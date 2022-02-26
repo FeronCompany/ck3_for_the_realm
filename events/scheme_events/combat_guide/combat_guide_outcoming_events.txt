@@ -1,0 +1,91 @@
+﻿namespace = combat_guide_outcome
+
+######################
+# Positive Outcomes
+# 1000-1999
+######################
+# Success!
+combat_guide_outcome.1000 = {
+	type = character_event
+	title = combat_guide_outcome.1000.t
+	desc = combat_guide_outcome.1000.desc
+	theme = education
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_rational
+	}
+
+	option = {
+		name = combat_guide_outcome.1000.a
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {
+		scope:owner = {
+			send_interface_toast = {
+				title = combat_guide_complete
+				left_icon = root
+				add_prowess_skill = 4 ###
+				#TODO...
+				scope:scheme = { end_scheme = yes }
+			}
+		}
+	}
+}
+
+#################################
+# Negative Outcomes
+# 2000-2999
+#################################
+
+# Failure
+combat_guide_outcome.2000 = {
+	type = character_event
+	title = combat_guide_outcome.2000.t
+	desc = combat_guide_outcome.2000.desc
+	theme = education
+	left_portrait = {
+		character = root
+		animation = rage
+	}
+	right_portrait = scope:target
+
+	option = {
+		name = learn_language_outcome.2000.a
+		scope:scheme = {
+			end_scheme = yes
+		}
+	}
+}
+
+#################################
+# Invalidation Outcomes
+# 3000-3999
+#################################
+
+# Invalidation
+combat_guide_outcome.3000 = {
+	type = character_event
+	title = combat_guide_outcome.3000.t
+	desc = combat_guide_outcome.3000.desc
+	theme = education
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = scope:target
+
+	option = {
+		name = combat_guide_outcome.3000.a
+	}
+
+	after = {
+		remove_variable = combat_guide_progress
+	}
+}

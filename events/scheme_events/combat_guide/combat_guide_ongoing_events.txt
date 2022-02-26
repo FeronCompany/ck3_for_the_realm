@@ -1,0 +1,36 @@
+﻿namespace = combat_guide_ongoing
+
+######################
+# FREE-STANDING EVENTS
+# 1000-4999
+######################
+combat_guide_ongoing.1000 = {
+	type = character_event
+	title = combat_guide_ongoing.1000.t
+	desc = combat_guide_ongoing.1000.desc
+	theme = education
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+	}
+
+	immediate = {
+		## TODO 
+	}
+
+	option = { # normal progress
+		name = combat_guide_ongoing.1000.a
+		custom_tooltip = scheme_executes_immediately
+		hidden_effect = {
+			scope:scheme = {
+				add_scheme_progress = 10
+			}
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+}

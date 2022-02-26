@@ -1,0 +1,288 @@
+﻿
+########## Aid Liege #########
+aid_my_lord_interaction = {
+	icon = icon_gold
+	category = interaction_category_vassal
+	common_interaction = yes
+	desc = aid_my_lord_interaction_desc
+	greeting = positive
+	notification_text = VASSAL_AID_LIEGE
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_frequency = 12
+
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		scope:actor = {
+			NOT = { this = scope:recipient }
+			liege = scope:recipient
+		}
+		scope:recipient = {
+			gold < 1
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor.gold >= 300
+		scope:recipient = { is_diplomatically_available = yes }
+		NOT = { scope:actor = { is_at_war_with = scope:recipient } } 
+	}
+
+	on_accept = {
+		scope:actor = {
+			send_interface_message = {
+				type = event_generic_neutral
+				title = aid_my_lord_interaction_notification
+				right_icon = scope:recipient
+				pay_short_term_gold = {
+					gold = 300
+					target = scope:recipient
+				}
+				stress_impact = {
+					greedy = medium_stress_impact_gain
+					generous = medium_stress_impact_loss
+				}
+				scope:recipient = {
+					if = {
+						limit = {
+							scope:gain_hook = yes
+						}
+						scope:actor = {
+							add_hook = { #Hook effect must match gain_hook option condition
+								target = scope:recipient
+								type = favor_hook
+							}
+						}
+					}
+					else = {
+						add_opinion = {
+							target = scope:actor
+							modifier = gift_opinion
+							opinion = send_gift_opinion
+						}
+					}
+				}
+			}
+
+			# Warning for multiple gifts
+			if = {
+				limit = {
+					scope:recipient = {
+						has_opinion_modifier = {
+							target = scope:actor
+							modifier = gift_opinion
+						}
+					}
+				}
+				custom_tooltip = ALREADY_SENT_GIFT_WARNING
+			}
+		}
+	}
+	send_option = {
+		flag = gain_hook
+		localization = "AID_LIEGE_GAIN_HOOK"
+		is_valid = {
+			trigger_if = {
+				limit = {
+					scope:actor = { is_ai = yes }
+				}
+				scope:recipient = {
+					OR = {
+						is_vassal_of = scope:actor
+						AND = {
+							exists = liege
+							liege = scope:actor
+						}
+					}
+				}
+			}
+			scope:actor = {
+				can_add_hook = {
+					type = favor_hook #Matches the hook added in the on_accept
+					target = scope:recipient
+				}
+			}
+		}
+	}
+	on_decline = {
+		# nothing happen for now
+	}
+
+	ai_accept = {
+		base = 0
+		modifier = {
+			add = 50
+			trigger = {
+				scope:recipient = {
+					gold < 10
+				}
+			}
+			desc = "LIEGE_LACK_OF_MONEY"
+		}
+	}
+
+	ai_will_do = {
+		base = 50
+		modifier = { # Do not send double-gifts
+			factor = 0
+			scope:recipient = {
+				has_opinion_modifier = {
+					target = scope:actor
+					modifier = gift_opinion
+				}
+			}
+		}
+		modifier = { # Bad relation
+			factor = 0
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value <= 20
+				}
+			}
+		}
+		modifier = {
+			add = 50
+			scope:gain_hook = yes
+		}
+	}
+}
+
+########## Combat Guidance #########
+request_combat_guidance_interaction = {
+	icon = icon_combat
+	category = interaction_category_friendly
+	scheme = combat_guide
+	send_name = START_SCHEME
+	ignores_pending_interaction_block = yes
+	ai_targets = {
+		ai_recipients = vassals
+		ai_recipients = peer_vassals
+		ai_recipients = liege
+		ai_recipients = guests
+		ai_recipients = courtiers
+		chance = 0.25
+	}
+	ai_frequency = 36
+
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		scope:actor = {
+			primary_title.tier > tier_barony
+			is_adult = yes
+			OR = {
+				has_perk = stalwart_leader_perk
+				culture = { has_cultural_parameter = can_duel_rivals }
+			}
+			prowess < 16
+		}
+		scope:recipient = {
+			prowess >= 20
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor.gold >= 150
+		scope:recipient = { is_diplomatically_available = yes }
+		NOT = { scope:actor = { is_at_war_with = scope:recipient } } 
+	}
+
+	ai_accept = {
+		base = -40
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 0.5
+			desc = AI_OPINION_REASON
+		}
+		modifier = {
+			add = 50
+			trigger = {
+				scope:recipient = {
+					gold < 20
+				}
+			}
+			desc = GOLD_REASON
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = -10
+			scope:actor = {
+				has_trait = shy
+			}
+		}
+		modifier = {
+			add = -20
+			scope:actor = {
+				has_trait = lazy
+			}
+		}
+		modifier = {
+			add = -30
+			scope:actor = {
+				has_trait = content
+			}
+		}
+		modifier = {
+			add = -10
+			scope:actor = {
+				has_trait = craven
+			}
+		}
+		modifier = {
+			add = 50
+			scope:actor = {
+				has_trait = ambitious
+			}
+		}
+		modifier = {
+			add = 20
+			scope:actor = {
+				has_trait = brave
+			}
+		}
+		modifier = {
+			add = 10
+			scope:actor = {
+				has_trait = humble
+			}
+		}
+		modifier = {
+			add = 50
+			scope:actor = {
+				has_trait = diligent
+			}
+		}
+	}
+
+	on_accept = {
+		hidden_effect = {
+			scope:actor = {
+				send_interface_toast = {
+					title = request_combat_guidance_interaction_notification
+					left_icon = scope:actor					
+					right_icon = scope:recipient
+					start_scheme = {
+						type = combat_guide
+						target = scope:recipient
+					}
+					pay_short_term_gold = {
+						gold = 150
+						target = scope:recipient
+					}
+					stress_impact = {
+						greedy = medium_stress_impact_gain
+						lazy = medium_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+	on_decline = {
+		# nothing happen for now
+	}
+}

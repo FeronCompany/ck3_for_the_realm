@@ -1,0 +1,10 @@
+﻿l_simp_chinese:
+ aid_my_lord_interaction:0 "资助君上"
+ aid_my_lord_interaction_desc:0 "资助你的君主以获取回报"
+ aid_my_lord_interaction_notification:0 "资助君上"
+ VASSAL_AID_LIEGE:0 "忠心臣子自当资助其君上"
+ AID_LIEGE_GAIN_HOOK:0 "你通过资金支持获取君主的牵制"
+ LIEGE_LACK_OF_MONEY:0 "君上的财政绷不住了"
+ request_combat_guidance_interaction:0 "学习格斗技巧"
+ request_combat_guidance_interaction_desc:0 "花点学费学习格斗技巧"
+ request_combat_guidance_interaction_notification:0 "学习格斗技巧"

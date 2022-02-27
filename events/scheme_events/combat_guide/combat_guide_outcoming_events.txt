@@ -31,8 +31,7 @@ combat_guide_outcome.1000 = {
 			send_interface_toast = {
 				title = combat_guide_complete
 				left_icon = root
-				add_prowess_skill = 4 ###
-				#TODO...
+				add_prowess_skill = 4
 				scope:scheme = { end_scheme = yes }
 			}
 		}
@@ -57,7 +56,7 @@ combat_guide_outcome.2000 = {
 	right_portrait = scope:target
 
 	option = {
-		name = learn_language_outcome.2000.a
+		name = combat_guide_outcome.2000.a
 		scope:scheme = {
 			end_scheme = yes
 		}

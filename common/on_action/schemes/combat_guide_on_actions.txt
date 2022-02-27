@@ -1,0 +1,33 @@
+﻿combat_guide_success = {
+	random_events = {
+		100 = combat_guide_outcome.1000
+	}
+}
+
+combat_guide_failure = {
+	random_events = {
+		100 = combat_guide_outcome.2000
+	}
+}
+
+
+combat_guide_ongoing = {
+	trigger = {
+		is_landed = yes
+		is_physically_able = yes
+	}
+	random_events = {
+		50 = 0
+		5 = combat_guide_ongoing.1000 # hard training
+		10 = combat_guide_ongoing.1001 # late of learning
+		5 = combat_guide_ongoing.1002 # deeply inspired
+		5 = combat_guide_ongoing.1003 # physical training
+		5 = combat_guide_ongoing.1004 # the true meaning of martial arts
+		5 = combat_guide_ongoing.1005 # disagreement
+		5 = combat_guide_ongoing.1006 # cruel training
+		5 = combat_guide_ongoing.1007 # both deligent
+		5 = combat_guide_ongoing.1008 # spouse demand stop train
+		20 = combat_guide_ongoing.1009 # trial of master
+	}
+}
+

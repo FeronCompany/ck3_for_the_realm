@@ -1,0 +1,60 @@
+﻿l_english:
+ combat_guide_outcome.1000.t:1 "$combat_guide$: Success!"
+ combat_guide_outcome.1000.desc:3 "After the patient teaching of my master [target.GetShortUIName|U] and my unremitting efforts, I finally mastered superb combat skills. Knights and generals who used to despise my martial arts had to sit up and take notice. Now it's time to show your heroic bearing on the battlefield!"
+ combat_guide_outcome.1000.a:0 "I feel accomplished!"
+
+ combat_guide_outcome.2000.t:1 "$combat_guide$: Failed."
+ combat_guide_outcome.2000.desc:3 "Although I have made great efforts to practice fighting, my skills are still stagnant. My master [target.GetShortUIName|U] sighed helplessly and said to me, as a lord, you may have a more important role to play. Martial arts are not everything, so stop here. It seems that my wish to become stronger will be defeated."
+ combat_guide_outcome.2000.a:0 "But I don't want to fail!"
+ 
+ combat_guide_outcome.3000.t:1 "$combat_guide$: Invalid."
+ combat_guide_outcome.3000.desc:3 "Your master [target.GetShortUIName|U] can no longer teach you."
+ combat_guide_outcome.3000.a:0 "What a pity."
+
+ combat_guide_ongoing.1000.t:1 "Muscle Soreness"
+ combat_guide_ongoing.1000.desc:3 "Under the supervision of my master [target.GetShortUIName|U], I fought fiercely with Woodenhead. A wave cut down, sweat had already soaked my clothes, and only when I got home did I find my muscles sore."
+ combat_guide_ongoing.1000.a:0 "Go go go!"
+ combat_guide_ongoing.1000.b:0 "Do summary after training."
+ combat_guide_ongoing.1000.c:0 "Take a rest."
+ 
+ combat_guide_ongoing.1001.t:1 "Late of training"
+ combat_guide_ongoing.1001.desc:3 "Perhaps yesterday's training was too tiring, and today I overslept for an hour. As I hurriedly put on my clothes and ran to the training ground, [target.GetShortUIName|U] who had been waiting here for a long time cast a meaningful look at me.\n\n Where is your weapon, [target.GetShortUIName|U] asked."
+ combat_guide_ongoing.1001.a:0 "It will not happen again."
+
+ combat_guide_ongoing.1002.t:1 "Deeply inspired"
+ combat_guide_ongoing.1002.desc:3 "When my training gradually fell into a bottleneck, my wise master [target.GetShortUIName|U] came calmly and pointed out in detail the areas where my moves could be improved. When I tried again in accordance with his method, all doubts suddenly became clear. I broke through!"
+ combat_guide_ongoing.1002.a:0 "Thank you, [target.GetShortUIName|U]."
+
+ combat_guide_ongoing.1003.t:1 "Physical training"
+ combat_guide_ongoing.1003.desc:3 "The instructor [target.GetShortUIName|U] came to me and said earnestly, \n\nAccording to my observation, your strength is obviously insufficient, which is not enough to support your fighting training. So from today on, we will conduct physical training!"
+ combat_guide_ongoing.1003.a:0 "Oh, no."
+
+ combat_guide_ongoing.1004.t:1 "Essense of chivalry"
+ combat_guide_ongoing.1004.desc:3 "During the break from training, I sat on the floor with my master [target.GetShortUIName|U] and discussed my views on martial arts ethics. I expressed my views, but [target.GetShortUIName|U] shook head and said that war cannot solve all problems. As knights, we have a duty to protect the weak. Bullying behavior should be spurned. I couldn't help thinking deeply..."
+ combat_guide_ongoing.1004.a:0 "Yes?"
+ combat_guide_ongoing.1004.b:0 "Torturing people is not good."
+ combat_guide_ongoing.1004.c:0 "Rightous knights don't think of abusing others, do they?"
+ combat_guide_ongoing.1004.d:0 "The world needs more warmth from us knights."
+ combat_guide_ongoing.1004.e:0 "I can't agree more."
+
+ combat_guide_ongoing.1005.t:1 "Disagreement"
+ combat_guide_ongoing.1005.desc:3 "Day after day, my master [target.GetShortUIName|U] kept repeating [target.GetHerHis] platitudes. At the same time, my martial arts skills did not improve. I finally couldn't bear it and expressed my dissatisfaction, but [target.GetSheHe|U] told me directly that [target.GetSheHe|U] was also dissatisfied with me."
+ combat_guide_ongoing.1005.a:0 "I disagree with you."
+ combat_guide_ongoing.1005.b:0 "Forget this, for now."
+ combat_guide_ongoing.1005.c:0 "Return my money, you idiot!"
+
+ combat_guide_ongoing.1006.t:1 "Cruel training"
+ combat_guide_ongoing.1006.desc:3 "My master [target.GetShortUIName|U] looked at me while I was training, thoughtfully. Suddenly, [target.GetSheHe] took my hand and ran to the nearby woods. [target.GetSheHe|U] opened the door of the cabin in the forest and led out a big German shepherd with grinning teeth. [target.GetSheHe|U] smiled at me strangely and said, Beat it and you will truly graduate."
+ combat_guide_ongoing.1006.a:0 "Stick to it!"
+ combat_guide_ongoing.1006.a.failure:0 "You get injured."
+ combat_guide_ongoing.1006.a.critical_failure:0 "You died."
+
+ combat_guide_ongoing.1007.t:1 "Two deligent friends"
+ combat_guide_ongoing.1007.desc:3 "In order to make a good impression on my master [target.GetShortUIName|U], I got up early and started exercising. I didn't expect that shortly after I arrived at the training ground, [target.GetShortUIName|U] also came to exercise. [target.GetSheHe|U] was surprised to say, So you also have the habit of getting up early to exercise!"
+ combat_guide_ongoing.1007.a:0 "Come on, [target.GetShortUIName|U]!"
+
+ combat_guide_ongoing.1008.t:1 "Spouse's complaint"
+ combat_guide_ongoing.1008.desc:3 "My spouse stormed to the training ground, pulled me aside, and asked me, why didn't you come home for so long? How can practicing martial arts help you?"
+ combat_guide_ongoing.1008.a:0 "It will soon be done."
+ combat_guide_ongoing.1008.b:0 "Let's test the result of training."
+ combat_guide_ongoing.1008.c:0 "I'll rethink about it."

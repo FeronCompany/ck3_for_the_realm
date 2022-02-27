@@ -1,0 +1,4 @@
+﻿over_training_modifier = {
+	icon = health_negative
+	health = -0.25
+}

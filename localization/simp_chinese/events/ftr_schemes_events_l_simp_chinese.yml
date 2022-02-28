@@ -53,8 +53,15 @@
  combat_guide_ongoing.1007.desc:3 "为了给导师 [target.GetShortUIName|U] 留下一个好印象，我起了个大早开始锻炼。没想到我刚到训练场不久，[target.GetShortUIName|U] 也过来锻炼了。[target.GetSheHe|U]惊讶地说，原来你也有早起锻炼的习惯！"
  combat_guide_ongoing.1007.a:0 "来一起锻炼呀, [target.GetShortUIName|U]!"
 
- combat_guide_ongoing.1008.t:1 "肘腋之患"
+ combat_guide_ongoing.1008.t:1 "河东狮吼"
  combat_guide_ongoing.1008.desc:3 "我的配偶气冲冲地来到训练场，把我拉到一边，质问我，为什么这么久都不回家？练武对你能有什么帮助呢？"
  combat_guide_ongoing.1008.a:0 "很快就好."
  combat_guide_ongoing.1008.b:0 "我会让你下不来床."
  combat_guide_ongoing.1008.c:0 "我会重新考虑的."
+
+ combat_guide_ongoing.1009.t:1 "实战演练"
+ combat_guide_ongoing.1009.desc:3 "[target.GetShortUIName|U] 对我的训练进展非常满意，于是邀请我来一场实战演练。我们两人来到空旷的训练场，双手紧握着木棍，怒目对视，准备来一场贴近实战的格斗演习。鹿死谁手，犹未可知！"
+ combat_guide_ongoing.1009.a:0 "来呀, [target.GetShortUIName|U]!"
+ combat_guide_ongoing.1009.a.win_master:0 "你击败了 [target.GetShortUIName|U]"
+ combat_guide_ongoing.1009.a.lost_master:0 "你输给了 [target.GetShortUIName|U]"
+ combat_guide_ongoing.1009.a.tie:0 "你和 [target.GetShortUIName|U] 打了个平手"

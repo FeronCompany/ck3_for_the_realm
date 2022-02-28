@@ -58,3 +58,10 @@
  combat_guide_ongoing.1008.a:0 "It will soon be done."
  combat_guide_ongoing.1008.b:0 "Let's test the result of training."
  combat_guide_ongoing.1008.c:0 "I'll rethink about it."
+
+ combat_guide_ongoing.1009.t:1 "Master's Trial"
+ combat_guide_ongoing.1009.desc:3 "[target.GetShortUIName|U] was very satisfied with the progress of my training, so [target.GetSheHe|U] invited me to a real combat exercise. The two of us came to the empty training ground, clutching sticks in both hands, glaring at each other, preparing for a combat exercise close to actual combat. It is still unknown who will win!"
+ combat_guide_ongoing.1009.a:0 "Come on, [target.GetShortUIName|U]!"
+ combat_guide_ongoing.1009.a.win_master:0 "You defeated [target.GetShortUIName|U]"
+ combat_guide_ongoing.1009.a.lost_master:0 "You lose to [target.GetShortUIName|U]"
+ combat_guide_ongoing.1009.a.tie:0 "You give [target.GetShortUIName|U] a draw"

@@ -4,7 +4,6 @@
 Focusing on interior affairs of realms, strengthening interations between vassals and liege, added some more decisions and events to make game more rich in content.
 ## v0.1.0 调整日志 Change log of v0.1.0
 ///TODO
-///TODO LIST combat_guide_ongoing.1008 combat_guide_ongoing.1009 fix health_modifier
 ## 改动总览 Change detail
 + 新增交互选项 New interative oprtions
   + 神学辩论 Theological debate: 具备神学家特质的角色可以和与自己信仰不同的门客、领主和封臣以及同僚进行神学辩论，辩论的胜利者将获得大量虔诚，失败者可以选择诡异胜利者的宗教或者损失虔诚。

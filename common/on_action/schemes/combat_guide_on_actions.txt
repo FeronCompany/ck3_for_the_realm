@@ -18,7 +18,7 @@ combat_guide_ongoing = {
 	}
 	random_events = {
 		50 = 0
-		5 = combat_guide_ongoing.1000 # hard training
+		20 = combat_guide_ongoing.1000 # hard training
 		10 = combat_guide_ongoing.1001 # late of learning
 		5 = combat_guide_ongoing.1002 # deeply inspired
 		5 = combat_guide_ongoing.1003 # physical training

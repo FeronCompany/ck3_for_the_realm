@@ -456,9 +456,13 @@ combat_guide_ongoing.1006 = {
 	option = { # fight
 		name = combat_guide_ongoing.1006.a
 		random_list = {
-			50 = {
+			20 = {
 				modifier = {
-          add = prowess
+					add = {
+						value = prowess
+						multiply = 2
+					}
+          #add = prowess
         }
 				add_prowess_skill = 1
 				hidden_effect = {
@@ -467,10 +471,14 @@ combat_guide_ongoing.1006 = {
 					}
 				}
 			}
-			40 = {
+			75 = {
 				send_interface_toast = {	
 					title = combat_guide_ongoing.1006.a.failure
-					increase_wounds_effect = { REASON = hunting_accident }
+					change_trait_rank = {
+						trait = wounded
+						rank = 1
+						max = 3
+					}
 				}
 				hidden_effect = {
 					scope:scheme = {
@@ -483,7 +491,7 @@ combat_guide_ongoing.1006 = {
 					opinion = -10
 				}
 			}
-			10 = {
+			5 = {
 				desc = combat_guide_ongoing.1006.a.critical_failure
 				send_interface_toast = {
 					title = combat_guide_ongoing.1006.a.critical_failure				
@@ -543,8 +551,11 @@ combat_guide_ongoing.1007 = {
 						scope:owner = { has_relation_rival = scope:target }
 					}
 				}
-				set_relation_friend = scope:target
 				add_prowess_skill = 1
+				scope:target = {
+					set_relation_friend = root
+				}
+				#set_relation_friend = scope:target
 			}
 			10 = {
 				trigger = {
@@ -584,34 +595,50 @@ combat_guide_ongoing.1008 = {
 	theme = education
 	left_portrait = {
 		character = root
-		animation = happiness
+		animation = boredom
 	}
 	right_portrait = {
-    character = scope:target
-		animation = happiness
+    character = scope:spouse
+		animation = anger
   }
 	
 	trigger = {
 		NOT = { has_variable = had_event_combat_guide_ongoing_1008 }
+		is_married = yes
 	}
 	immediate = {
 		set_variable = {	
 			name = had_event_combat_guide_ongoing_1008
 			value = yes
-			days = 365
+			days = 1460
+		}
+		random_spouse = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			save_scope_as = spouse
 		}
 	}
 
 	option = { # ignore
 		name = combat_guide_ongoing.1008.a
-		#TODO
+		scope:spouse = {
+			add_opinion = {
+				modifier = angry_opinion
+				target = root
+				opinion = -20
+			}
+		}
 		ai_chance = {
 			base = 70
 		}
 	}
 	option = { # make love
 		name = combat_guide_ongoing.1008.b
-		#TODO
+		had_sex_with_effect = {
+			CHARACTER = scope:spouse
+			PREGNANCY_CHANCE = 20
+		}
 		ai_chance = {
 			base = 20
 		}
@@ -625,6 +652,72 @@ combat_guide_ongoing.1008 = {
 		}
 		ai_chance = {
 			base = 10
+		}
+	}
+}
+
+
+# trial of master
+combat_guide_ongoing.1009 = {
+	type = character_event
+	title = combat_guide_ongoing.1009.t
+	desc = combat_guide_ongoing.1009.desc
+	theme = martial
+	left_portrait = {
+		character = root
+		animation = war_attacker
+	}
+	right_portrait = {
+    character = scope:target
+		animation = war_attacker
+  }
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1009 }
+	}
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1009
+			value = yes
+			days = 1460
+		}
+	}
+
+	option = { # fight
+		name = combat_guide_ongoing.1009.a
+		duel = {
+			skill = prowess
+			value = 0
+			25 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 4
+					min = -10
+				}
+				add_prowess_skill = 1
+				desc = combat_guide_ongoing.1009.a.lost_master
+			}
+			15 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -4
+					min = -10
+				}
+				add_prowess_skill = 4
+				desc = combat_guide_ongoing.1009.a.win_master
+			}
+			10 = {
+				add_prowess_skill = 2
+				desc = combat_guide_ongoing.1009.a.tie
+			}
+		}
+		hidden_effect = {
+			scope:scheme = {
+				add_scheme_progress = 2
+			}
+		}
+		ai_chance = {
+			base = 100
 		}
 	}
 }

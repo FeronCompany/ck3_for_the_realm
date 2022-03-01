@@ -11,7 +11,7 @@ aid_my_lord_interaction = {
 	ai_targets = {
 		ai_recipients = liege
 	}
-	ai_frequency = 12
+	ai_frequency = 24
 
 	is_shown = {
 		NOT = { scope:actor = scope:recipient }
@@ -20,7 +20,7 @@ aid_my_lord_interaction = {
 			liege = scope:recipient
 		}
 		scope:recipient = {
-			gold < 1
+			gold < 100
 		}
 	}
 
@@ -36,31 +36,36 @@ aid_my_lord_interaction = {
 				type = event_generic_neutral
 				title = aid_my_lord_interaction_notification
 				right_icon = scope:recipient
-				pay_short_term_gold = {
-					gold = 300
-					target = scope:recipient
-				}
-				stress_impact = {
-					greedy = medium_stress_impact_gain
-					generous = medium_stress_impact_loss
-				}
-				scope:recipient = {
-					if = {
-						limit = {
-							scope:gain_hook = yes
-						}
-						scope:actor = {
-							add_hook = { #Hook effect must match gain_hook option condition
-								target = scope:recipient
-								type = favor_hook
+				send_interface_toast = {
+					title = liege_accept_my_fund_support
+					left_icon = scope:actor					
+					right_icon = scope:recipient
+					pay_short_term_gold = {
+						gold = 300
+						target = scope:recipient
+					}
+					stress_impact = {
+						greedy = medium_stress_impact_gain
+						generous = medium_stress_impact_loss
+					}
+					scope:recipient = {
+						if = {
+							limit = {
+								scope:gain_hook = yes
+							}
+							scope:actor = {
+								add_hook = { #Hook effect must match gain_hook option condition
+									target = scope:recipient
+									type = favor_hook
+								}
 							}
 						}
-					}
-					else = {
-						add_opinion = {
-							target = scope:actor
-							modifier = gift_opinion
-							opinion = send_gift_opinion
+						else = {
+							add_opinion = {
+								target = scope:actor
+								modifier = gift_opinion
+								opinion = send_gift_opinion
+							}
 						}
 					}
 				}
@@ -84,42 +89,40 @@ aid_my_lord_interaction = {
 		flag = gain_hook
 		localization = "AID_LIEGE_GAIN_HOOK"
 		is_valid = {
-			trigger_if = {
-				limit = {
-					scope:actor = { is_ai = yes }
-				}
-				scope:recipient = {
-					OR = {
-						is_vassal_of = scope:actor
-						AND = {
-							exists = liege
-							liege = scope:actor
-						}
-					}
-				}
-			}
 			scope:actor = {
 				can_add_hook = {
-					type = favor_hook #Matches the hook added in the on_accept
+					type = favor_hook
 					target = scope:recipient
 				}
 			}
 		}
 	}
-	on_decline = {
-		# nothing happen for now
+	send_option = {
+		flag = help
+		localization = "JUST_HELP_LIEGE"
 	}
+	on_decline = {}
 
+	auto_accept = {
+		scope:gain_hook = no
+	}
 	ai_accept = {
-		base = 0
+		base = 40
 		modifier = {
 			add = 50
 			trigger = {
 				scope:recipient = {
-					gold < 10
+					gold < -50
 				}
 			}
-			desc = "LIEGE_LACK_OF_MONEY"
+			desc = "GOLD_REASON"
+		}
+		modifier = {
+			add = -50
+			trigger = {
+				scope:gain_hook = yes
+			}
+			desc = "GAIN_HOOK_NEGATIVE_REASON"
 		}
 	}
 

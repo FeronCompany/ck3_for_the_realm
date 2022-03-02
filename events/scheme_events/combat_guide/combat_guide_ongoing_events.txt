@@ -544,7 +544,7 @@ combat_guide_ongoing.1007 = {
 	option = { # train together
 		name = combat_guide_ongoing.1007.a
 		random_list = {
-			30 = {
+			50 = {
 				trigger = {
 					NOR = {
 						scope:owner = { has_relation_friend = scope:target }
@@ -573,7 +573,7 @@ combat_guide_ongoing.1007 = {
 				}
 				add_trait = athletic
 			}
-			50 = {
+			20 = {
 				hidden_effect = {
 					scope:scheme = {
 						add_scheme_progress = 2

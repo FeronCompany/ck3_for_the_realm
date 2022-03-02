@@ -1,0 +1,11 @@
+﻿l_simp_chinese:
+ ftr_interaction_event.0001.opening:0 "我的朋友"
+ ftr_interaction_event.0001.desc:0 "我已经迫不及待和你探讨宗教问题了呢，让我们走着瞧吧，我保证你会折服于正信！"
+ ftr_interaction_event.0001.a:0 "哟呵"
+
+ ftr_interaction_event.0002.t:0 "辩论开始"
+ ftr_interaction_event.0002.desc:0 "[recipient.GetShortUIName|U] 来到你的宫廷，迫不及待的取出经书，并毫无顾忌地朗读起经文，试图在气势上压倒你。你则不慌不忙地放下公文，缓步走到[target.GetHerHim]面前，思考接下来的对策。"
+ ftr_interaction_event.0002.a:0 "指出对方教义中的谬误"
+ ftr_interaction_event.0002.b:0 "寻找对方言语中的逻辑漏洞"
+ ftr_interaction_event.0002.c:0 "引经据典证明自己"
+ ftr_interaction_event.0002.d:0 "暗示不信者的悲惨命运"

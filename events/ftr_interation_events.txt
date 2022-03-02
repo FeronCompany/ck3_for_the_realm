@@ -1,0 +1,57 @@
+﻿
+namespace = ftr_interaction_event
+
+# Religious Debate: Accept
+ftr_interaction_event.0001 = {
+	type = letter_event
+	opening = {
+		desc = ftr_interaction_event.0001.opening
+	}
+	desc = ftr_interaction_event.0001.desc
+		
+	sender = scope:recipient
+
+	immediate = {
+		show_as_tooltip = { retract_vassal_interaction_effect = yes }
+	}
+
+	option = {
+		name = ftr_interaction_event.0001.a
+		hidden_effect = {
+			trigger_event = ftr_interaction_event.0002
+		}
+	}
+}
+
+# Religious Debate: Choose stratagy
+ftr_interaction_event.0002 = {
+	type = character_event
+	title = ftr_interaction_event.0002.t
+	desc = ftr_interaction_event.0002.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = personality_zealous
+  }
+
+	option = { # point out doctrine fallacy
+		name = ftr_interaction_event.0002.a
+		#
+	}
+	option = { # find logic mistake
+		name = ftr_interaction_event.0002.b
+		#
+	}
+	option = { # quoting historical allusions
+		name = ftr_interaction_event.0002.c
+		#
+	}
+	option = { # implying the tragic fate of the unbeliever
+		name = ftr_interaction_event.0002.d
+		#
+	}
+}

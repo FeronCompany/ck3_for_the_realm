@@ -10,3 +10,9 @@
  request_combat_guidance_interaction:0 "学习格斗技巧"
  request_combat_guidance_interaction_desc:0 "花点学费学习格斗技巧"
  request_combat_guidance_interaction_notification:0 "学习格斗技巧"
+
+ religious_debate_interaction:0 "宗教辩论"
+ religious_debate_interaction_desc:0 "向目标发起一场宗教辩论."
+ religious_debate_interaction_notification:0 "宗教辩论"
+ FOR_THE_FAITH:0 "为了信仰!"
+ NOT_CARE_ABOUT_RELIGION:0 "不在乎宗教事务"

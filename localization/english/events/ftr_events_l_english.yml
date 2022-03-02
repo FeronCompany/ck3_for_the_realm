@@ -1,0 +1,11 @@
+﻿l_english:
+ ftr_interaction_event.0001.opening:0 "Dear friend"
+ ftr_interaction_event.0001.desc:0 "I can't wait to start a religious debate with you. Just wait a few days and you shall convert to the true faith."
+ ftr_interaction_event.0001.a:0 "Wait and see."
+
+ ftr_interaction_event.0002.t:0 "Debate begin"
+ ftr_interaction_event.0002.desc:0 "[recipient.GetShortUIName|U]came to your court, eagerly took out the scriptures, and read them aloud without hesitation, trying to overwhelm you in momentum. You unhurriedly put down the official document, walked slowly to [target.GetHerHim], and thought about the next countermeasures."
+ ftr_interaction_event.0002.a:0 "Point out doctrine fallacy of his faith."
+ ftr_interaction_event.0002.b:0 "Find logic mistake."
+ ftr_interaction_event.0002.c:0 "Quoting historical allusions."
+ ftr_interaction_event.0002.d:0 "Implying the tragic fate of the unbeliever."

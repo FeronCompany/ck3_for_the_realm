@@ -6,7 +6,7 @@ Focusing on interior affairs of realms, strengthening interations between vassal
 ///TODO
 ## 改动总览 Change detail
 + 新增交互选项 New interative oprtions
-  + 神学辩论 Theological debate: 具备神学家特质的角色可以和与自己信仰不同的门客、领主和封臣以及同僚进行神学辩论，辩论的胜利者将获得大量虔诚，失败者可以选择诡异胜利者的宗教或者损失虔诚。
+  + 神学辩论 Theological debate: 具备神学家特质的角色可以和与自己信仰不同的门客、领主和封臣以及同僚进行神学辩论，辩论的胜利者将获得大量虔诚，失败者可以选择皈依胜利者的宗教或者损失虔诚。
   + 发动政变 Launch a coup: 具有领主主头衔宣称的门客或者封臣可以对领主发起政变密谋，成功则获取领主的所有头衔，并囚禁领主，有概率杀死领主。所有参与者获得对发起者的弱牵制。政变失败所有参与者都有几率被囚禁或被杀。
   + 援助领主 Aid my lord: 当领主负债时，忠心的封臣可以主动提出提供资金支持，可以选择换来君主的牵制。
   + 格斗教练 Request combat guidance: 向比自己勇武高的人请求指导，开启一个私人谋略。

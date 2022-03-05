@@ -16,3 +16,5 @@
  religious_debate_interaction_notification:0 "宗教辩论"
  FOR_THE_FAITH:0 "为了信仰!"
  NOT_CARE_ABOUT_RELIGION:0 "不在乎宗教事务"
+ SOMEONE_START_RELIGIOUS_DEBATE:0 "[actor.GetShortUIName|U] 想与你进行一场宗教辩论."
+ RECENT_RELIGIOUS_DEBATE:0 "近期的宗教辩论"

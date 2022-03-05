@@ -1,11 +1,65 @@
 ﻿l_english:
- ftr_interaction_event.0001.opening:0 "Dear friend"
+ ftr_interaction_event.0001.opening:0 "Lord [root.GetShortUIName|U]"
  ftr_interaction_event.0001.desc:0 "I can't wait to start a religious debate with you. Just wait a few days and you shall convert to the true faith."
  ftr_interaction_event.0001.a:0 "Wait and see."
 
  ftr_interaction_event.0002.t:0 "Debate begin"
- ftr_interaction_event.0002.desc:0 "[recipient.GetShortUIName|U]came to your court, eagerly took out the scriptures, and read them aloud without hesitation, trying to overwhelm you in momentum. You unhurriedly put down the official document, walked slowly to [target.GetHerHim], and thought about the next countermeasures."
+ ftr_interaction_event.0002.desc:0 "[recipient.GetShortUIName|U] came to your court, eagerly took out the scriptures, and read them aloud without hesitation, trying to overwhelm you in momentum. You unhurriedly put down the official document, walked slowly to [recipient.GetHerHim], and thought about the next countermeasures."
  ftr_interaction_event.0002.a:0 "Point out doctrine fallacy of his faith."
  ftr_interaction_event.0002.b:0 "Find logic mistake."
  ftr_interaction_event.0002.c:0 "Quoting historical allusions."
  ftr_interaction_event.0002.d:0 "Implying the tragic fate of the unbeliever."
+
+ ftr_interaction_event.0003.t:0 "Question Doctrine of Faith"
+ ftr_interaction_event.0003.desc:0 "As the debate raged on, [root.GetShortUIName|U] found a doctrine in our scriptures that [root.GetSheHe|U] thought was unreasonable. I was furious at this questioning of our sacred doctrine, but calmed down I began to think about strategies to counter [target.GetHerHim|U]..."
+ ftr_interaction_event.0003.a:0 "Strike back."
+ ftr_interaction_event.0003.a.start_lose:0 "[root.GetShortUIName|U] lose."
+ ftr_interaction_event.0003.a.recipient_lose:0 "You lose."
+ ftr_interaction_event.0003.a.tie:0 "It's a draw."
+ ftr_interaction_event.0003.a.fight:0 "You will have a fight."
+ ftr_interaction_event.0003.b:0 "Explain away."
+
+ ftr_interaction_event.0004.t:0 "My Logic Mistake"
+ ftr_interaction_event.0004.desc:0 "We both tried our best to find each other's flaws, but [root.GetShortUIName|U] still made a move and found my logical vulnerability. Now it's my turn to think about how to break the game..."
+ ftr_interaction_event.0004.a:0 "Change the subject."
+ ftr_interaction_event.0004.b:0 "Steal concept."
+
+ ftr_interaction_event.0005.t:0 "Quoting Historical Allusions"
+ ftr_interaction_event.0005.desc:0 "After an in-depth discussion, I found more and more that [root.GetShortUIName|U] knowledge is really profound. In the discussion, [root.GetSheHe|U] quoted various classics and said the right thing, and the others in the court actually agreed. I'm afraid this is not good..."
+ ftr_interaction_event.0005.a:0 "Quoting historical allusions too."
+ ftr_interaction_event.0005.b:0 "Question its reality."
+
+ ftr_interaction_event.0006.t:0 "Fate of Unbeliever"
+ ftr_interaction_event.0006.desc:0 "[root.GetShortUIName|U] tried [root.GetHerHis] best to advise me that if I did not convert to [root.GetHerHis] faith, I would go to hell after death. Is there any curse in the world more annoying than this? I must show my attitude!"
+ ftr_interaction_event.0006.a:0 "I excel in virtue."
+ ftr_interaction_event.0006.b:0 "Go to hell, now!"
+
+ ftr_interaction_event.0007.t:0 "Self-inflicted Consequence"
+ ftr_interaction_event.0007.desc:0 "After [recipient.GetShortUIName|U] finished [recipient.GetHerHis] eloquence, I was speechless. [recipient.GetHerHis|U] logic and [recipient.GetHerHis] expression made me unable to refute, and my loyalty to my faith was shaken..."
+ ftr_interaction_event.0007.a:0 "I failed you, my faith."
+ ftr_interaction_event.0007.b:0 "Maybe [recipient.GetShortUIName|U] is right..."
+
+ ftr_interaction_event.0008.t:0 "Slightly Downwind"
+ ftr_interaction_event.0008.desc:0 "After [root.GetShortUIName|U] finished [root.GetHerHis] eloquence, I was speechless. [root.GetHerHis|U] logic and [root.GetHerHis] expression made me unable to refute, and my loyalty to my faith was shaken..."
+ ftr_interaction_event.0008.a:0 "I failed you, my faith."
+ ftr_interaction_event.0008.b:0 "Maybe [root.GetShortUIName|U] is right..."
+
+ ftr_interaction_event.0009.t:0 "Victory of Faith"
+ ftr_interaction_event.0009.desc:0 "[recipient.GetShortUIName|U]'s petty cleverness seemed so laughable against the backdrop of my profound knowledge. [recipient.GetSheHe|U] begged me with a sad face not to continue, and admitted that [recipient.GetSheHe] had lost the debate."
+ ftr_interaction_event.0009.a:0 "Everything is as I expected."
+
+ ftr_interaction_event.0010.t:0 "Victory of Faith"
+ ftr_interaction_event.0010.desc:0 "[root.GetShortUIName|U]'s petty cleverness seemed so laughable against the backdrop of my profound knowledge. [root.GetSheHe|U] begged me with a sad face not to continue, and admitted that [root.GetSheHe] had lost the debate."
+ ftr_interaction_event.0010.a:0 "Everything is as I expected."
+
+ ftr_interaction_event.0011.t:0 "Victory of Farce"
+ ftr_interaction_event.0011.desc:0 "Our theological discussion gradually went astray and turned into a quarrel, and finally even a fight. I went back to my room with a dusty face, collapsed on the bed wearily, and said nothing..."
+ ftr_interaction_event.0011.a:0 "How did things get like this."
+
+ ftr_interaction_event.0012.t:0 "Spiritual communication"
+ ftr_interaction_event.0012.desc:0 "Although there are differences on some theological details, this does not prevent us from getting to know each other better. After an afternoon of communication, I found each other to be a friend worthy of deep friendship."
+ ftr_interaction_event.0012.a:0 "Go on, my friend."
+
+ ftr_interaction_event.0013.t:0 "Differences of opinion"
+ ftr_interaction_event.0013.desc:0 "Neither of us could persuade anyone. We could only stand at both ends of the living room and stare blankly. The guests on the side were all talking about it, analyzing who said it was more reasonable. I was tired, and the debate was over."
+ ftr_interaction_event.0013.a:0 "Next time, I will defeat you!"

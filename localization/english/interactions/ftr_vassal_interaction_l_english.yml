@@ -16,3 +16,5 @@
  religious_debate_interaction_notification:0 "Religious Debate"
  FOR_THE_FAITH:0 "For the faith!"
  NOT_CARE_ABOUT_RELIGION:0 "Not care about religion."
+ SOMEONE_START_RELIGIOUS_DEBATE:0 "[actor.GetShortUIName|U] wants to start a religious debate with you."
+ RECENT_RELIGIOUS_DEBATE:0 "Recent religious debate"

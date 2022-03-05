@@ -11,10 +11,6 @@ ftr_interaction_event.0001 = {
 		
 	sender = scope:recipient
 
-	immediate = {
-		show_as_tooltip = { retract_vassal_interaction_effect = yes }
-	}
-
 	option = {
 		name = ftr_interaction_event.0001.a
 		hidden_effect = {
@@ -40,18 +36,409 @@ ftr_interaction_event.0002 = {
 
 	option = { # point out doctrine fallacy
 		name = ftr_interaction_event.0002.a
-		#
+		hidden_effect = {
+			scope:recipient = {
+				trigger_event = ftr_interaction_event.0003
+			}
+		}
 	}
 	option = { # find logic mistake
 		name = ftr_interaction_event.0002.b
-		#
+		hidden_effect = {
+			scope:recipient = {
+				trigger_event = ftr_interaction_event.0004
+			}
+		}
 	}
 	option = { # quoting historical allusions
 		name = ftr_interaction_event.0002.c
-		#
+		hidden_effect = {
+			scope:recipient = {
+				trigger_event = ftr_interaction_event.0005
+			}
+		}
 	}
 	option = { # implying the tragic fate of the unbeliever
 		name = ftr_interaction_event.0002.d
-		#
+		hidden_effect = {
+			scope:recipient = {
+				trigger_event = ftr_interaction_event.0006
+			}
+		}
+	}
+}
+
+# Religious Debate: Starter question doctrine
+ftr_interaction_event.0003 = {
+	type = character_event
+	title = ftr_interaction_event.0003.t
+	desc = ftr_interaction_event.0003.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = schadenfreude
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = shock
+  }
+
+	option = { #Strike back
+		name = ftr_interaction_event.0003.a
+		duel = {
+			skill = learning
+			value = 0
+			15 = { # starter convinced
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 4
+					min = -10
+				}
+				root = {
+					trigger_event = ftr_interaction_event.0007
+				}
+				scope:recipient = {
+					trigger_event = ftr_interaction_event.0010
+				}
+				desc = ftr_interaction_event.0003.a.start_lose
+			}
+			15 = { # recipient convinced
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -4
+					min = -10
+				}
+				root = {
+					trigger_event = ftr_interaction_event.0009
+				}
+				scope:recipient = {
+					trigger_event = ftr_interaction_event.0008
+				}
+				desc = ftr_interaction_event.0003.a.recipient_lose
+			}
+			35 = { # no one wins
+				root = {
+					trigger_event = ftr_interaction_event.0013
+				}
+				scope:recipient = {
+					trigger_event = ftr_interaction_event.0013
+				}
+				desc = ftr_interaction_event.0003.a.tie
+			}
+			35 = { # lead to a fight
+				root = {
+					trigger_event = ftr_interaction_event.0011
+				}
+				scope:recipient = {
+					trigger_event = ftr_interaction_event.0011
+				}
+				desc = ftr_interaction_event.0003.a.fight
+			}
+		}
+	}
+	option = { #Explain away
+		name = ftr_interaction_event.0003.b
+		duel = {
+			skill = learning
+			value = 0
+			25 = { # starter convinced
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 4
+					min = -10
+				}
+				root = {
+					trigger_event = ftr_interaction_event.0007
+				}
+				scope:recipient = {
+					trigger_event = ftr_interaction_event.0010
+				}
+				desc = ftr_interaction_event.0003.a.start_lose
+			}
+			25 = { # recipient convinced
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -4
+					min = -10
+				}
+				root = {
+					trigger_event = ftr_interaction_event.0009
+				}
+				scope:recipient = {
+					trigger_event = ftr_interaction_event.0008
+				}
+				desc = ftr_interaction_event.0003.a.recipient_lose
+			}
+			50 = { # no one wins
+				root = {
+					trigger_event = ftr_interaction_event.0013
+				}
+				scope:recipient = {
+					trigger_event = ftr_interaction_event.0013
+				}
+				desc = ftr_interaction_event.0003.a.tie
+			}
+		}
+	}
+}
+
+
+# Religious Debate: Find logic mistake
+ftr_interaction_event.0004 = {
+	type = character_event
+	title = ftr_interaction_event.0004.t
+	desc = ftr_interaction_event.0004.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = schadenfreude
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = shock
+  }
+
+	option = { #Change the subject
+		name = ftr_interaction_event.0004.a
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+	option = { #Steal concept
+		name = ftr_interaction_event.0004.b
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+}
+
+# Religious Debate: Quoting historical allusions
+ftr_interaction_event.0005 = {
+	type = character_event
+	title = ftr_interaction_event.0005.t
+	desc = ftr_interaction_event.0005.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = schadenfreude
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = shock
+  }
+
+	option = { #Quoting historical allusions too
+		name = ftr_interaction_event.0005.a
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+	option = { #Question reality
+		name = ftr_interaction_event.0005.b
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+}
+
+# Religious Debate: Implying the tragic fate of the unbeliever
+ftr_interaction_event.0006 = {
+	type = character_event
+	title = ftr_interaction_event.0006.t
+	desc = ftr_interaction_event.0006.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = schadenfreude
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = shock
+  }
+
+	option = { #I have virtual
+		name = ftr_interaction_event.0006.a
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+	option = { #You shall go to hell
+		name = ftr_interaction_event.0006.b
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+}
+
+# Religious Debate: Starter lose
+ftr_interaction_event.0007 = {
+	type = character_event
+	title = ftr_interaction_event.0007.t
+	desc = ftr_interaction_event.0007.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = grief
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = happiness
+  }
+
+	option = { #Admit failure
+		name = ftr_interaction_event.0007.a
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+	option = { #Convert
+		name = ftr_interaction_event.0007.b
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+}
+
+# Religious Debate: Recipient lose
+ftr_interaction_event.0008 = {
+	type = character_event
+	title = ftr_interaction_event.0008.t
+	desc = ftr_interaction_event.0008.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = grief
+  }
+
+	option = { #Admit failure
+		name = ftr_interaction_event.0008.a
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+	option = { #Convert
+		name = ftr_interaction_event.0008.b
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+}
+
+# Religious Debate: Starter win
+ftr_interaction_event.0009 = {
+	type = character_event
+	title = ftr_interaction_event.0009.t
+	desc = ftr_interaction_event.0009.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = grief
+  }
+
+	option = { #I win
+		name = ftr_interaction_event.0009.a
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+}
+
+# Religious Debate: Recipient win
+ftr_interaction_event.0010 = {
+	type = character_event
+	title = ftr_interaction_event.0010.t
+	desc = ftr_interaction_event.0010.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = grief
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = happiness
+  }
+
+	option = { #I win
+		name = ftr_interaction_event.0010.a
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+}
+
+# Religious Debate: End with farce
+ftr_interaction_event.0011 = {
+	type = character_event
+	title = ftr_interaction_event.0011.t
+	desc = ftr_interaction_event.0011.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = rage
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = rage
+  }
+
+	option = { #WTF
+		name = ftr_interaction_event.0011.a
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+}
+
+# Religious Debate: Spiritual communication
+ftr_interaction_event.0012 = {
+	type = character_event
+	title = ftr_interaction_event.0012.t
+	desc = ftr_interaction_event.0012.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = happiness
+  }
+
+	option = { #talk deeply
+		name = ftr_interaction_event.0012.a
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
+	}
+}
+
+# Religious Debate: Nobody wins
+ftr_interaction_event.0013 = {
+	type = character_event
+	title = ftr_interaction_event.0013.t
+	desc = ftr_interaction_event.0013.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = disbelief
+	}
+	right_portrait = {
+    character = scope:recipient
+    animation = disbelief
+  }
+
+	option = { #ok
+		name = ftr_interaction_event.0013.a
+		hidden_effect = {
+			#trigger_event = ftr_interaction_event.0002
+		}
 	}
 }

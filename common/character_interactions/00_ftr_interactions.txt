@@ -298,7 +298,7 @@ religious_debate_interaction = {
 	ignores_pending_interaction_block = no
 	desc = religious_debate_interaction_desc
 	greeting = positive
-	#notification_text = VASSAL_AID_LIEGE
+	notification_text = SOMEONE_START_RELIGIOUS_DEBATE
 	ai_targets = {
 		ai_recipients = vassals
 		ai_recipients = peer_vassals
@@ -320,7 +320,18 @@ religious_debate_interaction = {
 
 	is_valid_showing_failures_only = {
 		scope:recipient = { is_diplomatically_available = yes }
-		NOT = { scope:actor = { is_at_war_with = scope:recipient } } 
+		scope:actor = {
+			NOT = { is_at_war_with = scope:recipient }
+		}
+	}
+
+	on_send = {
+		scope:actor = {
+			add_character_flag = {
+				flag = flag_recent_start_religious_debate
+				days = 365
+			}
+		}
 	}
 
 	on_accept = {
@@ -333,7 +344,7 @@ religious_debate_interaction = {
 
 	on_decline = {}
 
-	auto_accept = {}
+	#auto_accept = {}
 	ai_accept = {
 		base = 10
 		modifier = {
@@ -353,6 +364,15 @@ religious_debate_interaction = {
 				}
 			}
 			desc = "NOT_CARE_ABOUT_RELIGION"
+		}
+		modifier = {
+			add = -100
+			trigger = {
+				scope:actor = {
+					has_character_flag = flag_recent_start_religious_debate
+				}
+			}
+			desc = "RECENT_RELIGIOUS_DEBATE"
 		}
 	}
 

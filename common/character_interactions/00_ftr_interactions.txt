@@ -4,13 +4,14 @@ aid_my_lord_interaction = {
 	icon = icon_gold
 	category = interaction_category_vassal
 	common_interaction = yes
+	ignores_pending_interaction_block = no
 	desc = aid_my_lord_interaction_desc
 	greeting = positive
 	notification_text = VASSAL_AID_LIEGE
 	ai_targets = {
 		ai_recipients = liege
 	}
-	ai_frequency = 12
+	ai_frequency = 24
 
 	is_shown = {
 		NOT = { scope:actor = scope:recipient }
@@ -19,7 +20,7 @@ aid_my_lord_interaction = {
 			liege = scope:recipient
 		}
 		scope:recipient = {
-			gold < 1
+			gold < 100
 		}
 	}
 
@@ -35,31 +36,36 @@ aid_my_lord_interaction = {
 				type = event_generic_neutral
 				title = aid_my_lord_interaction_notification
 				right_icon = scope:recipient
-				pay_short_term_gold = {
-					gold = 300
-					target = scope:recipient
-				}
-				stress_impact = {
-					greedy = medium_stress_impact_gain
-					generous = medium_stress_impact_loss
-				}
-				scope:recipient = {
-					if = {
-						limit = {
-							scope:gain_hook = yes
-						}
-						scope:actor = {
-							add_hook = { #Hook effect must match gain_hook option condition
-								target = scope:recipient
-								type = favor_hook
+				send_interface_toast = {
+					title = liege_accept_my_fund_support
+					left_icon = scope:actor					
+					right_icon = scope:recipient
+					pay_short_term_gold = {
+						gold = 300
+						target = scope:recipient
+					}
+					stress_impact = {
+						greedy = medium_stress_impact_gain
+						generous = medium_stress_impact_loss
+					}
+					scope:recipient = {
+						if = {
+							limit = {
+								scope:gain_hook = yes
+							}
+							scope:actor = {
+								add_hook = { #Hook effect must match gain_hook option condition
+									target = scope:recipient
+									type = favor_hook
+								}
 							}
 						}
-					}
-					else = {
-						add_opinion = {
-							target = scope:actor
-							modifier = gift_opinion
-							opinion = send_gift_opinion
+						else = {
+							add_opinion = {
+								target = scope:actor
+								modifier = gift_opinion
+								opinion = send_gift_opinion
+							}
 						}
 					}
 				}
@@ -83,42 +89,40 @@ aid_my_lord_interaction = {
 		flag = gain_hook
 		localization = "AID_LIEGE_GAIN_HOOK"
 		is_valid = {
-			trigger_if = {
-				limit = {
-					scope:actor = { is_ai = yes }
-				}
-				scope:recipient = {
-					OR = {
-						is_vassal_of = scope:actor
-						AND = {
-							exists = liege
-							liege = scope:actor
-						}
-					}
-				}
-			}
 			scope:actor = {
 				can_add_hook = {
-					type = favor_hook #Matches the hook added in the on_accept
+					type = favor_hook
 					target = scope:recipient
 				}
 			}
 		}
 	}
-	on_decline = {
-		# nothing happen for now
+	send_option = {
+		flag = help
+		localization = "JUST_HELP_LIEGE"
 	}
+	on_decline = {}
 
+	auto_accept = {
+		scope:gain_hook = no
+	}
 	ai_accept = {
-		base = 0
+		base = 40
 		modifier = {
 			add = 50
 			trigger = {
 				scope:recipient = {
-					gold < 10
+					gold < -50
 				}
 			}
-			desc = "LIEGE_LACK_OF_MONEY"
+			desc = "GOLD_REASON"
+		}
+		modifier = {
+			add = -50
+			trigger = {
+				scope:gain_hook = yes
+			}
+			desc = "GAIN_HOOK_NEGATIVE_REASON"
 		}
 	}
 
@@ -284,5 +288,123 @@ request_combat_guidance_interaction = {
 	}
 	on_decline = {
 		# nothing happen for now
+	}
+}
+
+########## Religious Debate #########
+religious_debate_interaction = {
+	category = interaction_category_religion
+	common_interaction = yes
+	ignores_pending_interaction_block = no
+	desc = religious_debate_interaction_desc
+	greeting = positive
+	notification_text = SOMEONE_START_RELIGIOUS_DEBATE
+	ai_targets = {
+		ai_recipients = vassals
+		ai_recipients = peer_vassals
+		ai_recipients = liege
+	}
+	ai_frequency = 36
+
+	is_shown = {
+		NOT = { scope:actor.faith = scope:recipient.faith }
+		scope:actor = { is_imprisoned = no }
+		scope:recipient = { is_imprisoned = no }
+		NOT = {
+			scope:recipient = scope:recipient.faith.religious_head
+		}
+		scope:actor = {
+			OR = {
+				has_perk = faithful_perk
+				has_trait = zealous
+			}
+		}
+		scope:actor.top_liege = scope:recipient.top_liege
+	}
+
+	is_valid_showing_failures_only = {
+		scope:recipient = { is_diplomatically_available = yes }
+		scope:actor = {
+			NOT = { is_at_war_with = scope:recipient }
+		}
+	}
+
+	on_send = {
+		scope:recipient = {
+			add_character_flag = {
+				flag = flag_recent_start_religious_debate
+				days = 365
+			}
+		}
+	}
+
+	on_accept = {
+		hidden_effect = {
+			scope:actor = {
+				trigger_event = ftr_interaction_event.0001
+			}
+		}
+	}
+
+	on_decline = {}
+
+	#auto_accept = {}
+	ai_accept = {
+		base = 10
+		modifier = {
+			add = 50
+			trigger = {
+				scope:recipient = {
+					has_trait = zealous
+				}
+			}
+			desc = "FOR_THE_FAITH"
+		}
+		modifier = {
+			add = -50
+			trigger = {
+				scope:recipient = {
+					has_trait = cynical
+				}
+			}
+			desc = "NOT_CARE_ABOUT_RELIGION"
+		}
+		modifier = {
+			add = -100
+			trigger = {
+				scope:recipient = {
+					has_character_flag = flag_recent_start_religious_debate
+				}
+			}
+			desc = "RECENT_RELIGIOUS_DEBATE"
+		}
+	}
+
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = -50
+			trigger = {
+				scope:actor = {
+					has_trait = cynical
+				}
+			}
+		}
+		modifier = {
+			add = 50
+			trigger = {
+				scope:actor = {
+					has_trait = zealous
+				}
+			}
+		}
+		modifier = {
+			add = -100
+			trigger = {
+				scope:actor = {
+					has_character_flag = flag_recent_start_religious_debate
+				}
+			}
+		}
 	}
 }

@@ -3,7 +3,7 @@
 	desc = combat_guide_desc_general
 	cooldown = { months = 12 }
 	uses_agents = no
-	power_per_skill_point = 1
+	power_per_skill_point = 4
 	spymaster_power_per_skill_point = 0	
 	resistance_per_skill_point = 0
 	spymaster_resistance_per_skill_point = 0
@@ -36,14 +36,14 @@
 		modifier = {
 			add = {
 				value = scope:owner.learning
-				multiply = 2
+				multiply = 3
 			}
 			desc = SCHEME_LEARNING_MODIFIER
 			scope:owner.learning > 0
 		}
 		modifier = {
 			add = {
-				value = 10
+				value = 40
 				subtract = scope:owner.age
 				multiply = 2
 			}
@@ -169,5 +169,5 @@
 			trigger_event = { on_action = combat_guide_ongoing }
 		}
 	}
-	success_desc = "COMBAT_GUID_SUCCESS_DESC"
+	success_desc = "COMBAT_GUIDE_SUCCESS_DESC"
 }

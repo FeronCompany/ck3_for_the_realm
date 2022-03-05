@@ -12,3 +12,8 @@
  combat_guide_complete:1 "你已经精通战斗技巧."
  combat_guide_invalidated_title:0 "@scheme_icon! $combat_guide$ 结束"
  COMBAT_GUIDE_SUCCESS_DESC:2 "你的武艺超群!"
+ SCHEME_TRAIT_AMBITIOUS:2 "雄心壮志"
+ SCHEME_TRAIT_DILIGENT:2 "勤能补拙"
+ SCHEME_TRAIT_STRONG:2 "身壮如牛"
+ SCHEME_TRAIT_LAZY:2 "懒惰成性"
+ SCHEME_TRAIT_WEAK:2 "弱不禁风"

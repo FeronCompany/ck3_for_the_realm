@@ -12,3 +12,8 @@
  combat_guide_complete:1 "You have learned combat skills."
  combat_guide_invalidated_title:0 "@scheme_icon! $combat_guide$ Ends"
  COMBAT_GUIDE_SUCCESS_DESC:2 "You learn a lot combat skill!"
+ SCHEME_TRAIT_AMBITIOUS:2 "You are ambitious"
+ SCHEME_TRAIT_DILIGENT:2 "You are diligent"
+ SCHEME_TRAIT_STRONG:2 "You are so strong"
+ SCHEME_TRAIT_LAZY:2 "Lazy guy"
+ SCHEME_TRAIT_WEAK:2 "You are weak"

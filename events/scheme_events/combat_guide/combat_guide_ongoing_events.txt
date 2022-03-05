@@ -4,6 +4,7 @@
 # FREE-STANDING EVENTS
 # 1000-4999
 ######################
+# hard training
 combat_guide_ongoing.1000 = {
 	type = character_event
 	title = combat_guide_ongoing.1000.t
@@ -11,22 +12,708 @@ combat_guide_ongoing.1000 = {
 	theme = education
 	left_portrait = {
 		character = root
-		animation = happiness
+		animation = war_attacker
 	}
 	
 	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1000 }
+		NOT = { has_trait = lazy }
+		NOT = { has_trait = content }
 	}
 
 	immediate = {
-		## TODO 
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1000
+			value = yes
+			days = 120
+		}
 	}
 
-	option = { # normal progress
+	option = { # hard training
 		name = combat_guide_ongoing.1000.a
-		custom_tooltip = scheme_executes_immediately
 		hidden_effect = {
 			scope:scheme = {
-				add_scheme_progress = 10
+				add_scheme_progress = 2
+			}
+		}
+		random_list = {
+			25 = {
+				add_prowess_skill = 1
+			}
+			25 = {
+				add_character_modifier = {
+					modifier = over_training_modifier
+					days = 120
+				}
+			}
+			50 = {
+				# nothing happen
+			}
+		}
+		scope:target = {
+			add_opinion = {
+				modifier = pleased_opinion
+				target = root
+				opinion = 10
+			}
+		}
+		ai_chance = {
+			base = 25
+		}
+	}
+	option = { # training summary
+		trigger = {
+			learning >= 10
+		}
+		name = combat_guide_ongoing.1000.b
+		hidden_effect = {
+			scope:scheme = {
+				add_scheme_progress = 2
+			}
+		}
+		random = {
+			chance = 75
+			add_prowess_skill = 1
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+	option = { # take a rest
+		name = combat_guide_ongoing.1000.c
+		ai_chance = {
+			base = 25
+		}
+	}
+}
+
+# late of learning
+combat_guide_ongoing.1001 = {
+	type = character_event
+	title = combat_guide_ongoing.1001.t
+	desc = combat_guide_ongoing.1001.desc
+	theme = education
+	left_portrait = {
+		character = root
+		animation = fear
+	}
+	right_portrait = {
+    character = scope:target
+    animation = anger
+  }
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1001 }
+	}
+
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1001
+			value = yes
+			days = 1460
+		}
+	}
+
+	option = { # sorry master
+		name = combat_guide_ongoing.1001.a
+		hidden_effect = {
+			scope:scheme = {
+				add_scheme_progress = -1
+			}
+		}
+		scope:target = {
+			add_opinion = {
+				modifier = disappointed_opinion
+				target = root
+				opinion = -10
+			}
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+}
+
+
+# deeply inspired
+combat_guide_ongoing.1002 = {
+	type = character_event
+	title = combat_guide_ongoing.1002.t
+	desc = combat_guide_ongoing.1002.desc
+	theme = education
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+    character = scope:target
+    animation = happiness
+  }
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1002 }
+		scope:target = {
+			learning >= 12
+		}
+	}
+
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1002
+			value = yes
+			days = 120
+		}
+	}
+
+	option = { # thank you master
+		name = combat_guide_ongoing.1002.a
+		hidden_effect = {
+			scope:scheme = {
+				add_scheme_progress = 3
+			}
+		}
+		add_prowess_skill = 1
+		add_opinion = {
+			modifier = grateful_opinion
+			target = scope:target
+			opinion = 20
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+}
+
+
+# physical training
+combat_guide_ongoing.1003 = {
+	type = character_event
+	title = combat_guide_ongoing.1003.t
+	desc = combat_guide_ongoing.1003.desc
+	theme = education
+	left_portrait = {
+		character = root
+		animation = beg
+	}
+	right_portrait = {
+    character = scope:target
+  }
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1003 }
+		NOT = { has_trait = strong }
+	}
+
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1003
+			value = yes
+			days = 120
+		}
+	}
+
+	option = { # as you wish
+		name = combat_guide_ongoing.1003.a
+		random_list = {
+			40 = {
+				add_character_modifier = {
+					modifier = over_training_modifier
+					days = 120
+				}
+			}
+			25 = {
+				add_prowess_skill = 1
+			}
+			10 = {
+				add_trait = strong
+			}
+			25 = {
+				# nothing happen
+			}
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+}
+
+
+# Essense of chivalry
+combat_guide_ongoing.1004 = {
+	type = character_event
+	title = combat_guide_ongoing.1004.t
+	desc = combat_guide_ongoing.1004.desc
+	theme = education
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+    character = scope:target
+  }
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1004 }
+		NOR = {
+			scope:target = { has_trait = torturer }
+			scope:target = { has_trait = sadistic }
+			scope:target = { has_trait = callous }
+		}
+	}
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1004
+			value = yes
+			days = 1460
+		}
+	}
+
+	option = { # yes?
+		name = combat_guide_ongoing.1004.a
+		ai_chance = {
+			base = 60
+		}
+	}
+	option = { # remove torturer
+		name = combat_guide_ongoing.1004.b
+		trigger = {
+			has_trait = torturer
+		}
+		remove_trait = torturer
+		ai_chance = {
+			base = 10
+		}
+	}
+	option = { # remove sadistic
+		name = combat_guide_ongoing.1004.c
+		trigger = {
+			has_trait = sadistic
+		}
+		remove_trait = sadistic
+		ai_chance = {
+			base = 10
+		}
+	}
+	option = { # remove callous
+		name = combat_guide_ongoing.1004.d
+		trigger = {
+			has_trait = callous
+		}
+		remove_trait = callous
+		ai_chance = {
+			base = 10
+		}
+	}
+	option = { # agree with master
+		name = combat_guide_ongoing.1004.e
+		add_piety = 50
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+
+# disagreement
+combat_guide_ongoing.1005 = {
+	type = character_event
+	title = combat_guide_ongoing.1005.t
+	desc = combat_guide_ongoing.1005.desc
+	theme = education
+	left_portrait = {
+		character = root
+		animation = anger
+	}
+	right_portrait = {
+    character = scope:target
+		animation = anger
+  }
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1005 }
+	}
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1005
+			value = yes
+			days = 365
+		}
+	}
+
+	option = { # I have reservations about this
+		name = combat_guide_ongoing.1005.a
+		hidden_effect = {
+			scope:scheme = {
+				add_scheme_progress = -1
+			}
+		}
+		add_opinion = {
+			modifier = angry_opinion
+			target = scope:target
+			opinion = -10
+		}
+		scope:target = {
+			add_opinion = {
+				modifier = angry_opinion
+				target = root
+				opinion = -10
+			}
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+	option = { # ignore this for now
+		name = combat_guide_ongoing.1005.b
+		trigger = {
+			diplomacy >= 10
+		}
+		hidden_effect = {
+			scope:scheme = {
+				add_scheme_progress = -1
+			}
+		}
+		add_prestige = -100
+		add_opinion = {
+			modifier = angry_opinion
+			target = scope:target
+			opinion = -10
+		}
+		ai_chance = {
+			base = 25
+		}
+	}
+	option = { # stop training
+		name = combat_guide_ongoing.1005.c
+		trigger = {
+			OR = {
+				has_trait = arbitrary
+				has_trait = impatient
+			}
+		}
+		add_prestige = -100
+		add_opinion = {
+			modifier = angry_opinion
+			target = scope:target
+			opinion = -10
+		}
+		scope:target = {
+			pay_short_term_gold = {
+				gold = 150
+				target = root
+			}
+			add_opinion = {
+				modifier = insult_opinion
+				target = root
+				opinion = -30
+			}
+		}
+		show_as_tooltip = {
+			scope:scheme = {
+				end_scheme = yes
+			}
+		}
+		ai_chance = {
+			base = 25
+		}
+	}
+}
+
+
+# cruel training
+combat_guide_ongoing.1006 = {
+	type = character_event
+	title = combat_guide_ongoing.1006.t
+	desc = combat_guide_ongoing.1006.desc
+	theme = education
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+    character = scope:target
+		animation = ecstasy
+  }
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1006 }
+		scope:target = {
+			OR = {
+				has_trait = impatient
+				has_trait = torturer
+				has_trait = sadistic
+				has_trait = callous
+			}
+		}
+	}
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1006
+			value = yes
+			days = 365
+		}
+	}
+
+	option = { # fight
+		name = combat_guide_ongoing.1006.a
+		random_list = {
+			20 = {
+				modifier = {
+					add = {
+						value = prowess
+						multiply = 2
+					}
+          #add = prowess
+        }
+				add_prowess_skill = 1
+				hidden_effect = {
+					scope:scheme = {
+						add_scheme_progress = 1
+					}
+				}
+			}
+			75 = {
+				send_interface_toast = {	
+					title = combat_guide_ongoing.1006.a.failure
+					change_trait_rank = {
+						trait = wounded
+						rank = 1
+						max = 3
+					}
+				}
+				hidden_effect = {
+					scope:scheme = {
+						add_scheme_progress = -1
+					}
+				}
+				add_opinion = {
+					modifier = angry_opinion
+					target = scope:target
+					opinion = -10
+				}
+			}
+			5 = {
+				desc = combat_guide_ongoing.1006.a.critical_failure
+				send_interface_toast = {
+					title = combat_guide_ongoing.1006.a.critical_failure				
+					death = {
+						death_reason = death_hunting_accident
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+}
+
+# both deligent
+combat_guide_ongoing.1007 = {
+	type = character_event
+	title = combat_guide_ongoing.1007.t
+	desc = combat_guide_ongoing.1007.desc
+	theme = education
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+    character = scope:target
+		animation = happiness
+  }
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1007 }
+		NOT = {
+			has_trait = lazy
+		}
+		scope:target = {
+			NOT = {
+				has_trait = lazy
+			}
+		}
+	}
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1007
+			value = yes
+			days = 1460
+		}
+	}
+
+	option = { # train together
+		name = combat_guide_ongoing.1007.a
+		random_list = {
+			50 = {
+				trigger = {
+					NOR = {
+						scope:owner = { has_relation_friend = scope:target }
+						scope:owner = { has_relation_rival = scope:target }
+					}
+				}
+				add_prowess_skill = 1
+				scope:target = {
+					set_relation_friend = root
+				}
+				#set_relation_friend = scope:target
+			}
+			10 = {
+				trigger = {
+					NOT = {
+						has_trait = strong
+					}
+				}
+				add_trait = strong
+			}
+			10 = {
+				trigger = {
+					NOT = {
+						has_trait = athletic
+					}
+				}
+				add_trait = athletic
+			}
+			20 = {
+				hidden_effect = {
+					scope:scheme = {
+						add_scheme_progress = 2
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+}
+
+# spouse demand stop train
+combat_guide_ongoing.1008 = {
+	type = character_event
+	title = combat_guide_ongoing.1008.t
+	desc = combat_guide_ongoing.1008.desc
+	theme = education
+	left_portrait = {
+		character = root
+		animation = boredom
+	}
+	right_portrait = {
+    character = scope:spouse
+		animation = anger
+  }
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1008 }
+		is_married = yes
+	}
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1008
+			value = yes
+			days = 1460
+		}
+		random_spouse = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			save_scope_as = spouse
+		}
+	}
+
+	option = { # ignore
+		name = combat_guide_ongoing.1008.a
+		scope:spouse = {
+			add_opinion = {
+				modifier = angry_opinion
+				target = root
+				opinion = -20
+			}
+		}
+		ai_chance = {
+			base = 70
+		}
+	}
+	option = { # make love
+		name = combat_guide_ongoing.1008.b
+		had_sex_with_effect = {
+			CHARACTER = scope:spouse
+			PREGNANCY_CHANCE = 20
+		}
+		ai_chance = {
+			base = 20
+		}
+	}
+	option = { # give up training
+		name = combat_guide_ongoing.1008.c
+		show_as_tooltip = {
+			scope:scheme = {
+				end_scheme = yes
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+
+# trial of master
+combat_guide_ongoing.1009 = {
+	type = character_event
+	title = combat_guide_ongoing.1009.t
+	desc = combat_guide_ongoing.1009.desc
+	theme = martial
+	left_portrait = {
+		character = root
+		animation = war_attacker
+	}
+	right_portrait = {
+    character = scope:target
+		animation = war_attacker
+  }
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1009 }
+	}
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1009
+			value = yes
+			days = 1460
+		}
+	}
+
+	option = { # fight
+		name = combat_guide_ongoing.1009.a
+		duel = {
+			skill = prowess
+			value = 0
+			25 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 4
+					min = -10
+				}
+				add_prowess_skill = 1
+				desc = combat_guide_ongoing.1009.a.lost_master
+			}
+			15 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -4
+					min = -10
+				}
+				add_prowess_skill = 4
+				desc = combat_guide_ongoing.1009.a.win_master
+			}
+			10 = {
+				add_prowess_skill = 2
+				desc = combat_guide_ongoing.1009.a.tie
+			}
+		}
+		hidden_effect = {
+			scope:scheme = {
+				add_scheme_progress = 2
 			}
 		}
 		ai_chance = {

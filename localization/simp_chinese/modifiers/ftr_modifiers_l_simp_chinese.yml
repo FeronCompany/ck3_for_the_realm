@@ -1,0 +1,9 @@
+﻿l_simp_chinese:
+ over_training_modifier:0 "过度训练"
+ over_training_modifier_desc:0 "这名角色因为过度训练而精疲力竭。"
+
+ lose_religious_debate_modifier:0 "辩经失败"
+ lose_religious_debate_modifier:0 "此人近期和他人辩经失败."
+
+ win_religious_debate_modifier:0 "辩经胜利"
+ win_religious_debate_modifier_desc:0 "此人近期赢得了与他人的辩经."

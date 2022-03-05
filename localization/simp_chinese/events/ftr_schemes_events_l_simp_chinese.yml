@@ -1,0 +1,67 @@
+﻿l_simp_chinese:
+ combat_guide_outcome.1000.t:1 "$combat_guide$: 大获成功!"
+ combat_guide_outcome.1000.desc:3 "经过我的导师[target.GetShortUIName|U]的耐心教导和我本人的不懈努力, 我终于掌握了高超的战斗技巧.从前对我的武艺不屑一顾的骑士与将领们都不得不刮目相看, 现在是时候在战场上一展英姿了!"
+ combat_guide_outcome.1000.a:0 "天道酬勤!"
+
+ combat_guide_outcome.2000.t:1 "$combat_guide$: 失败."
+ combat_guide_outcome.2000.desc:3 "尽管我已经付出了巨大的努力练习战斗, 但我的技巧却仍旧止步不前. 我的导师[target.GetShortUIName|U]无奈的叹着气对我说, 作为领主, 你或许有更重要的角色去扮演. 武艺不是一切, 就此打住吧. 看起来我变得更强的愿望要落空了."
+ combat_guide_outcome.2000.a:0 "我不甘心!"
+  
+ combat_guide_outcome.3000.t:1 "$combat_guide$: 无效."
+ combat_guide_outcome.3000.desc:3 "你的导师 [target.GetShortUIName|U] 无法再教授你武艺."
+ combat_guide_outcome.3000.a:0 "哎."
+
+ combat_guide_ongoing.1000.t:1 "肌肉酸痛"
+ combat_guide_ongoing.1000.desc:3 "在导师 [target.GetShortUIName|U] 的监督下，我与木头人进行了激烈的战斗。一通挥砍下来，汗水早已浸透衣衫，回到家中才发现肌肉酸痛不已。"
+ combat_guide_ongoing.1000.a:0 "接着训练!"
+ combat_guide_ongoing.1000.b:0 "不妨稍作总结."
+ combat_guide_ongoing.1000.c:0 "休息会儿吧."
+
+ combat_guide_ongoing.1001.t:1 "训练迟到"
+ combat_guide_ongoing.1001.desc:3 "也许是昨日训练太过劳累，今天居然睡过头了一个小时。当我慌张地穿上衣服奔向训练场时，在此久候多时的导师 [target.GetShortUIName|U] 向我投来了意味深长的目光。\n\n你的武器呢， [target.GetShortUIName|U] 问道。"
+ combat_guide_ongoing.1001.a:0 "以后绝不迟到"
+
+ combat_guide_ongoing.1002.t:1 "深受启发"
+ combat_guide_ongoing.1002.desc:3 "当我的训练逐渐陷入瓶颈时，我睿智的导师 [target.GetShortUIName|U] 从容地走过来，详细地指出了我的招式中可以改进的地方。当我按照他的方法再去尝试时，一切的疑惑都豁然开朗。我突破了！"
+ combat_guide_ongoing.1002.a:0 "感激不尽", [target.GetShortUIName|U]."
+
+ combat_guide_ongoing.1003.t:1 "体能训练"
+ combat_guide_ongoing.1003.desc:3 "导师 [target.GetShortUIName|U] 向我走来，并且语重心长地对我说：据我观察，你的力量还明显不足，这不足以支撑你的格斗训练。那么从今天开始，我们进行体能训练！"
+ combat_guide_ongoing.1003.a:0 "训练量还不够吗"
+
+ combat_guide_ongoing.1004.t:1 "探讨武德"
+ combat_guide_ongoing.1004.desc:3 "训练的空档，我和导师 [target.GetShortUIName|U] 一起席地而坐，讨论起了对武德的看法。我发表了自己的观点，可是 [target.GetShortUIName|U] 却摇头说道，杀伐并不能解决所有问题，我们作为骑士有职责守护弱小，恃强凌弱的行为应当被唾弃。我不禁陷入了深思……"
+ combat_guide_ongoing.1004.a:0 "是吗？"
+ combat_guide_ongoing.1004.b:0 "折磨别人真是恶毒啊"
+ combat_guide_ongoing.1004.c:0 "正经骑士谁会虐待别人呢"
+ combat_guide_ongoing.1004.d:0 "世间需要更多来自骑士的温情"
+ combat_guide_ongoing.1004.e:0 "嗯，有道理"
+
+ combat_guide_ongoing.1005.t:1 "意见分歧"
+ combat_guide_ongoing.1005.desc:3 "日复一日，我的导师 [target.GetShortUIName|U] 始终重复着[target.GetHerHis]的那些陈词滥调。而与此同时，我的武艺却没有什么提升。我终于忍无可忍，说出了我的不满，没想到[target.GetSheHe|U]却直截了当地告诉我 [target.GetSheHe|U]也一样对我不满。"
+ combat_guide_ongoing.1005.a:0 "恕难苟同"
+ combat_guide_ongoing.1005.b:0 "权且忍让吧"
+ combat_guide_ongoing.1005.c:0 "XXX, 退钱！"
+
+ combat_guide_ongoing.1006.t:1 "严苛训练"
+ combat_guide_ongoing.1006.desc:3 "我的导师 [target.GetShortUIName|U] 看着正在训练的我，若有所思。忽然， [target.GetSheHe|U]拉着我的手，飞奔到附近的树林里。[target.GetSheHe|U]打开林中小屋的门，并牵出一条龇牙咧嘴的大狼狗。[target.GetSheHe|U]对我露出了诡异的微笑并说，击败它你才算真正毕业了。"
+ combat_guide_ongoing.1006.a:0 "硬着头皮上吧!"
+ combat_guide_ongoing.1006.a.failure:0 "你受伤了."
+ combat_guide_ongoing.1006.a.critical_failure:0 "你死了."
+
+ combat_guide_ongoing.1007.t:1 "闻鸡起舞"
+ combat_guide_ongoing.1007.desc:3 "为了给导师 [target.GetShortUIName|U] 留下一个好印象，我起了个大早开始锻炼。没想到我刚到训练场不久，[target.GetShortUIName|U] 也过来锻炼了。[target.GetSheHe|U]惊讶地说，原来你也有早起锻炼的习惯！"
+ combat_guide_ongoing.1007.a:0 "来一起锻炼呀, [target.GetShortUIName|U]!"
+
+ combat_guide_ongoing.1008.t:1 "河东狮吼"
+ combat_guide_ongoing.1008.desc:3 "我的配偶气冲冲地来到训练场，把我拉到一边，质问我，为什么这么久都不回家？练武对你能有什么帮助呢？"
+ combat_guide_ongoing.1008.a:0 "很快就好."
+ combat_guide_ongoing.1008.b:0 "我会让你下不来床."
+ combat_guide_ongoing.1008.c:0 "我会重新考虑的."
+
+ combat_guide_ongoing.1009.t:1 "实战演练"
+ combat_guide_ongoing.1009.desc:3 "[target.GetShortUIName|U] 对我的训练进展非常满意，于是邀请我来一场实战演练。我们两人来到空旷的训练场，双手紧握着木棍，怒目对视，准备来一场贴近实战的格斗演习。鹿死谁手，犹未可知！"
+ combat_guide_ongoing.1009.a:0 "来呀, [target.GetShortUIName|U]!"
+ combat_guide_ongoing.1009.a.win_master:0 "你击败了 [target.GetShortUIName|U]"
+ combat_guide_ongoing.1009.a.lost_master:0 "你输给了 [target.GetShortUIName|U]"
+ combat_guide_ongoing.1009.a.tie:0 "你和 [target.GetShortUIName|U] 打了个平手"

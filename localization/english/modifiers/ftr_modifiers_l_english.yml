@@ -1,0 +1,9 @@
+﻿l_english:
+ over_training_modifier:0 "Exhausted"
+ over_training_modifier_desc:0 "The character was exhausted from overtraining."
+
+ lose_religious_debate_modifier:0 "Lost religious debate"
+ lose_religious_debate_modifier:0 "The character lost a religious debate recently."
+
+ win_religious_debate_modifier:0 "Win religious debate"
+ win_religious_debate_modifier_desc:0 "The character win a religious debate recently."

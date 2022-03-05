@@ -75,7 +75,7 @@ ftr_interaction_event.0003 = {
 	desc = ftr_interaction_event.0003.desc
 	theme = faith
 	left_portrait = {
-		character = root
+		character = scope:actor
 		animation = schadenfreude
 	}
 	right_portrait = {
@@ -85,98 +85,108 @@ ftr_interaction_event.0003 = {
 
 	option = { #Strike back
 		name = ftr_interaction_event.0003.a
-		duel = {
-			skill = learning
-			value = 0
-			15 = { # starter convinced
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = 4
-					min = -10
+		scope:actor = {
+			duel = {
+				skill = learning
+				target = scope:recipient
+				15 = { # starter convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 4
+						min = -10
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0007
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0010
+					}
+					desc = ftr_interaction_event.0003.a.start_lose
 				}
-				root = {
-					trigger_event = ftr_interaction_event.0007
+				15 = { # recipient convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -4
+						min = -10
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0009
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0008
+					}
+					desc = ftr_interaction_event.0003.a.recipient_lose
 				}
-				scope:recipient = {
-					trigger_event = ftr_interaction_event.0010
+				35 = { # no one wins
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					desc = ftr_interaction_event.0003.a.tie
 				}
-				desc = ftr_interaction_event.0003.a.start_lose
-			}
-			15 = { # recipient convinced
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = -4
-					min = -10
+				35 = { # lead to a fight
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0011
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0011
+					}
+					desc = ftr_interaction_event.0003.a.fight
 				}
-				root = {
-					trigger_event = ftr_interaction_event.0009
-				}
-				scope:recipient = {
-					trigger_event = ftr_interaction_event.0008
-				}
-				desc = ftr_interaction_event.0003.a.recipient_lose
-			}
-			35 = { # no one wins
-				root = {
-					trigger_event = ftr_interaction_event.0013
-				}
-				scope:recipient = {
-					trigger_event = ftr_interaction_event.0013
-				}
-				desc = ftr_interaction_event.0003.a.tie
-			}
-			35 = { # lead to a fight
-				root = {
-					trigger_event = ftr_interaction_event.0011
-				}
-				scope:recipient = {
-					trigger_event = ftr_interaction_event.0011
-				}
-				desc = ftr_interaction_event.0003.a.fight
 			}
 		}
 	}
 	option = { #Explain away
 		name = ftr_interaction_event.0003.b
-		duel = {
-			skill = learning
-			value = 0
-			25 = { # starter convinced
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = 4
-					min = -10
+		scope:actor = {
+			duel = {
+				skill = learning
+				target = scope:recipient
+				15 = { # starter convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 4
+						min = -10
+					}
+					modifier = {
+						add = 30
+						scope:recipient = {
+							has_trait = deceitful
+						}
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0007
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0010
+					}
+					desc = ftr_interaction_event.0003.a.start_lose
 				}
-				root = {
-					trigger_event = ftr_interaction_event.0007
+				35 = { # recipient convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -4
+						min = -10
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0009
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0008
+					}
+					desc = ftr_interaction_event.0003.a.recipient_lose
 				}
-				scope:recipient = {
-					trigger_event = ftr_interaction_event.0010
+				50 = { # no one wins
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					desc = ftr_interaction_event.0003.a.tie
 				}
-				desc = ftr_interaction_event.0003.a.start_lose
-			}
-			25 = { # recipient convinced
-				compare_modifier = {
-					value = scope:duel_value
-					multiplier = -4
-					min = -10
-				}
-				root = {
-					trigger_event = ftr_interaction_event.0009
-				}
-				scope:recipient = {
-					trigger_event = ftr_interaction_event.0008
-				}
-				desc = ftr_interaction_event.0003.a.recipient_lose
-			}
-			50 = { # no one wins
-				root = {
-					trigger_event = ftr_interaction_event.0013
-				}
-				scope:recipient = {
-					trigger_event = ftr_interaction_event.0013
-				}
-				desc = ftr_interaction_event.0003.a.tie
 			}
 		}
 	}
@@ -190,7 +200,7 @@ ftr_interaction_event.0004 = {
 	desc = ftr_interaction_event.0004.desc
 	theme = faith
 	left_portrait = {
-		character = root
+		character = scope:actor
 		animation = schadenfreude
 	}
 	right_portrait = {
@@ -200,14 +210,98 @@ ftr_interaction_event.0004 = {
 
 	option = { #Change the subject
 		name = ftr_interaction_event.0004.a
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:actor = {
+			duel = {
+				skill = learning
+				target = scope:recipient
+				15 = { # starter convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 4
+						min = -10
+					}
+					modifier = {
+    	      add = intrigue
+						multiply = 2
+    	    }
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0007
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0010
+					}
+					desc = ftr_interaction_event.0003.a.start_lose
+				}
+				35 = { # recipient convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -4
+						min = -10
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0009
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0008
+					}
+					desc = ftr_interaction_event.0003.a.recipient_lose
+				}
+				50 = { # no one wins
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					desc = ftr_interaction_event.0003.a.tie
+				}
+			}
 		}
 	}
 	option = { #Steal concept
 		name = ftr_interaction_event.0004.b
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:actor = { 
+			duel = {
+				skill = learning
+				target = scope:recipient
+				25 = { # starter convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 4
+						min = -10
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0007
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0010
+					}
+					desc = ftr_interaction_event.0003.a.start_lose
+				}
+				25 = { # recipient convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -4
+						min = -10
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0009
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0008
+					}
+					desc = ftr_interaction_event.0003.a.recipient_lose
+				}
+				50 = { # no one wins
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					desc = ftr_interaction_event.0003.a.tie
+				}
+			}
 		}
 	}
 }
@@ -219,7 +313,7 @@ ftr_interaction_event.0005 = {
 	desc = ftr_interaction_event.0005.desc
 	theme = faith
 	left_portrait = {
-		character = root
+		character = scope:actor
 		animation = schadenfreude
 	}
 	right_portrait = {
@@ -229,14 +323,107 @@ ftr_interaction_event.0005 = {
 
 	option = { #Quoting historical allusions too
 		name = ftr_interaction_event.0005.a
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:actor = {
+			duel = {
+				skill = learning
+				target = scope:recipient
+				20 = { # starter convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 4
+						min = -10
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0007
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0010
+					}
+					desc = ftr_interaction_event.0003.a.start_lose
+				}
+				20 = { # recipient convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -4
+						min = -10
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0009
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0008
+					}
+					desc = ftr_interaction_event.0003.a.recipient_lose
+				}
+				20 = { # no one wins
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					desc = ftr_interaction_event.0003.a.tie
+				}
+				40 = { # be like each other
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0012
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0012
+					}
+					desc = ftr_interaction_event.0003.a.tie
+				}
+			}
 		}
 	}
 	option = { #Question reality
 		name = ftr_interaction_event.0005.b
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:actor = {
+			duel = {
+				skill = learning
+				target = scope:recipient
+				15 = { # starter convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 4
+						min = -10
+					}
+					modifier = {
+    	      add = intrigue
+						multiply = 3
+    	    }
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0007
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0010
+					}
+					desc = ftr_interaction_event.0003.a.start_lose
+				}
+				35 = { # recipient convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -4
+						min = -10
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0009
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0008
+					}
+					desc = ftr_interaction_event.0003.a.recipient_lose
+				}
+				50 = { # no one wins
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					desc = ftr_interaction_event.0003.a.tie
+				}
+			}
 		}
 	}
 }
@@ -248,7 +435,7 @@ ftr_interaction_event.0006 = {
 	desc = ftr_interaction_event.0006.desc
 	theme = faith
 	left_portrait = {
-		character = root
+		character = scope:actor
 		animation = schadenfreude
 	}
 	right_portrait = {
@@ -258,14 +445,75 @@ ftr_interaction_event.0006 = {
 
 	option = { #I have virtual
 		name = ftr_interaction_event.0006.a
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:actor = {
+			duel = {
+				skill = learning
+				target = scope:recipient
+				25 = { # starter convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 4
+						min = -10
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0007
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0010
+					}
+					desc = ftr_interaction_event.0003.a.start_lose
+				}
+				25 = { # recipient convinced
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -4
+						min = -10
+					}
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0009
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0008
+					}
+					desc = ftr_interaction_event.0003.a.recipient_lose
+				}
+				50 = { # no one wins
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					desc = ftr_interaction_event.0003.a.tie
+				}
+			}
 		}
 	}
 	option = { #You shall go to hell
 		name = ftr_interaction_event.0006.b
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:actor = {
+			duel = {
+				skill = learning
+				target = scope:recipient
+				50 = { # no one wins
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0013
+					}
+					desc = ftr_interaction_event.0003.a.tie
+				}
+				50 = { # lead to a fight
+					scope:actor = {
+						trigger_event = ftr_interaction_event.0011
+					}
+					scope:recipient = {
+						trigger_event = ftr_interaction_event.0011
+					}
+					desc = ftr_interaction_event.0003.a.fight
+				}
+			}
 		}
 	}
 }
@@ -277,7 +525,7 @@ ftr_interaction_event.0007 = {
 	desc = ftr_interaction_event.0007.desc
 	theme = faith
 	left_portrait = {
-		character = root
+		character = scope:actor
 		animation = grief
 	}
 	right_portrait = {
@@ -287,14 +535,25 @@ ftr_interaction_event.0007 = {
 
 	option = { #Admit failure
 		name = ftr_interaction_event.0007.a
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:actor = {
+			add_piety = -200
+			add_prestige = -150
+			add_character_modifier = {
+				modifier = lose_religious_debate_modifier
+				days = 730
+			}
+		}
+		ai_chance = {
+			base = 10
 		}
 	}
 	option = { #Convert
 		name = ftr_interaction_event.0007.b
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:actor = {
+			set_character_faith_with_conversion = scope:recipient.faith
+		}
+		ai_chance = {
+			base = 90
 		}
 	}
 }
@@ -306,7 +565,7 @@ ftr_interaction_event.0008 = {
 	desc = ftr_interaction_event.0008.desc
 	theme = faith
 	left_portrait = {
-		character = root
+		character = scope:actor
 		animation = happiness
 	}
 	right_portrait = {
@@ -316,14 +575,25 @@ ftr_interaction_event.0008 = {
 
 	option = { #Admit failure
 		name = ftr_interaction_event.0008.a
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:recipient = {
+			add_piety = -200
+			add_prestige = -150
+			add_character_modifier = {
+				modifier = lose_religious_debate_modifier
+				days = 730
+			}
+		}
+		ai_chance = {
+			base = 10
 		}
 	}
 	option = { #Convert
 		name = ftr_interaction_event.0008.b
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:recipient = {
+			set_character_faith_with_conversion = scope:actor.faith
+		}
+		ai_chance = {
+			base = 90
 		}
 	}
 }
@@ -335,7 +605,7 @@ ftr_interaction_event.0009 = {
 	desc = ftr_interaction_event.0009.desc
 	theme = faith
 	left_portrait = {
-		character = root
+		character = scope:actor
 		animation = happiness
 	}
 	right_portrait = {
@@ -345,8 +615,13 @@ ftr_interaction_event.0009 = {
 
 	option = { #I win
 		name = ftr_interaction_event.0009.a
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:actor = {
+			add_piety = 200
+			add_prestige = 150
+			add_character_modifier = {
+				modifier = win_religious_debate_modifier
+				days = 730
+			}
 		}
 	}
 }
@@ -358,7 +633,7 @@ ftr_interaction_event.0010 = {
 	desc = ftr_interaction_event.0010.desc
 	theme = faith
 	left_portrait = {
-		character = root
+		character = scope:actor
 		animation = grief
 	}
 	right_portrait = {
@@ -368,8 +643,13 @@ ftr_interaction_event.0010 = {
 
 	option = { #I win
 		name = ftr_interaction_event.0010.a
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:recipient = {
+			add_piety = 200
+			add_prestige = 150
+			add_character_modifier = {
+				modifier = win_religious_debate_modifier
+				days = 730
+			}
 		}
 	}
 }
@@ -381,7 +661,7 @@ ftr_interaction_event.0011 = {
 	desc = ftr_interaction_event.0011.desc
 	theme = faith
 	left_portrait = {
-		character = root
+		character = scope:actor
 		animation = rage
 	}
 	right_portrait = {
@@ -391,8 +671,20 @@ ftr_interaction_event.0011 = {
 
 	option = { #WTF
 		name = ftr_interaction_event.0011.a
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:actor = {
+			add_opinion = {
+				modifier = angry_opinion
+				target = scope:recipient
+				opinion = -30
+			}
+		}
+		
+		scope:recipient = {
+			add_opinion = {
+				modifier = angry_opinion
+				target = scope:actor
+				opinion = -30
+			}
 		}
 	}
 }
@@ -404,7 +696,7 @@ ftr_interaction_event.0012 = {
 	desc = ftr_interaction_event.0012.desc
 	theme = faith
 	left_portrait = {
-		character = root
+		character = scope:actor
 		animation = happiness
 	}
 	right_portrait = {
@@ -414,8 +706,19 @@ ftr_interaction_event.0012 = {
 
 	option = { #talk deeply
 		name = ftr_interaction_event.0012.a
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
+		scope:actor = {
+			add_opinion = {
+				modifier = respect_opinion
+				target = scope:recipient
+				opinion = 30
+			}
+		}
+		scope:recipient = {
+			add_opinion = {
+				modifier = respect_opinion
+				target = scope:actor
+				opinion = 30
+			}
 		}
 	}
 }
@@ -427,7 +730,7 @@ ftr_interaction_event.0013 = {
 	desc = ftr_interaction_event.0013.desc
 	theme = faith
 	left_portrait = {
-		character = root
+		character = scope:actor
 		animation = disbelief
 	}
 	right_portrait = {
@@ -437,8 +740,5 @@ ftr_interaction_event.0013 = {
 
 	option = { #ok
 		name = ftr_interaction_event.0013.a
-		hidden_effect = {
-			#trigger_event = ftr_interaction_event.0002
-		}
 	}
 }

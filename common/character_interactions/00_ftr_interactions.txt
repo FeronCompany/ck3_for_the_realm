@@ -310,12 +310,16 @@ religious_debate_interaction = {
 		NOT = { scope:actor.faith = scope:recipient.faith }
 		scope:actor = { is_imprisoned = no }
 		scope:recipient = { is_imprisoned = no }
+		NOT = {
+			scope:recipient = scope:recipient.faith.religious_head
+		}
 		scope:actor = {
 			OR = {
 				has_perk = faithful_perk
 				has_trait = zealous
 			}
 		}
+		scope:actor.top_liege = scope:recipient.top_liege
 	}
 
 	is_valid_showing_failures_only = {
@@ -326,7 +330,7 @@ religious_debate_interaction = {
 	}
 
 	on_send = {
-		scope:actor = {
+		scope:recipient = {
 			add_character_flag = {
 				flag = flag_recent_start_religious_debate
 				days = 365
@@ -368,7 +372,7 @@ religious_debate_interaction = {
 		modifier = {
 			add = -100
 			trigger = {
-				scope:actor = {
+				scope:recipient = {
 					has_character_flag = flag_recent_start_religious_debate
 				}
 			}
@@ -391,6 +395,14 @@ religious_debate_interaction = {
 			trigger = {
 				scope:actor = {
 					has_trait = zealous
+				}
+			}
+		}
+		modifier = {
+			add = -100
+			trigger = {
+				scope:actor = {
+					has_character_flag = flag_recent_start_religious_debate
 				}
 			}
 		}

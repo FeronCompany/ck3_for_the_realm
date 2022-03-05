@@ -1,5 +1,5 @@
 ﻿l_simp_chinese:
- ftr_interaction_event.0001.opening:0 "尊敬的 [root.GetShortUIName|U]"
+ ftr_interaction_event.0001.opening:0 "尊敬的 [actor.GetShortUIName|U]"
  ftr_interaction_event.0001.desc:0 "我已经迫不及待和你探讨宗教问题了呢，让我们走着瞧吧，我保证你会折服于正信！"
  ftr_interaction_event.0001.a:0 "哟呵"
 
@@ -11,26 +11,26 @@
  ftr_interaction_event.0002.d:0 "暗示不信者的悲惨命运"
 
  ftr_interaction_event.0003.t:0 "质疑教条"
- ftr_interaction_event.0003.desc:0 "辩论激烈地进行着，没想到 [root.GetShortUIName|U] 居然从我们的经书中找到了一条[root.GetSheHe|U]认为不可理喻的教义。面对着这种对我们神圣教条的质疑，我不禁怒火中烧，但冷静下来的我开始思考反击[target.GetHerHim|U]的策略……"
+ ftr_interaction_event.0003.desc:0 "辩论激烈地进行着，没想到 [actor.GetShortUIName|U] 居然从我们的经书中找到了一条[actor.GetSheHe|U]认为不可理喻的教义。面对着这种对我们神圣教条的质疑，我不禁怒火中烧，但冷静下来的我开始思考反击[target.GetHerHim|U]的策略……"
  ftr_interaction_event.0003.a:0 "反戈一击"
- ftr_interaction_event.0003.a.start_lose:0 "[root.GetShortUIName|U] 输了"
+ ftr_interaction_event.0003.a.start_lose:0 "[actor.GetShortUIName|U] 输了"
  ftr_interaction_event.0003.a.recipient_lose:0 "你输了"
  ftr_interaction_event.0003.a.tie:0 "平局"
  ftr_interaction_event.0003.a.fight:0 "你们会打一架"
  ftr_interaction_event.0003.b:0 "极力辩解"
 
  ftr_interaction_event.0004.t:0 "逻辑谬误"
- ftr_interaction_event.0004.desc:0 "我们两人都使出了浑身解数寻找对方的破绽，但 [root.GetShortUIName|U] 还是棋高一着，找到了我的逻辑漏洞。现在轮到我思考如何破局了……"
+ ftr_interaction_event.0004.desc:0 "我们两人都使出了浑身解数寻找对方的破绽，但 [actor.GetShortUIName|U] 还是棋高一着，找到了我的逻辑漏洞。现在轮到我思考如何破局了……"
  ftr_interaction_event.0004.a:0 "转移话题"
  ftr_interaction_event.0004.b:0 "偷换概念"
 
  ftr_interaction_event.0005.t:0 "引经据典"
- ftr_interaction_event.0005.desc:0 "在一番深入的探讨后，我越来越发现 [root.GetShortUIName|U] 的学识真的渊博，在讨论中各种引经据典，说的头头是道，宫廷里的其他人居然也附和。这样下去恐怕不妙……"
+ ftr_interaction_event.0005.desc:0 "在一番深入的探讨后，我越来越发现 [actor.GetShortUIName|U] 的学识真的渊博，在讨论中各种引经据典，说的头头是道，宫廷里的其他人居然也附和。这样下去恐怕不妙……"
  ftr_interaction_event.0005.a:0 "我肚子里也不缺墨水哦！"
  ftr_interaction_event.0005.b:0 "质疑典故的真实性"
 
  ftr_interaction_event.0006.t:0 "不信者下火狱"
- ftr_interaction_event.0006.desc:0 "[root.GetShortUIName|U] 千方百计地劝告我，如果不皈依[root.GetSheHe|U]的信仰，我死后就会下火狱。世界上还有比这个更恼人的诅咒吗？我必须表明自己的态度！"
+ ftr_interaction_event.0006.desc:0 "[actor.GetShortUIName|U] 千方百计地劝告我，如果不皈依[actor.GetSheHe|U]的信仰，我死后就会下火狱。世界上还有比这个更恼人的诅咒吗？我必须表明自己的态度！"
  ftr_interaction_event.0006.a:0 "我品德高尚"
  ftr_interaction_event.0006.b:0 "你可拉倒吧!"
 
@@ -40,16 +40,16 @@
  ftr_interaction_event.0007.b:0 "或许 [recipient.GetShortUIName|U] 说的没错……"
 
  ftr_interaction_event.0008.t:0 "略处下风"
- ftr_interaction_event.0008.desc:0 "在 [root.GetShortUIName|U] 结束了自己的慷慨陈词后，我语塞了。[root.GetSheHe|U]的逻辑、[root.GetSheHe]的表达都让我无法辩驳，我对信仰的忠贞受到了动摇……"
+ ftr_interaction_event.0008.desc:0 "在 [actor.GetShortUIName|U] 结束了自己的慷慨陈词后，我语塞了。[actor.GetSheHe|U]的逻辑、[actor.GetSheHe]的表达都让我无法辩驳，我对信仰的忠贞受到了动摇……"
  ftr_interaction_event.0008.a:0 "我的信仰啊……"
- ftr_interaction_event.0008.b:0 "或许 [root.GetShortUIName|U] 说的没错……"
+ ftr_interaction_event.0008.b:0 "或许 [actor.GetShortUIName|U] 说的没错……"
 
  ftr_interaction_event.0009.t:0 "信仰之胜"
  ftr_interaction_event.0009.desc:0 "在我渊博学识的衬托下，[recipient.GetShortUIName|U] 那些微不足道的小聪明显得如此可笑。[recipient.GetSheHe]哭丧着脸恳求我不要再继续了，并承认自己输掉了这场辩论。"
  ftr_interaction_event.0009.a:0 "探囊取物罢了"
 
  ftr_interaction_event.0010.t:0 "信仰之胜"
- ftr_interaction_event.0010.desc:0 "在我渊博学识的衬托下，[root.GetShortUIName|U] 那些微不足道的小聪明显得如此可笑。[root.GetSheHe]哭丧着脸恳求我不要再继续了，并承认自己输掉了这场辩论。"
+ ftr_interaction_event.0010.desc:0 "在我渊博学识的衬托下，[actor.GetShortUIName|U] 那些微不足道的小聪明显得如此可笑。[actor.GetSheHe]哭丧着脸恳求我不要再继续了，并承认自己输掉了这场辩论。"
  ftr_interaction_event.0010.a:0 "探囊取物罢了"
 
  ftr_interaction_event.0011.t:0 "一场闹剧"

@@ -1,5 +1,5 @@
 ﻿l_english:
- ftr_interaction_event.0001.opening:0 "Lord [root.GetShortUIName|U]"
+ ftr_interaction_event.0001.opening:0 "Lord [actor.GetShortUIName|U]"
  ftr_interaction_event.0001.desc:0 "I can't wait to start a religious debate with you. Just wait a few days and you shall convert to the true faith."
  ftr_interaction_event.0001.a:0 "Wait and see."
 
@@ -11,26 +11,26 @@
  ftr_interaction_event.0002.d:0 "Implying the tragic fate of the unbeliever."
 
  ftr_interaction_event.0003.t:0 "Question Doctrine of Faith"
- ftr_interaction_event.0003.desc:0 "As the debate raged on, [root.GetShortUIName|U] found a doctrine in our scriptures that [root.GetSheHe|U] thought was unreasonable. I was furious at this questioning of our sacred doctrine, but calmed down I began to think about strategies to counter [target.GetHerHim|U]..."
+ ftr_interaction_event.0003.desc:0 "As the debate raged on, [actor.GetShortUIName|U] found a doctrine in our scriptures that [actor.GetSheHe|U] thought was unreasonable. I was furious at this questioning of our sacred doctrine, but calmed down I began to think about strategies to counter [recipient.GetHerHim|U]..."
  ftr_interaction_event.0003.a:0 "Strike back."
- ftr_interaction_event.0003.a.start_lose:0 "[root.GetShortUIName|U] lose."
+ ftr_interaction_event.0003.a.start_lose:0 "[actor.GetShortUIName|U] lose."
  ftr_interaction_event.0003.a.recipient_lose:0 "You lose."
  ftr_interaction_event.0003.a.tie:0 "It's a draw."
  ftr_interaction_event.0003.a.fight:0 "You will have a fight."
  ftr_interaction_event.0003.b:0 "Explain away."
 
  ftr_interaction_event.0004.t:0 "My Logic Mistake"
- ftr_interaction_event.0004.desc:0 "We both tried our best to find each other's flaws, but [root.GetShortUIName|U] still made a move and found my logical vulnerability. Now it's my turn to think about how to break the game..."
+ ftr_interaction_event.0004.desc:0 "We both tried our best to find each other's flaws, but [actor.GetShortUIName|U] still made a move and found my logical vulnerability. Now it's my turn to think about how to break the game..."
  ftr_interaction_event.0004.a:0 "Change the subject."
  ftr_interaction_event.0004.b:0 "Steal concept."
 
  ftr_interaction_event.0005.t:0 "Quoting Historical Allusions"
- ftr_interaction_event.0005.desc:0 "After an in-depth discussion, I found more and more that [root.GetShortUIName|U] knowledge is really profound. In the discussion, [root.GetSheHe|U] quoted various classics and said the right thing, and the others in the court actually agreed. I'm afraid this is not good..."
+ ftr_interaction_event.0005.desc:0 "After an in-depth discussion, I found more and more that [actor.GetShortUIName|U] knowledge is really profound. In the discussion, [actor.GetSheHe|U] quoted various classics and said the right thing, and the others in the court actually agreed. I'm afraid this is not good..."
  ftr_interaction_event.0005.a:0 "Quoting historical allusions too."
  ftr_interaction_event.0005.b:0 "Question its reality."
 
  ftr_interaction_event.0006.t:0 "Fate of Unbeliever"
- ftr_interaction_event.0006.desc:0 "[root.GetShortUIName|U] tried [root.GetHerHis] best to advise me that if I did not convert to [root.GetHerHis] faith, I would go to hell after death. Is there any curse in the world more annoying than this? I must show my attitude!"
+ ftr_interaction_event.0006.desc:0 "[actor.GetShortUIName|U] tried [actor.GetHerHis] best to advise me that if I did not convert to [actor.GetHerHis] faith, I would go to hell after death. Is there any curse in the world more annoying than this? I must show my attitude!"
  ftr_interaction_event.0006.a:0 "I excel in virtue."
  ftr_interaction_event.0006.b:0 "Go to hell, now!"
 
@@ -40,16 +40,16 @@
  ftr_interaction_event.0007.b:0 "Maybe [recipient.GetShortUIName|U] is right..."
 
  ftr_interaction_event.0008.t:0 "Slightly Downwind"
- ftr_interaction_event.0008.desc:0 "After [root.GetShortUIName|U] finished [root.GetHerHis] eloquence, I was speechless. [root.GetHerHis|U] logic and [root.GetHerHis] expression made me unable to refute, and my loyalty to my faith was shaken..."
+ ftr_interaction_event.0008.desc:0 "After [actor.GetShortUIName|U] finished [actor.GetHerHis] eloquence, I was speechless. [actor.GetHerHis|U] logic and [actor.GetHerHis] expression made me unable to refute, and my loyalty to my faith was shaken..."
  ftr_interaction_event.0008.a:0 "I failed you, my faith."
- ftr_interaction_event.0008.b:0 "Maybe [root.GetShortUIName|U] is right..."
+ ftr_interaction_event.0008.b:0 "Maybe [actor.GetShortUIName|U] is right..."
 
  ftr_interaction_event.0009.t:0 "Victory of Faith"
  ftr_interaction_event.0009.desc:0 "[recipient.GetShortUIName|U]'s petty cleverness seemed so laughable against the backdrop of my profound knowledge. [recipient.GetSheHe|U] begged me with a sad face not to continue, and admitted that [recipient.GetSheHe] had lost the debate."
  ftr_interaction_event.0009.a:0 "Everything is as I expected."
 
  ftr_interaction_event.0010.t:0 "Victory of Faith"
- ftr_interaction_event.0010.desc:0 "[root.GetShortUIName|U]'s petty cleverness seemed so laughable against the backdrop of my profound knowledge. [root.GetSheHe|U] begged me with a sad face not to continue, and admitted that [root.GetSheHe] had lost the debate."
+ ftr_interaction_event.0010.desc:0 "[actor.GetShortUIName|U]'s petty cleverness seemed so laughable against the backdrop of my profound knowledge. [actor.GetSheHe|U] begged me with a sad face not to continue, and admitted that [actor.GetSheHe] had lost the debate."
  ftr_interaction_event.0010.a:0 "Everything is as I expected."
 
  ftr_interaction_event.0011.t:0 "Victory of Farce"

@@ -1,0 +1,35 @@
+solitude_time_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	desc = solitude_time_decision_desc
+	selection_tooltip = solitude_time_decision_tooltip
+	cooldown = { days = 1825 }
+	is_shown = {
+		is_landed = yes
+		exists = house
+    has_trait = shy
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		prestige = { value = medium_prestige_value }
+	}
+
+	effect = {
+    add_character_modifier = {
+			modifier = unsocial_personality_modifier
+			days = 730
+		}
+		trigger_event = solitude_time.0001
+	}
+	
+	ai_check_interval = 240
+	ai_potential = {
+		has_trait = shy
+	}
+	ai_will_do = {
+		base = 100
+	}
+}

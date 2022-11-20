@@ -63,3 +63,79 @@
  ftr_interaction_event.0013.t:0 "意见分歧"
  ftr_interaction_event.0013.desc:0 "我们两人谁也说服不了谁，只能站在客厅两端干瞪眼，一旁的客人都议论纷纷，分析着谁说的更有道理。我累了，辩论是时候结束了。"
  ftr_interaction_event.0013.a:0 "你给我等着!"
+
+ solitude_time.0001.t:0 "自娱自乐"
+ solitude_time.0001.desc:0 "娱乐时间到，到底做点什么好呢？"
+ solitude_time.0001.a:0 "读书"
+ solitude_time.0001.b:0 "手办应该不错"
+ solitude_time.0001.b.good:0 "你玩的很开心"
+ solitude_time.0001.b.bad:0 "手办有损坏的风险"
+ solitude_time.0001.c:0 "冥想一段时间也好"
+
+ solitude_time.0002.t:0 "选择书籍"
+ solitude_time.0002.desc:0 "家中的藏书还不少，看看选什么书读呢？"
+ solitude_time.0002.a:0 "阅读史诗篇章"
+ solitude_time.0002.b:0 "诵读经文"
+ solitude_time.0002.c:0 "看看市井小说"
+
+ solitude_time.0003.t:0 "震人心魄"
+ solitude_time.0003.desc:0 "我手中的史诗篇章看得人热血沸腾，以至于忍不住想要回到那个时代参与其中，搅动风云。冷静下来后，总觉得自己需要做点什么。"
+ solitude_time.0003.a:0 "光读书就已经满足了"
+ solitude_time.0003.b:0 "我得自己试着模仿写一下"
+
+ solitude_time.0004.t:0 "令人满意"
+ solitude_time.0004.desc:0 "参照着史诗中的写作手法，我续写了几个篇章，虽然没有原版的那种热血沸腾的感觉，不过也算是满足了一点遗憾。"
+ solitude_time.0004.a:0 "我真的是天下无敌！"
+
+ solitude_time.0005.t:0 "令人失望"
+ solitude_time.0005.desc:0 "我写的故事都是什么跟什么啊，不仅逻辑混乱，文笔也和原作差了好多，原本沸腾的热血逐渐冷却下来。"
+ solitude_time.0005.a:0 "我还会卷土重来的！"
+
+ solitude_time.0006.t:0 "无聊至极"
+ solitude_time.0006.desc:0 "昏暗的灯光下，我的眼睛艰难地睁开着，怀着虔诚的心情，我努力阅读书中苍白的文字。最后，我终于受不了那些无聊的道德说教，一头睡下。"
+ solitude_time.0006.a:0 "这书也不是毫无用处，至少助眠"
+
+ solitude_time.0007.t:0 "无比虔诚"
+ solitude_time.0007.desc:0 "我翻开书页，里面的故事令我震惊，里面的阐述令我深受启发。当我发现先贤们竟然与我思维想通时，顿感狂喜。朝闻道，夕死可矣！"
+ solitude_time.0007.a:0 "以后还要多读书"
+
+ solitude_time.0008.t:0 "怀疑教义"
+ solitude_time.0008.desc:0 "随着阅读的深入，我的疑问越来越多。经书中列举的教条一旦用于实践，就会产生各种矛盾和谬误。是我对经书的理解有问题吗？"
+ solitude_time.0008.a:0 "到底要不要看下去呢"
+
+ solitude_time.0009.t:0 "一出好戏"
+ solitude_time.0009.desc:0 "市井小民的故事总是充满着各种悲欢离合。作为贵族，我纵然不能完全体会他们生活的艰辛与快乐，但也能提供一个独特的观察视角。"
+ solitude_time.0009.a:0 "一出好戏"
+
+ solitude_time.0010.t:0 "滥竽充数"
+ solitude_time.0010.desc:0 "没想到居然会有如此糊弄读者的书籍。虽然我身居城堡，但也不至于对市井生活一无所知。这个作者会为他的傲慢付出代价的！"
+ solitude_time.0010.a:0 "下次别让我再看见"
+
+ solitude_time.0011.t:0 "玩物丧志"
+ solitude_time.0011.desc:0 "下人们供奉的小工艺品真是巧夺天工，令人爱不释手。"
+ solitude_time.0011.a:0 "如果还有别的小玩意记得也给我一份"
+
+ solitude_time.0012.t:0 "毛手毛脚"
+ solitude_time.0012.desc:0 "当我把玩小手工艺品正兴起之时，一个仆人急匆匆跑进屋要汇报，却一不小心踩碎了放在地上的宝物。他吓得脸色苍白，跪地不起。"
+ solitude_time.0012.a:0 "你被开除了！"
+
+ solitude_time.0013.t:0 "爱人的抱怨"
+ solitude_time.0013.desc:0 "或许是我最近冥想太久，我的配偶[spouse.GetShortUIName|U]忍不住抱怨起来。经过仆人提醒，我意识到已经整整10天没有回卧室了。"
+ solitude_time.0013.a:0 "你来的正是时候"
+ solitude_time.0013.b:0 "别烦我！"
+
+ solitude_time.0014.t:0 "发散思维"
+ solitude_time.0014.desc:0 "整日的冥想总算有了一些结果，我脑中冒出了无数的神奇点子。这时，我的祭司[bishop.GetShortUIName|U]过来找我了。该不该分享一下我的思路呢？"
+ solitude_time.0014.a:0 "祭司，你怎么看"
+
+ solitude_time.0015.t:0 "充分休息"
+ solitude_time.0015.desc:0 "冥想并没有带来什么鬼点子，不过倒是让我好好睡了一觉。再度醒来时，外面正是晴天，是时候处理公务了。"
+ solitude_time.0015.a:0 "没有帮助也没坏处"
+
+ solitude_time.0016.t:0 "异端邪说"
+ solitude_time.0016.desc:0 "我刚刚把自己冥想中得到的奇思妙想说出来，祭司就惊掉了下巴。[bishop.GetSheHe|U]颤抖着双手捂住我的嘴巴，并告诉我这是异端言论。"
+ solitude_time.0016.a:0 "啊——这——"
+
+ solitude_time.0017.t:0 "模范教徒"
+ solitude_time.0017.desc:0 "我毫无保留地将自己在冥想中想出的点子说给[bishop.GetShortUIName|U]听。[bishop.GetShortUIName|U]听完后大为赞许。我很高兴大家能达成一致。"
+ solitude_time.0017.a:0 "英雄所见略同"

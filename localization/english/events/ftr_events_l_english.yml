@@ -63,3 +63,79 @@
  ftr_interaction_event.0013.t:0 "Differences of opinion"
  ftr_interaction_event.0013.desc:0 "Neither of us could persuade anyone. We could only stand at both ends of the living room and stare blankly. The guests on the side were all talking about it, analyzing who said it was more reasonable. I was tired, and the debate was over."
  ftr_interaction_event.0013.a:0 "Next time, I will defeat you!"
+
+ solitude_time.0001.t:0 "Solitude time"
+ solitude_time.0001.desc:0 "It's leasure time now, what to do then?"
+ solitude_time.0001.a:0 "Read a book"
+ solitude_time.0001.b:0 "Play with artifact"
+ solitude_time.0001.b.good:0 "You will have fun"
+ solitude_time.0001.b.bad:0 "Your artifact may be destroyed."
+ solitude_time.0001.c:0 "Just meditate for a while."
+
+ solitude_time.0002.t:0 "Choose book"
+ solitude_time.0002.desc:0 "There's a lot of books, which one to read?"
+ solitude_time.0002.a:0 "Read epic."
+ solitude_time.0002.b:0 "Read relious books."
+ solitude_time.0002.c:0 "Read townfolk stories."
+
+ solitude_time.0003.t:0 "Shock to my heart"
+ solitude_time.0003.desc:0 "The epic chapter in my hands is so hot that I can't help but want to go back to that era to participate in it and stir up the situation. After calming down, I always feel that I need to do something."
+ solitude_time.0003.a:0 "Reading is enough."
+ solitude_time.0003.b:0 "Try to imitate writing."
+
+ solitude_time.0004.t:0 "Content with my writing"
+ solitude_time.0004.desc:0 "With reference to the writing method in the epic, I continued to write a few chapters. Although it did not have the feeling of blood boiling in the original version, it still made up for a little regret."
+ solitude_time.0004.a:0 "I am so invincible!"
+
+ solitude_time.0005.t:0 "Disappointing!"
+ solitude_time.0005.desc:0 "The stories I wrote were all about what. Not only was the logic chaotic, but the writing was also much worse than the original, and the originally boiling blood gradually cooled down."
+ solitude_time.0005.a:0 "I will make a comeback!"
+
+ solitude_time.0006.t:0 "Boriong Book"
+ solitude_time.0006.desc:0 "Under the dim candlelight, my eyes were hard to open, and with piety, I tried to read the pale words in the book. Finally, I couldn't stand the boring moral preaching and fell asleep."
+ solitude_time.0006.a:0 "This book is not useless, at least it helps sleep"
+
+ solitude_time.0007.t:0 "Piety"
+ solitude_time.0007.desc:0 "I opened the pages, and the stories in it shocked me, and the explanations in it inspired me. When I found out that the sages actually had the same thinking as me, I was ecstatic. Hearing the truth in the morning, it is enough to die overnight!"
+ solitude_time.0007.a:0 "Read more in the future"
+
+ solitude_time.0008.t:0 "Doubt the book"
+ solitude_time.0008.desc:0 "As I read deeper, I have more and more questions. Once the dogmas enumerated in the scriptures are put into practice, various contradictions and fallacies will arise. Is there any problem with my understanding of the scriptures?"
+ solitude_time.0008.a:0 "Should I read it deeper?"
+
+ solitude_time.0009.t:0 "Good novel"
+ solitude_time.0009.desc:0 "The stories of ordinary people are always full of joys and sorrows. As a nobleman, even if I can't fully appreciate the hardships and joys of their lives, I can still provide a unique perspective."
+ solitude_time.0009.a:0 "Good novel"
+
+ solitude_time.0010.t:0 "Worthless novel"
+ solitude_time.0010.desc:0 "I didn't expect there would be books that fool readers so much. Although I live in a castle, I don't know anything about civilian life. This author will pay for his arrogance!"
+ solitude_time.0010.a:0 "Don't let me see it again!"
+
+ solitude_time.0011.t:0 "Nice artifacts"
+ solitude_time.0011.desc:0 "The little crafts offered by the servants are really ingenious and addictive."
+ solitude_time.0011.a:0 "More, please"
+
+ solitude_time.0012.t:0 "Clumsy servant"
+ solitude_time.0012.desc:0 "When I was playing with small handicrafts, a servant hurried into the house to report, but accidentally smashed the treasure on the ground. He was pale with fright and knelt down."
+ solitude_time.0012.a:0 "You are fired!"
+
+ solitude_time.0013.t:0 "Lover's complain"
+ solitude_time.0013.desc:0 "Maybe I've been meditating so much lately that my spouse [spouse.GetShortUIName|U] can't help but complain. After being reminded by the servant, I realized that I hadn't been back to the bedroom for 10 days."
+ solitude_time.0013.a:0 "It's the right time for us."
+ solitude_time.0013.b:0 "Stay away from me!"
+
+ solitude_time.0014.t:0 "Divergent thinking"
+ solitude_time.0014.desc:0 "The whole day of meditation finally had some results, and countless magical ideas came to my mind. At this time, my priest [bishop.GetShortUIName|U] came to me. Should I share my thoughts?"
+ solitude_time.0014.a:0 "What do you think, my priest."
+
+ solitude_time.0015.t:0 "Relax"
+ solitude_time.0015.desc:0 "Meditation didn't bring any tricks, but it gave me a good night's sleep. When I woke up again, it was sunny outside, and it was time for business."
+ solitude_time.0015.a:0 "No good, no bad."
+
+ solitude_time.0016.t:0 "Heresy"
+ solitude_time.0016.desc:0 "As soon as I told the whimsy of my meditation, the priest dropped his jaw. [bishop.GetSheHe|U] covered my mouth with trembling hands and told me it was heretical."
+ solitude_time.0016.a:0 "Oh, no!"
+
+ solitude_time.0017.t:0 "Model believer"
+ solitude_time.0017.desc:0 "I unreservedly told [bishop.GetShortUIName|U] the ideas I came up with during my meditation. [bishop.GetShortUIName|U] applauded after listening. I'm glad everyone can agree."
+ solitude_time.0017.a:0 "Good to agree"

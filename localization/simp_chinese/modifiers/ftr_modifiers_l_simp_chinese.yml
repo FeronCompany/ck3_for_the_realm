@@ -1,9 +1,18 @@
 ﻿l_simp_chinese:
- over_training_modifier:0 "过度训练"
+ over_training_modifier:0 "<FTR>过度训练"
  over_training_modifier_desc:0 "这名角色因为过度训练而精疲力竭。"
 
- lose_religious_debate_modifier:0 "辩经失败"
+ lose_religious_debate_modifier:0 "<FTR>辩经失败"
  lose_religious_debate_modifier:0 "此人近期和他人辩经失败."
 
- win_religious_debate_modifier:0 "辩经胜利"
+ win_religious_debate_modifier:0 "<FTR>辩经胜利"
  win_religious_debate_modifier_desc:0 "此人近期赢得了与他人的辩经."
+ 
+ unsocial_personality_modifier:0 "<FTR>远离社交"
+ unsocial_personality_modifier:0 "此人离群索居，终日神龙见首不见尾."
+ 
+ epic_writing_imitator_modifier:0 "史诗写手"
+ epic_writing_imitator_modifier:0 "此人擅长模仿史诗写作."
+ 
+ boring_book_help_sleep_modifier:0 "烂书有助睡眠"
+ boring_book_help_sleep_modifier:0 "没有什么比这本烂书更能助人入睡的了zzZ."

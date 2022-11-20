@@ -1,5 +1,5 @@
 ﻿l_simp_chinese:
- aid_my_lord_interaction:0 "资助君上"
+ aid_my_lord_interaction:0 "<FTR>资助君上"
  aid_my_lord_interaction_desc:0 "资助你的君主以获取回报"
  aid_my_lord_interaction_notification:0 "资助君上"
  VASSAL_AID_LIEGE:0 "忠心臣子自当资助其君上"
@@ -11,7 +11,7 @@
  request_combat_guidance_interaction_desc:0 "花点学费学习格斗技巧"
  request_combat_guidance_interaction_notification:0 "学习格斗技巧"
 
- religious_debate_interaction:0 "宗教辩论"
+ religious_debate_interaction:0 "<FTR>宗教辩论"
  religious_debate_interaction_desc:0 "向目标发起一场宗教辩论."
  religious_debate_interaction_notification:0 "宗教辩论"
  FOR_THE_FAITH:0 "为了信仰!"

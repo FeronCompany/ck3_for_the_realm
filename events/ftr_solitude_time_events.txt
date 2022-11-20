@@ -1,0 +1,656 @@
+
+namespace = solitude_time
+
+# Choose how to spend solitude time
+solitude_time.0001 = {
+	type = character_event
+	title = solitude_time.0001.t
+	desc = solitude_time.0001.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	# left_portrait = {
+	# 	character = scope:writer
+	# 	animation = personality_bold
+	# }
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+
+	immediate = {
+    random_spouse = {
+			save_scope_as = spouse
+		}
+    cp:councillor_court_chaplain = {
+			save_scope_as = bishop
+		}
+  }
+
+	option = { # Read a book
+		name = solitude_time.0001.a
+		remove_short_term_gold = {
+			add = minor_gold_value
+			multiply = 1
+		}
+		trigger_event = {
+			id = solitude_time.0002
+			days = 1
+		}
+		ai_chance = {
+			base = 100
+			modifier = {
+				factor = 0
+				short_term_gold <= minor_gold_value
+			}
+		}
+	}
+
+	option = { # Play with artifacts
+		name = solitude_time.0001.b
+		remove_short_term_gold = {
+			add = minor_gold_value
+			multiply = 2
+		}
+    random_list = {
+      90 = { # nice day
+        desc = solitude_time.0001.b.good
+        trigger_event = {
+			    id = solitude_time.0011
+			    days = 5
+		    }
+      }
+      10 = { # artifact broken
+        desc = solitude_time.0001.b.bad
+        trigger_event = {
+			    id = solitude_time.0012
+			    days = 5
+		    }
+      }
+    }
+		
+		ai_chance = {
+			base = 100
+			modifier = {
+				factor = 0
+				short_term_gold <= minor_gold_value
+			}
+		}
+	}
+	
+	option = { # Meditate
+		name = solitude_time.0001.c
+    random_list = {
+      10 = { # couple events
+        trigger_event = {
+			    id = solitude_time.0013
+			    days = 10
+		    }
+      }
+      10 = { # bishop come
+        trigger_event = {
+			    id = solitude_time.0014
+			    days = 10
+		    }
+      }
+      80 = { # just relax
+        trigger_event = {
+			    id = solitude_time.0015
+			    days = 10
+		    }
+      }
+    }
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Choose book to read
+solitude_time.0002 = {
+	type = character_event
+	title = solitude_time.0002.t
+	desc = solitude_time.0002.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Epic
+		name = solitude_time.0002.a
+		trigger_event = {
+			id = solitude_time.0003
+			days = 10
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	option = { # Religious book
+		name = solitude_time.0002.b
+		remove_short_term_gold = {
+			add = minor_gold_value
+			multiply = 2
+		}
+		random_list = {
+      30 = { # boring
+        trigger_event = {
+			    id = solitude_time.0006
+			    days = 10
+		    }
+      }
+      40 = { # more piety
+        trigger_event = {
+			    id = solitude_time.0007
+			    days = 10
+		    }
+      }
+      30 = { # unbelieve
+        trigger_event = {
+			    id = solitude_time.0008
+			    days = 10
+		    }
+      }
+    }
+		ai_chance = {
+			base = 100
+			modifier = {
+				add = 600
+				has_trait = zealous
+			}
+		}
+	}
+	
+	option = { # Novel
+		name = solitude_time.0002.c
+		random_list = {
+      80 = { # have fun
+        trigger_event = {
+			    id = solitude_time.0009
+			    days = 10
+		    }
+      }
+      20 = { # worthless
+        trigger_event = {
+			    id = solitude_time.0010
+			    days = 10
+		    }
+      }
+    }
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Epic enjoy
+solitude_time.0003 = {
+	type = character_event
+	title = solitude_time.0003.t
+	desc = solitude_time.0003.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Good and relax
+		name = solitude_time.0003.a
+		stress_impact = {
+      base = minor_stress_impact_loss
+    }
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	option = { # Try to imitate
+		name = solitude_time.0003.b
+		random_list = {
+      5 = { # good content
+        modifier = {
+					add = {
+						value = learning
+						multiply = 2
+					}
+        }
+        trigger_event = {
+			    id = solitude_time.0004
+			    days = 10
+		    }
+      }
+      5 = { # bad content
+        trigger_event = {
+			    id = solitude_time.0005
+			    days = 10
+		    }
+      }
+    }
+		ai_chance = {
+			base = 100
+			modifier = {
+				add = -50
+				has_trait = content
+			}
+			modifier = {
+				add = -50
+				has_trait = lazy
+			}
+		}
+	}
+
+	after = {}
+}
+
+# my own epic good
+solitude_time.0004 = {
+	type = character_event
+	title = solitude_time.0004.t
+	desc = solitude_time.0004.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Content with my own epic writing
+		name = solitude_time.0004.a
+		stress_impact = {
+      base = minor_stress_impact_loss
+    }
+    add_character_modifier = {
+			modifier = epic_writing_imitator_modifier
+			days = 1825
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# my own epic bad
+solitude_time.0005 = {
+	type = character_event
+	title = solitude_time.0005.t
+	desc = solitude_time.0005.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Nothing happen
+		name = solitude_time.0005.a
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Religous book is really boring
+solitude_time.0006 = {
+	type = character_event
+	title = solitude_time.0006.t
+	desc = solitude_time.0006.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Boring!
+		name = solitude_time.0006.a
+    add_character_modifier = {
+			modifier = boring_book_help_sleep_modifier
+			days = 365
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Gain piety after reading relious book
+solitude_time.0007 = {
+	type = character_event
+	title = solitude_time.0007.t
+	desc = solitude_time.0007.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Gain piety
+		name = solitude_time.0007.a
+    add_piety = 200
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Loss piety after reading relious book
+solitude_time.0008 = {
+	type = character_event
+	title = solitude_time.0008.t
+	desc = solitude_time.0008.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Loss piety
+		name = solitude_time.0008.a
+    add_piety = -100
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Good novel
+solitude_time.0009 = {
+	type = character_event
+	title = solitude_time.0009.t
+	desc = solitude_time.0009.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Loss piety
+		name = solitude_time.0009.a
+    stress_impact = {
+      base = minor_stress_impact_loss
+    }
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Worthless novel
+solitude_time.0010 = {
+	type = character_event
+	title = solitude_time.0010.t
+	desc = solitude_time.0010.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Worthless
+		name = solitude_time.0010.a
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Have fun with artifacts
+solitude_time.0011 = {
+	type = character_event
+	title = solitude_time.0011.t
+	desc = solitude_time.0011.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Have fun
+		name = solitude_time.0011.a
+    stress_impact = {
+      base = medium_stress_impact_loss
+    }
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Broke artifacts
+solitude_time.0012 = {
+	type = character_event
+	title = solitude_time.0012.t
+	desc = solitude_time.0012.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # broke artifact
+		name = solitude_time.0012.a
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Spouse complain
+solitude_time.0013 = {
+	type = character_event
+	title = solitude_time.0013.t
+	desc = solitude_time.0013.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+  right_portrait = {
+		character = scope:spouse
+		animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Have sex
+		name = solitude_time.0013.a
+    had_sex_with_effect = {
+			CHARACTER = scope:spouse
+			PREGNANCY_CHANCE = 20
+		}
+    stress_impact = {
+      base = minor_stress_impact_loss
+    }
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	option = { # Don't disturb me!
+		name = solitude_time.0013.b
+    scope:spouse = {
+			add_opinion = {
+				modifier = angry_opinion
+				target = root
+				opinion = -20
+			}
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Bishop's doubt
+solitude_time.0014 = {
+	type = character_event
+	title = solitude_time.0014.t
+	desc = solitude_time.0014.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+	}
+  right_portrait = {
+		character = scope:bishop
+		animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Talk about your learning
+		name = solitude_time.0014.a
+    random_list = {
+      80 = {
+        trigger_event = {
+			    id = solitude_time.0016
+			    days = 1
+		    }
+      }
+      20 = {
+        trigger_event = {
+			    id = solitude_time.0017
+			    days = 1
+		    }
+      }
+    }
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Just relax
+solitude_time.0015 = {
+	type = character_event
+	title = solitude_time.0015.t
+	desc = solitude_time.0015.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		# animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Have fun
+		name = solitude_time.0015.a
+    stress_impact = {
+      base = minor_stress_impact_loss
+    }
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Heresy
+solitude_time.0016 = {
+	type = character_event
+	title = solitude_time.0016.t
+	desc = solitude_time.0016.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = scope:bishop
+		animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Heresy
+		name = solitude_time.0016.a
+    add_piety = -150
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}
+
+# Loyal servant of god
+solitude_time.0017 = {
+	type = character_event
+	title = solitude_time.0017.t
+	desc = solitude_time.0017.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = scope:bishop
+		animation = worry
+	}
+
+	immediate = {}
+
+	option = { # Loyal
+		name = solitude_time.0017.a
+    add_piety = 150
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {}
+}

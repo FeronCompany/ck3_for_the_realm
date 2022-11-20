@@ -7,3 +7,12 @@
 
  win_religious_debate_modifier:0 "Win religious debate"
  win_religious_debate_modifier_desc:0 "The character win a religious debate recently."
+ 
+ unsocial_personality_modifier:0 "Unsocial Personality"
+ unsocial_personality_modifier:0 "The character get rid of social activities."
+ 
+ epic_writing_imitator_modifier:0 "Epic Imitator"
+ epic_writing_imitator_modifier:0 "The character is quite good at imitating epic stories."
+ 
+ boring_book_help_sleep_modifier:0 "Boring books help sleep"
+ boring_book_help_sleep_modifier:0 "Boring books really help sleep."

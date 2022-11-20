@@ -1,6 +1,12 @@
-﻿over_training_modifier = {
+﻿
+over_training_modifier = {
 	icon = health_negative
 	health = -0.25
+}
+
+boring_book_help_sleep_modifier = {
+	icon = health_negative
+	health = 0.25
 }
 
 lose_religious_debate_modifier = {
@@ -12,4 +18,15 @@ win_religious_debate_modifier = {
 	icon = piety_positive
 	same_faith_opinion = 10
 	monthly_piety_gain_mult = 0.2
+}
+
+unsocial_personality_modifier = {
+	icon = diplomacy_negative
+	diplomacy = -2
+}
+
+epic_writing_imitator_modifier = {
+	icon = diplomacy_positive
+	diplomacy = 1
+	monthly_prestige = 0.5
 }

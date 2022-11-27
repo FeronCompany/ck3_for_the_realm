@@ -1,4 +1,4 @@
-solitude_time_decision = {
+﻿solitude_time_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
 	desc = solitude_time_decision_desc
 	selection_tooltip = solitude_time_decision_tooltip

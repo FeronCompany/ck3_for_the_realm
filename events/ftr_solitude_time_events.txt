@@ -1,4 +1,4 @@
-
+﻿
 namespace = solitude_time
 
 # Choose how to spend solitude time
@@ -495,7 +495,7 @@ solitude_time.0013 = {
 	desc = solitude_time.0013.desc
 	theme = diplomacy
 	override_background = { event_background = study }
-	right_portrait = {
+	left_portrait = {
 		character = root
 		# animation = worry
 	}
@@ -544,7 +544,7 @@ solitude_time.0014 = {
 	desc = solitude_time.0014.desc
 	theme = diplomacy
 	override_background = { event_background = study }
-	right_portrait = {
+	left_portrait = {
 		character = root
 	}
   right_portrait = {

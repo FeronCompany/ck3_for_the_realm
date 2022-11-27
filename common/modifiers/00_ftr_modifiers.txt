@@ -1,4 +1,5 @@
 ﻿
+#character modifier
 over_training_modifier = {
 	icon = health_negative
 	health = -0.25
@@ -29,4 +30,16 @@ epic_writing_imitator_modifier = {
 	icon = diplomacy_positive
 	diplomacy = 1
 	monthly_prestige = 0.5
+}
+
+# county modifier
+cultural_diversity_county_modifier = {
+	icon = county_modifier_opinion_positive
+	county_opinion_add = 5
+}
+
+push_culture_failed_modifier = {
+	icon = county_modifier_opinion_negative
+	monthly_county_control_change_add = -0.1
+	county_opinion_add = -20
 }

@@ -1,0 +1,261 @@
+﻿namespace = ftr_realm_event
+
+# Culture diffrence at high acceptance
+ftr_realm_event.0001 = {
+  type = character_event
+	title = ftr_realm_event.0001.t
+	desc = ftr_realm_event.0001.desc
+  theme = diplomacy
+  left_portrait = {
+		character = root
+	}
+	right_portrait = {
+    character = scope:different_culture_elite
+  }
+  cooldown = { years = 1 }
+  trigger = {
+		any_sub_realm_county = {
+			NOT = { culture = root.culture }
+      culture = {
+		    cultural_acceptance = { target = root.culture value >= 80 } 
+	    }
+      NOT = { has_county_modifier = cultural_diversity_county_modifier }
+      NOT = { has_county_modifier = push_culture_failed_modifier }
+		}
+	}
+  weight_multiplier = {
+		base = 1
+	}
+
+  immediate = {
+    random_sub_realm_county = {
+			limit = {
+				NOT = { culture = root.culture }
+        culture = {
+		      cultural_acceptance = { target = root.culture value >= 80 } 
+	      }
+        NOT = { has_county_modifier = cultural_diversity_county_modifier }
+        NOT = { has_county_modifier = push_culture_failed_modifier }
+			}
+			save_scope_as = different_culture_county
+      culture = {
+        save_scope_as = diff_culture
+      }
+		}
+    root.culture = {
+      save_scope_as = my_culture
+    }
+    if = {
+			limit = {
+				any_pool_guest = {
+					culture = scope:different_culture_county.culture
+				}
+			}
+		  random_pool_guest = {
+			  limit = {
+					culture = scope:different_culture_county.culture
+			  }
+			  #add_trait = peasant_leader
+			  save_scope_as = different_culture_elite
+			}
+		}
+		else = { # else, make one for the event
+			create_character = {
+				#template = tax_collector_character
+        gender = male
+				location = root.location
+				culture = scope:different_culture_county.culture
+        faith = root.faith
+				#dynasty = none
+				save_scope_as = different_culture_elite	
+			}
+		}
+  }
+
+  option = { # push by force
+    name = ftr_realm_event.0001.a
+    hidden_effect = {
+      random_list = {
+        50 = { # push failed
+          trigger_event = {
+			      id = ftr_realm_event.0002
+			      days = 10
+		      }
+        }
+        50 = { # push success
+          trigger_event = {
+			      id = ftr_realm_event.0003
+			      days = 10
+		      }
+        }
+      }
+    }
+    ai_chance = {
+			base = 20
+      modifier = {
+				add = -20
+				has_trait = compassionate
+			}
+			modifier = {
+				add = 50
+				has_trait = arrogant
+			}
+		}
+  }
+  option = { # bribe local elite
+    name = ftr_realm_event.0001.b
+    pay_short_term_gold = {
+			gold = 300
+			target = scope:different_culture_elite
+		}
+    hidden_effect = {
+      random_list = {
+        70 = { # push success
+          trigger_event = {
+			      id = ftr_realm_event.0004
+			      days = 10
+		      }
+        }
+        30 = { # push failed
+          trigger_event = {
+			      id = ftr_realm_event.0005
+			      days = 10
+		      }
+        }
+      }
+    }
+    ai_chance = {
+			base = 20
+      modifier = {
+				add = -20
+				has_trait = greedy
+			}
+			modifier = {
+				add = 50
+				has_trait = generous
+			}
+		}
+  }
+  option = { # do nothing for now
+    name = ftr_realm_event.0001.c
+    scope:different_culture_county = {
+      add_county_modifier = {
+	      modifier = cultural_diversity_county_modifier
+	      years = 50
+      }
+    }
+    ai_chance = {
+			base = 20
+		}
+  }
+}
+
+# Push by force failed
+ftr_realm_event.0002 = {
+	type = character_event
+	title = ftr_realm_event.0002.t
+	desc = ftr_realm_event.0002.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+
+	immediate = {}
+
+	option = {
+		name = ftr_realm_event.0002.a
+    add_prestige = -300
+    scope:different_culture_county = {
+      add_county_modifier = {
+	      modifier = push_culture_failed_modifier
+	      years = 10
+      }
+    }
+	}
+
+	after = {}
+}
+
+# Push by force success
+ftr_realm_event.0003 = {
+	type = character_event
+	title = ftr_realm_event.0003.t
+	desc = ftr_realm_event.0003.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	immediate = {}
+
+	option = {
+		name = ftr_realm_event.0003.a
+    add_prestige = 300
+    scope:different_culture_county = {
+      set_county_culture = root.culture
+    }
+	}
+
+	after = {}
+}
+
+# Push by bribe failed
+ftr_realm_event.0004 = {
+	type = character_event
+	title = ftr_realm_event.0004.t
+	desc = ftr_realm_event.0004.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+
+	immediate = {}
+
+	option = {
+		name = ftr_realm_event.0004.a
+    add_prestige = -300
+    scope:different_culture_county = {
+      add_county_modifier = {
+	      modifier = push_culture_failed_modifier
+	      years = 10
+      }
+    }
+	}
+
+	after = {}
+}
+
+# Push by bribe success
+ftr_realm_event.0005 = {
+	type = character_event
+	title = ftr_realm_event.0005.t
+	desc = ftr_realm_event.0005.desc
+	theme = diplomacy
+	override_background = { event_background = study }
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:different_culture_elite
+		animation = happiness
+	}
+
+	immediate = {}
+
+	option = {
+		name = ftr_realm_event.0005.a
+    add_prestige = 300
+    scope:different_culture_county = {
+      set_county_culture = root.culture
+    }
+	}
+
+	after = {}
+}

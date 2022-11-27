@@ -153,7 +153,7 @@
 					}
 				}
 				set_variable = {
-					name = combat_guid_progress
+					name = combat_guide_progress
 					value = prev.scheme_progress
 				}
 				trigger_event = combat_guide_outcome.3000

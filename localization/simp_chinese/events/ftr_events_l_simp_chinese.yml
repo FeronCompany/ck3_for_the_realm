@@ -139,3 +139,25 @@
  solitude_time.0017.t:0 "模范教徒"
  solitude_time.0017.desc:0 "我毫无保留地将自己在冥想中想出的点子说给[bishop.GetShortUIName|U]听。[bishop.GetShortUIName|U]听完后大为赞许。我很高兴大家能达成一致。"
  solitude_time.0017.a:0 "英雄所见略同"
+
+ ftr_realm_event.0001.t:0 "<FTR>文化融合"
+ ftr_realm_event.0001.desc:0 "经过多年的携手并进，我们领地内的[my_culture.GetName]与[diff_culture.GetName]已经融为一体。除了生活细节上的细微差异，再难以分辨彼此的族群。或许是时候思考今后该如何处理两个族群间的关系了。"
+ ftr_realm_event.0001.a:0 "强力推进统一的语言文字"
+ ftr_realm_event.0001.b:0 "拉拢精英阶层接受新的公文形式"
+ ftr_realm_event.0001.c:0 "求同存异"
+
+ ftr_realm_event.0002.t:0 "强力同化失败"
+ ftr_realm_event.0002.desc:0 "事情的发展出乎我们的意料，[diff_culture.GetName]的民众对新的政令十分抵触，他们扬言只接受先前格式的公文，之前的努力失效了，两个族群的关系甚至还不如以前。"
+ ftr_realm_event.0002.a:0 "我也不想这样"
+
+ ftr_realm_event.0003.t:0 "强力同化成功"
+ ftr_realm_event.0003.desc:0 "事情进展得很顺利，[diff_culture.GetName]的民众对新的政令并无怨言，他们很快接受了新的官方语言，并逐渐在日常生活中使用，毕竟这与过去并无不同。"
+ ftr_realm_event.0003.a:0 "谁敢不从"
+
+ ftr_realm_event.0004.t:0 "收买失败"
+ ftr_realm_event.0004.desc:0 "万万没有想到，那位拿了我的钱的[different_culture_elite.GetName]竟然不尽力而为，新的法案应者寥寥，人们还是像往常一样说话写字。"
+ ftr_realm_event.0004.a:0 "可耻的家伙"
+
+ ftr_realm_event.0005.t:0 "收买成功"
+ ftr_realm_event.0005.desc:0 "收到我的经费后，[different_culture_elite.GetName]积极地投入了工作，当地人积极地响应新政，看来文化的融合近在眼前了。"
+ ftr_realm_event.0005.a:0 "收人钱财替人消灾"

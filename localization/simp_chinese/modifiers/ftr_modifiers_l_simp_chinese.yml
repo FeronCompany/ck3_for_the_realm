@@ -9,10 +9,16 @@
  win_religious_debate_modifier_desc:0 "此人近期赢得了与他人的辩经."
  
  unsocial_personality_modifier:0 "<FTR>远离社交"
- unsocial_personality_modifier:0 "此人离群索居，终日神龙见首不见尾."
+ unsocial_personality_modifier_desc:0 "此人离群索居，终日神龙见首不见尾."
  
  epic_writing_imitator_modifier:0 "史诗写手"
- epic_writing_imitator_modifier:0 "此人擅长模仿史诗写作."
+ epic_writing_imitator_modifier_desc:0 "此人擅长模仿史诗写作."
  
  boring_book_help_sleep_modifier:0 "烂书有助睡眠"
- boring_book_help_sleep_modifier:0 "没有什么比这本烂书更能助人入睡的了zzZ."
+ boring_book_help_sleep_modifier_desc:0 "没有什么比这本烂书更能助人入睡的了zzZ."
+ 
+ cultural_diversity_county_modifier:0 "文化包容政策"
+ cultural_diversity_county_modifier_desc:0 "在这个地方，所有文化都是平等的."
+ 
+ push_culture_failed_modifier:0 "统一文字失败"
+ push_culture_failed_modifier_desc:0 "谁喜欢你们的语言和文字，见鬼去吧!"

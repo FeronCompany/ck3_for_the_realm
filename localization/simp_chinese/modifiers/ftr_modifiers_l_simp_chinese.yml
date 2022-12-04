@@ -22,3 +22,6 @@
  
  push_culture_failed_modifier:0 "统一文字失败"
  push_culture_failed_modifier_desc:0 "谁喜欢你们的语言和文字，见鬼去吧!"
+
+ enact_war_tax_modifier:0 "颁布战争税法案"
+ enact_war_tax_modifier_desc:0 "不惜一切代价取得战争胜利。"

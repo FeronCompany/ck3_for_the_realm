@@ -1,0 +1,57 @@
+﻿war_tax_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = war_tax_decision_desc
+	selection_tooltip = war_tax_decision_tooltip
+	cooldown = { days = 3650 }
+	is_shown = {
+		is_landed = yes
+    is_at_war = yes
+	}
+  is_valid = {
+    prestige > 500
+  }
+
+	cost = {
+		prestige = { value = 500 }
+	}
+
+	effect = {
+    if = {
+			limit = {
+				has_trait = compassionate
+			}
+			stress_impact = {
+				compassionate = medium_stress_impact_gain
+			}
+		}
+		trigger_event = ftr_war_tax.0001
+	}
+	
+	ai_check_interval = 365
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = -50
+    modifier = {
+			add = 30
+			has_trait = greedy
+		}
+    modifier = {
+			add = 30
+			gold < -200
+		}
+    modifier = {
+			add = 100
+			gold < -500
+		}
+    modifier = {
+			add = -20
+			has_trait = just
+		}
+    modifier = {
+			add = -20
+			has_trait = compassionate
+		}
+	}
+}

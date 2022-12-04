@@ -140,7 +140,7 @@
  solitude_time.0017.desc:0 "我毫无保留地将自己在冥想中想出的点子说给[bishop.GetShortUIName|U]听。[bishop.GetShortUIName|U]听完后大为赞许。我很高兴大家能达成一致。"
  solitude_time.0017.a:0 "英雄所见略同"
 
- ftr_realm_event.0001.t:0 "文化融合"
+ ftr_realm_event.0001.t:0 "<FTR>文化融合"
  ftr_realm_event.0001.desc:0 "经过多年的携手并进，我们领地内的[my_culture.GetName]与[diff_culture.GetName]已经融为一体。除了生活细节上的细微差异，再难以分辨彼此的族群。或许是时候思考今后该如何处理两个族群间的关系了。"
  ftr_realm_event.0001.a:0 "强力推进统一的语言文字"
  ftr_realm_event.0001.b:0 "拉拢精英阶层接受新的公文形式"

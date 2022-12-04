@@ -15,6 +15,7 @@ ftr_realm_event.0001 = {
   cooldown = { years = 1 }
   trigger = {
 		any_sub_realm_county = {
+			holder = root
 			NOT = { culture = root.culture }
       culture = {
 		    cultural_acceptance = { target = root.culture value >= 80 } 
@@ -30,6 +31,7 @@ ftr_realm_event.0001 = {
   immediate = {
     random_sub_realm_county = {
 			limit = {
+				holder = root
 				NOT = { culture = root.culture }
         culture = {
 		      cultural_acceptance = { target = root.culture value >= 80 } 
@@ -79,13 +81,13 @@ ftr_realm_event.0001 = {
         50 = { # push failed
           trigger_event = {
 			      id = ftr_realm_event.0002
-			      days = 10
+			      days = 30
 		      }
         }
         50 = { # push success
           trigger_event = {
 			      id = ftr_realm_event.0003
-			      days = 10
+			      days = 30
 		      }
         }
       }
@@ -110,16 +112,16 @@ ftr_realm_event.0001 = {
 		}
     hidden_effect = {
       random_list = {
-        70 = { # push success
-          trigger_event = {
-			      id = ftr_realm_event.0004
-			      days = 10
-		      }
-        }
         30 = { # push failed
           trigger_event = {
+			      id = ftr_realm_event.0004
+			      days = 30
+		      }
+        }
+        70 = { # push success
+          trigger_event = {
 			      id = ftr_realm_event.0005
-			      days = 10
+			      days = 30
 		      }
         }
       }

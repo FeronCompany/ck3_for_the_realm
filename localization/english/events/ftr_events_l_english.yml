@@ -140,7 +140,7 @@
  solitude_time.0017.desc:0 "I unreservedly told [bishop.GetShortUIName|U] the ideas I came up with during my meditation. [bishop.GetShortUIName|U] applauded after listening. I'm glad everyone can agree."
  solitude_time.0017.a:0 "Good to agree"
 
- ftr_realm_event.0001.t:0 "Cultural Integration"
+ ftr_realm_event.0001.t:0 "<FTR> Cultural Integration"
  ftr_realm_event.0001.desc:0 "After years of working hand in hand, the people of the two ethnic groups [my_culture.GetName] and [diff_culture.GetName] in our territory have almost merged. It is difficult to tell each other apart from the subtle differences in the details of life. Perhaps it is time to think about how to deal with the relationship between the two ethnic groups in the future."
  ftr_realm_event.0001.a:0 "Unify our language"
  ftr_realm_event.0001.b:0 "Bribe the elites to accept new language"

@@ -40,6 +40,6 @@ cultural_diversity_county_modifier = {
 
 push_culture_failed_modifier = {
 	icon = county_modifier_opinion_negative
-	monthly_county_control_change_add = -0.1
+	monthly_county_control_change_add = -0.5
 	county_opinion_add = -20
 }

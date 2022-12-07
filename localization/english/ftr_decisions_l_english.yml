@@ -9,3 +9,8 @@
  war_tax_decision_prestige:0 "Need prestige."
  war_tax_decision_desc:0 "The expenses of the war are particularly huge, and our thin financial capacity may not be able to support the long-term war expenses. In order to reward the soldiers on the front line, the lord has issued a war tax decree. All the subjects of the territory must abide by their obligations and pay the tax. Violators will be severely punished!"
  war_tax_decision_confirm:0 "War tax"
+
+ feudal_convert_to_centralism_decision:0 "<FTR>Centralization Reform"
+ feudal_convert_to_centralism_decision_tooltip:0 "Implement reform, restore power to the central government, and replace feudal lords with officials to rule the country."
+ feudal_convert_to_centralism_decision_desc:0 "The feudal system has completed its historical mission, and the country is at the crossroads of change. Concentration of power in the center is the only way, both internally and externally. It is time to witness history."
+ feudal_convert_to_centralism_decision_confirm:0 "l'etat, c'est moi"

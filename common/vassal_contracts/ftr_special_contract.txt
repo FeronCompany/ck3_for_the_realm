@@ -1,0 +1,47 @@
+﻿
+
+centralism_special_contract = {
+  display_mode = radiobutton
+	is_shown = {
+		scope:vassal.primary_title.tier >= tier_duchy
+	}
+  obligation_levels = {
+		normal_state = {
+			position = { 0 2 }
+			default = yes
+      vassal_modifier = {
+				men_at_arms_cap = -10
+        domain_limit = -15
+			}
+      liege_modifier = {
+        men_at_arms_cap = 1
+      }
+      ai_liege_desire = {
+        value = 1
+      }
+      ai_vassal_desire = {
+        value = 0
+      }
+    }
+    warload = {
+      is_shown = { scope:vassal = { has_government = centralism_government } }
+			position = { 1 2 }
+			parent = normal_state
+      tax_factor = -1
+			levies_factor = -1
+      vassal_modifier = {
+				levy_reinforcement_rate = 0.2
+				controlled_province_advantage = 5
+        men_at_arms_cap = 1
+			}
+
+      ai_liege_desire = {
+        value = 0
+      }
+      ai_vassal_desire = {
+        value = 1
+      }
+      flag = has_warlord_contract
+    }
+  }
+}

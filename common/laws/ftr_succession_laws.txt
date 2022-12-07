@@ -1,0 +1,98 @@
+﻿ftr_succession_order_laws = {
+	flag = succession_order_laws
+  bureacratic_succession_law = {
+    can_keep = {
+			has_government = centralism_government
+			is_independent_ruler = no
+		}
+		can_have = {
+			has_government = centralism_government
+			is_independent_ruler = no
+		}
+		can_pass = {
+			has_government = centralism_government
+			NOT = { has_realm_law = warload_succession_law }
+      NOT = { vassal_contract_has_flag = has_warlord_contract }
+		}
+		should_start_with = {
+			has_government = centralism_government
+			is_independent_ruler = no
+		}
+		succession = {
+			order_of_succession = election
+      election_type = bureacratic_elective
+		}
+		modifier = {
+		}
+		pass_cost = {
+			prestige = change_succession_law_prestige_cost
+		}
+		revoke_cost = {
+			prestige = change_succession_law_prestige_cost
+		}
+  }
+
+  warload_succession_law = {
+    can_keep = {
+			has_government = centralism_government
+			is_independent_ruler = no
+		}
+		can_have = {
+			has_government = centralism_government
+			is_independent_ruler = no
+		}
+		can_pass = {
+			has_government = centralism_government
+			NOT = { has_realm_law = bureacratic_succession_law }
+      vassal_contract_has_flag = has_warlord_contract
+		}
+		should_start_with = {
+			has_government = centralism_government
+			is_independent_ruler = no
+		}
+		succession = {
+			order_of_succession = election
+      election_type = warlord_elective
+		}
+		modifier = {
+		}
+		pass_cost = {
+			prestige = change_succession_law_prestige_cost
+		}
+		revoke_cost = {
+			prestige = change_succession_law_prestige_cost
+		}
+  }
+
+  autocracy_succession_law = {
+    can_keep = {
+			has_government = centralism_government
+			is_independent_ruler = yes
+		}
+		can_have = {
+			has_government = centralism_government
+			is_independent_ruler = yes
+		}
+		can_pass = {
+			has_government = centralism_government
+		}
+		should_start_with = {
+			has_government = centralism_government
+			is_independent_ruler = yes
+		}
+		succession = {
+			order_of_succession = inheritance
+			traversal_order = children
+			rank = oldest
+			title_division = single_heir
+		}
+		modifier = {
+		}
+		pass_cost = {
+			prestige = change_succession_law_prestige_cost
+		}
+		revoke_cost = {
+			prestige = change_succession_law_prestige_cost
+		}
+  }
+}

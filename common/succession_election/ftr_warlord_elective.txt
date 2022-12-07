@@ -1,0 +1,62 @@
+﻿warlord_elective = {
+	elector_vote_strength = {
+		base = 100
+		modifier = {
+			desc = elector_vote_army_desc
+			add = this.max_military_strength
+		}
+		modifier = {
+      desc = elector_vote_prestige_desc
+      add = prestige
+    }
+	}
+	
+	electors = {
+		add = holder
+		add = {
+			type = holder_direct_vassals
+			limit = {
+				is_adult = yes
+			}
+		}
+	}
+
+	candidate_score = {
+		base = 0
+		######################	Elector self-voting pattern	##########################
+		elector_self_voting_pattern_feudal_elective_modifier = yes
+
+		##########################	Holder voting pattern	##########################
+		holder_voting_pattern_feudal_elective_modifier = yes
+
+		##########################	Elector voting patterns (circumstances)	##########################
+		elector_voting_pattern_circumstances_feudal_elective_modifier = yes
+
+		##########################	Elector voting patterns (prestige/piety)	##########################
+		elector_voting_pattern_prestige_piety_feudal_elective_modifier = yes
+
+		##########################	Elector voting patterns (traits)	##########################
+		elector_voting_pattern_traits_feudal_elective_modifier = yes
+
+		##########################	Elector voting patterns (opinion)	##########################
+		elector_voting_pattern_opinion_feudal_elective_modifier = yes
+	}
+
+	candidates = {
+		add = {
+			type = holder_direct_vassals
+			limit = {
+				is_adult = yes
+			}
+		}
+		add = {
+			type = holder_close_family
+			limit = {
+				is_adult = yes
+				any_liege_or_above = {
+					this = scope:holder
+				}
+			}
+		}
+	}
+}

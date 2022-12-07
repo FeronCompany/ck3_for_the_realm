@@ -162,6 +162,14 @@
  ftr_realm_event.0005.desc:0 "收到我的经费后，[different_culture_elite.GetName]积极地投入了工作，当地人积极地响应新政，看来文化的融合近在眼前了。"
  ftr_realm_event.0005.a:0 "收人钱财替人消灾"
 
+ ftr_realm_event.1001.t:0 "<FTR>变革的时代"
+ ftr_realm_event.1001.desc:0 "您的君主[liege.GetName]已经完成了集权制的改革准备，国家将在[liege.GetHisHer]的带领下步入新的阶段。过去长期运行良好的封建制度似乎正在走向终结，而您作为附庸又该何去何从呢？"
+ ftr_realm_event.1001.a:0 "保证我的利益就好"
+
+ ftr_realm_event.1002.t:0 "<FTR>变革的时代"
+ ftr_realm_event.1002.desc:0 "作为至高无上的君主，我，[liege.GetName]将在全国推行集权制改革，一切权力归于中央。尽管如此，我的封建制封臣们仍然享受着历史遗留的特权。如何平衡与他们的关系将是对我的考验。"
+ ftr_realm_event.1002.a:0 "至高无上！"
+
  ftr_war_tax.0001.t:0 "<FTR>战争税"
  ftr_war_tax.0001.desc:0 "战争税的问题已经摆上了桌面，大臣们对于具体的实施方案莫衷一是。所以采用哪种征税形式比较好呢？"
  ftr_war_tax.0001.a:0 "战争可能会持续一段时间"

@@ -26,7 +26,6 @@ aid_my_lord_interaction = {
 
 	is_valid_showing_failures_only = {
 		scope:actor.gold >= 300
-		scope:recipient = { is_diplomatically_available = yes }
 		NOT = { scope:actor = { is_at_war_with = scope:recipient } } 
 	}
 
@@ -188,7 +187,6 @@ request_combat_guidance_interaction = {
 
 	is_valid_showing_failures_only = {
 		scope:actor.gold >= 150
-		scope:recipient = { is_diplomatically_available = yes }
 		NOT = { scope:actor = { is_at_war_with = scope:recipient } } 
 	}
 
@@ -323,7 +321,6 @@ religious_debate_interaction = {
 	}
 
 	is_valid_showing_failures_only = {
-		scope:recipient = { is_diplomatically_available = yes }
 		scope:actor = {
 			NOT = { is_at_war_with = scope:recipient }
 		}

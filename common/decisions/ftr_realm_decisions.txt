@@ -58,3 +58,55 @@
 		}
 	}
 }
+
+feudal_convert_to_centralism_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = feudal_convert_to_centralism_decision_desc
+	selection_tooltip = feudal_convert_to_centralism_decision_tooltip
+	cooldown = { days = 3650 }
+	is_shown = {
+		is_landed = yes
+    has_government = feudal_government
+		primary_title.tier > tier_duchy
+	}
+  is_valid = {
+		is_independent_ruler = yes
+		has_realm_law = crown_authority_3
+	}
+
+	cost = {
+		prestige = { value = 2000 }
+	}
+
+	effect = {
+    if = {
+			limit = {
+				has_trait = content
+			}
+			stress_impact = {
+				content = medium_stress_impact_gain
+			}
+		}
+		hidden_effect = {
+			save_scope_as = liege
+			every_vassal = {
+				trigger_event = {
+					id = ftr_realm_event.1001
+					days = 3
+				}
+			}
+			trigger_event = {
+				id = ftr_realm_event.1002
+			}
+		}
+		change_government = centralism_government
+	}
+	
+	ai_check_interval = 365
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 0
+	}
+}

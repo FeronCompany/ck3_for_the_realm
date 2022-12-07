@@ -1,0 +1,12 @@
+﻿l_simp_chinese:
+ ftr_succession_order_laws:0 "继承法"
+ ftr_succession_order_laws_singular:0 "继承法"
+ bureacratic_succession_law:1 "官僚推举制"
+ bureacratic_succession_law_subname:0 "官僚们内部推举下一任候选人"
+ bureacratic_succession_law_effects:1 "官僚们会在内部推选出自己心仪的候选人，综合能力和威望越出众的人越有话语权。"
+ warload_succession_law:1 "军阀内部选举"
+ warload_succession_law_subname:0 "军阀的部下们凭实力推选下一任长官"
+ warload_succession_law_effects:2 "在军阀的世界里，拳头大小决定了境界高低。"
+ autocracy_succession_law:1 "集权制继承"
+ autocracy_succession_law_subname:0 "君主可以任意决定继承人"
+ autocracy_succession_law_effects:2 "王座的继承全屏陛下的圣心独裁。"

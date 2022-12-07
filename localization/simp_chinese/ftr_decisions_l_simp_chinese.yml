@@ -6,5 +6,6 @@
 
  war_tax_decision:0 "<FTR>战争税"
  war_tax_decision_tooltip:0 "征收战争税以支援前线将士。"
+ war_tax_decision_prestige:0 "需要足够的威望"
  war_tax_decision_desc:0 "战争中的各项开支都尤为巨大，我们单薄的财政能力恐怕难以支撑长期的战争开销。为了犒赏前线的将士，领主大人特颁布战争税法令，全体领地臣民务必要遵守义务，上缴税款，违者严惩不贷！"
  war_tax_decision_confirm:0 "战争税"

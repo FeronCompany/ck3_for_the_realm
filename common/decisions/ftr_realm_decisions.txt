@@ -8,8 +8,11 @@
     is_at_war = yes
 	}
   is_valid = {
-    prestige > 500
-  }
+		custom_description = {
+			text = war_tax_decision_prestige
+			prestige > 500
+		}
+	}
 
 	cost = {
 		prestige = { value = 500 }

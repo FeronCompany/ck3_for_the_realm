@@ -22,6 +22,9 @@ ftr_war_tax.0001 = {
     trigger_event = {
       id = ftr_war_tax.0002
     }
+    ai_chance = {
+      base = 40
+    }
   }
   option = { # Ask vassals for donation
     name = ftr_war_tax.0001.b
@@ -34,9 +37,19 @@ ftr_war_tax.0001 = {
 				}
 			}
 		}
+    ai_chance = {
+      base = 0
+      modifier = {
+				add = 20
+				has_trait = craven
+			}
+    }
   }
   option = { # Do nothing
     name = ftr_war_tax.0001.c
+    ai_chance = {
+      base = 0
+    }
   }
 }
 

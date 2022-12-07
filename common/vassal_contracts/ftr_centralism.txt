@@ -1,6 +1,6 @@
 ﻿centralism_government_taxes = {
-	display_mode = tree
-	icon = gold_icon
+#	display_mode = tree
+#	icon = gold_icon
 	obligation_levels = {
 		centralism_tax_exempt = {
 			position = { 0 0 }
@@ -55,8 +55,8 @@
 }
 
 centralism_government_levies = {
-	display_mode = tree
-	icon = soldier_icon
+#	display_mode = tree
+#	icon = soldier_icon
 	obligation_levels = {
 		centralism_levies_exempt = {
 			position = { 0 0 }

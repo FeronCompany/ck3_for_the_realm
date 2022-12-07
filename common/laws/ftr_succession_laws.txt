@@ -91,6 +91,7 @@
 		pass_cost = {
 			prestige = change_succession_law_prestige_cost
 		}
+		flag = can_designate_heirs
 		revoke_cost = {
 			prestige = change_succession_law_prestige_cost
 		}

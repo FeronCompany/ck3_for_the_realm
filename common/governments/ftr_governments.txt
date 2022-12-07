@@ -13,8 +13,8 @@
 		centralism_government_taxes
 		centralism_government_levies
 		centralism_special_contract
+		fortification_rights
 	}
-	
-  flag = can_designate_heirs
+
 	color = hsv{ 0.75 0.80 0.85 }
 }

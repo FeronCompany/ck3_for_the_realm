@@ -32,6 +32,13 @@ epic_writing_imitator_modifier = {
 	monthly_prestige = 0.5
 }
 
+enact_war_tax_modifier = {
+	icon = economy_negative
+	monthly_war_income_mult = 0.5
+	direct_vassal_opinion = -20
+	county_opinion_add = -20
+}
+
 # county modifier
 cultural_diversity_county_modifier = {
 	icon = county_modifier_opinion_positive

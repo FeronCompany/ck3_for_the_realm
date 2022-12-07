@@ -1,0 +1,204 @@
+﻿
+namespace = ftr_war_tax
+
+ftr_war_tax.0001 = {
+  type = character_event
+	title = ftr_war_tax.0001.t
+	desc = ftr_war_tax.0001.desc
+  theme = diplomacy
+  left_portrait = {
+		character = root
+	}
+
+  immediate = {
+    root = {
+      save_scope_as = my_liege
+    }
+  }
+
+  option = { # Add a long term tax
+    name = ftr_war_tax.0001.a
+    desc = ftr_war_tax.0001.a.desc
+    trigger_event = {
+      id = ftr_war_tax.0002
+    }
+    ai_chance = {
+      base = 40
+    }
+  }
+  option = { # Ask vassals for donation
+    name = ftr_war_tax.0001.b
+    desc = ftr_war_tax.0001.b.desc
+    hidden_effect = {
+			every_vassal = {
+				trigger_event = {
+					id = ftr_war_tax.0003
+					days = 5
+				}
+			}
+		}
+    ai_chance = {
+      base = 0
+      modifier = {
+				add = 20
+				has_trait = craven
+			}
+    }
+  }
+  option = { # Do nothing
+    name = ftr_war_tax.0001.c
+    ai_chance = {
+      base = 0
+    }
+  }
+}
+
+ftr_war_tax.0002 = {
+  type = character_event
+	title = ftr_war_tax.0002.t
+	desc = ftr_war_tax.0002.desc
+  theme = diplomacy
+  left_portrait = {
+		character = root
+	}
+
+  immediate = {
+    ##
+  }
+
+  option = { # 1 year
+    name = ftr_war_tax.0002.a
+    add_character_modifier = {
+			modifier = enact_war_tax_modifier
+			years = 1
+		}
+    ai_chance = {
+      base = 40
+    }
+  }
+  option = { # 2 years
+    name = ftr_war_tax.0002.b
+    add_character_modifier = {
+			modifier = enact_war_tax_modifier
+			years = 2
+		}
+    ai_chance = {
+      base = 30
+    }
+  }
+  option = { # 5 years
+    name = ftr_war_tax.0002.c
+    add_character_modifier = {
+			modifier = enact_war_tax_modifier
+			years = 5
+		}
+    ai_chance = {
+      base = 20
+    }
+  }
+  option = { # 10 years
+    name = ftr_war_tax.0002.d
+    add_character_modifier = {
+			modifier = enact_war_tax_modifier
+			years = 10
+		}
+    ai_chance = {
+      base = 10
+    }
+  }
+}
+
+ftr_war_tax.0003 = {
+  type = character_event
+	title = ftr_war_tax.0003.t
+	desc = ftr_war_tax.0003.desc
+  theme = diplomacy
+  left_portrait = {
+		character = scope:my_liege
+    animation = scheme
+	}
+  right_portrait = {
+		character = root
+    animation = fear
+	}
+
+  immediate = {
+    ##
+  }
+
+  option = { # Offer gold unconditionally
+    name = ftr_war_tax.0003.a
+    scope:my_liege = {
+      send_interface_toast = {
+        title = ftr_war_tax.0003.a.offer_gold
+        desc = ftr_war_tax.0003.a.offer_gold.desc
+				left_icon = root
+				right_icon = scope:my_liege
+        root = {
+          pay_short_term_gold = {
+			      gold = 100
+			      target = scope:my_liege
+		      }
+        }
+      }
+    }
+    ai_chance = {
+      base = 30
+      modifier = {
+				add = -20
+				has_trait = greedy
+			}
+      modifier = {
+				add = -20
+				gold < 200
+			}
+      modifier = { # Bad relation
+		  	factor = 0
+		  	root = {
+		  		opinion = {
+		  			target = scope:my_liege
+		  			value <= 20
+		  		}
+		  	}
+		  }
+    }
+  }
+  option = { # Ask for a favor
+    name = ftr_war_tax.0003.b
+    scope:my_liege = {
+      send_interface_toast = {
+        title = ftr_war_tax.0003.b.ask_favor
+        desc = ftr_war_tax.0003.b.ask_favor.desc
+				left_icon = root
+				right_icon = scope:my_liege
+        root = {
+          pay_short_term_gold = {
+			      gold = 100
+			      target = scope:my_liege
+		      }
+          add_hook = {
+						target = scope:my_liege
+						type = favor_hook
+					}
+        }
+      }
+    }
+    ai_chance = {
+      base = 0
+      modifier = {
+				add = 20
+				has_trait = arrogant
+			}
+      modifier = {
+				add = 20
+				has_trait = ambitious
+			}
+    }
+  }
+  option = { # Ignore
+    name = ftr_war_tax.0003.c
+    ai_chance = {
+      base = 20
+    }
+  }
+}

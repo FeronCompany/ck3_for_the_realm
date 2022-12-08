@@ -41,10 +41,6 @@
  warload:0 "军阀"
  warload_desc:1 "军阀是境内失控的军事实体，不会正常上缴赋税和服兵役，只会在与中央关系密切时提供援助。"
  warload_short:0 "军阀"
-
-# religious_rights:0 "宗教权利"
-# religious_rights_none:0 "宗教无保护"
-# religious_rights_none_short:0 "无保护"
-# religious_rights_protected:0 "宗教受保护"
-# religious_rights_protected_desc:3 "#emphasis #bold [vassal|E]特权：#!#!\n[liege|E]不能对该[vassal|E][demand_conversion|E]\n[liege|E]不能对该[vassals|E]的土地使用[convert_county|E]\n[liege|E]不能用[faith|E]为理由在剥夺头衔时避免[tyranny|E]\n\n#flavor 该[vassal|E]受赐予特殊保护地位，领地正式确认其奉行自己[faith|E]的权利。#!"
-# religious_rights_protected_short:0 "受保护"
+ theme:0 "军区"
+ theme_desc:1 "军区额外提供税收但不再向上级提供征召兵，作为补偿，其领主可以额外获得常备军上限。"
+ theme_short:0 "军区"

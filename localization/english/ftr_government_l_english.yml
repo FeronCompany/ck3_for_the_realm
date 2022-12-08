@@ -35,3 +35,6 @@
  warload:0 "Warlord"
  warload_desc:1 "Warlords are military entities that are out of control within their borders and do not normally pay taxes and perform military service, but only provide assistance when they have close ties to the central government."
  warload_short:0 "Warlord"
+ theme:0 "Theme"
+ theme_desc:1 "Theme provide more tax and men-at-arms cap in stead of levy."
+ theme_short:0 "Theme"

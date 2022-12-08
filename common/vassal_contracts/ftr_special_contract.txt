@@ -13,9 +13,6 @@ centralism_special_contract = {
 				men_at_arms_cap = -10
         domain_limit = -15
 			}
-      liege_modifier = {
-        men_at_arms_cap = 1
-      }
       ai_liege_desire = {
         value = 1
       }
@@ -39,9 +36,30 @@ centralism_special_contract = {
         value = 0
       }
       ai_vassal_desire = {
-        value = 1
+        value = 2
       }
       flag = has_warlord_contract
+    }
+    theme = {
+      is_shown = { scope:vassal = { has_government = centralism_government } }
+			position = { 1 0 }
+			parent = normal_state
+      tax_factor = 0.15
+			levies_factor = -1
+      vassal_modifier = {
+				men_at_arms_cap = -10
+        domain_limit = -15
+			}
+      liege_modifier = {
+        men_at_arms_cap = 1
+      }
+
+      ai_liege_desire = {
+        value = 2
+      }
+      ai_vassal_desire = {
+        value = 1
+      }
     }
   }
 }

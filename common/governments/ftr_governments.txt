@@ -14,6 +14,7 @@
 		centralism_government_levies
 		centralism_special_contract
 		fortification_rights
+		coinage_rights
 	}
 
 	color = hsv{ 0.75 0.80 0.85 }

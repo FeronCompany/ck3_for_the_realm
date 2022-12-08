@@ -1,6 +1,6 @@
 ﻿centralism_government_taxes = {
-#	display_mode = tree
-#	icon = gold_icon
+	display_mode = tree
+	icon = gold_icon
 	obligation_levels = {
 		centralism_tax_exempt = {
 			position = { 0 0 }
@@ -55,8 +55,8 @@
 }
 
 centralism_government_levies = {
-#	display_mode = tree
-#	icon = soldier_icon
+	display_mode = tree
+	icon = soldier_icon
 	obligation_levels = {
 		centralism_levies_exempt = {
 			position = { 0 0 }
@@ -71,7 +71,7 @@ centralism_government_levies = {
 			parent = centralism_levies_exempt
 			position = { 1 0 }
 
-			levies = 0.25
+			levies = 0.15
 			vassal_opinion = 5
 
 			ai_liege_desire = 2
@@ -82,7 +82,7 @@ centralism_government_levies = {
 			parent = centralism_levies_low
 			position = { 2 0 }
 
-			levies = 0.5
+			levies = 0.3
 
 			ai_liege_desire = 3
 			ai_vassal_desire = 3
@@ -91,7 +91,7 @@ centralism_government_levies = {
 			parent = centralism_levies_normal
 			position = { 3 0 }
 			
-			levies = 0.6
+			levies = 0.45
 			vassal_opinion = -15
 
 			ai_liege_desire = 4
@@ -101,7 +101,7 @@ centralism_government_levies = {
 			parent = centralism_levies_high
 			position = { 4 0 }
 			
-			levies = 0.8
+			levies = 0.6
 			vassal_opinion = -25
 
 			ai_liege_desire = 5

@@ -7,6 +7,7 @@ centralism_special_contract = {
 	}
   obligation_levels = {
 		normal_state = {
+      is_shown = { scope:vassal = { has_government = centralism_government } }
 			position = { 0 0 }
 			default = yes
       vassal_modifier = {
@@ -40,12 +41,12 @@ centralism_special_contract = {
       }
       flag = has_warlord_contract
     }
-    theme = {
+    adv_scutage = {
       is_shown = { scope:vassal = { has_government = centralism_government } }
 			position = { 1 0 }
 			parent = normal_state
-      tax_factor = 0.15
-			levies_factor = -1
+      tax_factor = 0.5
+			levies_factor = -0.75
       vassal_modifier = {
 				men_at_arms_cap = -10
         domain_limit = -15

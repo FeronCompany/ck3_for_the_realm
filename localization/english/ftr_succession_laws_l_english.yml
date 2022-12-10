@@ -1,6 +1,8 @@
 ﻿l_english:
  ftr_succession_order_laws:0 "Succession Laws"
  ftr_succession_order_laws_singular:0 "Succession Laws"
+ ftr_succession_title_laws:0 "Title Succession Laws"
+ ftr_succession_title_laws_singular:0 "Title Succession Laws"
  bureacratic_succession_law:1 "Bureacrats Elective"
  bureacratic_succession_law_subname:0 "Bureaucrats pick the next candidate from within."
  bureacratic_succession_law_effects:1 "Bureaucrats choose their favorite candidates internally, and the better the general capabilities and prestige, the better the person has the voice over."
@@ -10,3 +12,6 @@
  autocracy_succession_law:1 "Autocracy Succession"
  autocracy_succession_law_subname:0 "Monarch can desginate anyone to be heir."
  autocracy_succession_law_effects:2 "Succession of crown is all decided by you, my liege."
+ centralism_vassal_succession_law:1 "Centralized Vassal Succession"
+ centralism_vassal_succession_law_subname:0 "All Children Inherit Equally"
+ centralism_vassal_succession_law_effects:2 "\n#V Under $partition_succession_law$ [succession], your [titles] will be divided equally between your children.#!\n\n#weak $partition_base_desc$#!"

@@ -2,55 +2,49 @@
 	elector_vote_strength = {
 		base = 100
 		modifier = {
-      desc = elector_vote_learning_desc
-      add = {
-        add = learning
-        multiply = 100
-      }
-    }
+			desc = elector_vote_learning_desc
+			add = {
+				add = learning
+				multiply = 100
+			}
+		}
 		modifier = {
-      desc = elector_vote_diplomacy_desc
-      add = {
-        add = diplomacy
-        multiply = 100
-      }
-    }
+			desc = elector_vote_diplomacy_desc
+			add = {
+				add = diplomacy
+				multiply = 100
+			}
+		}
 		modifier = {
-      desc = elector_vote_stewardship_desc
-      add = {
-        add = stewardship
-        multiply = 100
-      }
-    }
+			desc = elector_vote_stewardship_desc
+			add = {
+				add = stewardship
+				multiply = 100
+			}
+		}
 		modifier = {
-      desc = elector_vote_martial_desc
-      add = {
-        add = martial
-        multiply = 100
-      }
-    }
+			desc = elector_vote_martial_desc
+			add = {
+				add = martial
+				multiply = 100
+			}
+		}
 		modifier = {
-      desc = elector_vote_intrigue_desc
-      add = {
-        add = intrigue
-        multiply = 100
-      }
-    }
+			desc = elector_vote_intrigue_desc
+			add = {
+				add = intrigue
+				multiply = 100
+			}
+		}
 		modifier = {
-      desc = elector_vote_prestige_desc
-      add = prestige
-    }
+			desc = elector_vote_prestige_desc
+			add = prestige
+		}
 	}
 	
 	electors = {
 		add = {
-			type = holder_direct_vassals
-			limit = {
-				is_adult = yes
-			}
-		}
-		add = {
-			type = holder_close_family
+			type = title_dejure_vassals
 			limit = {
 				is_adult = yes
 				any_liege_or_above = {
@@ -83,9 +77,11 @@
 
 	candidates = {
 		add = {
-			type = holder_direct_vassals
+			type = title_dejure_vassals
 			limit = {
 				is_adult = yes
+				is_vassal_of = scope:holder
+				NOT = { has_trait = incapable }
 			}
 		}
 		add = {
@@ -95,6 +91,7 @@
 				any_liege_or_above = {
 					this = scope:holder
 				}
+				NOT = { has_trait = incapable }
 			}
 		}
 	}

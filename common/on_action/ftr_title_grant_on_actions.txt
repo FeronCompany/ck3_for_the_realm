@@ -1,0 +1,42 @@
+﻿
+on_title_gain = {
+	on_actions = {
+		ftr_title_gain_effects
+	}
+}	
+ftr_title_gain_effects = {
+	trigger = {
+		scope:transfer_type = flag:granted
+		has_government = centralism_government
+		top_liege = {
+			has_government = centralism_government
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				any_held_title = {
+					has_title_law = warload_succession_law
+				}
+			}
+			every_held_title = {
+				limit = {
+					NOT = {
+						has_title_law = warload_succession_law
+					}
+				}
+				add_title_law = bureacratic_succession_law
+			}
+		}
+		else = {
+			every_held_title = {
+				limit = {
+					NOT = {
+						has_title_law = bureacratic_succession_law
+					}
+				}
+				add_title_law = bureacratic_succession_law
+			}
+		}
+	}	
+}

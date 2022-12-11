@@ -52,6 +52,13 @@
 				}
 			}
 		}
+		add = {
+			type = holder
+			limit = {
+				is_adult = yes
+				highest_held_title_tier = tier_county
+			}
+		}
 	}
 
 	candidate_score = {
@@ -82,6 +89,13 @@
 				is_adult = yes
 				is_vassal_of = scope:holder
 				NOT = { has_trait = incapable }
+			}
+		}
+		add = {
+			type = holder_direct_vassals
+			limit = {
+				is_adult = yes
+				highest_held_title_tier = tier_barony
 			}
 		}
 		add = {

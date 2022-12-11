@@ -170,6 +170,10 @@
  ftr_realm_event.1002.desc:0 "作为至高无上的君主，我，[liege.GetName]将在全国推行集权制改革，一切权力归于中央。尽管如此，我的封建制封臣们仍然享受着历史遗留的特权。如何平衡与他们的关系将是对我的考验。"
  ftr_realm_event.1002.a:0 "至高无上！"
 
+ ftr_realm_event.1003.t:0 "<FTR>封建特权"
+ ftr_realm_event.1003.desc:0 "你的君主[liege.GetName]已经决定授予你世袭罔替的封建特权。现在你不再是君主的官僚，而是一位封建附庸。"
+ ftr_realm_event.1003.a:0 "谢主隆恩！"
+
  ftr_war_tax.0001.t:0 "<FTR>战争税"
  ftr_war_tax.0001.desc:0 "战争税的问题已经摆上了桌面，大臣们对于具体的实施方案莫衷一是。所以采用哪种征税形式比较好呢？"
  ftr_war_tax.0001.a:0 "战争可能会持续一段时间"

@@ -7,7 +7,6 @@ centralism_special_contract = {
 	}
   obligation_levels = {
 		normal_state = {
-      is_shown = { scope:vassal = { has_government = centralism_government } }
 			position = { 0 0 }
 			default = yes
       vassal_modifier = {

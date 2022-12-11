@@ -102,9 +102,6 @@ aid_my_lord_interaction = {
 	}
 	on_decline = {}
 
-	auto_accept = {
-		scope:gain_hook = no
-	}
 	ai_accept = {
 		base = 40
 		modifier = {
@@ -158,7 +155,7 @@ request_combat_guidance_interaction = {
 	category = interaction_category_friendly
 	scheme = combat_guide
 	send_name = START_SCHEME
-	ignores_pending_interaction_block = yes
+	ignores_pending_interaction_block = no
 	ai_targets = {
 		ai_recipients = vassals
 		ai_recipients = peer_vassals
@@ -403,5 +400,51 @@ religious_debate_interaction = {
 				}
 			}
 		}
+	}
+}
+
+######### Convert Bureacrat to Feudal ##########
+ftr_convert_bureacrat_to_feudal_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	desc = ftr_convert_bureacrat_to_feudal_interaction_desc
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		scope:recipient = {
+			is_vassal_of = scope:actor
+			has_government = centralism_government
+		}
+		scope:actor = {
+			has_government = centralism_government
+		}
+	}
+	on_accept = {
+		scope:recipient = {
+			trigger_event = {
+				id = ftr_realm_event.1003
+				days = 5
+			}
+		}
+		scope:actor = {
+			add_prestige = -150
+			save_scope_as = liege
+		}
+		scope:recipient = {
+			show_as_tooltip = {
+				#change_government = feudal_government
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_grant_here_privilage_opinion
+				}
+			}
+		}
+		
+	}
+	on_decline = {}
+	ai_accept = {
+		base = 20
+	}
+	ai_will_do = {
+		base = 0
 	}
 }

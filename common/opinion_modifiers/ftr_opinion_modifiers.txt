@@ -1,0 +1,7 @@
+﻿
+
+ftr_grant_here_privilage_opinion = {
+	opinion = 50
+	years = 50
+	decaying = yes
+}

@@ -1,4 +1,4 @@
-has_changed_contract_obligation_trigger = {
+﻿has_changed_contract_obligation_trigger = {
 	$WHO$ = { save_temporary_scope_as = obligation_check }
 	trigger_if = {
 		limit = { $WHO$ = { has_government = feudal_government } }

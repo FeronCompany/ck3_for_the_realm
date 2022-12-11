@@ -3,14 +3,15 @@ on_title_gain = {
 	on_actions = {
 		ftr_title_gain_effects
 	}
-}	
+}
 ftr_title_gain_effects = {
 	trigger = {
-		scope:transfer_type = flag:granted
-		has_government = centralism_government
-		top_liege = {
-			has_government = centralism_government
+		OR = {
+			scope:transfer_type = flag:granted
+			scope:transfer_type = flag:created
 		}
+		has_government = centralism_government
+		is_independent_ruler = no
 	}
 	effect = {
 		if = {

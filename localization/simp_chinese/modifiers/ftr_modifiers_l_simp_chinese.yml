@@ -25,3 +25,6 @@
 
  enact_war_tax_modifier:0 "颁布战争税法案"
  enact_war_tax_modifier_desc:0 "不惜一切代价取得战争胜利。"
+
+ ftr_grant_here_privilage_opinion:0 "授予封建特权"
+ ftr_grant_here_privilage_opinion_desc:0 "君主授予封建特权"

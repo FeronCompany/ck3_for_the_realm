@@ -18,3 +18,7 @@
  NOT_CARE_ABOUT_RELIGION:0 "不在乎宗教事务"
  SOMEONE_START_RELIGIOUS_DEBATE:0 "[actor.GetShortUIName|U] 想与你进行一场宗教辩论."
  RECENT_RELIGIOUS_DEBATE:0 "近期的宗教辩论"
+
+ ftr_convert_bureacrat_to_feudal_interaction:0 "<FTR>赐予世袭罔替"
+ ftr_convert_bureacrat_to_feudal_interaction_desc:0 "赐予该臣子世袭罔替之特权"
+ ftr_convert_bureacrat_to_feudal_interaction_notification:0 "君主赐予世袭罔替"

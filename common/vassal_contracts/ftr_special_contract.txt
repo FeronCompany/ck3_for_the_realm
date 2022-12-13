@@ -20,26 +20,6 @@ centralism_special_contract = {
         value = 0
       }
     }
-    warload = {
-      is_shown = { scope:vassal = { has_government = centralism_government } }
-			position = { 1 0 }
-			parent = normal_state
-      tax_factor = -1
-			levies_factor = -1
-      vassal_modifier = {
-				levy_reinforcement_rate = 0.2
-				controlled_province_advantage = 5
-        men_at_arms_cap = 1
-			}
-
-      ai_liege_desire = {
-        value = 0
-      }
-      ai_vassal_desire = {
-        value = 2
-      }
-      flag = has_warlord_contract
-    }
     adv_scutage = {
       is_shown = { scope:vassal = { has_government = centralism_government } }
 			position = { 1 0 }
@@ -55,7 +35,7 @@ centralism_special_contract = {
       }
 
       ai_liege_desire = {
-        value = 2
+        value = 1
       }
       ai_vassal_desire = {
         value = 1

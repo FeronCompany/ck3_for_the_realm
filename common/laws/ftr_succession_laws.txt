@@ -87,31 +87,4 @@ ftr_succession_title_law = {
 			prestige = 99999
 		}
 	}
-
-	warload_succession_law = {
-		can_have = {
-			has_government = centralism_government
-			is_independent_ruler = no
-		}
-		can_pass = {
-			has_government = centralism_government
-			vassal_contract_has_flag = has_warlord_contract
-		}
-		can_title_have = {
-			is_temporal_head_of_faith_trigger = no
-		}
-		succession = {
-			order_of_succession = election
-			election_type = warlord_elective
-		}
-		modifier = {
-		}
-		flag = elective_succession_law
-		pass_cost = {
-			prestige = change_succession_law_prestige_cost
-		}
-		revoke_cost = {
-			prestige = 99999
-		}
-	}
 }

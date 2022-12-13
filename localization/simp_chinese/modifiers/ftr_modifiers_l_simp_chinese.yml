@@ -28,3 +28,9 @@
 
  ftr_grant_here_privilage_opinion:0 "授予封建特权"
  ftr_grant_here_privilage_opinion_desc:0 "君主授予封建特权"
+
+ ftr_depose_bureacrat_opinion:0 "罢免官职"
+ ftr_depose_bureacrat_opinion_desc:0 "君主罢免了其官职"
+
+ ftr_promote_me_opinion:0 "得到晋升"
+ ftr_promote_me_opinion_desc:0 "得到晋升"

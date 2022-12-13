@@ -223,7 +223,7 @@ ftr_interaction_event.0004 = {
 					modifier = {
 						add = {
 							value = intrigue
-							multiplier = 2
+							multiply = 2
 						}
 					}
 					scope:actor = {
@@ -393,7 +393,7 @@ ftr_interaction_event.0005 = {
 					modifier = {
 						add = {
 							value = intrigue
-							multiplier = 3
+							multiply = 3
 						}
 					}
 					scope:actor = {

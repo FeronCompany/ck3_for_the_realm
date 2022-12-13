@@ -337,3 +337,35 @@ ftr_realm_event.1003 = {
 
 	after = {}
 }
+
+# Liege depose your bureacrat position
+ftr_realm_event.1004 = {
+	type = character_event
+	title = ftr_realm_event.1004.t
+	desc = ftr_realm_event.1004.desc
+	theme = realm
+	override_background = { event_background = council_chamber }
+	left_portrait = {
+		character = scope:liege
+		animation = personality_honorable
+	}
+	lower_left_portrait = {
+		character = scope:successor
+		animation = happiness
+	}
+	right_portrait = {
+		character = root
+		animation = sadness
+	}
+
+	immediate = {}
+
+	option = {
+		name = ftr_realm_event.1004.a
+		scope:successor = {
+			change_government = centralism_government
+		}
+	}
+
+	after = {}
+}

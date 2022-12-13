@@ -119,6 +119,6 @@ feudal_convert_to_centralism_decision = {
 		always = yes
 	}
 	ai_will_do = {
-		base = 0
+		base = 20
 	}
 }

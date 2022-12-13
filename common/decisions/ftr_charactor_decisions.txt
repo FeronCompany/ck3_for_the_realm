@@ -6,7 +6,12 @@
 	is_shown = {
 		is_landed = yes
 		exists = house
-    has_trait = shy
+		has_trait = shy
+		OR = {
+			has_government = feudal_government
+			has_government = centralism_government
+			has_government = clan_government
+		}
 	}
 
 	is_valid_showing_failures_only = {

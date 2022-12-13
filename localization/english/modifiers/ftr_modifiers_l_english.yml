@@ -25,3 +25,12 @@
 
  enact_war_tax_modifier:0 "Enact War Tax"
  enact_war_tax_modifier_desc:0 "Everything for war."
+
+ ftr_grant_here_privilage_opinion:0 "Grant Hereditary Privilege"
+ ftr_grant_here_privilage_opinion_desc:0 "Liege grant hereditary privilege"
+
+ ftr_depose_bureacrat_opinion:0 "Depose Bureacrat"
+ ftr_depose_bureacrat_opinion_desc:0 "Liege deposed your bureacracy position"
+
+ ftr_promote_me_opinion:0 "Promote Me"
+ ftr_promote_me_opinion_desc:0 "Liege promoted me"

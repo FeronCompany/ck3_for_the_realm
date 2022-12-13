@@ -1,0 +1,51 @@
+﻿
+on_title_gain = {
+	on_actions = {
+		ftr_title_gain_effects
+		ftr_title_conquerd_effects
+	}
+}
+ftr_title_gain_effects = {
+	trigger = {
+		OR = {
+			scope:transfer_type = flag:granted
+			scope:transfer_type = flag:created
+		}
+		has_government = centralism_government
+		is_independent_ruler = no
+	}
+	effect = {
+		if = {
+			every_held_title = {
+				limit = {
+					NOT = {
+						has_title_law = bureacratic_succession_law
+					}
+				}
+				add_title_law = bureacratic_succession_law
+			}
+		}
+	}	
+}
+ftr_title_conquerd_effects = {
+	trigger = {
+		OR = {
+			scope:transfer_type = flag:revoked
+			scope:transfer_type = flag:conquest
+			scope:transfer_type = flag:conquest_holy_war
+			scope:transfer_type = flag:conquest_claim
+			scope:transfer_type = flag:conquest_populist
+		}
+		NOT = { has_government = centralism_government }
+	}
+	effect = {
+		if = {
+			every_held_title = {
+				limit = {
+					has_title_law = bureacratic_succession_law
+				}
+				clear_title_laws = yes
+			}
+		}
+	}	
+}

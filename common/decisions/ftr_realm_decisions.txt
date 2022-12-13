@@ -5,9 +5,9 @@
 	cooldown = { days = 3650 }
 	is_shown = {
 		is_landed = yes
-    is_at_war = yes
+		is_at_war = yes
 	}
-  is_valid = {
+	is_valid = {
 		custom_description = {
 			text = war_tax_decision_prestige
 			prestige > 500
@@ -56,5 +56,69 @@
 			add = -20
 			has_trait = compassionate
 		}
+	}
+}
+
+feudal_convert_to_centralism_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = feudal_convert_to_centralism_decision_desc
+	major = yes
+	selection_tooltip = feudal_convert_to_centralism_decision_tooltip
+	cooldown = { days = 3650 }
+	is_shown = {
+		is_landed = yes
+		has_government = feudal_government
+		primary_title.tier > tier_duchy
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		has_realm_law = crown_authority_3
+		culture = {
+			OR = {
+				AND = {
+					has_innovation = innovation_primogeniture
+					has_innovation = innovation_court_officials
+				}
+				has_cultural_pillar = heritage_chinese
+				has_cultural_pillar = heritage_byzantine
+			}
+		}
+	}
+
+	cost = {
+		prestige = { value = 2000 }
+	}
+
+	effect = {
+		if = {
+			limit = {
+				has_trait = content
+			}
+			stress_impact = {
+				content = medium_stress_impact_gain
+			}
+		}
+		hidden_effect = {
+			save_scope_as = liege
+			every_vassal = {
+				trigger_event = {
+					id = ftr_realm_event.1001
+					days = 3
+				}
+			}
+			trigger_event = {
+				id = ftr_realm_event.1002
+			}
+		}
+		change_government = centralism_government
+		add_realm_law = autocracy_succession_law
+	}
+	
+	ai_check_interval = 365
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 20
 	}
 }

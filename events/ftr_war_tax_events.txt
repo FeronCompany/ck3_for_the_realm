@@ -18,7 +18,6 @@ ftr_war_tax.0001 = {
 
   option = { # Add a long term tax
     name = ftr_war_tax.0001.a
-    desc = ftr_war_tax.0001.a.desc
     trigger_event = {
       id = ftr_war_tax.0002
     }
@@ -28,7 +27,6 @@ ftr_war_tax.0001 = {
   }
   option = { # Ask vassals for donation
     name = ftr_war_tax.0001.b
-    desc = ftr_war_tax.0001.b.desc
     hidden_effect = {
 			every_vassal = {
 				trigger_event = {

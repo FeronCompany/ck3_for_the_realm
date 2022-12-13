@@ -221,9 +221,11 @@ ftr_interaction_event.0004 = {
 						min = -10
 					}
 					modifier = {
-    	      add = intrigue
-						multiplier = 2
-    	    }
+						add = {
+							value = intrigue
+							multiply = 2
+						}
+					}
 					scope:actor = {
 						trigger_event = ftr_interaction_event.0007
 					}
@@ -389,9 +391,11 @@ ftr_interaction_event.0005 = {
 						min = -10
 					}
 					modifier = {
-    	      add = intrigue
-						multiplier = 3
-    	    }
+						add = {
+							value = intrigue
+							multiply = 3
+						}
+					}
 					scope:actor = {
 						trigger_event = ftr_interaction_event.0007
 					}

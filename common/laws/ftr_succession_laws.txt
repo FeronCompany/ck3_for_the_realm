@@ -1,0 +1,90 @@
+﻿ftr_succession_order_laws = {
+	flag = succession_order_laws
+	centralism_vassal_succession_law = {
+		can_keep = {
+			has_government = centralism_government
+			is_independent_ruler = no
+		}
+		can_have = {
+			has_government = centralism_government
+		}
+		can_pass = {
+			has_government = centralism_government
+			is_independent_ruler = no
+		}
+		should_start_with = {
+			has_government = centralism_government
+			is_independent_ruler = no
+		}
+		succession = {
+			order_of_succession = inheritance
+			traversal_order = children
+			rank = oldest
+			title_division = partition
+		}
+		modifier = {
+		}
+		pass_cost = {
+			prestige = change_succession_law_prestige_cost
+		}
+	}
+
+	autocracy_succession_law = {
+		can_keep = {
+			has_government = centralism_government
+			is_independent_ruler = yes
+		}
+		can_have = {
+			has_government = centralism_government
+		}
+		can_pass = {
+			has_government = centralism_government
+			is_independent_ruler = yes
+		}
+		should_start_with = {
+			has_government = centralism_government
+			is_independent_ruler = yes
+		}
+		succession = {
+			order_of_succession = inheritance
+			traversal_order = children
+			rank = oldest
+			title_division = single_heir
+		}
+		modifier = {
+		}
+		pass_cost = {
+			prestige = change_succession_law_prestige_cost
+		}
+		flag = can_designate_heirs
+	}
+}
+
+ftr_succession_title_law = {
+	bureacratic_succession_law = {
+		can_have = {
+			has_government = centralism_government
+			is_independent_ruler = no
+		}
+		can_pass = {
+			has_government = centralism_government
+			is_independent_ruler = no
+		}
+		can_title_have = {
+			is_temporal_head_of_faith_trigger = no
+		}
+		succession = {
+			order_of_succession = election
+			election_type = bureacratic_elective
+		}
+		modifier = {
+		}
+		flag = elective_succession_law
+		pass_cost = {
+			prestige = change_succession_law_prestige_cost
+		}
+		revoke_cost = {
+			prestige = 99999
+		}
+	}
+}

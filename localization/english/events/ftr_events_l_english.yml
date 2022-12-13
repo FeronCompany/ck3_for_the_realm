@@ -162,6 +162,22 @@
  ftr_realm_event.0005.desc:0 "After receiving my funding, [different_culture_elite.GetName] was actively involved in his work, the locals responded positively to the New Deal, and it seemed that the fusion of cultures was at hand."
  ftr_realm_event.0005.a:0 "Good job"
 
+ ftr_realm_event.1001.t:0 "<FTR> Age of Reform"
+ ftr_realm_event.1001.desc:0 "Your monarch [liege.GetName] has completed the reform of the centralism system, and the country will enter a new stage under [liege.GetHisHer] leadership. The feudal system that has worked well for a long time in the past seems to be coming to an end, and what should you do as a vassal?"
+ ftr_realm_event.1001.a:0 "Just keep my interests safe."
+
+ ftr_realm_event.1002.t:0 "<FTR> Age of Reform"
+ ftr_realm_event.1002.desc:0 "As sovereign monarch, I, [liege.GetName], will carry out centralized reforms across the country, with all power going to the court. Despite this, the feudal lords of the past still enjoy privileges. How to balance the relationship with them will become a new test."
+ ftr_realm_event.1002.a:0 "Sovereign!"
+
+ ftr_realm_event.1003.t:0 "<FTR> Grant Hereditary Privilage"
+ ftr_realm_event.1003.desc:0 "Your liege [liege.GetName] has decided to grant you hereditary privilage. You are a feudal vassal instead of bureacrat."
+ ftr_realm_event.1003.a:0 "Long live my Liege!"
+
+ ftr_realm_event.1004.t:0 "<FTR> Depose Position"
+ ftr_realm_event.1004.desc:0 "Your liege [liege.GetName] has decided to depose your bureacracy position."
+ ftr_realm_event.1004.a:0 "No!"
+
  ftr_war_tax.0001.t:0 "<FTR>War Tax"
  ftr_war_tax.0001.desc:0 "The issue of the war tax is on the table, and ministers are divided on the specific implementation plan. So which form of taxation is better?"
  ftr_war_tax.0001.a:0 "The war may last for a while..."

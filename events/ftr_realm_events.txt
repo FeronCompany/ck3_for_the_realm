@@ -196,10 +196,10 @@ ftr_realm_event.0003 = {
 
 	option = {
 		name = ftr_realm_event.0003.a
-    add_prestige = 300
-    scope:different_culture_county = {
-      set_county_culture = root.culture
-    }
+		add_prestige = 300
+		scope:different_culture_county = {
+			set_county_culture = root.culture
+		}
 	}
 
 	after = {}
@@ -221,13 +221,13 @@ ftr_realm_event.0004 = {
 
 	option = {
 		name = ftr_realm_event.0004.a
-    add_prestige = -300
-    scope:different_culture_county = {
-      add_county_modifier = {
-	      modifier = push_culture_failed_modifier
-	      years = 10
-      }
-    }
+		add_prestige = -300
+		scope:different_culture_county = {
+			add_county_modifier = {
+				modifier = push_culture_failed_modifier
+				years = 10
+			}
+		}
 	}
 
 	after = {}
@@ -253,10 +253,118 @@ ftr_realm_event.0005 = {
 
 	option = {
 		name = ftr_realm_event.0005.a
-    add_prestige = 300
-    scope:different_culture_county = {
-      set_county_culture = root.culture
-    }
+		add_prestige = 300
+		scope:different_culture_county = {
+			set_county_culture = root.culture
+		}
+	}
+
+	after = {}
+}
+
+
+# Liege convert to centralism_government
+ftr_realm_event.1001 = {
+	type = character_event
+	title = ftr_realm_event.1001.t
+	desc = ftr_realm_event.1001.desc
+	theme = realm
+	override_background = { event_background = council_chamber }
+	left_portrait = {
+		character = scope:liege
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = root
+		animation = admiration
+	}
+
+	immediate = {}
+
+	option = {
+		name = ftr_realm_event.1001.a
+	}
+
+	after = {}
+}
+
+# Convert to centralism_government notification to yourself
+ftr_realm_event.1002 = {
+	type = character_event
+	title = ftr_realm_event.1002.t
+	desc = ftr_realm_event.1002.desc
+	theme = realm
+	override_background = { event_background = council_chamber }
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	immediate = {}
+
+	option = {
+		name = ftr_realm_event.1002.a
+	}
+
+	after = {}
+}
+
+# Liege grant hereditary privilage
+ftr_realm_event.1003 = {
+	type = character_event
+	title = ftr_realm_event.1003.t
+	desc = ftr_realm_event.1003.desc
+	theme = realm
+	override_background = { event_background = council_chamber }
+	left_portrait = {
+		character = scope:liege
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = root
+		animation = admiration
+	}
+
+	immediate = {}
+
+	option = {
+		name = ftr_realm_event.1003.a
+		change_government = feudal_government
+		every_held_title = {
+			clear_title_laws = yes
+		}
+	}
+
+	after = {}
+}
+
+# Liege depose your bureacrat position
+ftr_realm_event.1004 = {
+	type = character_event
+	title = ftr_realm_event.1004.t
+	desc = ftr_realm_event.1004.desc
+	theme = realm
+	override_background = { event_background = council_chamber }
+	left_portrait = {
+		character = scope:liege
+		animation = personality_honorable
+	}
+	lower_left_portrait = {
+		character = scope:successor
+		animation = happiness
+	}
+	right_portrait = {
+		character = root
+		animation = sadness
+	}
+
+	immediate = {}
+
+	option = {
+		name = ftr_realm_event.1004.a
+		scope:successor = {
+			change_government = centralism_government
+		}
 	}
 
 	after = {}

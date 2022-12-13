@@ -18,3 +18,12 @@
  NOT_CARE_ABOUT_RELIGION:0 "Not care about religion."
  SOMEONE_START_RELIGIOUS_DEBATE:0 "[actor.GetShortUIName|U] wants to start a religious debate with you."
  RECENT_RELIGIOUS_DEBATE:0 "Recent religious debate"
+
+ ftr_convert_bureacrat_to_feudal_interaction:0 "<FTR> Grant Hereditary Privilege"
+ ftr_convert_bureacrat_to_feudal_interaction_desc:0 "Grant hereditary privilege to your vassal."
+ ftr_convert_bureacrat_to_feudal_interaction_notification:0 "Liege Grant Hereditary Privilege"
+
+ ftr_depose_bureacrat_interaction:0 "<FTR> Depose Bureacrat"
+ ftr_depose_bureacrat_interaction_desc:0 "Depose bureacrat."
+ ftr_depose_bureacrat_interaction_notification:0 "Liege deposed you"
+ actor_secondary_ftr_depose_bureacrat_interaction:0 "Bureacrat candidate"

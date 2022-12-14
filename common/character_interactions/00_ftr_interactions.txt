@@ -556,5 +556,14 @@ ftr_depose_bureacrat_interaction = {
 				}
 			}
 		}
+		modifier = {
+			add = 50
+			scope:recipient = {
+				opinion = {
+					target = scope:actor
+					value <= 10
+				}
+			}
+		}
 	}
 }

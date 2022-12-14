@@ -10,6 +10,13 @@ ftr_title_gain_effects = {
 		OR = {
 			scope:transfer_type = flag:granted
 			scope:transfer_type = flag:created
+			scope:transfer_type = flag:inheritance
+			scope:transfer_type = flag:usurped
+			scope:transfer_type = flag:revoked
+			scope:transfer_type = flag:conquest
+			scope:transfer_type = flag:conquest_holy_war
+			scope:transfer_type = flag:conquest_claim
+			scope:transfer_type = flag:conquest_populist
 		}
 		has_government = centralism_government
 		is_independent_ruler = no

@@ -362,9 +362,6 @@ ftr_realm_event.1004 = {
 
 	option = {
 		name = ftr_realm_event.1004.a
-		scope:successor = {
-			change_government = centralism_government
-		}
 	}
 
 	after = {}

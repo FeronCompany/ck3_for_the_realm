@@ -11,7 +11,7 @@ combat_guide_outcome.1000 = {
 	desc = combat_guide_outcome.1000.desc
 	theme = education
 	left_portrait = {
-		character = root
+		character = scope:student
 		animation = happiness
 	}
 	right_portrait = {
@@ -19,10 +19,21 @@ combat_guide_outcome.1000 = {
 		animation = personality_rational
 	}
 
+	immediate = {
+		root = {
+			save_scope_as = student
+		}
+	}
+
 	option = {
 		name = combat_guide_outcome.1000.a
 		ai_chance = {
 			base = 100
+		}
+		scope:target = {
+			trigger_event = {
+				id = combat_guide_outcome.1001
+			}
 		}
 	}
 
@@ -38,6 +49,27 @@ combat_guide_outcome.1000 = {
 	}
 }
 
+# Success to teacher
+combat_guide_outcome.1001 = {
+	type = character_event
+	title = combat_guide_outcome.1001.t
+	desc = combat_guide_outcome.1001.desc
+	theme = education
+	left_portrait = {
+		character = scope:student
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_rational
+	}
+
+	option = {
+		name = combat_guide_outcome.1001.a
+		add_prestige = 150
+	}
+}
+
 #################################
 # Negative Outcomes
 # 2000-2999
@@ -50,16 +82,44 @@ combat_guide_outcome.2000 = {
 	desc = combat_guide_outcome.2000.desc
 	theme = education
 	left_portrait = {
-		character = root
+		character = scope:student
+		animation = rage
+	}
+	right_portrait = scope:target
+
+	immediate = {
+		root = {
+			save_scope_as = student
+		}
+	}
+
+	option = {
+		name = combat_guide_outcome.2000.a
+		scope:target = {
+			trigger_event = {
+				id = combat_guide_outcome.2001
+			}
+		}
+		scope:scheme = {
+			end_scheme = yes
+		}
+	}
+}
+
+# Failure to teacher
+combat_guide_outcome.2001 = {
+	type = character_event
+	title = combat_guide_outcome.2001.t
+	desc = combat_guide_outcome.2001.desc
+	theme = education
+	left_portrait = {
+		character = scope:student
 		animation = rage
 	}
 	right_portrait = scope:target
 
 	option = {
-		name = combat_guide_outcome.2000.a
-		scope:scheme = {
-			end_scheme = yes
-		}
+		name = combat_guide_outcome.2001.a
 	}
 }
 

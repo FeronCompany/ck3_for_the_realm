@@ -178,6 +178,10 @@
  ftr_realm_event.1004.desc:0 "Your liege [liege.GetName] has decided to depose your bureacracy position."
  ftr_realm_event.1004.a:0 "No!"
 
+ ftr_realm_event.1005.t:0 "<FTR> Overwork"
+ ftr_realm_event.1005.desc:0 "Your liege [top_liege.GetName] appreciate what you have done for the realm. [successor.GetName] was sent to help you manage your land."
+ ftr_realm_event.1005.a:0 "I'm not so exausted, really ..."
+
  ftr_war_tax.0001.t:0 "<FTR>War Tax"
  ftr_war_tax.0001.desc:0 "The issue of the war tax is on the table, and ministers are divided on the specific implementation plan. So which form of taxation is better?"
  ftr_war_tax.0001.a:0 "The war may last for a while..."

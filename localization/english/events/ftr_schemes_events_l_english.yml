@@ -3,10 +3,18 @@
  combat_guide_outcome.1000.desc:3 "After the patient teaching of my master [target.GetShortUIName|U] and my unremitting efforts, I finally mastered superb combat skills. Knights and generals who used to despise my martial arts had to sit up and take notice. Now it's time to show your heroic bearing on the battlefield!"
  combat_guide_outcome.1000.a:0 "I feel accomplished!"
 
+ combat_guide_outcome.1001.t:1 "$combat_guide$: Success!"
+ combat_guide_outcome.1001.desc:3 "After the patient teaching of you and [student.GetName]'s unremitting efforts, [student.GetName] finally mastered superb combat skills. "
+ combat_guide_outcome.1001.a:0 "I feel accomplished!"
+
  combat_guide_outcome.2000.t:1 "$combat_guide$: Failed."
  combat_guide_outcome.2000.desc:3 "Although I have made great efforts to practice fighting, my skills are still stagnant. My master [target.GetShortUIName|U] sighed helplessly and said to me, as a lord, you may have a more important role to play. Martial arts are not everything, so stop here. It seems that my wish to become stronger will be defeated."
  combat_guide_outcome.2000.a:0 "But I don't want to fail!"
- 
+
+ combat_guide_outcome.2001.t:1 "$combat_guide$: Failed."
+ combat_guide_outcome.2001.desc:3 "Although I have made great efforts to teach, [student.GetName]'s skills are still stagnant. I sighed helplessly and said to [student.GetName], as a lord, you may have a more important role to play. Martial arts are not everything, so stop here."
+ combat_guide_outcome.2001.a:0 "What a pity!"
+
  combat_guide_outcome.3000.t:1 "$combat_guide$: Invalid."
  combat_guide_outcome.3000.desc:3 "Your master [target.GetShortUIName|U] can no longer teach you."
  combat_guide_outcome.3000.a:0 "What a pity."

@@ -178,6 +178,10 @@
  ftr_realm_event.1004.desc:0 "您的君主[liege.GetName]已经决定将您罢官。"
  ftr_realm_event.1004.a:0 "这不可能！"
 
+ ftr_realm_event.1005.t:0 "<FTR>案牍劳形"
+ ftr_realm_event.1005.desc:0 "您的君主[top_liege.GetName]感念您的辛劳，担心您无法同时管理过多领地，特派遣[successor.GetName]来为您分担一部分工作。"
+ ftr_realm_event.1005.a:0 "其实我也没那么累……"
+
  ftr_war_tax.0001.t:0 "<FTR>战争税"
  ftr_war_tax.0001.desc:0 "战争税的问题已经摆上了桌面，大臣们对于具体的实施方案莫衷一是。所以采用哪种征税形式比较好呢？"
  ftr_war_tax.0001.a:0 "战争可能会持续一段时间"

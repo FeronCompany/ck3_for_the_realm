@@ -2,7 +2,7 @@
  aid_my_lord_interaction:0 "Aid my liege"
  aid_my_lord_interaction_desc:0 "Aid your liege to get a favor"
  aid_my_lord_interaction_notification:0 "Aid Liege"
- VASSAL_AID_LIEGE:0 "A loyal subject come to aid his/hers liege"
+ VASSAL_AID_LIEGE:0 "A loyal subject [actor.GetShortUIName|U] come to aid [actor.GetHisHer] liege"
  AID_LIEGE_GAIN_HOOK:0 "Aid for a favor"
  JUST_HELP_LIEGE:0 "Help without condition"
  liege_accept_my_fund_support:0 "Liege accept my fund support"
@@ -10,6 +10,7 @@
  request_combat_guidance_interaction:0 "Combat guidance"
  request_combat_guidance_interaction_desc:0 "Request combat guidance in exchange of money"
  request_combat_guidance_interaction_notification:0 "Combat Guidance"
+ GUIDE_ME_ON_PROWESS:0 "[actor.GetName|U] is requesting combat guidance from you."
 
  religious_debate_interaction:0 "Religious Debate"
  religious_debate_interaction_desc:0 "Start a religious debate with the target."

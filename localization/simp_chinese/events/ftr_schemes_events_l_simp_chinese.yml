@@ -3,10 +3,18 @@
  combat_guide_outcome.1000.desc:3 "经过我的导师[target.GetShortUIName|U]的耐心教导和我本人的不懈努力, 我终于掌握了高超的战斗技巧.从前对我的武艺不屑一顾的骑士与将领们都不得不刮目相看, 现在是时候在战场上一展英姿了!"
  combat_guide_outcome.1000.a:0 "天道酬勤!"
 
+ combat_guide_outcome.1001.t:1 "$combat_guide$: 大获成功!"
+ combat_guide_outcome.1001.desc:3 "经过我的耐心教导以及[student.GetName]本人的不懈努力， [student.GetName]终于掌握了高超的战斗技巧。"
+ combat_guide_outcome.1001.a:0 "天道酬勤!"
+
  combat_guide_outcome.2000.t:1 "$combat_guide$: 失败."
  combat_guide_outcome.2000.desc:3 "尽管我已经付出了巨大的努力练习战斗, 但我的技巧却仍旧止步不前. 我的导师[target.GetShortUIName|U]无奈的叹着气对我说, 作为领主, 你或许有更重要的角色去扮演. 武艺不是一切, 就此打住吧. 看起来我变得更强的愿望要落空了."
  combat_guide_outcome.2000.a:0 "我不甘心!"
-  
+
+ combat_guide_outcome.2001.t:1 "$combat_guide$: 失败."
+ combat_guide_outcome.2001.desc:3 "尽管我已经付出了巨大的努力教授战斗技巧，[student.GetName]的技巧却仍旧止步不前. 我无奈的叹着气对[student.GetName]说，作为领主, 你或许有更重要的角色去扮演. 武艺不是一切, 就此打住吧。"
+ combat_guide_outcome.2001.a:0 "真是遗憾呐！"
+
  combat_guide_outcome.3000.t:1 "$combat_guide$: 无效."
  combat_guide_outcome.3000.desc:3 "你的导师 [target.GetShortUIName|U] 无法再教授你武艺."
  combat_guide_outcome.3000.a:0 "哎."

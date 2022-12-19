@@ -153,8 +153,12 @@ aid_my_lord_interaction = {
 request_combat_guidance_interaction = {
 	icon = icon_combat
 	category = interaction_category_friendly
+	desc = request_combat_guidance_interaction_desc
 	scheme = combat_guide
 	send_name = START_SCHEME
+	greeting = positive
+	notification_text = GUIDE_ME_ON_PROWESS
+	cooldown = { years = 2 }
 	ignores_pending_interaction_block = no
 	ai_targets = {
 		ai_recipients = vassals
@@ -172,13 +176,13 @@ request_combat_guidance_interaction = {
 			primary_title.tier > tier_barony
 			is_adult = yes
 			OR = {
-				has_perk = stalwart_leader_perk
+				has_trait = education_martial
 				culture = { has_cultural_parameter = can_duel_rivals }
 			}
-			prowess < 16
+			prowess < scope:recipient.prowess
 		}
 		scope:recipient = {
-			prowess >= 20
+			prowess >= 12
 		}
 	}
 
@@ -233,13 +237,13 @@ request_combat_guidance_interaction = {
 			}
 		}
 		modifier = {
-			add = 50
+			add = 10
 			scope:actor = {
 				has_trait = ambitious
 			}
 		}
 		modifier = {
-			add = 20
+			add = 10
 			scope:actor = {
 				has_trait = brave
 			}
@@ -251,7 +255,7 @@ request_combat_guidance_interaction = {
 			}
 		}
 		modifier = {
-			add = 50
+			add = 10
 			scope:actor = {
 				has_trait = diligent
 			}
@@ -278,6 +282,12 @@ request_combat_guidance_interaction = {
 						lazy = medium_stress_impact_gain
 					}
 				}
+			}
+		}
+		scope:actor = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = ftr_guide_me_on_prowess_opinion
 			}
 		}
 	}

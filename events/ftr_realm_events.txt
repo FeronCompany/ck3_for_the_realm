@@ -366,3 +366,83 @@ ftr_realm_event.1004 = {
 
 	after = {}
 }
+
+# Top liege designated bureaucrat to take your over-size land
+ftr_realm_event.1005 = {
+	type = character_event
+	title = ftr_realm_event.1005.t
+	desc = ftr_realm_event.1005.desc
+	theme = realm
+	override_background = { event_background = council_chamber }
+	left_portrait = {
+		character = root
+		animation = sadness
+	}
+	lower_right_portrait = {
+		character = scope:successor
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:top_liege
+		animation = personality_honorable
+	}
+
+	cooldown = { days = 10 }
+	trigger = {
+		is_independent_ruler = no
+		has_government = centralism_government
+		domain_size >= domain_limit
+		any_sub_realm_county = {
+			holder = root
+			NOT = { this = root.capital_county }
+		}
+	}
+	weight_multiplier = {
+		base = 1
+	}
+
+	immediate = {
+		root.top_liege = {
+			save_scope_as = top_liege
+		}
+		root.liege = {
+			save_scope_as = liege
+		}
+		create_character = {
+			gender = male
+			location = scope:top_liege.location
+			culture = scope:top_liege.culture
+			faith = scope:top_liege.faith
+			save_scope_as = successor
+		}
+		random_sub_realm_county = {
+			limit = {
+				holder = root
+				NOT = { this = root.capital_county }
+			}
+			save_scope_as = deliver_county
+		}
+	}
+
+	option = {
+		name = ftr_realm_event.1005.a
+		create_title_and_vassal_change = {
+			type = granted
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:deliver_county = {
+			change_title_holder = {
+				holder = scope:successor
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		scope:successor = {
+			change_government = centralism_government
+			add_realm_law = centralism_vassal_succession_law
+		}
+	}
+
+	after = {}
+}

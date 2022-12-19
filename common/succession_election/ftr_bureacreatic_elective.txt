@@ -52,13 +52,6 @@
 				}
 			}
 		}
-		add = {
-			type = holder
-			limit = {
-				is_adult = yes
-				highest_held_title_tier = tier_county
-			}
-		}
 	}
 
 	candidate_score = {

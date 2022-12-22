@@ -429,6 +429,13 @@ ftr_convert_bureacrat_to_feudal_interaction = {
 			is_independent_ruler = yes
 		}
 	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  {
+				is_at_war_with = scope:recipient
+			}
+		}
+	}
 	on_accept = {
 		scope:actor = {
 			add_prestige = -150
@@ -501,6 +508,16 @@ ftr_depose_bureacrat_interaction = {
 			is_independent_ruler = yes
 		}
 	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			is_at_war = no
+		}
+		scope:actor = {
+			NOT =  {
+				has_truce = scope:recipient
+			}
+		}
+	}
 	on_accept = {
 		create_title_and_vassal_change = {
 			type = granted
@@ -524,7 +541,7 @@ ftr_depose_bureacrat_interaction = {
 				}
 				every_held_title = {
 					limit = {
-						has_title_law = bureacratic_succession_law
+						#has_title_law = bureacratic_succession_law
 						tier >= tier_county
 					}
 					change_title_holder = {

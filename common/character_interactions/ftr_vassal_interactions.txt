@@ -187,3 +187,61 @@ ftr_depose_bureacrat_interaction = {
 	}
 }
 
+######### Vassal War Mediation ##########
+ftr_vassal_mediation_interaction = {
+	category = interaction_category_vassal
+	interface = interfere_in_war
+	special_interaction = interfere_in_war_interaction
+	ai_accept_negotiation = yes
+	popup_on_receive = yes
+	pause_on_receive = yes
+	desc = ftr_vassal_mediation_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			is_vassal_of = scope:actor
+			is_at_war = yes
+			any_character_war = {
+				OR = {
+					primary_attacker = scope:recipient
+					primary_defender = scope:recipient
+				}
+				save_temporary_scope_as = target_war
+			}
+		}
+		scope:actor = {
+			has_government = centralism_government
+			NOT = { is_participant_in_war = scope:target_war }
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			NOT = {
+				any_war_enemy = {
+					this = scope:actor
+				}
+			}
+		}
+	}
+	can_be_picked = {
+		OR = {
+			scope:target.primary_attacker = scope:recipient
+			scope:target.primary_defender = scope:recipient
+		}
+	}
+	on_accept = {
+		scope:actor = {
+			add_prestige = -150
+		}
+		scope:recipient = {
+			trigger_event = ftr_interaction_event.1001
+		}
+	}
+	on_auto_accept = {}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = 100
+	}
+}
+

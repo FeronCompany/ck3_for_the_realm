@@ -214,3 +214,11 @@
  ftr_decision_events.0002.t:0 "<FTR> Restore Byzantium Empire"
  ftr_decision_events.0002.desc:0 "Amazing news came from afar that under [emperor.GetName]'s leadership, the remnants of Eastern Rome rebuilt the Eastern Roman Empire. We will wait and see how this rejuvenated ancient empire will perform in the future."
  ftr_decision_events.0002.a:0 "Shock news"
+
+ ftr_interaction_event.1001.t:0 "<FTR> Abolish Personal Fight"
+ ftr_interaction_event.1001.desc:0 "Your liege [actor.GetName] heard that you are in an illegal law. Now [actor.GetHeShe] request you to stop the war and return to your estate."
+ ftr_interaction_event.1001.a:0 "Yes, my liege."
+
+ ftr_interaction_event.1002.t:0 "<FTR> Abolish Personal Fight"
+ ftr_interaction_event.1002.desc:0 "[recipient.GetName] stop the war as you requested, now is back to estate."
+ ftr_interaction_event.1002.a:0 "Good."

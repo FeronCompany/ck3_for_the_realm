@@ -746,3 +746,48 @@ ftr_interaction_event.0013 = {
 		name = ftr_interaction_event.0013.a
 	}
 }
+
+# Liege ask stop war
+ftr_interaction_event.1001 = {
+	type = character_event
+	title = ftr_interaction_event.1001.t
+	desc = ftr_interaction_event.1001.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	option = {
+		name = ftr_interaction_event.1001.a
+		scope:target = {
+			end_war = white_peace
+		}
+		scope:actor = {
+			trigger_event = {
+				id = ftr_interaction_event.1002
+				days = { 3 6 }
+			}
+		}
+	}
+}
+
+# Vassal stop war as requested
+ftr_interaction_event.1002 = {
+	type = character_event
+	title = ftr_interaction_event.1002.t
+	desc = ftr_interaction_event.1002.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	option = {
+		name = ftr_interaction_event.1002.a
+	}
+}

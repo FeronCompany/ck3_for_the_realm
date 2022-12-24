@@ -82,6 +82,7 @@
 				is_adult = yes
 				is_vassal_of = scope:holder
 				NOT = { has_trait = incapable }
+				has_government = centralism_government
 			}
 		}
 		add = {
@@ -89,6 +90,7 @@
 			limit = {
 				is_adult = yes
 				highest_held_title_tier = tier_barony
+				has_government = centralism_government
 			}
 		}
 		add = {
@@ -99,6 +101,13 @@
 					this = scope:holder
 				}
 				NOT = { has_trait = incapable }
+				OR = {
+					AND = {
+						is_landed = yes
+						has_government = centralism_government
+					}
+					is_landed = no
+				}
 			}
 		}
 	}

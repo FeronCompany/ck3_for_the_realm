@@ -206,3 +206,19 @@
  ftr_war_tax.0003.b.ask_favor:0 "何以报德"
  ftr_war_tax.0003.b.ask_favor.desc:0 "[root.GetName]同意了您的捐款请求，但提醒您不要忘记[root.GetHerHis]贡献。"
  ftr_war_tax.0003.c:0 "我什么也没看见"
+
+ ftr_decision_events.0001.t:0 "<FTR>重建东罗马"
+ ftr_decision_events.0001.desc:0 "经历短暂的真空期后，东罗马帝国的土地上重新崛起一位明君。乌云不会永远遮蔽天空，正如历史不能埋没罗马帝国的荣光。今天，帝王重返神圣的紫色宫殿，宣告东罗马的复兴。"
+ ftr_decision_events.0001.a:0 "罗马帝国不朽"
+
+ ftr_decision_events.0002.t:0 "<FTR>重建东罗马"
+ ftr_decision_events.0002.desc:0 "远方传来惊人的消息，在[emperor.GetName]的带领下，东罗马的遗民重建了东罗马帝国。这个焕发新生的古老帝国未来表现如何，我们拭目以待。"
+ ftr_decision_events.0002.a:0 "震惊"
+
+ ftr_interaction_event.1001.t:0 "<FTR>禁绝私斗"
+ ftr_interaction_event.1001.desc:0 "您的君主[actor.GetName]听闻您私自参与非法的战争，现要求您立即结束战争返回属地。"
+ ftr_interaction_event.1001.a:0 "遵旨"
+
+ ftr_interaction_event.1002.t:0 "<FTR>禁绝私斗"
+ ftr_interaction_event.1002.desc:0 "[recipient.GetName]按照您的要求结束了战争，现已返回自己的属地。"
+ ftr_interaction_event.1002.a:0 "这就对了"

@@ -14,3 +14,13 @@
  feudal_convert_to_centralism_decision_tooltip:0 "Implement reform, restore power to the central government, and replace feudal lords with officials to rule the country."
  feudal_convert_to_centralism_decision_desc:0 "The feudal system has completed its historical mission, and the country is at the crossroads of change. Concentration of power in the center is the only way, both internally and externally. It is time to witness history."
  feudal_convert_to_centralism_decision_confirm:0 "l'etat, c'est moi"
+
+ restore_byzantine_decision:0 "<FTR> Restore Byzantium Empire"
+ restore_byzantine_decision_tooltip:0 "Restore Byzantium Empire"
+ restore_byzantine_decision_desc:0 "After a brief vacuum, the land of the Eastern Roman Empire has once again risen a wise king. Dark clouds will not obscure the sky forever, just as history cannot obscure the glory of the Roman Empire. Today, the emperor returns to the sacred purple palace to announce the revival of Eastern Rome."
+ restore_byzantine_decision_confirm:0 "Long live SQPR"
+
+ ftr_clear_bureaucrat_title_law_decision:0 "<FTR> Consolidate Bureaucratic Titles"
+ ftr_clear_bureaucrat_title_law_decision_tooltip:0 "Remove bureaucratic title laws"
+ ftr_clear_bureaucrat_title_law_decision_desc:0 "Once an imperial bureaucrat, you have finally achieved your independence, and it is time to remove the anachronistic laws of bureaucratic succession."
+ ftr_clear_bureaucrat_title_law_decision_confirm:0 "It's nice to be independent ruler."

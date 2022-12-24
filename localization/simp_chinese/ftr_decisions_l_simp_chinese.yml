@@ -14,3 +14,13 @@
  feudal_convert_to_centralism_decision_tooltip:0 "实施变法，将权力收回中央，用官吏代替封建主统治国家。"
  feudal_convert_to_centralism_decision_desc:0 "封建制业已完成其历史使命，国家正处在变革的十字路口。集中权力于中央，不论对内还是对外都是一条必由之路。是时候见证历史了。"
  feudal_convert_to_centralism_decision_confirm:0 "朕即国家！"
+
+ restore_byzantine_decision:0 "<FTR>重建东罗马帝国"
+ restore_byzantine_decision_tooltip:0 "恢复东罗马帝国荣光。"
+ restore_byzantine_decision_desc:0 "经历短暂的真空期后，东罗马帝国的土地上重新崛起一位明君。乌云不会永远遮蔽天空，正如历史不能埋没罗马帝国的荣光。今天，帝王重返神圣的紫色宫殿，宣告东罗马的复兴。"
+ restore_byzantine_decision_confirm:0 "罗马帝国不朽"
+
+ ftr_clear_bureaucrat_title_law_decision:0 "<FTR>整合官僚头衔"
+ ftr_clear_bureaucrat_title_law_decision_tooltip:0 "移除官僚头衔继承法"
+ ftr_clear_bureaucrat_title_law_decision_desc:0 "曾经作为帝国官僚存在的你如今终于取得独立的地位，是时候移除不合时宜的官僚继承法了。"
+ ftr_clear_bureaucrat_title_law_decision_confirm:0 "自立的感觉真不错"

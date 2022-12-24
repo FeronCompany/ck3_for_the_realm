@@ -28,3 +28,7 @@
  ftr_depose_bureacrat_interaction_desc:0 "Depose bureacrat."
  ftr_depose_bureacrat_interaction_notification:0 "Liege deposed you"
  actor_secondary_ftr_depose_bureacrat_interaction:0 "Bureacrat candidate"
+
+ ftr_vassal_mediation_interaction:0 "<FTR> Vassal War Intervention"
+ ftr_vassal_mediation_interaction_desc:0 "Vassals should not have private fights other than foreign wars."
+ ftr_vassal_mediation_interaction_notification:0 "Your liege [actor.GetName] give order to stop your war."

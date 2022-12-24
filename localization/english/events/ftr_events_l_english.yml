@@ -206,3 +206,19 @@
  ftr_war_tax.0003.b.ask_favor:0 "A Hook In Return"
  ftr_war_tax.0003.b.ask_favor.desc:0 "[root.GetName]agree with your request of donation, but also reminds you of [root.GetHerHis] contribution."
  ftr_war_tax.0003.c:0 "Have I seen anything?"
+
+ ftr_decision_events.0001.t:0 "<FTR> Restore Byzantium Empire"
+ ftr_decision_events.0001.desc:0 "After a brief vacuum, the land of the Eastern Roman Empire has once again risen a wise king. Dark clouds will not obscure the sky forever, just as history cannot obscure the glory of the Roman Empire. Today, the emperor returns to the sacred purple palace to announce the revival of Eastern Rome."
+ ftr_decision_events.0001.a:0 "Long live SQPR"
+
+ ftr_decision_events.0002.t:0 "<FTR> Restore Byzantium Empire"
+ ftr_decision_events.0002.desc:0 "Amazing news came from afar that under [emperor.GetName]'s leadership, the remnants of Eastern Rome rebuilt the Eastern Roman Empire. We will wait and see how this rejuvenated ancient empire will perform in the future."
+ ftr_decision_events.0002.a:0 "Shock news"
+
+ ftr_interaction_event.1001.t:0 "<FTR> Abolish Personal Fight"
+ ftr_interaction_event.1001.desc:0 "Your liege [actor.GetName] heard that you are in an illegal law. Now [actor.GetHeShe] request you to stop the war and return to your estate."
+ ftr_interaction_event.1001.a:0 "Yes, my liege."
+
+ ftr_interaction_event.1002.t:0 "<FTR> Abolish Personal Fight"
+ ftr_interaction_event.1002.desc:0 "[recipient.GetName] stop the war as you requested, now is back to estate."
+ ftr_interaction_event.1002.a:0 "Good."

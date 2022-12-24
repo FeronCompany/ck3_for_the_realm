@@ -1,0 +1,147 @@
+﻿
+
+restore_byzantine_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = restore_byzantine_decision_desc
+	major = yes
+	ai_check_interval = 36
+	selection_tooltip = restore_byzantine_decision_tooltip
+	is_shown = {
+		is_landed = yes
+		OR = {
+			has_government = feudal_government
+			has_government = centralism_government
+			has_government = clan_government
+		}
+		primary_title.tier = tier_kingdom
+		culture = {
+			has_cultural_pillar = heritage_byzantine
+		}
+		NOT = {
+			exists = title:e_byzantium.holder
+		}
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		completely_controls = title:d_thrace
+		OR = {
+			completely_controls = title:d_thessalonika
+			completely_controls = title:d_athens
+			completely_controls = title:d_opsikion
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+	}
+	cost = {
+		prestige = { value = 500 }
+	}
+	effect = {
+		restore_byzantium_empire_scripted_effect = yes
+		trigger_event = {
+			id = ftr_decision_events.0001
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 100
+	}
+}
+
+# rewrite restore roman empire for centralism_government
+ftr_restore_roman_empire_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	desc = restore_roman_empire_decision_desc
+	selection_tooltip = restore_roman_empire_decision_tooltip
+	major = yes
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			has_title = title:e_byzantium
+			has_title = title:e_hre
+			has_title = title:e_italy
+		}
+		
+		NOT = {  #Can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_roman_empire
+			}
+		}
+		OR = {
+			has_government = centralism_government
+		}
+	}
+
+	is_valid = {
+		prestige_level >= max_prestige_level
+
+		custom_description = {
+			text = restore_roman_empire_decision_tt
+			OR = {
+				religion = religion:christianity_religion
+				religion = religion:hellenism_religion
+				culture = culture:roman
+			}
+		}
+
+		completely_controls = title:d_latium
+		completely_controls = title:d_venice
+		completely_controls = title:d_romagna
+		completely_controls = title:d_sicily
+		completely_controls = title:d_genoa
+		completely_controls = title:d_capua
+		completely_controls = title:d_apulia
+		completely_controls = title:d_thrace
+		completely_controls = title:d_antioch
+		completely_controls = title:d_palestine
+		completely_controls = title:d_alexandria
+		completely_controls = title:d_athens
+		completely_controls = title:d_tunis
+		completely_controls = title:d_croatia
+		completely_controls = title:d_thessalonika
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+	}
+
+	effect = {
+		custom_tooltip = restore_roman_empire_decision_effect_tooltip
+		show_as_tooltip = {
+			create_roman_empire_scripted_effect = yes
+		}
+		trigger_event = {
+			id = roman_restoration.0001
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_roman_empire
+			}
+			set_global_variable = {
+				name = flag_restored_roman_empire
+				value = root
+			}
+		}
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

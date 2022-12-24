@@ -1,0 +1,189 @@
+﻿
+######### Convert Bureacrat to Feudal ##########
+ftr_convert_bureacrat_to_feudal_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	desc = ftr_convert_bureacrat_to_feudal_interaction_desc
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		scope:recipient = {
+			is_vassal_of = scope:actor
+			has_government = centralism_government
+		}
+		scope:actor = {
+			has_government = centralism_government
+			is_independent_ruler = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  {
+				is_at_war_with = scope:recipient
+			}
+		}
+	}
+	on_accept = {
+		scope:actor = {
+			add_prestige = -150
+			save_scope_as = liege
+		}
+		scope:recipient = {
+			add_opinion = {
+				target = scope:actor
+				modifier = ftr_grant_here_privilage_opinion
+			}
+			trigger_event = {
+				id = ftr_realm_event.1003
+			}
+		}
+	}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = -40
+		modifier = {
+			add = 20
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value >= 50
+				}
+			}
+		}
+		modifier = {
+			add = 20
+			scope:actor = {
+				has_trait = generous
+			}
+		}
+		modifier = {
+			add = 20
+			scope:actor = {
+				is_parent_of = scope:recipient
+			}
+		}
+	}
+}
+
+######### Depose Bureacrat ##########
+ftr_depose_bureacrat_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	desc = ftr_depose_bureacrat_interaction_desc
+	populate_actor_list = {
+		scope:actor = {
+			every_courtier = {
+				limit = {
+					is_adult = yes
+					is_physically_able = yes
+					can_be_granted_titles_by = { RULER = scope:actor }
+					NOT = { has_council_position = councillor_court_chaplain }
+				}
+				add_to_list = characters
+			}
+		}
+	}
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		scope:recipient = {
+			is_vassal_of = scope:actor
+			has_government = centralism_government
+		}
+		scope:actor = {
+			has_government = centralism_government
+			is_independent_ruler = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			is_at_war = no
+		}
+		scope:actor = {
+			NOT =  {
+				has_truce = scope:recipient
+			}
+		}
+	}
+	on_accept = {
+		create_title_and_vassal_change = {
+			type = granted
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:actor = {
+			add_prestige = -500
+			save_scope_as = liege
+			scope:secondary_actor = {
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_promote_me_opinion
+				}
+				save_scope_as = successor
+			}
+			scope:recipient = {
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_depose_bureacrat_opinion
+				}
+				every_held_title = {
+					limit = {
+						#has_title_law = bureacratic_succession_law
+						tier >= tier_county
+					}
+					change_title_holder = {
+						holder = scope:secondary_actor
+						change = scope:change
+					}
+				}
+				every_vassal = {
+					change_liege = {
+						liege = scope:secondary_actor
+						change = scope:change
+					}
+				}
+				scope:recipient = {
+					trigger_event = {
+						id = ftr_realm_event.1004
+						days = 1
+					}
+				}
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		scope:secondary_actor = {
+			change_government = centralism_government
+			add_realm_law = centralism_vassal_succession_law
+			every_held_title = {
+				limit = {
+					tier > tier_county
+				}
+				add_title_law = bureacratic_succession_law
+			}
+		}
+	}
+	on_auto_accept = {}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 50
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value <= 0
+				}
+			}
+		}
+		modifier = {
+			add = 50
+			scope:recipient = {
+				opinion = {
+					target = scope:actor
+					value <= 10
+				}
+			}
+		}
+	}
+}
+

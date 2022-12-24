@@ -1,0 +1,56 @@
+﻿
+
+restore_byzantine_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = restore_byzantine_decision_desc
+	major = yes
+	ai_check_interval = 36
+	selection_tooltip = restore_byzantine_decision_tooltip
+	is_shown = {
+		is_landed = yes
+		OR = {
+			has_government = feudal_government
+			has_government = centralism_government
+			has_government = clan_government
+		}
+		primary_title.tier = tier_kingdom
+		culture = {
+			has_cultural_pillar = heritage_byzantine
+		}
+		NOT = {
+			exists = title:e_byzantium.holder
+		}
+	}
+	is_valid = {
+		is_independent_ruler = yes
+		completely_controls = title:d_thrace
+		OR = {
+			completely_controls = title:d_thessalonika
+			completely_controls = title:d_athens
+			completely_controls = title:d_opsikion
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+	}
+	cost = {
+		prestige = { value = 500 }
+	}
+	effect = {
+		show_as_tooltip = {
+			restore_byzantium_empire_scripted_effect = yes
+		}
+		trigger_event = {
+			id = ftr_decision_events.0001
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 100
+	}
+}

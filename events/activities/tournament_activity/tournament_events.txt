@@ -1,0 +1,7 @@
+﻿
+
+namespace = ftr_tournament
+
+# 0001-0999 Starter events
+# 1001-1999 spectator on_action events
+# 2001-2999 competitor on_action events

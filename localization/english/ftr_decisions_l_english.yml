@@ -24,3 +24,13 @@
  ftr_clear_bureaucrat_title_law_decision_tooltip:0 "Remove bureaucratic title laws"
  ftr_clear_bureaucrat_title_law_decision_desc:0 "Once an imperial bureaucrat, you have finally achieved your independence, and it is time to remove the anachronistic laws of bureaucratic succession."
  ftr_clear_bureaucrat_title_law_decision_confirm:0 "It's nice to be independent ruler."
+
+ ftr_restore_roman_empire_decision:0 "<FTR> Restore Roman Empire"
+ ftr_restore_roman_empire_decision_confirm:0 "Restore Roman Empire"
+
+ ftr_renounce_dynasty_decision:0 "<FTR> Create New Dynasty"
+ ftr_renounce_dynasty_decision_tooltip:0 "Create a new dynasty."
+ ftr_renounce_dynasty_decision_desc:0 "As a member of [ROOT.Char.GetDynasty.GetBaseName], your ambitions are beyond reach. It's time to declare that I have parted ways with the past."
+ ftr_renounce_dynasty_decision_confirm:0 "My new dynasty!"
+ created_new_dynasty_desc:0 "Create New Dynasty"
+ created_new_dynasty_text:0 "You create new dynasty [ROOT.Char.GetDynasty.GetBaseName]."

@@ -1,6 +1,6 @@
 ﻿
 
-namespace ftr_decision_events
+namespace = ftr_decision_events
 
 # Restore Byzantium Empire
 ftr_decision_events.0001 = {

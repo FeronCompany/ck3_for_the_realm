@@ -51,3 +51,70 @@ restore_byzantium_empire_scripted_effect = {
 		root = { set_realm_capital = title:c_byzantion }
 	}
 }
+
+# Found New Dynasty
+found_new_dynasty_effect = {
+	hidden_effect = {
+		save_scope_as = new_head
+		create_character = {
+			gender = male
+			location = scope:new_head.location
+			culture = scope:new_head.culture
+			faith = scope:new_head.faith
+			save_scope_as = hidden_founder
+		}
+		create_character = {
+			gender = male
+			location = scope:new_head.location
+			culture = scope:new_head.culture
+			faith = scope:new_head.faith
+			save_scope_as = hidden_receiver
+		}
+		scope:hidden_founder = {
+			house = {
+				save_scope_as = new_house
+			}
+			dynasty = {
+				save_scope_as = new_dynasty
+			}
+		}
+		scope:hidden_receiver = {
+			house = {
+				save_scope_as = cover_house
+			}
+		}
+		house = {
+			every_house_member = {
+				add_to_list = family_to_change_house
+			}
+		}
+	}
+	add_prestige = $PRESTIGE$
+	custom_description = {
+		text = ftr_all_house_member_join_new_house_text
+		every_in_list = {
+			list = family_to_change_house
+			set_house = scope:new_house
+		}
+	}
+	scope:new_dynasty = {
+		add_dynasty_prestige = {
+			value = scope:new_head.prestige
+			add = {
+				value = 5000
+				multiply = scope:new_head.prestige_level
+			}
+		}
+	}
+	hidden_effect = {
+		scope:hidden_founder = {
+			set_house = scope:cover_house
+		}
+		send_interface_toast = {
+			type = msg_created_new_house
+			title = created_new_dynasty_desc
+			left_icon = scope:new_head
+			desc = created_new_dynasty_text
+		}
+	}
+}

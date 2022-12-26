@@ -5,3 +5,665 @@ namespace = ftr_tournament
 # 0001-0999 Starter events
 # 1001-1999 spectator on_action events
 # 2001-2999 competitor on_action events
+
+# Letter to invite vassal
+ftr_tournament.0001 = {
+	type = letter_event
+	opening = {
+		desc = ftr_tournament.0001.opening
+	}
+	desc = {
+		desc = ftr_tournament.0001.opening_desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					reverse_opinion = {
+						target = scope:sender
+						value > 50
+					}
+				}
+				desc = ftr_tournament.0001.host_likes_me
+			}
+			triggered_desc = {
+				trigger = {
+					reverse_opinion = {
+						target = scope:sender
+						value > -1
+					}
+				}
+				desc = ftr_tournament.0001.host_gets_along_with_me
+			}
+			desc = ftr_tournament.0001.host_dislikes_me
+		}
+	}
+	sender = scope:sender
+
+	trigger = {
+		is_available_for_activity_trigger = yes
+		exists = scope:activity.activity_owner
+		target_is_liege_or_above = scope:activity.activity_owner
+		NOT = { exists = var:is_handling_tournament_invitation }
+	}
+
+	on_trigger_fail = { #Trigger invitation again if it was blocked because the character was handling another invitation
+		if = {
+			limit = {
+				is_available_for_activity_trigger = yes
+				exists = var:is_handling_tournament_invitation
+			}
+			trigger_event = {
+				id = ftr_tournament.0001
+				days = 1
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity.activity_owner = {
+			save_scope_as = sender
+		}
+		scope:activity.activity_province = {
+			barony = {
+				save_scope_as = barony
+			}
+		}
+		set_variable = {
+			name = is_handling_tournament_invitation
+			value = scope:sender
+			days = 20
+		}
+	}
+
+	option = {
+		name = ftr_tournament.0001.a
+		play_music_cue = mx_cue_banquet
+		scope:activity = {
+			accept_invitation_for_character = prev
+		}
+		set_variable = {
+			name = booked_for_a_party
+			value = scope:sender
+			days = 20
+		}
+		stress_impact = {
+			brave = minor_stress_loss
+			arrogant = minor_stress_loss
+		}
+		ai_chance = {
+			base = 50
+			opinion_modifier = {
+				opinion_target = scope:sender
+			}
+		}
+	}
+
+	option = {
+		name = ftr_tournament.0001.b
+		scope:activity = {
+			decline_invitation_for_character = prev
+		}
+		stress_impact = {
+			inappetetic = minor_stress_loss
+			craven = minor_stress_loss
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	after = {
+		remove_variable = is_handling_tournament_invitation
+	}
+}
+
+#Letter to invite liege
+ftr_tournament.0002 = {
+	type = letter_event
+	opening = {
+		desc = ftr_tournament.0001.opening # reuse ftr_tournament.0001
+	}
+	desc = ftr_tournament.0002.desc
+	sender = scope:sender
+
+	trigger = {
+		is_available_for_activity_trigger = yes
+		NOT = { exists = var:is_handling_tournament_invitation }
+		exists = scope:activity.activity_owner #In case the activity owner dies waiting...
+	}
+
+	on_trigger_fail = { #Trigger invitation again if it was blocked because the character was handling another invitation
+		if = {
+			limit = {
+				is_available_for_activity_trigger = yes
+				exists = var:is_handling_tournament_invitation
+			}
+			trigger_event = {
+				id = ftr_tournament.0002
+				days = 1
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity.activity_owner = {
+			save_scope_as = sender
+		}
+		scope:activity.activity_province = {
+			barony = {
+				save_scope_as = barony
+			}
+		}
+		set_variable = {
+			name = is_handling_tournament_invitation
+			value = scope:sender
+			days = 20
+		}
+	}
+
+	option = {
+		name = ftr_tournament.0002.a
+		play_music_cue = mx_cue_banquet
+		scope:activity = {
+			accept_invitation_for_character = prev
+		}
+		set_variable = {
+			name = booked_for_a_party
+			value = scope:sender
+			days = 20
+		}
+		stress_impact = {
+			brave = minor_stress_loss
+			arrogant = minor_stress_loss
+		}
+		ai_chance = {
+			base = 100
+			opinion_modifier = {
+				opinion_target = scope:sender
+			}
+		}
+	}
+
+	option = {
+		name = ftr_tournament.0002.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 15
+				target_is_liege_or_above = scope:sender
+			}
+			ai_value_modifier = {
+				ai_boldness = 0.2
+			}
+		}
+		scope:activity = {
+			decline_invitation_for_character = prev
+		}
+		stress_impact = {
+			inappetetic = minor_stress_loss
+			craven = minor_stress_loss
+		}
+	}
+
+	after = {
+		remove_variable = is_handling_tournament_invitation
+	}
+}
+
+#Other relations
+ftr_tournament.0003 = {
+	type = letter_event
+	opening = {
+		desc = ftr_tournament.0001.opening
+	}
+	desc = ftr_tournament.0003.desc
+	sender = scope:sender
+
+	trigger = {
+		is_available_for_activity_trigger = yes
+		NOT = { exists = var:is_handling_tournament_invitation }
+	}
+
+	on_trigger_fail = { #Trigger invitation again if it was blocked because the character was handling another invitation
+		if = {
+			limit = {
+				is_available_for_activity_trigger = yes
+				exists = var:is_handling_tournament_invitation
+			}
+			trigger_event = {
+				id = ftr_tournament.0003
+				days = 1
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity.activity_owner = {
+			save_scope_as = sender
+		}
+		scope:activity.activity_province = {
+			barony = {
+				save_scope_as = barony
+			}
+		}
+		set_variable = {
+			name = is_handling_tournament_invitation
+			value = scope:sender
+			days = 20
+		}
+	}
+
+	option = {
+		name = ftr_tournament.0003.a
+		play_music_cue = mx_cue_banquet
+		scope:activity = {
+			accept_invitation_for_character = prev
+		}
+		set_variable = {
+			name = booked_for_a_party
+			value = scope:sender
+			days = 20
+		}
+		stress_impact = {
+			brave = minor_stress_loss
+			arrogant = minor_stress_loss
+		}
+		ai_chance = {
+			base = 100
+			opinion_modifier = {
+				opinion_target = scope:sender
+			}
+		}
+	}
+
+	option = {
+		name = ftr_tournament.0003.b
+		scope:activity = {
+			decline_invitation_for_character = prev
+		}
+		stress_impact = {
+			inappetetic = minor_stress_loss
+			craven = minor_stress_loss
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 15
+				scope:sender = {
+					target_is_liege_or_above = scope:sender
+				}
+			}
+			ai_value_modifier = {
+				ai_boldness = 0.2
+			}
+		}
+	}
+
+	after = {
+		remove_variable = is_handling_tournament_invitation
+	}
+}
+
+#Tournament End
+ftr_tournament.0004 = {
+	type = character_event
+	title = ftr_tournament.0004.t
+	desc = ftr_tournament.0004.desc
+	theme = hunting
+	override_background = { event_background = council_chamber }
+	left_portrait = {
+		character = scope:cavalry_champion
+		animation = war_over_win
+	}
+	right_portrait = {
+		character = scope:infantry_champion
+		animation = war_over_win
+	}
+
+	immediate = {
+		set_local_variable = {
+			name = cavalry_score
+			value = 0
+			days = 20
+		}
+		set_local_variable = {
+			name = infantry_score
+			value = 0
+			days = 20
+		}
+		every_in_list = {
+			list = cavalry_group
+			if = {
+				limit = {
+					is_alive = yes
+					exists = var:tournament_score
+					var:tournament_score > var:cavalry_score
+				}
+				set_local_variable = {
+					name = cavalry_score
+					value = var:tournament_score
+					days = 20
+				}
+				save_scope_as = cavalry_champion
+			}
+		}
+		every_in_list = {
+			list = infantry_group
+			if = {
+				limit = {
+					is_alive = yes
+					exists = var:tournament_score
+					var:tournament_score > var:infantry_score
+				}
+				set_local_variable = {
+					name = infantry_score
+					value = var:tournament_score
+					days = 20
+				}
+				save_scope_as = infantry_champion
+			}
+		}
+	}
+
+	option = {
+		name = ftr_tournament.0004.a
+		scope:activity = {
+			every_participant = {
+				limit = { NOT = { this = root } }
+				custom = ftr_hosted_successful_tournament_text
+				add_opinion = {
+					target = root
+					modifier = ftr_hosted_successful_tournament
+				}
+			}
+		}
+		scope:activity = {
+			complete_activity = yes
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	after = {
+		scope:cavalry_champion = {
+			add_character_modifier = {
+				modifier = ftr_tournament_champion_modifier
+				years = 5
+			}
+		}
+		scope:infantry_champion = {
+			add_character_modifier = {
+				modifier = ftr_tournament_champion_modifier
+				years = 5
+			}
+		}
+	}
+}
+
+#Choose group
+ftr_tournament.0005 = {
+	type = character_event
+	title = ftr_tournament.0005.t
+	desc = ftr_tournament.0005.desc
+	theme = hunting
+	override_background = { event_background = council_chamber }
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {}
+
+	option = { # Be spectator
+		name = ftr_tournament.0005.a
+		add_to_list = spectator_group
+		ai_chance = {
+			base = 50
+			modifier = {
+				add = -40
+				has_trait = brave
+			}
+			modifier = {
+				add = -10
+				has_trait = arrogant
+			}
+			modifier = {
+				add = 40
+				has_trait = craven
+			}
+			modifier = {
+				add = 40
+				has_trait = shy
+			}
+		}
+	}
+	option = { # Join cavalry_group
+		name = ftr_tournament.0005.b
+		trigger = {
+			OR = {
+				is_male = yes
+				AND = {
+					is_male = no
+					culture = {
+						has_cultural_parameter = high_prowess_ignores_knight_restrictions
+					}
+				}
+			}
+		}
+		add_to_list = cavalry_group
+		set_variable = {
+			name = tournament_score
+			value = prowess
+			days = 45
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+	option = { # Join infantry_group
+		name = ftr_tournament.0005.c
+		trigger = {
+			OR = {
+				is_male = yes
+				AND = {
+					is_male = no
+					culture = {
+						has_cultural_parameter = high_prowess_ignores_knight_restrictions
+					}
+				}
+			}
+		}
+		add_to_list = infantry_group
+		set_variable = {
+			name = tournament_score
+			value = prowess
+			days = 45
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+}
+
+#Tournament End for participants
+ftr_tournament.0006 = {
+	type = character_event
+	title = ftr_tournament.0006.t
+	desc = ftr_tournament.0006.desc
+	theme = hunting
+	override_background = { event_background = council_chamber }
+	left_portrait = {
+		character = scope:cavalry_champion
+		animation = war_over_win
+	}
+	right_portrait = {
+		character = scope:infantry_champion
+		animation = war_over_win
+	}
+
+	immediate = {}
+
+	option = {
+		name = ftr_tournament.0006.a
+		ai_chance = {
+			base = 100
+		}
+	}
+}
+
+#Tournament start, setting up worrors
+ftr_tournament.0007 = {
+	hidden = yes
+	immediate = {
+		while = {
+			count = 2
+			create_character = {
+				gender = male
+				location = root.location
+				culture = root.culture
+				faith = root.faith
+				after_creation = {
+					add_prowess_skill = 10
+					add_to_list = cavalry_group
+					set_variable = {
+						name = tournament_score
+						value = prowess
+						days = 45
+					}
+				}
+			}
+		}
+		while = {
+			count = 2
+			create_character = {
+				gender = male
+				location = root.location
+				culture = root.culture
+				faith = root.faith
+				after_creation = {
+					add_prowess_skill = 10
+					add_to_list = infantry_group
+					set_variable = {
+						name = tournament_score
+						value = prowess
+						days = 45
+					}
+				}
+			}
+		}
+	}
+}
+
+# Expire
+ftr_tournament.0008 = {
+	type = character_event
+	title = ftr_tournament.0008.t
+	desc = ftr_tournament.0008.desc
+	theme = hunting
+
+	immediate = {}
+
+	option = {
+		name = ftr_tournament.0008.a
+	}
+}
+
+# Host die
+ftr_tournament.0009 = {
+	type = character_event
+	title = ftr_tournament.0009.t
+	desc = ftr_tournament.0009.desc
+	theme = hunting
+	left_portrait = {
+		character = scope:host
+	}
+
+	immediate = {}
+
+	option = {
+		name = ftr_tournament.0009.a
+	}
+}
+
+#The host has been imprisoned - for host
+ftr_tournament.0010 = {
+	type = character_event
+	title = ftr_tournament.0010.t
+	desc = ftr_tournament.0010.desc
+	theme = hunting
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_prison.dds"
+	}
+	left_portrait = {
+		character = scope:host
+		animation = prison_dungeon
+	}
+
+	immediate = {}
+	
+	option = {
+		name = ftr_tournament.0010.a
+	}
+
+	after = {}
+}
+
+#The host has been imprisoned - for guests
+ftr_tournament.0011 = {
+	type = character_event
+	title = ftr_tournament.0011.t
+	desc = ftr_tournament.0011.desc
+	theme = feast_activity
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_prison.dds"
+	}
+	left_portrait = {
+		character = scope:host
+		animation = prison_dungeon
+	}
+	
+	option = {
+		name = ftr_tournament.0011.a
+	}
+}
+
+#The host is at war - for host
+ftr_tournament.0012 = {
+	type = character_event
+	title = ftr_tournament.0012.t
+	desc = ftr_tournament.0012.desc
+	theme = hunting
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_prison.dds"
+	}
+	left_portrait = {
+		character = scope:host
+		animation = war_defender
+	}
+
+	immediate = {}
+	
+	option = {
+		name = ftr_tournament.0012.a
+	}
+
+	after = {}
+}
+
+#The host is at war - for guests
+ftr_tournament.0013 = {
+	type = character_event
+	title = ftr_tournament.0013.t
+	desc = ftr_tournament.0013.desc
+	theme = feast_activity
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_prison.dds"
+	}
+	left_portrait = {
+		character = scope:host
+		animation = war_defender
+	}
+	
+	option = {
+		name = ftr_tournament.0013.a
+	}
+}

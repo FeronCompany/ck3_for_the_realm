@@ -222,3 +222,57 @@
  ftr_interaction_event.1002.t:0 "<FTR> Abolish Personal Fight"
  ftr_interaction_event.1002.desc:0 "[recipient.GetName] stop the war as you requested, now is back to estate."
  ftr_interaction_event.1002.a:0 "Good."
+
+ ftr_tournament.0001.opening:0 "[sender.Custom2('AppropriateGreeting', ROOT.Char)]"
+ ftr_tournament.0001.opening_desc:0 "I hereby invite you to my tournament in [barony.GetNameNoTier]!"
+ ftr_tournament.0001.host_likes_me:0 "I look forward to your visit, I will miss you very much if you don't come."
+ ftr_tournament.0001.host_gets_along_with_me:0 "I would be honored if such a distinguished [ROOT.Char.GetTitleTierName] as you could attend."
+ ftr_tournament.0001.host_dislikes_me:0 "I expect all influential people to attend, unfortunately including you."
+ ftr_tournament.0001.a:0 "I will attend."
+ ftr_tournament.0001.b:0 "Sorry, I'm busy."
+
+ ftr_tournament.0002.desc:0 "I hereby invite you to my tournament in [barony.GetNameNoTier]! It will be a grand event and worth your visit."
+ ftr_tournament.0002.a:0 "My honor."
+ ftr_tournament.0002.b:0 "I have more important things to do."
+
+ ftr_tournament.0003.desc:0 "I hereby invite you to my tournament at the court in [barony.GetNameNoTier]! It will be a grand event with exciting games to entertain."
+ ftr_tournament.0003.a:0 "My honor."
+ ftr_tournament.0003.b:0 "I have more important things to do."
+
+ ftr_tournament.0004.t:0 "Tournament Closes"
+ ftr_tournament.0004.desc:0 "The tournament came to an end with the cheers of the crowd. It's time to announce the winners of this competition, they are [infantry_champion.GetName] in the close combat group and [cavalry_champion.GetName] in the riding group. Let's cheer for them!"
+ ftr_tournament.0004.a:0 "Excellent!"
+
+ ftr_tournament.0005.t:0 "Tournament Opens"
+ ftr_tournament.0005.desc:0 "The tournament opened as scheduled, many athletes are eager to try, ready to show their strength here, do I want to do something?"
+ ftr_tournament.0005.a:0 "I'll be a spectator."
+ ftr_tournament.0005.b:0 "I'll join the close combat game."
+ ftr_tournament.0005.c:0 "I'll join horsemen match."
+
+ ftr_tournament.0006.t:0 "Tournament Closes"
+ ftr_tournament.0006.desc:0 "The tournament came to an end with the cheers of the crowd. It's time to announce the winners of this competition, they are [infantry_champion.GetName] in the close combat group and [cavalry_champion.GetName] in the riding group. Let's cheer for them!"
+ ftr_tournament.0006.a:0 "Excellent!"
+
+ ftr_tournament.0008.t:0 "Tournament Expired"
+ ftr_tournament.0008.desc:0 "The tournament has been going on for so long that the organizer [host.GetName] seems to have forgotten the closing ceremony. Anyway, it's time for us to leave."
+ ftr_tournament.0008.a:0 "Wired."
+
+ ftr_tournament.0009.t:0 "Host Died"
+ ftr_tournament.0009.desc:0 "Shocked to hear that the host of the tournament [host.GetName] passed away suddenly, everyone mourned, and the tournament schedule had to be put aside first."
+ ftr_tournament.0009.a:0 "R.I.P."
+
+ ftr_tournament.0010.t:0 "Host Arrested"
+ ftr_tournament.0010.desc:0 "Due to my arrest, the scene of the competition is now leaderless, and the schedule of the tournament has to be put aside first."
+ ftr_tournament.0010.a:0 "Disappointing."
+
+ ftr_tournament.0011.t:0 "Host Arrested"
+ ftr_tournament.0011.desc:0 "Surprised to hear that the host of the tournament [host.GetName] was arrested, the tournament site is now leaderless, and the tournament schedule has to be put aside."
+ ftr_tournament.0011.a:0 "Disappointing."
+
+ ftr_tournament.0012.t:0 "Host In War"
+ ftr_tournament.0012.desc:0 "When the battle report came from afar, I had to put on the battle. The schedule also had to be put on hold, hoping to have the opportunity to finish the event smoothly next time."
+ ftr_tournament.0012.a:0 "Fight on the battlefield!"
+
+ ftr_tournament.0013.t:0 "Host In War"
+ ftr_tournament.0013.desc:0 "Shocked to hear that the host of the tournament [host.GetName] was involved in a war, the tournament site is now leaderless, and the tournament schedule has to be put aside."
+ ftr_tournament.0013.a:0 "Disappointing."

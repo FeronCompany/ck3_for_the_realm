@@ -5,16 +5,16 @@ tournament_spectator_events = {
 		exists = scope:activity
 	}
 	random_events = {
-		100 = ftr_tournament.1001 # Nice Intermatch Show
-		100 = ftr_tournament.1002 # Be ambitious
-		100 = ftr_tournament.1003 # Tie
-		100 = ftr_tournament.1004 # Stands crash
-		100 = ftr_tournament.1005 # wrong bet
-		100 = ftr_tournament.1006 # Nice worrior
-		100 = ftr_tournament.1007 # quarrel
-		100 = ftr_tournament.1008 # horse charge into crowds
-		100 = ftr_tournament.1009 # be friends with other apectator
-		100 = ftr_tournament.1010 # rejoice with competitors
+		#100 = ftr_tournament.1001 # Nice Intermatch Show
+		#100 = ftr_tournament.1002 # Be ambitious
+		#100 = ftr_tournament.1003 # Tie
+		#100 = ftr_tournament.1004 # Stands crash
+		#100 = ftr_tournament.1005 # wrong bet
+		#100 = ftr_tournament.1006 # Nice worrior
+		#100 = ftr_tournament.1007 # quarrel
+		#100 = ftr_tournament.1008 # horse charge into crowds
+		#100 = ftr_tournament.1009 # be friends with other apectator
+		#100 = ftr_tournament.1010 # rejoice with competitors
 	}
 	fallback = tournament_end_pulse
 }
@@ -24,16 +24,16 @@ tournament_cavalry_events = {
 		exists = scope:activity
 	}
 	random_events = {
-		100 = ftr_tournament.2001 # Good competitor
-		100 = ftr_tournament.2002 # EZ
-		100 = ftr_tournament.2003 # make friends with other competitor
-		100 = ftr_tournament.2004 # make enemy with other competitor
-		100 = ftr_tournament.2005 # find nice worrior
-		100 = ftr_tournament.2006 # hurt by accident
-		100 = ftr_tournament.2007 # weapon broken
-		100 = ftr_tournament.2008 # save competitor's life
-		100 = ftr_tournament.2009 # face the enemy
-		100 = ftr_tournament.2010 # cheers from family
+		#100 = ftr_tournament.2001 # Good competitor
+		#100 = ftr_tournament.2002 # EZ
+		#100 = ftr_tournament.2003 # make friends with other competitor
+		#100 = ftr_tournament.2004 # make enemy with other competitor
+		#100 = ftr_tournament.2005 # find nice worrior
+		#100 = ftr_tournament.2006 # hurt by accident
+		#100 = ftr_tournament.2007 # weapon broken
+		#100 = ftr_tournament.2008 # save competitor's life
+		#100 = ftr_tournament.2009 # face the enemy
+		#100 = ftr_tournament.2010 # cheers from family
 	}
 	fallback = tournament_end_pulse
 }
@@ -43,22 +43,22 @@ tournament_infantry_events = {
 		exists = scope:activity
 	}
 	random_events = {
-		100 = ftr_tournament.2001 # 
-		100 = ftr_tournament.2002 # 
-		100 = ftr_tournament.2003 # 
-		100 = ftr_tournament.2004 # 
-		100 = ftr_tournament.2005 # 
-		100 = ftr_tournament.2015 # hurt by accident on horse
-		100 = ftr_tournament.2016 # horse hurt
-		100 = ftr_tournament.2017 # save knight
-		100 = ftr_tournament.2018 # dirty competitor
-		100 = ftr_tournament.2019 # cheers from spectators
+		#100 = ftr_tournament.2001 # 
+		#100 = ftr_tournament.2002 # 
+		#100 = ftr_tournament.2003 # 
+		#100 = ftr_tournament.2004 # 
+		#100 = ftr_tournament.2005 # 
+		#100 = ftr_tournament.2015 # hurt by accident on horse
+		#100 = ftr_tournament.2016 # horse hurt
+		#100 = ftr_tournament.2017 # save knight
+		#100 = ftr_tournament.2018 # dirty competitor
+		#100 = ftr_tournament.2019 # cheers from spectators
 	}
 	fallback = tournament_end_pulse
 }
 
 tournament_end_pulse = {
 	events = {
-		ftr_tournament.0999
+		#ftr_tournament.0999
 	}
 }

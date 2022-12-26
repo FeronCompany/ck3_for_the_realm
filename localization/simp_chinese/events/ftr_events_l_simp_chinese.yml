@@ -222,3 +222,57 @@
  ftr_interaction_event.1002.t:0 "<FTR>禁绝私斗"
  ftr_interaction_event.1002.desc:0 "[recipient.GetName]按照您的要求结束了战争，现已返回自己的属地。"
  ftr_interaction_event.1002.a:0 "这就对了"
+
+ ftr_tournament.0001.opening:0 "[sender.Custom2('AppropriateGreeting', ROOT.Char)]"
+ ftr_tournament.0001.opening_desc:0 "我特此邀请你参加我在[barony.GetNameNoTier]举办的比武大会！"
+ ftr_tournament.0001.host_likes_me:0 "我期待你的光临，你要是不来我会非常想你的。"
+ ftr_tournament.0001.host_gets_along_with_me:0 "如果你这样一位显赫的[ROOT.Char.GetTitleTierName]能出席，会让我倍感荣幸。"
+ ftr_tournament.0001.host_dislikes_me:0 "我期望所有有影响力的人都能出席，很不幸也包括你。"
+ ftr_tournament.0001.a:0 "我当然会参加。"
+ ftr_tournament.0001.b:0 "很遗憾，我很忙。"
+
+ ftr_tournament.0002.desc:0 "我在此邀请你参加我在[barony.GetNameNoTier]举办的比武大会！这将会是一场盛会，值得你光临。"
+ ftr_tournament.0002.a:0 "这是我的荣幸。"
+ ftr_tournament.0002.b:0 "我有更重要的事要处理。"
+
+ ftr_tournament.0003.desc:0 "我在此邀请你参加我在[barony.GetNameNoTier]的宫廷举办的比武大会！这将会是一场盛会，有精彩的比赛可供消遣。"
+ ftr_tournament.0003.a:0 "这是我的荣幸。"
+ ftr_tournament.0003.b:0 "我有更重要的事要处理。"
+
+ ftr_tournament.0004.t:0 "比武大会闭幕"
+ ftr_tournament.0004.desc:0 "比武大会在众人的喝彩声中走向了尾声。是时候揭晓本次比赛的冠军了，他们分别是近身格斗组的[infantry_champion.GetName]和骑术组的[cavalry_champion.GetName]。让我们为他们欢呼！"
+ ftr_tournament.0004.a:0 "优秀！"
+
+ ftr_tournament.0005.t:0 "比武大会开幕"
+ ftr_tournament.0005.desc:0 "比武大会如期开幕，众多健儿都跃跃欲试，准备在此大展拳脚，我要不要也做点什么呢？"
+ ftr_tournament.0005.a:0 "我就当观众好了"
+ ftr_tournament.0005.b:0 "我要参加近身格斗比赛"
+ ftr_tournament.0005.c:0 "我要参加骑术比赛"
+
+ ftr_tournament.0006.t:0 "比武大会闭幕"
+ ftr_tournament.0006.desc:0 "比武大会在众人的喝彩声中走向了尾声。是时候揭晓本次比赛的冠军了，他们分别是近身格斗组的[infantry_champion.GetName]和骑术组的[cavalry_champion.GetName]。让我们为他们欢呼！"
+ ftr_tournament.0006.a:0 "优秀！"
+
+ ftr_tournament.0008.t:0 "比武大会到期"
+ ftr_tournament.0008.desc:0 "比武大会已经进行了太久，主办方[host.GetName]似乎早已忘记闭幕式。不论如何，我们是时候离开了。"
+ ftr_tournament.0008.a:0 "诡异"
+
+ ftr_tournament.0009.t:0 "东道主去世"
+ ftr_tournament.0009.desc:0 "惊闻比武大会的东道主[host.GetName]猝然离世，众人无不沉痛缅怀，比武大会的赛程也不得不先搁置一边。"
+ ftr_tournament.0009.a:0 "安息吧"
+
+ ftr_tournament.0010.t:0 "东道主被捕"
+ ftr_tournament.0010.desc:0 "由于自己被捕，赛会现场如今群龙无首，比武大会的赛程也不得不先搁置一边。"
+ ftr_tournament.0010.a:0 "真是扫兴"
+
+ ftr_tournament.0011.t:0 "东道主被捕"
+ ftr_tournament.0011.desc:0 "惊闻比武大会的东道主[host.GetName]被捕，赛会现场如今群龙无首，比武大会的赛程也不得不先搁置一边。"
+ ftr_tournament.0011.a:0 "真是扫兴"
+
+ ftr_tournament.0012.t:0 "东道主参战"
+ ftr_tournament.0012.desc:0 "远方战报传来，我不得不披挂上阵。赛程也不得不搁置，希望下次能有机会顺利办完赛事。"
+ ftr_tournament.0012.a:0 "到战场上一显身手吧"
+
+ ftr_tournament.0013.t:0 "东道主参战"
+ ftr_tournament.0013.desc:0 "惊闻比武大会的东道主[host.GetName]被卷入一场战争，赛会现场如今群龙无首，比武大会的赛程也不得不先搁置一边。"
+ ftr_tournament.0013.a:0 "真是扫兴"

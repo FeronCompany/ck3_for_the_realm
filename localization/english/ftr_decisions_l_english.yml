@@ -34,3 +34,8 @@
  ftr_renounce_dynasty_decision_confirm:0 "My new dynasty!"
  created_new_dynasty_desc:0 "Create New Dynasty"
  created_new_dynasty_text:0 "You create new dynasty [ROOT.Char.GetDynasty.GetBaseName]."
+
+ ftr_hold_tournament_decision:0 "<FTR> Hold Tournament"
+ ftr_hold_tournament_decision_tooltip:0 "Hold tournament"
+ ftr_hold_tournament_decision_desc:0 "The tournament is a grand event for the brave, calling warriors from all over the country to participate in the competition, so that everyone can stretch their muscles and bones."
+ ftr_hold_tournament_decision_confirm:0 "Hold Tournament"

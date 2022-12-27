@@ -309,7 +309,6 @@ ftr_tournament.0004 = {
 	title = ftr_tournament.0004.t
 	desc = ftr_tournament.0004.desc
 	theme = hunting
-	override_background = { event_background = council_chamber }
 	left_portrait = {
 		character = scope:cavalry_champion
 		animation = war_over_win
@@ -320,45 +319,31 @@ ftr_tournament.0004 = {
 	}
 
 	immediate = {
-		set_local_variable = {
-			name = cavalry_score
-			value = 0
-			days = 20
-		}
-		set_local_variable = {
-			name = infantry_score
-			value = 0
-			days = 20
-		}
-		every_in_list = {
-			list = cavalry_group
-			if = {
-				limit = {
-					is_alive = yes
-					exists = var:tournament_score
-					var:tournament_score > var:cavalry_score
+		scope:activity = {
+			every_participant = {
+				if = {
+					limit = {
+						var:tournament_role = 1
+					}
+					add_to_list = cavalry_group
 				}
-				set_local_variable = {
-					name = cavalry_score
-					value = var:tournament_score
-					days = 20
+				else_if = {
+					limit = {
+						var:tournament_role = 2
+					}
+					add_to_list = infantry_group
 				}
+			}
+			ordered_in_list = {
+				list = cavalry_group
+				order_by = var:tournament_score
+				max = 1
 				save_scope_as = cavalry_champion
 			}
-		}
-		every_in_list = {
-			list = infantry_group
-			if = {
-				limit = {
-					is_alive = yes
-					exists = var:tournament_score
-					var:tournament_score > var:infantry_score
-				}
-				set_local_variable = {
-					name = infantry_score
-					value = var:tournament_score
-					days = 20
-				}
+			ordered_in_list = {
+				list = infantry_group
+				order_by = var:tournament_score
+				max = 1
 				save_scope_as = infantry_champion
 			}
 		}
@@ -406,7 +391,6 @@ ftr_tournament.0005 = {
 	title = ftr_tournament.0005.t
 	desc = ftr_tournament.0005.desc
 	theme = hunting
-	override_background = { event_background = council_chamber }
 	left_portrait = {
 		character = root
 	}
@@ -415,7 +399,12 @@ ftr_tournament.0005 = {
 
 	option = { # Be spectator
 		name = ftr_tournament.0005.a
-		add_to_list = spectator_group
+		#add_to_list = spectator_group
+		set_variable = {
+			name = tournament_role
+			value = 0
+			days = 45
+		}
 		ai_chance = {
 			base = 50
 			modifier = {
@@ -449,7 +438,11 @@ ftr_tournament.0005 = {
 				}
 			}
 		}
-		add_to_list = cavalry_group
+		set_variable = {
+			name = tournament_role
+			value = 1
+			days = 45
+		}
 		set_variable = {
 			name = tournament_score
 			value = prowess
@@ -472,7 +465,11 @@ ftr_tournament.0005 = {
 				}
 			}
 		}
-		add_to_list = infantry_group
+		set_variable = {
+			name = tournament_role
+			value = 2
+			days = 45
+		}
 		set_variable = {
 			name = tournament_score
 			value = prowess
@@ -490,7 +487,6 @@ ftr_tournament.0006 = {
 	title = ftr_tournament.0006.t
 	desc = ftr_tournament.0006.desc
 	theme = hunting
-	override_background = { event_background = council_chamber }
 	left_portrait = {
 		character = scope:cavalry_champion
 		animation = war_over_win
@@ -523,10 +519,14 @@ ftr_tournament.0007 = {
 				faith = root.faith
 				after_creation = {
 					add_prowess_skill = 10
-					add_to_list = cavalry_group
 					set_variable = {
 						name = tournament_score
 						value = prowess
+						days = 45
+					}
+					set_variable = {
+						name = tournament_role
+						value = 1
 						days = 45
 					}
 				}
@@ -541,10 +541,14 @@ ftr_tournament.0007 = {
 				faith = root.faith
 				after_creation = {
 					add_prowess_skill = 10
-					add_to_list = infantry_group
 					set_variable = {
 						name = tournament_score
 						value = prowess
+						days = 45
+					}
+					set_variable = {
+						name = tournament_role
+						value = 2
 						days = 45
 					}
 				}

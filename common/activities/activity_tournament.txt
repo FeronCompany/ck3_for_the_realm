@@ -177,7 +177,10 @@
 			#Remove blocker for invitations to activity
 			remove_variable = booked_for_a_party
 			#choose to be spectator or competitor
-			trigger_event = ftr_tournament.0005
+			trigger_event = {
+				id = ftr_tournament.0005
+				days = 1
+			}
 		}
 	}
 	on_complete = { # do nothing if not needed

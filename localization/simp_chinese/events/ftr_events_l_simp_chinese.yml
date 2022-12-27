@@ -242,6 +242,7 @@
  ftr_tournament.0004.t:0 "比武大会闭幕"
  ftr_tournament.0004.desc:0 "比武大会在众人的喝彩声中走向了尾声。是时候揭晓本次比赛的冠军了，他们分别是近身格斗组的[infantry_champion.GetName]和骑术组的[cavalry_champion.GetName]。让我们为他们欢呼！"
  ftr_tournament.0004.a:0 "优秀！"
+ ftr_tournament.0004.a.success:0 "所有与会人员对你的好感提升"
 
  ftr_tournament.0005.t:0 "比武大会开幕"
  ftr_tournament.0005.desc:0 "比武大会如期开幕，众多健儿都跃跃欲试，准备在此大展拳脚，我要不要也做点什么呢？"

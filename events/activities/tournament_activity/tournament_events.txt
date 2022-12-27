@@ -354,7 +354,7 @@ ftr_tournament.0004 = {
 		scope:activity = {
 			every_participant = {
 				limit = { NOT = { this = root } }
-				custom = ftr_hosted_successful_tournament_text
+				custom = ftr_tournament.0004.a.success
 				add_opinion = {
 					target = root
 					modifier = ftr_hosted_successful_tournament
@@ -399,11 +399,13 @@ ftr_tournament.0005 = {
 
 	option = { # Be spectator
 		name = ftr_tournament.0005.a
-		#add_to_list = spectator_group
 		set_variable = {
 			name = tournament_role
 			value = 0
 			days = 45
+		}
+		trigger_event = {
+			on_action = tournament_spectator_events
 		}
 		ai_chance = {
 			base = 50
@@ -448,6 +450,9 @@ ftr_tournament.0005 = {
 			value = prowess
 			days = 45
 		}
+		trigger_event = {
+			on_action = tournament_cavalry_events
+		}
 		ai_chance = {
 			base = 50
 		}
@@ -474,6 +479,9 @@ ftr_tournament.0005 = {
 			name = tournament_score
 			value = prowess
 			days = 45
+		}
+		trigger_event = {
+			on_action = tournament_infantry_events
 		}
 		ai_chance = {
 			base = 50
@@ -529,6 +537,9 @@ ftr_tournament.0007 = {
 						value = 1
 						days = 45
 					}
+					scope:activity = {
+						accept_invitation_for_character = prev
+					}
 				}
 			}
 		}
@@ -550,6 +561,9 @@ ftr_tournament.0007 = {
 						name = tournament_role
 						value = 2
 						days = 45
+					}
+					scope:activity = {
+						accept_invitation_for_character = prev
 					}
 				}
 			}
@@ -616,7 +630,7 @@ ftr_tournament.0011 = {
 	type = character_event
 	title = ftr_tournament.0011.t
 	desc = ftr_tournament.0011.desc
-	theme = feast_activity
+	theme = hunting
 	override_icon = {
 		reference = "gfx/interface/icons/event_types/type_prison.dds"
 	}
@@ -636,9 +650,6 @@ ftr_tournament.0012 = {
 	title = ftr_tournament.0012.t
 	desc = ftr_tournament.0012.desc
 	theme = hunting
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_prison.dds"
-	}
 	left_portrait = {
 		character = scope:host
 		animation = war_defender
@@ -658,10 +669,7 @@ ftr_tournament.0013 = {
 	type = character_event
 	title = ftr_tournament.0013.t
 	desc = ftr_tournament.0013.desc
-	theme = feast_activity
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_prison.dds"
-	}
+	theme = hunting
 	left_portrait = {
 		character = scope:host
 		animation = war_defender
@@ -669,5 +677,413 @@ ftr_tournament.0013 = {
 	
 	option = {
 		name = ftr_tournament.0013.a
+	}
+}
+
+#Nice Intermatch Show
+ftr_tournament.1001 = {
+	type = character_event
+	title = ftr_tournament.1001.t
+	desc = ftr_tournament.1001.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = {
+		name = ftr_tournament.1001.a
+	}
+}
+
+#Be ambitious
+ftr_tournament.1002 = {
+	type = character_event
+	title = ftr_tournament.1002.t
+	desc = ftr_tournament.1002.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	trigger = {
+		OR = {
+			has_trait = brave
+			has_trait = arrogant
+			has_trait = ambitious
+		}
+		NOT = { has_variable = has_1002 }
+	}
+
+	immediate = {
+		set_variable = {	
+			name = has_1002
+			value = yes
+			days = 50
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.1002.a
+	}
+}
+
+#Tie
+ftr_tournament.1003 = {
+	type = character_event
+	title = ftr_tournament.1003.t
+	desc = ftr_tournament.1003.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {}
+	
+	option = {
+		name = ftr_tournament.1003.a
+	}
+}
+
+#Stands crash
+ftr_tournament.1004 = {
+	type = character_event
+	title = ftr_tournament.1004.t
+	desc = ftr_tournament.1004.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	trigger = {
+		NOT = { has_variable = has_1004 }
+	}
+
+	immediate = {
+		set_variable = {	
+			name = has_1004
+			value = yes
+			days = 50
+		}
+		scope:activity = {
+			hidden_effect = {
+				every_participant = {
+					if = {
+						limit = {
+							var:tournament_role = 0
+						}
+						random_list = {
+							70 = {
+								#Nothing happen
+							}
+							20 = {
+								add_to_list = injured_list
+							}
+							10 = {
+								add_to_list = death_list
+							}
+						}
+					}
+				}
+			}
+			every_in_list = {
+				list = injured_list
+				send_interface_toast = {	
+					title = ftr_tournament.1004.injured
+					desc = ftr_tournament.1004.injured.desc
+					change_trait_rank = {
+						trait = wounded
+						rank = 1
+						max = 3
+					}
+				}
+			}
+			every_in_list = {
+				list = death_list
+				send_interface_toast = {
+					title = ftr_tournament.1004.death
+					desc = ftr_tournament.1004.death.desc
+					death = {
+						death_reason = death_fall
+					}
+				}
+			}
+		}
+		complete_activity = yes
+		scope:host = {
+			trigger_event = ftr_tournament.1011
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.1004.a
+	}
+}
+
+#wrong bet
+ftr_tournament.1005 = {
+	type = character_event
+	title = ftr_tournament.1005.t
+	desc = ftr_tournament.1005.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = rage
+	}
+
+	immediate = {}
+	
+	option = {
+		name = ftr_tournament.1005.a
+		remove_short_term_gold = {
+			add = -15
+		}
+	}
+}
+
+#Nice worrior
+ftr_tournament.1006 = {
+	type = character_event
+	title = ftr_tournament.1006.t
+	desc = ftr_tournament.1006.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+	left_portrait = {
+		character = scope:nice_worrior
+		animation = personality_bold
+	}
+
+	immediate = {
+		create_character = {
+			gender = male
+			location = root.location
+			culture = root.culture
+			faith = root.faith
+			after_creation = {
+				add_prowess_skill = 15
+			}
+			save_scope_as = nice_worrior
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.1006.a
+		pay_short_term_gold = {
+			gold = 50
+			target = scope:nice_worrior
+		}
+		recruit_courtier = scope:nice_worrior
+		scope:nice_worrior = {
+			add_opinion = {
+				target = root
+				modifier = gift_opinion
+				opinion = send_gift_opinion
+			}
+		}
+	}
+	option = {
+		name = ftr_tournament.1006.b
+	}
+}
+
+#quarrel
+ftr_tournament.1007 = {
+	type = character_event
+	title = ftr_tournament.1007.t
+	desc = ftr_tournament.1007.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = rage
+	}
+	left_portrait = {
+		character = scope:quarrel_target
+		animation = rage
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					var:tournament_role = 0
+				}
+				add_to_temporary_list = spectator_list
+			}
+		}
+		random_in_list = {
+			list = spectator_list
+			save_scope_as = quarrel_target
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.1007.a
+		add_opinion = {
+			target = quarrel_target
+			modifier = rival_insult_opinion
+		}
+		scope:quarrel_target = {
+			add_opinion = {
+				target = root
+				modifier = rival_insult_opinion
+			}
+			send_interface_toast = {
+				title = ftr_tournament.1007.a.quarrel
+				desc = ftr_tournament.1007.a.quarrel.desc
+				left_icon = root
+				right_icon = scope:quarrel_target
+			}
+		}
+	}
+	option = {
+		name = ftr_tournament.1007.b
+		trigger = {
+			diplomacy >= 10
+		}
+	}
+	option = {
+		name = ftr_tournament.1007.c
+		add_prestige = -100
+	}
+}
+
+#horse charge into crowds
+ftr_tournament.1008 = {
+	type = character_event
+	title = ftr_tournament.1008.t
+	desc = ftr_tournament.1008.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	trigger = {
+		NOT = { has_variable = has_1008 }
+	}
+
+	immediate = {
+		set_variable = {	
+			name = has_1008
+			value = yes
+			days = 50
+		}
+		scope:activity = {
+			every_participant = {
+				limit = {
+					var:tournament_role = 0
+				}
+				add_to_temporary_list = spectator_list
+			}
+			random_in_list = {
+				list = spectator_list
+				random_list = {
+					90 = {
+						send_interface_toast = {	
+							title = ftr_tournament.1008.injured
+							desc = ftr_tournament.1008.injured.desc
+							change_trait_rank = {
+								trait = wounded
+								rank = 1
+								max = 3
+							}
+						}
+					}
+					10 = {
+						send_interface_toast = {
+							title = ftr_tournament.1008.death
+							desc = ftr_tournament.1008.death.desc
+							death = {
+								death_reason = death_horse_riding_accident
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.1008.a
+	}
+}
+
+#be friends with other apectator
+ftr_tournament.1009 = {
+	type = character_event
+	title = ftr_tournament.1009.t
+	desc = ftr_tournament.1009.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	left_portrait = {
+		character = scope:new_friend
+		animation = happiness
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					NOT = { has_relation_friend = root }
+					var:tournament_role = 0
+				}
+				add_to_temporary_list = spectator_list
+			}
+		}
+		random_in_list = {
+			list = spectator_list
+			save_scope_as = new_friend
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.1009.a
+		set_relation_friend = {
+			reason = friend_nice_talk_during_tournament
+			target = scope:new_friend
+		}
+	}
+}
+
+#rejoice with competitors
+ftr_tournament.1010 = {
+	type = character_event
+	title = ftr_tournament.1010.t
+	desc = ftr_tournament.1010.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	immediate = {}
+	
+	option = {
+		name = ftr_tournament.1010.a
+	}
+}
+
+#Stands crash for host
+ftr_tournament.1011 = {
+	type = character_event
+	title = ftr_tournament.1011.t
+	desc = ftr_tournament.1011.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+
+	immediate = {}
+	
+	option = {
+		name = ftr_tournament.1011.a
 	}
 }

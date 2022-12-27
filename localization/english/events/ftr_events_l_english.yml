@@ -242,6 +242,7 @@
  ftr_tournament.0004.t:0 "Tournament Closes"
  ftr_tournament.0004.desc:0 "The tournament came to an end with the cheers of the crowd. It's time to announce the winners of this competition, they are [infantry_champion.GetName] in the close combat group and [cavalry_champion.GetName] in the riding group. Let's cheer for them!"
  ftr_tournament.0004.a:0 "Excellent!"
+ ftr_tournament.0004.a.success:0 "All participant increase their opinion to you."
 
  ftr_tournament.0005.t:0 "Tournament Opens"
  ftr_tournament.0005.desc:0 "The tournament opened as scheduled, many athletes are eager to try, ready to show their strength here, do I want to do something?"

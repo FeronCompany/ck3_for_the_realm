@@ -350,11 +350,11 @@
  ftr_tournament.2002.a:0 "Need more improvement."
 
  ftr_tournament.2003.t:0 "No Fight, No Acquaintance"
- ftr_tournament.2003.desc:0 "I played inextricably with [competitor.GetName] in the competition, and [competitor.GetHerHis] martial arts are really respectable. I have to say that I still have a lot to learn from [competitor.GetHimHer]."
+ ftr_tournament.2003.desc:0 "I played inextricably with [new_friend.GetName] in the competition, and [new_friend.GetHerHis] martial arts are really respectable. I have to say that I still have a lot to learn from [new_friend.GetHerHim]."
  ftr_tournament.2003.a:0 "Nice Battle"
 
  ftr_tournament.2004.t:0 "Rage"
- ftr_tournament.2004.desc:0 "[Competitor.GetName] spoke wildly during the game, and I was like a jumping clown in the context of [competitor.GetHerHis]. It's unbearable to be arrogant."
+ ftr_tournament.2004.desc:0 "[new_rival.GetName] spoke wildly during the game, and I was like a jumping clown in the context of [new_rival.GetHerHis]. It's unbearable to be arrogant."
  ftr_tournament.2004.a:0 "Come and fight!"
 
  ftr_tournament.2005.t:0 "Seeded Player"

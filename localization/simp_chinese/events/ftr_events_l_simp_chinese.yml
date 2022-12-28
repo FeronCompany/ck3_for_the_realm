@@ -352,11 +352,11 @@
  ftr_tournament.2002.a:0 "水平尚待提高啊"
 
  ftr_tournament.2003.t:0 "不打不相识"
- ftr_tournament.2003.desc:0 "我与[competitor.GetName]在比赛中打得难分难解，[competitor.GetHerHis]武艺确实值得尊敬。不得不说我还有很多地方需要向[competitor.GetHimHer]学习呢。"
+ ftr_tournament.2003.desc:0 "我与[new_friend.GetName]在比赛中打得难分难解，[new_friend.GetHerHis]武艺确实值得尊敬。不得不说我还有很多地方需要向[new_friend.GetHerHim]学习呢。"
  ftr_tournament.2003.a:0 "不错不错"
 
  ftr_tournament.2004.t:0 "怒火中烧"
- ftr_tournament.2004.desc:0 "[competitor.GetName]在比赛中口出狂言，在[competitor.GetHerHis]的语境下我仿佛就是个跳梁小丑。真是难以忍受这种傲气。"
+ ftr_tournament.2004.desc:0 "[new_rival.GetName]在比赛中口出狂言，在[new_rival.GetHerHis]的语境下我仿佛就是个跳梁小丑。真是难以忍受这种傲气。"
  ftr_tournament.2004.a:0 "有种来战"
 
  ftr_tournament.2005.t:0 "种子选手"

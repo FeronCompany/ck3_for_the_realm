@@ -37,3 +37,15 @@
 
  ftr_guide_me_on_prowess_opinion:0 "教授武艺"
  ftr_guide_me_on_prowess_opinion_desc:0 "此人教授他人武艺，令人佩服"
+
+ ftr_hosted_successful_tournament:0 "成功举办比武大会"
+ ftr_hosted_successful_tournament_desc:0 "成功举办比武大会"
+
+ ftr_tournament_champion_modifier:0 "比武大会冠军"
+ ftr_tournament_champion_modifier_desc:0 "比武大会冠军"
+
+ ftr_save_me_during_tournament:0 "救命恩人"
+ ftr_save_me_during_tournament_desc:0 "在比武大会中救了我一命"
+
+ ftr_reward_me_during_tournament:0 "收到打赏"
+ ftr_reward_me_during_tournament_desc:0 "在比武大会中打赏了我"

@@ -24,3 +24,18 @@
  ftr_clear_bureaucrat_title_law_decision_tooltip:0 "移除官僚头衔继承法"
  ftr_clear_bureaucrat_title_law_decision_desc:0 "曾经作为帝国官僚存在的你如今终于取得独立的地位，是时候移除不合时宜的官僚继承法了。"
  ftr_clear_bureaucrat_title_law_decision_confirm:0 "自立的感觉真不错"
+
+ ftr_restore_roman_empire_decision:0 "<FTR>重建罗马帝国"
+ ftr_restore_roman_empire_decision_confirm:0 "重建罗马帝国"
+
+ ftr_renounce_dynasty_decision:0 "<FTR>创建新宗族"
+ ftr_renounce_dynasty_decision_tooltip:0 "创建一个新的宗族"
+ ftr_renounce_dynasty_decision_desc:0 "作为过去宗族[ROOT.Char.GetDynasty.GetBaseName]的一份子，您的雄心壮志已经难以施展。是时候宣告众人自己与过去分道扬镳了。"
+ ftr_renounce_dynasty_decision_confirm:0 "我的新时代"
+ created_new_dynasty_desc:0 "建立新宗族"
+ created_new_dynasty_text:0 "您创建了新的宗族[ROOT.Char.GetDynasty.GetBaseName]。"
+
+ ftr_hold_tournament_decision:0 "<FTR>举办比武大会"
+ ftr_hold_tournament_decision_tooltip:0 "举办比武大会"
+ ftr_hold_tournament_decision_desc:0 "比武大会是属于勇者的盛事，召集全国的勇士前来参赛，让大家都舒展一下筋骨。"
+ ftr_hold_tournament_decision_confirm:0 "举办比武大会"

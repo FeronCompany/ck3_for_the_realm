@@ -50,3 +50,10 @@ push_culture_failed_modifier = {
 	monthly_county_control_change_add = -0.5
 	county_opinion_add = -20
 }
+
+ftr_tournament_champion_modifier = {
+	icon = prowess_positive
+	general_opinion = 5
+	prowess = 2
+	monthly_prestige = 1
+}

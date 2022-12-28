@@ -1,0 +1,9 @@
+﻿
+
+ftr_all_house_member_join_new_house_text = {
+	global = FTR_ALL_HOUSE_MEMEBER_JOIN_NEW_HOUSE_EFFECT
+}
+
+ftr_let_competitor_cheat_text = {
+	global = FTR_LET_COMPETITOR_CHEAT_EFFECT
+}

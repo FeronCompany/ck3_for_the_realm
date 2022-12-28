@@ -222,3 +222,191 @@
  ftr_interaction_event.1002.t:0 "<FTR>禁绝私斗"
  ftr_interaction_event.1002.desc:0 "[recipient.GetName]按照您的要求结束了战争，现已返回自己的属地。"
  ftr_interaction_event.1002.a:0 "这就对了"
+
+ ftr_tournament.0001.opening:0 "[sender.Custom2('AppropriateGreeting', ROOT.Char)]"
+ ftr_tournament.0001.opening_desc:0 "我特此邀请你参加我在[barony.GetNameNoTier]举办的比武大会！"
+ ftr_tournament.0001.host_likes_me:0 "我期待你的光临，你要是不来我会非常想你的。"
+ ftr_tournament.0001.host_gets_along_with_me:0 "如果你这样一位显赫的[ROOT.Char.GetTitleTierName]能出席，会让我倍感荣幸。"
+ ftr_tournament.0001.host_dislikes_me:0 "我期望所有有影响力的人都能出席，很不幸也包括你。"
+ ftr_tournament.0001.a:0 "我当然会参加。"
+ ftr_tournament.0001.b:0 "很遗憾，我很忙。"
+
+ ftr_tournament.0002.desc:0 "我在此邀请你参加我在[barony.GetNameNoTier]举办的比武大会！这将会是一场盛会，值得你光临。"
+ ftr_tournament.0002.a:0 "这是我的荣幸。"
+ ftr_tournament.0002.b:0 "我有更重要的事要处理。"
+
+ ftr_tournament.0003.desc:0 "我在此邀请你参加我在[barony.GetNameNoTier]的宫廷举办的比武大会！这将会是一场盛会，有精彩的比赛可供消遣。"
+ ftr_tournament.0003.a:0 "这是我的荣幸。"
+ ftr_tournament.0003.b:0 "我有更重要的事要处理。"
+
+ ftr_tournament.0004.t:0 "比武大会闭幕"
+ ftr_tournament.0004.desc:0 "比武大会在众人的喝彩声中走向了尾声。是时候揭晓本次比赛的冠军了，他们分别是近身格斗组的[infantry_champion.GetName]和骑术组的[cavalry_champion.GetName]。让我们为他们欢呼！"
+ ftr_tournament.0004.a:0 "优秀！"
+ ftr_tournament.0004.a.success:0 "所有与会人员对你的好感提升"
+
+ ftr_tournament.0005.t:0 "比武大会开幕"
+ ftr_tournament.0005.desc:0 "比武大会如期开幕，众多健儿都跃跃欲试，准备在此大展拳脚，我要不要也做点什么呢？"
+ ftr_tournament.0005.a:0 "我就当观众好了"
+ ftr_tournament.0005.b:0 "我要参加骑术比赛"
+ ftr_tournament.0005.c:0 "我要参加近身格斗比赛"
+
+ ftr_tournament.0006.t:0 "比武大会闭幕"
+ ftr_tournament.0006.desc:0 "比武大会在众人的喝彩声中走向了尾声。是时候揭晓本次比赛的冠军了，他们分别是近身格斗组的[infantry_champion.GetName]和骑术组的[cavalry_champion.GetName]。让我们为他们欢呼！"
+ ftr_tournament.0006.a:0 "优秀！"
+
+ ftr_tournament.0008.t:0 "比武大会到期"
+ ftr_tournament.0008.desc:0 "比武大会已经进行了太久，主办方[host.GetName]似乎早已忘记闭幕式。不论如何，我们是时候离开了。"
+ ftr_tournament.0008.a:0 "诡异"
+
+ ftr_tournament.0009.t:0 "东道主去世"
+ ftr_tournament.0009.desc:0 "惊闻比武大会的东道主[host.GetName]猝然离世，众人无不沉痛缅怀，比武大会的赛程也不得不先搁置一边。"
+ ftr_tournament.0009.a:0 "安息吧"
+
+ ftr_tournament.0010.t:0 "东道主被捕"
+ ftr_tournament.0010.desc:0 "由于自己被捕，赛会现场如今群龙无首，比武大会的赛程也不得不先搁置一边。"
+ ftr_tournament.0010.a:0 "真是扫兴"
+
+ ftr_tournament.0011.t:0 "东道主被捕"
+ ftr_tournament.0011.desc:0 "惊闻比武大会的东道主[host.GetName]被捕，赛会现场如今群龙无首，比武大会的赛程也不得不先搁置一边。"
+ ftr_tournament.0011.a:0 "真是扫兴"
+
+ ftr_tournament.0012.t:0 "东道主参战"
+ ftr_tournament.0012.desc:0 "远方战报传来，我不得不披挂上阵。赛程也不得不搁置，希望下次能有机会顺利办完赛事。"
+ ftr_tournament.0012.a:0 "到战场上一显身手吧"
+
+ ftr_tournament.0013.t:0 "东道主参战"
+ ftr_tournament.0013.desc:0 "惊闻比武大会的东道主[host.GetName]被卷入一场战争，赛会现场如今群龙无首，比武大会的赛程也不得不先搁置一边。"
+ ftr_tournament.0013.a:0 "真是扫兴"
+
+ ftr_tournament.0999.t:0 "无疾而终"
+ ftr_tournament.0999.desc:0 "---<DEBUG>---。"
+ ftr_tournament.0999.a:0 "<DEBUG>"
+
+ ftr_tournament.1001.t:0 "赛间表演"
+ ftr_tournament.1001.desc:0 "一场酣畅淋漓的比赛后，主办方安排了华丽的赛间表演。好好休息一下，养足精神准备观赏下一场比赛。"
+ ftr_tournament.1001.a:0 "真是惬意"
+
+ ftr_tournament.1002.t:0 "我上我也行"
+ ftr_tournament.1002.desc:0 "我亲眼目睹了一场酣畅淋漓的比赛，赛后我忍不住有些后悔，自己当初怎么没有报名参赛呢。"
+ ftr_tournament.1002.a:0 "我上我也行！"
+
+ ftr_tournament.1003.t:0 "陷入焦灼"
+ ftr_tournament.1003.desc:0 "两位选手实力相当，交手数十回合也难分高下。我和其他观众一样，大喊着为自己支持的选手加油。不要让大家失望啊。"
+ ftr_tournament.1003.a:0 "加油啊！"
+
+ ftr_tournament.1004.t:0 "看台坍塌"
+ ftr_tournament.1004.desc:0 "正在大家齐声为赛场选手助威呐喊时，赛场临时搭建的看台却突然坍塌，这下难免会有伤亡了。"
+ ftr_tournament.1004.injured:0 "比武大会-不幸受伤"
+ ftr_tournament.1004.injured.desc:0 "你在看台坍塌事故中不幸受伤。"
+ ftr_tournament.1004.death:0 "比武大会-意外死亡"
+ ftr_tournament.1004.death.desc:0 "你在看台坍塌事故中不幸死亡。"
+ ftr_tournament.1004.a:0 "不！"
+
+ ftr_tournament.1005.t:0 "看走眼"
+ ftr_tournament.1005.desc:0 "我之前一直看好的一位选手这场比赛表现欠佳，害我白白输掉了赌本。"
+ ftr_tournament.1005.a:0 "真不走运"
+
+ ftr_tournament.1006.t:0 "种子选手"
+ ftr_tournament.1006.desc:0 "一位生面孔的勇士出现在了赛场，其表现惊艳了观众。虽然其身份卑微，不过勇气可嘉。其高超武艺或许可以为我所用。"
+ ftr_tournament.1006.a:0 "来给我做事吧"
+ ftr_tournament.1006.b:0 "口头表扬即可"
+
+ ftr_tournament.1007.t:0 "赛场口角"
+ ftr_tournament.1007.desc:0 "和我同在看台观赛的[quarrel_target.GetName]举止粗鲁，我忍不住抱怨了几句，没想到[quarrel_target.GetSheHe]却不依不饶。"
+ ftr_tournament.1007.a:0 "怼回去"
+ ftr_tournament.1007.a.quarrel:0 "激烈争吵"
+ ftr_tournament.1007.a.quarrel.desc:0 "你与[root.GetName]在场外因为礼仪问题爆发力激烈的争吵"
+ ftr_tournament.1007.b:0 "高情商化解纠纷"
+ ftr_tournament.1007.c:0 "算了算了"
+
+ ftr_tournament.1008.t:0 "马有失蹄"
+ ftr_tournament.1008.desc:0 "一匹骏马在比赛过程中突然受惊，不受控制地冲入了观赛人群中。"
+ ftr_tournament.1008.injured:0 "比武大会-不幸受伤"
+ ftr_tournament.1008.injured.desc:0 "你在观看比赛时被受惊的马踩伤。"
+ ftr_tournament.1008.death:0 "比武大会-意外死亡"
+ ftr_tournament.1008.death.desc:0 "你在观看比赛时被受惊的马踩死。"
+ ftr_tournament.1008.a:0 "不！"
+
+ ftr_tournament.1009.t:0 "兴趣相投"
+ ftr_tournament.1009.desc:0 "在和[new_friend.GetName]一同观赛的过程中，我们惊奇地发现彼此居然有这么多相似之处，忍不住多聊了两句。"
+ ftr_tournament.1009.a:0 "很高兴成为朋友"
+
+ ftr_tournament.1010.t:0 "赛后狂欢"
+ ftr_tournament.1010.desc:0 "一场比赛结束后，大家冲下看台和场内的选手一起狂欢。人们大声呼喊着获胜选手的名字，因为他值得大家的尊敬。"
+ ftr_tournament.1010.a:0 "不枉来一遭"
+
+ ftr_tournament.1011.t:0 "不幸事故"
+ ftr_tournament.1011.desc:0 "比赛过程中看台突然坍塌，造成人员伤亡。眼下救助伤员要紧，比赛日程只能先放一放了。"
+ ftr_tournament.1011.a:0 "哎，都怪我"
+
+ ftr_tournament.2001.t:0 "旗鼓相当"
+ ftr_tournament.2001.desc:0 "我在比赛中与[competitor.GetName]遭遇，[competitor.GetName]技艺精湛，与我不相上下。经过艰难的战斗，我才终于获胜。"
+ ftr_tournament.2001.competitor:0 "比武大会-旗鼓相当"
+ ftr_tournament.2001.competitor.desc:0 "[root.GetName]在比赛中艰难地战胜了你。"
+ ftr_tournament.2001.a:0 "值得尊敬的对手"
+
+ ftr_tournament.2002.t:0 "轻松获胜"
+ ftr_tournament.2002.desc:0 "我在比赛中与[competitor.GetName]遭遇。不出意外，[competitor.GetName]被我轻松击败。"
+ ftr_tournament.2002.competitor:0 "比武大会-惜败"
+ ftr_tournament.2002.competitor.desc:0 "[root.GetName]在比赛中轻易地战胜了你。"
+ ftr_tournament.2002.a:0 "水平尚待提高啊"
+
+ ftr_tournament.2003.t:0 "不打不相识"
+ ftr_tournament.2003.desc:0 "我与[new_friend.GetName]在比赛中打得难分难解，[new_friend.GetHerHis]武艺确实值得尊敬。不得不说我还有很多地方需要向[new_friend.GetHerHim]学习呢。"
+ ftr_tournament.2003.a:0 "不错不错"
+
+ ftr_tournament.2004.t:0 "怒火中烧"
+ ftr_tournament.2004.desc:0 "[new_rival.GetName]在比赛中口出狂言，在[new_rival.GetHerHis]的语境下我仿佛就是个跳梁小丑。真是难以忍受这种傲气。"
+ ftr_tournament.2004.a:0 "有种来战"
+
+ ftr_tournament.2005.t:0 "种子选手"
+ ftr_tournament.2005.desc:0 "一位生面孔的勇士出现在了赛场，其表现惊艳了观众。虽然其身份卑微，不过勇气可嘉。其高超武艺或许可以为我所用。"
+ ftr_tournament.2005.a:0 "来给我做事吧"
+ ftr_tournament.2005.b:0 "口头表扬即可"
+
+ ftr_tournament.2006.t:0 "失手伤人"
+ ftr_tournament.2006.desc:0 "比赛正处于白热化阶段，我与[competitor.GetName]激战了十几个回合。突然我的刀刃击中了[competitor.GetHerHis]膝盖，[competitor.GetSheHe]一个踉跄栽倒在地，脑袋正好撞在赛场周围的拒马桩尖上。"
+ ftr_tournament.2006.injured:0 "比武大会-不幸受伤"
+ ftr_tournament.2006.injured.desc:0 "[root.GetName]在比赛中意外击伤了你。"
+ ftr_tournament.2006.death:0 "比武大会-意外死亡"
+ ftr_tournament.2006.death.desc:0 "你死于一场比赛事故。"
+ ftr_tournament.2006.competitor_death:0 "比武大会-意外死亡"
+ ftr_tournament.2006.competitor_death.desc:0 "[competitor.GetName]死于一场比赛事故。"
+ ftr_tournament.2006.a:0 "快来救人！"
+
+ ftr_tournament.2007.t:0 "武器损坏"
+ ftr_tournament.2007.desc:0 "在一场关键比赛中，我的武器意外折断，导致我输掉了比赛。后面我得加把劲了。"
+ ftr_tournament.2007.a:0 "有点可惜"
+
+ ftr_tournament.2008.t:0 "骑士精神"
+ ftr_tournament.2008.desc:0 "[competitor.GetName]在与我的对战中意外受伤，在医务人员赶来前，我及时帮[competitor.GetHerHim]包扎好了伤口，这才救下一命。"
+ ftr_tournament.2008.a:0 "救人要紧"
+
+ ftr_tournament.2009.t:0 "仇人相见"
+ ftr_tournament.2009.desc:0 "我的仇敌[new_rival.GetName]在比赛中成为了我的对手，我在脑海中早已推演了一万种杀死[new_rival.GetHerHim]的办法，没想到今天会是这样一种形式。"
+ ftr_tournament.2009.a:0 "分外眼红"
+
+ ftr_tournament.2010.t:0 "亲友团啦啦队"
+ ftr_tournament.2010.desc:0 "我的亲人[family.GetName]在比赛中为我加油助威，在亲人们的加油声中，我取得了比赛的胜利。"
+ ftr_tournament.2010.a:0 "谢谢你们"
+
+ ftr_tournament.2011.t:0 "骑枪对冲"
+ ftr_tournament.2011.desc:0 "最为刺激的骑枪大赛开始了，我和[competitor.GetName]都骑着快马急速冲向对方。[competitor.GetName]被我一枪戳下马，我还没来得及高兴，就发现他已经大出血了。"
+ ftr_tournament.2011.a:0 "快来救人！"
+
+ ftr_tournament.2012.t:0 "马匹受伤"
+ ftr_tournament.2012.desc:0 "我的爱驹在比赛中不幸受伤，我无缘下一场比赛。一想到马儿的哀鸣和渐渐远去的奖杯我就心痛不已。"
+ ftr_tournament.2012.a:0 "好好养伤，下一轮我们还有机会"
+
+ ftr_tournament.2013.t:0 "骑士精神"
+ ftr_tournament.2013.desc:0 "[competitor.GetName]在与我的对战中意外受伤，在医务人员赶来前，我及时帮[competitor.GetHerHim]包扎好了伤口，这才救下一命。"
+ ftr_tournament.2013.a:0 "救人要紧"
+
+ ftr_tournament.2014.t:0 "抢跑选手"
+ ftr_tournament.2014.desc:0 "选手[competitor.GetName]在赛马比赛中抢跑并取得了好名次，我亲眼目睹，心中不由得怒火中烧。"
+ ftr_tournament.2014.a:0 "裁判，有人犯规"
+ ftr_tournament.2014.b:0 "算了"
+
+ ftr_tournament.2015.t:0 "观众的欢呼"
+ ftr_tournament.2015.desc:0 "在激烈的比赛中，场外的观众为我英勇的表现欢呼。我也不由得虎躯一震，用自己的实力回应大家的期待。"
+ ftr_tournament.2015.a:0 "强者就是如此"

@@ -1,0 +1,5 @@
+﻿l_simp_chinese:
+ activity_tournament:0 "比武大会"
+ activity_tournament_name:0 "[ACTIVITY.GetOwner.GetNamePossessiveOrMy|U]举办的比武大会"
+ activity_tournament_desc:0 "领地内每个有一定身份的人都被邀请参加一场盛大的比武大会，以建立和加强友谊与忠诚的纽带。"
+ activity_tournament_owner:0 "东道主"

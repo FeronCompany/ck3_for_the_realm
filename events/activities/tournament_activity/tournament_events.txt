@@ -40,8 +40,8 @@ ftr_tournament.0001 = {
 
 	trigger = {
 		is_available_for_activity_trigger = yes
-		exists = scope:activity.activity_owner
-		target_is_liege_or_above = scope:activity.activity_owner
+		exists = scope:host
+		target_is_liege_or_above = scope:host
 		NOT = { exists = var:is_handling_tournament_invitation }
 	}
 
@@ -59,7 +59,7 @@ ftr_tournament.0001 = {
 	}
 
 	immediate = {
-		scope:activity.activity_owner = {
+		scope:host = {
 			save_scope_as = sender
 		}
 		scope:activity.activity_province = {
@@ -128,7 +128,7 @@ ftr_tournament.0002 = {
 	trigger = {
 		is_available_for_activity_trigger = yes
 		NOT = { exists = var:is_handling_tournament_invitation }
-		exists = scope:activity.activity_owner #In case the activity owner dies waiting...
+		exists = scope:host #In case the activity owner dies waiting...
 	}
 
 	on_trigger_fail = { #Trigger invitation again if it was blocked because the character was handling another invitation
@@ -145,7 +145,7 @@ ftr_tournament.0002 = {
 	}
 
 	immediate = {
-		scope:activity.activity_owner = {
+		scope:host = {
 			save_scope_as = sender
 		}
 		scope:activity.activity_province = {
@@ -237,7 +237,7 @@ ftr_tournament.0003 = {
 	}
 
 	immediate = {
-		scope:activity.activity_owner = {
+		scope:host = {
 			save_scope_as = sender
 		}
 		scope:activity.activity_province = {
@@ -324,12 +324,14 @@ ftr_tournament.0004 = {
 				if = {
 					limit = {
 						var:tournament_role = 1
+						is_alive = yes
 					}
 					add_to_list = cavalry_group
 				}
 				else_if = {
 					limit = {
 						var:tournament_role = 2
+						is_alive = yes
 					}
 					add_to_list = infantry_group
 				}
@@ -406,6 +408,7 @@ ftr_tournament.0005 = {
 		}
 		trigger_event = {
 			on_action = tournament_spectator_events
+			days = { 1 5 }
 		}
 		ai_chance = {
 			base = 50
@@ -452,6 +455,7 @@ ftr_tournament.0005 = {
 		}
 		trigger_event = {
 			on_action = tournament_cavalry_events
+			days = { 1 5 }
 		}
 		ai_chance = {
 			base = 50
@@ -482,6 +486,7 @@ ftr_tournament.0005 = {
 		}
 		trigger_event = {
 			on_action = tournament_infantry_events
+			days = { 1 5 }
 		}
 		ai_chance = {
 			base = 50
@@ -538,6 +543,7 @@ ftr_tournament.0007 = {
 						days = 45
 					}
 					scope:activity = {
+						invite_character_to_activity = prev
 						accept_invitation_for_character = prev
 					}
 				}
@@ -563,6 +569,7 @@ ftr_tournament.0007 = {
 						days = 45
 					}
 					scope:activity = {
+						invite_character_to_activity = prev
 						accept_invitation_for_character = prev
 					}
 				}
@@ -680,6 +687,24 @@ ftr_tournament.0013 = {
 	}
 }
 
+#End for nothing happen
+ftr_tournament.0999 = {
+	type = character_event
+	title = ftr_tournament.0999.t
+	desc = ftr_tournament.0999.desc
+	theme = hunting
+	left_portrait = {
+		character = scope:host
+	}
+	
+	option = {
+		name = ftr_tournament.0999.a
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
 #Nice Intermatch Show
 ftr_tournament.1001 = {
 	type = character_event
@@ -693,6 +718,13 @@ ftr_tournament.1001 = {
 	
 	option = {
 		name = ftr_tournament.1001.a
+	}
+
+	after = {
+		trigger_event = {
+			on_action = tournament_spectator_events
+			days = { 5 10 }
+		}
 	}
 }
 
@@ -726,6 +758,13 @@ ftr_tournament.1002 = {
 	option = {
 		name = ftr_tournament.1002.a
 	}
+	
+	after = {
+		trigger_event = {
+			on_action = tournament_spectator_events
+			days = { 5 10 }
+		}
+	}
 }
 
 #Tie
@@ -742,6 +781,13 @@ ftr_tournament.1003 = {
 	
 	option = {
 		name = ftr_tournament.1003.a
+	}
+	
+	after = {
+		trigger_event = {
+			on_action = tournament_spectator_events
+			days = { 5 10 }
+		}
 	}
 }
 
@@ -770,6 +816,7 @@ ftr_tournament.1004 = {
 				every_participant = {
 					if = {
 						limit = {
+							exists = var:tournament_role
 							var:tournament_role = 0
 						}
 						random_list = {
@@ -808,15 +855,21 @@ ftr_tournament.1004 = {
 					}
 				}
 			}
-		}
-		complete_activity = yes
-		scope:host = {
-			trigger_event = ftr_tournament.1011
+			every_participant = {
+				trigger_event = ftr_tournament.1011
+			}
 		}
 	}
 	
 	option = {
 		name = ftr_tournament.1004.a
+	}
+	
+	after = {
+		trigger_event = {
+			on_action = tournament_spectator_events
+			days = { 5 10 }
+		}
 	}
 }
 
@@ -839,6 +892,13 @@ ftr_tournament.1005 = {
 			add = -15
 		}
 	}
+	
+	after = {
+		trigger_event = {
+			on_action = tournament_spectator_events
+			days = { 5 10 }
+		}
+	}
 }
 
 #Nice worrior
@@ -851,7 +911,7 @@ ftr_tournament.1006 = {
 		character = root
 		animation = admiration
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:nice_worrior
 		animation = personality_bold
 	}
@@ -879,13 +939,19 @@ ftr_tournament.1006 = {
 		scope:nice_worrior = {
 			add_opinion = {
 				target = root
-				modifier = gift_opinion
-				opinion = send_gift_opinion
+				modifier = ftr_reward_me_during_tournament
 			}
 		}
 	}
 	option = {
 		name = ftr_tournament.1006.b
+	}
+	
+	after = {
+		trigger_event = {
+			on_action = tournament_spectator_events
+			days = { 5 10 }
+		}
 	}
 }
 
@@ -899,9 +965,19 @@ ftr_tournament.1007 = {
 		character = root
 		animation = rage
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:quarrel_target
 		animation = rage
+	}
+
+	trigger = {
+		scope:activity = {
+			any_participant = {
+				NOT = { this = root }
+				exists = var:tournament_role
+				var:tournament_role = 0
+			}
+		}
 	}
 
 	immediate = {
@@ -909,6 +985,7 @@ ftr_tournament.1007 = {
 			every_participant = {
 				limit = {
 					NOT = { this = root }
+					exists = var:tournament_role
 					var:tournament_role = 0
 				}
 				add_to_temporary_list = spectator_list
@@ -923,7 +1000,7 @@ ftr_tournament.1007 = {
 	option = {
 		name = ftr_tournament.1007.a
 		add_opinion = {
-			target = quarrel_target
+			target = scope:quarrel_target
 			modifier = rival_insult_opinion
 		}
 		scope:quarrel_target = {
@@ -948,6 +1025,13 @@ ftr_tournament.1007 = {
 	option = {
 		name = ftr_tournament.1007.c
 		add_prestige = -100
+	}
+	
+	after = {
+		trigger_event = {
+			on_action = tournament_spectator_events
+			days = { 5 10 }
+		}
 	}
 }
 
@@ -974,6 +1058,7 @@ ftr_tournament.1008 = {
 		scope:activity = {
 			every_participant = {
 				limit = {
+					exists = var:tournament_role
 					var:tournament_role = 0
 				}
 				add_to_temporary_list = spectator_list
@@ -1009,6 +1094,13 @@ ftr_tournament.1008 = {
 	option = {
 		name = ftr_tournament.1008.a
 	}
+	
+	after = {
+		trigger_event = {
+			on_action = tournament_spectator_events
+			days = { 5 10 }
+		}
+	}
 }
 
 #be friends with other apectator
@@ -1021,9 +1113,20 @@ ftr_tournament.1009 = {
 		character = root
 		animation = happiness
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:new_friend
 		animation = happiness
+	}
+
+	trigger = {
+		scope:activity = {
+			any_participant = {
+				NOT = { this = root }
+				NOT = { has_relation_friend = root }
+				exists = var:tournament_role
+				var:tournament_role = 0
+			}
+		}
 	}
 
 	immediate = {
@@ -1032,6 +1135,7 @@ ftr_tournament.1009 = {
 				limit = {
 					NOT = { this = root }
 					NOT = { has_relation_friend = root }
+					exists = var:tournament_role
 					var:tournament_role = 0
 				}
 				add_to_temporary_list = spectator_list
@@ -1048,6 +1152,13 @@ ftr_tournament.1009 = {
 		set_relation_friend = {
 			reason = friend_nice_talk_during_tournament
 			target = scope:new_friend
+		}
+	}
+	
+	after = {
+		trigger_event = {
+			on_action = tournament_spectator_events
+			days = { 5 10 }
 		}
 	}
 }
@@ -1068,9 +1179,16 @@ ftr_tournament.1010 = {
 	option = {
 		name = ftr_tournament.1010.a
 	}
+	
+	after = {
+		trigger_event = {
+			on_action = tournament_spectator_events
+			days = { 5 10 }
+		}
+	}
 }
 
-#Stands crash for host
+#Stands crash for everyone
 ftr_tournament.1011 = {
 	type = character_event
 	title = ftr_tournament.1011.t
@@ -1085,5 +1203,1264 @@ ftr_tournament.1011 = {
 	
 	option = {
 		name = ftr_tournament.1011.a
+		if = {
+			limit = {
+				scope:host = root
+			}
+			scope:activity = {
+				complete_activity = yes
+			}
+		}
+	}
+}
+
+#Good competitor
+ftr_tournament.2001 = {
+	type = character_event
+	title = ftr_tournament.2001.t
+	desc = ftr_tournament.2001.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = war_attacker
+	}
+	right_portrait = {
+		character = scope:competitor
+		animation = war_attacker
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					exists = var:tournament_role
+					var:tournament_role = root.var:tournament_role
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = competitor
+		}
+		scope:competitor = {
+			send_interface_toast = {
+				title = ftr_tournament.2001.competitor
+				desc = ftr_tournament.2001.competitor.desc
+				left_icon = root
+				right_icon = scope:competitor
+			}
+			change_variable = {
+				name = tournament_score
+				subtract = 5
+			}
+		}
+		change_variable = {
+			name = tournament_score
+			add = 5
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2001.a
+	}
+	
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#EZ
+ftr_tournament.2002 = {
+	type = character_event
+	title = ftr_tournament.2002.t
+	desc = ftr_tournament.2002.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = war_attacker
+	}
+	right_portrait = {
+		character = scope:competitor
+		animation = shock
+	}
+	trigger = {
+		exists = var:tournament_role
+		scope:activity = {
+			any_participant = {
+				NOT = { this = root }
+				exists = var:tournament_role
+				var:tournament_role = root.var:tournament_role
+				prowess < root.prowess
+				is_alive = yes
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					exists = var:tournament_role
+					var:tournament_role = root.var:tournament_role
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = competitor
+		}
+		scope:competitor = {
+			send_interface_toast = {
+				title = ftr_tournament.2002.competitor
+				desc = ftr_tournament.2002.competitor.desc
+				left_icon = root
+				right_icon = scope:competitor
+			}
+			change_variable = {
+				name = tournament_score
+				subtract = 5
+			}
+		}
+		change_variable = {
+			name = tournament_score
+			add = 5
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2002.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#make friends with other competitor
+ftr_tournament.2003 = {
+	type = character_event
+	title = ftr_tournament.2003.t
+	desc = ftr_tournament.2003.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:new_friend
+		animation = happiness
+	}
+	trigger = {}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					NOT = { has_relation_friend = root }
+					exists = var:tournament_role
+					var:tournament_role = root.var:tournament_role
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = new_friend
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2003.a
+		set_relation_friend = {
+			reason = friend_nice_fight_during_tournament
+			target = scope:new_friend
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#make enemy with other competitor
+ftr_tournament.2004 = {
+	type = character_event
+	title = ftr_tournament.2004.t
+	desc = ftr_tournament.2004.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = anger
+	}
+	right_portrait = {
+		character = scope:new_rival
+		animation = anger
+	}
+	trigger = {}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					NOT = { has_relation_rival = root }
+					exists = var:tournament_role
+					var:tournament_role = root.var:tournament_role
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = new_rival
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2004.a
+		set_relation_rival = {
+			reason = rival_during_tournament
+			target = scope:new_rival
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#find nice worrior
+ftr_tournament.2005 = {
+	type = character_event
+	title = ftr_tournament.2005.t
+	desc = ftr_tournament.2005.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+	right_portrait = {
+		character = scope:nice_worrior
+		animation = personality_bold
+	}
+
+	immediate = {
+		create_character = {
+			gender = male
+			location = root.location
+			culture = root.culture
+			faith = root.faith
+			after_creation = {
+				add_prowess_skill = 15
+			}
+			save_scope_as = nice_worrior
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2005.a
+		pay_short_term_gold = {
+			gold = 50
+			target = scope:nice_worrior
+		}
+		recruit_courtier = scope:nice_worrior
+		scope:nice_worrior = {
+			add_opinion = {
+				target = root
+				modifier = ftr_reward_me_during_tournament
+			}
+		}
+	}
+	option = {
+		name = ftr_tournament.2005.b
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#hurt by accident
+ftr_tournament.2006 = {
+	type = character_event
+	title = ftr_tournament.2006.t
+	desc = ftr_tournament.2006.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:competitor
+		animation = pain
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					exists = var:tournament_role
+					var:tournament_role = root.var:tournament_role
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = competitor
+		}
+		scope:competitor = {
+			random_list = {
+				80 = {
+					send_interface_toast = {	
+						title = ftr_tournament.2006.injured
+						desc = ftr_tournament.2006.injured.desc
+						change_trait_rank = {
+							trait = wounded
+							rank = 1
+							max = 3
+						}
+					}
+					change_variable = {
+						name = tournament_score
+						subtract = 5
+					}
+				}
+				20 = {
+					send_interface_toast = {
+						title = ftr_tournament.2006.death
+						desc = ftr_tournament.2006.death.desc
+						death = {
+							death_reason = death_duel
+						}
+					}
+					scope:activity = {
+						every_participant = {
+							limit = {
+								NOT = { this = scope:competitor }
+							}
+							send_interface_toast = {
+								title = ftr_tournament.2006.competitor_death
+								desc = ftr_tournament.2006.competitor_death.desc
+								left_icon = root
+								right_icon = scope:competitor
+							}
+						}
+					}
+				}
+			}
+		}
+		change_variable = {
+			name = tournament_score
+			add = 5
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2006.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#weapon broken
+ftr_tournament.2007 = {
+	type = character_event
+	title = ftr_tournament.2007.t
+	desc = ftr_tournament.2007.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:competitor
+		animation = war_over_win
+	}
+	trigger = {
+		scope:activity = {
+			any_participant = {
+				NOT = { this = root }
+				exists = var:tournament_role
+				var:tournament_role = root.var:tournament_role
+				is_alive = yes
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					exists = var:tournament_role
+					var:tournament_role = root.var:tournament_role
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = competitor
+		}
+		scope:competitor = {
+			change_variable = {
+				name = tournament_score
+				add = 5
+			}
+		}
+		change_variable = {
+			name = tournament_score
+			subtract = 5
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2007.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#save competitor's life
+ftr_tournament.2008 = {
+	type = character_event
+	title = ftr_tournament.2008.t
+	desc = ftr_tournament.2008.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:competitor
+		animation = shock
+	}
+	trigger = {
+		scope:activity = {
+			any_participant = {
+				NOT = { this = root }
+				exists = var:tournament_role
+				var:tournament_role = root.var:tournament_role
+				NOT = { has_relation_friend = root }
+				is_alive = yes
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					exists = var:tournament_role
+					var:tournament_role = root.var:tournament_role
+					NOT = { has_relation_friend = root }
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = competitor
+		}
+		scope:competitor = {
+			change_variable = {
+				name = tournament_score
+				subtract = 5
+			}
+		}
+		change_variable = {
+			name = tournament_score
+			add = 5
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2008.a
+		random_list = {
+			60 = {
+				scope:competitor = {
+					set_relation_friend = {
+						reason = friend_save_life_during_tournament
+						target = root
+					}
+				}
+			}
+			40 = {
+				scope:competitor = {
+					add_opinion = {
+						target = root
+						modifier = ftr_save_me_during_tournament
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#face the enemy
+ftr_tournament.2009 = {
+	type = character_event
+	title = ftr_tournament.2009.t
+	desc = ftr_tournament.2009.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = anger
+	}
+	right_portrait = {
+		character = scope:new_rival
+		animation = anger
+	}
+	trigger = {
+		scope:activity = {
+			any_participant = {
+				NOT = { this = root }
+				has_relation_rival = root
+				exists = var:tournament_role
+				var:tournament_role = root.var:tournament_role
+				is_alive = yes
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					has_relation_rival = root
+					var:tournament_role = root.var:tournament_role
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = new_rival
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2009.a
+		random_list = {
+			50 = {
+				send_interface_toast = {	
+					title = ftr_tournament.2006.injured
+					desc = ftr_tournament.2006.injured.desc
+					change_trait_rank = {
+						trait = wounded
+						rank = 2
+						max = 3
+					}
+				}
+				scope:new_rival = {
+					send_interface_toast = {	
+						title = ftr_tournament.2006.injured
+						desc = ftr_tournament.2006.injured.desc
+						change_trait_rank = {
+							trait = wounded
+							rank = 2
+							max = 3
+						}
+					}
+				}
+			}
+			30 = {
+				# Nothing happen
+			}
+			10 = {
+				send_interface_toast = {
+						title = ftr_tournament.2006.death
+						desc = ftr_tournament.2006.death.desc
+						death = {
+							death_reason = death_duel
+						}
+					}
+					scope:activity = {
+						every_participant = {
+							limit = {
+								NOT = { this = scope:competitor }
+							}
+							send_interface_toast = {
+								title = ftr_tournament.2006.competitor_death
+								desc = ftr_tournament.2006.competitor_death.desc
+								left_icon = root
+								right_icon = scope:competitor
+							}
+						}
+					}
+			}
+			10 = {
+				scope:new_rival = {
+					send_interface_toast = {
+						title = ftr_tournament.2006.death
+						desc = ftr_tournament.2006.death.desc
+						death = {
+							death_reason = death_duel
+						}
+					}
+					scope:activity = {
+						every_participant = {
+							limit = {
+								NOT = { this = scope:competitor }
+							}
+							send_interface_toast = {
+								title = ftr_tournament.2006.competitor_death
+								desc = ftr_tournament.2006.competitor_death.desc
+								left_icon = root
+								right_icon = scope:competitor
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#cheers from family
+ftr_tournament.2010 = {
+	type = character_event
+	title = ftr_tournament.2010.t
+	desc = ftr_tournament.2010.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = war_over_win
+	}
+	right_portrait = {
+		character = scope:family
+		animation = love
+	}
+	trigger = {
+		scope:activity = {
+			any_participant = {
+				NOT = { this = root }
+				is_close_family_of = root
+				exists = var:tournament_role
+				var:tournament_role = 0
+				is_alive = yes
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					is_close_family_of = root
+					var:tournament_role = 0
+					is_alive = yes
+				}
+				add_to_temporary_list = family_list
+			}
+		}
+		random_in_list = {
+			list = family_list
+			save_scope_as = family
+		}
+		change_variable = {
+			name = tournament_score
+			add = 5
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2010.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#hurt by accident on horse
+ftr_tournament.2011 = {
+	type = character_event
+	title = ftr_tournament.2011.t
+	desc = ftr_tournament.2011.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:competitor
+		animation = pain
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					exists = var:tournament_role
+					var:tournament_role = root.var:tournament_role
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = competitor
+		}
+		scope:competitor = {
+			random_list = {
+				60 = {
+					send_interface_toast = {	
+						title = ftr_tournament.2006.injured
+						desc = ftr_tournament.2006.injured.desc
+						change_trait_rank = {
+							trait = wounded
+							rank = 2
+							max = 3
+						}
+					}
+					change_variable = {
+						name = tournament_score
+						subtract = 5
+					}
+				}
+				40 = {
+					send_interface_toast = {
+						title = ftr_tournament.2006.death
+						desc = ftr_tournament.2006.death.desc
+						death = {
+							death_reason = death_duel
+						}
+					}
+					scope:activity = {
+						every_participant = {
+							limit = {
+								NOT = { this = scope:competitor }
+							}
+							send_interface_toast = {
+								title = ftr_tournament.2006.competitor_death
+								desc = ftr_tournament.2006.competitor_death.desc
+								left_icon = root
+								right_icon = scope:competitor
+							}
+						}
+					}
+				}
+			}
+		}
+		change_variable = {
+			name = tournament_score
+			add = 5
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2011.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#horse hurt
+ftr_tournament.2012 = {
+	type = character_event
+	title = ftr_tournament.2012.t
+	desc = ftr_tournament.2012.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:competitor
+		animation = war_over_win
+	}
+	trigger = {
+		scope:activity = {
+			any_participant = {
+				NOT = { this = root }
+				exists = var:tournament_role
+				var:tournament_role = root.var:tournament_role
+				is_alive = yes
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					exists = var:tournament_role
+					var:tournament_role = root.var:tournament_role
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = competitor
+		}
+		scope:competitor = {
+			change_variable = {
+				name = tournament_score
+				add = 5
+			}
+		}
+		change_variable = {
+			name = tournament_score
+			subtract = 5
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2012.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#save knight
+ftr_tournament.2013 = {
+	type = character_event
+	title = ftr_tournament.2013.t
+	desc = ftr_tournament.2013.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:competitor
+		animation = shock
+	}
+	trigger = {
+		scope:activity = {
+			any_participant = {
+				NOT = { this = root }
+				exists = var:tournament_role
+				var:tournament_role = root.var:tournament_role
+				NOT = { has_relation_friend = root }
+				is_alive = yes
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					exists = var:tournament_role
+					var:tournament_role = root.var:tournament_role
+					NOT = { has_relation_friend = root }
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = competitor
+		}
+		scope:competitor = {
+			change_variable = {
+				name = tournament_score
+				subtract = 5
+			}
+		}
+		change_variable = {
+			name = tournament_score
+			add = 5
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2013.a
+		random_list = {
+			60 = {
+				scope:competitor = {
+					set_relation_friend = {
+						reason = friend_save_life_during_tournament
+						target = root
+					}
+				}
+			}
+			40 = {
+				scope:competitor = {
+					add_opinion = {
+						target = root
+						modifier = ftr_save_me_during_tournament
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#dirty competitor
+ftr_tournament.2014 = {
+	type = character_event
+	title = ftr_tournament.2014.t
+	desc = ftr_tournament.2014.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = anger
+	}
+	right_portrait = {
+		character = scope:competitor
+		animation = anger
+	}
+	trigger = {
+		scope:activity = {
+			any_participant = {
+				NOT = { this = root }
+				NOT = { has_relation_rival = root }
+				exists = var:tournament_role
+				var:tournament_role = root.var:tournament_role
+				NOT = { has_trait = honest }
+				NOT = { has_trait = just }
+				is_alive = yes
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			every_participant = {
+				limit = {
+					NOT = { this = root }
+					NOT = { has_relation_rival = root }
+					exists = var:tournament_role
+					var:tournament_role = root.var:tournament_role
+					NOT = { has_trait = honest }
+					NOT = { has_trait = just }
+					is_alive = yes
+				}
+				add_to_temporary_list = competitor_list
+			}
+		}
+		random_in_list = {
+			list = competitor_list
+			save_scope_as = competitor
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2014.a
+		set_relation_rival = {
+			reason = rival_during_tournament
+			target = scope:competitor
+		}
+		hidden_effect = {
+			random_list = {
+				70 = {
+					scope:competitor = {
+						change_variable = {
+							name = tournament_score
+							subtract = 10
+						}
+					}
+				}
+				30 = {
+					#Nothing happen
+				}
+			}
+		}
+	}
+	option = {
+		name = ftr_tournament.2014.b
+		custom_description = {
+			text = "ftr_let_competitor_cheat_text"
+			scope:competitor = {
+				change_variable = {
+					name = tournament_score
+					add = 5
+				}
+			}
+			change_variable = {
+				name = tournament_score
+				subtract = 5
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
+	}
+}
+
+#cheers from spectators
+ftr_tournament.2015 = {
+	type = character_event
+	title = ftr_tournament.2015.t
+	desc = ftr_tournament.2015.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = war_over_win
+	}
+	trigger = {}
+
+	immediate = {
+		change_variable = {
+			name = tournament_score
+			add = 5
+		}
+	}
+	
+	option = {
+		name = ftr_tournament.2015.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				var:tournament_role = 2
+			}
+			trigger_event = {
+				on_action = tournament_infantry_events
+				days = { 5 10 }
+			}
+		}
+		else = {
+			trigger_event = {
+				on_action = tournament_cavalry_events
+				days = { 5 10 }
+			}
+		}
 	}
 }

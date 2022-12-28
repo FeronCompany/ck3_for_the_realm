@@ -43,3 +43,9 @@
 
  ftr_tournament_champion_modifier:0 "比武大会冠军"
  ftr_tournament_champion_modifier_desc:0 "比武大会冠军"
+
+ ftr_save_me_during_tournament:0 "救命恩人"
+ ftr_save_me_during_tournament_desc:0 "在比武大会中救了我一命"
+
+ ftr_reward_me_during_tournament:0 "收到打赏"
+ ftr_reward_me_during_tournament_desc:0 "在比武大会中打赏了我"

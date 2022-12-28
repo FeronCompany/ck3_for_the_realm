@@ -247,8 +247,8 @@
  ftr_tournament.0005.t:0 "Tournament Opens"
  ftr_tournament.0005.desc:0 "The tournament opened as scheduled, many athletes are eager to try, ready to show their strength here, do I want to do something?"
  ftr_tournament.0005.a:0 "I'll be a spectator."
- ftr_tournament.0005.b:0 "I'll join the close combat game."
- ftr_tournament.0005.c:0 "I'll join horsemen match."
+ ftr_tournament.0005.b:0 "I'll join horsemen match."
+ ftr_tournament.0005.c:0 "I'll join the close combat game."
 
  ftr_tournament.0006.t:0 "Tournament Closes"
  ftr_tournament.0006.desc:0 "The tournament came to an end with the cheers of the crowd. It's time to announce the winners of this competition, they are [infantry_champion.GetName] in the close combat group and [cavalry_champion.GetName] in the riding group. Let's cheer for them!"
@@ -277,3 +277,134 @@
  ftr_tournament.0013.t:0 "Host In War"
  ftr_tournament.0013.desc:0 "Shocked to hear that the host of the tournament [host.GetName] was involved in a war, the tournament site is now leaderless, and the tournament schedule has to be put aside."
  ftr_tournament.0013.a:0 "Disappointing."
+
+ ftr_tournament.0999.t:0 "End with no reason"
+ ftr_tournament.0999.desc:0 "---<DEBUG>---。"
+ ftr_tournament.0999.a:0 "<DEBUG>"
+
+ ftr_tournament.1001.t:0 "Inter-match Performance"
+ ftr_tournament.1001.desc:0 "After a hearty game, the organizers arranged a gorgeous inter-match performance. Take a good rest and get ready to watch the next game."
+ ftr_tournament.1001.a:0 "What a day"
+
+ ftr_tournament.1002.t:0 "I Can Make it"
+ ftr_tournament.1002.desc:0 "I witnessed a hearty game with my own eyes, and I couldn't help but regret it after the game. Why didn't I sign up for the competition in the first place?"
+ ftr_tournament.1002.a:0 "I can make it."
+
+ ftr_tournament.1003.t:0 "Draw"
+ ftr_tournament.1003.desc:0 "The two players are of equal strength, and they are indistinguishable after dozens of rounds. Like the rest of the audience, I shouted to cheer for the players I supported. Don't let everyone down."
+ ftr_tournament.1003.a:0 "Come on!"
+
+ ftr_tournament.1004.t:0 "Stand Collapses"
+ ftr_tournament.1004.desc:0 "When everyone cheered and shouted for the players in the arena in unison, the temporary stands of the arena suddenly collapsed, and it was inevitable that there would be casualties."
+ ftr_tournament.1004.injured:0 "Unfortunately Injured"
+ ftr_tournament.1004.injured.desc:0 "You are injured in a stand crash accident."
+ ftr_tournament.1004.death:0 "Unfortunately Death"
+ ftr_tournament.1004.death.desc:0 "You are dead due to a stand crash accident."
+ ftr_tournament.1004.a:0 "No!"
+
+ ftr_tournament.1005.t:0 "Wrong Choice"
+ ftr_tournament.1005.desc:0 "A player I had been bullish on before did not perform well in this game, and I lost my bet in vain."
+ ftr_tournament.1005.a:0 "Unlucky"
+
+ ftr_tournament.1006.t:0 "Seeded Player"
+ ftr_tournament.1006.desc:0 "A fresh-faced warrior appeared on the field, and his performance amazed the audience. Although his status is humble, his courage is commendable. His superb martial arts may be of use to me."
+ ftr_tournament.1006.a:0 "Come and work for me."
+ ftr_tournament.1006.b:0 "Just praise."
+
+ ftr_tournament.1007.t:0 "Field Spat"
+ ftr_tournament.1007.desc:0 "[quarrel_target.GetName], who was watching the game with me in the stands, behaved rudely, and I couldn't help but complain a few words, but I didn't expect [quarrel_target.GetHerHim] to be reluctant."
+ ftr_tournament.1007.a:0 "Strike back"
+ ftr_tournament.1007.b:0 "Resolve dissagreement."
+ ftr_tournament.1007.c:0 "Let it be."
+
+ ftr_tournament.1008.t:0 "Horse Frightened"
+ ftr_tournament.1008.desc:0 "A horse suddenly startled during the race and rushed into the crowd uncontrollably."
+ ftr_tournament.1008.injured:0 "Unfortunately Injured"
+ ftr_tournament.1008.injured.desc:0 "You are injured by a frightened horse during tournament."
+ ftr_tournament.1008.death:0 "Unfortunately Death"
+ ftr_tournament.1008.death.desc:0 "You are killed by a frightened horse during tournament."
+ ftr_tournament.1008.a:0 "Oh, no!"
+
+ ftr_tournament.1009.t:0 "Congenial Interests"
+ ftr_tournament.1009.desc:0 "In the process of watching the game with [new_friend.GetName], we were surprised to find so many similarities with each other, and we couldn't help chatting a few more words."
+ ftr_tournament.1009.a:0 "Nice to be friend of you."
+
+ ftr_tournament.1010.t:0 "Post-game Carnival"
+ ftr_tournament.1010.desc:0 "After a game, everyone rushed down the stands to revel with the players in the field. People shouted the name of the winner because he deserved everyone's respect."
+ ftr_tournament.1010.a:0 "Nice to attend"
+
+ ftr_tournament.1011.t:0 "Incident"
+ ftr_tournament.1011.desc:0 "During the game, the stands suddenly collapsed, causing casualties. It is important to rescue the wounded right now, and the game schedule can only be put aside for now."
+ ftr_tournament.1011.a:0 "All my fault"
+
+ ftr_tournament.2001.t:0 "Evenly Matched"
+ ftr_tournament.2001.desc:0 "I met [competitor.GetName] in the competition, [competitor.GetName] is very skilled and comparable to me. After a tough battle, I finally won."
+ ftr_tournament.2001.competitor:0 "Evenly Matched"
+ ftr_tournament.2001.competitor.desc:0 "[root.GetName] defeat you in match after a tough battle."
+ ftr_tournament.2001.a:0 "A worthy opponent."
+
+ ftr_tournament.2002.t:0 "Easy Victory"
+ ftr_tournament.2002.desc:0 "I met [competitor.GetName] in game. Without any doublt, [competitor.GetName] was easily defeated by me."
+ ftr_tournament.2002.competitor:0 "Defeated"
+ ftr_tournament.2002.competitor.desc:0 "[root.GetName] defeated you easily in game."
+ ftr_tournament.2002.a:0 "Need more improvement."
+
+ ftr_tournament.2003.t:0 "No Fight, No Acquaintance"
+ ftr_tournament.2003.desc:0 "I played inextricably with [competitor.GetName] in the competition, and [competitor.GetHerHis] martial arts are really respectable. I have to say that I still have a lot to learn from [competitor.GetHimHer]."
+ ftr_tournament.2003.a:0 "Nice Battle"
+
+ ftr_tournament.2004.t:0 "Rage"
+ ftr_tournament.2004.desc:0 "[Competitor.GetName] spoke wildly during the game, and I was like a jumping clown in the context of [competitor.GetHerHis]. It's unbearable to be arrogant."
+ ftr_tournament.2004.a:0 "Come and fight!"
+
+ ftr_tournament.2005.t:0 "Seeded Player"
+ ftr_tournament.2005.desc:0 "A fresh-faced warrior appeared on the field, and his performance amazed the audience. Although his status is humble, his courage is commendable. His superb martial arts may be of use to me."
+ ftr_tournament.2005.a:0 "Come and work for me."
+ ftr_tournament.2005.b:0 "Just praise."
+
+ ftr_tournament.2006.t:0 "Hurt by Accident"
+ ftr_tournament.2006.desc:0 "In the heat of the game, I fought [competitor.GetName] fiercely for more than a dozen rounds. Suddenly my blade hit [competitor.GetHerHis] knee, and [competitor.GetSheHe] stumbled to the ground, hitting his head on the point of the chevaux-de-frise around the field."
+ ftr_tournament.2006.injured:0 "Hut by Accident"
+ ftr_tournament.2006.injured.desc:0 "[root.GetName] hurt you by accident during tournament."
+ ftr_tournament.2006.death:0 "Death by Accident"
+ ftr_tournament.2006.death.desc:0 "You died in accident during tournament"
+ ftr_tournament.2006.competitor_death:0 "Death by Accident"
+ ftr_tournament.2006.competitor_death.desc:0 "[competitor.GetName] died accidentally in a match."
+ ftr_tournament.2006.a:0 "Medic!"
+
+ ftr_tournament.2007.t:0 "Weapon Damage"
+ ftr_tournament.2007.desc:0 "In a crucial game, my weapon accidentally snapped and I lost the game. I have to work harder later."
+ ftr_tournament.2007.a:0 "What a pity."
+
+ ftr_tournament.2008.t:0 "Chivalry"
+ ftr_tournament.2008.desc:0 "[competitor.GetName] was accidentally injured in the fight with me, and before the medical staff arrived, I bandaged the wound for [competitor.GetHerHim] in time to save [competitor.GetHerHis] life."
+ ftr_tournament.2008.a:0 "Save life first."
+
+ ftr_tournament.2009.t:0 "Face The Enemy"
+ ftr_tournament.2009.desc:0 "My enemy [new_rival.GetName] became my opponent in the game, and I had already deduced 10,000 ways to kill [new_rival.GetHerHim] in my mind, but I didn't expect it to be such a form today."
+ ftr_tournament.2009.a:0 "Rage from heart"
+
+ ftr_tournament.2010.t:0 "Family and Friends Cheerleading"
+ ftr_tournament.2010.desc:0 "My relative [family.GetName] cheered for me in the game, and with the cheers of my relatives, I won the game."
+ ftr_tournament.2010.a:0 "Thank you."
+
+ ftr_tournament.2011.t:0 "Knight's Charge!"
+ ftr_tournament.2011.desc:0 "The most exciting lance competition began. [competitor.GetName] and I both rushed to each other on fast horses. [competitor.GetName] was stabbed off the horse by me, and before I could be happy, I found that he was bleeding profusely."
+ ftr_tournament.2011.a:0 "Medic!"
+
+ ftr_tournament.2012.t:0 "Horse Injury"
+ ftr_tournament.2012.desc:0 "My foal was unfortunately injured in the race and I missed the next race. It hurts my heart to think of the whining of the horses and the passing trophies."
+ ftr_tournament.2012.a:0 "Recover well, we still have a chance in the next round."
+
+ ftr_tournament.2013.t:0 "Chivalry"
+ ftr_tournament.2013.desc:0 "[competitor.GetName] was accidentally injured in the fight with me, and before the medical staff arrived, I bandaged the wound for [competitor.GetHerHim] in time to save [competitor.GetHerHis] life."
+ ftr_tournament.2013.a:0 "Save life first."
+
+ ftr_tournament.2014.t:0 "Cheat Player"
+ ftr_tournament.2014.desc:0 "The competitor [competitor.GetName] snatched a good place in the horse race by cheat, and I couldn't help but be furious when I saw it with my own eyes."
+ ftr_tournament.2014.a:0 "Referee, someone fouled."
+ ftr_tournament.2014.b:0 "So be it."
+
+ ftr_tournament.2015.t:0 "Audience Cheers"
+ ftr_tournament.2015.desc:0 "In the fierce competition, the audience outside the venue cheered for my heroic performance. I couldn't help but be shocked and responded to everyone's expectations with my own strength."
+ ftr_tournament.2015.a:0 "The strong deserve such cheers"

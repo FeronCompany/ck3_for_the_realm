@@ -16,6 +16,7 @@
 		
 		activity_owner = {
 			# Check for special guest and make sure they join the party; the acceptance was done in the interaction
+			save_scope_as = host
 			invite_special_guest_to_activity_effect = yes
 
 			#Start by setting the "host spouse"
@@ -160,13 +161,13 @@
 					trigger_event = ftr_tournament.0003
 				}
 			}
+			# Add worriors into each group
+			trigger_event = ftr_tournament.0007
 		}
 	}
 	on_activate = {
 		# If there are guests present
 		activity_owner = { # The host gets their events
-			# Add worriors into each group
-			trigger_event = ftr_tournament.0007
 			# PreSend Close Event
 			trigger_event = {
 				id = ftr_tournament.0004
@@ -206,9 +207,6 @@
 	on_participant_death = {}
 
 	on_invalidated = {
-		activity_owner = {
-			save_scope_as = host
-		}
 		every_participant = {
 			limit = {
 				NOT = { this = scope:host }

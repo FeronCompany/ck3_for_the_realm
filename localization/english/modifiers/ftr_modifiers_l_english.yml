@@ -43,3 +43,9 @@
 
  ftr_tournament_champion_modifier:0 "Tournament Champion"
  ftr_tournament_champion_modifier_desc:0 "Tournament champion"
+
+ ftr_save_me_during_tournament:0 "Save My Life"
+ ftr_save_me_during_tournament_desc:0 "save my life during tournament"
+
+ ftr_reward_me_during_tournament:0 "Get Reward"
+ ftr_reward_me_during_tournament_desc:0 "Reward me during tournament"

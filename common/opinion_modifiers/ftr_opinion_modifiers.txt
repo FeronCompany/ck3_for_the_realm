@@ -29,3 +29,15 @@ ftr_hosted_successful_tournament = {
 	years = 10
 	decaying = yes
 }
+
+ftr_save_me_during_tournament = {
+	opinion = 50
+	years = 10
+	decaying = yes
+}
+
+ftr_reward_me_during_tournament = {
+	opinion = 40
+	years = 10
+	decaying = yes
+}

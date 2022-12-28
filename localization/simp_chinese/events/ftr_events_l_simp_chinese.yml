@@ -296,9 +296,9 @@
 
  ftr_tournament.1004.t:0 "看台坍塌"
  ftr_tournament.1004.desc:0 "正在大家齐声为赛场选手助威呐喊时，赛场临时搭建的看台却突然坍塌，这下难免会有伤亡了。"
- ftr_tournament.1004.injured:0 "不幸受伤"
+ ftr_tournament.1004.injured:0 "比武大会-不幸受伤"
  ftr_tournament.1004.injured.desc:0 "你在看台坍塌事故中不幸受伤。"
- ftr_tournament.1004.death:0 "意外死亡"
+ ftr_tournament.1004.death:0 "比武大会-意外死亡"
  ftr_tournament.1004.death.desc:0 "你在看台坍塌事故中不幸死亡。"
  ftr_tournament.1004.a:0 "不！"
 
@@ -321,9 +321,9 @@
 
  ftr_tournament.1008.t:0 "马有失蹄"
  ftr_tournament.1008.desc:0 "一匹骏马在比赛过程中突然受惊，不受控制地冲入了观赛人群中。"
- ftr_tournament.1008.injured:0 "不幸受伤"
+ ftr_tournament.1008.injured:0 "比武大会-不幸受伤"
  ftr_tournament.1008.injured.desc:0 "你在观看比赛时被受惊的马踩伤。"
- ftr_tournament.1008.death:0 "意外死亡"
+ ftr_tournament.1008.death:0 "比武大会-意外死亡"
  ftr_tournament.1008.death.desc:0 "你在观看比赛时被受惊的马踩死。"
  ftr_tournament.1008.a:0 "不！"
 
@@ -341,13 +341,13 @@
 
  ftr_tournament.2001.t:0 "旗鼓相当"
  ftr_tournament.2001.desc:0 "我在比赛中与[competitor.GetName]遭遇，[competitor.GetName]技艺精湛，与我不相上下。经过艰难的战斗，我才终于获胜。"
- ftr_tournament.2001.competitor:0 "旗鼓相当"
+ ftr_tournament.2001.competitor:0 "比武大会-旗鼓相当"
  ftr_tournament.2001.competitor.desc:0 "[root.GetName]在比赛中艰难地战胜了你。"
  ftr_tournament.2001.a:0 "值得尊敬的对手"
 
  ftr_tournament.2002.t:0 "轻松获胜"
  ftr_tournament.2002.desc:0 "我在比赛中与[competitor.GetName]遭遇。不出意外，[competitor.GetName]被我轻松击败。"
- ftr_tournament.2002.competitor:0 "惜败"
+ ftr_tournament.2002.competitor:0 "比武大会-惜败"
  ftr_tournament.2002.competitor.desc:0 "[root.GetName]在比赛中轻易地战胜了你。"
  ftr_tournament.2002.a:0 "水平尚待提高啊"
 
@@ -366,11 +366,11 @@
 
  ftr_tournament.2006.t:0 "失手伤人"
  ftr_tournament.2006.desc:0 "比赛正处于白热化阶段，我与[competitor.GetName]激战了十几个回合。突然我的刀刃击中了[competitor.GetHerHis]膝盖，[competitor.GetSheHe]一个踉跄栽倒在地，脑袋正好撞在赛场周围的拒马桩尖上。"
- ftr_tournament.2006.injured:0 "不幸受伤"
+ ftr_tournament.2006.injured:0 "比武大会-不幸受伤"
  ftr_tournament.2006.injured.desc:0 "[root.GetName]在比赛中意外击伤了你。"
- ftr_tournament.2006.death:0 "意外死亡"
+ ftr_tournament.2006.death:0 "比武大会-意外死亡"
  ftr_tournament.2006.death.desc:0 "你死于一场比赛事故。"
- ftr_tournament.2006.competitor_death:0 "意外死亡"
+ ftr_tournament.2006.competitor_death:0 "比武大会-意外死亡"
  ftr_tournament.2006.competitor_death.desc:0 "[competitor.GetName]死于一场比赛事故。"
  ftr_tournament.2006.a:0 "快来救人！"
 

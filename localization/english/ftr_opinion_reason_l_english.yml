@@ -6,10 +6,10 @@
  friend_nice_fight_during_tournament_corresponding:0 "[CHARACTER.GetShortUIName|U] had a good fight with [TARGET_CHARACTER.GetShortUIName] during tournament."
 
  friend_save_life_during_tournament:0 "[TARGET_CHARACTER.GetShortUIName|U] saved [CHARACTER.GetShortUIName]'s life during tournament。"
- friend_save_life_during_tournament_corresponding:0 "[CHARACTER.GetShortUIName|U] was saved by [TARGET_CHARACTER.GetShortUIName] during tournament。"
+ friend_save_life_during_tournament_corresponding:0 "[CHARACTER.GetShortUIName|U] saved [TARGET_CHARACTER.GetShortUIName]'s life during tournament。"
 
  friend_during_combat_guidance:0 "[TARGET_CHARACTER.GetShortUIName|U] gave inspiration to [CHARACTER.GetShortUIName] during combat guidance."
- friend_during_combat_guidance_corresponding:0 "[CHARACTER.GetShortUIName|U] was inspired by [TARGET_CHARACTER.GetShortUIName] during combat guidance."
+ friend_during_combat_guidance_corresponding:0 "[CHARACTER.GetShortUIName|U] gave inspiration to [TARGET_CHARACTER.GetShortUIName] during combat guidance."
 
  rival_during_tournament:0 "[TARGET_CHARACTER.GetShortUIName|U] quarrel with [CHARACTER.GetShortUIName] during tournament."
  rival_during_tournament_corresponding:0 "[CHARACTER.GetShortUIName|U] quarrel with [TARGET_CHARACTER.GetShortUIName] during tournament."

@@ -296,9 +296,9 @@
 
  ftr_tournament.1004.t:0 "Stand Collapses"
  ftr_tournament.1004.desc:0 "When everyone cheered and shouted for the players in the arena in unison, the temporary stands of the arena suddenly collapsed, and it was inevitable that there would be casualties."
- ftr_tournament.1004.injured:0 "Unfortunately Injured"
+ ftr_tournament.1004.injured:0 "Tournament - Unfortunately Injured"
  ftr_tournament.1004.injured.desc:0 "You are injured in a stand crash accident."
- ftr_tournament.1004.death:0 "Unfortunately Death"
+ ftr_tournament.1004.death:0 "Tournament - Unfortunately Death"
  ftr_tournament.1004.death.desc:0 "You are dead due to a stand crash accident."
  ftr_tournament.1004.a:0 "No!"
 
@@ -319,9 +319,9 @@
 
  ftr_tournament.1008.t:0 "Horse Frightened"
  ftr_tournament.1008.desc:0 "A horse suddenly startled during the race and rushed into the crowd uncontrollably."
- ftr_tournament.1008.injured:0 "Unfortunately Injured"
+ ftr_tournament.1008.injured:0 "Tournament - Unfortunately Injured"
  ftr_tournament.1008.injured.desc:0 "You are injured by a frightened horse during tournament."
- ftr_tournament.1008.death:0 "Unfortunately Death"
+ ftr_tournament.1008.death:0 "Tournament - Unfortunately Death"
  ftr_tournament.1008.death.desc:0 "You are killed by a frightened horse during tournament."
  ftr_tournament.1008.a:0 "Oh, no!"
 
@@ -339,13 +339,13 @@
 
  ftr_tournament.2001.t:0 "Evenly Matched"
  ftr_tournament.2001.desc:0 "I met [competitor.GetName] in the competition, [competitor.GetName] is very skilled and comparable to me. After a tough battle, I finally won."
- ftr_tournament.2001.competitor:0 "Evenly Matched"
+ ftr_tournament.2001.competitor:0 "Tournament - Evenly Matched"
  ftr_tournament.2001.competitor.desc:0 "[root.GetName] defeat you in match after a tough battle."
  ftr_tournament.2001.a:0 "A worthy opponent."
 
  ftr_tournament.2002.t:0 "Easy Victory"
  ftr_tournament.2002.desc:0 "I met [competitor.GetName] in game. Without any doublt, [competitor.GetName] was easily defeated by me."
- ftr_tournament.2002.competitor:0 "Defeated"
+ ftr_tournament.2002.competitor:0 "Tournament - Defeated"
  ftr_tournament.2002.competitor.desc:0 "[root.GetName] defeated you easily in game."
  ftr_tournament.2002.a:0 "Need more improvement."
 
@@ -364,11 +364,11 @@
 
  ftr_tournament.2006.t:0 "Hurt by Accident"
  ftr_tournament.2006.desc:0 "In the heat of the game, I fought [competitor.GetName] fiercely for more than a dozen rounds. Suddenly my blade hit [competitor.GetHerHis] knee, and [competitor.GetSheHe] stumbled to the ground, hitting his head on the point of the chevaux-de-frise around the field."
- ftr_tournament.2006.injured:0 "Hut by Accident"
+ ftr_tournament.2006.injured:0 "Tournament - Hurt by Accident"
  ftr_tournament.2006.injured.desc:0 "[root.GetName] hurt you by accident during tournament."
- ftr_tournament.2006.death:0 "Death by Accident"
+ ftr_tournament.2006.death:0 "Tournament - Death by Accident"
  ftr_tournament.2006.death.desc:0 "You died in accident during tournament"
- ftr_tournament.2006.competitor_death:0 "Death by Accident"
+ ftr_tournament.2006.competitor_death:0 "Tournament - Death by Accident"
  ftr_tournament.2006.competitor_death.desc:0 "[competitor.GetName] died accidentally in a match."
  ftr_tournament.2006.a:0 "Medic!"
 

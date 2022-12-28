@@ -801,6 +801,7 @@ ftr_tournament.1004 = {
 	}
 	trigger = {
 		NOT = { has_variable = has_1004 }
+		scope:host = root
 	}
 
 	immediate = {
@@ -856,14 +857,17 @@ ftr_tournament.1004 = {
 			activity_owner = {
 				save_scope_as = host
 			}
-			every_participant = {
-				trigger_event = ftr_tournament.1011
-			}
 		}
 	}
 	
 	option = {
 		name = ftr_tournament.1004.a
+		scope:activity = {
+			every_participant = {
+				trigger_event = ftr_tournament.1011
+			}
+			complete_activity = yes
+		}
 	}
 	
 	after = {
@@ -1141,9 +1145,16 @@ ftr_tournament.1009 = {
 	
 	option = {
 		name = ftr_tournament.1009.a
-		set_relation_friend = {
-			reason = friend_nice_talk_during_tournament
-			target = scope:new_friend
+		random_list = {
+			50 = {
+				set_relation_friend = {
+					reason = friend_nice_talk_during_tournament
+					target = scope:new_friend
+				}
+			}
+			50 = {
+				# Nothing happen
+			}
 		}
 	}
 	
@@ -1189,14 +1200,6 @@ ftr_tournament.1011 = {
 	
 	option = {
 		name = ftr_tournament.1011.a
-		if = {
-			limit = {
-				scope:host = root
-			}
-			scope:activity = {
-				complete_activity = yes
-			}
-		}
 	}
 }
 
@@ -1384,9 +1387,16 @@ ftr_tournament.2003 = {
 	
 	option = {
 		name = ftr_tournament.2003.a
-		set_relation_friend = {
-			reason = friend_nice_fight_during_tournament
-			target = scope:new_friend
+		random_list = {
+			50 = {
+				set_relation_friend = {
+					reason = friend_nice_talk_during_tournament
+					target = scope:new_friend
+				}
+			}
+			50 = {
+				# Nothing happen
+			}
 		}
 	}
 
@@ -1792,7 +1802,7 @@ ftr_tournament.2009 = {
 				scope:new_rival = {
 					send_interface_toast = {	
 						title = ftr_tournament.2006.injured
-						custom = ftr_tournament.2006.injured.desc
+						desc = ftr_tournament.2006.injured.desc
 						change_trait_rank = {
 							trait = wounded
 							rank = 2

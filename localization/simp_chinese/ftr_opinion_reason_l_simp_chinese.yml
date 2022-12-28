@@ -6,10 +6,10 @@
  friend_nice_fight_during_tournament_corresponding:0 "[CHARACTER.GetShortUIName|U]在一场比赛中与[TARGET_CHARACTER.GetShortUIName]不打不相识。"
 
  friend_save_life_during_tournament:0 "[TARGET_CHARACTER.GetShortUIName|U]在一场比赛中救了[CHARACTER.GetShortUIName]一命。"
- friend_save_life_during_tournament_corresponding:0 "[CHARACTER.GetShortUIName|U]在一场比赛中被[TARGET_CHARACTER.GetShortUIName]救了一命。"
+ friend_save_life_during_tournament_corresponding:0 "[CHARACTER.GetShortUIName|U]在一场比赛中救了[TARGET_CHARACTER.GetShortUIName]一命。"
 
  friend_during_combat_guidance:0 "[TARGET_CHARACTER.GetShortUIName|U]在武术训练中给予了[CHARACTER.GetShortUIName]启发。"
- friend_during_combat_guidance_corresponding:0 "[CHARACTER.GetShortUIName|U]在武术训练中受到了[TARGET_CHARACTER.GetShortUIName]的启发。"
+ friend_during_combat_guidance_corresponding:0 "[CHARACTER.GetShortUIName|U]在武术训练中给予了[TARGET_CHARACTER.GetShortUIName]启发。"
 
  rival_during_tournament:0 "[TARGET_CHARACTER.GetShortUIName|U]在比赛中与[CHARACTER.GetShortUIName]发生争吵。"
  rival_during_tournament_corresponding:0 "[CHARACTER.GetShortUIName|U]在比赛中与[TARGET_CHARACTER.GetShortUIName]发生争吵。"

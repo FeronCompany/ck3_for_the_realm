@@ -335,7 +335,7 @@
 
  ftr_tournament.1011.t:0 "Incident"
  ftr_tournament.1011.desc:0 "During the game, the stands suddenly collapsed, causing casualties. It is important to rescue the wounded right now, and the game schedule can only be put aside for now."
- ftr_tournament.1011.a:0 "All my fault"
+ ftr_tournament.1011.a:0 "What a tragedy"
 
  ftr_tournament.2001.t:0 "Evenly Matched"
  ftr_tournament.2001.desc:0 "I met [competitor.GetName] in the competition, [competitor.GetName] is very skilled and comparable to me. After a tough battle, I finally won."

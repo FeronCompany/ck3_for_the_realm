@@ -1,0 +1,10 @@
+﻿l_simp_chinese:
+ count_bureaucrat_male_common:0 "郡长"
+ count_bureaucrat_female_common:0 "郡长"
+ count_bureaucrat_title_common:0 "郡"
+ duchy_bureaucrat_male_common:0 "执政官"
+ duchy_bureaucrat_female_common:0 "执政官"
+ duchy_bureaucrat_title_common:0 "行省"
+ kingdom_bureaucrat_male_common:0 "总督"
+ kingdom_bureaucrat_female_common:0 "总督"
+ kingdom_bureaucrat_title_common:0 "大区"

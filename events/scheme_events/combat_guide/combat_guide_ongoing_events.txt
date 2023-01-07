@@ -553,8 +553,10 @@ combat_guide_ongoing.1007 = {
 				}
 				add_prowess_skill = 1
 				root = {
-					set_relation_friend = scope:target
-					reason = friend_during_combat_guidance
+					set_relation_friend = {
+						target = scope:target
+						reason = friend_during_combat_guidance
+					}
 				}
 			}
 			10 = {

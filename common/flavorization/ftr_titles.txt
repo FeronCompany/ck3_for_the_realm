@@ -1,0 +1,84 @@
+﻿
+count_bureaucrat_male_common = {
+	type = character
+	special = holder
+	gender = male
+	tier = county
+	priority = 100
+	governments = { centralism_government }
+	top_liege = no
+}
+
+count_bureaucrat_female_common = {
+	type = character
+	special = holder
+	gender = female
+	tier = county
+	priority = 100
+	governments = { centralism_government }
+	top_liege = no
+}
+
+count_bureaucrat_title_common = {
+	type = title
+	tier = county
+	priority = 100
+	governments = { centralism_government }
+	top_liege = no
+}
+
+duchy_bureaucrat_male_common = {
+	type = character
+	special = holder
+	gender = male
+	tier = duchy
+	priority = 100
+	governments = { centralism_government }
+	top_liege = no
+}
+
+duchy_bureaucrat_female_common = {
+	type = character
+	special = holder
+	gender = female
+	tier = duchy
+	priority = 100
+	governments = { centralism_government }
+	top_liege = no
+}
+
+duchy_bureaucrat_title_common = {
+	type = title
+	tier = duchy
+	priority = 100
+	governments = { centralism_government }
+	top_liege = no
+}
+
+kingdom_bureaucrat_male_common = {
+	type = character
+	special = holder
+	gender = male
+	tier = kingdom
+	priority = 100
+	governments = { centralism_government }
+	top_liege = no
+}
+
+kingdom_bureaucrat_female_common = {
+	type = character
+	special = holder
+	gender = female
+	tier = kingdom
+	priority = 100
+	governments = { centralism_government }
+	top_liege = no
+}
+
+kingdom_bureaucrat_title_common = {
+	type = title
+	tier = kingdom
+	priority = 100
+	governments = { centralism_government }
+	top_liege = no
+}

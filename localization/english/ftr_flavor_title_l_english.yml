@@ -1,0 +1,10 @@
+﻿l_english:
+ count_bureaucrat_male_common:0 "sheriff"
+ count_bureaucrat_female_common:0 "sheriff"
+ count_bureaucrat_title_common:0 "county"
+ duchy_bureaucrat_male_common:0 "preator"
+ duchy_bureaucrat_female_common:0 "preator"
+ duchy_bureaucrat_title_common:0 "province"
+ kingdom_bureaucrat_male_common:0 "governor"
+ kingdom_bureaucrat_female_common:0 "governor"
+ kingdom_bureaucrat_title_common:0 "region"

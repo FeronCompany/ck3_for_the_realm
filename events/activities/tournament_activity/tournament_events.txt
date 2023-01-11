@@ -705,13 +705,6 @@ ftr_tournament.0999 = {
 	}
 }
 
-scripted_effect ftr_spectator_after_tournament_event_effect = {
-	trigger_event = {
-		on_action = tournament_spectator_events
-		days = { 15 20 }
-	}
-}
-
 #Nice Intermatch Show
 ftr_tournament.1001 = {
 	type = character_event
@@ -725,10 +718,9 @@ ftr_tournament.1001 = {
 	
 	option = {
 		name = ftr_tournament.1001.a
-	}
-
-	after = {
-		ftr_spectator_after_tournament_event_effect = yes
+		stress_impact = {
+			base = medium_stress_impact_loss
+		}
 	}
 }
 
@@ -762,10 +754,6 @@ ftr_tournament.1002 = {
 	option = {
 		name = ftr_tournament.1002.a
 	}
-	
-	after = {
-		ftr_spectator_after_tournament_event_effect = yes
-	}
 }
 
 #Tie
@@ -783,10 +771,6 @@ ftr_tournament.1003 = {
 	option = {
 		name = ftr_tournament.1003.a
 	}
-	
-	after = {
-		ftr_spectator_after_tournament_event_effect = yes
-	}
 }
 
 #Stands crash
@@ -796,12 +780,12 @@ ftr_tournament.1004 = {
 	desc = ftr_tournament.1004.desc
 	theme = hunting
 	left_portrait = {
-		character = root
+		character = scope:host
 		animation = shock
 	}
 	trigger = {
 		NOT = { has_variable = has_1004 }
-		scope:host = root
+		scope:activity.activity_owner = root
 	}
 
 	immediate = {
@@ -869,10 +853,6 @@ ftr_tournament.1004 = {
 			complete_activity = yes
 		}
 	}
-	
-	after = {
-		ftr_spectator_after_tournament_event_effect = yes
-	}
 }
 
 #wrong bet
@@ -893,10 +873,6 @@ ftr_tournament.1005 = {
 		remove_short_term_gold = {
 			add = -15
 		}
-	}
-	
-	after = {
-		ftr_spectator_after_tournament_event_effect = yes
 	}
 }
 
@@ -948,10 +924,6 @@ ftr_tournament.1006 = {
 	}
 	option = {
 		name = ftr_tournament.1006.b
-	}
-	
-	after = {
-		ftr_spectator_after_tournament_event_effect = yes
 	}
 }
 
@@ -1026,10 +998,6 @@ ftr_tournament.1007 = {
 		name = ftr_tournament.1007.c
 		add_prestige = -100
 	}
-	
-	after = {
-		ftr_spectator_after_tournament_event_effect = yes
-	}
 }
 
 #horse charge into crowds
@@ -1090,10 +1058,6 @@ ftr_tournament.1008 = {
 	
 	option = {
 		name = ftr_tournament.1008.a
-	}
-	
-	after = {
-		ftr_spectator_after_tournament_event_effect = yes
 	}
 }
 
@@ -1157,10 +1121,6 @@ ftr_tournament.1009 = {
 			}
 		}
 	}
-	
-	after = {
-		ftr_spectator_after_tournament_event_effect = yes
-	}
 }
 
 #rejoice with competitors
@@ -1178,10 +1138,9 @@ ftr_tournament.1010 = {
 	
 	option = {
 		name = ftr_tournament.1010.a
-	}
-	
-	after = {
-		ftr_spectator_after_tournament_event_effect = yes
+		stress_impact = {
+			base = medium_stress_impact_loss
+		}
 	}
 }
 
@@ -1200,24 +1159,6 @@ ftr_tournament.1011 = {
 	
 	option = {
 		name = ftr_tournament.1011.a
-	}
-}
-
-scripted_effect ftr_after_tournament_event_effect = {
-	if = {
-		limit = {
-			var:tournament_role = 2
-		}
-		trigger_event = {
-			on_action = tournament_infantry_events
-			days = { 8 15 }
-		}
-	}
-	else = {
-		trigger_event = {
-			on_action = tournament_cavalry_events
-			days = { 8 15 }
-		}
 	}
 }
 
@@ -1272,10 +1213,6 @@ ftr_tournament.2001 = {
 	
 	option = {
 		name = ftr_tournament.2001.a
-	}
-	
-	after = {
-		ftr_after_tournament_event_effect = yes
 	}
 }
 
@@ -1343,10 +1280,6 @@ ftr_tournament.2002 = {
 	option = {
 		name = ftr_tournament.2002.a
 	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
-	}
 }
 
 #make friends with other competitor
@@ -1399,10 +1332,6 @@ ftr_tournament.2003 = {
 			}
 		}
 	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
-	}
 }
 
 #make enemy with other competitor
@@ -1447,10 +1376,6 @@ ftr_tournament.2004 = {
 			reason = rival_during_tournament
 			target = scope:new_rival
 		}
-	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
 	}
 }
 
@@ -1502,10 +1427,6 @@ ftr_tournament.2005 = {
 	}
 	option = {
 		name = ftr_tournament.2005.b
-	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
 	}
 }
 
@@ -1590,10 +1511,6 @@ ftr_tournament.2006 = {
 	option = {
 		name = ftr_tournament.2006.a
 	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
-	}
 }
 
 #weapon broken
@@ -1651,10 +1568,6 @@ ftr_tournament.2007 = {
 	
 	option = {
 		name = ftr_tournament.2007.a
-	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
 	}
 }
 
@@ -1735,10 +1648,6 @@ ftr_tournament.2008 = {
 				}
 			}
 		}
-	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
 	}
 }
 
@@ -1862,10 +1771,6 @@ ftr_tournament.2009 = {
 			}
 		}
 	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
-	}
 }
 
 #cheers from family
@@ -1918,10 +1823,6 @@ ftr_tournament.2010 = {
 	
 	option = {
 		name = ftr_tournament.2010.a
-	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
 	}
 }
 
@@ -2006,10 +1907,6 @@ ftr_tournament.2011 = {
 	option = {
 		name = ftr_tournament.2011.a
 	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
-	}
 }
 
 #horse hurt
@@ -2067,10 +1964,6 @@ ftr_tournament.2012 = {
 	
 	option = {
 		name = ftr_tournament.2012.a
-	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
 	}
 }
 
@@ -2151,10 +2044,6 @@ ftr_tournament.2013 = {
 				}
 			}
 		}
-	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
 	}
 }
 
@@ -2247,10 +2136,6 @@ ftr_tournament.2014 = {
 			}
 		}
 	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
-	}
 }
 
 #cheers from spectators
@@ -2274,9 +2159,8 @@ ftr_tournament.2015 = {
 	
 	option = {
 		name = ftr_tournament.2015.a
-	}
-
-	after = {
-		ftr_after_tournament_event_effect = yes
+		stress_impact = {
+			base = minor_stress_loss
+		}
 	}
 }

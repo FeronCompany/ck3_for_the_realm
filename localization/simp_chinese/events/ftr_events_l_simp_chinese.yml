@@ -337,7 +337,7 @@
 
  ftr_tournament.1011.t:0 "不幸事故"
  ftr_tournament.1011.desc:0 "比赛过程中看台突然坍塌，造成人员伤亡。眼下救助伤员要紧，比赛日程只能先放一放了。"
- ftr_tournament.1011.a:0 "哎，都怪我"
+ ftr_tournament.1011.a:0 "哎，真不幸"
 
  ftr_tournament.2001.t:0 "旗鼓相当"
  ftr_tournament.2001.desc:0 "我在比赛中与[competitor.GetName]遭遇，[competitor.GetName]技艺精湛，与我不相上下。经过艰难的战斗，我才终于获胜。"

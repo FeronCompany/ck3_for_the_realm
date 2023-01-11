@@ -10,7 +10,7 @@
 	is_valid = {}
 
 	cost = {
-		prestige = { value = 500 }
+		prestige = { value = 250 }
 	}
 
 	effect = {
@@ -81,7 +81,7 @@ feudal_convert_to_centralism_decision = {
 	}
 
 	cost = {
-		prestige = { value = 2000 }
+		prestige = { value = 1000 }
 	}
 
 	effect = {

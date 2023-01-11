@@ -446,3 +446,47 @@ ftr_realm_event.1005 = {
 
 	after = {}
 }
+
+# Add title law to bureaucrat titles
+ftr_realm_event.1006 = {
+	hidden = yes
+	trigger = {
+		is_landed = yes
+		is_independent_ruler = no
+		has_government = centralism_government
+		any_held_title = {
+			tier >= tier_duchy
+			NOT = {
+				has_title_law = bureacratic_succession_law
+			}
+		}
+	}
+	immediate = {
+		every_held_title = {
+			limit = {
+				tier >= tier_duchy
+				NOT = {
+					has_title_law = bureacratic_succession_law
+				}
+			}
+			add_title_law = bureacratic_succession_law
+		}
+	}
+}
+
+# Change government for ruler who has bureacrat titles
+ftr_realm_event.1007 = {
+	hidden = yes
+	trigger = {
+		is_landed = yes
+		is_independent_ruler = no
+		NOT = { has_government = centralism_government }
+		any_held_title = {
+			tier >= tier_duchy
+			has_title_law = bureacratic_succession_law
+		}
+	}
+	immediate = {
+		change_government = centralism_government
+	}
+}

@@ -6,8 +6,9 @@
 }
 
 quarterly_playable_pulse = {
-	random_events = {
-		chance_to_happen = 100
-		20 = ftr_realm_event.1005 # Top liege send bureaucrat to manage your land
+	events = {
+		ftr_realm_event.1005 # Top liege send bureaucrat to manage your land
+		ftr_realm_event.1006 # Add title law to bureaucrat titles
+		ftr_realm_event.1007 # Change government for ruler who has bureacrat titles
 	}
 }

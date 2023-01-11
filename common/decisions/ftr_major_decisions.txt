@@ -65,11 +65,7 @@ ftr_restore_roman_empire_decision = {
 	is_shown = {
 		is_ruler = yes
 		is_landed = yes
-		OR = {
-			has_title = title:e_byzantium
-			has_title = title:e_hre
-			has_title = title:e_italy
-		}
+		has_title = title:e_byzantium
 		
 		NOT = {  #Can only do it once.
 			is_target_in_global_variable_list = {

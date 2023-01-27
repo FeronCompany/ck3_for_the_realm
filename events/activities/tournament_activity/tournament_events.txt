@@ -317,6 +317,9 @@ ftr_tournament.0004 = {
 		character = scope:infantry_champion
 		animation = war_over_win
 	}
+	trigger = {
+		exists = scope:activity
+	}
 
 	immediate = {
 		scope:activity = {
@@ -361,6 +364,7 @@ ftr_tournament.0004 = {
 					target = root
 					modifier = ftr_hosted_successful_tournament
 				}
+				trigger_event = ftr_tournament.0006
 			}
 		}
 		scope:activity = {
@@ -870,9 +874,7 @@ ftr_tournament.1005 = {
 	
 	option = {
 		name = ftr_tournament.1005.a
-		remove_short_term_gold = {
-			add = -15
-		}
+		remove_short_term_gold = minor_gold_value
 	}
 }
 

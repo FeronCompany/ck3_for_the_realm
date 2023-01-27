@@ -184,15 +184,8 @@
 			}
 		}
 	}
-	on_complete = { # do nothing if not needed
-		activity_owner = {
-			target_weight_modifier_effect = {
-				VALUE = hunt_weight_modifier_value
-			}
-		}
+	on_complete = {
 		every_participant = {
-			limit = { NOT = { this = scope:activity.activity_owner } }
-			trigger_event = ftr_tournament.0006
 			target_weight_modifier_effect = {
 				VALUE = hunt_weight_modifier_value
 			}

@@ -32,3 +32,9 @@
  ftr_vassal_mediation_interaction:0 "<FTR>调停私斗"
  ftr_vassal_mediation_interaction_desc:0 "封臣们不应有对外战争之外的私斗"
  ftr_vassal_mediation_interaction_notification:0 "您的君主[actor.GetName]下令制止您参与的战争"
+
+ ftr_request_depose_interaction:0 "<FTR>奏请罢免官职"
+ ftr_request_depose_interaction_desc:0 "奏请领主罢免官职"
+ ftr_request_depose_interaction_notification:0 "奏请罢免官职"
+ ftr_request_depose_interaction_text:0 "[actor.GetName|U]上表弹劾[secondary_recipient.GetName|U]，并举荐[secondary_actor.GetName|U]接替职位。"
+ actor_secondary_ftr_request_depose_interaction:0 "备选官员"

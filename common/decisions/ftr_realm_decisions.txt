@@ -81,7 +81,7 @@ feudal_convert_to_centralism_decision = {
 	}
 
 	cost = {
-		prestige = { value = 1000 }
+		prestige = { value = 250 }
 	}
 
 	effect = {

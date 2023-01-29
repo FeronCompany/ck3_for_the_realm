@@ -49,3 +49,6 @@
 
  ftr_reward_me_during_tournament:0 "Get Reward"
  ftr_reward_me_during_tournament_desc:0 "Reward me during tournament"
+
+ ftr_refuse_depose_bureacrat_opinion:0 "Reject Impeachment"
+ ftr_refuse_depose_bureacrat_opinion_desc:0 "Liege rejected impeachment."

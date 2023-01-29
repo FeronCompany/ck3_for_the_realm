@@ -187,6 +187,163 @@ ftr_depose_bureacrat_interaction = {
 	}
 }
 
+######### Request Depose Bureacrat ##########
+ftr_request_depose_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	cooldown = { years = 2 }
+	ai_frequency = 24
+	desc = ftr_request_depose_interaction_desc
+	greeting = positive
+	notification_text = ftr_request_depose_interaction_text
+	populate_actor_list = {
+		scope:actor = {
+			every_courtier = {
+				limit = {
+					is_adult = yes
+					is_physically_able = yes
+					can_be_granted_titles_by = { RULER = scope:actor }
+					NOT = { has_council_position = councillor_court_chaplain }
+				}
+				add_to_list = characters
+			}
+		}
+	}
+	populate_recipient_list = {
+		scope:actor = {
+			every_vassal = {
+				limit = {
+					primary_title.tier >= tier_county
+					has_government = centralism_government
+				}
+				add_to_list = characters
+			}
+		}
+	}
+	can_be_picked = {
+		is_at_war = no
+	}
+
+	is_shown = {
+		scope:actor = {
+			has_government = centralism_government
+			is_independent_ruler = no
+			primary_title.tier > tier_county
+		}
+		scope:recipient = {
+			this = scope:actor.top_liege
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_at_war = no
+		}
+	}
+	on_accept = {
+		create_title_and_vassal_change = {
+			type = granted
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:actor = {
+			add_prestige = -250
+			scope:secondary_actor = {
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_promote_me_opinion
+				}
+			}
+			scope:secondary_recipient = {
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_depose_bureacrat_opinion
+				}
+				every_held_title = {
+					limit = {
+						tier >= tier_county
+					}
+					change_title_holder = {
+						holder = scope:secondary_actor
+						change = scope:change
+					}
+				}
+				every_vassal = {
+					change_liege = {
+						liege = scope:secondary_actor
+						change = scope:change
+					}
+				}
+				scope:secondary_recipient = {
+					trigger_event = {
+						id = ftr_realm_event.1004
+						days = 1
+					}
+				}
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		scope:secondary_actor = {
+			change_government = centralism_government
+			add_realm_law = centralism_vassal_succession_law
+			every_held_title = {
+				limit = {
+					tier > tier_county
+				}
+				add_title_law = bureacratic_succession_law
+			}
+		}
+	}
+	on_auto_accept = {}
+	on_decline = {
+		scope:actor = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = ftr_refuse_depose_bureacrat_opinion
+			}
+		}
+	}
+	ai_accept = {
+		base = -40
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 0.4
+		}
+		opinion_modifier = {
+			opinion_target = scope:secondary_actor
+			who = scope:recipient
+			multiplier = 0.2
+		}
+		opinion_modifier = {
+			opinion_target = scope:secondary_recipient
+			who = scope:recipient
+			multiplier = -0.2
+		}
+	}
+	#auto_accept = yes
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 50
+			scope:actor = {
+				opinion = {
+					target = scope:secondary_recipient
+					value <= 0
+				}
+			}
+		}
+		modifier = {
+			add = 50
+			scope:secondary_recipient = {
+				opinion = {
+					target = scope:actor
+					value <= 20
+				}
+			}
+		}
+	}
+}
+
 ######### Vassal War Mediation ##########
 ftr_vassal_mediation_interaction = {
 	category = interaction_category_vassal

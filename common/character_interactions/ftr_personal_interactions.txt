@@ -1,140 +1,106 @@
 ﻿
-########## Aid Liege #########
-aid_my_lord_interaction = {
+########## Buy Favor #########
+ftr_buy_favor_interaction = {
 	icon = icon_gold
-	category = interaction_category_vassal
+	category = interaction_category_diplomacy
 	common_interaction = yes
 	ignores_pending_interaction_block = no
-	desc = aid_my_lord_interaction_desc
+	desc = ftr_buy_favor_interaction_desc
 	greeting = positive
-	notification_text = VASSAL_AID_LIEGE
+	notification_text = ftr_buy_favor_interaction_text
 	ai_targets = {
 		ai_recipients = liege
+		ai_recipients = vassals
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 5
 	}
 	ai_frequency = 24
+	cooldown_against_recipient = { years = 5 }
 
 	is_shown = {
 		NOT = { scope:actor = scope:recipient }
 		scope:actor = {
-			NOT = { this = scope:recipient }
-			liege = scope:recipient
+			gold >= 200
 		}
-		scope:recipient = {
-			gold < 100
-		}
+		#scope:recipient = {
+		#	gold < 100
+		#}
 	}
 
 	is_valid_showing_failures_only = {
-		scope:actor.gold >= 300
-		NOT = { scope:actor = { is_at_war_with = scope:recipient } } 
+		scope:actor = {
+			NOR = {
+				has_usable_hook = scope:recipient
+				is_at_war_with = scope:recipient
+			}
+		}
 	}
 
+	send_option = {
+		flag = normal_gold
+		localization = "FTR_BUY_FAVOR_NORMAL_GOLD"
+		starts_enabled = { always = yes	}
+	}
+	send_option = {
+		flag = double_gold
+		localization = "FTR_BUY_FAVOR_DOUBLE_GOLD"
+	}
+	send_option = {
+		flag = five_times_gold
+		localization = "FTR_BUY_FAVOR_FIVE_TIMES_GOLD"
+	}
+	send_option = {
+		flag = ten_times_gold
+		localization = "FTR_BUY_FAVOR_TEN_TIMES_GOLD"
+	}
+	send_options_exclusive = yes
 	on_accept = {
 		scope:actor = {
 			send_interface_message = {
 				type = event_generic_neutral
-				title = aid_my_lord_interaction_notification
+				title = ftr_buy_favor_interaction_notification
+				left_icon = scope:actor
 				right_icon = scope:recipient
-				send_interface_toast = {
-					title = liege_accept_my_fund_support
-					left_icon = scope:actor					
-					right_icon = scope:recipient
-					pay_short_term_gold = {
-						gold = 300
-						target = scope:recipient
-					}
-					stress_impact = {
-						greedy = medium_stress_impact_gain
-						generous = medium_stress_impact_loss
-					}
-					scope:recipient = {
-						if = {
-							limit = {
-								scope:gain_hook = yes
-							}
-							scope:actor = {
-								add_hook = { #Hook effect must match gain_hook option condition
-									target = scope:recipient
-									type = favor_hook
-								}
-							}
-						}
-						else = {
-							add_opinion = {
-								target = scope:actor
-								modifier = gift_opinion
-								opinion = send_gift_opinion
-							}
-						}
-					}
-				}
-			}
-
-			# Warning for multiple gifts
-			if = {
-				limit = {
-					scope:recipient = {
-						has_opinion_modifier = {
-							target = scope:actor
-							modifier = gift_opinion
-						}
-					}
-				}
-				custom_tooltip = ALREADY_SENT_GIFT_WARNING
-			}
-		}
-	}
-	send_option = {
-		flag = gain_hook
-		localization = "AID_LIEGE_GAIN_HOOK"
-		is_valid = {
-			scope:actor = {
-				can_add_hook = {
-					type = favor_hook
+				pay_long_term_gold = {
+					gold = ftr_buy_favor_cost_value
 					target = scope:recipient
 				}
+				stress_impact = {
+					greedy = medium_stress_impact_gain
+					generous = medium_stress_impact_loss
+				}
+				add_hook = {
+					target = scope:recipient
+					type = favor_hook
+				}
 			}
 		}
-	}
-	send_option = {
-		flag = help
-		localization = "JUST_HELP_LIEGE"
 	}
 	on_decline = {}
 
 	ai_accept = {
-		base = 40
+		base = -20
 		modifier = {
-			add = 50
-			trigger = {
-				scope:recipient = {
-					gold < -50
-				}
+			add = {
+				value = ftr_buy_favor_cost_value
+				multiply = 0.1
 			}
-			desc = "GOLD_REASON"
+			desc = "FTR_BUY_FAVOR_GOLD_REASON"
 		}
 		modifier = {
-			add = -50
-			trigger = {
-				scope:gain_hook = yes
+			add = {
+				value = scope:recipient.gold
+				multiply = -0.05
 			}
-			desc = "GAIN_HOOK_NEGATIVE_REASON"
+			desc = "FTR_BUY_FAVOR_FINANCIAL_SITUATION"
 		}
 	}
 
 	ai_will_do = {
-		base = 50
-		modifier = { # Do not send double-gifts
-			factor = 0
-			scope:recipient = {
-				has_opinion_modifier = {
-					target = scope:actor
-					modifier = gift_opinion
-				}
-			}
-		}
+		base = 0
 		modifier = { # Bad relation
-			factor = 0
+			add = -10
 			scope:actor = {
 				opinion = {
 					target = scope:recipient
@@ -143,8 +109,32 @@ aid_my_lord_interaction = {
 			}
 		}
 		modifier = {
-			add = 50
-			scope:gain_hook = yes
+			add = {
+				value = ftr_buy_favor_cost_value
+				multiply = -0.05
+			}
+		}
+		modifier = {
+			add = 10
+			scope:actor = {
+				gold >= 300
+			}
+		}
+		modifier = { # Don't need money
+			add = -20
+			scope:recipient.gold > 100
+		}
+		modifier = { # Bribe liege
+			add = 25
+			scope:actor = {
+				is_vassal_of = scope:recipient
+			}
+		}
+		modifier = { # Bribe vassals
+			add = 25
+			scope:recipient = {
+				is_vassal_of = scope:actor
+			}
 		}
 	}
 }

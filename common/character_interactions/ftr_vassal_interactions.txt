@@ -130,15 +130,10 @@ ftr_depose_bureacrat_interaction = {
 						#has_title_law = bureacratic_succession_law
 						tier >= tier_county
 					}
-					change_title_holder = {
+					change_title_holder_include_vassals = {
 						holder = scope:secondary_actor
 						change = scope:change
-					}
-				}
-				every_vassal = {
-					change_liege = {
-						liege = scope:secondary_actor
-						change = scope:change
+						government_base = scope:actor
 					}
 				}
 				scope:recipient = {
@@ -151,7 +146,6 @@ ftr_depose_bureacrat_interaction = {
 		}
 		resolve_title_and_vassal_change = scope:change
 		scope:secondary_actor = {
-			change_government = centralism_government
 			add_realm_law = centralism_vassal_succession_law
 			every_held_title = {
 				limit = {
@@ -262,15 +256,10 @@ ftr_request_depose_interaction = {
 					limit = {
 						tier >= tier_county
 					}
-					change_title_holder = {
+					change_title_holder_include_vassals = {
 						holder = scope:secondary_actor
 						change = scope:change
-					}
-				}
-				every_vassal = {
-					change_liege = {
-						liege = scope:secondary_actor
-						change = scope:change
+						government_base = scope:actor
 					}
 				}
 				scope:secondary_recipient = {
@@ -283,7 +272,6 @@ ftr_request_depose_interaction = {
 		}
 		resolve_title_and_vassal_change = scope:change
 		scope:secondary_actor = {
-			change_government = centralism_government
 			add_realm_law = centralism_vassal_succession_law
 			every_held_title = {
 				limit = {

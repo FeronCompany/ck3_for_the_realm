@@ -357,3 +357,54 @@ ftr_buy_favor_cost_value = {
 		add = 10
 	}
 }
+
+ftr_land_price_value = {
+	value = 0
+	add = {
+		value = scope:target.development_level
+		multiply = 50
+	}
+}
+
+ftr_buy_land_cost_value = {
+	value = 0
+	if = {
+		limit = {
+			scope:half_price = yes
+		}
+		add = {
+			value = ftr_land_price_value
+			multiply = 0.5
+		}
+	}
+	else_if = {
+		limit = {
+			scope:normal_price = yes
+		}
+		add = {
+			value = ftr_land_price_value
+			multiply = 1
+		}
+	}
+	else_if = {
+		limit = {
+			scope:double_price = yes
+		}
+		add = {
+			value = ftr_land_price_value
+			multiply = 2
+		}
+	}
+	else_if = {
+		limit = {
+			scope:five_times_price = yes
+		}
+		add = {
+			value = ftr_land_price_value
+			multiply = 5
+		}
+	}
+	else = {
+		add = 10
+	}
+}

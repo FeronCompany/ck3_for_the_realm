@@ -92,8 +92,15 @@ ftr_buy_favor_interaction = {
 			add = {
 				value = scope:recipient.gold
 				multiply = -0.05
+				min = -100
+				max = 100
 			}
 			desc = "FTR_BUY_FAVOR_FINANCIAL_SITUATION"
+		}
+		modifier = {
+			add = -20
+			NOT = { scope:actor.faith = scope:recipient.faith }
+			desc = "FTR_BUY_FAVOR_RELIGION_DIFFERENCE"
 		}
 	}
 
@@ -121,7 +128,7 @@ ftr_buy_favor_interaction = {
 			}
 		}
 		modifier = { # Don't need money
-			add = -20
+			add = -40
 			scope:recipient.gold > 100
 		}
 		modifier = { # Bribe liege

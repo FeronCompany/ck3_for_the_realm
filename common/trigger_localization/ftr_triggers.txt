@@ -1,0 +1,13 @@
+﻿
+
+only_county_can_be_trade_text = {
+	global_not = only_county_can_be_trade_text
+}
+
+capital_cannot_be_trade_text = {
+	global_not = capital_cannot_be_trade_text
+}
+
+is_neighbor_to_realm_text = {
+	global_not = is_neighbor_to_realm_text
+}

@@ -161,7 +161,7 @@ ftr_depose_bureacrat_interaction = {
 	ai_will_do = {
 		base = 0
 		modifier = {
-			add = 50
+			add = 10
 			scope:actor = {
 				opinion = {
 					target = scope:recipient
@@ -170,13 +170,40 @@ ftr_depose_bureacrat_interaction = {
 			}
 		}
 		modifier = {
-			add = 50
+			add = -100
+			OR = {
+				scope:actor = {
+					opinion = {
+						target = scope:recipient
+						value > 10
+					}
+				}
+				scope:recipient = {
+					opinion = {
+						target = scope:actor
+						value >= 30
+					}
+				}
+			}
+		}
+		modifier = {
+			add = 10
 			scope:recipient = {
 				opinion = {
 					target = scope:actor
-					value <= 10
+					value < 30
 				}
 			}
+		}
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:secondary_actor
+			multiplier = 0.1
+		}
+		opinion_modifier = {
+			opinion_target = scope:secondary_actor
+			who = scope:actor
+			multiplier = 0.1
 		}
 	}
 }
@@ -187,6 +214,9 @@ ftr_request_depose_interaction = {
 	common_interaction = yes
 	cooldown = { years = 2 }
 	ai_frequency = 24
+	ai_targets = {
+		ai_recipients = liege
+	}
 	desc = ftr_request_depose_interaction_desc
 	greeting = positive
 	notification_text = ftr_request_depose_interaction_text
@@ -312,7 +342,7 @@ ftr_request_depose_interaction = {
 	ai_will_do = {
 		base = 0
 		modifier = {
-			add = 50
+			add = 10
 			scope:actor = {
 				opinion = {
 					target = scope:secondary_recipient
@@ -321,13 +351,40 @@ ftr_request_depose_interaction = {
 			}
 		}
 		modifier = {
-			add = 50
+			add = -100
+			OR = {
+				scope:actor = {
+					opinion = {
+						target = scope:secondary_recipient
+						value > 10
+					}
+				}
+				scope:secondary_recipient = {
+					opinion = {
+						target = scope:actor
+						value >= 30
+					}
+				}
+			}
+		}
+		modifier = {
+			add = 10
 			scope:secondary_recipient = {
 				opinion = {
 					target = scope:actor
 					value <= 20
 				}
 			}
+		}
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:secondary_actor
+			multiplier = 0.1
+		}
+		opinion_modifier = {
+			opinion_target = scope:secondary_actor
+			who = scope:actor
+			multiplier = 0.1
 		}
 	}
 }

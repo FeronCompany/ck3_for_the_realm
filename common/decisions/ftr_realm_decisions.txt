@@ -62,7 +62,10 @@ feudal_convert_to_centralism_decision = {
 	cooldown = { days = 3650 }
 	is_shown = {
 		is_landed = yes
-		has_government = feudal_government
+		OR = {
+			has_government = feudal_government
+			has_government = clan_government
+		}
 		primary_title.tier > tier_duchy
 	}
 	is_valid = {

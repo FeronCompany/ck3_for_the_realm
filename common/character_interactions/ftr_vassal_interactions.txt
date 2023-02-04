@@ -195,6 +195,12 @@ ftr_depose_bureacrat_interaction = {
 				}
 			}
 		}
+		modifier = {
+			add = 40
+			scope:actor = {
+				has_imprisonment_reason = scope:recipient
+			}
+		}
 		opinion_modifier = {
 			opinion_target = scope:actor
 			who = scope:secondary_actor
@@ -337,6 +343,21 @@ ftr_request_depose_interaction = {
 			who = scope:recipient
 			multiplier = -0.2
 		}
+		modifier = {
+			add = {
+				add = 10
+				multiply = scope:secondary_recipient.num_sinful_traits
+			}
+			scope:secondary_recipient.num_sinful_traits > 0
+			desc = DEPOSE_TARGET_SIN
+		}
+		modifier = {
+			add = 50
+			scope:actor = {
+				has_imprisonment_reason = scope:secondary_recipient
+			}
+			desc = DEPOSE_TARGET_IMPRISON
+		}
 	}
 	#auto_accept = yes
 	ai_will_do = {
@@ -374,6 +395,12 @@ ftr_request_depose_interaction = {
 					target = scope:actor
 					value <= 20
 				}
+			}
+		}
+		modifier = {
+			add = 50
+			scope:actor = {
+				has_imprisonment_reason = scope:secondary_recipient
 			}
 		}
 		opinion_modifier = {

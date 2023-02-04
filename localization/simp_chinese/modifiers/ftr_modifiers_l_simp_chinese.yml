@@ -49,3 +49,6 @@
 
  ftr_reward_me_during_tournament:0 "收到打赏"
  ftr_reward_me_during_tournament_desc:0 "在比武大会中打赏了我"
+
+ ftr_refuse_depose_bureacrat_opinion:0 "否决弹劾案"
+ ftr_refuse_depose_bureacrat_opinion_desc:0 "君主否决弹劾案"

@@ -1,0 +1,445 @@
+﻿
+
+######### Buy Land ############
+ftr_buy_land_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	ignores_pending_interaction_block = no
+	desc = ftr_buy_land_interaction_desc
+	greeting = positive
+	notification_text = ftr_buy_land_interaction_text
+	target_type = title
+	target_filter = recipient_domain_titles
+	ai_targets = {
+		ai_recipients = liege
+		ai_recipients = vassals
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 5
+	}
+	icon = revoke_title
+	ai_frequency = 48
+	cooldown_against_recipient = { years = 10 }
+
+	is_shown = {
+		scope:actor.primary_title.tier >= tier_county
+		scope:recipient.primary_title.tier >= tier_county
+		OR = {
+			AND = {
+				scope:actor = {
+					is_independent_ruler = yes
+				}
+				scope:recipient = {
+					is_independent_ruler = yes
+				}
+			}
+			scope:actor.liege = scope:recipient.liege
+			scope:actor = {
+				is_vassal_of = scope:recipient
+			}
+			scope:recipient = {
+				is_vassal_of = scope:actor
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_at_war = no
+		}
+		scope:recipient = {
+			is_at_war = no
+		}
+	}
+	can_be_picked_title = {
+		scope:target = {
+			custom_description = {
+				text = only_county_can_be_trade_text
+				tier = tier_county
+			}
+			trigger_if = {
+				limit = {
+					NOR = {
+						scope:actor = {
+							is_vassal_of = scope:recipient
+						}
+						scope:recipient = {
+							is_vassal_of = scope:actor
+						}
+					}
+				}
+				custom_description = {
+					text = is_neighbor_to_realm_text
+					is_neighbor_to_realm = scope:actor
+				}
+			}
+			custom_description = {
+				text = capital_cannot_be_trade_text
+				NOT = { this = scope:recipient.capital_county }
+			}
+		}
+	}
+
+	send_option = {
+		flag = half_price
+		localization = "FTR_BUY_LAND_HALF_PRICE"
+	}
+	send_option = {
+		flag = normal_price
+		localization = "FTR_BUY_LAND_NORMAL_PRICE"
+		starts_enabled = { always = yes	}
+	}
+	send_option = {
+		flag = double_price
+		localization = "FTR_BUY_LAND_DOUBLE_PRICE"
+	}
+	send_option = {
+		flag = five_times_price
+		localization = "FTR_BUY_LAND_FIVE_TIMES_PRICE"
+	}
+	send_options_exclusive = yes
+
+	on_accept = {
+		scope:actor = {
+			if = {
+				limit = { scope:target = { tier = tier_county } }
+				pay_long_term_gold = {
+					gold = ftr_buy_land_cost_value
+					target = scope:recipient
+				}
+			}
+		}
+		create_title_and_vassal_change = {
+			type = granted
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:target = {
+			change_title_holder_include_vassals = {
+				holder = scope:actor
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+
+	ai_accept = {
+		base = -20
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 0.2
+		}
+		modifier = {
+			add = -40
+			scope:recipient = {
+				domain_size <= domain_limit
+			}
+			desc = "FTR_BUY_LAND_DOMAIN_SIZE_FEW"
+		}
+		modifier = {
+			add = -100
+			scope:recipient = {
+				gold > 200
+			}
+			desc = "FTR_BUY_LAND_RICH_ENOUGH"
+		}
+		modifier = {
+			add = 40
+			scope:recipient = {
+				domain_size > domain_limit
+			}
+			desc = "FTR_BUY_LAND_DOMAIN_SIZE_OVER"
+		}
+		modifier = {
+			add = {
+				value = scope:recipient.debt_level
+				multiply = 20
+			}
+			scope:recipient.debt_level >= 1
+			desc = "FTR_BUY_LAND_IN_DEBT"
+		}
+		modifier = {
+			add = {
+				value = ftr_buy_land_cost_value
+				multiply = 0.02
+				max = 100
+			}
+			scope:target = { tier = tier_county }
+			desc = "FTR_BUY_LAND_MONEY_REASON"
+		}
+		modifier = {
+			add = -50
+			scope:recipient = {
+				any_held_title = {
+					tier >= tier_duchy
+					scope:target = {
+						de_jure_liege = PREV
+					}
+				}
+			}
+			desc = "FTR_BUY_LAND_DEJURE"
+		}
+		modifier = {
+			add = -20
+			NOT = { scope:actor.faith = scope:recipient.faith }
+			desc = "FTR_BUY_LAND_RELIGION_DIFFERENCE"
+		}
+	}
+	ai_will_do = {
+		base = -20
+		modifier = {
+			add = 10
+			scope:actor = {
+				gold > ftr_buy_land_cost_value
+			}
+		}
+		modifier = {
+			add = -40
+			scope:actor = {
+				domain_size >= domain_limit
+			}
+		}
+		modifier = {
+			add = 20
+			scope:actor = {
+				domain_size < domain_limit
+			}
+		}
+		modifier = {
+			add = -100
+			scope:actor = {
+				has_government = centralism_government
+				is_independent_ruler = no
+			}
+		}
+		modifier = {
+			add = 20
+			scope:target = {
+				de_jure_liege = scope:actor
+				NOT = {
+					de_jure_liege = scope:recipient
+				}
+			}
+		}
+		modifier = {
+			add = -10
+			scope:target = {
+				NOT = {
+					de_jure_liege = scope:actor
+				}
+			}
+		}
+		modifier = {
+			add = -10
+			scope:recipient = {
+				is_vassal_of = scope:actor
+			}
+		}
+	}
+}
+
+##### BUY VASSAL #####
+ftr_buy_vassal_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	ignores_pending_interaction_block = no
+	desc = ftr_buy_vassal_interaction_desc
+	greeting = positive
+	notification_text = ftr_buy_vassal_interaction_text
+	ai_targets = {
+		ai_recipients = liege
+		ai_recipients = vassals
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 5
+	}
+	icon = icon_liege
+	ai_frequency = 48
+	cooldown_against_recipient = { years = 5 }
+
+	populate_recipient_list = {
+		scope:recipient = {
+			every_vassal = {
+				limit = {
+					primary_title.tier >= tier_county
+					primary_title.tier < tier_kingdom
+				}
+				add_to_list = characters
+			}
+		}
+	}
+	can_be_picked = {
+		is_at_war = no
+		primary_title.tier < scope:actor.primary_title.tier
+	}
+
+	is_shown = {
+		scope:actor.primary_title.tier >= tier_duchy
+		scope:recipient.primary_title.tier >= tier_duchy
+		OR = {
+			AND = {
+				scope:actor = {
+					is_independent_ruler = yes
+				}
+				scope:recipient = {
+					is_independent_ruler = yes
+				}
+			}
+			scope:actor.liege = scope:recipient.liege
+			scope:actor = {
+				is_vassal_of = scope:recipient
+			}
+			scope:recipient = {
+				is_vassal_of = scope:actor
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_at_war = no
+		}
+		scope:recipient = {
+			is_at_war = no
+		}
+	}
+
+	send_option = {
+		flag = half_price
+		localization = "FTR_BUY_VASSAL_HALF_PRICE"
+	}
+	send_option = {
+		flag = normal_price
+		localization = "FTR_BUY_VASSAL_NORMAL_PRICE"
+		starts_enabled = { always = yes	}
+	}
+	send_option = {
+		flag = double_price
+		localization = "FTR_BUY_VASSAL_DOUBLE_PRICE"
+	}
+	send_option = {
+		flag = five_times_price
+		localization = "FTR_BUY_VASSAL_FIVE_TIMES_PRICE"
+	}
+	send_options_exclusive = yes
+
+	on_accept = {
+		scope:actor = {
+			if = {
+				pay_long_term_gold = {
+					gold = ftr_buy_vassal_cost_value
+					target = scope:recipient
+				}
+			}
+		}
+		create_title_and_vassal_change = {
+			type = granted
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:secondary_recipient = {
+			change_liege = {
+				liege = scope:actor
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+
+	ai_accept = {
+		base = -40
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 0.2
+		}
+		modifier = {
+			add = -50
+			scope:recipient = {
+				any_held_title = {
+					tier >= tier_duchy
+					is_de_jure_liege_or_above_target = scope:secondary_recipient.primary_title
+				}
+			}
+			desc = "FTR_BUY_VASSAL_DEJURE"
+		}
+		modifier = {
+			add = 40
+			scope:actor = {
+				any_held_title = {
+					tier >= tier_duchy
+					is_de_jure_liege_or_above_target = scope:secondary_recipient.primary_title
+					NOT = {
+						is_de_jure_liege_or_above_target = scope:recipient.primary_title
+					}
+				}
+			}
+			scope:recipient = {
+				NOT = {
+					is_vassal_of = scope:actor
+				}
+			}
+			desc = "FTR_BUY_VASSAL_DEJURE"
+		}
+		modifier = {
+			add = {
+				value = ftr_buy_vassal_cost_value
+				multiply = 0.02
+				max = 100
+			}
+			desc = "FTR_BUY_VASSAL_MONEY_REASON"
+		}
+		modifier = {
+			add = {
+				value = scope:recipient.debt_level
+				multiply = 20
+			}
+			scope:recipient.debt_level >= 1
+			desc = "FTR_BUY_VASSAL_IN_DEBT"
+		}
+		modifier = {
+			add = -100
+			scope:recipient = {
+				gold > 200
+			}
+			desc = "FTR_BUY_VASSAL_RICH_ENOUGH"
+		}
+		modifier = {
+			add = -20
+			NOT = { scope:actor.faith = scope:recipient.faith }
+			desc = "FTR_BUY_VASSAL_RELIGION_DIFFERENCE"
+		}
+	}
+
+	ai_will_do = {
+		base = -40
+		modifier = {
+			add = 30
+			scope:actor = {
+				any_held_title = {
+					tier >= tier_duchy
+					scope:secondary_recipient.primary_title = {
+						de_jure_liege = PREV
+					}
+				}
+			}
+			OR = {
+				# target is liege or peer vassal
+				scope:actor = {
+					OR = {
+						is_vassal_of = scope:recipient
+						liege = scope:recipient.liege
+					}
+				}
+				# both you and target are independent ruler
+				AND = {
+					scope:actor = { is_independent_ruler = yes }
+					scope:recipient = { is_independent_ruler = yes }
+				}
+			}
+		}
+		modifier = {
+			add = 20
+			scope:actor.gold > ftr_buy_vassal_cost_value
+		}
+	}
+}

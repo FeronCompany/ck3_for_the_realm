@@ -41,3 +41,9 @@ ftr_reward_me_during_tournament = {
 	years = 10
 	decaying = yes
 }
+
+ftr_refuse_depose_bureacrat_opinion = {
+	opinion = -20
+	years = 10
+	decaying = yes
+}

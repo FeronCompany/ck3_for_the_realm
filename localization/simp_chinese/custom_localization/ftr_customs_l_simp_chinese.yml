@@ -1,3 +1,6 @@
 ﻿l_simp_chinese:
  FTR_ALL_HOUSE_MEMEBER_JOIN_NEW_HOUSE_EFFECT:0 "所有家族成员加入新宗族"
  FTR_LET_COMPETITOR_CHEAT_EFFECT:0 "你纵容对手导致对方取得优势"
+ only_county_can_be_trade_text:0 "只可以交易伯爵领"
+ capital_cannot_be_trade_text:0 "不能交易首都"
+ is_neighbor_to_realm_text:0 "只可交易临近省份"

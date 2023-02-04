@@ -35,9 +35,6 @@ restore_byzantine_decision = {
 		is_imprisoned = no
 		is_independent_ruler = yes
 	}
-	cost = {
-		prestige = { value = 500 }
-	}
 	effect = {
 		restore_byzantium_empire_scripted_effect = yes
 		trigger_event = {

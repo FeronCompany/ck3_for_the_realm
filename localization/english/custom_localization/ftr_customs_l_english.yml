@@ -1,3 +1,6 @@
 ﻿l_english:
  FTR_ALL_HOUSE_MEMEBER_JOIN_NEW_HOUSE_EFFECT:0 "All house member join new dynasty."
- FTR_LET_COMPETITOR_CHEAT_EFFECT:0 "You allow your opponent to gain an advantage."
+ FTR_LET_COMPETITOR_CHEAT_EFFECT:0 "You allow your opponent to gain an advantage.
+ only_county_can_be_trade_text:0 "Only county can be trade."
+ capital_cannot_be_trade_text:0 "Capital cannot be trade."
+ is_neighbor_to_realm_text:0 "Must be neighbor provinces."

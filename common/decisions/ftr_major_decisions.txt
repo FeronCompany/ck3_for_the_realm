@@ -181,6 +181,10 @@ ftr_renounce_dynasty_decision = {
 				}
 			}
 		}
+		dynasty = {
+			dynasty_prestige_level >= 4
+		}
+		prestige_level >= 4
 	}
 
 	is_valid_showing_failures_only = {

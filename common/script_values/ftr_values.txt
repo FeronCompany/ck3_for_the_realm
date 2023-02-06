@@ -358,6 +358,34 @@ ftr_buy_favor_cost_value = {
 	}
 }
 
+ftr_payment_cost_level_value = {
+	value = 0
+	if = {
+		limit = {
+			scope:half_price = yes
+		}
+		add = 0.5
+	}
+	else_if = {
+		limit = {
+			scope:normal_price = yes
+		}
+		add = 1
+	}
+	else_if = {
+		limit = {
+			scope:double_price = yes
+		}
+		add = 2
+	}
+	else_if = {
+		limit = {
+			scope:five_times_price = yes
+		}
+		add = 5
+	}
+}
+
 ftr_land_price_value = {
 	value = 0
 	add = {
@@ -368,94 +396,62 @@ ftr_land_price_value = {
 
 ftr_buy_land_cost_value = {
 	value = 0
-	if = {
-		limit = {
-			scope:half_price = yes
-		}
-		add = {
-			value = ftr_land_price_value
-			multiply = 0.5
-		}
-	}
-	else_if = {
-		limit = {
-			scope:normal_price = yes
-		}
-		add = {
-			value = ftr_land_price_value
-			multiply = 1
-		}
-	}
-	else_if = {
-		limit = {
-			scope:double_price = yes
-		}
-		add = {
-			value = ftr_land_price_value
-			multiply = 2
-		}
-	}
-	else_if = {
-		limit = {
-			scope:five_times_price = yes
-		}
-		add = {
-			value = ftr_land_price_value
-			multiply = 5
-		}
-	}
-	else = {
-		add = 10
+	add = {
+		value = ftr_land_price_value
+		multiply = ftr_payment_cost_level_value
 	}
 }
 
 ftr_vassal_price_value = {
 	value = 0
-	add = {
-		value = scope:secondary_recipient.sub_realm_size
-		multiply = 1000
+	if = {
+		limit = {
+			current_date <= 1000.1.1
+		}
+		add = {
+			value = scope:secondary_recipient.sub_realm_size
+			multiply = 500
+		}
+	}
+	else_if = {
+		limit = {
+			current_date <= 1100.1.1
+		}
+		add = {
+			value = scope:secondary_recipient.sub_realm_size
+			multiply = 600
+		}
+	}
+	else_if = {
+		limit = {
+			current_date <= 1200.1.1
+		}
+		add = {
+			value = scope:secondary_recipient.sub_realm_size
+			multiply = 700
+		}
+	}
+	else_if = {
+		limit = {
+			current_date <= 1300.1.1
+		}
+		add = {
+			value = scope:secondary_recipient.sub_realm_size
+			multiply = 800
+		}
+	}
+	else = {
+		add = {
+			value = scope:secondary_recipient.sub_realm_size
+			multiply = 1000
+		}
 	}
 }
 
 ftr_buy_vassal_cost_value = {
 	value = 0
-	if = {
-		limit = {
-			scope:half_price = yes
-		}
-		add = {
-			value = ftr_vassal_price_value
-			multiply = 0.5
-		}
-	}
-	else_if = {
-		limit = {
-			scope:normal_price = yes
-		}
-		add = {
-			value = ftr_vassal_price_value
-			multiply = 1
-		}
-	}
-	else_if = {
-		limit = {
-			scope:double_price = yes
-		}
-		add = {
-			value = ftr_vassal_price_value
-			multiply = 2
-		}
-	}
-	else_if = {
-		limit = {
-			scope:five_times_price = yes
-		}
-		add = {
-			value = ftr_vassal_price_value
-			multiply = 5
-		}
-	}
-	else = {
-		add = 10
+	add = {
+		value = ftr_vassal_price_value
+		multiply = ftr_payment_cost_level_value
 	}
 }

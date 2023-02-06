@@ -83,8 +83,16 @@ found_new_dynasty_effect = {
 				save_scope_as = cover_house
 			}
 		}
+		add_to_list = family_to_change_house
 		house = {
 			every_house_member = {
+				limit = {
+					OR = {
+						is_child_of = scope:new_head
+						is_grandchild_of = scope:new_head
+						is_great_grandchild_of = scope:new_head
+					}
+				}
 				add_to_list = family_to_change_house
 			}
 		}
@@ -101,7 +109,7 @@ found_new_dynasty_effect = {
 		add_dynasty_prestige = {
 			value = scope:new_head.prestige
 			add = {
-				value = 5000
+				value = 3000
 				multiply = scope:new_head.prestige_level
 			}
 		}

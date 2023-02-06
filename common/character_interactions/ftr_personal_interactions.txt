@@ -23,9 +23,6 @@ ftr_buy_favor_interaction = {
 		scope:actor = {
 			gold >= 200
 		}
-		#scope:recipient = {
-		#	gold < 100
-		#}
 	}
 
 	is_valid_showing_failures_only = {
@@ -34,6 +31,10 @@ ftr_buy_favor_interaction = {
 				has_usable_hook = scope:recipient
 				is_at_war_with = scope:recipient
 			}
+		}
+		scope:recipient = {
+			is_adult = yes
+			is_imprisoned = no
 		}
 	}
 

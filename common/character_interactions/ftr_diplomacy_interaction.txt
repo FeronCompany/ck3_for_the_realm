@@ -22,6 +22,7 @@ ftr_buy_land_interaction = {
 	cooldown_against_recipient = { years = 10 }
 
 	is_shown = {
+		NOT = { scope:actor = scope:recipient}
 		scope:actor.primary_title.tier >= tier_county
 		scope:recipient.primary_title.tier >= tier_county
 		OR = {
@@ -160,9 +161,8 @@ ftr_buy_land_interaction = {
 		}
 		modifier = {
 			add = {
-				value = ftr_buy_land_cost_value
-				multiply = 0.02
-				max = 100
+				value = 20
+				multiply = ftr_payment_cost_level_value
 			}
 			scope:target = { tier = tier_county }
 			desc = "FTR_BUY_LAND_MONEY_REASON"
@@ -274,6 +274,7 @@ ftr_buy_vassal_interaction = {
 	}
 
 	is_shown = {
+		NOT = { scope:actor = scope:recipient}
 		scope:actor.primary_title.tier >= tier_duchy
 		scope:recipient.primary_title.tier >= tier_duchy
 		OR = {
@@ -382,9 +383,8 @@ ftr_buy_vassal_interaction = {
 		}
 		modifier = {
 			add = {
-				value = ftr_buy_vassal_cost_value
-				multiply = 0.02
-				max = 100
+				value = 20
+				multiply = ftr_payment_cost_level_value
 			}
 			desc = "FTR_BUY_VASSAL_MONEY_REASON"
 		}

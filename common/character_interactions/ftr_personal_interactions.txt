@@ -39,21 +39,29 @@ ftr_buy_favor_interaction = {
 	}
 
 	send_option = {
-		flag = normal_gold
-		localization = "FTR_BUY_FAVOR_NORMAL_GOLD"
+		flag = half_price
+		localization = "FTR_NEGO_HALF_PRICE"
+	}
+	send_option = {
+		flag = normal_price
+		localization = "FTR_NEGO_NORMAL_PRICE"
 		starts_enabled = { always = yes	}
 	}
 	send_option = {
-		flag = double_gold
-		localization = "FTR_BUY_FAVOR_DOUBLE_GOLD"
+		flag = double_price
+		localization = "FTR_NEGO_DOUBLE_PRICE"
 	}
 	send_option = {
-		flag = five_times_gold
-		localization = "FTR_BUY_FAVOR_FIVE_TIMES_GOLD"
+		flag = three_times_price
+		localization = "FTR_NEGO_THREE_TIMES_PRICE"
 	}
 	send_option = {
-		flag = ten_times_gold
-		localization = "FTR_BUY_FAVOR_TEN_TIMES_GOLD"
+		flag = four_times_price
+		localization = "FTR_NEGO_FOUR_TIMES_PRICE"
+	}
+	send_option = {
+		flag = five_times_price
+		localization = "FTR_NEGO_FIVE_TIMES_PRICE"
 	}
 	send_options_exclusive = yes
 	on_accept = {
@@ -84,17 +92,17 @@ ftr_buy_favor_interaction = {
 		base = -20
 		modifier = {
 			add = {
-				value = ftr_buy_favor_cost_value
-				multiply = 0.1
+				value = 20
+				multiply = ftr_payment_cost_level_value
 			}
 			desc = "FTR_BUY_FAVOR_GOLD_REASON"
 		}
 		modifier = {
 			add = {
 				value = scope:recipient.gold
-				multiply = -0.05
-				min = -200
-				max = 200
+				multiply = -0.1
+				min = -100
+				max = 100
 			}
 			desc = "FTR_BUY_FAVOR_FINANCIAL_SITUATION"
 		}

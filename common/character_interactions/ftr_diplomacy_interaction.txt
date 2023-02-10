@@ -82,20 +82,28 @@ ftr_buy_land_interaction = {
 
 	send_option = {
 		flag = half_price
-		localization = "FTR_BUY_LAND_HALF_PRICE"
+		localization = "FTR_NEGO_HALF_PRICE"
 	}
 	send_option = {
 		flag = normal_price
-		localization = "FTR_BUY_LAND_NORMAL_PRICE"
+		localization = "FTR_NEGO_NORMAL_PRICE"
 		starts_enabled = { always = yes	}
 	}
 	send_option = {
 		flag = double_price
-		localization = "FTR_BUY_LAND_DOUBLE_PRICE"
+		localization = "FTR_NEGO_DOUBLE_PRICE"
+	}
+	send_option = {
+		flag = three_times_price
+		localization = "FTR_NEGO_THREE_TIMES_PRICE"
+	}
+	send_option = {
+		flag = four_times_price
+		localization = "FTR_NEGO_FOUR_TIMES_PRICE"
 	}
 	send_option = {
 		flag = five_times_price
-		localization = "FTR_BUY_LAND_FIVE_TIMES_PRICE"
+		localization = "FTR_NEGO_FIVE_TIMES_PRICE"
 	}
 	send_options_exclusive = yes
 
@@ -138,7 +146,11 @@ ftr_buy_land_interaction = {
 			desc = "FTR_BUY_LAND_DOMAIN_SIZE_FEW"
 		}
 		modifier = {
-			add = -100
+			add = {
+				value = gold
+				multiply = -0.1
+				min = -100
+			}
 			scope:recipient = {
 				gold > 200
 			}
@@ -306,20 +318,28 @@ ftr_buy_vassal_interaction = {
 
 	send_option = {
 		flag = half_price
-		localization = "FTR_BUY_VASSAL_HALF_PRICE"
+		localization = "FTR_NEGO_HALF_PRICE"
 	}
 	send_option = {
 		flag = normal_price
-		localization = "FTR_BUY_VASSAL_NORMAL_PRICE"
+		localization = "FTR_NEGO_NORMAL_PRICE"
 		starts_enabled = { always = yes	}
 	}
 	send_option = {
 		flag = double_price
-		localization = "FTR_BUY_VASSAL_DOUBLE_PRICE"
+		localization = "FTR_NEGO_DOUBLE_PRICE"
+	}
+	send_option = {
+		flag = three_times_price
+		localization = "FTR_NEGO_THREE_TIMES_PRICE"
+	}
+	send_option = {
+		flag = four_times_price
+		localization = "FTR_NEGO_FOUR_TIMES_PRICE"
 	}
 	send_option = {
 		flag = five_times_price
-		localization = "FTR_BUY_VASSAL_FIVE_TIMES_PRICE"
+		localization = "FTR_NEGO_FIVE_TIMES_PRICE"
 	}
 	send_options_exclusive = yes
 
@@ -397,7 +417,11 @@ ftr_buy_vassal_interaction = {
 			desc = "FTR_BUY_VASSAL_IN_DEBT"
 		}
 		modifier = {
-			add = -100
+			add = {
+				value = gold
+				multiply = -0.1
+				min = -100
+			}
 			scope:recipient = {
 				gold > 200
 			}

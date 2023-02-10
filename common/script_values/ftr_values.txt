@@ -315,49 +315,6 @@ count_total_obligation_changes = {
 	}
 }
 
-ftr_buy_favor_cost_value = {
-	value = 0
-	if = {
-		limit = {
-			scope:normal_gold = yes
-		}
-		add = {
-			value = gift_value
-			multiply = 1
-		}
-	}
-	else_if = {
-		limit = {
-			scope:double_gold = yes
-		}
-		add = {
-			value = gift_value
-			multiply = 2
-		}
-	}
-	else_if = {
-		limit = {
-			scope:five_times_gold = yes
-		}
-		add = {
-			value = gift_value
-			multiply = 5
-		}
-	}
-	else_if = {
-		limit = {
-			scope:ten_times_gold = yes
-		}
-		add = {
-			value = gift_value
-			multiply = 10
-		}
-	}
-	else = {
-		add = 10
-	}
-}
-
 ftr_payment_cost_level_value = {
 	value = 0
 	if = {
@@ -380,9 +337,29 @@ ftr_payment_cost_level_value = {
 	}
 	else_if = {
 		limit = {
+			scope:three_times_price = yes
+		}
+		add = 3
+	}
+	else_if = {
+		limit = {
+			scope:four_times_price = yes
+		}
+		add = 4
+	}
+	else_if = {
+		limit = {
 			scope:five_times_price = yes
 		}
 		add = 5
+	}
+}
+
+ftr_buy_favor_cost_value = {
+	value = 0
+	add = {
+		value = gift_value
+		multiply = ftr_payment_cost_level_value
 	}
 }
 

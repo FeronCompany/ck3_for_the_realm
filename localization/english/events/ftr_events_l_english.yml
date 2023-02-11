@@ -223,6 +223,10 @@
  ftr_interaction_event.1002.desc:0 "[recipient.GetName] stop the war as you requested, now is back to estate."
  ftr_interaction_event.1002.a:0 "Good."
 
+ ftr_interaction_event.1003.t:0 "Break Alliance"
+ ftr_interaction_event.1003.desc:0 "[actor.GetShortUIName|U] has blatantly broken his covenant with us, which is not only short-sighted, but also arrogant. In time, we must pay back."
+ ftr_interaction_event.1003.a:0 "Traitor!"
+
  ftr_tournament.0001.opening:0 "[sender.Custom2('AppropriateGreeting', ROOT.Char)]"
  ftr_tournament.0001.opening_desc:0 "I hereby invite you to my tournament in [barony.GetNameNoTier]!"
  ftr_tournament.0001.host_likes_me:0 "I look forward to your visit, I will miss you very much if you don't come."

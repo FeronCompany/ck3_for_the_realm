@@ -349,9 +349,12 @@ religious_debate_interaction = {
 	}
 
 	on_accept = {
-		hidden_effect = {
-			scope:actor = {
-				trigger_event = ftr_interaction_event.0001
+		custom_description = {
+			text = ftr_start_religious_debate_text
+			hidden_effect = {
+				scope:actor = {
+					trigger_event = ftr_interaction_event.0001
+				}
 			}
 		}
 	}

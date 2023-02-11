@@ -64,6 +64,10 @@
  ftr_interaction_event.0013.desc:0 "我们两人谁也说服不了谁，只能站在客厅两端干瞪眼，一旁的客人都议论纷纷，分析着谁说的更有道理。我累了，辩论是时候结束了。"
  ftr_interaction_event.0013.a:0 "你给我等着!"
 
+ ftr_interaction_event.1003.t:0 "结束同盟"
+ ftr_interaction_event.1003.desc:0 "[actor.GetShortUIName|U]悍然背弃了与我们的盟约，此等行为不仅短视，而且傲慢。假以时日，我们必须要还以颜色。"
+ ftr_interaction_event.1003.a:0 "叛徒！"
+
  solitude_time.0001.t:0 "自娱自乐"
  solitude_time.0001.desc:0 "娱乐时间到，到底做点什么好呢？"
  solitude_time.0001.a:0 "读书"

@@ -47,3 +47,8 @@ ftr_refuse_depose_bureacrat_opinion = {
 	years = 10
 	decaying = yes
 }
+
+ftr_break_alliance_opinion = {
+	opinion = -20
+	years = 20
+}

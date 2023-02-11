@@ -52,3 +52,6 @@
 
  ftr_refuse_depose_bureacrat_opinion:0 "否决弹劾案"
  ftr_refuse_depose_bureacrat_opinion_desc:0 "君主否决弹劾案"
+
+ ftr_break_alliance_opinion:0 "结束同盟"
+ ftr_break_alliance_opinion_desc:0 "结束同盟"

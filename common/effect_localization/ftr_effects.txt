@@ -7,3 +7,7 @@ ftr_all_house_member_join_new_house_text = {
 ftr_let_competitor_cheat_text = {
 	global = FTR_LET_COMPETITOR_CHEAT_EFFECT
 }
+
+ftr_start_religious_debate_text = {
+	global = FTR_START_RELIOUS_DEBATE_EFFECT
+}

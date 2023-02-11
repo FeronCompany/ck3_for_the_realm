@@ -227,7 +227,7 @@ ftr_buy_land_interaction = {
 		modifier = {
 			add = 20
 			scope:target = {
-				de_jure_liege = scope:actor
+				de_jure_liege = scope:actor.primary_title
 				NOT = {
 					de_jure_liege = scope:recipient
 				}
@@ -237,7 +237,7 @@ ftr_buy_land_interaction = {
 			add = -10
 			scope:target = {
 				NOT = {
-					de_jure_liege = scope:actor
+					de_jure_liege = scope:actor.primary_title
 				}
 			}
 		}
@@ -464,6 +464,76 @@ ftr_buy_vassal_interaction = {
 		modifier = {
 			add = 20
 			scope:actor.gold > ftr_buy_vassal_cost_value
+		}
+	}
+}
+
+##### BREAK ALLIANCE #####
+ftr_break_alliance_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	ignores_pending_interaction_block = no
+	desc = ftr_break_alliance_interaction_desc
+	#greeting = negative
+	#notification_text = ftr_break_alliance_interaction_text
+	#icon = icon_liege
+	ai_targets = {
+		ai_recipients = liege
+		ai_recipients = vassals
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 5
+	}
+	ai_frequency = 48
+
+	is_shown = {
+		NOT = { scope:actor = scope:recipient}
+		scope:actor = {
+			is_allied_to = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {}
+
+	on_accept = {
+		scope:actor = {
+			break_alliance = scope:recipient
+		}
+		scope:recipient = {
+			show_as_tooltip = {
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_break_alliance_opinion
+				}
+			}
+			trigger_event = ftr_interaction_event.1003
+		}
+	}
+
+	auto_accept = yes
+	ai_accept = {}
+
+	ai_will_do = {
+		base = -40
+		modifier = {
+			add = 30
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value <= 0
+				}
+			}
+		}
+		modifier = {
+			add = 20
+			NOT = { scope:actor.faith = scope:recipient.faith }
+		}
+		modifier = {
+			add = 20
+			scope:actor = {
+				any_claim = {
+					holder = scope:recipient
+				}
+			}
 		}
 	}
 }

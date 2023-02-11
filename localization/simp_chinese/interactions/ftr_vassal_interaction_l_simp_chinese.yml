@@ -67,3 +67,6 @@
  FTR_BUY_VASSAL_DEJURE:0 "法理领地： $VALUE|=+0$"
  FTR_BUY_VASSAL_RELIGION_DIFFERENCE:0 "信仰差异： $VALUE|=+0$"
  recipient_secondary_ftr_buy_vassal_interaction:0 "待购封臣"
+
+ ftr_break_alliance_interaction:0 "<FTR>结束同盟"
+ ftr_break_alliance_interaction_desc:0 "结束与该角色的盟约"

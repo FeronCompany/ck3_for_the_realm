@@ -415,9 +415,9 @@ ftr_tournament.0005 = {
 			days = { 1 5 }
 		}
 		ai_chance = {
-			base = 50
+			base = 25
 			modifier = {
-				add = -40
+				add = -10
 				has_trait = brave
 			}
 			modifier = {

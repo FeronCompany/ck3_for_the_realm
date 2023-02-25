@@ -1,0 +1,20 @@
+﻿
+murderer = {
+	general_opinion = -10
+	fame = yes
+	ruler_designer_cost = -10
+	triggered_opinion = {
+		opinion_modifier = ftr_murderer_crime
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_murderer_desc
+			}
+			desc = trait_murderer_character_desc
+		}
+	}
+}

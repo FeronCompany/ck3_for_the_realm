@@ -3,14 +3,17 @@
  over_training_modifier_desc:0 "这名角色因为过度训练而精疲力竭。"
 
  lose_religious_debate_modifier:0 "<FTR>辩经失败"
- lose_religious_debate_modifier:0 "此人近期和他人辩经失败."
+ lose_religious_debate_modifier_desc:0 "此人近期和他人辩经失败."
 
  win_religious_debate_modifier:0 "<FTR>辩经胜利"
  win_religious_debate_modifier_desc:0 "此人近期赢得了与他人的辩经."
  
  unsocial_personality_modifier:0 "<FTR>远离社交"
  unsocial_personality_modifier_desc:0 "此人离群索居，终日神龙见首不见尾."
- 
+
+ ftr_usurper_modifier:0 "<FTR>篡位者"
+ ftr_usurper_modifier_desc:0 "此人得位不正，靠阴谋诡计上位。"
+
  epic_writing_imitator_modifier:0 "史诗写手"
  epic_writing_imitator_modifier_desc:0 "此人擅长模仿史诗写作."
  
@@ -52,3 +55,15 @@
 
  ftr_refuse_depose_bureacrat_opinion:0 "否决弹劾案"
  ftr_refuse_depose_bureacrat_opinion_desc:0 "君主否决弹劾案"
+
+ ftr_break_alliance_opinion:0 "结束同盟"
+ ftr_break_alliance_opinion_desc:0 "结束同盟"
+
+ ftr_success_coup_on_me_opinion:0 "政变叛徒"
+ ftr_success_coup_on_me_opinion_desc:0 "政变叛徒"
+
+ ftr_attempted_coup_crime:0 "政变未遂"
+ ftr_attempted_coup_crime_desc:0 "政变未遂"
+
+ ftr_murderer_crime:0 "杀人偿命"
+ ftr_murderer_crime_desc:0 "杀人偿命"

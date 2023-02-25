@@ -791,3 +791,27 @@ ftr_interaction_event.1002 = {
 		name = ftr_interaction_event.1002.a
 	}
 }
+
+# break alliance
+ftr_interaction_event.1003 = {
+	type = character_event
+	title = ftr_interaction_event.1003.t
+	desc = ftr_interaction_event.1003.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	option = {
+		name = ftr_interaction_event.1003.a
+		scope:recipient = {
+			add_opinion = {
+				target = scope:actor
+				modifier = ftr_break_alliance_opinion
+			}
+		}
+	}
+}

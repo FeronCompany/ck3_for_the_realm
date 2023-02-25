@@ -1,0 +1,485 @@
+﻿
+
+namespace = ftr_coup_outcoming
+
+# 1000-1999 Successful outcomes
+# 2000-2999 Failed outcomes
+# 3000-3999 Coup Target notification
+
+# Break into palace succeeded
+ftr_coup_outcoming.1000 = {
+	type = character_event
+	title = ftr_coup_outcoming.1000.t
+	desc = ftr_coup_outcoming.1000.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = shock
+	}
+
+	trigger = {
+		OR = {
+			NOT = { exists = var:ftr_coup_method }
+			var:ftr_coup_method = 0
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			scheme_target = {
+				trigger_event = ftr_coup_outcoming.3000
+			}
+			end_scheme = yes
+		}
+		ftr_coup_success_effect = {
+			OWNER = root
+			TARGET = scope:target
+		}
+	}
+
+	option = { # Just arrest target
+		name = ftr_coup_outcoming.1000.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = forgiving
+					has_trait = compassionate
+				}
+			}
+		}
+	}
+	option = { # Make target disappear
+		name = ftr_coup_outcoming.1000.b
+		unknown_murder_effect = {
+			VICTIM = scope:target
+			MURDERER = root
+			REASON = death_disappearance
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 50
+				OR = {
+					has_trait = vengeful
+					has_trait = callous
+					has_trait = sadistic
+				}
+			}
+		}
+	}
+}
+
+# Sneak into palace succeeded
+ftr_coup_outcoming.1001 = {
+	type = character_event
+	title = ftr_coup_outcoming.1001.t
+	desc = ftr_coup_outcoming.1001.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = shock
+	}
+
+	trigger = {
+		exists = var:ftr_coup_method
+		var:ftr_coup_method = 1
+	}
+
+	immediate = {
+		scope:scheme = {
+			scheme_target = {
+				trigger_event = ftr_coup_outcoming.3001
+			}
+			end_scheme = yes
+		}
+		ftr_coup_success_effect = {
+			OWNER = root
+			TARGET = scope:target
+		}
+	}
+
+	option = { # Just arrest target
+		name = ftr_coup_outcoming.1001.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = forgiving
+					has_trait = compassionate
+				}
+			}
+		}
+	}
+	option = { # Make target disappear
+		name = ftr_coup_outcoming.1001.b
+		unknown_murder_effect = {
+			VICTIM = scope:target
+			MURDERER = root
+			REASON = death_disappearance
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 50
+				OR = {
+					has_trait = vengeful
+					has_trait = callous
+					has_trait = sadistic
+				}
+			}
+		}
+	}
+}
+
+# Use trap succeeded
+ftr_coup_outcoming.1002 = {
+	type = character_event
+	title = ftr_coup_outcoming.1002.t
+	desc = ftr_coup_outcoming.1002.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = shock
+	}
+
+	trigger = {
+		exists = var:ftr_coup_method
+		var:ftr_coup_method = 2
+	}
+
+	immediate = {
+		scope:scheme = {
+			scheme_target = {
+				trigger_event = ftr_coup_outcoming.3002
+			}
+			end_scheme = yes
+		}
+		ftr_coup_success_effect = {
+			OWNER = root
+			TARGET = scope:target
+		}
+	}
+
+	option = { # Just arrest target
+		name = ftr_coup_outcoming.1002.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = forgiving
+					has_trait = compassionate
+				}
+			}
+		}
+	}
+	option = { # Make target disappear
+		name = ftr_coup_outcoming.1002.b
+		unknown_murder_effect = {
+			VICTIM = scope:target
+			MURDERER = root
+			REASON = death_disappearance
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 50
+				OR = {
+					has_trait = vengeful
+					has_trait = callous
+					has_trait = sadistic
+				}
+			}
+		}
+	}
+}
+
+# Break into palace Failed
+ftr_coup_outcoming.2000 = {
+	type = character_event
+	title = ftr_coup_outcoming.2000.t
+	desc = ftr_coup_outcoming.2000.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:target
+		animation = rage
+	}
+
+	trigger = {
+		OR = {
+			NOT = { exists = var:ftr_coup_method }
+			var:ftr_coup_method = 0
+		}
+	}
+
+	immediate = {
+		ftr_coup_failure_effect = {
+			SCHEME = scope:scheme
+		}
+		scope:target = {
+			trigger_event = ftr_coup_outcoming.3003
+		}
+	}
+
+	option = { # We can do nothing
+		name = ftr_coup_outcoming.2000.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Sneak into palace failed
+ftr_coup_outcoming.2001 = {
+	type = character_event
+	title = ftr_coup_outcoming.2001.t
+	desc = ftr_coup_outcoming.2001.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:target
+		animation = rage
+	}
+
+	trigger = {
+		exists = var:ftr_coup_method
+		var:ftr_coup_method = 1
+	}
+
+	immediate = {
+		ftr_coup_failure_effect = {
+			SCHEME = scope:scheme
+		}
+		scope:target = {
+			trigger_event = ftr_coup_outcoming.3004
+		}
+	}
+
+	option = { # We can do nothing
+		name = ftr_coup_outcoming.2001.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Trap didn't work
+ftr_coup_outcoming.2002 = {
+	type = character_event
+	title = ftr_coup_outcoming.2002.t
+	desc = ftr_coup_outcoming.2002.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:target
+		animation = rage
+	}
+
+	trigger = {
+		exists = var:ftr_coup_method
+		var:ftr_coup_method = 2
+	}
+
+	immediate = {
+		ftr_coup_failure_effect = {
+			SCHEME = scope:scheme
+		}
+		scope:target = {
+			trigger_event = ftr_coup_outcoming.3005
+		}
+	}
+
+	option = { # We can do nothing
+		name = ftr_coup_outcoming.2002.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Break into palace succ notify
+ftr_coup_outcoming.3000 = {
+	type = character_event
+	title = ftr_coup_outcoming.3000.t
+	desc = ftr_coup_outcoming.3000.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = scheme
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # I can do nothing
+		name = ftr_coup_outcoming.3000.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Infiltrate into palace succ notify
+ftr_coup_outcoming.3001 = {
+	type = character_event
+	title = ftr_coup_outcoming.3001.t
+	desc = ftr_coup_outcoming.3001.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = scheme
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # I can do nothing
+		name = ftr_coup_outcoming.3001.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Trap succ notify
+ftr_coup_outcoming.3002 = {
+	type = character_event
+	title = ftr_coup_outcoming.3002.t
+	desc = ftr_coup_outcoming.3002.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = scheme
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # I can do nothing
+		name = ftr_coup_outcoming.3002.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Break into palace fail notify
+ftr_coup_outcoming.3003 = {
+	type = character_event
+	title = ftr_coup_outcoming.3003.t
+	desc = ftr_coup_outcoming.3003.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = rage
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = shock
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # Make them pay
+		name = ftr_coup_outcoming.3003.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Infiltrate into palace fail notify
+ftr_coup_outcoming.3004 = {
+	type = character_event
+	title = ftr_coup_outcoming.3004.t
+	desc = ftr_coup_outcoming.3004.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = rage
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = shock
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # Make them pay
+		name = ftr_coup_outcoming.3004.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Trap fail notify
+ftr_coup_outcoming.3005 = {
+	type = character_event
+	title = ftr_coup_outcoming.3005.t
+	desc = ftr_coup_outcoming.3005.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = rage
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = shock
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # Make them pay
+		name = ftr_coup_outcoming.3005.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}

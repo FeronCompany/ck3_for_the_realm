@@ -1,0 +1,51 @@
+﻿
+
+ftr_coup_success = {
+	events = {
+		ftr_coup_outcoming.1000 # Break into palace succeeded
+		ftr_coup_outcoming.1001 # Sneak into palace succeeded
+		ftr_coup_outcoming.1002 # Use trap succeeded
+	}
+	on_actions = {
+		ftr_clear_coup_variable_effect
+	}
+}
+
+ftr_coup_failure = {
+	events = {
+		ftr_coup_outcoming.2000 # Break into palace failed
+		ftr_coup_outcoming.2001 # Sneak into palace failed
+		ftr_coup_outcoming.2002 # Trap didn't work
+	}
+	on_actions = {
+		ftr_clear_coup_variable_effect
+	}
+}
+
+ftr_clear_coup_variable_effect = {
+	effect = {
+		remove_variable = ftr_coup_method
+	}
+}
+
+ftr_coup_ongoing = {
+	trigger = {
+		is_physically_able = yes
+	}
+	random_events = {
+		50 = 0
+		5 = ftr_coup_ongoing.1000 # Bribe servant
+		5 = ftr_coup_ongoing.1001 # Agent exposed
+		5 = ftr_coup_ongoing.1002 # Undercover infiltrated into the Guard
+		5 = ftr_coup_ongoing.1003 # Steal castle map
+		5 = ftr_coup_ongoing.1004 # Agent hesitated
+		5 = ftr_coup_ongoing.1005 # Send thief to infiltrate the castle
+		5 = ftr_coup_ongoing.1006 # Counterfeit a pass
+		5 = ftr_coup_ongoing.1007 # Create chaos in the surrounding area
+		5 = ftr_coup_ongoing.1008 # Make a trap
+		5 = ftr_coup_ongoing.1009 # Action early because of misunderstanding
+	}
+	events = {
+		ftr_coup_ongoing.2004 # Auto progress
+	}
+}

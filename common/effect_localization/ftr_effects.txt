@@ -7,3 +7,63 @@ ftr_all_house_member_join_new_house_text = {
 ftr_let_competitor_cheat_text = {
 	global = FTR_LET_COMPETITOR_CHEAT_EFFECT
 }
+
+ftr_start_religious_debate_text = {
+	global = FTR_START_RELIOUS_DEBATE_EFFECT
+}
+
+ftr_coup_bribe_servant_suc_text = {
+	global = FTR_COUP_BRIBE_SERVANT_SUC_EFFECT
+}
+
+ftr_coup_infiltrate_guard_succ_text = {
+	global = FTR_COUP_INFILTRATE_GUARD_SUCC_EFFECT
+}
+
+ftr_coup_infiltrate_guard_fail_text = {
+	global = FTR_COUP_INFILTRATE_GUARD_FAIL_EFFECT
+}
+
+ftr_coup_steal_map_succ_text = {
+	global = FTR_COUP_STEAL_MAP_SUCC_EFFECT
+}
+
+ftr_coup_steal_map_fail_text = {
+	global = FTR_COUP_STEAL_MAP_FAIL_EFFECT
+}
+
+ftr_coup_counterfeit_pass_succ_text = {
+	global = FTR_COUP_COUNTERFEIT_PASS_SUCC_EFFECT
+}
+
+ftr_coup_counterfeit_pass_fail_text = {
+	global = FTR_COUP_COUNTERFEIT_PASS_FAIL_EFFECT
+}
+
+ftr_coup_create_chaos_succ_text = {
+	global = FTR_COUP_CREATE_CHAOS_SUCC_EFFECT
+}
+
+ftr_coup_create_chaos_fail_text = {
+	global = FTR_COUP_CREATE_CHAOS_FAIL_EFFECT
+}
+
+ftr_coup_make_trap_succ_text = {
+	global = FTR_COUP_MAKE_TRAP_SUCC_EFFECT
+}
+
+ftr_coup_make_trap_fail_text = {
+	global = FTR_COUP_MAKE_TRAP_FAIL_EFFECT
+}
+
+ftr_coup_agent_betray_text = {
+	global = FTR_COUP_AGENT_BETRAY_EFFECT
+}
+
+ftr_coup_thief_succ_text = {
+	global = FTR_COUP_THIEF_SUCC_EFFECT
+}
+
+ftr_coup_thief_fail_text = {
+	global = FTR_COUP_THIEF_FAIL_EFFECT
+}

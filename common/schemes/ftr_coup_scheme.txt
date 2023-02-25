@@ -1,0 +1,301 @@
+﻿coup = {
+	skill = intrigue
+	desc = coup_desc_general
+	hostile = yes
+	icon = icon_scheme_hostile
+	power_per_skill_point = 3.0
+	resistance_per_skill_point = 3.0
+	power_per_agent_skill_point = 0.5
+	minimum_progress_chance = 10
+	maximum_progress_chance = 90
+	minimum_success = 0
+	maximum_secrecy = 95
+	maximum_success = 95
+	success_desc = "COUP_SUCCESS_DESC"
+	discovery_desc = "COUP_DISCOVERY_DESC"		
+	cooldown = { years = 10 }
+	is_secret = yes
+	base_secrecy = 15
+	
+	allow = {
+		age >= 14
+		is_imprisoned = no
+	}
+	
+	valid = {
+		scope:target = {
+			NOT = { imprisoner = scope:owner }
+		}
+		scope:owner = {
+			NOT = { imprisoner = scope:target }
+		}
+		scope:owner = {
+			OR = {
+				is_courtier_of = scope:target
+				is_vassal_of = scope:target
+			}
+		}
+	}
+
+	valid_agent = {
+		age >= 14
+	}
+	
+	agent_join_chance = {
+		base = 0
+		
+		# Base Reluctance, including negative AI Energy
+		modifier = {
+			add = {
+				value = -20
+				if = {
+					limit = {
+						ai_energy < 0
+					}
+					add = {
+						value = ai_energy
+						multiply = 0.5
+					}
+				}
+			}
+			desc = BASE_RELUCTANCE
+		}
+
+		#Is Owner sending a gift in the invite interaction?
+		modifier = {
+			add = 30
+			exists = scope:gift
+			always = scope:gift
+			NOT = {
+				OR = {
+					scope:target = { is_parent_of = root }
+					root = { is_parent_of = scope:target }
+				}
+			}
+			desc = "SCHEME_WITH_GIFT"
+		}
+
+		#Coup Scheme modifiers
+		hostile_coup_agent_base_join_chance_modifier = yes
+
+		#Family Feud
+		house_feud_hostile_scheme_agent_modifier = yes
+	}
+	
+	base_success_chance = {
+		base = -20
+		
+		coup_base_chance_modifier = yes
+
+		modifier = {
+			add = 10
+			desc = FTR_COUP_COURTIER
+			scope:owner = {
+				is_courtier_of = scope:target
+			}
+		}
+
+		modifier = {
+			add = 10
+			desc = FTR_COUP_GUARD_INFILTRATED
+			scope:owner = {
+				exists = var:ftr_coup_guard_infiltrated
+			}
+		}
+
+		modifier = {
+			add = -15
+			desc = FTR_COUP_GUARD_INFILTRATION_FAIL
+			scope:owner = {
+				exists = var:ftr_coup_guard_infiltration_failed
+			}
+		}
+
+		modifier = {
+			add = 10
+			desc = FTR_COUP_STEAL_MAP_SUCC
+			scope:owner = {
+				exists = var:ftr_coup_steal_map_succ
+			}
+		}
+
+		modifier = {
+			add = -15
+			desc = FTR_COUP_STEAL_MAP_FAIL
+			scope:owner = {
+				exists = var:ftr_coup_steal_map_fail
+			}
+		}
+
+		modifier = {
+			add = 10
+			desc = FTR_COUP_COUNTERFEIT_PASS_SUCC
+			scope:owner = {
+				exists = var:ftr_coup_counterfeit_pass_succ
+			}
+		}
+
+		modifier = {
+			add = -15
+			desc = FTR_COUP_COUNTERFEIT_PASS_FAIL
+			scope:owner = {
+				exists = var:ftr_coup_counterfeit_pass_fail
+			}
+		}
+
+		modifier = {
+			add = 10
+			desc = FTR_COUP_CREATE_CHAOS_SUCC
+			scope:owner = {
+				exists = var:ftr_coup_create_chaos_succ
+			}
+		}
+
+		modifier = {
+			add = 10
+			desc = FTR_COUP_MAKE_TRAP_SUCC
+			scope:owner = {
+				exists = var:ftr_coup_make_trap_succ
+			}
+		}
+
+		modifier = {
+			add = 10
+			desc = FTR_COUP_THIEF_SUCC
+			scope:owner = {
+				exists = var:ftr_coup_thief_succ
+			}
+		}
+
+		modifier = {
+			add = 10
+			desc = FTR_COUP_SERVANT_BRIBE
+			scope:owner = {
+				exists = var:ftr_coup_servant_bribe
+			}
+		}
+
+		modifier = {
+			add = -30
+			desc = FTR_COUP_UNPREPARED_ACTION
+			scope:owner = {
+				exists = var:ftr_coup_unprepared_action
+			}
+		}
+
+		modifier = {
+			add = -100
+			scope:target = {				
+				has_opinion_modifier = {
+					target = scope:owner
+					modifier = ftr_attempted_coup_crime
+				}
+			}
+			desc = FTR_COUP_DISCOVERED
+		}
+
+		# At War
+		modifier = {
+			add = -50
+			desc = "SCHEME_AT_WAR"
+			scope:target = {
+				is_at_war_with = scope:owner
+			}
+		}
+	}
+	
+	agent_success_chance = {
+		base = 0
+		coup_agent_success_chance_modifier = yes #Adds a value depending on their "closeness" to target
+	}
+	agent_leave_threshold = -25
+
+	on_ready = {
+		random = {
+			chance = scope:scheme.scheme_success_chance
+			save_scope_value_as = {
+				name = scheme_successful
+				value = yes
+			}
+		}
+		scope:owner = {
+			if = {
+				limit = {
+					exists = scope:scheme_successful
+				}
+				trigger_event = {
+					on_action = ftr_coup_success
+				}
+			}
+			else = {
+				trigger_event = {
+					on_action = ftr_coup_failure
+				}	
+			}
+		}
+	}
+
+	on_monthly = {
+		save_scope_as = scheme
+		scheme_target = {
+			save_scope_as = target
+		}
+		scheme_owner = {
+			save_scope_as = owner
+		}
+		hostile_scheme_discovery_chance_effect = yes
+		if = {
+			limit = {
+				NOT = { exists = scope:discovery_event_happening }
+			}
+			scheme_owner = {
+				trigger_event = {
+					on_action = ftr_coup_ongoing
+				}
+			}
+		}
+	}
+
+	
+	on_invalidated = {
+		scheme_target = {
+			save_scope_as = target
+		}
+		scheme_owner = {
+			remove_variable = ftr_coup_method
+			save_scope_as = owner
+		}
+		if = { #Did the character die in another way?
+			limit = {
+				scope:target = {
+					is_alive = no
+					NOT = { killer = scope:owner }
+				}
+			}
+			scope:owner = {
+				send_interface_toast = {
+					title = ftr_coup_invalid_target_die
+					desc = ftr_coup_invalid_target_die.desc
+					left_icon = scope:owner
+					right_icon = scope:target
+				}
+			}
+		}
+		if = {
+			limit = {
+				scope:owner = {
+					NOT = { is_vassal_of = scope:target }
+					NOT = { is_courtier_of = scope:target }
+				}
+			}
+			scope:owner = {
+				send_interface_toast = {
+					title = ftr_coup_invalid_relation_change
+					desc = ftr_coup_invalid_relation_change.desc
+					left_icon = scope:owner
+					right_icon = scope:target
+				}
+			}
+		}
+	}
+}

@@ -229,7 +229,7 @@ ftr_buy_land_interaction = {
 			scope:target = {
 				de_jure_liege = scope:actor.primary_title
 				NOT = {
-					de_jure_liege = scope:recipient
+					de_jure_liege = scope:recipient.primary_title
 				}
 			}
 		}

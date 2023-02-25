@@ -52,3 +52,25 @@ ftr_break_alliance_opinion = {
 	opinion = -20
 	years = 20
 }
+
+ftr_success_coup_on_me_opinion = {
+	opinion = -100
+	years = 100
+}
+
+# Crime opinions
+ftr_attempted_coup_crime = {
+	opinion = -100
+	imprisonment_reason = yes
+	execute_reason = yes
+	banish_reason = yes
+	revoke_title_reason = yes
+}
+
+ftr_murderer_crime = {
+	opinion = -10
+	imprisonment_reason = yes
+	execute_reason = yes
+	banish_reason = yes
+	revoke_title_reason = yes
+}

@@ -57,3 +57,8 @@ ftr_tournament_champion_modifier = {
 	prowess = 2
 	monthly_prestige = 1
 }
+
+ftr_usurper_modifier = {
+	icon = diplomacy_negative
+	direct_vassal_opinion = -20
+}

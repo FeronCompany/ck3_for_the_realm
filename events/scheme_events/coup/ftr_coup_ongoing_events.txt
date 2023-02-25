@@ -1,0 +1,1074 @@
+﻿
+
+namespace = ftr_coup_ongoing
+
+# 1000 - 1999 Random on_going events
+# 2000 - 2999 Side effect of choices
+
+# Bribe servant
+ftr_coup_ongoing.1000 = {
+	type = character_event
+	title = ftr_coup_ongoing.1000.t
+	desc = ftr_coup_ongoing.1000.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = scheme
+	}
+	
+	trigger = {
+		NOT = { has_variable = has_ftr_coup_ongoing_1000 }
+		scope:scheme = {
+			any_scheme_agent = {
+				intrigue > 10
+				NOT = { root = this }
+			}
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					intrigue > 10
+					NOT = { root = this }
+				}
+				save_scope_as = agent
+			}
+		}
+		set_variable = {	
+			name = has_ftr_coup_ongoing_1000
+			value = yes
+			days = 365
+		}
+	}
+
+	option = { # Do it
+		name = ftr_coup_ongoing.1000.a
+		pay_short_term_gold = {
+			target = scope:agent
+			gold = medium_gold_value
+		}
+		random_list = {
+			10 = {
+				modifier = {
+					add = scope:agent.intrigue
+				}
+				custom_description = {
+					text = ftr_coup_bribe_servant_suc_text
+					trigger_event = {
+						id = ftr_coup_ongoing.2000
+						days = 5
+					}
+				}
+			}
+			10 = {
+				# Nothing will happen
+			}
+		}
+		ai_chance = {
+			base = 75
+		}
+	}
+	option = { # Forget about it
+		name = ftr_coup_ongoing.1000.b
+		ai_chance = {
+			base = 25
+		}
+	}
+}
+
+# Agent exposed
+ftr_coup_ongoing.1001 = {
+	type = character_event
+	title = ftr_coup_ongoing.1001.t
+	desc = ftr_coup_ongoing.1001.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = stress
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = shock
+	}
+	
+	trigger = {
+		scope:scheme = {
+			any_scheme_agent = {
+				OR = {
+					has_trait = lustful
+					has_trait = gluttonous
+				}
+				NOT = { root = this }
+			}
+		}
+		NOT = { has_variable = has_ftr_coup_ongoing_1001 }
+	}
+
+	immediate = {
+		set_variable = {	
+			name = has_ftr_coup_ongoing_1001
+			value = yes
+			days = 365
+		}
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					OR = {
+						has_trait = lustful
+						has_trait = gluttonous
+					}
+					NOT = { root = this }
+				}
+				save_scope_as = agent
+			}
+			expose_scheme = yes
+			expose_scheme_agent = scope:agent
+			scheme_target = {
+				trigger_event = ftr_coup_ongoing.2001
+			}
+		}
+	}
+
+	option = { # Do nothing
+		name = ftr_coup_ongoing.1001.a
+		ai_chance = {
+			base = 25
+		}
+	}
+
+	option = { # Do it right now
+		name = ftr_coup_ongoing.1001.b
+		scope:scheme = {
+			add_scheme_progress = 10
+		}
+		ai_chance = {
+			base = 25
+			modifier = {
+				add = 50
+				has_trait = brave
+			}
+		}
+	}
+}
+
+# Undercover infiltrated into the Guard
+ftr_coup_ongoing.1002 = {
+	type = character_event
+	title = ftr_coup_ongoing.1002.t
+	desc = ftr_coup_ongoing.1002.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = scheme
+	}
+
+	trigger = {
+		NOT = { has_variable = has_ftr_coup_ongoing_1002 }
+		scope:scheme = {
+			any_scheme_agent = {
+				intrigue > 10
+				NOT = { root = this }
+			}
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					intrigue > 10
+					NOT = { root = this }
+				}
+				save_scope_as = agent
+			}
+		}
+		set_variable = {	
+			name = has_ftr_coup_ongoing_1002
+			value = yes
+			days = 365
+		}
+	}
+
+	option = { # Do nothing
+		name = ftr_coup_ongoing.1002.a
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Try it
+		name = ftr_coup_ongoing.1002.b
+		random_list = {
+			10 = {
+				modifier = {
+					add = scope:agent.intrigue
+				}
+				custom_description = {
+					text = ftr_coup_infiltrate_guard_succ_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1002.b.succ
+						desc = ftr_coup_ongoing.1002.b.succ.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+					set_variable = {
+						name = ftr_coup_guard_infiltrated
+						value = yes
+						days = 365
+					}
+					scope:scheme = {
+						add_scheme_progress = 2
+					}
+				}
+			}
+			10 = {
+				custom_description = {
+					text = ftr_coup_infiltrate_guard_fail_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1002.b.fail
+						desc = ftr_coup_ongoing.1002.b.fail.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+					set_variable = {
+						name = ftr_coup_guard_infiltration_failed
+						value = yes
+						days = 365
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 90
+		}
+	}
+}
+
+# Steal castle map
+ftr_coup_ongoing.1003 = {
+	type = character_event
+	title = ftr_coup_ongoing.1003.t
+	desc = ftr_coup_ongoing.1003.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = scheme
+	}
+
+	trigger = {
+		NOT = { has_variable = has_ftr_coup_ongoing_1003 }
+		NOT = {
+			is_courtier_of = scope:target
+		}
+		scope:scheme = {
+			any_scheme_agent = {
+				is_courtier_of = scope:target
+				NOT = { root = this }
+			}
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					is_courtier_of = scope:target
+					NOT = { root = this }
+				}
+				save_scope_as = agent
+			}
+		}
+		set_variable = {	
+			name = has_ftr_coup_ongoing_1003
+			value = yes
+			days = 365
+		}
+	}
+
+	option = { # Do nothing
+		name = ftr_coup_ongoing.1003.a
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Try it
+		name = ftr_coup_ongoing.1003.b
+		random_list = {
+			10 = {
+				modifier = {
+					add = scope:agent.intrigue
+				}
+				custom_description = {
+					text = ftr_coup_steal_map_succ_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1003.b.succ
+						desc = ftr_coup_ongoing.1003.b.succ.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+					scope:scheme = {
+						add_scheme_progress = 2
+					}
+					set_variable = {
+						name = ftr_coup_steal_map_succ
+						value = yes
+						days = 365
+					}
+				}
+			}
+			10 = {
+				custom_description = {
+					text = ftr_coup_steal_map_fail_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1003.b.fail
+						desc = ftr_coup_ongoing.1003.b.fail.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+					set_variable = {
+						name = ftr_coup_steal_map_fail
+						value = yes
+						days = 365
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 90
+		}
+	}
+}
+
+# Agent snitch
+ftr_coup_ongoing.1004 = {
+	type = character_event
+	title = ftr_coup_ongoing.1004.t
+	desc = ftr_coup_ongoing.1004.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = scheme
+	}
+
+	trigger = {
+		NOT = { has_variable = has_ftr_coup_ongoing_1004 }
+		scope:scheme = {
+			any_scheme_agent = {
+				NOT = { root = this }
+				is_landed = no
+				opinion = {
+					target = root
+					value < 30
+				}
+			}
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					NOT = { root = this }
+					is_landed = no
+					opinion = {
+						target = root
+						value < 30
+					}
+				}
+				save_scope_as = agent
+			}
+		}
+		set_variable = {	
+			name = has_ftr_coup_ongoing_1004
+			value = yes
+			days = 365
+		}
+	}
+
+	option = { # Stop!
+		name = ftr_coup_ongoing.1004.a
+		random_list = {
+			10 = {
+				modifier = {
+					add = intrigue
+				}
+				unknown_murder_effect = {
+					VICTIM = scope:agent
+					MURDERER = scope:owner
+					REASON = death_disappearance
+				}
+			}
+			10 = {
+				custom_description = {
+					text = ftr_coup_agent_betray_text
+					scope:target = {
+						trigger_event = {
+							id = ftr_coup_ongoing.2002
+							days = 1
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Send thief to infiltrate the castle
+ftr_coup_ongoing.1005 = {
+	type = character_event
+	title = ftr_coup_ongoing.1005.t
+	desc = ftr_coup_ongoing.1005.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = scheme
+	}
+
+	trigger = {
+		NOT = { has_variable = has_ftr_coup_ongoing_1005 }
+		scope:scheme = {
+			any_scheme_agent = {
+				intrigue > 10
+				NOT = { root = this }
+			}
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					intrigue > 10
+					NOT = { root = this }
+				}
+				save_scope_as = agent
+			}
+		}
+		set_variable = {	
+			name = has_ftr_coup_ongoing_1005
+			value = yes
+			days = 365
+		}
+	}
+
+	option = { # Do nothing
+		name = ftr_coup_ongoing.1005.a
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Try it
+		name = ftr_coup_ongoing.1005.b
+		random_list = {
+			10 = {
+				modifier = {
+					add = scope:agent.intrigue
+				}
+				custom_description = {
+					text = ftr_coup_thief_succ_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1005.b.succ
+						desc = ftr_coup_ongoing.1005.b.succ.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+					scope:scheme = {
+						add_scheme_progress = 2
+						scheme_owner = {
+							set_variable = {
+								name = ftr_coup_method
+								value = 1
+								days = 365
+							}
+						}
+					}
+					set_variable = {
+						name = ftr_coup_thief_succ
+						value = yes
+						days = 365
+					}
+				}
+			}
+			10 = {
+				custom_description = {
+					text = ftr_coup_thief_fail_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1005.b.fail
+						desc = ftr_coup_ongoing.1005.b.fail.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 90
+		}
+	}
+}
+
+# Counterfeit a pass
+ftr_coup_ongoing.1006 = {
+	type = character_event
+	title = ftr_coup_ongoing.1006.t
+	desc = ftr_coup_ongoing.1006.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = scheme
+	}
+
+	trigger = {
+		NOT = { has_variable = has_ftr_coup_ongoing_1006 }
+		scope:scheme = {
+			any_scheme_agent = {
+				intrigue > 10
+				NOT = { root = this }
+			}
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					intrigue > 10
+					NOT = { root = this }
+				}
+				save_scope_as = agent
+			}
+		}
+		set_variable = {	
+			name = has_ftr_coup_ongoing_1006
+			value = yes
+			days = 365
+		}
+	}
+
+	option = { # Do nothing
+		name = ftr_coup_ongoing.1006.a
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Try it
+		name = ftr_coup_ongoing.1006.b
+		random_list = {
+			10 = {
+				modifier = {
+					add = scope:agent.intrigue
+				}
+				custom_description = {
+					text = ftr_coup_counterfeit_pass_succ_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1006.b.succ
+						desc = ftr_coup_ongoing.1006.b.succ.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+					set_variable = {
+						name = ftr_coup_counterfeit_pass_succ
+						value = yes
+						days = 365
+					}
+					scope:scheme = {
+						add_scheme_progress = 2
+					}
+				}
+			}
+			10 = {
+				custom_description = {
+					text = ftr_coup_counterfeit_pass_fail_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1006.b.fail
+						desc = ftr_coup_ongoing.1006.b.fail.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+					set_variable = {
+						name = ftr_coup_counterfeit_pass_fail
+						value = yes
+						days = 365
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 90
+		}
+	}
+}
+
+# Create chaos in the surrounding area
+ftr_coup_ongoing.1007 = {
+	type = character_event
+	title = ftr_coup_ongoing.1007.t
+	desc = ftr_coup_ongoing.1007.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = scheme
+	}
+
+	trigger = {
+		NOT = { has_variable = has_ftr_coup_ongoing_1007 }
+		scope:scheme = {
+			any_scheme_agent = {
+				intrigue > 10
+				NOT = { root = this }
+			}
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					intrigue > 10
+					NOT = { root = this }
+				}
+				save_scope_as = agent
+			}
+		}
+		set_variable = {	
+			name = has_ftr_coup_ongoing_1007
+			value = yes
+			days = 365
+		}
+	}
+
+	option = { # Do nothing
+		name = ftr_coup_ongoing.1007.a
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Try it
+		name = ftr_coup_ongoing.1007.b
+		random_list = {
+			10 = {
+				modifier = {
+					add = scope:agent.intrigue
+				}
+				custom_description = {
+					text = ftr_coup_create_chaos_succ_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1007.b.succ
+						desc = ftr_coup_ongoing.1007.b.succ.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+					set_variable = {
+						name = ftr_coup_create_chaos_succ
+						value = yes
+						days = 365
+					}
+					scope:scheme = {
+						add_scheme_progress = 2
+					}
+				}
+			}
+			10 = {
+				custom_description = {
+					text = ftr_coup_create_chaos_fail_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1007.b.fail
+						desc = ftr_coup_ongoing.1007.b.fail.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 90
+		}
+	}
+}
+
+# Make a trap
+ftr_coup_ongoing.1008 = {
+	type = character_event
+	title = ftr_coup_ongoing.1008.t
+	desc = ftr_coup_ongoing.1008.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = scheme
+	}
+
+	trigger = {
+		NOT = { has_variable = has_ftr_coup_ongoing_1008 }
+		scope:scheme = {
+			any_scheme_agent = {
+				intrigue > 10
+				NOT = { root = this }
+			}
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					intrigue > 10
+					NOT = { root = this }
+				}
+				save_scope_as = agent
+			}
+		}
+		set_variable = {	
+			name = has_ftr_coup_ongoing_1008
+			value = yes
+			days = 365
+		}
+	}
+
+	option = { # Do nothing
+		name = ftr_coup_ongoing.1008.a
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Try it
+		name = ftr_coup_ongoing.1008.b
+		random_list = {
+			10 = {
+				modifier = {
+					add = scope:agent.intrigue
+				}
+				custom_description = {
+					text = ftr_coup_make_trap_succ_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1008.b.succ
+						desc = ftr_coup_ongoing.1008.b.succ.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+					set_variable = {
+						name = ftr_coup_make_trap_succ
+						value = yes
+						days = 365
+					}
+					scope:scheme = {
+						add_scheme_progress = 2
+						scheme_owner = {
+							set_variable = {
+								name = ftr_coup_method
+								value = 2
+								days = 365
+							}
+						}
+					}
+				}
+			}
+			10 = {
+				custom_description = {
+					text = ftr_coup_make_trap_fail_text
+					send_interface_toast = {
+						title = ftr_coup_ongoing.1008.b.fail
+						desc = ftr_coup_ongoing.1008.b.fail.desc
+						left_icon = root
+						right_icon = scope:agent
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 90
+		}
+	}
+}
+
+# Action early because of misunderstanding
+ftr_coup_ongoing.1009 = {
+	type = character_event
+	title = ftr_coup_ongoing.1009.t
+	desc = ftr_coup_ongoing.1009.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = scheme
+	}
+
+	trigger = {
+		NOT = { has_variable = has_ftr_coup_ongoing_1009 }
+		scope:scheme = {
+			any_scheme_agent = {
+				OR = {
+					has_trait = craven
+					has_trait = impatient
+					has_trait = arbitrary
+					has_trait = paranoid
+					has_trait = fickle
+				}
+				NOT = { root = this }
+				is_courtier_of = scope:target
+			}
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					OR = {
+						has_trait = craven
+						has_trait = impatient
+						has_trait = arbitrary
+						has_trait = paranoid
+						has_trait = fickle
+					}
+					NOT = { root = this }
+					is_courtier_of = scope:target
+				}
+				save_scope_as = agent
+			}
+		}
+		set_variable = {	
+			name = has_ftr_coup_ongoing_1009
+			value = yes
+			days = 365
+		}
+		random_list = {
+			10 = {
+				scope:agent = {
+					death = {
+						death_reason = death_execution
+						killer = scope:target
+					}
+				}
+				scope:target = {
+					trigger_event = {
+						id = ftr_coup_ongoing.2003
+						days = 1
+					}
+				}
+				set_variable = {
+					name = ftr_coup_unprepared_action
+					value = yes
+					days = 365
+				}
+			}
+			40 = {
+				scope:target = {
+					imprison = {
+						target = scope:agent
+						type = dungeon
+					}
+					trigger_event = {
+						id = ftr_coup_ongoing.2002
+						days = 1
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Nothing we can do
+		name = ftr_coup_ongoing.1009.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Bribe servant succeed
+ftr_coup_ongoing.2000 = {
+	type = character_event
+	title = ftr_coup_ongoing.2000.t
+	desc = ftr_coup_ongoing.2000.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = happiness
+	}
+
+	option = { # Success bribe
+		name = ftr_coup_ongoing.2000.a
+		set_variable = {
+			name = ftr_coup_servant_bribe
+			value = yes
+			days = 365
+		}
+		scope:scheme = {
+			add_scheme_progress = 2
+		}
+	}
+}
+
+# Agent exposed notify to liege
+ftr_coup_ongoing.2001 = {
+	type = character_event
+	title = ftr_coup_ongoing.2001.t
+	desc = ftr_coup_ongoing.2001.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = rage
+	}
+	right_portrait = {
+		character = scope:agent
+		animation = prison_dungeon
+	}
+	
+	trigger = {}
+
+	immediate = {
+		add_opinion = {
+			target = scope:agent
+			modifier = ftr_attempted_coup_crime
+		}
+		imprison = {
+			target = scope:agent
+			type = dungeon
+		}
+		stress_impact = {
+			craven = minor_stress_impact_loss
+		}
+	}
+
+	option = { # Get information
+		name = ftr_coup_ongoing.2001.a
+		trigger_event = {
+			id = ftr_coup_ongoing.2002
+			days = { 1 5 }
+		}
+	}
+}
+
+# Get coup detail from imprisoned agent
+ftr_coup_ongoing.2002 = {
+	type = character_event
+	title = ftr_coup_ongoing.2002.t
+	desc = ftr_coup_ongoing.2002.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = rage
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = scheme
+	}
+	
+	trigger = {}
+
+	immediate = {
+		scope:scheme = {
+			expose_scheme_agent = scheme_owner
+			scheme_owner = {
+				save_scope_as = owner
+			}
+			every_scheme_agent = {
+				limit = {
+					NOT = { scope:owner = this }
+				}
+				scope:scheme = {
+					expose_scheme_agent = prev
+				}
+				root = {
+					add_opinion = {
+						target = prev
+						modifier = ftr_attempted_coup_crime
+					}
+				}
+			}
+		}
+		add_opinion = {
+			target = scope:owner
+			modifier = ftr_attempted_coup_crime
+		}
+	}
+
+	option = { # I know.
+		name = ftr_coup_ongoing.2002.a
+	}
+}
+
+# Coup member dead for early coup
+ftr_coup_ongoing.2003 = {
+	type = character_event
+	title = ftr_coup_ongoing.2003.t
+	desc = ftr_coup_ongoing.2003.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:agent
+	}
+	
+	trigger = {}
+
+	immediate = {}
+
+	option = { # I know.
+		name = ftr_coup_ongoing.2003.a
+	}
+}
+
+# Coup auto progress
+ftr_coup_ongoing.2004 = {
+	hidden = yes
+
+	immediate = {
+		random = {
+			chance = 50
+			scope:scheme = {
+				add_scheme_progress = 1
+			}
+		}
+	}
+}

@@ -3,14 +3,17 @@
  over_training_modifier_desc:0 "The character was exhausted from overtraining."
 
  lose_religious_debate_modifier:0 "Lost religious debate"
- lose_religious_debate_modifier:0 "The character lost a religious debate recently."
+ lose_religious_debate_modifier_desc:0 "The character lost a religious debate recently."
 
  win_religious_debate_modifier:0 "Win religious debate"
  win_religious_debate_modifier_desc:0 "The character win a religious debate recently."
  
  unsocial_personality_modifier:0 "Unsocial Personality"
  unsocial_personality_modifier_desc:0 "The character get rid of social activities."
- 
+
+ ftr_usurper_modifier:0 "<FTR> Usurper"
+ ftr_usurper_modifier_desc:0 "This person is not in the right position and relies on conspiracy and trickery to ascend to the position."
+
  epic_writing_imitator_modifier:0 "Epic Imitator"
  epic_writing_imitator_modifier_desc:0 "The character is quite good at imitating epic stories."
  
@@ -55,3 +58,12 @@
 
  ftr_break_alliance_opinion:0 "Break Alliance"
  ftr_break_alliance_opinion_desc:0 "Break alliance"
+
+ ftr_success_coup_on_me_opinion:0 "Coup Traitor"
+ ftr_success_coup_on_me_opinion_desc:0 "Coup Traitor"
+
+ ftr_attempted_coup_crime:0 "Unsuccessful Coup Traitor"
+ ftr_attempted_coup_crime_desc:0 "Unsuccessful Coup Traitor"
+
+ ftr_murderer_crime:0 "Murder is crime"
+ ftr_murderer_crime_desc:0 "Murder is crime"

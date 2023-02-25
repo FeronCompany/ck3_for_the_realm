@@ -1,0 +1,70 @@
+﻿
+# Coup success effect
+ftr_coup_success_effect = {
+	$OWNER$ = {
+		imprison = {
+			target = $TARGET$
+			type = dungeon
+		}
+		add_character_modifier = {
+			modifier = ftr_usurper_modifier
+			years = 10
+		}
+		add_dread = 50
+	}
+	create_title_and_vassal_change = {
+		type = usurped
+		save_scope_as = change
+		add_claim_on_loss = yes
+	}
+	$TARGET$ = {
+		add_opinion = {
+			target = $OWNER$
+			modifier = ftr_success_coup_on_me_opinion
+		}
+		every_held_title = {
+			limit = {
+				tier >= tier_county
+			}
+			change_title_holder_include_vassals = {
+				holder = $OWNER$
+				change = scope:change
+				government_base = $TARGET$
+			}
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+}
+
+# Coup failure effect
+ftr_coup_failure_effect = {
+	$SCHEME$ = {
+		save_scope_as = coup_scheme
+	}
+	scope:coup_scheme = {
+		every_scheme_agent = {
+			limit = { NOT = { this = scope:coup_scheme.scheme_owner } }
+			scope:coup_scheme.scheme_target = {
+				imprison = {
+					target = prev
+					type = dungeon
+				}
+				add_opinion = {
+					target = prev
+					modifier = ftr_attempted_coup_crime
+				}
+			}
+		}
+		scheme_target = {
+			imprison = {
+				target = scope:coup_scheme.scheme_owner
+				type = dungeon
+			}
+			add_opinion = {
+				target = scope:coup_scheme.scheme_owner
+				modifier = ftr_attempted_coup_crime
+			}
+		}
+		end_scheme = yes
+	}
+}

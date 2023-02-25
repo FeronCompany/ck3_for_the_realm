@@ -474,3 +474,128 @@ ftr_vassal_mediation_interaction = {
 	}
 }
 
+###### COUP INTERACTION ######
+ftr_coup_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	desc = ftr_coup_interaction_desc
+	cooldown_against_recipient = { years = 10 }
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		scope:actor = {
+			OR = {
+				is_vassal_of = scope:recipient
+				is_courtier_of = scope:recipient
+			}
+			OR = {
+				is_child_of = scope:recipient
+				is_grandchild_of = scope:recipient
+				is_great_grandchild_of = scope:recipient
+				is_sibling_of = scope:recipient
+				scope:recipient.primary_title = {
+					scope:actor = {
+						has_claim_on = prev
+					}
+				}
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			is_imprisoned = no
+			OR = {
+				is_independent_ruler = yes
+				AND = {
+					is_independent_ruler = no
+					NOT = { has_government = centralism_government }
+				}
+			}
+		}
+		scope:actor = {
+			is_imprisoned = no
+		}
+	}
+	on_accept = {
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_coup_interaction_notification
+				left_icon = scope:actor					
+				right_icon = scope:recipient
+				start_scheme = {
+					type = coup
+					target = scope:recipient
+				}
+				stress_impact = {
+					compassionate = medium_stress_impact_gain
+					just = minor_stress_impact_gain
+					humble = minor_stress_impact_gain
+					honest = minor_stress_impact_gain
+					craven = medium_stress_impact_gain
+					ambitious = medium_stress_impact_loss
+					callous = minor_stress_impact_loss
+				}
+			}
+			set_variable = {
+				name = ftr_coup_method
+				# 0-force attack; 1-infiltrate; 2-use trap
+				value = 0
+				days = 365
+			}
+		}
+	}
+	on_auto_accept = {}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = -30
+		modifier = {
+			add = 20
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value <= 50
+				}
+			}
+		}
+		modifier = {
+			add = 20
+			scope:actor = {
+				OR = {
+					has_trait = ambitious
+					has_trait = deceitful
+					has_trait = impatient
+					has_trait = paranoid
+					has_trait = callous
+				}
+			}
+		}
+		modifier = {
+			add = -10
+			scope:actor = {
+				OR = {
+					has_trait = content
+					has_trait = honest
+					has_trait = patient
+					has_trait = trusting
+					has_trait = compassionate
+					has_trait = craven
+				}
+			}
+		}
+		modifier = {
+			add = 10
+			scope:recipient = {
+				opinion = {
+					target = scope:actor
+					value < 30
+				}
+			}
+		}
+		modifier = {
+			add = 20
+			scope:recipient = {
+				has_imprisonment_reason = scope:actor
+			}
+		}
+	}
+}

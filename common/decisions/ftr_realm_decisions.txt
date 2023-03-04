@@ -14,7 +14,7 @@
 	}
 
 	effect = {
-    if = {
+		if = {
 			limit = {
 				has_trait = compassionate
 			}
@@ -31,23 +31,23 @@
 	}
 	ai_will_do = {
 		base = -50
-    modifier = {
+		modifier = {
 			add = 30
 			has_trait = greedy
 		}
-    modifier = {
+		modifier = {
 			add = 30
 			gold < -200
 		}
-    modifier = {
+		modifier = {
 			add = 100
 			gold < -500
 		}
-    modifier = {
+		modifier = {
 			add = -20
 			has_trait = just
 		}
-    modifier = {
+		modifier = {
 			add = -20
 			has_trait = compassionate
 		}
@@ -70,7 +70,7 @@ feudal_convert_to_centralism_decision = {
 	}
 	is_valid = {
 		is_independent_ruler = yes
-		has_realm_law = crown_authority_3
+		has_realm_law = crown_authority_2
 		culture = {
 			OR = {
 				AND = {

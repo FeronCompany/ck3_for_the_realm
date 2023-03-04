@@ -227,3 +227,9 @@
  ftr_coup_ongoing.2003.t:1 "Suddenly Attack"
  ftr_coup_ongoing.2003.desc:3 "The calm evening was broken by a noise. [agent.GetName]'s wounded body was dragged into the courtyard by the guards. It turned out that [agent.GetSheHe] was trying to sneak attack my palace with a pitiful few thugs. Of course, this could not be done by one person."
  ftr_coup_ongoing.2003.a:0 "So who is behind [agent.GetSheHe]?"
+
+ ftr_coup_ongoing.2005.t:1 "A Bad Feeling"
+ ftr_coup_ongoing.2005.desc:3 "The recent court meetings and inspections have always made me feel uneasy. My courtiers and subordinates are talking about something in private, but as soon as I get close, they don't say a word. Could it be that someone is trying to harm me, or am I just thinking too much?"
+ ftr_coup_ongoing.2005.a:0 "I must be thinking too much."
+ ftr_coup_ongoing.2005.b:0 "Secretly send more people to lead the snake out of the hole."
+ FTR_COUP_SENSED_EFFECT:0 "You have strengthened the secret guards in the castle, and there may be unexpected gains in the future..."

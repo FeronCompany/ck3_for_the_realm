@@ -222,6 +222,9 @@
 			if = {
 				limit = {
 					exists = scope:scheme_successful
+					scope:target = {
+						NOT = { exists = var:ftr_coup_sensed }
+					}
 				}
 				trigger_event = {
 					on_action = ftr_coup_success

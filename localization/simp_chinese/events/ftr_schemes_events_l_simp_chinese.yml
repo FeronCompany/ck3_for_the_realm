@@ -227,3 +227,9 @@
  ftr_coup_ongoing.2003.t:1 "突然袭击"
  ftr_coup_ongoing.2003.desc:3 "平静的傍晚被一阵嘈杂声打破，[agent.GetName]浑身是伤的遗体被卫兵们拖到庭院中，原来[agent.GetSheHe]竟然妄图带着少得可怜的几个暴徒偷袭我的宫殿。当然，这绝不可能是一人所为。"
  ftr_coup_ongoing.2003.a:0 "[agent.GetSheHe]背后到底是谁？"
+
+ ftr_coup_ongoing.2005.t:1 "不祥的预感"
+ ftr_coup_ongoing.2005.desc:3 "最近的朝会和巡视总让我感到不安，我的廷臣和下属们都在私底下议论着什么，可等我一靠近，他们就一句话也不说了。难道是有人想要暗害我，还是说我只是想多了？"
+ ftr_coup_ongoing.2005.a:0 "一定是我想多了"
+ ftr_coup_ongoing.2005.b:0 "暗中加派人手引蛇出洞"
+ FTR_COUP_SENSED_EFFECT:0 "你加强了城堡内的暗哨，后续可能会有意外收获……"

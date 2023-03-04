@@ -79,9 +79,23 @@ ftr_buy_favor_interaction = {
 					greedy = medium_stress_impact_gain
 					generous = medium_stress_impact_loss
 				}
-				add_hook = {
-					target = scope:recipient
-					type = favor_hook
+				if = {
+					limit = {
+						NOT = {
+							scope:recipient = {
+								has_hook = scope:actor
+							}
+						}
+					}
+					add_hook = {
+						target = scope:recipient
+						type = favor_hook
+					}
+				}
+				else = {
+					scope:recipient = {
+						remove_hook = { target = scope:actor }
+					}
 				}
 			}
 		}
@@ -128,6 +142,7 @@ ftr_buy_favor_interaction = {
 			add = {
 				value = ftr_buy_favor_cost_value
 				multiply = -0.05
+				min = -50
 			}
 		}
 		modifier = {
@@ -180,10 +195,13 @@ request_combat_guidance_interaction = {
 		NOT = { scope:actor = scope:recipient }
 		scope:actor = {
 			primary_title.tier > tier_barony
-			is_adult = yes
+			age >= 12
 			OR = {
 				has_trait = education_martial
 				culture = { has_cultural_parameter = can_duel_rivals }
+				has_focus = martial_chivalry_focus
+				has_focus = martial_authority_focus
+				has_focus = martial_strategy_focus
 			}
 			prowess < scope:recipient.prowess
 		}

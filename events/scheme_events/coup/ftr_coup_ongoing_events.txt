@@ -1072,3 +1072,34 @@ ftr_coup_ongoing.2004 = {
 		}
 	}
 }
+
+# Coup sensed by target
+ftr_coup_ongoing.2005 = {
+	type = character_event
+	title = ftr_coup_ongoing.2005.t
+	desc = ftr_coup_ongoing.2005.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	
+	trigger = {}
+
+	immediate = {}
+
+	option = { # Maybe i just think too much
+		name = ftr_coup_ongoing.2005.a
+	}
+	option = { # Lead the snake out of the hole
+		name = ftr_coup_ongoing.2005.b
+		custom_description = {
+			text = ftr_coup_sensed_text
+			set_variable = {
+				name = ftr_coup_sensed
+				value = yes
+				days = 365
+			}
+		}
+	}
+}

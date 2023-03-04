@@ -104,6 +104,11 @@ ftr_depose_bureacrat_interaction = {
 			}
 		}
 	}
+	can_send = {
+		scope:actor = {
+			prestige >= 500
+		}
+	}
 	on_accept = {
 		create_title_and_vassal_change = {
 			type = granted
@@ -239,34 +244,37 @@ ftr_request_depose_interaction = {
 			}
 		}
 	}
-	populate_recipient_list = {
-		scope:actor = {
-			every_vassal = {
-				limit = {
-					primary_title.tier >= tier_county
-					has_government = centralism_government
-				}
-				add_to_list = characters
-			}
+
+	redirect = {
+		scope:recipient = {
+			save_scope_as = secondary_recipient
+		}
+		scope:actor.top_liege = {
+			save_scope_as = recipient
 		}
 	}
-	can_be_picked = {
-		is_at_war = no
-	}
-
 	is_shown = {
 		scope:actor = {
 			has_government = centralism_government
 			is_independent_ruler = no
 			primary_title.tier > tier_county
 		}
-		scope:recipient = {
-			this = scope:actor.top_liege
+		scope:secondary_recipient = {
+			is_vassal_of = scope:actor
+			has_government = centralism_government
 		}
 	}
 	is_valid_showing_failures_only = {
 		scope:actor = {
 			is_at_war = no
+		}
+		scope:recipient = {
+			is_at_war = no
+		}
+	}
+	can_send = {
+		scope:actor = {
+			prestige >= 250
 		}
 	}
 	on_accept = {
@@ -540,6 +548,20 @@ ftr_coup_interaction = {
 				# 0-force attack; 1-infiltrate; 2-use trap
 				value = 0
 				days = 365
+			}
+		}
+		hidden_effect = {
+			scope:recipient = {
+				random = {
+					chance = 10
+					modifier = {
+						add = scope:recipient.intrigue
+					}
+					trigger_event = {
+						id = ftr_coup_ongoing.2005
+						days = 5
+					}
+				}
 			}
 		}
 	}

@@ -226,7 +226,7 @@ ftr_request_depose_interaction = {
 	cooldown = { years = 2 }
 	ai_frequency = 24
 	ai_targets = {
-		ai_recipients = liege
+		ai_recipients = vassals
 	}
 	desc = ftr_request_depose_interaction_desc
 	greeting = positive

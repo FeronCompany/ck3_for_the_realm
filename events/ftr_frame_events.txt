@@ -1,0 +1,7 @@
+
+
+namespace ftr_frame_event
+
+ftr_frame_event.0001 = {
+	#
+}

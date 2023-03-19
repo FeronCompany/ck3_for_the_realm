@@ -71,3 +71,7 @@ ftr_coup_thief_fail_text = {
 ftr_coup_sensed_text = {
 	global = FTR_COUP_SENSED_EFFECT
 }
+
+ftr_frame_effect_text = {
+	global = FTR_FRAME_EFFECT
+}

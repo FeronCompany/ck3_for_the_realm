@@ -1,0 +1,4 @@
+﻿l_english:
+ ftr_frame_interaction:0 "<FTR> Frame"
+ ftr_frame_interaction_desc:0 "Falsify evidence against the target and damage its image."
+ FTR_FRAME_EFFECT:2 "You can choose the specific method of framing..."

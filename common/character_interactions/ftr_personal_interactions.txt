@@ -439,3 +439,80 @@ religious_debate_interaction = {
 		}
 	}
 }
+
+ftr_frame_interaction = {
+	category = interaction_category_hostile
+	common_interaction = yes
+	desc = ftr_coup_interaction_desc
+	cooldown_against_recipient = { years = 10 }
+	ai_targets = {
+		ai_recipients = vassals
+		ai_recipients = peer_vassals
+		ai_recipients = liege
+	}
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			is_imprisoned = no
+		}
+		scope:actor = {
+			is_imprisoned = no
+		}
+	}
+	can_send = {
+		scope:actor = {
+			piety >= 250
+		}
+	}
+	on_accept = {
+		scope:actor = {
+			add_piety = -250
+			stress_impact = {
+				compassionate = medium_stress_impact_gain
+				just = minor_stress_impact_gain
+				honest = medium_stress_impact_gain
+				craven = minor_stress_impact_gain
+				callous = minor_stress_impact_loss
+				deceitful = minor_stress_impact_loss
+			}
+			custom_description = {
+				text = ftr_frame_effect_text
+				trigger_event = {
+					id = ftr_frame_event.0001
+					days = { 1 5 }
+				}
+			}
+		}
+	}
+	on_auto_accept = {}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = -30
+		opinion_modifier = {
+			opinion_target = scope:recipient
+			who = scope:actor
+			multiplier = -2
+		}
+		modifier = {
+			add = 10
+			scope:actor = {
+				OR = {
+					has_trait = deceitful
+					has_trait = vengeful
+				}
+			}
+		}
+		modifier = {
+			add = -10
+			scope:actor = {
+				OR = {
+					has_trait = honest
+					has_trait = just
+				}
+			}
+		}
+	}
+}

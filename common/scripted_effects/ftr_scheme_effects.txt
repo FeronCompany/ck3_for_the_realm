@@ -1,9 +1,32 @@
 ﻿
 # Coup success effect
 ftr_coup_success_effect = {
-	$OWNER$ = {
+	$SCHEME$ = {
+		save_scope_as = coup_scheme
+	}
+	scope:coup_scheme = {
+		scheme_owner = {
+			save_scope_as = owner
+		}
+		scheme_target = {
+			save_scope_as = target
+		}
+		hidden_effect = {
+			every_scheme_agent = {
+				add_opinion = {
+					modifier = claimant_faction_member_opinion
+					target = scope:owner
+				}
+				reverse_add_opinion = {
+					modifier = claimant_faction_claimant_opinion
+					target = scope:owner
+				}
+			}
+		}
+	}
+	scope:owner = {
 		imprison = {
-			target = $TARGET$
+			target = scope:target
 			type = dungeon
 		}
 		add_character_modifier = {
@@ -17,9 +40,9 @@ ftr_coup_success_effect = {
 		save_scope_as = change
 		add_claim_on_loss = yes
 	}
-	$TARGET$ = {
+	scope:target = {
 		add_opinion = {
-			target = $OWNER$
+			target = scope:owner
 			modifier = ftr_success_coup_on_me_opinion
 		}
 		every_held_title = {
@@ -27,13 +50,43 @@ ftr_coup_success_effect = {
 				tier >= tier_county
 			}
 			change_title_holder_include_vassals = {
-				holder = $OWNER$
+				holder = scope:owner
 				change = scope:change
-				government_base = $TARGET$
+				government_base = scope:target
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:target = {
+				has_royal_court = yes
+			}
+			scope:owner = {
+				has_royal_court = no
+			}
+		}
+		scope:owner = {
+			set_variable = {
+				name = previous_holder_grandeur_value
+				value = scope:target.court_grandeur_current
 			}
 		}
 	}
 	resolve_title_and_vassal_change = scope:change
+	scope:owner = {
+		if = {
+			limit = {
+				exists = var:previous_holder_grandeur_value
+				has_royal_court = yes
+			}
+			hidden_effect = {
+				change_current_court_grandeur = -100 # Reset to 0
+				change_current_court_grandeur = var:previous_holder_grandeur_value
+				remove_variable = previous_holder_grandeur_value
+			}
+			change_current_court_grandeur = massive_court_grandeur_gain # Gain a bonus to Grandeur for winning a claim faction
+		}
+	}
 }
 
 # Coup failure effect

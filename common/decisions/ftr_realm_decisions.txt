@@ -112,7 +112,7 @@ feudal_convert_to_centralism_decision = {
 		add_realm_law = autocracy_succession_law
 	}
 	
-	ai_check_interval = 365
+	ai_check_interval = 3
 	ai_potential = {
 		always = yes
 	}

@@ -29,15 +29,14 @@ ftr_coup_outcoming.1000 = {
 	}
 
 	immediate = {
-		scope:scheme = {
-			scheme_target = {
-				trigger_event = ftr_coup_outcoming.3000
-			}
-			end_scheme = yes
+		scope:target = {
+			trigger_event = ftr_coup_outcoming.3000
 		}
 		ftr_coup_success_effect = {
-			OWNER = root
-			TARGET = scope:target
+			SCHEME = scope:scheme
+		}
+		scope:scheme = {
+			end_scheme = yes
 		}
 	}
 
@@ -96,15 +95,14 @@ ftr_coup_outcoming.1001 = {
 	}
 
 	immediate = {
-		scope:scheme = {
-			scheme_target = {
-				trigger_event = ftr_coup_outcoming.3001
-			}
-			end_scheme = yes
+		scope:target = {
+			trigger_event = ftr_coup_outcoming.3001
 		}
 		ftr_coup_success_effect = {
-			OWNER = root
-			TARGET = scope:target
+			SCHEME = scope:scheme
+		}
+		scope:scheme = {
+			end_scheme = yes
 		}
 	}
 
@@ -163,15 +161,14 @@ ftr_coup_outcoming.1002 = {
 	}
 
 	immediate = {
-		scope:scheme = {
-			scheme_target = {
-				trigger_event = ftr_coup_outcoming.3002
-			}
-			end_scheme = yes
+		scope:target = {
+			trigger_event = ftr_coup_outcoming.3002
 		}
 		ftr_coup_success_effect = {
-			OWNER = root
-			TARGET = scope:target
+			SCHEME = scope:scheme
+		}
+		scope:scheme = {
+			end_scheme = yes
 		}
 	}
 

@@ -1,0 +1,54 @@
+﻿
+
+#on_game_start = {
+#	on_actions = {
+#		shattered_world_effects
+#	}
+#}
+
+shattered_world_effects = {
+	effect = {
+		every_ruler = {
+			if = {
+				limit = {
+					primary_title.tier >= tier_duchy
+				}
+				save_temporary_scope_as = lord
+				every_held_title = {
+					limit = {
+						tier >= tier_duchy
+					}
+					scope:lord = {
+						destroy_title = prev
+					}
+				}
+			}
+			every_sub_realm_county = {
+				limit = {
+					holder = prev
+					NOT = { this = prev.capital_county }
+				}
+				create_character = {
+					gender = male
+					location = prev.location
+					culture = this.culture
+					faith = this.faith
+					save_scope_as = successor
+				}
+				create_title_and_vassal_change = {
+					type = granted
+					save_scope_as = change
+					add_claim_on_loss = no
+				}
+				this = {
+					change_title_holder = {
+						holder = scope:successor
+						change = scope:change
+						government_base = prev
+					}
+				}
+				resolve_title_and_vassal_change = scope:change
+			}
+		}
+	}
+}

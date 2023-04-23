@@ -691,24 +691,6 @@ ftr_tournament.0013 = {
 	}
 }
 
-#End for nothing happen
-ftr_tournament.0999 = {
-	type = character_event
-	title = ftr_tournament.0999.t
-	desc = ftr_tournament.0999.desc
-	theme = hunting
-	left_portrait = {
-		character = scope:host
-	}
-	
-	option = {
-		name = ftr_tournament.0999.a
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
-
 #Nice Intermatch Show
 ftr_tournament.1001 = {
 	type = character_event

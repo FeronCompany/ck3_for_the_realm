@@ -566,13 +566,17 @@ revoke_title_interaction = {
 		}
 
 		###### OVERRIDE START #####
-		NOT = {
-			AND = {
-				scope:actor = {
-					is_independent_ruler = no
-				}
-				scope:recipient = {
-					has_government = centralism_government
+		custom_description = {
+			text = official_cannot_revok_other_officials_text
+			NOT = {
+				AND = {
+					scope:actor = {
+						is_independent_ruler = no
+					}
+					scope:recipient = {
+						has_government = centralism_government
+						primary_title.tier >= tier_county
+					}
 				}
 			}
 		}

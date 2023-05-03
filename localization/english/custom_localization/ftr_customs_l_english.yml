@@ -5,3 +5,4 @@
  capital_cannot_be_trade_text:0 "Capital cannot be trade."
  is_neighbor_to_realm_text:0 "Must be neighbor provinces."
  FTR_START_RELIOUS_DEBATE_EFFECT:0 "Start religious debate."
+ official_cannot_revok_other_officials_text:0 "Officials cannot revoke titles from other officials."

@@ -88,6 +88,7 @@ ftr_depose_bureacrat_interaction = {
 		scope:recipient = {
 			is_vassal_of = scope:actor
 			has_government = centralism_government
+			primary_title.tier >= tier_county
 		}
 		scope:actor = {
 			has_government = centralism_government

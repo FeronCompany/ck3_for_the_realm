@@ -68,7 +68,7 @@ ftr_attempted_coup_crime = {
 }
 
 ftr_murderer_crime = {
-	opinion = -10
+	opinion = -15
 	imprisonment_reason = yes
 	execute_reason = yes
 	banish_reason = yes

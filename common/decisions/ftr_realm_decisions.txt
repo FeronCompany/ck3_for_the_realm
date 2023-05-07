@@ -70,7 +70,10 @@ feudal_convert_to_centralism_decision = {
 	}
 	is_valid = {
 		is_independent_ruler = yes
-		has_realm_law = crown_authority_2
+		OR = {
+			has_realm_law = crown_authority_2
+			has_realm_law = crown_authority_3
+		}
 		culture = {
 			OR = {
 				AND = {

@@ -263,6 +263,7 @@ ftr_request_depose_interaction = {
 		scope:secondary_recipient = {
 			is_vassal_of = scope:actor
 			has_government = centralism_government
+			primary_title.tier >= tier_county
 		}
 	}
 	is_valid_showing_failures_only = {

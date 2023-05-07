@@ -1,6 +1,5 @@
 ﻿
 murderer = {
-	general_opinion = -10
 	fame = yes
 	ruler_designer_cost = -10
 	triggered_opinion = {

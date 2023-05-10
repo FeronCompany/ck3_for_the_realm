@@ -82,6 +82,17 @@ ftr_depose_bureacrat_interaction = {
 				add_to_list = characters
 			}
 		}
+		scope:recipient = {
+			every_vassal = {
+				limit = {
+					primary_title.tier >= tier_county
+					is_adult = yes
+					is_physically_able = yes
+					has_government = centralism_government
+				}
+				add_to_list = characters
+			}
+		}
 	}
 	is_shown = {
 		NOT = { scope:actor = scope:recipient }
@@ -131,15 +142,35 @@ ftr_depose_bureacrat_interaction = {
 					target = scope:actor
 					modifier = ftr_depose_bureacrat_opinion
 				}
-				every_held_title = {
+				if = {
 					limit = {
-						#has_title_law = bureacratic_succession_law
-						tier >= tier_county
+						scope:secondary_actor = { is_landed = no }
 					}
-					change_title_holder_include_vassals = {
-						holder = scope:secondary_actor
+					every_held_title = {
+						limit = {
+							tier >= tier_county
+						}
+						change_title_holder_include_vassals = {
+							holder = scope:secondary_actor
+							change = scope:change
+							government_base = scope:actor
+						}
+					}
+				}
+				else = {
+					every_held_title = {
+						limit = {
+							tier = scope:recipient.primary_title.tier
+						}
+						change_title_holder_include_vassals = {
+							holder = scope:secondary_actor
+							change = scope:change
+							government_base = scope:actor
+						}
+					}
+					change_liege = {
+						liege = scope:secondary_actor
 						change = scope:change
-						government_base = scope:actor
 					}
 				}
 				scope:recipient = {
@@ -244,6 +275,17 @@ ftr_request_depose_interaction = {
 				add_to_list = characters
 			}
 		}
+		scope:secondary_recipient = {
+			every_vassal = {
+				limit = {
+					primary_title.tier >= tier_county
+					is_adult = yes
+					is_physically_able = yes
+					has_government = centralism_government
+				}
+				add_to_list = characters
+			}
+		}
 	}
 
 	redirect = {
@@ -298,14 +340,35 @@ ftr_request_depose_interaction = {
 					target = scope:actor
 					modifier = ftr_depose_bureacrat_opinion
 				}
-				every_held_title = {
+				if = {
 					limit = {
-						tier >= tier_county
+						scope:secondary_actor = { is_landed = no }
 					}
-					change_title_holder_include_vassals = {
-						holder = scope:secondary_actor
+					every_held_title = {
+						limit = {
+							tier >= tier_county
+						}
+						change_title_holder_include_vassals = {
+							holder = scope:secondary_actor
+							change = scope:change
+							government_base = scope:actor
+						}
+					}
+				}
+				else = {
+					every_held_title = {
+						limit = {
+							tier = scope:secondary_recipient.primary_title.tier
+						}
+						change_title_holder_include_vassals = {
+							holder = scope:secondary_actor
+							change = scope:change
+							government_base = scope:actor
+						}
+					}
+					change_liege = {
+						liege = scope:secondary_actor
 						change = scope:change
-						government_base = scope:actor
 					}
 				}
 				scope:secondary_recipient = {

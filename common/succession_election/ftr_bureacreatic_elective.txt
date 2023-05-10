@@ -44,12 +44,10 @@
 	
 	electors = {
 		add = {
-			type = title_dejure_vassals
+			type = holder_direct_vassals
 			limit = {
 				is_adult = yes
-				any_liege_or_above = {
-					this = scope:holder
-				}
+				primary_title.tier >= tier_county
 			}
 		}
 	}
@@ -89,7 +87,7 @@
 			type = holder_direct_vassals
 			limit = {
 				is_adult = yes
-				highest_held_title_tier = tier_barony
+				NOT = { has_trait = incapable }
 				has_government = centralism_government
 			}
 		}

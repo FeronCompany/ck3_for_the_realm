@@ -8,10 +8,10 @@ ftr_convert_bureacrat_to_feudal_interaction = {
 		NOT = { scope:actor = scope:recipient }
 		scope:recipient = {
 			is_vassal_of = scope:actor
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 		}
 		scope:actor = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			is_independent_ruler = yes
 		}
 	}
@@ -88,7 +88,7 @@ ftr_depose_bureacrat_interaction = {
 					primary_title.tier >= tier_county
 					is_adult = yes
 					is_physically_able = yes
-					has_government = centralism_government
+					government_has_flag = government_is_centralism
 				}
 				add_to_list = characters
 			}
@@ -98,11 +98,11 @@ ftr_depose_bureacrat_interaction = {
 		NOT = { scope:actor = scope:recipient }
 		scope:recipient = {
 			is_vassal_of = scope:actor
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			primary_title.tier >= tier_county
 		}
 		scope:actor = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			is_independent_ruler = yes
 		}
 	}
@@ -281,7 +281,19 @@ ftr_request_depose_interaction = {
 					primary_title.tier >= tier_county
 					is_adult = yes
 					is_physically_able = yes
-					has_government = centralism_government
+					government_has_flag = government_is_centralism
+				}
+				add_to_list = characters
+			}
+		}
+	}
+
+	populate_recipient_list = {
+		scope:actor = {
+			every_vassal = {
+				limit = {
+					primary_title.tier >= tier_county
+					government_has_flag = government_is_centralism
 				}
 				add_to_list = characters
 			}
@@ -298,13 +310,13 @@ ftr_request_depose_interaction = {
 	}
 	is_shown = {
 		scope:actor = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			is_independent_ruler = no
 			primary_title.tier > tier_county
 		}
 		scope:secondary_recipient = {
 			is_vassal_of = scope:actor
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			primary_title.tier >= tier_county
 		}
 	}
@@ -512,7 +524,7 @@ ftr_vassal_mediation_interaction = {
 			}
 		}
 		scope:actor = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			NOT = { is_participant_in_war = scope:target_war }
 		}
 	}
@@ -580,7 +592,7 @@ ftr_coup_interaction = {
 				is_independent_ruler = yes
 				AND = {
 					is_independent_ruler = no
-					NOT = { has_government = centralism_government }
+					NOT = { government_has_flag = government_is_centralism }
 				}
 			}
 		}

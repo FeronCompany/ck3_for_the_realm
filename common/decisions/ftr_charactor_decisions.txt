@@ -9,7 +9,7 @@
 		has_trait = shy
 		OR = {
 			has_government = feudal_government
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			has_government = clan_government
 		}
 	}

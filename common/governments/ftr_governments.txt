@@ -23,5 +23,6 @@
 		jizya_special_rights
 	}
 
+	flag = government_is_centralism
 	color = hsv{ 0.75 0.80 0.85 }
 }

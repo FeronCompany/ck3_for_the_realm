@@ -2,52 +2,52 @@
 
 # Culture diffrence at high acceptance
 ftr_realm_event.0001 = {
-  type = character_event
+	type = character_event
 	title = ftr_realm_event.0001.t
 	desc = ftr_realm_event.0001.desc
-  theme = diplomacy
-  left_portrait = {
+	theme = diplomacy
+	left_portrait = {
 		character = root
 	}
 	right_portrait = {
-    character = scope:different_culture_elite
-  }
-  cooldown = { years = 1 }
-  trigger = {
+		character = scope:different_culture_elite
+	}
+	cooldown = { years = 1 }
+	trigger = {
 		any_sub_realm_county = {
 			holder = root
 			NOT = { culture = root.culture }
-      culture = {
-		    cultural_acceptance = { target = root.culture value >= 80 } 
-	    }
-      NOT = { has_county_modifier = cultural_diversity_county_modifier }
-      NOT = { has_county_modifier = push_culture_failed_modifier }
+			culture = {
+				cultural_acceptance = { target = root.culture value >= 80 } 
+			}
+			NOT = { has_county_modifier = cultural_diversity_county_modifier }
+			NOT = { has_county_modifier = push_culture_failed_modifier }
 		}
 	}
-  weight_multiplier = {
+	weight_multiplier = {
 		base = 1
 	}
 
-  immediate = {
-    random_sub_realm_county = {
+	immediate = {
+		random_sub_realm_county = {
 			limit = {
 				holder = root
 				NOT = { culture = root.culture }
-        culture = {
-		      cultural_acceptance = { target = root.culture value >= 80 } 
-	      }
-        NOT = { has_county_modifier = cultural_diversity_county_modifier }
-        NOT = { has_county_modifier = push_culture_failed_modifier }
+				culture = {
+					cultural_acceptance = { target = root.culture value >= 80 } 
+				}
+				NOT = { has_county_modifier = cultural_diversity_county_modifier }
+				NOT = { has_county_modifier = push_culture_failed_modifier }
 			}
 			save_scope_as = different_culture_county
-      culture = {
-        save_scope_as = diff_culture
-      }
+			culture = {
+				save_scope_as = diff_culture
+			}
 		}
-    root.culture = {
-      save_scope_as = my_culture
-    }
-    if = {
+		root.culture = {
+			save_scope_as = my_culture
+		}
+		if = {
 			limit = {
 				any_pool_guest = {
 					culture = scope:different_culture_county.culture
@@ -158,7 +158,6 @@ ftr_realm_event.0002 = {
 	title = ftr_realm_event.0002.t
 	desc = ftr_realm_event.0002.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		animation = worry
@@ -186,7 +185,6 @@ ftr_realm_event.0003 = {
 	title = ftr_realm_event.0003.t
 	desc = ftr_realm_event.0003.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		animation = happiness
@@ -211,7 +209,6 @@ ftr_realm_event.0004 = {
 	title = ftr_realm_event.0004.t
 	desc = ftr_realm_event.0004.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		animation = worry
@@ -239,7 +236,6 @@ ftr_realm_event.0005 = {
 	title = ftr_realm_event.0005.t
 	desc = ftr_realm_event.0005.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	left_portrait = {
 		character = root
 		animation = happiness
@@ -269,7 +265,6 @@ ftr_realm_event.1001 = {
 	title = ftr_realm_event.1001.t
 	desc = ftr_realm_event.1001.desc
 	theme = realm
-	override_background = { event_background = council_chamber }
 	left_portrait = {
 		character = scope:liege
 		animation = personality_honorable
@@ -294,7 +289,6 @@ ftr_realm_event.1002 = {
 	title = ftr_realm_event.1002.t
 	desc = ftr_realm_event.1002.desc
 	theme = realm
-	override_background = { event_background = council_chamber }
 	left_portrait = {
 		character = root
 		animation = personality_honorable
@@ -315,7 +309,6 @@ ftr_realm_event.1003 = {
 	title = ftr_realm_event.1003.t
 	desc = ftr_realm_event.1003.desc
 	theme = realm
-	override_background = { event_background = council_chamber }
 	left_portrait = {
 		character = scope:liege
 		animation = personality_honorable
@@ -344,7 +337,6 @@ ftr_realm_event.1004 = {
 	title = ftr_realm_event.1004.t
 	desc = ftr_realm_event.1004.desc
 	theme = realm
-	override_background = { event_background = council_chamber }
 	left_portrait = {
 		character = scope:liege
 		animation = personality_honorable
@@ -373,7 +365,6 @@ ftr_realm_event.1005 = {
 	title = ftr_realm_event.1005.t
 	desc = ftr_realm_event.1005.desc
 	theme = realm
-	override_background = { event_background = council_chamber }
 	left_portrait = {
 		character = root
 		animation = sadness
@@ -390,7 +381,7 @@ ftr_realm_event.1005 = {
 	cooldown = { days = 10 }
 	trigger = {
 		is_independent_ruler = no
-		has_government = centralism_government
+		government_has_flag = government_is_centralism
 		domain_size >= domain_limit
 		any_sub_realm_county = {
 			holder = root
@@ -453,7 +444,7 @@ ftr_realm_event.1006 = {
 	trigger = {
 		is_landed = yes
 		is_independent_ruler = no
-		has_government = centralism_government
+		government_has_flag = government_is_centralism
 		any_held_title = {
 			tier >= tier_duchy
 			NOT = {
@@ -480,7 +471,7 @@ ftr_realm_event.1007 = {
 	trigger = {
 		is_landed = yes
 		is_independent_ruler = no
-		NOT = { has_government = centralism_government }
+		NOT = { government_has_flag = government_is_centralism }
 		any_held_title = {
 			tier >= tier_duchy
 			has_title_law = bureacratic_succession_law

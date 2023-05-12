@@ -80,7 +80,7 @@
 				is_adult = yes
 				is_vassal_of = scope:holder
 				NOT = { has_trait = incapable }
-				has_government = centralism_government
+				government_has_flag = government_is_centralism
 			}
 		}
 		add = {
@@ -88,7 +88,7 @@
 			limit = {
 				is_adult = yes
 				NOT = { has_trait = incapable }
-				has_government = centralism_government
+				government_has_flag = government_is_centralism
 			}
 		}
 		add = {
@@ -102,7 +102,7 @@
 				OR = {
 					AND = {
 						is_landed = yes
-						has_government = centralism_government
+						government_has_flag = government_is_centralism
 					}
 					is_landed = no
 				}

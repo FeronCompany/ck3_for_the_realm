@@ -7,7 +7,6 @@ solitude_time.0001 = {
 	title = solitude_time.0001.t
 	desc = solitude_time.0001.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	# left_portrait = {
 	# 	character = scope:writer
 	# 	animation = personality_bold
@@ -113,7 +112,6 @@ solitude_time.0002 = {
 	title = solitude_time.0002.t
 	desc = solitude_time.0002.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -197,7 +195,6 @@ solitude_time.0003 = {
 	title = solitude_time.0003.t
 	desc = solitude_time.0003.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -259,7 +256,6 @@ solitude_time.0004 = {
 	title = solitude_time.0004.t
 	desc = solitude_time.0004.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -290,7 +286,6 @@ solitude_time.0005 = {
 	title = solitude_time.0005.t
 	desc = solitude_time.0005.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -314,7 +309,6 @@ solitude_time.0006 = {
 	title = solitude_time.0006.t
 	desc = solitude_time.0006.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -342,7 +336,6 @@ solitude_time.0007 = {
 	title = solitude_time.0007.t
 	desc = solitude_time.0007.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -367,7 +360,6 @@ solitude_time.0008 = {
 	title = solitude_time.0008.t
 	desc = solitude_time.0008.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -392,7 +384,6 @@ solitude_time.0009 = {
 	title = solitude_time.0009.t
 	desc = solitude_time.0009.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -419,7 +410,6 @@ solitude_time.0010 = {
 	title = solitude_time.0010.t
 	desc = solitude_time.0010.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -443,7 +433,6 @@ solitude_time.0011 = {
 	title = solitude_time.0011.t
 	desc = solitude_time.0011.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -470,7 +459,6 @@ solitude_time.0012 = {
 	title = solitude_time.0012.t
 	desc = solitude_time.0012.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -494,7 +482,6 @@ solitude_time.0013 = {
 	title = solitude_time.0013.t
 	desc = solitude_time.0013.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	left_portrait = {
 		character = root
 		# animation = worry
@@ -543,7 +530,6 @@ solitude_time.0014 = {
 	title = solitude_time.0014.t
 	desc = solitude_time.0014.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	left_portrait = {
 		character = root
 	}
@@ -584,7 +570,6 @@ solitude_time.0015 = {
 	title = solitude_time.0015.t
 	desc = solitude_time.0015.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = root
 		# animation = worry
@@ -611,7 +596,6 @@ solitude_time.0016 = {
 	title = solitude_time.0016.t
 	desc = solitude_time.0016.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = scope:bishop
 		animation = worry
@@ -636,7 +620,6 @@ solitude_time.0017 = {
 	title = solitude_time.0017.t
 	desc = solitude_time.0017.desc
 	theme = diplomacy
-	override_background = { event_background = study }
 	right_portrait = {
 		character = scope:bishop
 		animation = worry

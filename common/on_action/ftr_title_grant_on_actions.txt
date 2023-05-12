@@ -18,7 +18,7 @@ ftr_title_gain_effects = {
 			scope:transfer_type = flag:conquest_claim
 			scope:transfer_type = flag:conquest_populist
 		}
-		has_government = centralism_government
+		government_has_flag = government_is_centralism
 		is_independent_ruler = no
 	}
 	effect = {

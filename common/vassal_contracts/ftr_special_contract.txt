@@ -21,7 +21,7 @@ centralism_special_contract = {
       }
     }
     adv_scutage = {
-      is_shown = { scope:vassal = { has_government = centralism_government } }
+      is_shown = { scope:vassal = { government_has_flag = government_is_centralism } }
 			position = { 1 0 }
 			parent = normal_state
       tax_factor = 0.5

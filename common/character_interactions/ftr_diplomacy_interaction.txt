@@ -220,7 +220,7 @@ ftr_buy_land_interaction = {
 		modifier = {
 			add = -100
 			scope:actor = {
-				has_government = centralism_government
+				government_has_flag = government_is_centralism
 				is_independent_ruler = no
 			}
 		}
@@ -490,6 +490,10 @@ ftr_break_alliance_interaction = {
 		NOT = { scope:actor = scope:recipient}
 		scope:actor = {
 			is_allied_to = scope:recipient
+			is_landed = yes
+		}
+		scope:recipient = {
+			is_landed = yes
 		}
 	}
 	is_valid_showing_failures_only = {}

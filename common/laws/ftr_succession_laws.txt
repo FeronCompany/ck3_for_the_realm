@@ -2,18 +2,18 @@
 	flag = succession_order_laws
 	centralism_vassal_succession_law = {
 		can_keep = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			is_independent_ruler = no
 		}
 		can_have = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 		}
 		can_pass = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			is_independent_ruler = no
 		}
 		should_start_with = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			is_independent_ruler = no
 		}
 		succession = {
@@ -31,18 +31,18 @@
 
 	autocracy_succession_law = {
 		can_keep = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			is_independent_ruler = yes
 		}
 		can_have = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 		}
 		can_pass = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			is_independent_ruler = yes
 		}
 		should_start_with = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			is_independent_ruler = yes
 		}
 		succession = {
@@ -63,11 +63,11 @@
 ftr_succession_title_law = {
 	bureacratic_succession_law = {
 		can_have = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			is_independent_ruler = no
 		}
 		can_pass = {
-			has_government = centralism_government
+			government_has_flag = government_is_centralism
 			is_independent_ruler = no
 		}
 		can_title_have = {

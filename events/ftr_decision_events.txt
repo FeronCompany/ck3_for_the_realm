@@ -8,7 +8,6 @@ ftr_decision_events.0001 = {
 	title = ftr_decision_events.0001.t
 	desc = ftr_decision_events.0001.desc
 	theme = realm
-	override_background = { event_background = council_chamber }
 	left_portrait = {
 		character = scope:root
 		animation = personality_honorable
@@ -40,7 +39,6 @@ ftr_decision_events.0002 = {
 	title = ftr_decision_events.0002.t
 	desc = ftr_decision_events.0002.desc
 	theme = realm
-	override_background = { event_background = council_chamber }
 	left_portrait = {
 		character = scope:emperor
 		animation = personality_honorable

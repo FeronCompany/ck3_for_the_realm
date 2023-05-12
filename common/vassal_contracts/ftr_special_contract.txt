@@ -19,6 +19,7 @@ centralism_special_contract = {
       ai_vassal_desire = {
         value = 0
       }
+      score = 0
     }
     adv_scutage = {
       is_shown = { scope:vassal = { government_has_flag = government_is_centralism } }
@@ -40,6 +41,7 @@ centralism_special_contract = {
       ai_vassal_desire = {
         value = 1
       }
+      score = 0
     }
   }
 }

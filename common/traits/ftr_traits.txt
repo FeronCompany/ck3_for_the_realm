@@ -1,6 +1,6 @@
 ﻿
 murderer = {
-	fame = yes
+	category = fame
 	ruler_designer_cost = -10
 	triggered_opinion = {
 		opinion_modifier = ftr_murderer_crime

@@ -7,23 +7,29 @@ solitude_time.0001 = {
 	title = solitude_time.0001.t
 	desc = solitude_time.0001.desc
 	theme = diplomacy
-	# left_portrait = {
-	# 	character = scope:writer
-	# 	animation = personality_bold
-	# }
 	right_portrait = {
 		character = root
 		animation = worry
 	}
 
 	immediate = {
-    random_spouse = {
-			save_scope_as = spouse
+		if = {
+			limit = {
+				is_married = yes
+			}
+			random_spouse = {
+				save_scope_as = spouse
+			}
 		}
-    cp:councillor_court_chaplain = {
-			save_scope_as = bishop
+		if = {
+			limit = {
+				exists = cp:councillor_court_chaplain
+			}
+			cp:councillor_court_chaplain = {
+				save_scope_as = bishop
+			}
 		}
-  }
+	}
 
 	option = { # Read a book
 		name = solitude_time.0001.a
@@ -50,22 +56,22 @@ solitude_time.0001 = {
 			add = minor_gold_value
 			multiply = 2
 		}
-    random_list = {
-      90 = { # nice day
-        desc = solitude_time.0001.b.good
-        trigger_event = {
-			    id = solitude_time.0011
-			    days = 5
-		    }
-      }
-      10 = { # artifact broken
-        desc = solitude_time.0001.b.bad
-        trigger_event = {
-			    id = solitude_time.0012
-			    days = 5
-		    }
-      }
-    }
+		random_list = {
+			90 = { # nice day
+				desc = solitude_time.0001.b.good
+				trigger_event = {
+					id = solitude_time.0011
+					days = 5
+		    	}
+			}
+			10 = { # artifact broken
+				desc = solitude_time.0001.b.bad
+				trigger_event = {
+					id = solitude_time.0012
+					days = 5
+				}
+			}
+		}
 		
 		ai_chance = {
 			base = 100
@@ -78,26 +84,32 @@ solitude_time.0001 = {
 	
 	option = { # Meditate
 		name = solitude_time.0001.c
-    random_list = {
-      10 = { # couple events
-        trigger_event = {
-			    id = solitude_time.0013
-			    days = 10
-		    }
-      }
-      10 = { # bishop come
-        trigger_event = {
-			    id = solitude_time.0014
-			    days = 10
-		    }
-      }
-      80 = { # just relax
-        trigger_event = {
-			    id = solitude_time.0015
-			    days = 10
-		    }
-      }
-    }
+		random_list = {
+			10 = { # couple events
+				trigger = {
+					exists = scope:spouse
+				}
+				trigger_event = {
+					id = solitude_time.0013
+					days = 10
+		    	}
+			}
+			10 = { # bishop come
+				trigger = {
+					exists = scope:bishop
+				}
+				trigger_event = {
+					id = solitude_time.0014
+					days = 10
+				}
+			}
+			80 = { # just relax
+				trigger_event = {
+					id = solitude_time.0015
+					days = 10
+				}
+			}
+		}
 		ai_chance = {
 			base = 100
 		}

@@ -48,6 +48,7 @@
 			limit = {
 				is_adult = yes
 				primary_title.tier >= tier_county
+				government_has_flag = government_is_centralism
 			}
 		}
 	}

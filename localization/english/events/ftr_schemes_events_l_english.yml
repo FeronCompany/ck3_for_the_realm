@@ -74,6 +74,29 @@
  combat_guide_ongoing.1009.a.lost_master:0 "You lose to [target.GetShortUIName|U]"
  combat_guide_ongoing.1009.a.tie:0 "You give [target.GetShortUIName|U] a draw"
 
+ combat_guide_ongoing.1010.t:1 "Love over time"
+ combat_guide_ongoing.1010.desc:3 "[target.GetShortUIName|U]'s heroic appearance fascinated me. After a day of training, my mind was full of [target.GetHerHis] voice and smile, which lingered. Towards evening, I finally couldn't help but come outside of [target.GetHerHis] door, hesitating to confess my love to [target.GetHerHim]."
+ combat_guide_ongoing.1010.a:0 "I have to communicate with [target.GetShortUIName|U]."
+ combat_guide_ongoing.1010.b:0 "No, that's not good."
+
+ combat_guide_ongoing.1011.t:1 "See injustice on the road"
+ combat_guide_ongoing.1011.desc:3 "After training, [target.GetShortUIName|U] and I were strolling on the forest path near the castle, but we came across several robbers with weapons and blades who were robbing passers-by. The fire of justice burns in my chest, but I know that with my current strength, I will probably be outnumbered. Should I personally take this step for passers-by?"
+ combat_guide_ongoing.1011.a:0 "Drive them away with [target.GetShortUIName|U]."
+ combat_guide_ongoing.1011.b:0 "I can deal with them alone."
+
+ combat_guide_ongoing.2001.t:1 "Love over time"
+ combat_guide_ongoing.2001.desc:3 "The performance of [owner.GetShortUIName|U] when [owner.GetSheHe] came to train recently was confusing, and I couldn't help but wonder if [owner.GetSheHe] was interested in me. Sure enough, tonight [owner.GetSheHe] came to my temporary residence to find me and told me [owner.GetHerHis] real thought. To be honest, I'm not surprised by these things, just by [owner.GetHerHis] courage to tell the truth. Now, a difficult problem lies in front of me..."
+ combat_guide_ongoing.2001.a:0 "Not that difficult..."
+ combat_guide_ongoing.2001.b:0 "No, I can't break my principles!"
+
+ combat_guide_ongoing.2002.t:1 "Dry wood and fire"
+ combat_guide_ongoing.2002.desc:3 "[target.GetShortUIName|U] was not surprised by my confession. After a short period of embarrassment, we tore off our disguises, hugged each other tightly, and kissed each other's sensitive parts. Then we excitedly stripped each other of our clothes, and our sweaty bodies slammed together violently, like two knights riding a steed, galloping in the boundless wilderness. The pleasure of lovers soothing each other was blushing and heartbeat, and we couldn't help but cry out in the impact of each other. With heavy gasps and the swaying sound of the bed board, we finally ended the fight, and the length of the fight also showed that our recent training had not been in vain."
+ combat_guide_ongoing.2002.a:0 "Ah, wonderful!"
+
+ combat_guide_ongoing.2003.t:1 "It must be a mistake"
+ combat_guide_ongoing.2003.desc:3 "[target.GetShortUIName|U] was not surprised by my confession, But [target.GetSheHe] still stuck to [target.GetHerHis] principles, and I had to leave angrily."
+ combat_guide_ongoing.2003.a:0 "Yes?"
+
 
  ftr_coup_outcoming.1000.t:1 "Coup Succeeded"
  ftr_coup_outcoming.1000.desc:3 "The time has come, raise your troops today! The people involved in the coup gathered outside the palace in the dark, quietly waiting for the opportunity. In the space where the guards were lax, we broke into the palace and disarmed the sleepy guards. The disheveled [target.GetShortUIName|U] hurried to the side door, but was caught by our people."

@@ -1,8 +1,8 @@
 ﻿namespace = combat_guide_ongoing
 
 ######################
-# FREE-STANDING EVENTS
-# 1000-4999
+# 1000-1999 Trigger events
+# 2000-2999 reaction events
 ######################
 # hard training
 combat_guide_ongoing.1000 = {
@@ -68,12 +68,12 @@ combat_guide_ongoing.1000 = {
 		name = combat_guide_ongoing.1000.b
 		hidden_effect = {
 			scope:scheme = {
-				add_scheme_progress = 2
+				add_scheme_progress = 1
 			}
 		}
 		random = {
 			chance = 75
-			add_prowess_skill = 1
+			add_prowess_skill = 2
 		}
 		ai_chance = {
 			base = 50
@@ -98,9 +98,9 @@ combat_guide_ongoing.1001 = {
 		animation = fear
 	}
 	right_portrait = {
-    character = scope:target
-    animation = anger
-  }
+		character = scope:target
+		animation = anger
+	}
 	
 	trigger = {
 		NOT = { has_variable = had_event_combat_guide_ongoing_1001 }
@@ -146,9 +146,9 @@ combat_guide_ongoing.1002 = {
 		animation = happiness
 	}
 	right_portrait = {
-    character = scope:target
-    animation = happiness
-  }
+		character = scope:target
+		animation = happiness
+	}
 	
 	trigger = {
 		NOT = { has_variable = had_event_combat_guide_ongoing_1002 }
@@ -196,8 +196,8 @@ combat_guide_ongoing.1003 = {
 		animation = beg
 	}
 	right_portrait = {
-    character = scope:target
-  }
+		character = scope:target
+	}
 	
 	trigger = {
 		NOT = { has_variable = had_event_combat_guide_ongoing_1003 }
@@ -248,8 +248,8 @@ combat_guide_ongoing.1004 = {
 		character = root
 	}
 	right_portrait = {
-    character = scope:target
-  }
+		character = scope:target
+	}
 	
 	trigger = {
 		NOT = { has_variable = had_event_combat_guide_ongoing_1004 }
@@ -324,9 +324,9 @@ combat_guide_ongoing.1005 = {
 		animation = anger
 	}
 	right_portrait = {
-    character = scope:target
+		character = scope:target
 		animation = anger
-  }
+	}
 	
 	trigger = {
 		NOT = { has_variable = had_event_combat_guide_ongoing_1005 }
@@ -430,9 +430,9 @@ combat_guide_ongoing.1006 = {
 		animation = shock
 	}
 	right_portrait = {
-    character = scope:target
+		character = scope:target
 		animation = ecstasy
-  }
+	}
 	
 	trigger = {
 		NOT = { has_variable = had_event_combat_guide_ongoing_1006 }
@@ -518,9 +518,9 @@ combat_guide_ongoing.1007 = {
 		animation = happiness
 	}
 	right_portrait = {
-    character = scope:target
+		character = scope:target
 		animation = happiness
-  }
+	}
 	
 	trigger = {
 		NOT = { has_variable = had_event_combat_guide_ongoing_1007 }
@@ -576,10 +576,8 @@ combat_guide_ongoing.1007 = {
 				add_trait = athletic
 			}
 			20 = {
-				hidden_effect = {
-					scope:scheme = {
-						add_scheme_progress = 2
-					}
+				scope:scheme = {
+					add_scheme_progress = 1
 				}
 			}
 		}
@@ -600,9 +598,9 @@ combat_guide_ongoing.1008 = {
 		animation = boredom
 	}
 	right_portrait = {
-    character = scope:spouse
+		character = scope:spouse
 		animation = anger
-  }
+	}
 	
 	trigger = {
 		NOT = { has_variable = had_event_combat_guide_ongoing_1008 }
@@ -670,9 +668,9 @@ combat_guide_ongoing.1009 = {
 		animation = war_attacker
 	}
 	right_portrait = {
-    character = scope:target
+		character = scope:target
 		animation = war_attacker
-  }
+	}
 	
 	trigger = {
 		NOT = { has_variable = had_event_combat_guide_ongoing_1009 }
@@ -705,21 +703,319 @@ combat_guide_ongoing.1009 = {
 					multiplier = -4
 					min = -10
 				}
-				add_prowess_skill = 4
+				add_prowess_skill = 3
+				scope:target = {
+					add_prowess_skill = 1
+				}
 				desc = combat_guide_ongoing.1009.a.win_master
 			}
 			10 = {
 				add_prowess_skill = 2
+				scope:target = {
+					add_prowess_skill = 1
+				}
 				desc = combat_guide_ongoing.1009.a.tie
 			}
 		}
 		hidden_effect = {
 			scope:scheme = {
-				add_scheme_progress = 2
+				add_scheme_progress = 1
 			}
 		}
 		ai_chance = {
 			base = 100
 		}
+	}
+}
+
+# become lover
+combat_guide_ongoing.1010 = {
+	type = character_event
+	title = combat_guide_ongoing.1010.t
+	desc = combat_guide_ongoing.1010.desc
+	theme = seduce_scheme
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_bold
+	}
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1010 }
+		OR = {
+			AND = {
+				is_male = yes
+				scope:target = {
+					is_female = yes
+				}
+			}
+			AND = {
+				is_female = yes
+				scope:target = {
+					is_male = yes
+				}
+			}
+		}
+		opinion = {
+			target = scope:target
+			value >= 30
+		}
+		NOT = { has_relation_lover = scope:target }
+		NOT = { is_close_family_of = scope:target }
+	}
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1010
+			value = yes
+			days = 1460
+		}
+	}
+
+	option = { # Try to seduce
+		name = combat_guide_ongoing.1010.a
+		scope:target = {
+			trigger_event = combat_guide_ongoing.2001
+		}
+		stress_impact = {
+			lustful = minor_stress_impact_loss
+			just = minor_stress_impact_gain
+			chaste = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 50
+				has_trait = lustful
+			}
+			modifier = {
+				add = 20
+				opinion = {
+					target = scope:target
+					value >= 50
+				}
+			}
+			modifier = {
+				add = -20
+				is_married = yes
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					has_trait = just
+					has_trait = chaste
+				}
+			}
+		}
+	}
+	option = { # keep it in my heart
+		name = combat_guide_ongoing.1010.b
+		stress_impact = {
+			lustful = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 50
+			modifier = {
+				factor = 0
+				has_trait = lustful
+			}
+			modifier = {
+				add = 50
+				OR = {
+					has_trait = just
+					has_trait = chaste
+				}
+			}
+		}
+	}
+}
+
+combat_guide_ongoing.1011 = {
+	type = character_event
+	title = combat_guide_ongoing.1011.t
+	desc = combat_guide_ongoing.1011.desc
+	theme = martial
+	left_portrait = {
+		character = root
+		animation = war_attacker
+	}
+	right_portrait = {
+		character = scope:target
+		animation = war_attacker
+	}
+	
+	trigger = {
+		NOT = { has_variable = had_event_combat_guide_ongoing_1011 }
+	}
+
+	immediate = {
+		set_variable = {	
+			name = had_event_combat_guide_ongoing_1011
+			value = yes
+			days = 1460
+		}
+	}
+
+	option = { # watch master defeat the bandits
+		name = combat_guide_ongoing.1011.a
+		add_prowess_skill = 1
+		ai_chance = 50
+	}
+
+	option = { # defeat those bandit by myself
+		name = combat_guide_ongoing.1011.b
+		random_list = {
+			40 = {
+				add_prowess_skill = 4
+				add_piety = 100
+			}
+			60 = {
+				add_prestige = -100
+				change_trait_rank = {
+					trait = wounded
+					rank = 1
+					max = 3
+				}
+			}
+		}
+		ai_chance = 50
+	}
+}
+
+combat_guide_ongoing.2001 = {
+	type = character_event
+	title = combat_guide_ongoing.2001.t
+	desc = combat_guide_ongoing.2001.desc
+	theme = seduce_scheme
+	left_portrait = {
+		character = scope:owner
+		animation = admiration
+	}
+	right_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	option = { # Accept love
+		name = combat_guide_ongoing.2001.a
+		had_sex_with_effect = {
+			CHARACTER = scope:owner
+			PREGNANCY_CHANCE = 20
+		}
+		set_relation_lover = {
+			target = scope:owner
+			reason = lover_court_visit_seduction
+		}
+		stress_impact = {
+			lustful = minor_stress_impact_loss
+			just = minor_stress_impact_gain
+			chaste = minor_stress_impact_gain
+		}
+		scope:owner = {
+			trigger_event = combat_guide_ongoing.2002
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 50
+				has_trait = lustful
+			}
+			modifier = {
+				add = 20
+				opinion = {
+					target = scope:owner
+					value >= 50
+				}
+			}
+			modifier = {
+				add = -20
+				is_married = yes
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					has_trait = just
+					has_trait = chaste
+				}
+			}
+		}
+	}
+	option = { # Reject
+		name = combat_guide_ongoing.2001.b
+		stress_impact = {
+			lustful = minor_stress_impact_gain
+		}
+		scope:owner = {
+			trigger_event = combat_guide_ongoing.2003
+		}
+		ai_chance = {
+			base = 50
+			modifier = {
+				factor = 0
+				has_trait = lustful
+			}
+			modifier = {
+				add = 50
+				OR = {
+					has_trait = just
+					has_trait = chaste
+				}
+			}
+		}
+	}
+}
+
+combat_guide_ongoing.2002 = {
+	type = character_event
+	title = combat_guide_ongoing.2002.t
+	desc = combat_guide_ongoing.2002.desc
+	theme = seduce_scheme
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+	right_portrait = {
+		character = scope:target
+		animation = love
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			had_sex_with_effect = {
+				CHARACTER = scope:target
+				PREGNANCY_CHANCE = 20
+			}
+			set_relation_lover = {
+				target = scope:target
+				reason = lover_court_visit_seduction
+			}
+		}
+	}
+
+	option = {
+		name = combat_guide_ongoing.2002.a
+	}
+}
+
+combat_guide_ongoing.2003 = {
+	type = character_event
+	title = combat_guide_ongoing.2003.t
+	desc = combat_guide_ongoing.2003.desc
+	theme = seduce_scheme
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_honorable
+	}
+
+	immediate = {}
+
+	option = {
+		name = combat_guide_ongoing.2003.a
 	}
 }

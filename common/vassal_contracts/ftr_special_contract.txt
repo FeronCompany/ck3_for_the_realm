@@ -10,7 +10,7 @@ centralism_special_contract = {
 			position = { 0 0 }
 			default = yes
       vassal_modifier = {
-				men_at_arms_cap = -10
+				#men_at_arms_cap = -10
         domain_limit = -15
 			}
       ai_liege_desire = {
@@ -28,7 +28,7 @@ centralism_special_contract = {
       tax_factor = 0.5
 			levies_factor = -0.75
       vassal_modifier = {
-				men_at_arms_cap = -10
+				#men_at_arms_cap = -10
         domain_limit = -15
 			}
       liege_modifier = {

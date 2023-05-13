@@ -74,6 +74,29 @@
  combat_guide_ongoing.1009.a.lost_master:0 "你输给了 [target.GetShortUIName|U]"
  combat_guide_ongoing.1009.a.tie:0 "你和 [target.GetShortUIName|U] 打了个平手"
 
+ combat_guide_ongoing.1010.t:1 "日久生情"
+ combat_guide_ongoing.1010.desc:3 "[target.GetShortUIName|U] 的飒爽英姿令我着迷。结束了一天的训练后，我的脑中全是[target.GetHerHis]音容笑貌，挥之不去。临近傍晚，我终于忍不住来到[target.GetHerHis]房门外，犹豫着要不要和[target.GetHerHim]坦白我的爱意。"
+ combat_guide_ongoing.1010.a:0 "我觉得有必要和[target.GetShortUIName|U]沟通一下我的想法。"
+ combat_guide_ongoing.1010.b:0 "算了，这样不好"
+
+ combat_guide_ongoing.1011.t:1 "路见不平"
+ combat_guide_ongoing.1011.desc:3 "训练之余，我与[target.GetShortUIName|U]漫步在城堡附近的林间小道中，却偶遇几名手持兵刃的劫匪正在打劫过往的路人。正义之火在我的胸中燃烧，但我清楚以我目前的实力出手，很可能会寡不敌众。到底要不要亲自为路人出这个头呢？"
+ combat_guide_ongoing.1011.a:0 "和[target.GetShortUIName|U]一起解决他们。"
+ combat_guide_ongoing.1011.b:0 "我觉得我能独自解决他们！"
+
+ combat_guide_ongoing.2001.t:1 "日久生情"
+ combat_guide_ongoing.2001.desc:3 "最近[owner.GetShortUIName|U]来训练时的表现令人疑惑，我忍不住怀疑[owner.GetSheHe]是不是对我有意思。果不其然，今夜[owner.GetSheHe]就来到我的临时住处找到我，告诉了我[owner.GetHerHis]真实想法。说老实话，我对这些事情并不惊奇，只是惊讶于[owner.GetHerHis]表露真情的勇气。现在，一道难题摆在我的面前……"
+ combat_guide_ongoing.2001.a:0 "这道题其实很简单。"
+ combat_guide_ongoing.2001.b:0 "不行，这不符合我的原则！"
+
+ combat_guide_ongoing.2002.t:1 "干柴烈火"
+ combat_guide_ongoing.2002.desc:3 "[target.GetShortUIName|U]对我的表白竟然毫不意外，在短暂的尴尬掩饰之后，我们撕掉了伪装，紧紧拥抱在了一起，互相亲吻对方的敏感部位。随后我们兴奋地脱光对方的衣服，大汗淋漓的身体猛烈地撞击在一起，就像两位骑着骏马的骑士，驰骋在无边荒野之中。爱人互相抚慰的快感令人脸红心跳，我们在互相的冲击中忍不住叫出了声。在沉重的喘息声和床板的摇曳声中我们最终结束了战斗，而战斗的时长也表明我们近期的训练没有白费。"
+ combat_guide_ongoing.2002.a:0 "啊——真是棒极了"
+
+ combat_guide_ongoing.2003.t:1 "一场误会"
+ combat_guide_ongoing.2003.desc:3 "[target.GetShortUIName|U]对我的表白竟然毫不意外，不过[target.GetSheHe]仍然坚持自己的原则，我只好悻悻离去。"
+ combat_guide_ongoing.2003.a:0 "哦，是吗……"
+
 
  ftr_coup_outcoming.1000.t:1 "政变成功"
  ftr_coup_outcoming.1000.desc:3 "时机已到，今日起兵！参与政变的人员趁着夜色集结在宫殿外面，静静等待时机。在守卫松懈的空当，我们突入宫内，把睡眼惺忪的卫兵们缴了械。衣冠不整的[target.GetShortUIName|U]慌忙向侧门逃去，却被我们的人逮了个正着。"

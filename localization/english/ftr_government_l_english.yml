@@ -35,3 +35,10 @@
  adv_scutage:0 "Advance Scutage"
  adv_scutage_desc:1 "Advance Scutage provide more tax and men-at-arms cap in stead of levy."
  adv_scutage_short:0 "Advance Scutage"
+
+ men_of_arms_ban:0 "Men of Arms Ban"
+ men_of_arms_ban_default:0 "Men-at-arms Allowed"
+ men_of_arms_ban_default_short:0 "Allowed"
+ men_of_arms_ban_active:0 "Men-at-arms Banned"
+ men_of_arms_ban_active_desc:1 "Vassals are forbidden to keep men-at-arms. Sovereigns should avoid local power so inflated that it threatens their dominance."
+ men_of_arms_ban_active_short:0 "Banned"

@@ -21,6 +21,7 @@
 		council_rights
 		title_revocation_rights
 		jizya_special_rights
+		men_of_arms_ban
 	}
 
 	flag = government_is_centralism

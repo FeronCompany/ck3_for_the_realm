@@ -45,3 +45,29 @@ centralism_special_contract = {
     }
   }
 }
+
+men_of_arms_ban = {
+	display_mode = checkbox
+	obligation_levels = {
+		men_of_arms_ban_default = {
+			default = yes
+			position = { 0 0 }
+			ai_liege_desire = 0
+			ai_vassal_desire = @ai_standard_vassal_desire
+		}
+		men_of_arms_ban_active = {
+			score = -1
+			parent = men_of_arms_ban_default
+			position = { 1 0 }
+
+			vassal_opinion = -5
+
+			flag = vassal_men_of_arms_banned
+      vassal_modifier = {
+				men_at_arms_cap = -10
+			}
+			ai_liege_desire = @ai_standard_liege_desire
+			ai_vassal_desire = 0
+		}
+	}
+}

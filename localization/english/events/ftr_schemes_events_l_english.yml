@@ -22,7 +22,10 @@
  combat_guide_ongoing.1000.t:1 "Muscle Soreness"
  combat_guide_ongoing.1000.desc:3 "Under the supervision of my master [target.GetShortUIName|U], I fought fiercely with Woodenhead. A wave cut down, sweat had already soaked my clothes, and only when I got home did I find my muscles sore."
  combat_guide_ongoing.1000.a:0 "Go go go!"
+ combat_guide_ongoing.1000.a.good:0 "Training is effective."
+ combat_guide_ongoing.1000.a.bad:0 "Over-training damages your health."
  combat_guide_ongoing.1000.b:0 "Do summary after training."
+ combat_guide_ongoing.1000.b.good:0 "You gain a lot after summary."
  combat_guide_ongoing.1000.c:0 "Take a rest."
  
  combat_guide_ongoing.1001.t:1 "Late of training"
@@ -36,6 +39,9 @@
  combat_guide_ongoing.1003.t:1 "Physical training"
  combat_guide_ongoing.1003.desc:3 "The instructor [target.GetShortUIName|U] came to me and said earnestly, \n\nAccording to my observation, your strength is obviously insufficient, which is not enough to support your fighting training. So from today on, we will conduct physical training!"
  combat_guide_ongoing.1003.a:0 "Oh, no."
+ combat_guide_ongoing.1003.a.bad:0 "Over-training damages your health."
+ combat_guide_ongoing.1003.a.normal:0 "Training is ok."
+ combat_guide_ongoing.1003.a.good:0 "Training is effective."
 
  combat_guide_ongoing.1004.t:1 "Essense of chivalry"
  combat_guide_ongoing.1004.desc:3 "During the break from training, I sat on the floor with my master [target.GetShortUIName|U] and discussed my views on martial arts ethics. I expressed my views, but [target.GetShortUIName|U] shook head and said that war cannot solve all problems. As knights, we have a duty to protect the weak. Bullying behavior should be spurned. I couldn't help thinking deeply..."
@@ -54,6 +60,7 @@
  combat_guide_ongoing.1006.t:1 "Cruel training"
  combat_guide_ongoing.1006.desc:3 "My master [target.GetShortUIName|U] looked at me while I was training, thoughtfully. Suddenly, [target.GetSheHe] took my hand and ran to the nearby woods. [target.GetSheHe|U] opened the door of the cabin in the forest and led out a big German shepherd with grinning teeth. [target.GetSheHe|U] smiled at me strangely and said, Beat it and you will truly graduate."
  combat_guide_ongoing.1006.a:0 "Stick to it!"
+ combat_guide_ongoing.1006.a.good:0 "You are well-trained."
  combat_guide_ongoing.1006.a.failure:0 "You get injured."
  combat_guide_ongoing.1006.a.critical_failure:0 "You died."
 
@@ -73,6 +80,31 @@
  combat_guide_ongoing.1009.a.win_master:0 "You defeated [target.GetShortUIName|U]"
  combat_guide_ongoing.1009.a.lost_master:0 "You lose to [target.GetShortUIName|U]"
  combat_guide_ongoing.1009.a.tie:0 "You give [target.GetShortUIName|U] a draw"
+
+ combat_guide_ongoing.1010.t:1 "Love over time"
+ combat_guide_ongoing.1010.desc:3 "[target.GetShortUIName|U]'s heroic appearance fascinated me. After a day of training, my mind was full of [target.GetHerHis] voice and smile, which lingered. Towards evening, I finally couldn't help but come outside of [target.GetHerHis] door, hesitating to confess my love to [target.GetHerHim]."
+ combat_guide_ongoing.1010.a:0 "I have to communicate with [target.GetShortUIName|U]."
+ combat_guide_ongoing.1010.b:0 "No, that's not good."
+
+ combat_guide_ongoing.1011.t:1 "See injustice on the road"
+ combat_guide_ongoing.1011.desc:3 "After training, [target.GetShortUIName|U] and I were strolling on the forest path near the castle, but we came across several robbers with weapons and blades who were robbing passers-by. The fire of justice burns in my chest, but I know that with my current strength, I will probably be outnumbered. Should I personally take this step for passers-by?"
+ combat_guide_ongoing.1011.a:0 "Drive them away with [target.GetShortUIName|U]."
+ combat_guide_ongoing.1011.b:0 "I can deal with them alone."
+ combat_guide_ongoing.1011.b.win:0 "You defeated those bandits all by yourself."
+ combat_guide_ongoing.1011.b.lost:0 "You were defeated by those bandits."
+
+ combat_guide_ongoing.2001.t:1 "Love over time"
+ combat_guide_ongoing.2001.desc:3 "The performance of [owner.GetShortUIName|U] when [owner.GetSheHe] came to train recently was confusing, and I couldn't help but wonder if [owner.GetSheHe] was interested in me. Sure enough, tonight [owner.GetSheHe] came to my temporary residence to find me and told me [owner.GetHerHis] real thought. To be honest, I'm not surprised by these things, just by [owner.GetHerHis] courage to tell the truth. Now, a difficult problem lies in front of me..."
+ combat_guide_ongoing.2001.a:0 "Not that difficult..."
+ combat_guide_ongoing.2001.b:0 "No, I can't break my principles!"
+
+ combat_guide_ongoing.2002.t:1 "Dry wood and fire"
+ combat_guide_ongoing.2002.desc:3 "[target.GetShortUIName|U] was not surprised by my confession. After a short period of embarrassment, we tore off our disguises, hugged each other tightly, and kissed each other's sensitive parts. Then we excitedly stripped each other of our clothes, and our sweaty bodies slammed together violently, like two knights riding a steed, galloping in the boundless wilderness. The pleasure of lovers soothing each other was blushing and heartbeat, and we couldn't help but cry out in the impact of each other. With heavy gasps and the swaying sound of the bed board, we finally ended the fight, and the length of the fight also showed that our recent training had not been in vain."
+ combat_guide_ongoing.2002.a:0 "Ah, wonderful!"
+
+ combat_guide_ongoing.2003.t:1 "It must be a mistake"
+ combat_guide_ongoing.2003.desc:3 "[target.GetShortUIName|U] was not surprised by my confession, But [target.GetSheHe] still stuck to [target.GetHerHis] principles, and I had to leave angrily."
+ combat_guide_ongoing.2003.a:0 "Yes?"
 
 
  ftr_coup_outcoming.1000.t:1 "Coup Succeeded"

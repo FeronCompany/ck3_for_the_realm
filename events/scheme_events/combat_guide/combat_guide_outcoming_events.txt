@@ -42,7 +42,7 @@ combat_guide_outcome.1000 = {
 			send_interface_toast = {
 				title = combat_guide_complete
 				left_icon = root
-				add_prowess_skill = 4
+				add_prowess_skill = 5
 				scope:scheme = { end_scheme = yes }
 			}
 		}

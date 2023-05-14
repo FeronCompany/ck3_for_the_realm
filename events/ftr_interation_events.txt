@@ -30,9 +30,9 @@ ftr_interaction_event.0002 = {
 		animation = personality_zealous
 	}
 	right_portrait = {
-    character = scope:recipient
-    animation = personality_zealous
-  }
+		character = scope:recipient
+		animation = personality_zealous
+	}
 
 	option = { # point out doctrine fallacy
 		name = ftr_interaction_event.0002.a
@@ -79,9 +79,9 @@ ftr_interaction_event.0003 = {
 		animation = schadenfreude
 	}
 	right_portrait = {
-    character = scope:recipient
-    animation = shock
-  }
+		character = scope:recipient
+		animation = shock
+	}
 
 	option = { #Strike back
 		name = ftr_interaction_event.0003.a
@@ -204,9 +204,9 @@ ftr_interaction_event.0004 = {
 		animation = schadenfreude
 	}
 	right_portrait = {
-    character = scope:recipient
-    animation = shock
-  }
+		character = scope:recipient
+		animation = shock
+	}
 
 	option = { #Change the subject
 		name = ftr_interaction_event.0004.a
@@ -319,9 +319,9 @@ ftr_interaction_event.0005 = {
 		animation = schadenfreude
 	}
 	right_portrait = {
-    character = scope:recipient
-    animation = shock
-  }
+		character = scope:recipient
+		animation = shock
+	}
 
 	option = { #Quoting historical allusions too
 		name = ftr_interaction_event.0005.a
@@ -443,9 +443,9 @@ ftr_interaction_event.0006 = {
 		animation = schadenfreude
 	}
 	right_portrait = {
-    character = scope:recipient
-    animation = shock
-  }
+		character = scope:recipient
+		animation = shock
+	}
 
 	option = { #I have virtual
 		name = ftr_interaction_event.0006.a
@@ -533,9 +533,9 @@ ftr_interaction_event.0007 = {
 		animation = grief
 	}
 	right_portrait = {
-    character = scope:recipient
-    animation = happiness
-  }
+		character = scope:recipient
+		animation = happiness
+	}
 
 	option = { #Admit failure
 		name = ftr_interaction_event.0007.a
@@ -613,9 +613,9 @@ ftr_interaction_event.0009 = {
 		animation = happiness
 	}
 	right_portrait = {
-    character = scope:recipient
-    animation = grief
-  }
+		character = scope:recipient
+		animation = grief
+	}
 
 	option = { #I win
 		name = ftr_interaction_event.0009.a
@@ -641,9 +641,9 @@ ftr_interaction_event.0010 = {
 		animation = grief
 	}
 	right_portrait = {
-    character = scope:recipient
-    animation = happiness
-  }
+		character = scope:recipient
+		animation = happiness
+	}
 
 	option = { #I win
 		name = ftr_interaction_event.0010.a
@@ -669,9 +669,9 @@ ftr_interaction_event.0011 = {
 		animation = rage
 	}
 	right_portrait = {
-    character = scope:recipient
-    animation = rage
-  }
+		character = scope:recipient
+		animation = rage
+	}
 
 	option = { #WTF
 		name = ftr_interaction_event.0011.a
@@ -704,9 +704,9 @@ ftr_interaction_event.0012 = {
 		animation = happiness
 	}
 	right_portrait = {
-    character = scope:recipient
-    animation = happiness
-  }
+		character = scope:recipient
+		animation = happiness
+	}
 
 	option = { #talk deeply
 		name = ftr_interaction_event.0012.a
@@ -738,9 +738,9 @@ ftr_interaction_event.0013 = {
 		animation = disbelief
 	}
 	right_portrait = {
-    character = scope:recipient
-    animation = disbelief
-  }
+		character = scope:recipient
+		animation = disbelief
+	}
 
 	option = { #ok
 		name = ftr_interaction_event.0013.a

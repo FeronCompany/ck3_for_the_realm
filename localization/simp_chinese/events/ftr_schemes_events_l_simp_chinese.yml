@@ -22,7 +22,10 @@
  combat_guide_ongoing.1000.t:1 "肌肉酸痛"
  combat_guide_ongoing.1000.desc:3 "在导师 [target.GetShortUIName|U] 的监督下，我与木头人进行了激烈的战斗。一通挥砍下来，汗水早已浸透衣衫，回到家中才发现肌肉酸痛不已。"
  combat_guide_ongoing.1000.a:0 "接着训练!"
+ combat_guide_ongoing.1000.a.good:0 "训练颇有成效"
+ combat_guide_ongoing.1000.a.bad:0 "过度的训练损害了你的身体"
  combat_guide_ongoing.1000.b:0 "不妨稍作总结."
+ combat_guide_ongoing.1000.b.good:0 "稍作总结后你深受启发"
  combat_guide_ongoing.1000.c:0 "休息会儿吧."
 
  combat_guide_ongoing.1001.t:1 "训练迟到"
@@ -36,6 +39,9 @@
  combat_guide_ongoing.1003.t:1 "体能训练"
  combat_guide_ongoing.1003.desc:3 "导师 [target.GetShortUIName|U] 向我走来，并且语重心长地对我说：据我观察，你的力量还明显不足，这不足以支撑你的格斗训练。那么从今天开始，我们进行体能训练！"
  combat_guide_ongoing.1003.a:0 "训练量还不够吗"
+ combat_guide_ongoing.1003.a.bad:0 "过度的训练损害了你的身体"
+ combat_guide_ongoing.1003.a.normal:0 "训练起到了一定的效果"
+ combat_guide_ongoing.1003.a.good:0 "训练结果让人满意"
 
  combat_guide_ongoing.1004.t:1 "探讨武德"
  combat_guide_ongoing.1004.desc:3 "训练的空档，我和导师 [target.GetShortUIName|U] 一起席地而坐，讨论起了对武德的看法。我发表了自己的观点，可是 [target.GetShortUIName|U] 却摇头说道，杀伐并不能解决所有问题，我们作为骑士有职责守护弱小，恃强凌弱的行为应当被唾弃。我不禁陷入了深思……"
@@ -54,6 +60,7 @@
  combat_guide_ongoing.1006.t:1 "严苛训练"
  combat_guide_ongoing.1006.desc:3 "我的导师 [target.GetShortUIName|U] 看着正在训练的我，若有所思。忽然， [target.GetSheHe|U]拉着我的手，飞奔到附近的树林里。[target.GetSheHe|U]打开林中小屋的门，并牵出一条龇牙咧嘴的大狼狗。[target.GetSheHe|U]对我露出了诡异的微笑并说，击败它你才算真正毕业了。"
  combat_guide_ongoing.1006.a:0 "硬着头皮上吧!"
+ combat_guide_ongoing.1006.a.good:0 "你的确得到了训练"
  combat_guide_ongoing.1006.a.failure:0 "你受伤了."
  combat_guide_ongoing.1006.a.critical_failure:0 "你死了."
 
@@ -73,6 +80,31 @@
  combat_guide_ongoing.1009.a.win_master:0 "你击败了 [target.GetShortUIName|U]"
  combat_guide_ongoing.1009.a.lost_master:0 "你输给了 [target.GetShortUIName|U]"
  combat_guide_ongoing.1009.a.tie:0 "你和 [target.GetShortUIName|U] 打了个平手"
+
+ combat_guide_ongoing.1010.t:1 "日久生情"
+ combat_guide_ongoing.1010.desc:3 "[target.GetShortUIName|U] 的飒爽英姿令我着迷。结束了一天的训练后，我的脑中全是[target.GetHerHis]音容笑貌，挥之不去。临近傍晚，我终于忍不住来到[target.GetHerHis]房门外，犹豫着要不要和[target.GetHerHim]坦白我的爱意。"
+ combat_guide_ongoing.1010.a:0 "我觉得有必要和[target.GetShortUIName|U]沟通一下我的想法。"
+ combat_guide_ongoing.1010.b:0 "算了，这样不好"
+
+ combat_guide_ongoing.1011.t:1 "路见不平"
+ combat_guide_ongoing.1011.desc:3 "训练之余，我与[target.GetShortUIName|U]漫步在城堡附近的林间小道中，却偶遇几名手持兵刃的劫匪正在打劫过往的路人。正义之火在我的胸中燃烧，但我清楚以我目前的实力出手，很可能会寡不敌众。到底要不要亲自为路人出这个头呢？"
+ combat_guide_ongoing.1011.a:0 "和[target.GetShortUIName|U]一起解决他们。"
+ combat_guide_ongoing.1011.b:0 "我觉得我能独自解决他们！"
+ combat_guide_ongoing.1011.b.win:0 "你独自击败了这群劫匪"
+ combat_guide_ongoing.1011.b.lost:0 "你被劫匪击败"
+
+ combat_guide_ongoing.2001.t:1 "日久生情"
+ combat_guide_ongoing.2001.desc:3 "最近[owner.GetShortUIName|U]来训练时的表现令人疑惑，我忍不住怀疑[owner.GetSheHe]是不是对我有意思。果不其然，今夜[owner.GetSheHe]就来到我的临时住处找到我，告诉了我[owner.GetHerHis]真实想法。说老实话，我对这些事情并不惊奇，只是惊讶于[owner.GetHerHis]表露真情的勇气。现在，一道难题摆在我的面前……"
+ combat_guide_ongoing.2001.a:0 "这道题其实很简单。"
+ combat_guide_ongoing.2001.b:0 "不行，这不符合我的原则！"
+
+ combat_guide_ongoing.2002.t:1 "干柴烈火"
+ combat_guide_ongoing.2002.desc:3 "[target.GetShortUIName|U]对我的表白竟然毫不意外，在短暂的尴尬掩饰之后，我们撕掉了伪装，紧紧拥抱在了一起，互相亲吻对方的敏感部位。随后我们兴奋地脱光对方的衣服，大汗淋漓的身体猛烈地撞击在一起，就像两位骑着骏马的骑士，驰骋在无边荒野之中。爱人互相抚慰的快感令人脸红心跳，我们在互相的冲击中忍不住叫出了声。在沉重的喘息声和床板的摇曳声中我们最终结束了战斗，而战斗的时长也表明我们近期的训练没有白费。"
+ combat_guide_ongoing.2002.a:0 "啊——真是棒极了"
+
+ combat_guide_ongoing.2003.t:1 "一场误会"
+ combat_guide_ongoing.2003.desc:3 "[target.GetShortUIName|U]对我的表白竟然毫不意外，不过[target.GetSheHe]仍然坚持自己的原则，我只好悻悻离去。"
+ combat_guide_ongoing.2003.a:0 "哦，是吗……"
 
 
  ftr_coup_outcoming.1000.t:1 "政变成功"

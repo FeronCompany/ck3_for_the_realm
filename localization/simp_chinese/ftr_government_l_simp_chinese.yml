@@ -41,3 +41,10 @@
  adv_scutage:0 "兵役免除税"
  adv_scutage_desc:1 "军区额外提供税收且减少向上级提供征召兵，作为补偿，其领主可以额外获得常备军上限。"
  adv_scutage_short:0 "兵役免除税"
+
+ men_of_arms_ban:0 "禁蓄私兵"
+ men_of_arms_ban_default:0 "授权组建常备军"
+ men_of_arms_ban_default_short:0 "授权"
+ men_of_arms_ban_active:0 "禁止常备军"
+ men_of_arms_ban_active_desc:1 "禁止封臣蓄养常备军。君主应当避免地方实力过于膨胀，以至于威胁自己的统治地位。"
+ men_of_arms_ban_active_short:0 "禁止"

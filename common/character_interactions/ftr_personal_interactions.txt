@@ -205,14 +205,15 @@ request_combat_guidance_interaction = {
 			}
 			prowess < scope:recipient.prowess
 		}
-		scope:recipient = {
-			prowess >= 12
-		}
 	}
 
 	is_valid_showing_failures_only = {
 		scope:actor.gold >= 150
-		NOT = { scope:actor = { is_at_war_with = scope:recipient } } 
+		NOT = { scope:actor = { is_at_war_with = scope:recipient } }
+		scope:recipient = {
+			prowess >= 12
+			is_adult = yes
+		}
 	}
 
 	ai_accept = {

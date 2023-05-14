@@ -1,0 +1,34 @@
+﻿l_simp_chinese:
+ ftr_decision_events.0003.t:0 "<FTR>确认身份"
+ ftr_decision_events.0003.desc:0 "天空回应了你的召唤，数道亮光冲破夜空，化作流星从你的头顶飞过。现在是时候确认你的身份了……"
+ ftr_decision_events.0003.a:0 "我是苻坚"
+ ftr_decision_events.0003.b:0 "其他人物在做了——"
+ ftr_call_traverser_fujian_text:0 "苻坚的旧部将会逐个回归……"
+
+ ftr_decision_events.0004.t:0 "旧部来投"
+ ftr_decision_events.0004.desc:0 "[legendary_leader.GetShortUIName|U]，我最可靠的相国，我朝思暮想的左右手，如今又活生生地站在我的面前。我简直不敢相信自己的眼睛，最后还是[legendary_leader.GetShortUIName|U]打断了我的回忆，我这才震惊中回过神来。"
+ ftr_decision_events.0004.a:0 "爱卿平身！"
+
+ ftr_decision_events.0005.t:0 "旧部来投"
+ ftr_decision_events.0005.desc:0 "[legendary_leader.GetShortUIName|U]，我最可靠的将军之一，如今又活生生地站在我的面前。我简直不敢相信自己的眼睛，最后还是[legendary_leader.GetShortUIName|U]打断了我的回忆，我这才震惊中回过神来。"
+ ftr_decision_events.0005.a:0 "爱卿平身！"
+
+ ftr_decision_events.0006.t:0 "旧部来投"
+ ftr_decision_events.0006.desc:0 "[legendary_leader.GetShortUIName|U]，我最可靠的将军之一，如今又活生生地站在我的面前。我简直不敢相信自己的眼睛，最后还是[legendary_leader.GetShortUIName|U]打断了我的回忆，我这才震惊中回过神来。"
+ ftr_decision_events.0006.a:0 "爱卿平身！"
+
+ ftr_decision_events.0007.t:0 "旧部来投"
+ ftr_decision_events.0007.desc:0 "[legendary_leader.GetShortUIName|U]，我最可靠的将军之一，如今又活生生地站在我的面前。我简直不敢相信自己的眼睛，最后还是[legendary_leader.GetShortUIName|U]打断了我的回忆，我这才震惊中回过神来。"
+ ftr_decision_events.0007.a:0 "爱卿平身！"
+
+ ftr_decision_events.0008.t:0 "不速之客"
+ ftr_decision_events.0008.desc:0 "[legendary_leader.GetShortUIName|U]，我曾经的臣子，后来的叛徒。我曾经发誓在取胜之后一定要将[legendary_leader.GetShortUIName|U]处以极刑，可当[legendary_leader.GetSheHe]真的不顾危险投奔我时，我却一如既往地有些犹豫了……"
+ ftr_decision_events.0008.a:0 "爱卿平身。"
+ ftr_decision_events.0008.b:0 "[legendary_leader.GetShortUIName|U]，你怎么还敢来见我？"
+ ftr_decision_events.0008.c:0 "刀斧手，来呀！"
+
+ ftr_decision_events.0009.t:0 "不速之客"
+ ftr_decision_events.0009.desc:0 "[legendary_leader.GetShortUIName|U]，我曾经的臣子，后来的叛徒。我曾经发誓在取胜之后一定要将[legendary_leader.GetShortUIName|U]处以极刑，可当[legendary_leader.GetSheHe]真的不顾危险投奔我时，我却一如既往地有些犹豫了……"
+ ftr_decision_events.0009.a:0 "爱卿平身。"
+ ftr_decision_events.0009.b:0 "[legendary_leader.GetShortUIName|U]，你怎么还敢来见我？"
+ ftr_decision_events.0009.c:0 "刀斧手，来呀！"

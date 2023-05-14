@@ -23,17 +23,67 @@
 	}
 
 	effect = {
-    add_character_modifier = {
+		add_character_modifier = {
 			modifier = unsocial_personality_modifier
 			days = 730
 		}
 		trigger_event = solitude_time.0001
 	}
 	
-	ai_check_interval = 240
+	ai_check_frequency = 48
 	ai_potential = {
 		has_trait = shy
 	}
+	ai_will_do = {
+		base = 100
+	}
+}
+
+ftr_call_traverser_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	desc = ftr_call_traverser_decision_desc
+	selection_tooltip = ftr_call_traverser_decision_tooltip
+	#cooldown = { days = 1825 }
+	is_shown = {
+		is_landed = yes
+		has_trait = ftr_traverser
+		NOT = {  #Can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_call_traverser
+			}
+		}
+	}
+
+	is_valid = {
+		current_date <= 1100.1.1
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	#cost = {
+	#	prestige = { value = medium_prestige_value }
+	#}
+
+	effect = {
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_call_traverser
+			}
+			set_global_variable = {
+				name = flag_call_traverser
+				value = root
+			}
+		}
+		custom_description = {
+			text = ftr_call_traverser_effect_tt
+			trigger_event = ftr_decision_events.0003
+		}
+	}
+
 	ai_will_do = {
 		base = 100
 	}

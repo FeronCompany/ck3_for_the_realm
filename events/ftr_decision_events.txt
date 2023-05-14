@@ -53,3 +53,347 @@ ftr_decision_events.0002 = {
 	after = {}
 }
 
+# call traversers - Pick leader identity
+ftr_decision_events.0003 = {
+	type = character_event
+	title = ftr_decision_events.0003.t
+	desc = ftr_decision_events.0003.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	immediate = {}
+
+	option = { # Fu Jian's vassals comes
+		name = ftr_decision_events.0003.a
+		custom_description = {
+			text = ftr_call_traverser_fujian_tt
+			trigger_event = {
+				id = ftr_decision_events.0004 # Wang Meng on call
+				days = { 1 15 }
+			}
+			trigger_event = {
+				id = ftr_decision_events.0005 # Fu Rong on call
+				days = { 5 15 }
+			}
+			trigger_event = {
+				id = ftr_decision_events.0006 # Lv Guang on call
+				days = { 10 15 }
+			}
+			trigger_event = {
+				id = ftr_decision_events.0007 # Deng Qiang on call
+				days = { 15 25 }
+			}
+			trigger_event = {
+				id = ftr_decision_events.0008 # Yao Chang on call
+				days = { 30 50 }
+			}
+			trigger_event = {
+				id = ftr_decision_events.0009 # Murong Chui on call
+				days = { 35 50 }
+			}
+		}
+	}
+
+	option = { # TODO...
+		name = ftr_decision_events.0003.b
+	}
+
+	after = {}
+}
+
+# Wang Meng
+ftr_decision_events.0004 = {
+	type = character_event
+	title = ftr_decision_events.0004.t
+	desc = ftr_decision_events.0004.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	left_portrait = {
+		character = scope:legendary_leader
+		animation = admiration
+	}
+
+	immediate = {
+		hidden_effect = {
+			create_character = {
+				location = root.location
+				template = accolade_manipulator_character
+				culture = culture:han
+				faith = root.faith
+				name = Meng_of_Wang
+				dynasty_house = house:house_ftr_wang
+				gender = male
+				save_scope_as = legendary_leader
+			}
+			scope:legendary_leader = {
+				add_trait = ftr_traverser
+				add_trait = intellect_good_3
+				if = {
+					limit = {
+						has_trait = honest
+					}
+					remove_trait = honest
+				}
+				add_trait = deceitful
+
+				add_diplomacy_skill = 5
+				add_stewardship_skill = 5
+				add_learning_skill = 5
+				add_intrigue_skill = 5
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0004.a
+		recruit_courtier = scope:legendary_leader
+		add_gold = 200
+	}
+
+	after = {}
+}
+
+# Fu Rong
+ftr_decision_events.0005 = {
+	type = character_event
+	title = ftr_decision_events.0005.t
+	desc = ftr_decision_events.0005.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	left_portrait = {
+		character = scope:legendary_leader
+		animation = admiration
+	}
+
+	immediate = {
+		hidden_effect = {
+			create_character = {
+				location = root.location
+				template = new_warrior_character
+				culture = culture:han
+				faith = root.faith
+				name = Rong_of_Fu
+				dynasty_house = root.house
+				gender = male
+				save_scope_as = legendary_leader
+			}
+			scope:legendary_leader = {
+				add_trait = ftr_traverser
+				add_martial_skill = 5
+				add_prowess_skill = 10
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0004.a
+		recruit_courtier = scope:legendary_leader
+	}
+
+	after = {}
+}
+
+# Lv Guang
+ftr_decision_events.0006 = {
+	type = character_event
+	title = ftr_decision_events.0006.t
+	desc = ftr_decision_events.0006.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	left_portrait = {
+		character = scope:legendary_leader
+		animation = admiration
+	}
+
+	immediate = {
+		hidden_effect = {
+			create_character = {
+				location = root.location
+				template = new_warrior_character
+				culture = culture:han
+				faith = root.faith
+				name = Guang_of_Lv
+				dynasty_house = house:house_ftr_lv
+				gender = male
+				save_scope_as = legendary_leader
+			}
+			scope:legendary_leader = {
+				add_trait = ftr_traverser
+				add_martial_skill = 10
+				add_prowess_skill = 10
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0006.a
+		recruit_courtier = scope:legendary_leader
+	}
+
+	after = {}
+}
+
+# Deng Qiang
+ftr_decision_events.0007 = {
+	type = character_event
+	title = ftr_decision_events.0007.t
+	desc = ftr_decision_events.0007.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	left_portrait = {
+		character = scope:legendary_leader
+		animation = admiration
+	}
+
+	immediate = {
+		hidden_effect = {
+			create_character = {
+				location = root.location
+				template = new_warrior_character
+				culture = culture:han
+				faith = root.faith
+				name = Qiang_of_Deng
+				dynasty_house = house:house_ftr_deng
+				gender = male
+				save_scope_as = legendary_leader
+			}
+			scope:legendary_leader = {
+				add_trait = ftr_traverser
+				add_martial_skill = 10
+				add_prowess_skill = 10
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0007.a
+		recruit_courtier = scope:legendary_leader
+	}
+
+	after = {}
+}
+
+# Yao Chang
+ftr_decision_events.0008 = {
+	type = character_event
+	title = ftr_decision_events.0008.t
+	desc = ftr_decision_events.0008.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	left_portrait = {
+		character = scope:legendary_leader
+		animation = admiration
+	}
+
+	immediate = {
+		hidden_effect = {
+			create_character = {
+				location = root.location
+				template = new_warrior_character
+				culture = culture:han
+				faith = root.faith
+				name = Chang_of_Yao
+				dynasty_house = house:house_ftr_yao
+				gender = male
+				save_scope_as = legendary_leader
+			}
+			scope:legendary_leader = {
+				add_trait = ftr_traverser
+				add_martial_skill = 10
+				add_prowess_skill = 10
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0008.a
+		recruit_courtier = scope:legendary_leader
+	}
+
+	option = { # Be gone
+		name = ftr_decision_events.0008.b
+	}
+
+	option = { # execute!
+		name = ftr_decision_events.0008.c
+		execute_prisoner_effect = {
+			VICTIM = scope:legendary_leader
+			EXECUTIONER = root
+		}
+	}
+
+	after = {}
+}
+
+# Murong Chui
+ftr_decision_events.0009 = {
+	type = character_event
+	title = ftr_decision_events.0009.t
+	desc = ftr_decision_events.0009.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	left_portrait = {
+		character = scope:legendary_leader
+		animation = admiration
+	}
+
+	immediate = {
+		hidden_effect = {
+			create_character = {
+				location = root.location
+				template = new_warrior_character
+				culture = culture:han
+				faith = root.faith
+				name = Chui_of_Murong
+				dynasty_house = house:house_ftr_murong
+				gender = male
+				save_scope_as = legendary_leader
+			}
+			scope:legendary_leader = {
+				add_trait = ftr_traverser
+				add_martial_skill = 10
+				add_prowess_skill = 10
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0009.a
+		recruit_courtier = scope:legendary_leader
+	}
+
+	option = { # Be gone
+		name = ftr_decision_events.0009.b
+	}
+
+	option = { # execute!
+		name = ftr_decision_events.0009.c
+		execute_prisoner_effect = {
+			VICTIM = scope:legendary_leader
+			EXECUTIONER = root
+		}
+	}
+
+	after = {}
+}

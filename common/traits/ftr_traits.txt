@@ -17,3 +17,22 @@ murderer = {
 		}
 	}
 }
+
+ftr_traverser = {
+	category = fame
+	ruler_designer_cost = 0
+	health = 1
+	same_opinion = 50
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_ftr_traverser_desc
+			}
+			desc = trait_ftr_traverser_character_desc
+		}
+	}
+}

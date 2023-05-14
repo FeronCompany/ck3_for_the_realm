@@ -75,3 +75,11 @@ ftr_coup_sensed_text = {
 ftr_frame_effect_text = {
 	global = FTR_FRAME_EFFECT
 }
+
+ftr_call_traverser_effect_tt = {
+	global = ftr_call_traverser_effect_text
+}
+
+ftr_call_traverser_fujian_tt = {
+	global = ftr_call_traverser_fujian_text
+}

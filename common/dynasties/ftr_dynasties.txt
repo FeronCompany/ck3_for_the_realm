@@ -1,0 +1,25 @@
+﻿
+ftr_wang = {
+	name = "dynn_Wang"
+	culture = "han"
+}
+
+ftr_lv = {
+	name = "dynn_ftr_Lv"
+	culture = "han"
+}
+
+ftr_deng = {
+	name = "dynn_ftr_Deng"
+	culture = "han"
+}
+
+ftr_yao = {
+	name = "dynn_Yao"
+	culture = "han"
+}
+
+ftr_murong = {
+	name = "dynn_ftr_Murong"
+	culture = "han"
+}

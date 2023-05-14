@@ -1,0 +1,26 @@
+﻿
+
+house_ftr_wang = {
+	name = "dynn_Wang"
+	dynasty = ftr_wang
+}
+
+house_ftr_lv = {
+	name = "dynn_ftr_Lv"
+	dynasty = ftr_lv
+}
+
+house_ftr_deng = {
+	name = "dynn_ftr_Deng"
+	dynasty = ftr_deng
+}
+
+house_ftr_yao = {
+	name = "dynn_Yao"
+	dynasty = ftr_yao
+}
+
+house_ftr_murong = {
+	name = "dynn_ftr_Murong"
+	dynasty = ftr_murong
+}

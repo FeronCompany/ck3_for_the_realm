@@ -1,0 +1,34 @@
+﻿l_english:
+ ftr_decision_events.0003.t:0 "<FTR> Confirm identity"
+ ftr_decision_events.0003.desc:0 "The sky responded to your call, and several bright lights broke through the night sky and turned into meteors and flew over your head. Now it's time to confirm your identity..."
+ ftr_decision_events.0003.a:0 "I am Fu Jian."
+ ftr_decision_events.0003.b:0 "TODO..."
+ ftr_call_traverser_fujian_text:0 "Fu Jian's generals will come back soon..."
+
+ ftr_decision_events.0004.t:0 "Past Subordinates On Call"
+ ftr_decision_events.0004.desc:0 "[legendary_leader.GetShortUIName|U], my most reliable prime minister, the right and left hand I have been longing for, is now standing in front of me alive. I couldn't believe my eyes, and finally [legendary_leader.GetShortUIName|U] interrupted my memories, and I came back to my senses in shock."
+ ftr_decision_events.0004.a:0 "Welcome!"
+
+ ftr_decision_events.0005.t:0 "Past Subordinates On Call"
+ ftr_decision_events.0005.desc:0 "[legendary_leader.GetShortUIName|U], one of my most reliable generals was now standing before me alive. I couldn't believe my eyes, and finally [legendary_leader.GetShortUIName|U] interrupted my memories, and I came back to my senses in shock."
+ ftr_decision_events.0005.a:0 "Welcome!"
+
+ ftr_decision_events.0006.t:0 "Past Subordinates On Call"
+ ftr_decision_events.0006.desc:0 "[legendary_leader.GetShortUIName|U], one of my most reliable generals was now standing before me alive. I couldn't believe my eyes, and finally [legendary_leader.GetShortUIName|U] interrupted my memories, and I came back to my senses in shock."
+ ftr_decision_events.0006.a:0 "Welcome!"
+
+ ftr_decision_events.0007.t:0 "Past Subordinates On Call"
+ ftr_decision_events.0007.desc:0 "[legendary_leader.GetShortUIName|U], one of my most reliable generals was now standing before me alive. I couldn't believe my eyes, and finally [legendary_leader.GetShortUIName|U] interrupted my memories, and I came back to my senses in shock."
+ ftr_decision_events.0007.a:0 "Welcome!"
+
+ ftr_decision_events.0008.t:0 "Unexpected Guest"
+ ftr_decision_events.0008.desc:0 "[legendary_leader.GetShortUIName|U] was my former courtier and later traitor. I once swore to put [legendary_leader.GetShortUIName|U] to death after winning, but when [legendary_leader.GetSheHe] really defected to me regardless of the danger, I was a little hesitant as always..."
+ ftr_decision_events.0008.a:0 "Welcome."
+ ftr_decision_events.0008.b:0 "[legendary_leader.GetShortUIName|U], how dare you come to see me?"
+ ftr_decision_events.0008.c:0 "Guards!"
+
+ ftr_decision_events.0009.t:0 "Unexpected Guest"
+ ftr_decision_events.0009.desc:0 "[legendary_leader.GetShortUIName|U] was my former courtier and later traitor. I once swore to put [legendary_leader.GetShortUIName|U] to death after winning, but when [legendary_leader.GetSheHe] really defected to me regardless of the danger, I was a little hesitant as always..."
+ ftr_decision_events.0009.a:0 "Welcome."
+ ftr_decision_events.0009.b:0 "[legendary_leader.GetShortUIName|U], how dare you come to see me?"
+ ftr_decision_events.0009.c:0 "Guards!"

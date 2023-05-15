@@ -83,3 +83,15 @@ ftr_call_traverser_effect_tt = {
 ftr_call_traverser_fujian_tt = {
 	global = ftr_call_traverser_fujian_text
 }
+
+auto_convert_culture_by_force_tt = {
+	global = auto_convert_culture_by_force_text
+}
+
+auto_convert_culture_by_bribe_tt = {
+	global = auto_convert_culture_by_bribe_text
+}
+
+auto_convert_culture_elite_run_tt = {
+	global = auto_convert_culture_elite_run_text
+}

@@ -101,7 +101,20 @@ ftr_decision_events.0003 = {
 		name = ftr_decision_events.0003.b
 	}
 
-	after = {}
+	after = {
+		if = {
+			limit = {
+				NOT = { root.culture = root.capital_county.culture }
+			}
+			root.capital_county.culture = {
+				change_cultural_acceptance = {
+					target = root.culture
+					value =	90
+					desc = cultural_acceptance_gain_auto_granted_county
+				}
+			}
+		}
+	}
 }
 
 # Wang Meng

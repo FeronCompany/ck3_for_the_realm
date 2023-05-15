@@ -183,7 +183,7 @@ ftr_depose_bureacrat_interaction = {
 		}
 		resolve_title_and_vassal_change = scope:change
 		scope:secondary_actor = {
-			add_realm_law = centralism_vassal_succession_law
+			add_realm_law = autocracy_succession_law
 			every_held_title = {
 				limit = {
 					tier > tier_county
@@ -393,7 +393,7 @@ ftr_request_depose_interaction = {
 		}
 		resolve_title_and_vassal_change = scope:change
 		scope:secondary_actor = {
-			add_realm_law = centralism_vassal_succession_law
+			add_realm_law = autocracy_succession_law
 			every_held_title = {
 				limit = {
 					tier > tier_county

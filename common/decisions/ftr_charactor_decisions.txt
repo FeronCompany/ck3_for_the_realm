@@ -30,7 +30,7 @@
 		trigger_event = solitude_time.0001
 	}
 	
-	ai_check_frequency = 48
+	ai_check_interval = 48
 	ai_potential = {
 		has_trait = shy
 	}

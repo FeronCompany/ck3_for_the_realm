@@ -790,4 +790,4 @@ revoke_title_interaction = {
 			}
 		}
 	}
-}//
+}

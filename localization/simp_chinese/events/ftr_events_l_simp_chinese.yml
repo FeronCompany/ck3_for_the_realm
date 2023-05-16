@@ -171,7 +171,7 @@
  ftr_realm_event.0006.t:0 "卷款跑路"
  ftr_realm_event.0006.desc:0 "收到我的经费后，[different_culture_elite.GetName]立刻带上家小卷款跑路，我的文化政策无疑受到了打击。"
  ftr_realm_event.0006.a:0 "再想想别的办法吧"
- auto_convert_culture_elite_run_text:0 "[different_culture_elite.GetName]和家人消失在无人的夜色中……"
+ auto_convert_culture_elite_run_text:0 "被委托人带着家人消失在无人的夜色中……"
 
  ftr_realm_event.1001.t:0 "<FTR>变革的时代"
  ftr_realm_event.1001.desc:0 "您的君主[liege.GetName]已经完成了集权制的改革准备，国家将在[liege.GetHisHer]的带领下步入新的阶段。过去长期运行良好的封建制度似乎正在走向终结，而您作为附庸又该何去何从呢？"

@@ -167,7 +167,7 @@
  ftr_realm_event.0006.t:0 "Run away with money"
  ftr_realm_event.0006.desc:0 "After receiving my funding, [different_culture_elite.GetName] immediately took the money and ran away, and my cultural policy was undoubtedly hit."
  ftr_realm_event.0006.a:0 "Maybe there is other solution..."
- auto_convert_culture_elite_run_text:0 "[different_culture_elite.GetName] disappear at night..."
+ auto_convert_culture_elite_run_text:0 "Your agent disappear with family at night..."
 
  ftr_realm_event.1001.t:0 "<FTR> Age of Reform"
  ftr_realm_event.1001.desc:0 "Your monarch [liege.GetName] has completed the reform of the centralism system, and the country will enter a new stage under [liege.GetHisHer] leadership. The feudal system that has worked well for a long time in the past seems to be coming to an end, and what should you do as a vassal?"

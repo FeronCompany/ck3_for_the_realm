@@ -101,7 +101,20 @@ ftr_decision_events.0003 = {
 		name = ftr_decision_events.0003.b
 	}
 
-	after = {}
+	after = {
+		if = {
+			limit = {
+				NOT = { root.culture = root.capital_county.culture }
+			}
+			root.capital_county.culture = {
+				change_cultural_acceptance = {
+					target = root.culture
+					value =	90
+					desc = cultural_acceptance_gain_auto_granted_county
+				}
+			}
+		}
+	}
 }
 
 # Wang Meng
@@ -114,7 +127,7 @@ ftr_decision_events.0004 = {
 		character = root
 		animation = personality_honorable
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:legendary_leader
 		animation = admiration
 	}
@@ -169,7 +182,7 @@ ftr_decision_events.0005 = {
 		character = root
 		animation = personality_honorable
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:legendary_leader
 		animation = admiration
 	}
@@ -212,7 +225,7 @@ ftr_decision_events.0006 = {
 		character = root
 		animation = personality_honorable
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:legendary_leader
 		animation = admiration
 	}
@@ -255,7 +268,7 @@ ftr_decision_events.0007 = {
 		character = root
 		animation = personality_honorable
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:legendary_leader
 		animation = admiration
 	}
@@ -298,7 +311,7 @@ ftr_decision_events.0008 = {
 		character = root
 		animation = personality_honorable
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:legendary_leader
 		animation = admiration
 	}
@@ -353,7 +366,7 @@ ftr_decision_events.0009 = {
 		character = root
 		animation = personality_honorable
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:legendary_leader
 		animation = admiration
 	}

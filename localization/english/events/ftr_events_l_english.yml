@@ -143,8 +143,10 @@
  ftr_realm_event.0001.t:0 "<FTR> Cultural Integration"
  ftr_realm_event.0001.desc:0 "After years of working hand in hand, the people of the two ethnic groups [my_culture.GetName] and [diff_culture.GetName] in our territory have almost merged. It is difficult to tell each other apart from the subtle differences in the details of life. Perhaps it is time to think about how to deal with the relationship between the two ethnic groups in the future."
  ftr_realm_event.0001.a:0 "Unify our language"
- ftr_realm_event.0001.b:0 "Bribe the elites to accept new language"
+ ftr_realm_event.0001.b:0 "Bribe local elites to accept new language"
  ftr_realm_event.0001.c:0 "All culture is equal"
+ auto_convert_culture_by_force_text:0 "The effect of force push for cultural assimilation depends on your military capabilities, and if the push fails, it will lead to local resistance."
+ auto_convert_culture_by_bribe_text:0 "The effect of promoting cultural assimilation by buying local elites depends on the diplomatic ability of the elite, and if the promotion fails, it will lead to resistance from the local people."
 
  ftr_realm_event.0002.t:0 "Push integration failed"
  ftr_realm_event.0002.desc:0 "The development of the matter was beyond our expectations. The people of [diff_culture.GetName] were very resistant to the new decree. They threatened to accept only the official documents in the previous format. The previous efforts failed, and the relationship between the two ethnic groups was even worse than before."
@@ -161,6 +163,11 @@
  ftr_realm_event.0005.t:0 "Bribe success"
  ftr_realm_event.0005.desc:0 "After receiving my funding, [different_culture_elite.GetName] was actively involved in his work, the locals responded positively to the New Deal, and it seemed that the fusion of cultures was at hand."
  ftr_realm_event.0005.a:0 "Good job"
+
+ ftr_realm_event.0006.t:0 "Run away with money"
+ ftr_realm_event.0006.desc:0 "After receiving my funding, [different_culture_elite.GetName] immediately took the money and ran away, and my cultural policy was undoubtedly hit."
+ ftr_realm_event.0006.a:0 "Maybe there is other solution..."
+ auto_convert_culture_elite_run_text:0 "Your agent disappear with family at night..."
 
  ftr_realm_event.1001.t:0 "<FTR> Age of Reform"
  ftr_realm_event.1001.desc:0 "Your monarch [liege.GetName] has completed the reform of the centralism system, and the country will enter a new stage under [liege.GetHisHer] leadership. The feudal system that has worked well for a long time in the past seems to be coming to an end, and what should you do as a vassal?"

@@ -40,3 +40,8 @@
  ftr_call_traverser_decision_desc:0 "既然选择了穿越，那么把曾经的部下召集过来共襄盛举岂不美哉？"
  ftr_call_traverser_decision_confirm:0 "复活吧，我的爱卿们！"
  ftr_call_traverser_effect_text:0 "你可以选择以合适的身份复活你曾经的部下……"
+
+ ftr_end_tyrant_succession_decision:0 "<FTR>结束僭主政治"
+ ftr_end_tyrant_succession_decision_tooltip:0 "结束僭主政治恢复合法主权"
+ ftr_end_tyrant_succession_decision_desc:0 "我们的国家过去经历了长期的僭主统治，所有的统治者都在缺乏合法性的阴影下施政。在权力的角逐中人人自危，朝不保夕。如今我们为国家寻得了一条光明的道路，伟大的陛下受命于天，是我们永远的合法领主！"
+ ftr_end_tyrant_succession_decision_confirm:0 "荣耀归于陛下！"

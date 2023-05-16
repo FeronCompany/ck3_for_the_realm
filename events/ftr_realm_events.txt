@@ -53,48 +53,55 @@ ftr_realm_event.0001 = {
 					culture = scope:different_culture_county.culture
 				}
 			}
-		  random_pool_guest = {
-			  limit = {
+			random_pool_guest = {
+				limit = {
 					culture = scope:different_culture_county.culture
-			  }
-			  #add_trait = peasant_leader
-			  save_scope_as = different_culture_elite
+				}
+				#add_trait = peasant_leader
+				save_scope_as = different_culture_elite
 			}
 		}
 		else = { # else, make one for the event
 			create_character = {
 				#template = tax_collector_character
-        gender = male
+				gender = male
 				location = root.location
 				culture = scope:different_culture_county.culture
-        faith = root.faith
+				faith = root.faith
 				#dynasty = none
 				save_scope_as = different_culture_elite	
 			}
 		}
-  }
+	}
 
-  option = { # push by force
-    name = ftr_realm_event.0001.a
-    hidden_effect = {
-      random_list = {
-        50 = { # push failed
-          trigger_event = {
-			      id = ftr_realm_event.0002
-			      days = 30
-		      }
-        }
-        50 = { # push success
-          trigger_event = {
-			      id = ftr_realm_event.0003
-			      days = 30
-		      }
-        }
-      }
-    }
-    ai_chance = {
+	option = { # push by force
+		name = ftr_realm_event.0001.a
+		custom_description = {
+			text = auto_convert_culture_by_force_tt
+			random_list = {
+				80 = { # push failed
+					trigger_event = {
+						id = ftr_realm_event.0002
+						days = 30
+					}
+				}
+				20 = { # push success
+					modifier = {
+						add = {
+							value = martial
+							multiply = 5
+						}
+					}
+					trigger_event = {
+						id = ftr_realm_event.0003
+						days = 30
+					}
+				}
+			}
+		}
+		ai_chance = {
 			base = 20
-      modifier = {
+			modifier = {
 				add = -20
 				has_trait = compassionate
 			}
@@ -103,32 +110,63 @@ ftr_realm_event.0001 = {
 				has_trait = arrogant
 			}
 		}
-  }
-  option = { # bribe local elite
-    name = ftr_realm_event.0001.b
-    pay_short_term_gold = {
+	}
+	option = { # bribe local elite
+		name = ftr_realm_event.0001.b
+		pay_short_term_gold = {
 			gold = 300
 			target = scope:different_culture_elite
 		}
-    hidden_effect = {
-      random_list = {
-        30 = { # push failed
-          trigger_event = {
-			      id = ftr_realm_event.0004
-			      days = 30
-		      }
-        }
-        70 = { # push success
-          trigger_event = {
-			      id = ftr_realm_event.0005
-			      days = 30
-		      }
-        }
-      }
-    }
-    ai_chance = {
+		custom_description = {
+			text = auto_convert_culture_by_bribe_tt
+			random_list = {
+				40 = { # push failed
+					trigger_event = {
+						id = ftr_realm_event.0004
+						days = 30
+					}
+				}
+				50 = { # push success
+					modifier = {
+						add = {
+							value = diplomacy
+							multiply = 5
+						}
+					}
+					trigger_event = {
+						id = ftr_realm_event.0005
+						days = 30
+					}
+				}
+				10 = { # run away
+					modifier = {
+						factor = 0
+						scope:different_culture_elite = {
+							OR = {
+								has_trait = just
+								has_trait = honest
+							}
+						}
+					}
+					modifier = {
+						add = 100
+						scope:different_culture_elite = {
+							OR = {
+								has_trait = deceitful
+								has_trait = greedy
+							}
+						}
+					}
+					trigger_event = {
+						id = ftr_realm_event.0006
+						days = 30
+					}
+				}
+			}
+		}
+		ai_chance = {
 			base = 20
-      modifier = {
+			modifier = {
 				add = -20
 				has_trait = greedy
 			}
@@ -137,19 +175,19 @@ ftr_realm_event.0001 = {
 				has_trait = generous
 			}
 		}
-  }
-  option = { # do nothing for now
-    name = ftr_realm_event.0001.c
-    scope:different_culture_county = {
-      add_county_modifier = {
-	      modifier = cultural_diversity_county_modifier
-	      years = 50
-      }
-    }
-    ai_chance = {
+	}
+	option = { # do nothing for now
+		name = ftr_realm_event.0001.c
+		scope:different_culture_county = {
+			add_county_modifier = {
+				modifier = cultural_diversity_county_modifier
+				years = 50
+			}
+		}
+		ai_chance = {
 			base = 20
 		}
-  }
+	}
 }
 
 # Push by force failed
@@ -167,13 +205,13 @@ ftr_realm_event.0002 = {
 
 	option = {
 		name = ftr_realm_event.0002.a
-    add_prestige = -300
-    scope:different_culture_county = {
-      add_county_modifier = {
-	      modifier = push_culture_failed_modifier
-	      years = 10
-      }
-    }
+		add_prestige = -300
+		scope:different_culture_county = {
+			add_county_modifier = {
+				modifier = push_culture_failed_modifier
+				years = 10
+			}
+		}
 	}
 
 	after = {}
@@ -253,6 +291,36 @@ ftr_realm_event.0005 = {
 		scope:different_culture_county = {
 			set_county_culture = root.culture
 		}
+	}
+
+	after = {}
+}
+
+# Agent just run away with money
+ftr_realm_event.0006 = {
+	type = character_event
+	title = ftr_realm_event.0006.t
+	desc = ftr_realm_event.0006.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = rage
+	}
+
+	immediate = {
+		custom_description = {
+			text = auto_convert_culture_elite_run_tt
+			scope:different_culture_elite = {
+				death = {
+ 					death_reason = death_disappearance
+ 				}
+			}
+		}
+	}
+
+	option = {
+		name = ftr_realm_event.0006.a
+		add_prestige = -300
 	}
 
 	after = {}
@@ -431,7 +499,7 @@ ftr_realm_event.1005 = {
 		resolve_title_and_vassal_change = scope:change
 		scope:successor = {
 			change_government = centralism_government
-			add_realm_law = centralism_vassal_succession_law
+			add_realm_law = autocracy_succession_law
 		}
 	}
 

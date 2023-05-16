@@ -51,7 +51,7 @@ men_of_arms_ban = {
 			default = yes
 			position = { 0 0 }
 			ai_liege_desire = 0
-			ai_vassal_desire = @ai_standard_vassal_desire
+			ai_vassal_desire = 2
 		}
 		men_of_arms_ban_active = {
 			score = -1
@@ -64,7 +64,7 @@ men_of_arms_ban = {
 			vassal_modifier = {
 				men_at_arms_cap = -20
 			}
-			ai_liege_desire = @ai_standard_liege_desire
+			ai_liege_desire = 2
 			ai_vassal_desire = 0
 		}
 	}

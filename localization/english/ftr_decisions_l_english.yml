@@ -40,3 +40,8 @@
  ftr_call_traverser_decision_desc:0 "Since I chose to travel through time and space, wouldn't it be beautiful to gather my former subordinates to participate in the grand event?"
  ftr_call_traverser_decision_confirm:0 "Resurrection, my loyal subjects!"
  ftr_call_traverser_effect_text:0 "You can choose to resurrect your former subordinates with a suitable identity..."
+
+ ftr_end_tyrant_succession_decision:0 "<FTR> End Tyrant Politics"
+ ftr_end_tyrant_succession_decision_tooltip:0 "End tyrant politics."
+ ftr_end_tyrant_succession_decision_desc:0 "Our country has experienced a long period of tyrannical rule in the past, and all rulers have governed under the shadow of lack of legitimacy. In the struggle for power, everyone is in danger and precarious. Now we have found a bright path for the country, and His Majesty the Great is ordained by heaven and is our eternal and legitimate lord!"
+ ftr_end_tyrant_succession_decision_confirm:0 "All glory belongs to Your Majasty!"

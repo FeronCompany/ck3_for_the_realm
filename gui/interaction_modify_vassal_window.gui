@@ -412,7 +412,6 @@ window = {
 					vbox = {
 						name = "major_line_tree_levels"
 						layoutpolicy_horizontal = expanding
-						visible = "[Character.GetGovernment.IsType('centralism_government')]" #集权制征兵
 						spacing = 10
 
 						datamodel = "[ModifyVassalContractInteractionWindow.AccessObligationLevelLineTrees]"

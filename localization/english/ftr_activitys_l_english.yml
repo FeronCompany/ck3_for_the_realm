@@ -1,5 +1,5 @@
 ﻿l_english:
- activity_tournament:0 "Tournament"
- activity_tournament_name:0 "[ACTIVITY.GetOwner.GetNamePossessiveOrMy|U]'s tournament"
- activity_tournament_desc:0 "Everyone with a certain status in the territory is invited to participate in a grand tournament to establish and strengthen bonds of friendship and loyalty."
- activity_tournament_owner:0 "Host"
+ #activity_tournament:0 "Tournament"
+ #activity_tournament_name:0 "[ACTIVITY.GetOwner.GetNamePossessiveOrMy|U]'s tournament"
+ #activity_tournament_desc:0 "Everyone with a certain status in the territory is invited to participate in a grand tournament to #establish and strengthen bonds of friendship and loyalty."
+ #activity_tournament_owner:0 "Host"

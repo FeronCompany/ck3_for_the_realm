@@ -44,6 +44,7 @@ ftr_call_traverser_decision = {
 	desc = ftr_call_traverser_decision_desc
 	selection_tooltip = ftr_call_traverser_decision_tooltip
 	#cooldown = { days = 1825 }
+	ai_check_interval = 48
 	is_shown = {
 		is_landed = yes
 		has_trait = ftr_traverser
@@ -73,10 +74,10 @@ ftr_call_traverser_decision = {
 				name = unavailable_unique_decisions
 				target = flag:flag_call_traverser
 			}
-			set_global_variable = {
-				name = flag_call_traverser
-				value = root
-			}
+			#set_global_variable = {
+			#	name = flag_call_traverser
+			#	value = root
+			#}
 		}
 		custom_description = {
 			text = ftr_call_traverser_effect_tt
@@ -85,6 +86,6 @@ ftr_call_traverser_decision = {
 	}
 
 	ai_will_do = {
-		base = 100
+		base = 0
 	}
 }

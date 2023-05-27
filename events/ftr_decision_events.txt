@@ -140,11 +140,18 @@ ftr_decision_events.0004 = {
 				culture = culture:han
 				faith = root.faith
 				name = Meng_of_Wang
-				dynasty_house = house:house_ftr_wang
+				dynasty = generate
+				#dynasty_house = house:house_ftr_wang
 				gender = male
 				save_scope_as = legendary_leader
 			}
 			scope:legendary_leader = {
+				dynasty = {
+					set_dynasty_name = dynn_Wang
+				}
+				house = {
+					set_house_name = dynn_Wang
+				}
 				add_trait = ftr_traverser
 				add_trait = intellect_good_3
 				if = {
@@ -238,11 +245,18 @@ ftr_decision_events.0006 = {
 				culture = culture:han
 				faith = root.faith
 				name = Guang_of_Lv
-				dynasty_house = house:house_ftr_lv
+				dynasty = generate
+				#dynasty_house = house:house_ftr_lv
 				gender = male
 				save_scope_as = legendary_leader
 			}
 			scope:legendary_leader = {
+				dynasty = {
+					set_dynasty_name = dynn_ftr_Lv
+				}
+				house = {
+					set_house_name = dynn_ftr_Lv
+				}
 				add_trait = ftr_traverser
 				add_martial_skill = 10
 				add_prowess_skill = 10
@@ -281,11 +295,18 @@ ftr_decision_events.0007 = {
 				culture = culture:han
 				faith = root.faith
 				name = Qiang_of_Deng
-				dynasty_house = house:house_ftr_deng
+				dynasty = generate
+				#dynasty_house = house:house_ftr_deng
 				gender = male
 				save_scope_as = legendary_leader
 			}
 			scope:legendary_leader = {
+				dynasty = {
+					set_dynasty_name = dynn_ftr_Deng
+				}
+				house = {
+					set_house_name = dynn_ftr_Deng
+				}
 				add_trait = ftr_traverser
 				add_martial_skill = 10
 				add_prowess_skill = 10
@@ -324,11 +345,18 @@ ftr_decision_events.0008 = {
 				culture = culture:han
 				faith = root.faith
 				name = Chang_of_Yao
-				dynasty_house = house:house_ftr_yao
+				dynasty = generate
+				#dynasty_house = house:house_ftr_yao
 				gender = male
 				save_scope_as = legendary_leader
 			}
 			scope:legendary_leader = {
+				dynasty = {
+					set_dynasty_name = dynn_Yao
+				}
+				house = {
+					set_house_name = dynn_Yao
+				}
 				add_trait = ftr_traverser
 				add_martial_skill = 10
 				add_prowess_skill = 10
@@ -379,11 +407,18 @@ ftr_decision_events.0009 = {
 				culture = culture:han
 				faith = root.faith
 				name = Chui_of_Murong
-				dynasty_house = house:house_ftr_murong
+				dynasty = generate
+				#dynasty_house = house:house_ftr_murong
 				gender = male
 				save_scope_as = legendary_leader
 			}
 			scope:legendary_leader = {
+				dynasty = {
+					set_dynasty_name = dynn_ftr_Murong
+				}
+				house = {
+					set_house_name = dynn_ftr_Murong
+				}
 				add_trait = ftr_traverser
 				add_martial_skill = 10
 				add_prowess_skill = 10

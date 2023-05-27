@@ -102,18 +102,18 @@ ftr_decision_events.0003 = {
 	}
 
 	after = {
-		if = {
-			limit = {
-				NOT = { root.culture = root.capital_county.culture }
-			}
-			root.capital_county.culture = {
-				change_cultural_acceptance = {
-					target = root.culture
-					value =	90
-					desc = cultural_acceptance_gain_auto_granted_county
-				}
-			}
-		}
+		#if = {
+		#	limit = {
+		#		NOT = { root.culture = root.capital_county.culture }
+		#	}
+		#	root.capital_county.culture = {
+		#		change_cultural_acceptance = {
+		#			target = root.culture
+		#			value =	90
+		#			desc = cultural_acceptance_gain_auto_granted_county
+		#		}
+		#	}
+		#}
 	}
 }
 

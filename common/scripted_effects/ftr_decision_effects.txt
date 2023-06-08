@@ -11,7 +11,7 @@ restore_byzantium_empire_scripted_effect = {
 		}
 	}
 	change_government = centralism_government
-	add_realm_law = autocracy_succession_law
+	#add_realm_law = autocracy_succession_law
 	
 	create_title_and_vassal_change = {
 		type = created
@@ -23,9 +23,11 @@ restore_byzantium_empire_scripted_effect = {
 			holder = root
 			change = scope:restore
 		}
-		add_title_law = tyrant_succession_law
 	}
 	resolve_title_and_vassal_change = scope:restore
+	title:e_byzantium = {
+		add_title_law = tyrant_succession_law
+	}
 	hidden_effect = { set_primary_title_to = title:e_byzantium }
 	if = { #Automatically move capital to Constantinople
 		limit = {

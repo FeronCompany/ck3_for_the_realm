@@ -9,7 +9,7 @@ ftr_decision_events.0001 = {
 	desc = ftr_decision_events.0001.desc
 	theme = realm
 	left_portrait = {
-		character = scope:root
+		character = root
 		animation = personality_honorable
 	}
 
@@ -20,7 +20,7 @@ ftr_decision_events.0001 = {
 		root = {
 			save_scope_as = emperor
 		}
-		set_nickname_effect = { NICKNAME = nick_the_glorious }
+		give_nickname = nick_the_glorious
 		every_player = {
 			limit = {
 				NOT = { this = root }
@@ -172,7 +172,7 @@ ftr_decision_events.0004 = {
 
 	option = {
 		name = ftr_decision_events.0004.a
-		recruit_courtier = scope:legendary_leader
+		add_courtier = scope:legendary_leader
 		add_gold = 200
 	}
 
@@ -216,7 +216,7 @@ ftr_decision_events.0005 = {
 
 	option = {
 		name = ftr_decision_events.0004.a
-		recruit_courtier = scope:legendary_leader
+		add_courtier = scope:legendary_leader
 	}
 
 	after = {}
@@ -266,7 +266,7 @@ ftr_decision_events.0006 = {
 
 	option = {
 		name = ftr_decision_events.0006.a
-		recruit_courtier = scope:legendary_leader
+		add_courtier = scope:legendary_leader
 	}
 
 	after = {}
@@ -316,7 +316,7 @@ ftr_decision_events.0007 = {
 
 	option = {
 		name = ftr_decision_events.0007.a
-		recruit_courtier = scope:legendary_leader
+		add_courtier = scope:legendary_leader
 	}
 
 	after = {}
@@ -366,7 +366,7 @@ ftr_decision_events.0008 = {
 
 	option = {
 		name = ftr_decision_events.0008.a
-		recruit_courtier = scope:legendary_leader
+		add_courtier = scope:legendary_leader
 	}
 
 	option = { # Be gone
@@ -428,7 +428,7 @@ ftr_decision_events.0009 = {
 
 	option = {
 		name = ftr_decision_events.0009.a
-		recruit_courtier = scope:legendary_leader
+		add_courtier = scope:legendary_leader
 	}
 
 	option = { # Be gone

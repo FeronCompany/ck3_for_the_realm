@@ -1,1 +1,38 @@
 ﻿
+
+########### OVERRIDE ##########
+
+common_character_validity_trigger = {
+	NOR = { #No prince-bishop can ever join
+		government_has_flag = government_is_theocracy
+		trigger_if = {
+			limit = { exists = cp:councillor_court_chaplain }
+			this = cp:councillor_court_chaplain
+		}
+	}
+
+	$FACTION_TARGET$ = liege
+	highest_held_title_tier > tier_barony
+
+	#Not blocked through events
+	custom_description = {
+		text = character_blocked_from_joining
+		NOT = {
+			has_character_flag = joining_faction_block
+		}
+	}
+
+	########### OVERRIDE START ##########
+	custom_description = {
+		text = officials_blocked_from_joining
+		NOT = {
+			$FACTION_TARGET$ = {
+				government_has_flag = government_is_centralism
+				is_independent_ruler = no
+			}
+		}
+	}
+	###########  OVERRIDE RND  ##########
+}
+
+########### OVERRIDE ##########

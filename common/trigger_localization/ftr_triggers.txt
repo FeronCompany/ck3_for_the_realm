@@ -15,3 +15,7 @@ is_neighbor_to_realm_text = {
 official_cannot_revok_other_officials_text = {
 	global_not = official_cannot_revok_other_officials_text
 }
+
+officials_blocked_from_joining = {
+	global_not = officials_blocked_from_joining_text
+}

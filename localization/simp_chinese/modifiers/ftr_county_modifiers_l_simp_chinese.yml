@@ -1,0 +1,15 @@
+﻿l_simp_chinese:
+ ftr_drought_modifier:0 "<FTR>地区干旱"
+ ftr_drought_modifier_desc:0 "当地遭遇旱情，农田颗粒无收，百姓生活艰难。"
+
+ ftr_disaster_modifier:0 "<FTR>灾情紧急"
+ ftr_disaster_modifier_desc:0 "当地遭遇灾情，百姓生活艰难。"
+
+ ftr_disaster_fund_modifier:0 "<FTR>领主出钱赈灾"
+ ftr_disaster_fund_modifier_desc:0 "当地遭遇灾情，但领主出钱赈灾，缓解了燃眉之急。"
+
+ ftr_disaster_fund_shabby_modifier:0 "<FTR>赈灾款被侵吞"
+ ftr_disaster_fund_shabby_modifier_desc:0 "领主的赈灾款被奸人侵吞，百姓得到的救济聊胜于无。"
+
+ ftr_exempt_tax_modifier:0 "<FTR>税收减免"
+ ftr_exempt_tax_modifier_desc:0 "领主下令减免当地的税款，灾情对当地人造成的经济困难得到了缓解。"

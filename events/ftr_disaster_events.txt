@@ -95,6 +95,29 @@ ftr_disaster_event.0001 = {
 				}
 			}
 		}
+		add_prestige = 150
+		stress_impact = {
+			compassionate = minor_stress_impact_loss
+			generous = minor_stress_impact_loss
+			greedy = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 50
+			modifier = {
+				add = -50
+				gold < ftr_province_fund_value
+			}
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = generous
+					has_trait = just
+					has_trait = diligent
+					has_trait = compassionate
+				}
+			}
+		}
 	}
 	option = { # Exempt tax for 1 year
 		name = ftr_disaster_event.0001.b
@@ -102,6 +125,20 @@ ftr_disaster_event.0001 = {
 			add_county_modifier = {
 				modifier = ftr_exempt_tax_modifier
 				years = 2
+			}
+		}
+		add_prestige = 150
+		stress_impact = {
+			compassionate = minor_stress_impact_loss
+			generous = minor_stress_impact_loss
+			greedy = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 50
+				gold < ftr_province_fund_value
 			}
 		}
 	}
@@ -118,10 +155,28 @@ ftr_disaster_event.0001 = {
 				days = { 10 15 }
 			}
 		}
+		ai_chance = {
+			base = 40
+		}
 	}
 	option = { # Do nothing
 		name = ftr_disaster_event.0001.d
 		add_prestige = -200
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			callous = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 50
+				OR = {
+					has_trait = callous
+					has_trait = greedy
+				}
+			}
+		}
 	}
 
 	after = {
@@ -263,6 +318,24 @@ ftr_disaster_event.0002 = {
 			}
 			trigger_event = ftr_disaster_event.0003
 		}
+		stress_impact = {
+			generous = minor_stress_impact_loss
+			greedy = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = just
+					has_trait = generous
+				}
+			}
+			modifier = {
+				add = 20
+				gold > 1000
+			}
+		}
 	}
 
 	option = { # Do your own business!
@@ -274,6 +347,9 @@ ftr_disaster_event.0002 = {
 				target = root
 			}
 			trigger_event = ftr_disaster_event.0004
+		}
+		ai_chance = {
+			base = 10
 		}
 	}
 }
@@ -317,6 +393,9 @@ ftr_disaster_event.0005 = {
 
 	option = { # Do as liege say
 		name = ftr_disaster_event.0005.a
+		ai_chance = {
+			base = 80
+		}
 	}
 
 	option = { # Embezzle funds
@@ -325,6 +404,11 @@ ftr_disaster_event.0005 = {
 		add_secret = {
 			type = secret_embezzler
 			target = scope:county_owner
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_loss
+			generous = minor_stress_impact_gain
+			just = minor_stress_impact_gain
 		}
 		hidden_effect = {
 			random_list = {
@@ -350,6 +434,13 @@ ftr_disaster_event.0005 = {
 						}
 					}
 				}
+			}
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 50
+				has_trait = greedy
 			}
 		}
 	}
@@ -381,7 +472,10 @@ ftr_disaster_event.0006 = {
 				}
 				remove_county_modifier = ftr_disaster_fund_modifier
 			}
-			add_county_modifier = ftr_disaster_fund_shabby_modifier
+			add_county_modifier = {
+				modifier = ftr_disaster_fund_shabby_modifier
+				years = 2
+			}
 		}
 		scope:steward_official = {
 			every_secret = {
@@ -402,6 +496,9 @@ ftr_disaster_event.0006 = {
 		scope:steward_official = {
 			trigger_event = ftr_disaster_event.0007
 		}
+		ai_chance = {
+			base = 100
+		}
 	}
 
 	option = { # I see nothing
@@ -412,6 +509,18 @@ ftr_disaster_event.0006 = {
 		}
 		scope:steward_official = {
 			trigger_event = ftr_disaster_event.0008
+		}
+		stress_impact = {
+			forgiving = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 0
+			opinion_modifier = {
+				opinion_target = scope:steward_official
+				multiplier = 1
+				min = 0
+				max = 50
+			}
 		}
 	}
 }

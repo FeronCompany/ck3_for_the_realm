@@ -1,0 +1,46 @@
+﻿l_simp_chinese:
+ ftr_disaster_event.0001.t:0 "<FTR>天灾降临"
+ ftr_disaster_event.0001.desc:0 "一场意外的灾难降临到了[unlucky_county.GetName]，当地的百姓叫苦不迭，急需我们伸出援手。"
+ ftr_disaster_event.0001.desc.earthquake:0 "一场突如其来的地震袭击了[unlucky_county.GetName]，当地军民设施被大量损毁，人民死伤惨重，叫苦不迭，急需我们伸出援手。"
+ ftr_disaster_event.0001.desc.fire:0 "一场突如其来的火灾烧毁了[unlucky_county.GetName]大半的建筑物，人员死伤惨重，叫苦不迭，急需我们伸出援手。"
+ ftr_disaster_event.0001.desc.drought:0 "干旱降临了[unlucky_county.GetName]，当地的农田颗粒无收，百姓的粮仓已经见底，如不赶紧采取措施，恐怕会演变为饥荒。"
+ ftr_disaster_event.0001.desc.flood:0 "一场突如其来的洪水席卷了[unlucky_county.GetName]，当地军民设施被大量损毁，人民死伤惨重，叫苦不迭，急需我们伸出援手。"
+ ftr_disaster_event.0001.a:0 "拿去，这是我的赈灾款"
+ ftr_disaster_event.0001.b:0 "减免当地两年的税款"
+ ftr_disaster_event.0001.c:0 "或许应该找我的领主帮帮忙"
+ ftr_disaster_event.0001.d:0 "我什么都做不到……"
+
+ ftr_disaster_event.0002.t:0 "<FTR>封臣的赈灾请求"
+ ftr_disaster_event.0002.desc:0 "你的封臣[county_owner.GetName]急匆匆地赶来汇报情况。一场意外的灾难降临到了[unlucky_county.GetName]，当地的百姓叫苦不迭，急需我们伸出援手。"
+ ftr_disaster_event.0002.desc.earthquake:0 "你的封臣[county_owner.GetName]急匆匆地赶来汇报情况。一场突如其来的地震袭击了[unlucky_county.GetName]，当地军民设施被大量损毁，人民死伤惨重，叫苦不迭，急需我们伸出援手。"
+ ftr_disaster_event.0002.desc.fire:0 "你的封臣[county_owner.GetName]急匆匆地赶来汇报情况。一场突如其来的火灾烧毁了[unlucky_county.GetName]大半的建筑物，人员死伤惨重，叫苦不迭，急需我们伸出援手。"
+ ftr_disaster_event.0002.desc.drought:0 "你的封臣[county_owner.GetName]急匆匆地赶来汇报情况。干旱降临了[unlucky_county.GetName]，当地的农田颗粒无收，百姓的粮仓已经见底，如不赶紧采取措施，恐怕会演变为饥荒。"
+ ftr_disaster_event.0002.desc.flood:0 "你的封臣[county_owner.GetName]急匆匆地赶来汇报情况。一场突如其来的洪水席卷了[unlucky_county.GetName]，当地军民设施被大量损毁，人民死伤惨重，叫苦不迭，急需我们伸出援手。"
+ ftr_disaster_event.0002.a:0 "拿去，这是我的赈灾款"
+ ftr_disaster_event.0002.b:0 "自己的事自己解决！"
+
+ ftr_disaster_event.0003.t:0 "爱卿[county_owner.GetTitledFirstName]，"
+ ftr_disaster_event.0003.desc:0 "[unlucky_county.GetName]当地的灾情我已知晓，现已派发一笔赈灾款给当地人，希望能缓解灾情。你作为当地领主，务必要监督好赈灾事务，钦此。"
+ ftr_disaster_event.0003.a:0 "谢主隆恩！"
+
+ ftr_disaster_event.0004.t:0 "爱卿[county_owner.GetTitledFirstName]，"
+ ftr_disaster_event.0004.desc:0 "[unlucky_county.GetName]当地的灾情我已知晓，听闻灾民困苦之现状，我痛心疾首。然目前国库空虚，且边防要务花费甚多，实难凑出赈灾款项。非常遗憾，希望你能利用手中现有的条件，妥善安置好灾民，平稳地渡过这个冬天。"
+ ftr_disaster_event.0004.a:0 "这可如何是好啊？"
+
+ ftr_disaster_event.0005.t:0 "爱卿[county_owner.GetTitledFirstName]，"
+ ftr_disaster_event.0005.desc:0 "[unlucky_county.GetName]当地发生严重灾情，我和内阁已经决定向当地派发一笔赈灾款，并委任你作为赈灾特使，监督当地赈灾事务。钦此。"
+ ftr_disaster_event.0005.a:0 "我一定把事办得漂亮。"
+ ftr_disaster_event.0005.b:0 "从中捞一笔如何？"
+
+ ftr_disaster_event.0006.t:0 "国家蛀虫"
+ ftr_disaster_event.0006.desc:0 "根据可靠情报，我的赈灾特使[steward_official.GetName]在[unlucky_county.GetName]赈灾期间居然贪墨了我的赈灾款。如今人赃俱获，该如何处置[steward_official.GetHerHim]才能平息民怨呢？"
+ ftr_disaster_event.0006.a:0 "把[steward_official.GetShortUIName]抓起来！"
+ ftr_disaster_event.0006.b:0 "水至清则无鱼，罢了。"
+
+ ftr_disaster_event.0007.t:0 "卑劣的蛀虫[county_owner.GetTitledFirstName]，"
+ ftr_disaster_event.0007.desc:0 "你在[unlucky_county.GetName]赈灾期间贪墨赈灾款的事情已经大白于天下，你的罪行天理不容，快来我的地牢享受灾民的怒火吧！"
+ ftr_disaster_event.0007.a:0 "不，请听我解释——"
+
+ ftr_disaster_event.0008.t:0 "爱卿[county_owner.GetTitledFirstName]，"
+ ftr_disaster_event.0008.desc:0 "你在[unlucky_county.GetName]赈灾期间贪墨赈灾款的事情我已知悉，本来你的罪行足以进监狱，但我感念你多年来为我效力的功劳，这次就不予追究了。下不为例！"
+ ftr_disaster_event.0008.a:0 "谢主隆恩！"

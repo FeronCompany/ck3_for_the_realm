@@ -26,6 +26,7 @@ five_year_playable_pulse = {
 ftr_random_earthquake_effects = {
 	trigger = {
 		is_landed = yes
+		primary_title.tier >= tier_county
 		any_sub_realm_county = {
 			holder = root
 			any_county_province = {
@@ -44,6 +45,16 @@ ftr_random_earthquake_effects = {
 			}
 			1 = {
 				random_sub_realm_county = {
+					limit = {
+						holder = root
+						any_county_province = {
+							OR = {
+								terrain = mountains
+								terrain = desert_mountains
+								terrain = hills
+							}
+						}
+					}
 					save_scope_as = unlucky_county
 					holder = {
 						save_scope_as = county_owner
@@ -60,25 +71,136 @@ ftr_random_earthquake_effects = {
 }
 
 ftr_random_fire_effects = {
+	trigger = {
+		is_landed = yes
+		primary_title.tier >= tier_county
+		any_sub_realm_county = {
+			holder = root
+			development_level >= 15
+		}
+	}
 	effect = {
-		#
+		random_list = {
+			99 = {
+				# Nothing happens
+			}
+			1 = {
+				random_sub_realm_county = {
+					limit = {
+						holder = root
+						development_level >= 15
+					}
+					save_scope_as = unlucky_county
+					holder = {
+						save_scope_as = county_owner
+						set_variable = {
+							name = disaster_type
+							value = 2
+						}
+						trigger_event = ftr_disaster_event.0001
+					}
+				}
+			}
+		}
 	}
 }
 
 ftr_random_drought_effects = {
+	trigger = {
+		is_landed = yes
+		primary_title.tier >= tier_county
+		any_sub_realm_county = {
+			holder = root
+			any_county_province = {
+				is_riverside_province = yes
+				OR = {
+					terrain = farmlands
+					terrain = plains
+				}
+			}
+		}
+	}
 	effect = {
-		#
+		random_list = {
+			99 = {
+				# Nothing happens
+			}
+			1 = {
+				random_sub_realm_county = {
+					limit = {
+						holder = root
+						any_county_province = {
+							is_riverside_province = yes
+							OR = {
+								terrain = farmlands
+								terrain = plains
+							}
+						}
+					}
+					save_scope_as = unlucky_county
+					holder = {
+						save_scope_as = county_owner
+						set_variable = {
+							name = disaster_type
+							value = 3
+						}
+						trigger_event = ftr_disaster_event.0001
+					}
+				}
+			}
+		}
 	}
 }
 
 ftr_random_flood_effects = {
+	trigger = {
+		is_landed = yes
+		primary_title.tier >= tier_county
+		any_sub_realm_county = {
+			holder = root
+			any_county_province = {
+				is_riverside_province = yes
+				OR = {
+					terrain = farmlands
+					terrain = plains
+				}
+			}
+		}
+	}
 	effect = {
-		#
+		random_list = {
+			99 = {
+				# Nothing happens
+			}
+			1 = {
+				random_sub_realm_county = {
+					limit = {
+						holder = root
+						any_county_province = {
+							is_riverside_province = yes
+							OR = {
+								terrain = farmlands
+								terrain = plains
+							}
+						}
+					}
+					save_scope_as = unlucky_county
+					holder = {
+						save_scope_as = county_owner
+						set_variable = {
+							name = disaster_type
+							value = 4
+						}
+						trigger_event = ftr_disaster_event.0001
+					}
+				}
+			}
+		}
 	}
 }
 
 ftr_random_disease_effects = {
 	effect = {
-		#
+		# TODO...
 	}
 }

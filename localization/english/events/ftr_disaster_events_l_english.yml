@@ -1,0 +1,46 @@
+﻿l_english:
+ ftr_disaster_event.0001.t:0 "<FTR> Disaster Occured"
+ ftr_disaster_event.0001.desc:0 "An unexpected disaster has befallen [unlucky_county.GetName], and the local people are crying out for our help."
+ ftr_disaster_event.0001.desc.earthquake:0 "A sudden earthquake hit [unlucky_county.GetName], the local military and civilian facilities were heavily damaged, the people suffered heavy casualties, and they were in urgent need of our help."
+ ftr_disaster_event.0001.desc.fire:0 "A sudden fire destroyed more than half of [unlucky_county.GetName]'s buildings, causing heavy casualties and urgent need for our help."
+ ftr_disaster_event.0001.desc.drought:0 "Drought has come [unlucky_county.GetName], the local farmland has no harvest, and the people's granaries have bottomed out. If measures are not taken quickly, it is feared that it will turn into a famine."
+ ftr_disaster_event.0001.desc.flood:0 "A sudden flood swept through [unlucky_county.GetName], the local military and civilian facilities were heavily damaged, the people were killed and injured, and they were in urgent need of our help."
+ ftr_disaster_event.0001.a:0 "Here is my funds."
+ ftr_disaster_event.0001.b:0 "Two years of local tax relief"
+ ftr_disaster_event.0001.c:0 "Perhaps I should ask my lord for help"
+ ftr_disaster_event.0001.d:0 "There's nothing i can do"
+
+ ftr_disaster_event.0002.t:0 "<FTR> Funds Request From Vassal"
+ ftr_disaster_event.0002.desc:0 "Your vassal [county_owner.GetName] hurried to report the situation. An unexpected disaster has befallen [unlucky_county.GetName], and the local people are crying out for our help."
+ ftr_disaster_event.0002.desc.earthquake:0 "Your vassal [county_owner.GetName] hurried to report the situation. A sudden earthquake hit [unlucky_county.GetName], the local military and civilian facilities were heavily damaged, the people suffered heavy casualties, and they were in urgent need of our help."
+ ftr_disaster_event.0002.desc.fire:0 "Your vassal [county_owner.GetName] hurried to report the situation. A sudden fire destroyed more than half of [unlucky_county.GetName]'s buildings, causing heavy casualties and urgent need for our help."
+ ftr_disaster_event.0002.desc.drought:0 "Your vassal [county_owner.GetName] hurried to report the situation. Drought has come [unlucky_county.GetName], the local farmland has no harvest, and the people's granaries have bottomed out. If measures are not taken quickly, it is feared that it will turn into a famine."
+ ftr_disaster_event.0002.desc.flood:0 "Your vassal [county_owner.GetName] hurried to report the situation. A sudden flood swept through [unlucky_county.GetName], the local military and civilian facilities were heavily damaged, the people were killed and injured, and they were in urgent need of our help."
+ ftr_disaster_event.0002.a:0 "Here is my funds."
+ ftr_disaster_event.0002.b:0 "Solve your own business!"
+
+ ftr_disaster_event.0003.t:0 "My loyal subject [county_owner.GetTitledFirstName],"
+ ftr_disaster_event.0003.desc:0 "I am aware of [unlucky_county.GetName]'s disaster situation, and a relief fund has been distributed to the local people, hoping to alleviate the disaster situation. As a local lord, you must supervise the disaster relief affairs, and so on."
+ ftr_disaster_event.0003.a:0 "Thank you, my lord!"
+
+ ftr_disaster_event.0004.t:0 "My loyal subject [county_owner.GetTitledFirstName],"
+ ftr_disaster_event.0004.desc:0 "I already know the disaster situation of [unlucky_county.GetName], and I am saddened to hear about the hardships of the victims. However, at present, the national treasury is empty, and the border defense affairs cost a lot, so it is difficult to gather disaster relief funds. It is very regrettable that I hope you can use the existing conditions in your hands to properly settle the victims and tide over this winter smoothly."
+ ftr_disaster_event.0004.a:0 "What can I do now?"
+
+ ftr_disaster_event.0005.t:0 "My loyal subject [county_owner.GetTitledFirstName],"
+ ftr_disaster_event.0005.desc:0 "There has been a serious disaster in [unlucky_county.GetName]. The Cabinet and I have decided to distribute a relief fund to the local area and appoint you as the special envoy for disaster relief to supervise the local disaster relief affairs. That's all."
+ ftr_disaster_event.0005.a:0 "I will make it."
+ ftr_disaster_event.0005.b:0 "What about embezzle?"
+
+ ftr_disaster_event.0006.t:0 "Realm Borer"
+ ftr_disaster_event.0006.desc:0 "According to reliable information, my disaster relief envoy [steward_official.GetName] actually embezzled my relief funds during the [unlucky_county.GetName] disaster relief. Now that everyone has got the stolen money, how should I deal with [steward_official.GetHerHim] to quell the grievances of the people?"
+ ftr_disaster_event.0006.a:0 "Arrest [steward_official.GetShortUIName]!"
+ ftr_disaster_event.0006.b:0 "Forget it."
+
+ ftr_disaster_event.0007.t:0 "Despicable moth [county_owner.GetTitledFirstName],"
+ ftr_disaster_event.0007.desc:0 "Your embezzlement of disaster relief funds during the [unlucky_county.GetName] disaster relief period has been revealed to the realm. Your crime is not allowed by heaven. Come to my dungeon and enjoy the anger of the victims!"
+ ftr_disaster_event.0007.a:0 "No, please listen to my explanation -"
+
+ ftr_disaster_event.0008.t:0 "My loyal subject [county_owner.GetTitledFirstName],"
+ ftr_disaster_event.0008.desc:0 "I am aware of your embezzlement of relief funds during the [unlucky_county.GetName] disaster relief period. Originally, your crime was enough to go to jail, but I am grateful for your contribution to my work over the years, and I will not pursue it this time. Not again!"
+ ftr_disaster_event.0008.a:0 "Thank you for your forgiveness!"

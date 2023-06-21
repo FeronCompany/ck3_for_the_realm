@@ -1,6 +1,6 @@
 ﻿
 
-namespace ftr_disaster_event
+namespace = ftr_disaster_event
 
 # Disaster for holder
 ftr_disaster_event.0001 = {
@@ -41,7 +41,7 @@ ftr_disaster_event.0001 = {
 	}
 	theme = diplomacy
 	left_portrait = {
-		character = county_owner
+		character = scope:county_owner
 		animation = shock
 	}
 	trigger = {}
@@ -62,7 +62,7 @@ ftr_disaster_event.0001 = {
 			}
 			else = {
 				change_development_level = {
-					subtract = scope:county.development_level
+					subtract = scope:unlucky_county.development_level
 					multiply = 0.2
 					floor = yes
 				}
@@ -292,7 +292,7 @@ ftr_disaster_event.0002 = {
 	}
 	theme = diplomacy
 	left_portrait = {
-		character = county_owner
+		character = scope:county_owner
 		animation = shock
 	}
 	trigger = {}
@@ -453,11 +453,11 @@ ftr_disaster_event.0006 = {
 	desc = ftr_disaster_event.0006.desc
 	theme = diplomacy
 	left_portrait = {
-		character = county_owner
+		character = scope:county_owner
 		animation = rage
 	}
 	right_portrait = {
-		character = steward_official
+		character = scope:steward_official
 		animation = shock
 	}
 	trigger = {}

@@ -9,6 +9,10 @@
  ftr_disaster_event.0001.b:0 "Two years of local tax relief"
  ftr_disaster_event.0001.c:0 "Perhaps I should ask my lord for help"
  ftr_disaster_event.0001.d:0 "There's nothing i can do"
+ ftr_disaster_notification.earthquake:0 "Earthquake in [unlucky_county.GetName]"
+ ftr_disaster_notification.fire:0 "Fire in [unlucky_county.GetName]"
+ ftr_disaster_notification.drought:0 "Drought in [unlucky_county.GetName]"
+ ftr_disaster_notification.flood:0 "Flood [unlucky_county.GetName]"
 
  ftr_disaster_event.0002.t:0 "<FTR> Funds Request From Vassal"
  ftr_disaster_event.0002.desc:0 "Your vassal [county_owner.GetName] hurried to report the situation. An unexpected disaster has befallen [unlucky_county.GetName], and the local people are crying out for our help."

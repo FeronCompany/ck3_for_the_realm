@@ -74,3 +74,15 @@ ftr_murderer_crime = {
 	banish_reason = yes
 	revoke_title_reason = yes
 }
+
+ftr_approve_aid_opinion = {
+	opinion = 20
+	years = 5
+	decaying = yes
+}
+
+ftr_refuse_aid_opinion = {
+	opinion = -20
+	years = 10
+	decaying = yes
+}

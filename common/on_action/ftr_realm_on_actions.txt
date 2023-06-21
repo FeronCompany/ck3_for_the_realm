@@ -16,9 +16,29 @@ quarterly_playable_pulse = {
 five_year_playable_pulse = {
 	on_actions = {
 		ftr_random_earthquake_effects
+	}
+}
+
+five_year_playable_pulse = {
+	on_actions = {
 		ftr_random_fire_effects
+	}
+}
+
+five_year_playable_pulse = {
+	on_actions = {
 		ftr_random_drought_effects
+	}
+}
+
+five_year_playable_pulse = {
+	on_actions = {
 		ftr_random_flood_effects
+	}
+}
+
+five_year_playable_pulse = {
+	on_actions = {
 		ftr_random_disease_effects
 	}
 }
@@ -40,10 +60,10 @@ ftr_random_earthquake_effects = {
 	}
 	effect = {
 		random_list = {
-			99 = {
+			95 = {
 				# Nothing happens
 			}
-			1 = {
+			5 = {
 				random_sub_realm_county = {
 					limit = {
 						holder = root
@@ -80,17 +100,25 @@ ftr_random_fire_effects = {
 		}
 	}
 	effect = {
+		random_sub_realm_county = {
+			limit = {
+				holder = root
+				development_level >= 10
+			}
+			save_scope_as = unlucky_county
+		}
 		random_list = {
-			99 = {
+			100 = {
 				# Nothing happens
 			}
-			1 = {
-				random_sub_realm_county = {
-					limit = {
-						holder = root
-						development_level >= 15
+			0 = {
+				modifier = {
+					add = {
+						value = scope:unlucky_county.development_level
+						multiply = 0.25
 					}
-					save_scope_as = unlucky_county
+				}
+				scope:unlucky_county = {
 					holder = {
 						save_scope_as = county_owner
 						set_variable = {
@@ -122,10 +150,10 @@ ftr_random_drought_effects = {
 	}
 	effect = {
 		random_list = {
-			99 = {
+			95 = {
 				# Nothing happens
 			}
-			1 = {
+			5 = {
 				random_sub_realm_county = {
 					limit = {
 						holder = root
@@ -169,10 +197,10 @@ ftr_random_flood_effects = {
 	}
 	effect = {
 		random_list = {
-			99 = {
+			95 = {
 				# Nothing happens
 			}
-			1 = {
+			5 = {
 				random_sub_realm_county = {
 					limit = {
 						holder = root

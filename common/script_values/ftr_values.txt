@@ -118,7 +118,7 @@ ftr_buy_vassal_cost_value = {
 }
 
 ftr_province_fund_value = {
-	base = 50
+	value = 50
 	add = {
 		value = scope:unlucky_county.development_level
 		multiply = 10

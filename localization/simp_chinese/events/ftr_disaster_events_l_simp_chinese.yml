@@ -9,6 +9,10 @@
  ftr_disaster_event.0001.b:0 "减免当地两年的税款"
  ftr_disaster_event.0001.c:0 "或许应该找我的领主帮帮忙"
  ftr_disaster_event.0001.d:0 "我什么都做不到……"
+ ftr_disaster_notification.earthquake:0 "[unlucky_county.GetName]发生地震"
+ ftr_disaster_notification.fire:0 "[unlucky_county.GetName]发生大火"
+ ftr_disaster_notification.drought:0 "[unlucky_county.GetName]发生干旱"
+ ftr_disaster_notification.flood:0 "[unlucky_county.GetName]发生洪水"
 
  ftr_disaster_event.0002.t:0 "<FTR>封臣的赈灾请求"
  ftr_disaster_event.0002.desc:0 "你的封臣[county_owner.GetName]急匆匆地赶来汇报情况。一场意外的灾难降临到了[unlucky_county.GetName]，当地的百姓叫苦不迭，急需我们伸出援手。"

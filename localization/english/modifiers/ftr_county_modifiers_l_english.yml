@@ -1,0 +1,15 @@
+﻿l_english:
+ ftr_drought_modifier:0 "<FTR> Local Drought"
+ ftr_drought_modifier_desc:0 "Local drought, farmland grain no harvest, people living in hardship."
+
+ ftr_disaster_modifier:0 "<FTR> Local Disaster"
+ ftr_disaster_modifier_desc:0 "Local disasters have occurred, and people's lives are difficult."
+
+ ftr_disaster_fund_modifier:0 "<FTR> Pays for Disaster Relief"
+ ftr_disaster_fund_modifier_desc:0 "The local area suffered a disaster, but the lord provided money for disaster relief and alleviated the urgent need."
+
+ ftr_disaster_fund_shabby_modifier:0 "<FTR> Relief Funds Embezzled"
+ ftr_disaster_fund_shabby_modifier_desc:0 "The relief funds of the lord was embezzled by treacherous court officials, and the relief received by the people was better than nothing."
+
+ ftr_exempt_tax_modifier:0 "<FTR> Tax Relief"
+ ftr_exempt_tax_modifier_desc:0 "The lord ordered a reduction in local taxes, and the economic difficulties caused by the disaster to the local people were alleviated."

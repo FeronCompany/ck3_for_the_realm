@@ -12,3 +12,211 @@ quarterly_playable_pulse = {
 		ftr_realm_event.1007 # Change government for ruler who has bureacrat titles
 	}
 }
+
+five_year_playable_pulse = {
+	on_actions = {
+		ftr_random_earthquake_effects
+	}
+}
+
+five_year_playable_pulse = {
+	on_actions = {
+		ftr_random_fire_effects
+	}
+}
+
+five_year_playable_pulse = {
+	on_actions = {
+		ftr_random_drought_effects
+	}
+}
+
+five_year_playable_pulse = {
+	on_actions = {
+		ftr_random_flood_effects
+	}
+}
+
+ftr_random_earthquake_effects = {
+	trigger = {
+		is_landed = yes
+		primary_title.tier >= tier_county
+		any_sub_realm_county = {
+			holder = root
+			any_county_province = {
+				OR = {
+					terrain = mountains
+					terrain = desert_mountains
+					terrain = hills
+				}
+			}
+		}
+	}
+	effect = {
+		random_list = {
+			95 = {
+				# Nothing happens
+			}
+			5 = {
+				random_sub_realm_county = {
+					limit = {
+						holder = root
+						any_county_province = {
+							OR = {
+								terrain = mountains
+								terrain = desert_mountains
+								terrain = hills
+							}
+						}
+					}
+					save_scope_as = unlucky_county
+					holder = {
+						save_scope_as = county_owner
+						set_variable = {
+							name = disaster_type
+							value = 1
+						}
+						trigger_event = ftr_disaster_event.0001
+					}
+				}
+			}
+		}
+	}
+}
+
+ftr_random_fire_effects = {
+	trigger = {
+		is_landed = yes
+		primary_title.tier >= tier_county
+		any_sub_realm_county = {
+			holder = root
+			development_level >= 15
+		}
+	}
+	effect = {
+		random_sub_realm_county = {
+			limit = {
+				holder = root
+				development_level >= 10
+			}
+			save_scope_as = unlucky_county
+		}
+		random_list = {
+			100 = {
+				# Nothing happens
+			}
+			0 = {
+				modifier = {
+					add = {
+						value = scope:unlucky_county.development_level
+						multiply = 0.25
+					}
+				}
+				scope:unlucky_county = {
+					holder = {
+						save_scope_as = county_owner
+						set_variable = {
+							name = disaster_type
+							value = 2
+						}
+						trigger_event = ftr_disaster_event.0001
+					}
+				}
+			}
+		}
+	}
+}
+
+ftr_random_drought_effects = {
+	trigger = {
+		is_landed = yes
+		primary_title.tier >= tier_county
+		any_sub_realm_county = {
+			holder = root
+			any_county_province = {
+				is_riverside_province = yes
+				OR = {
+					terrain = farmlands
+					terrain = plains
+				}
+			}
+		}
+	}
+	effect = {
+		random_list = {
+			95 = {
+				# Nothing happens
+			}
+			5 = {
+				random_sub_realm_county = {
+					limit = {
+						holder = root
+						any_county_province = {
+							is_riverside_province = yes
+							OR = {
+								terrain = farmlands
+								terrain = plains
+							}
+						}
+					}
+					save_scope_as = unlucky_county
+					holder = {
+						save_scope_as = county_owner
+						set_variable = {
+							name = disaster_type
+							value = 3
+						}
+						trigger_event = ftr_disaster_event.0001
+					}
+				}
+			}
+		}
+	}
+}
+
+ftr_random_flood_effects = {
+	trigger = {
+		is_landed = yes
+		primary_title.tier >= tier_county
+		any_sub_realm_county = {
+			holder = root
+			any_county_province = {
+				is_riverside_province = yes
+				OR = {
+					terrain = farmlands
+					terrain = plains
+				}
+			}
+		}
+	}
+	effect = {
+		random_list = {
+			95 = {
+				# Nothing happens
+			}
+			5 = {
+				random_sub_realm_county = {
+					limit = {
+						holder = root
+						any_county_province = {
+							is_riverside_province = yes
+							OR = {
+								terrain = farmlands
+								terrain = plains
+							}
+						}
+					}
+					save_scope_as = unlucky_county
+					holder = {
+						save_scope_as = county_owner
+						set_variable = {
+							name = disaster_type
+							value = 4
+						}
+						trigger_event = ftr_disaster_event.0001
+					}
+				}
+			}
+		}
+	}
+}

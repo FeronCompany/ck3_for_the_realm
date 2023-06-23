@@ -67,3 +67,9 @@
 
  ftr_murderer_crime:0 "Murder is crime"
  ftr_murderer_crime_desc:0 "Murder is crime"
+
+ ftr_approve_aid_opinion:0 "Approve to aid in disaster"
+ ftr_approve_aid_opinion_desc:0 "Liege approved to aid in disaster"
+
+ ftr_murderer_crime:0 "Refuse to aid in disaster"
+ ftr_murderer_crime_desc:0 "Liege refused to aid in disaster"

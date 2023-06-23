@@ -37,12 +37,6 @@ five_year_playable_pulse = {
 	}
 }
 
-five_year_playable_pulse = {
-	on_actions = {
-		ftr_random_disease_effects
-	}
-}
-
 ftr_random_earthquake_effects = {
 	trigger = {
 		is_landed = yes
@@ -224,11 +218,5 @@ ftr_random_flood_effects = {
 				}
 			}
 		}
-	}
-}
-
-ftr_random_disease_effects = {
-	effect = {
-		# TODO...
 	}
 }

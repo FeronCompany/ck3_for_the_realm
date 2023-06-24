@@ -2,8 +2,10 @@
  ftr_decision_events.0003.t:0 "<FTR> Confirm identity"
  ftr_decision_events.0003.desc:0 "The sky responded to your call, and several bright lights broke through the night sky and turned into meteors and flew over your head. Now it's time to confirm your identity..."
  ftr_decision_events.0003.a:0 "I am Fu Jian."
- ftr_decision_events.0003.b:0 "TODO..."
+ ftr_decision_events.0003.b:0 "I am Zhu Youjian."
+ ftr_decision_events.0003.c:0 "TODO..."
  ftr_call_traverser_fujian_text:0 "Fu Jian's generals will come back soon..."
+ ftr_call_traverser_zhuyoujian_text:0 "Zhu Youjian's generals will come back soon..."
 
  ftr_decision_events.0004.t:0 "Past Subordinates On Call"
  ftr_decision_events.0004.desc:0 "[legendary_leader.GetShortUIName|U], my most reliable prime minister, the right and left hand I have been longing for, is now standing in front of me alive. I couldn't believe my eyes, and finally [legendary_leader.GetShortUIName|U] interrupted my memories, and I came back to my senses in shock."
@@ -32,3 +34,11 @@
  ftr_decision_events.0009.a:0 "Welcome."
  ftr_decision_events.0009.b:0 "[legendary_leader.GetShortUIName|U], how dare you come to see me?"
  ftr_decision_events.0009.c:0 "Guards!"
+
+ ftr_decision_events.0010.t:0 "Past Subordinates On Call"
+ ftr_decision_events.0010.desc:0 "As I waited, the memories of the past gradually became blurred, and many old friends only had their names left in my memory. Those emotions of anger, distress and regret gradually dissipated, and God seemed to remind me to live in the present.\nBefore I knew it, several beautifully dressed court officials appeared in front of my eyes, and I recognized them at a glance, but I barely remembered their stories. From left to right, they were [hong_chengchou.GetShortUIName], [wu_sangui.GetShortUIName], [zu_dashou.GetShortUIName], [sun_chuanting.GetShortUIName] and my beloved concubine [tian_xiuying.GetShortUIName]! With these capable officials and relatives, there is hope for recovery!"
+ ftr_decision_events.0010.a:0 "Welcome!"
+
+ ftr_decision_events.0011.t:0 "Last Emperor"
+ ftr_decision_events.0011.desc:0 "I have to admit that as an emperor, I have a very failed side. The impatient constant changing of the cabinet, the daring to take on the responsibility of negotiating peace, and the inability to make a decision to move the capital at a critical moment all made Daming step by step towards extinction. While I sighed, a man in gorgeous Greek clothing came to me. He called himself [constantine.GetShortUIName], and like me, he was a ruler of a country that had traveled from another world. Unlike me, this land is now his former land. He proposed to make a deal with me. I would lead troops to help him restore Constantinople, and he would help me achieve hegemony."
+ ftr_decision_events.0011.a:0 "Deal!"

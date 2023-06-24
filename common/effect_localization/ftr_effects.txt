@@ -84,6 +84,10 @@ ftr_call_traverser_fujian_tt = {
 	global = ftr_call_traverser_fujian_text
 }
 
+ftr_call_traverser_zhuyoujian_tt = {
+	global = ftr_call_traverser_zhuyoujian_text
+}
+
 auto_convert_culture_by_force_tt = {
 	global = auto_convert_culture_by_force_text
 }

@@ -2,7 +2,8 @@
  ftr_decision_events.0003.t:0 "<FTR>确认身份"
  ftr_decision_events.0003.desc:0 "天空回应了你的召唤，数道亮光冲破夜空，化作流星从你的头顶飞过。现在是时候确认你的身份了……"
  ftr_decision_events.0003.a:0 "我是苻坚"
- ftr_decision_events.0003.b:0 "其他人物在做了——"
+ ftr_decision_events.0003.b:0 "我是朱由检"
+ ftr_decision_events.0003.c:0 "其他人物在做了——"
  ftr_call_traverser_fujian_text:0 "苻坚的旧部将会逐个回归……"
 
  ftr_decision_events.0004.t:0 "旧部来投"
@@ -32,3 +33,11 @@
  ftr_decision_events.0009.a:0 "爱卿平身。"
  ftr_decision_events.0009.b:0 "[legendary_leader.GetShortUIName|U]，你怎么还敢来见我？"
  ftr_decision_events.0009.c:0 "刀斧手，来呀！"
+
+ ftr_decision_events.0010.t:0 "旧部来投"
+ ftr_decision_events.0010.desc:0 "在我等待的时间里，过去的记忆逐渐变得模糊，许多故人只剩下名字还残留在我的记忆中。那些愤怒、苦恼还有遗憾的情绪逐渐消散，上天似乎在提醒我要活在当下。\n不知不觉，几位衣着华丽的廷臣出现在我的眼前，我一眼便认出了他们是谁，但他们故事我却几乎不记得了。他们从左到右分别是[hong_chengchou.GetShortUIName]、[wu_sangui.GetShortUIName]、[zu_dashou.GetShortUIName]、[sun_chuanting.GetShortUIName]和我朝思暮想的爱妃[tian_xiuying.GetShortUIName]！有了这些能臣和亲人，恢复大明有希望了！"
+ ftr_decision_events.0010.a:0 "众卿平身！"
+
+ ftr_decision_events.0011.t:0 "亡国之君"
+ ftr_decision_events.0011.desc:0 "不得不承认，作为皇帝，我有着极为失败的一面。急躁地不断更换内阁，不敢承担议和的责任，关键时刻无法做出迁都的决定，这些事情都让大明一步步走向灭亡。在我喟叹之余，一位身着华丽希腊服装的男子来到我的面前。他自称[constantine.GetShortUIName]，和我一样是从异世界穿越而来的亡国之君。和我流浪异乡不同，现在这片土地正是他曾经的国土。他提议和我做一个交易，我带兵帮助他恢复君士坦丁堡，而他则帮我成就霸业。"
+ ftr_decision_events.0011.a:0 "成交！"

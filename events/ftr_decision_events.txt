@@ -97,8 +97,23 @@ ftr_decision_events.0003 = {
 		}
 	}
 
-	option = { # TODO...
+	option = { # Zhu Youjian
 		name = ftr_decision_events.0003.b
+		custom_description = {
+			text = ftr_call_traverser_zhuyoujian_tt
+			trigger_event = {
+				id = ftr_decision_events.0010 # Hong Chengchou, Wu Sangui, Zu Dashou, Sun Chuanting, Tian Xiuying on call
+				days = { 5 15 }
+			}
+			trigger_event = {
+				id = ftr_decision_events.0011 # Constantine XI on call
+				days = { 20 30 }
+			}
+		}
+	}
+
+	option = { # TODO...
+		name = ftr_decision_events.0003.c
 	}
 
 	after = {
@@ -444,4 +459,272 @@ ftr_decision_events.0009 = {
 	}
 
 	after = {}
+}
+
+# Hong Chengchou
+scripted_effect ftr_hong_chengchou_on_call_effect = {
+	hidden_effect = {
+		create_character = {
+			location = root.location
+			culture = culture:han
+			faith = root.faith
+			name = Chengchou_of_Hong
+			dynasty = generate
+			gender = male
+			age = 30
+			diplomacy = 10
+			martial = 15
+			intrigue = 12
+			stewardship = 10
+			learning = 10
+			prowess = 5
+			random_traits = no
+			trait = education_martial_4
+			trait = ftr_traverser
+			trait = callous
+			trait = lustful
+			trait = patient
+			trait = intellect_good_1
+			save_scope_as = hong_chengchou
+		}
+		scope:hong_chengchou = {
+			dynasty = {
+				set_dynasty_name = dynn_ftr_Hong
+			}
+			house = {
+				set_house_name = dynn_ftr_Hong
+			}
+		}
+	}
+}
+
+# Wu Sangui
+scripted_effect ftr_wu_sangui_on_call_effect = {
+	hidden_effect = {
+		create_character = {
+			location = root.location
+			culture = culture:han
+			faith = root.faith
+			name = Sangui_of_Wu
+			dynasty = generate
+			gender = male
+			age = 20
+			diplomacy = 5
+			martial = 15
+			intrigue = 12
+			stewardship = 5
+			learning = 5
+			prowess = 15
+			random_traits = no
+			trait = education_martial_4
+			trait = ftr_traverser
+			trait = vengeful
+			trait = brave
+			trait = fickle
+			trait = flexible_leader
+			save_scope_as = wu_sangui
+		}
+		scope:wu_sangui = {
+			dynasty = {
+				set_dynasty_name = dynn_ftr_Wu
+			}
+			house = {
+				set_house_name = dynn_ftr_Wu
+			}
+		}
+	}
+}
+
+# Zu Dashou
+scripted_effect ftr_zu_dashou_on_call_effect = {
+	hidden_effect = {
+		create_character = {
+			location = root.location
+			culture = culture:han
+			faith = root.faith
+			name = Dashou_of_Zu
+			dynasty = generate
+			gender = male
+			age = 38
+			diplomacy = 8
+			martial = 12
+			intrigue = 12
+			stewardship = 5
+			learning = 5
+			prowess = 22
+			random_traits = no
+			trait = education_martial_3
+			trait = ftr_traverser
+			trait = deceitful
+			trait = brave
+			trait = fickle
+			trait = aggressive_attacker
+			save_scope_as = zu_dashou
+		}
+		scope:zu_dashou = {
+			dynasty = {
+				set_dynasty_name = dynn_ftr_Zu
+			}
+			house = {
+				set_house_name = dynn_ftr_Zu
+			}
+		}
+	}
+}
+
+# Sun Chuanting
+scripted_effect ftr_sun_chuanting_on_call_effect = {
+	hidden_effect = {
+		create_character = {
+			location = root.location
+			culture = culture:han
+			faith = root.faith
+			name = Chuanting_of_Sun
+			dynasty = generate
+			gender = male
+			age = 30
+			diplomacy = 10
+			martial = 12
+			intrigue = 12
+			stewardship = 11
+			learning = 10
+			prowess = 5
+			random_traits = no
+			trait = education_stewardship_3
+			trait = ftr_traverser
+			trait = calm
+			trait = patient
+			trait = diligent
+			trait = unyielding_defender
+			save_scope_as = sun_chuanting
+		}
+		scope:sun_chuanting = {
+			dynasty = {
+				set_dynasty_name = dynn_ftr_Sun
+			}
+			house = {
+				set_house_name = dynn_ftr_Sun
+			}
+		}
+	}
+}
+
+# Tian Xiuying
+scripted_effect ftr_tian_xiuying_on_call_effect = {
+	hidden_effect = {
+		create_character = {
+			location = root.location
+			culture = culture:han
+			faith = root.faith
+			name = Xiuying_of_Tian
+			dynasty = generate
+			gender = female
+			age = 16
+			diplomacy = 8
+			martial = 5
+			intrigue = 7
+			stewardship = 12
+			learning = 8
+			prowess = 5
+			random_traits = no
+			trait = education_stewardship_2
+			trait = ftr_traverser
+			trait = temperate
+			trait = patient
+			trait = humble
+			trait = beauty_good_3
+			save_scope_as = tian_xiuying
+		}
+		scope:tian_xiuying = {
+			dynasty = {
+				set_dynasty_name = dynn_ftr_Tian
+			}
+			house = {
+				set_house_name = dynn_ftr_Tian
+			}
+		}
+	}
+}
+
+# Ming officials comes
+ftr_decision_events.0010 = {
+	type = character_event
+	title = ftr_decision_events.0010.t
+	desc = ftr_decision_events.0010.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	immediate = {
+		ftr_hong_chengchou_on_call_effect = yes
+		ftr_wu_sangui_on_call_effect = yes
+		ftr_zu_dashou_on_call_effect = yes
+		ftr_sun_chuanting_on_call_effect = yes
+		ftr_tian_xiuying_on_call_effect = yes
+	}
+
+	option = {
+		name = ftr_decision_events.0010.a
+		add_courtier = scope:hong_chengchou
+		add_courtier = scope:wu_sangui
+		add_courtier = scope:zu_dashou
+		add_courtier = scope:sun_chuanting
+		add_courtier = scope:tian_xiuying
+	}
+}
+
+# Constantine XI of Ming
+scripted_effect ftr_constantine_ming_on_call_effect = {
+	hidden_effect = {
+		create_character = {
+			location = root.location
+			culture = culture:greek
+			faith = root.faith
+			name = Constantine
+			dynasty_house = house:house_paleologo-monferrato
+			gender = male
+			age = 25
+			diplomacy = 12
+			martial = 10
+			intrigue = 13
+			stewardship = 12
+			learning = 8
+			prowess = 12
+			random_traits = no
+			trait = education_intrigue_3
+			trait = ftr_traverser
+			trait = gregarious
+			trait = diligent
+			trait = brave
+			trait = intellect_good_2
+			save_scope_as = constantine
+		}
+	}
+}
+
+# Ming officials - Constantine XI comes
+ftr_decision_events.0011 = {
+	type = character_event
+	title = ftr_decision_events.0011.t
+	desc = ftr_decision_events.0011.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = scope:constantine
+		animation = personality_honorable
+	}
+
+	immediate = {
+		ftr_constantine_ming_on_call_effect = yes
+	}
+
+	option = {
+		name = ftr_decision_events.0011.a
+		add_courtier = scope:constantine
+	}
 }

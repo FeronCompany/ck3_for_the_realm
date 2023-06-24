@@ -5,6 +5,7 @@
  ftr_decision_events.0003.b:0 "I am Zhu Youjian."
  ftr_decision_events.0003.c:0 "TODO..."
  ftr_call_traverser_fujian_text:0 "Fu Jian's generals will come back soon..."
+ ftr_call_traverser_zhuyoujian_text:0 "Zhu Youjian's generals will come back soon..."
 
  ftr_decision_events.0004.t:0 "Past Subordinates On Call"
  ftr_decision_events.0004.desc:0 "[legendary_leader.GetShortUIName|U], my most reliable prime minister, the right and left hand I have been longing for, is now standing in front of me alive. I couldn't believe my eyes, and finally [legendary_leader.GetShortUIName|U] interrupted my memories, and I came back to my senses in shock."

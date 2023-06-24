@@ -5,6 +5,7 @@
  ftr_decision_events.0003.b:0 "我是朱由检"
  ftr_decision_events.0003.c:0 "其他人物在做了——"
  ftr_call_traverser_fujian_text:0 "苻坚的旧部将会逐个回归……"
+ ftr_call_traverser_zhuyoujian_text:0 "朱由检的旧部将会逐个回归……"
 
  ftr_decision_events.0004.t:0 "旧部来投"
  ftr_decision_events.0004.desc:0 "[legendary_leader.GetShortUIName|U]，我最可靠的相国，我朝思暮想的左右手，如今又活生生地站在我的面前。我简直不敢相信自己的眼睛，最后还是[legendary_leader.GetShortUIName|U]打断了我的回忆，我这才震惊中回过神来。"

@@ -672,6 +672,12 @@ ftr_decision_events.0010 = {
 		add_courtier = scope:zu_dashou
 		add_courtier = scope:sun_chuanting
 		add_courtier = scope:tian_xiuying
+		if = {
+			limit = {
+				is_married = no
+			}
+			marry = scope:tian_xiuying
+		}
 	}
 }
 

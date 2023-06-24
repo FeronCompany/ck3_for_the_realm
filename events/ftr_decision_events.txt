@@ -689,7 +689,7 @@ scripted_effect ftr_constantine_ming_on_call_effect = {
 			culture = culture:greek
 			faith = root.faith
 			name = Constantine
-			dynasty_house = house:house_paleologo-monferrato
+			dynasty = generate
 			gender = male
 			age = 25
 			diplomacy = 12
@@ -706,6 +706,14 @@ scripted_effect ftr_constantine_ming_on_call_effect = {
 			trait = brave
 			trait = intellect_good_2
 			save_scope_as = constantine
+		}
+		scope:constantine = {
+			dynasty = {
+				set_dynasty_name = dynn_ftr_Paleologo
+			}
+			house = {
+				set_house_name = dynn_ftr_Paleologo
+			}
 		}
 	}
 }

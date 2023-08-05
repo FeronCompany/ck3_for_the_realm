@@ -1,0 +1,113 @@
+window = {
+	name = "ftr_political_game_window"
+	parentanchor = center
+	size = { 1000 800 }
+	position = { 0 0 }
+	layer = windows_layer
+	visible = "[GetVariableSystem.Exists( 'ftr_political_game_toggle' )]"
+	using = Window_Background
+	using = Window_Decoration
+
+	margin_widget = {
+		size = { 100% 100% }
+		margin = { 10 26 }
+		margin_right = 13
+		widget = {
+			size = { 100% 100% }
+			vbox = {
+				using = Window_Margins
+				header_with_picture = {
+					layoutpolicy_horizontal = expanding
+					minimumsize = { 0 120 }
+					blockoverride "header_text" {
+						text = "[GetPlayer.GetPrimaryTitle.GetNameNoTooltip|U]"
+					}
+					blockoverride "size" {
+						size = { 100% 120 }
+					}
+					blockoverride "illustration_texture" {
+						texture = "gfx/interface/illustrations/window_headers/header_my_realm.dds"
+					}
+					blockoverride "button_close"
+					{
+						onclick = "[GetVariableSystem.Toggle( 'ftr_political_game_toggle')]"
+					}
+					hbox = {
+						position = { 0 15 }
+						text_label_left = {
+							margin = { 10 5 }
+							autoresize = yes
+							text = "FTR_SHOW_MY_PG_POWER_TEXT"
+							tooltip = "ftr_show_pg_power_tooltip"
+						}
+						button_standard = {
+							name = "ftr_get_pg_power"
+							text = "FTR_GET_PG_POWER_TEXT"
+							#onclick = "[OpenGameRules]"
+							#enabled = "[GameSetup.CanStart]"
+							tooltip = "ftr_get_pg_power_tooltip"
+							size = { 150 50 }
+    					}
+					}
+				}
+
+				hbox = {
+					name = "political_game_outer_tabs"
+					layoutpolicy_horizontal = expanding
+					button_tab = {
+						name = "th_my_realm_tab"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						onclick = "[GetVariableSystem.Clear('ftr_show_my_realm_tab_toggle')]"
+						onclick = "[GetVariableSystem.Clear('ftr_show_liege_realm_tab_toggle')]"
+						onclick = "[GetVariableSystem.Toggle('ftr_show_my_realm_tab_toggle')]"
+						#down = ""
+						text = "FTR_PG_MY_REALM_TAB"
+					}
+					button_tab = {
+						name = "th_liege_realm_tab"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						onclick = "[GetVariableSystem.Clear('ftr_show_my_realm_tab_toggle')]"
+						onclick = "[GetVariableSystem.Clear('ftr_show_liege_realm_tab_toggle')]"
+						onclick = "[GetVariableSystem.Toggle('ftr_show_liege_realm_tab_toggle')]"
+						#down = ""
+						text = "FTR_PG_LIEGE_REALM_TAB"
+					}
+				}
+
+				vbox = {
+					name = "tab_my_realm"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.Exists( 'ftr_show_my_realm_tab_toggle' )]"
+					using = Animation_Tab_Switch
+					button_standard = {
+						name = "ftr_test_button_1"
+						text = "FTR_GET_PG_POWER_TEXT_1"
+						#onclick = "[OpenGameRules]"
+						#enabled = "[GameSetup.CanStart]"
+						tooltip = "ftr_test_button_1_tooltip"
+						size = { 150 50 }
+    				}
+				}
+
+				vbox = {
+					name = "tab_liege_realm"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.Exists( 'ftr_show_liege_realm_tab_toggle' )]"
+					using = Animation_Tab_Switch
+					button_standard = {
+						name = "ftr_test_button_2"
+						text = "FTR_GET_PG_POWER_TEXT_2"
+						#onclick = "[OpenGameRules]"
+						#enabled = "[GameSetup.CanStart]"
+						tooltip = "ftr_test_button_2_tooltip"
+						size = { 150 50 }
+    				}
+				}
+			}
+		}
+	}
+}

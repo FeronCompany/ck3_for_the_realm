@@ -1,0 +1,8 @@
+﻿l_simp_chinese:
+ tab_position_open_tooltip:0 "政治博弈"
+ FTR_SHOW_MY_PG_POWER_TEXT:0 "影响力："
+ ftr_show_pg_power_tooltip:0 "影响力用于进行政治博弈。影响力可以通过获得头衔、消耗威望等方式获得。"
+ FTR_GET_PG_POWER_TEXT:0 "扩大影响力"
+ ftr_get_pg_power_tooltip:0 "消耗一定威望换取政治影响力"
+ FTR_PG_MY_REALM_TAB:0 "我的领地"
+ FTR_PG_LIEGE_REALM_TAB:0 "领主领地"

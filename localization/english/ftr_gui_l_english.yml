@@ -1,0 +1,8 @@
+﻿l_english:
+ tab_position_open_tooltip:0 "Political Game"
+ FTR_SHOW_MY_PG_POWER_TEXT:0 "Political Influence:"
+ ftr_show_pg_power_tooltip:0 "Political influence is used to play political games. Political influence can be obtained by obtaining titles, consuming prestige, etc."
+ FTR_GET_PG_POWER_TEXT:0 "Expand Influence"
+ ftr_get_pg_power_tooltip:0 "Consuming a certain amount of prestige in exchange for political influence."
+ FTR_PG_MY_REALM_TAB:0 "My realm"
+ FTR_PG_LIEGE_REALM_TAB:0 "Realm of liege"

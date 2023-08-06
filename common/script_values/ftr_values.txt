@@ -1,4 +1,9 @@
 ﻿
+
+ftr_expand_influence_prestige_cost_value = -500
+ftr_expand_influence_value = 20
+ftr_shift_focus_cost_value = -80
+
 ftr_payment_cost_level_value = {
 	value = 0
 	if = {
@@ -132,21 +137,5 @@ ftr_political_influence_value = {
 			exists = var:ftr_political_influence
 		}
 		add = var:ftr_political_influence
-	}
-}
-
-ftr_expand_influence_valid_value = {
-	value = 0
-	if = {
-		limit = {
-			prestige >= 500
-			custom_description = {
-				text = "ftr_not_expanded_influence_recently_tt"
-				NOT = {
-					has_character_flag = ftr_expand_influence_flag
-				}
-			}
-		}
-		add = 1
 	}
 }

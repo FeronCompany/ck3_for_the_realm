@@ -12,9 +12,9 @@ ftr_expand_influence = {
 		}
 	}
 	effect = {
-		add_prestige = -500
+		add_prestige = ftr_expand_influence_prestige_cost_value
 		ftr_add_political_influence_effect = {
-			VALUE = 20
+			VALUE = ftr_expand_influence_value
 		}
 		custom_description = {
 			text = "ftr_flag_expanded_influence_recently_tt"

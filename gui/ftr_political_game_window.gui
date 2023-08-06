@@ -1,7 +1,7 @@
 window = {
 	name = "ftr_political_game_window"
 	parentanchor = center
-	size = { 1000 800 }
+	size = { 1200 900 }
 	position = { 0 0 }
 	layer = windows_layer
 	visible = "[GetVariableSystem.Exists( 'ftr_political_game_toggle' )]"
@@ -46,7 +46,7 @@ window = {
 							tooltip = "ftr_get_pg_power_tooltip"
 							datacontext = "[GetScriptedGui( 'ftr_expand_influence' )]"
 							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-							enabled = "[GreaterThan_int32(GetPlayer.MakeScope.ScriptValue('ftr_expand_influence_valid_value'), '(int32)0')]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 							size = { 150 50 }
     					}
 					}
@@ -83,14 +83,54 @@ window = {
 					layoutpolicy_vertical = expanding
 					visible = "[GetVariableSystem.Exists( 'ftr_show_my_realm_tab_toggle' )]"
 					using = Animation_Tab_Switch
-					button_standard = {
-						name = "ftr_test_button_1"
-						text = "FTR_GET_PG_POWER_TEXT_1"
-						#onclick = "[OpenGameRules]"
-						#enabled = "[GameSetup.CanStart]"
-						tooltip = "ftr_test_button_1_tooltip"
-						size = { 150 50 }
-    				}
+					hbox = {
+						margin = { 10 10 }
+						size = { 100% 100 }
+						vbox = {
+							portrait_head_small = {
+								name = "player_head_portrait"
+								visible = "[Character.IsValid]"
+								datacontext = "[GetPlayer]"
+								tooltip_enabled = "[Character.IsValid]"
+							}
+							text_label_center = {
+								text = "FTR_PG_LIEGE_TEXT"
+							}
+						}
+						hbox = {
+							margin = { 60 0 }
+							layoutpolicy_horizontal = expanding
+							text_label_left = {
+								size = { 300 100% }
+								text = "FTR_REALM_POLITICAL_FOCUS_TEXT"
+								tooltip = "ftr_realm_political_focus_tooltip"
+							}
+							button_standard = {
+								name = "ftr_change_realm_political_focus_button"
+								text = "FTR_CHANGE_REALM_POLITICAL_FOCUS"
+								#onclick = "[OpenGameRules]"
+								#enabled = "[GameSetup.CanStart]"
+								tooltip = "ftr_change_realm_political_focus_tooltip"
+								size = { 100 50 }
+    						}
+						}
+						vbox = {
+							portrait_head_small = {
+								name = "regent_head_portrait"
+								#visible = "[GetPlayer.GetDiarchy.IsValid]"
+								datacontext = "[GetPlayer.GetDiarchy.GetDiarch]"
+								tooltip_enabled = "[GetPlayer.GetDiarchy.IsValid]"
+							}
+							text_label_center = {
+								text = "FTR_PG_REGENT_TEXT"
+							}
+						}
+					}
+					hbox = {
+						margin = { 10 10 }
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+					}
 				}
 
 				vbox = {

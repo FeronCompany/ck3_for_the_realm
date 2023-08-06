@@ -19,3 +19,7 @@ official_cannot_revok_other_officials_text = {
 officials_blocked_from_joining = {
 	global_not = officials_blocked_from_joining_text
 }
+
+ftr_not_expanded_influence_recently_tt = {
+	global_not = ftr_not_expanded_influence_recently_text
+}

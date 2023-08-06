@@ -71,5 +71,5 @@
  ftr_approve_aid_opinion:0 "同意提供赈灾资金"
  ftr_approve_aid_opinion_desc:0 "领主同意提供赈灾资金"
 
- ftr_murderer_crime:0 "拒绝提供赈灾资金"
- ftr_murderer_crime_desc:0 "领主拒绝提供赈灾资金"
+ ftr_refuse_aid_opinion:0 "拒绝提供赈灾资金"
+ ftr_refuse_aid_opinion_desc:0 "领主拒绝提供赈灾资金"

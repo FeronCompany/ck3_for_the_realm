@@ -124,3 +124,29 @@ ftr_province_fund_value = {
 		multiply = 10
 	}
 }
+
+ftr_political_influence_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = var:ftr_political_influence
+		}
+		add = var:ftr_political_influence
+	}
+}
+
+ftr_expand_influence_valid_value = {
+	value = 0
+	if = {
+		limit = {
+			prestige >= 500
+			custom_description = {
+				text = "ftr_not_expanded_influence_recently_tt"
+				NOT = {
+					has_character_flag = ftr_expand_influence_flag
+				}
+			}
+		}
+		add = 1
+	}
+}

@@ -1,0 +1,27 @@
+﻿
+
+ftr_expand_influence = {
+	scope = character
+	is_valid = {
+		prestige >= 500
+		custom_description = {
+			text = "ftr_not_expanded_influence_recently_tt"
+			NOT = {
+				has_character_flag = ftr_expand_influence_flag
+			}
+		}
+	}
+	effect = {
+		add_prestige = -500
+		ftr_add_political_influence_effect = {
+			VALUE = 20
+		}
+		custom_description = {
+			text = "ftr_flag_expanded_influence_recently_tt"
+			add_character_flag = {
+				flag = ftr_expand_influence_flag
+				days = 730
+			}
+		}
+	}
+}

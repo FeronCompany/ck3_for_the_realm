@@ -43,9 +43,10 @@ window = {
 						button_standard = {
 							name = "ftr_get_pg_power"
 							text = "FTR_GET_PG_POWER_TEXT"
-							#onclick = "[OpenGameRules]"
-							#enabled = "[GameSetup.CanStart]"
 							tooltip = "ftr_get_pg_power_tooltip"
+							datacontext = "[GetScriptedGui( 'ftr_expand_influence' )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							enabled = "[GreaterThan_int32(GetPlayer.MakeScope.ScriptValue('ftr_expand_influence_valid_value'), '(int32)0')]"
 							size = { 150 50 }
     					}
 					}
@@ -61,7 +62,7 @@ window = {
 						onclick = "[GetVariableSystem.Clear('ftr_show_my_realm_tab_toggle')]"
 						onclick = "[GetVariableSystem.Clear('ftr_show_liege_realm_tab_toggle')]"
 						onclick = "[GetVariableSystem.Toggle('ftr_show_my_realm_tab_toggle')]"
-						#down = ""
+						down = "[GetVariableSystem.Exists( 'ftr_show_my_realm_tab_toggle' )]"
 						text = "FTR_PG_MY_REALM_TAB"
 					}
 					button_tab = {
@@ -71,7 +72,7 @@ window = {
 						onclick = "[GetVariableSystem.Clear('ftr_show_my_realm_tab_toggle')]"
 						onclick = "[GetVariableSystem.Clear('ftr_show_liege_realm_tab_toggle')]"
 						onclick = "[GetVariableSystem.Toggle('ftr_show_liege_realm_tab_toggle')]"
-						#down = ""
+						down = "[GetVariableSystem.Exists( 'ftr_show_liege_realm_tab_toggle' )]"
 						text = "FTR_PG_LIEGE_REALM_TAB"
 					}
 				}

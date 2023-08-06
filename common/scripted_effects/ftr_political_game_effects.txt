@@ -1,0 +1,30 @@
+﻿
+
+ftr_add_political_influence_effect = {
+	custom_description = {
+		text = ftr_add_political_influence_effect_tt
+		value = $VALUE$
+	}
+	if = {
+		limit = {
+			exists = var:ftr_political_influence
+		}
+		change_variable = {
+			name = ftr_political_influence
+			add = $VALUE$
+		}
+	}
+	else = {
+		set_variable = {
+			name = ftr_political_influence
+			value = $VALUE$
+		}
+	}
+	if = {
+		limit = { var:ftr_political_influence < 0 }
+		set_variable = {
+			name = ftr_political_influence
+			value = 0
+		}
+	}
+}

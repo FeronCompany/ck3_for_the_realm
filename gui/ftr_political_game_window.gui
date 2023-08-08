@@ -20,7 +20,8 @@ window = {
 					layoutpolicy_horizontal = expanding
 					minimumsize = { 0 120 }
 					blockoverride "header_text" {
-						text = "[GetPlayer.GetPrimaryTitle.GetNameNoTooltip|U]"
+						#text = "[GetPlayer.GetPrimaryTitle.GetNameNoTooltip|U]"
+						text = "ftr_political_game_title"
 					}
 					blockoverride "size" {
 						size = { 100% 120 }
@@ -62,6 +63,8 @@ window = {
 						onclick = "[GetVariableSystem.Clear('ftr_show_my_realm_tab_toggle')]"
 						onclick = "[GetVariableSystem.Clear('ftr_show_liege_realm_tab_toggle')]"
 						onclick = "[GetVariableSystem.Toggle('ftr_show_my_realm_tab_toggle')]"
+						onclick = "[GetScriptedGui('ftr_update_my_powerful_subject_list').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ]"
+						onclick = "[GetScriptedGui('ftr_update_my_realm_pg_participants_list').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ]"
 						down = "[GetVariableSystem.Exists( 'ftr_show_my_realm_tab_toggle' )]"
 						text = "FTR_PG_MY_REALM_TAB"
 					}
@@ -83,7 +86,7 @@ window = {
 					layoutpolicy_vertical = expanding
 					visible = "[GetVariableSystem.Exists( 'ftr_show_my_realm_tab_toggle' )]"
 					using = Animation_Tab_Switch
-					hbox = {
+					hbox = { # 领主与摄政列表
 						margin = { 10 10 }
 						size = { 100% 100 }
 						vbox = {
@@ -98,19 +101,14 @@ window = {
 							}
 						}
 						hbox = {
-							margin = { 60 0 }
+							margin = { 150 0 }
 							layoutpolicy_horizontal = expanding
-							text_label_left = {
-								size = { 300 100% }
-								text = "FTR_REALM_POLITICAL_FOCUS_TEXT"
-								tooltip = "ftr_realm_political_focus_tooltip"
-							}
 							button_standard = {
-								name = "ftr_change_realm_political_focus_button"
-								text = "FTR_CHANGE_REALM_POLITICAL_FOCUS"
+								name = "ftr_pg_make_proposal_button"
+								text = "FTR_PG_MAKE_PROPOSAL"
 								#onclick = "[OpenGameRules]"
 								#enabled = "[GameSetup.CanStart]"
-								tooltip = "ftr_change_realm_political_focus_tooltip"
+								tooltip = "ftr_pg_make_proposal_tooltip"
 								size = { 100 50 }
     						}
 						}
@@ -126,10 +124,76 @@ window = {
 							}
 						}
 					}
+
 					hbox = {
-						margin = { 10 10 }
-						layoutpolicy_horizontal = expanding
-						layoutpolicy_vertical = expanding
+						vbox = { # 核心圈子
+							layoutpolicy_horizontal = fixed
+							text_label_center = {
+								margin = { 10 10 }
+								text = "FTR_POWERFUL_SUBJECTS_TEXT"
+								tooltip = "ftr_powerfult_subjects_tooltip"
+							}
+							dynamicgridbox = {
+								datamodel = "[GetPlayer.MakeScope.GetList('ftr_my_powerful_subject_list')]"
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								datamodel_wrap = 3
+								flipdirection = yes
+								item = {
+									portrait_head_small = {
+										name = "powerful_portrait"
+										datacontext = "[Scope.GetCharacter]"
+										tooltip_enabled = "[Character.IsValid]"
+									}
+								}
+							}
+						}
+						vbox = { # 全体博弈参与者列表
+							margin = { 10 10 }
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							text_label_center = {
+								margin = { 10 10 }
+								text = "FTR_ALL_PG_PARTICIPANTS_TEXT"
+								tooltip = "ftr_all_pg_participants_tooltip"
+							}
+							scrollbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								blockoverride "scrollbox_margins" {
+									margin = { 4 4 }
+								}
+								blockoverride "scrollbox_content"
+								{
+									dynamicgridbox = {
+										datamodel = "[GetPlayer.MakeScope.GetList('ftr_my_realm_pg_participants_list')]"
+										layoutpolicy_horizontal = expanding
+										item = {
+											portrait_head_small = {
+												name = "powerful_portrait"
+												datacontext = "[Scope.GetCharacter]"
+												tooltip_enabled = "[Character.IsValid]"
+												button = {
+													name = "bribe"
+													parentanchor = bottom|right
+													size = { 30 30 }
+													position = { 20 20 }
+													texture = "gfx/interface/icons/character_interactions/council.dds"
+													tooltip = "ftr_bribe_pg_memeber_tooltip"
+													#onclick = "[Character.OpenPlayerInteraction('change_vassal_legion_interaction')]"
+													#enabled = "[Character.OpenPlayerInteraction('change_vassal_legion_interaction')]"
+												}
+											}
+											#text_label_center = {
+											#	margin = { 10 10 }
+											#	text = "FTR_SHOW_CHARACTER_PG_POWER_TEXT"
+											#	tooltip = "ftr_show_pg_power_tooltip"
+											#}
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 
@@ -139,14 +203,14 @@ window = {
 					layoutpolicy_vertical = expanding
 					visible = "[GetVariableSystem.Exists( 'ftr_show_liege_realm_tab_toggle' )]"
 					using = Animation_Tab_Switch
-					button_standard = {
-						name = "ftr_test_button_2"
-						text = "FTR_GET_PG_POWER_TEXT_2"
-						#onclick = "[OpenGameRules]"
-						#enabled = "[GameSetup.CanStart]"
-						tooltip = "ftr_test_button_2_tooltip"
-						size = { 150 50 }
-    				}
+					#button_standard = {
+					#	name = "ftr_test_button_2"
+					#	text = "FTR_GET_PG_POWER_TEXT_2"
+					#	#onclick = "[OpenGameRules]"
+					#	#enabled = "[GameSetup.CanStart]"
+					#	tooltip = "ftr_test_button_2_tooltip"
+					#	size = { 150 50 }
+    				#}
 				}
 			}
 		}

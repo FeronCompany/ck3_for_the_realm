@@ -37,6 +37,8 @@
 				onclick = "[GetVariableSystem.Clear('ftr_show_my_realm_tab_toggle')]"
 				onclick = "[GetVariableSystem.Clear('ftr_show_liege_realm_tab_toggle')]"
 				onclick = "[GetVariableSystem.Toggle('ftr_show_my_realm_tab_toggle')]"
+				onclick = "[GetScriptedGui('ftr_update_my_powerful_subject_list').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ]"
+				onclick = "[GetScriptedGui('ftr_update_my_realm_pg_participants_list').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ]"
 				datacontext = "[GetVariableSystem]"
 				down = "[GetVariableSystem.Clear('ftr_political_game_toggle')]"
 			}

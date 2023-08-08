@@ -25,3 +25,71 @@ ftr_expand_influence = {
 		}
 	}
 }
+
+ftr_update_my_powerful_subject_list = {
+	scope = character
+	effect = {
+		clear_variable_list = ftr_my_powerful_subject_list
+		every_vassal = {
+			limit = { 
+				is_powerful_vassal = yes
+			}
+			save_scope_as = current_powerful_vassal
+			root = {
+				add_to_variable_list = {
+					name = ftr_my_powerful_subject_list
+					target = scope:current_powerful_vassal
+				}
+			}
+		}
+		every_councillor = {
+			limit = {
+				is_powerful_vassal = no
+			}
+			save_scope_as = current_councillor
+			root = {
+				add_to_variable_list = {
+					name = ftr_my_powerful_subject_list
+					target = scope:current_councillor
+				}
+			}
+		}
+	}
+}
+
+ftr_update_my_realm_pg_participants_list = {
+	scope = character
+	effect = {
+		clear_variable_list = ftr_my_realm_pg_participants_list
+		every_vassal = {
+			save_scope_as = current_vassal
+			root = {
+				add_to_variable_list = {
+					name = ftr_my_realm_pg_participants_list
+					target = scope:current_vassal
+				}
+			}
+		}
+		every_courtier = {
+			limit = {
+				is_landed = no
+				OR = {
+					is_councillor_of = root
+					house = root.house
+				}
+			}
+			save_scope_as = current_courtier
+			root = {
+				add_to_variable_list = {
+					name = ftr_my_realm_pg_participants_list
+					target = scope:current_courtier
+				}
+			}
+		}
+	}
+}
+
+ftr_update_liege_powerful_subject_list = {
+	scope = character
+	effect = {}
+}

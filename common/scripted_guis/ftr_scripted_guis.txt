@@ -88,8 +88,3 @@ ftr_update_my_realm_pg_participants_list = {
 		}
 	}
 }
-
-ftr_update_liege_powerful_subject_list = {
-	scope = character
-	effect = {}
-}

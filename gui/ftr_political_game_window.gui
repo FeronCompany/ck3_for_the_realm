@@ -126,8 +126,11 @@ window = {
 					}
 
 					hbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
 						vbox = { # 核心圈子
-							#layoutpolicy_horizontal = fixed
+							margin = { 30 10 }
+							layoutpolicy_vertical = expanding
 							text_label_center = {
 								margin = { 10 10 }
 								text = "FTR_POWERFUL_SUBJECTS_TEXT"
@@ -147,12 +150,12 @@ window = {
 									}
 								}
 							}
+							expand = {}
 						}
 						vbox = { # 全体博弈参与者列表
-							margin = { 10 0 }
+							margin = { 20 10 }
 							layoutpolicy_horizontal = expanding
 							layoutpolicy_vertical = expanding
-							minimumsize = { 700 30% }
 							text_label_center = {
 								margin = { 10 10 }
 								text = "FTR_ALL_PG_PARTICIPANTS_TEXT"
@@ -165,6 +168,7 @@ window = {
 								blockoverride "scrollbox_content"
 								{
 									vbox = {
+										margin = { 10 0 }
 										datamodel = "[GetPlayer.MakeScope.GetList('ftr_my_realm_pg_participants_list')]"
 										layoutpolicy_horizontal = expanding
 										item = {
@@ -204,63 +208,60 @@ window = {
 
 types Lists
 {
-	type ftr_widget_fg_member_list_item = widget {
-		datacontext = "[CharacterListItem.GetCharacter]"
-		hbox = {
-			layoutpolicy_horizontal = expanding
-			spacing = 10
-			portrait_head_small = {
-				datacontext = "[Scope.GetCharacter]"
-				tooltip_enabled = "[Character.IsValid]"
-			}
-			button_standard = {
-				name = "ftr_pg_influence_button"
-				text = "FTR_SHOW_CHARACTER_PG_POWER_TEXT"
-				enabled = false
-				tooltip = "ftr_show_pg_power_tooltip"
-				size = { 50 30 }
-			}
-			button_standard = {
-				name = "ftr_pg_bribe_button"
-				text = "FTR_PG_BRIBE_TEXT"
-				#onclick = "[OpenGameRules]"
-				#enabled = "[GameSetup.CanStart]"
-				tooltip = "ftr_pg_bribe_tooltip"
-				size = { 80 50 }
-			}
-			button_standard = {
-				name = "ftr_pg_endorse_button"
-				text = "FTR_PG_ENDORSE_TEXT"
-				#onclick = "[OpenGameRules]"
-				#enabled = "[GameSetup.CanStart]"
-				tooltip = "ftr_pg_endorse_tooltip"
-				size = { 80 50 }
-			}
-			button_standard = {
-				name = "ftr_pg_charge_button"
-				text = "FTR_PG_CHARGE_TEXT"
-				#onclick = "[OpenGameRules]"
-				#enabled = "[GameSetup.CanStart]"
-				tooltip = "ftr_pg_charge_tooltip"
-				size = { 80 50 }
-			}
-			button_standard = {
-				name = "ftr_pg_slander_button"
-				text = "FTR_PG_SLANDER_TEXT"
-				#onclick = "[OpenGameRules]"
-				#enabled = "[GameSetup.CanStart]"
-				tooltip = "ftr_pg_slander_tooltip"
-				size = { 80 50 }
-			}
-			button_standard = {
-				name = "ftr_pg_isolate_button"
-				text = "FTR_PG_ISOLATE_TEXT"
-				#onclick = "[OpenGameRules]"
-				#enabled = "[GameSetup.CanStart]"
-				tooltip = "ftr_pg_isolate_tooltip"
-				size = { 80 50 }
-			}
-			expand = {}
+	type ftr_widget_fg_member_list_item = hbox {
+		#datacontext = "[CharacterListItem.GetCharacter]"
+		layoutpolicy_horizontal = expanding
+		spacing = 10
+		portrait_head_small = {
+			datacontext = "[Scope.GetCharacter]"
+			tooltip_enabled = "[Character.IsValid]"
 		}
+		text_label_center = {
+			margin = { 10 10 }
+			datacontext = "[Scope.GetCharacter]"
+			text = "FTR_SHOW_CHARACTER_PG_POWER_TEXT"
+			tooltip = "ftr_show_pg_power_tooltip"
+		}
+		button_standard = {
+			name = "ftr_pg_bribe_button"
+			text = "FTR_PG_BRIBE_TEXT"
+			#onclick = "[OpenGameRules]"
+			#enabled = "[GameSetup.CanStart]"
+			tooltip = "ftr_pg_bribe_tooltip"
+			size = { 80 50 }
+		}
+		button_standard = {
+			name = "ftr_pg_endorse_button"
+			text = "FTR_PG_ENDORSE_TEXT"
+			#onclick = "[OpenGameRules]"
+			#enabled = "[GameSetup.CanStart]"
+			tooltip = "ftr_pg_endorse_tooltip"
+			size = { 80 50 }
+		}
+		button_standard = {
+			name = "ftr_pg_charge_button"
+			text = "FTR_PG_CHARGE_TEXT"
+			#onclick = "[OpenGameRules]"
+			#enabled = "[GameSetup.CanStart]"
+			tooltip = "ftr_pg_charge_tooltip"
+			size = { 80 50 }
+		}
+		button_standard = {
+			name = "ftr_pg_slander_button"
+			text = "FTR_PG_SLANDER_TEXT"
+			#onclick = "[OpenGameRules]"
+			#enabled = "[GameSetup.CanStart]"
+			tooltip = "ftr_pg_slander_tooltip"
+			size = { 80 50 }
+		}
+		button_standard = {
+			name = "ftr_pg_isolate_button"
+			text = "FTR_PG_ISOLATE_TEXT"
+			#onclick = "[OpenGameRules]"
+			#enabled = "[GameSetup.CanStart]"
+			tooltip = "ftr_pg_isolate_tooltip"
+			size = { 80 50 }
+		}
+		expand = {}
 	}
 }

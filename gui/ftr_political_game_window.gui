@@ -1,4 +1,4 @@
-window = {
+﻿window = {
 	name = "ftr_political_game_window"
 	parentanchor = center
 	size = { 1200 900 }
@@ -103,17 +103,34 @@ window = {
 								text = "FTR_PG_LIEGE_TEXT"
 							}
 						}
-						hbox = {
-							margin = { 150 0 }
+						vbox = {
+							margin = { 80 0 }
 							layoutpolicy_horizontal = expanding
-							button_standard = {
-								name = "ftr_pg_make_proposal_button"
-								text = "FTR_PG_MAKE_PROPOSAL"
-								#onclick = "[OpenGameRules]"
-								#enabled = "[GameSetup.CanStart]"
-								tooltip = "ftr_pg_make_proposal_tooltip"
-								size = { 100 50 }
-    						}
+							text_label_center = {
+								margin = { 0 10 }
+								text = "FTR_PG_MY_PG_FOCUS_TEXT"
+								tooltip = "ftr_pg_focus_tooltip"
+							}
+							hbox = {
+								spacing = 20
+								margin = { 0 10 }
+								button_standard = {
+									name = "ftr_pg_make_proposal_button"
+									text = "FTR_PG_MAKE_PROPOSAL"
+									#onclick = "[OpenGameRules]"
+									#enabled = "[GameSetup.CanStart]"
+									tooltip = "ftr_pg_make_proposal_tooltip"
+									size = { 100 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_change_focus_button"
+									text = "FTR_PG_CHANGE_FOCUS"
+									#onclick = "[OpenGameRules]"
+									#enabled = "[GameSetup.CanStart]"
+									tooltip = "ftr_pg_change_focus_tooltip"
+									size = { 100 33 }
+    							}
+							}
 						}
 						vbox = {
 							portrait_head_small = {
@@ -209,17 +226,34 @@ window = {
 								text = "FTR_PG_LIEGE_TEXT"
 							}
 						}
-						hbox = {
-							margin = { 150 0 }
+						vbox = {
+							margin = { 80 0 }
 							layoutpolicy_horizontal = expanding
-							button_standard = {
-								name = "ftr_pg_make_proposal_button"
-								text = "FTR_PG_MAKE_PROPOSAL"
-								#onclick = "[OpenGameRules]"
-								#enabled = "[GameSetup.CanStart]"
-								tooltip = "ftr_pg_make_proposal_tooltip"
-								size = { 100 50 }
-    						}
+							text_label_center = {
+								margin = { 0 10 }
+								text = "FTR_PG_LIEGE_PG_FOCUS_TEXT"
+								tooltip = "ftr_pg_focus_tooltip"
+							}
+							hbox = {
+								spacing = 20
+								margin = { 0 10 }
+								button_standard = {
+									name = "ftr_pg_make_proposal_button"
+									text = "FTR_PG_MAKE_PROPOSAL"
+									#onclick = "[OpenGameRules]"
+									#enabled = "[GameSetup.CanStart]"
+									tooltip = "ftr_pg_make_proposal_tooltip"
+									size = { 100 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_change_focus_button"
+									text = "FTR_PG_CHANGE_FOCUS"
+									#onclick = "[OpenGameRules]"
+									#enabled = "[GameSetup.CanStart]"
+									tooltip = "ftr_pg_change_focus_tooltip"
+									size = { 100 33 }
+    							}
+							}
 						}
 						vbox = {
 							portrait_head_small = {
@@ -301,16 +335,14 @@ window = {
 types Lists
 {
 	type ftr_widget_fg_member_list_item = hbox {
-		#datacontext = "[CharacterListItem.GetCharacter]"
+		datacontext = "[Scope.GetCharacter]"
 		layoutpolicy_horizontal = expanding
 		spacing = 10
 		portrait_head_small = {
-			datacontext = "[Scope.GetCharacter]"
 			tooltip_enabled = "[Character.IsValid]"
 		}
 		text_label_center = {
 			margin = { 10 10 }
-			datacontext = "[Scope.GetCharacter]"
 			text = "FTR_SHOW_CHARACTER_PG_POWER_TEXT"
 			tooltip = "ftr_show_pg_power_tooltip"
 		}

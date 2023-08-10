@@ -21,10 +21,28 @@ ftr_add_political_influence_effect = {
 		}
 	}
 	if = {
-		limit = { var:ftr_political_influence < 0 }
+		limit = {
+			exists = var:ftr_political_influence
+			var:ftr_political_influence < 0
+		}
 		set_variable = {
 			name = ftr_political_influence
 			value = 0
 		}
+	}
+}
+
+ftr_change_realm_political_focus_effect = {
+	$LIEGE$ = {
+		set_variable = {
+			name = ftr_pg_focus
+			value = $VALUE$
+		}
+	}
+	custom_description = {
+		text = ftr_change_realm_political_focus_effect_tt
+		subject = $STARTER$
+		object = $LIEGE$
+		value = $VALUE$
 	}
 }

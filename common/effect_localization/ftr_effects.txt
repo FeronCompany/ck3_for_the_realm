@@ -107,3 +107,7 @@ ftr_add_political_influence_effect_tt = {
 ftr_flag_expanded_influence_recently_tt = {
 	global = ftr_flag_expanded_influence_recently_text
 }
+
+ftr_change_realm_political_focus_effect_tt = {
+	global = ftr_change_realm_political_focus_effect_text
+}

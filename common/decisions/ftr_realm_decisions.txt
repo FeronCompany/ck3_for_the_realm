@@ -219,26 +219,26 @@ ftr_end_tyrant_succession_decision = {
 	}
 }
 
-ftr_add_political_influence_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	desc = ftr_end_tyrant_succession_decision_desc
-	selection_tooltip = ftr_end_tyrant_succession_decision_tooltip
-	is_shown = {
-		#is_independent_ruler = yes
-		is_ai = no
-	}
-	cost = {
-		#prestige = { value = 100 }
-	}
-	effect = {
-		ftr_add_political_influence_effect = {
-			VALUE = 100
-		}
-		save_scope_as = me
-		ftr_change_realm_political_focus_effect = {
-			LIEGE = scope:me
-			STARTER = scope:me
-			VALUE = 3
-		}
-	}
-}
+#ftr_add_political_influence_decision = {
+#	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+#	desc = ftr_end_tyrant_succession_decision_desc
+#	selection_tooltip = ftr_end_tyrant_succession_decision_tooltip
+#	is_shown = {
+#		#is_independent_ruler = yes
+#		is_ai = no
+#	}
+#	cost = {
+#		#prestige = { value = 100 }
+#	}
+#	effect = {
+#		ftr_add_political_influence_effect = {
+#			VALUE = 100
+#		}
+#		save_scope_as = me
+#		ftr_change_realm_political_focus_effect = {
+#			LIEGE = scope:me
+#			STARTER = scope:me
+#			VALUE = 3
+#		}
+#	}
+#}

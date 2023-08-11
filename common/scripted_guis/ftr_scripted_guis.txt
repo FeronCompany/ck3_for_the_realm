@@ -3,7 +3,8 @@
 ftr_expand_influence = {
 	scope = character
 	is_valid = {
-		prestige >= 500
+		is_capable_adult = yes
+		prestige >= ftr_expand_influence_prestige_cost_value
 		custom_description = {
 			text = "ftr_not_expanded_influence_recently_tt"
 			NOT = {
@@ -12,7 +13,7 @@ ftr_expand_influence = {
 		}
 	}
 	effect = {
-		add_prestige = ftr_expand_influence_prestige_cost_value
+		add_prestige = ftr_expand_influence_prestige_modify_value
 		ftr_add_political_influence_effect = {
 			VALUE = ftr_expand_influence_value
 		}

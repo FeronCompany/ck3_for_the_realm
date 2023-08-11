@@ -1,8 +1,10 @@
 ﻿
 
-ftr_expand_influence_prestige_cost_value = -500
+ftr_expand_influence_prestige_cost_value = 500
+ftr_expand_influence_prestige_modify_value = -500
 ftr_expand_influence_value = 20
-ftr_shift_focus_cost_value = -80
+ftr_shift_focus_cost_value = 80
+ftr_shift_focus_modify_value = -80
 
 ftr_payment_cost_level_value = {
 	value = 0

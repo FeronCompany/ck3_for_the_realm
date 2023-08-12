@@ -32,9 +32,13 @@ ftr_update_my_powerful_subject_list = {
 				}
 			}
 		}
-		every_councillor = {
+		every_courtier = {
 			limit = {
-				is_powerful_vassal = no
+				is_landed = no
+				OR = {
+					is_councillor_of = root
+					is_diarch = yes
+				}
 			}
 			save_scope_as = current_councillor
 			root = {
@@ -66,6 +70,7 @@ ftr_update_my_realm_pg_participants_list = {
 				OR = {
 					is_councillor_of = root
 					house = root.house
+					is_diarch = yes
 				}
 			}
 			save_scope_as = current_courtier
@@ -76,5 +81,25 @@ ftr_update_my_realm_pg_participants_list = {
 				}
 			}
 		}
+	}
+}
+
+ftr_change_my_focus = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		ftr_political_influence_value >= ftr_shift_focus_cost_value
+		custom_description = {
+			text = "ftr_not_change_focus_recently_tt"
+			NOT = {
+				has_character_flag = ftr_change_focus_flag
+			}
+		}
+		NOT = {
+			has_character_flag = ftr_changing_focus_flag
+		}
+	}
+	effect = {
+		trigger_event = ftr_pg_ui_event.0002
 	}
 }

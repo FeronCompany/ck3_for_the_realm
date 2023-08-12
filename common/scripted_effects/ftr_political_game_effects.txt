@@ -46,3 +46,56 @@ ftr_change_realm_political_focus_effect = {
 		value = $VALUE$
 	}
 }
+
+ftr_submit_change_foucus_effect = {
+	custom_description = {
+		text = ftr_submit_change_foucus_effect_tt
+	}
+	$LIEGE$ = {
+		save_scope_as = liege_c
+	}
+	$STARTER$ = {
+		save_scope_as = starter
+	}
+	save_scope_value_as = {
+		name = ftr_political_focus_tobe
+		value = $VALUE$
+	}
+	scope:liege_c = {
+		every_vassal = {
+			limit = {
+				is_capable_adult = yes
+			}
+			add_to_list = ftr_pg_focus_change_voter_list
+		}
+		every_courtier = {
+			limit = {
+				OR = {
+					is_councillor_of = scope:liege_c
+					house = scope:liege_c.house
+					is_diarch = yes
+				}
+			}
+			add_to_list = ftr_pg_focus_change_voter_list
+		}
+		set_variable = {
+			name = ftr_pg_focus_vote
+			value = scope:ftr_political_focus_tobe
+		}
+	}
+	if = {
+		limit = {
+			NOT = { scope:liege_c = scope:starter }
+			scope:liege_c = {
+				add_to_list = ftr_pg_focus_change_voter_list
+			}
+		}
+	}
+	every_in_list = {
+		list = ftr_pg_focus_change_voter_list
+		trigger_event = {
+			id = ftr_pg_ui_event.0003
+			days = { 5 10 }
+		}
+	}
+}

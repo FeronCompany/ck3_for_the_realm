@@ -111,3 +111,15 @@ ftr_flag_expanded_influence_recently_tt = {
 ftr_change_realm_political_focus_effect_tt = {
 	global = ftr_change_realm_political_focus_effect_text
 }
+
+ftr_flag_recently_changed_focus_tt = {
+	global = ftr_flag_recently_changed_focus_text
+}
+
+ftr_change_focus_failed_tt = {
+	global = ftr_change_focus_failed_text
+}
+
+ftr_submit_change_foucus_effect_tt = {
+	global = ftr_submit_change_foucus_effect_text
+}

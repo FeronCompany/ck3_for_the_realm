@@ -43,3 +43,48 @@ FTR_PlayerPG_Focus = {
 		fallback = yes
 	}
 }
+
+FTR_PlayerPG_Focus_Tobe = {
+	type = character
+
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus_vote
+			var:ftr_pg_focus_vote = 1
+		}
+		localization_key = ftr_pg_focus_crown_authority
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus_vote
+			var:ftr_pg_focus_vote = 2
+		}
+		localization_key = ftr_pg_focus_succession
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus_vote
+			var:ftr_pg_focus_vote = 3
+		}
+		localization_key = ftr_pg_focus_culture
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus_vote
+			var:ftr_pg_focus_vote = 4
+		}
+		localization_key = ftr_pg_focus_religion
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus_vote
+			var:ftr_pg_focus_vote = 5
+		}
+		localization_key = ftr_pg_focus_safety
+	}
+
+	text = {
+		localization_key = ftr_pg_focus_none
+		fallback = yes
+	}
+}

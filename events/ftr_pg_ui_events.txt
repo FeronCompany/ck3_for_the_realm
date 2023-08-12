@@ -20,7 +20,7 @@ ftr_pg_ui_event.0001 = {
 		ftr_add_political_influence_effect = {
 			VALUE = ftr_expand_influence_value
 		}
-		ai_change = {
+		ai_chance = {
 			base = 50
 			modifier = {
 				add = -40
@@ -37,7 +37,7 @@ ftr_pg_ui_event.0001 = {
 		ftr_add_political_influence_effect = {
 			VALUE = ftr_expand_influence_value
 		}
-		ai_change = {
+		ai_chance = {
 			base = 50
 		}
 	}
@@ -50,7 +50,7 @@ ftr_pg_ui_event.0001 = {
 		ftr_add_political_influence_effect = {
 			VALUE = ftr_expand_influence_value
 		}
-		ai_change = {
+		ai_chance = {
 			base = 50
 			modifier = {
 				add = -40
@@ -60,6 +60,9 @@ ftr_pg_ui_event.0001 = {
 	}
 	option = { # 什么也不做
 		name = ftr_pg_ui_event.0001.d
+		ai_chance = {
+			base = 1
+		}
 	}
 
 	after = {
@@ -69,6 +72,233 @@ ftr_pg_ui_event.0001 = {
 				flag = ftr_expand_influence_flag
 				days = 730
 			}
+		}
+	}
+}
+
+# Change My Realm Political Focus
+ftr_pg_ui_event.0002 = {
+	type = character_event
+	title = ftr_pg_ui_event.0002.t
+	desc = ftr_pg_ui_event.0002.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {
+		custom_description = {
+			text = "ftr_flag_recently_changed_focus_tt"
+			add_character_flag = {
+				flag = ftr_change_focus_flag
+				days = 365
+			}
+		}
+		
+		add_character_flag = {
+			flag = ftr_changing_focus_flag
+		}
+		set_variable = {
+			name = ftr_focus_vote_approve
+			value = 1
+		}
+		set_variable = {
+			name = ftr_focus_vote_oppose
+			value = 0
+		}
+	}
+
+	option = { # 王权
+		name = ftr_pg_ui_event.0002.a
+		ftr_submit_change_foucus_effect = {
+			LIEGE = root
+			STARTER = root
+			VALUE = 1
+		}
+		ai_chance = {
+			base = 10
+			modifier = { # Crown Athority too low, I want to make it higher
+				add = 40
+				has_realm_law = crown_authority_0
+			}
+			modifier = { # Crown Athority is enough, don't make any trouble
+				add = -10
+				OR = {
+					has_realm_law = crown_authority_2
+					has_realm_law = crown_authority_3
+				}
+			}
+		}
+	}
+
+	option = { # 继承权succession
+		name = ftr_pg_ui_event.0002.b
+		ftr_submit_change_foucus_effect = {
+			LIEGE = root
+			STARTER = root
+			VALUE = 2
+		}
+		ai_chance = { # AI liege don't want to talk about succession
+			base = 0
+		}
+	}
+
+	option = { # 文化
+		name = ftr_pg_ui_event.0002.c
+		ftr_submit_change_foucus_effect = {
+			LIEGE = root
+			STARTER = root
+			VALUE = 3
+		}
+		ai_chance = { # I have vassals in different culture
+			base = 10
+			modifier = {
+				add = 10
+				any_vassal = {
+					count >= 2
+					NOT = {
+						culture = root.culture
+					}
+				}
+			}
+		}
+	}
+
+	option = { # 宗教
+		name = ftr_pg_ui_event.0002.d
+		ftr_submit_change_foucus_effect = {
+			LIEGE = root
+			STARTER = root
+			VALUE = 4
+		}
+		ai_chance = { # I have vassals in different religion
+			base = 10
+			modifier = {
+				add = 10
+				any_vassal = {
+					count >= 2
+					NOT = {
+						religion = root.religion
+					}
+				}
+			}
+		}
+	}
+
+	option = { # 国家安全
+		name = ftr_pg_ui_event.0002.e
+		ftr_submit_change_foucus_effect = {
+			LIEGE = root
+			STARTER = root
+			VALUE = 5
+		}
+		ai_chance = { # AI liege likes this topic
+			base = 30
+		}
+	}
+
+	after = {
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_shift_focus_modify_value
+		}
+		trigger_event = {
+			id = ftr_pg_ui_event.0004
+			days = 15
+		}
+	}
+}
+
+# Vote for change focus
+ftr_pg_ui_event.0003 = {
+	type = character_event
+	title = ftr_pg_ui_event.0003.t
+	desc = ftr_pg_ui_event.0003.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	left_portrait = {
+		character = scope:starter
+	}
+	
+	option = { # 同意
+		name = ftr_pg_ui_event.0003.a
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_focus_modify_value
+		}
+		change_variable = {
+			name = ftr_focus_vote_approve
+			add = 1
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+	option = { # 反对
+		name = ftr_pg_ui_event.0003.b
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_focus_modify_value
+		}
+		change_variable = {
+			name = ftr_focus_vote_oppose
+			add = 1
+		}
+		ai_chance = {
+			base = 100
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:starter
+				multiplier = -1
+			}
+		}
+	}
+	option = { # 不表态
+		name = ftr_pg_ui_event.0003.c
+		ai_chance = {
+			base = 100
+		}
+	}
+}
+
+# Vote result of changing focus
+ftr_pg_ui_event.0004 = {
+	type = character_event
+	title = ftr_pg_ui_event.0004.t
+	desc = ftr_pg_ui_event.0004.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {
+		if = {
+			limit = { var:ftr_focus_vote_approve > var:ftr_focus_vote_oppose }
+			ftr_change_realm_political_focus_effect = {
+				LIEGE = root
+				STARTER = root
+				VALUE = scope:ftr_political_focus_tobe
+			}
+		}
+		else = {
+			custom_description = {
+				text = "ftr_change_focus_failed_tt"
+			}
+		}
+	}
+	
+	option = {
+		name = ftr_pg_ui_event.0004.a
+	}
+
+	after = {
+		remove_character_flag = ftr_changing_focus_flag
+		set_variable = {
+			name = ftr_focus_vote_approve
+			value = 0
+		}
+		set_variable = {
+			name = ftr_focus_vote_oppose
+			value = 0
 		}
 	}
 }

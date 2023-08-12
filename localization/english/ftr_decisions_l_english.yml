@@ -45,3 +45,8 @@
  ftr_end_tyrant_succession_decision_tooltip:0 "End tyrant politics."
  ftr_end_tyrant_succession_decision_desc:0 "Our country has experienced a long period of tyrannical rule in the past, and all rulers have governed under the shadow of lack of legitimacy. In the struggle for power, everyone is in danger and precarious. Now we have found a bright path for the country, and His Majesty the Great is ordained by heaven and is our eternal and legitimate lord!"
  ftr_end_tyrant_succession_decision_confirm:0 "All glory belongs to Your Majasty!"
+
+ ftr_pg_ai_expande_influence_decision:0 "<FTR> Expand Influence"
+ ftr_pg_ai_expande_influence_decision_tooltip:0 "Try to expande your political influence"
+ ftr_pg_ai_expande_influence_decision_desc:0 "Try to expand their political influence through certain means, so as to gain an advantage in the political game."
+ ftr_pg_ai_expande_influence_decision_confirm:0 "Time to action"

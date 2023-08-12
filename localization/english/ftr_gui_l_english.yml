@@ -4,7 +4,7 @@
  FTR_SHOW_MY_PG_POWER_TEXT:0 "#T Political Influence:[GetPlayer.MakeScope.ScriptValue('ftr_political_influence_value')]"
  ftr_show_pg_power_tooltip:0 "Political influence is used to play political games. Political influence can be obtained by obtaining titles, consuming [prestige|E] and trade with other participants, etc."
  FTR_GET_PG_POWER_TEXT:0 "Expand Influence"
- ftr_get_pg_power_tooltip:0 "Cost [EmptyScope.ScriptValue('ftr_expand_influence_prestige_cost_value')|0] of [prestige|E] in exchange for [EmptyScope.ScriptValue('ftr_expand_influence_value')|0] political influence."
+ ftr_get_pg_power_tooltip:0 "Try to expand political influence. Condition:\n +Is capable adault\n +Not expand influence recently"
  ftr_not_expanded_influence_recently_text:0 "You have expanded your influence recently."
  ftr_flag_expanded_influence_recently_text:0 "Cannot expand influence in two years."
  ftr_add_political_influence_effect_text:0 "$VALUE|=+0$ political influence"

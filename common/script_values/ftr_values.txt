@@ -2,6 +2,9 @@
 
 ftr_expand_influence_prestige_cost_value = 500
 ftr_expand_influence_prestige_modify_value = -500
+ftr_expand_influence_piety_cost_value = 300
+ftr_expand_influence_piety_modify_value = -300
+ftr_expand_influence_gold_cost_value = 250
 ftr_expand_influence_value = 20
 ftr_shift_focus_cost_value = 80
 ftr_shift_focus_modify_value = -80

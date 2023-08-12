@@ -1,0 +1,7 @@
+﻿l_english:
+ ftr_pg_ui_event.0001.t:0 "<FTR> Expand Influence"
+ ftr_pg_ui_event.0001.desc:0 "After hearing that I was going to try to expand my influence, the secretary designed several plans for me..."
+ ftr_pg_ui_event.0001.a:0 "Publicize political achievements"
+ ftr_pg_ui_event.0001.b:0 "Promote my virtues"
+ ftr_pg_ui_event.0001.c:0 "Do some charity"
+ ftr_pg_ui_event.0001.d:0 "Forget about it"

@@ -4,7 +4,7 @@
  FTR_SHOW_MY_PG_POWER_TEXT:0 "#T 影响力：[GetPlayer.MakeScope.ScriptValue('ftr_political_influence_value')|0]"
  ftr_show_pg_power_tooltip:0 "影响力用于进行政治博弈。影响力可以通过获得头衔、消耗[prestige|E]和与其他参与者交易等方式获得。"
  FTR_GET_PG_POWER_TEXT:0 "扩大影响力"
- ftr_get_pg_power_tooltip:0 "消耗[EmptyScope.ScriptValue('ftr_expand_influence_prestige_cost_value')|0][prestige|E]换取[EmptyScope.ScriptValue('ftr_expand_influence_value')|0]政治影响力\n 条件：\n +已成年\n +威望大于[EmptyScope.ScriptValue('ftr_expand_influence_prestige_cost_value')|U0]\n +近期没有扩大影响力"
+ ftr_get_pg_power_tooltip:0 "尝试获取政治影响力\n 条件：\n +已成年\n +近期没有扩大影响力"
  ftr_not_expanded_influence_recently_text:0 "近期已经进行过扩大影响力的操作"
  ftr_flag_expanded_influence_recently_text:0 "近两年内不能再次扩大影响力"
  ftr_add_political_influence_effect_text:0 "$VALUE|=+0$ 政治影响力"

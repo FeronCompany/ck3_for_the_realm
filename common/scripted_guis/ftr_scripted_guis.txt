@@ -19,74 +19,14 @@ ftr_expand_influence = {
 ftr_update_my_powerful_subject_list = {
 	scope = character
 	effect = {
-		clear_variable_list = ftr_my_powerful_subject_list
-		every_vassal = {
-			limit = { 
-				is_powerful_vassal = yes
-				is_capable_adult = yes
-			}
-			save_scope_as = current_powerful_vassal
-			root = {
-				add_to_variable_list = {
-					name = ftr_my_powerful_subject_list
-					target = scope:current_powerful_vassal
-				}
-			}
-		}
-		every_courtier = {
-			limit = {
-				is_landed = no
-				is_capable_adult = yes
-				OR = {
-					is_councillor_of = root
-					is_diarch = yes
-				}
-			}
-			save_scope_as = current_councillor
-			root = {
-				add_to_variable_list = {
-					name = ftr_my_powerful_subject_list
-					target = scope:current_councillor
-				}
-			}
-		}
+		ftr_update_powerful_subjects_effect = yes
 	}
 }
 
 ftr_update_my_realm_pg_participants_list = {
 	scope = character
 	effect = {
-		clear_variable_list = ftr_my_realm_pg_participants_list
-		every_vassal = {
-			limit = {
-				is_capable_adult = yes
-			}
-			save_scope_as = current_vassal
-			root = {
-				add_to_variable_list = {
-					name = ftr_my_realm_pg_participants_list
-					target = scope:current_vassal
-				}
-			}
-		}
-		every_courtier = {
-			limit = {
-				is_landed = no
-				is_capable_adult = yes
-				OR = {
-					is_councillor_of = root
-					house = root.house
-					is_diarch = yes
-				}
-			}
-			save_scope_as = current_courtier
-			root = {
-				add_to_variable_list = {
-					name = ftr_my_realm_pg_participants_list
-					target = scope:current_courtier
-				}
-			}
-		}
+		ftr_update_pg_member_effect = yes
 	}
 }
 
@@ -129,5 +69,67 @@ ftr_change_liege_focus = {
 	}
 	effect = {
 		trigger_event = ftr_pg_ui_event.0005
+	}
+}
+
+ftr_make_my_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+		custom_description = {
+			text = "ftr_not_make_proposal_recently_tt"
+			NOT = {
+				has_character_flag = ftr_make_proposal_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_not_considering_proposal_tt"
+			NOT = {
+				has_character_flag = ftr_considering_proposal_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_have_set_own_realm_focus_tt"
+			exists = var:ftr_pg_focus
+		}
+	}
+	effect = {
+		save_scope_as = starter
+		save_scope_as = liege_c
+		trigger_event = ftr_pg_ui_event.0100
+	}
+}
+
+ftr_make_proposal_to_liege = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+		custom_description = {
+			text = "ftr_not_make_proposal_recently_tt"
+			NOT = {
+				has_character_flag = ftr_make_proposal_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_liege_not_considering_proposal_tt"
+			liege = {
+				NOT = {
+					has_character_flag = ftr_considering_proposal_flag
+				}
+			}
+		}
+		custom_description = {
+			text = "ftr_have_set_liege_realm_focus_tt"
+			liege = { exists = var:ftr_pg_focus }
+		}
+	}
+	effect = {
+		save_scope_as = starter
+		liege = {
+			save_scope_as = liege_c
+		}
+		trigger_event = ftr_pg_ui_event.0100
 	}
 }

@@ -60,6 +60,7 @@ ftr_pg_ai_change_my_realm_focus_decision = {
 	is_shown = {
 		is_ai = yes
 		is_capable_adult = yes
+		is_landed = yes
 	}
 	is_valid = {
 		custom_description = {
@@ -130,6 +131,103 @@ ftr_pg_ai_change_liege_realm_focus_decision = {
 
 	effect = {
 		trigger_event = ftr_pg_ui_event.0005
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 33
+	}
+}
+
+ftr_pg_ai_make_own_proposal_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_ai_make_own_proposal_decision_desc
+	selection_tooltip = ftr_pg_ai_make_own_proposal_decision_tooltip
+	ai_check_interval = 24
+	is_shown = {
+		#is_ai = yes
+		is_capable_adult = yes
+		is_landed = yes
+	}
+	is_valid = {
+		custom_description = {
+			text = "ftr_have_enough_pi_tt"
+			value = ftr_make_pg_proposal_cost_value
+			ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+		}
+		custom_description = {
+			text = "ftr_not_make_proposal_recently_tt"
+			NOT = {
+				has_character_flag = ftr_make_proposal_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_not_considering_proposal_tt"
+			NOT = {
+				has_character_flag = ftr_considering_proposal_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_have_set_own_realm_focus_tt"
+			exists = var:ftr_pg_focus
+		}
+	}
+
+	effect = {
+		save_scope_as = starter
+		save_scope_as = liege_c
+		trigger_event = ftr_pg_ui_event.0100
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 33
+	}
+}
+
+ftr_pg_ai_make_proposal_to_liege_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_ai_make_proposal_to_liege_decision_desc
+	selection_tooltip = ftr_pg_ai_make_proposal_to_liege_decision_tooltip
+	ai_check_interval = 24
+	is_shown = {
+		#is_ai = yes
+		is_capable_adult = yes
+	}
+	is_valid = {
+		custom_description = {
+			text = "ftr_have_enough_pi_tt"
+			value = ftr_make_pg_proposal_cost_value
+			ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+		}
+		custom_description = {
+			text = "ftr_not_make_proposal_recently_tt"
+			NOT = {
+				has_character_flag = ftr_make_proposal_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_liege_not_considering_proposal_tt"
+			liege = {
+				NOT = {
+					has_character_flag = ftr_considering_proposal_flag
+				}
+			}
+		}
+		custom_description = {
+			text = "ftr_have_set_liege_realm_focus_tt"
+			liege = { exists = var:ftr_pg_focus }
+		}
+	}
+
+	effect = {
+		save_scope_as = starter
+		liege = {
+			save_scope_as = liege_c
+		}
+		trigger_event = ftr_pg_ui_event.0100
 	}
 	ai_potential = {
 		always = yes

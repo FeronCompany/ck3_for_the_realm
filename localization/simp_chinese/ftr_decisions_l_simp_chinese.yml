@@ -73,3 +73,18 @@
  ftr_add_political_influence_decision_tooltip:0 "增加影响力"
  ftr_add_political_influence_decision_desc:0 "增加影响力"
  ftr_add_political_influence_decision_confirm:0 "增加影响力"
+
+ ftr_pg_ai_make_own_proposal_decision:0 "<FTR>提交本地议案"
+ ftr_pg_ai_make_own_proposal_decision_tooltip:0 "提交本地议案"
+ ftr_pg_ai_make_own_proposal_decision_desc:0 "在你的领地内提交议案，交给领地内核心圈子成员审议。"
+ ftr_pg_ai_make_own_proposal_decision_confirm:0 "提交本地议案"
+ ftr_not_make_proposal_recently_text:0 "近期没有提交过议案"
+ ftr_not_considering_proposal_text:0 "没有正在商讨的议案"
+ ftr_have_set_own_realm_focus_text:0 "领地内存在政治焦点"
+
+ ftr_pg_ai_make_proposal_to_liege_decision:0 "<FTR>向领主提交议案"
+ ftr_pg_ai_make_proposal_to_liege_decision_tooltip:0 "向领主提交议案"
+ ftr_pg_ai_make_proposal_to_liege_decision_desc:0 "在你的领主的领地内提交议案，交给该领地内核心圈子成员审议。"
+ ftr_pg_ai_make_proposal_to_liege_decision_confirm:0 "向领主提交议案"
+ ftr_liege_not_considering_proposal_text:0 "领主的领地内没有正在商讨的议案"
+ ftr_have_set_liege_realm_focus_text:0 "领主领地内存在政治焦点"

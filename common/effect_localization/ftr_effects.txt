@@ -131,3 +131,27 @@ ftr_change_focus_vote_approve_tt = {
 ftr_change_focus_vote_oppose_tt = {
 	global = ftr_change_focus_vote_oppose_text
 }
+
+ftr_flag_recently_made_proposal_tt = {
+	global = ftr_flag_recently_made_proposal_text
+}
+
+ftr_expand_authority_failed_tt = {
+	global = ftr_expand_authority_failed_text
+}
+
+ftr_expand_authority_success_notify_tt = {
+	global = ftr_expand_authority_success_notify_text
+}
+
+ftr_expand_authority_failed_notify_tt = {
+	global = ftr_expand_authority_failed_notify_text
+}
+
+ftr_proposal_vote_approve_tt = {
+	global = ftr_proposal_vote_approve_text
+}
+
+ftr_proposal_vote_oppose_tt = {
+	global = ftr_proposal_vote_oppose_text
+}

@@ -43,3 +43,23 @@ ftr_liege_not_changing_focus_tt = {
 	global = ftr_liege_not_changing_focus_text
 	global_not = ftr_liege_has_changing_focus_text
 }
+
+ftr_not_make_proposal_recently_tt = {
+	global = ftr_not_make_proposal_recently_text
+}
+
+ftr_not_considering_proposal_tt = {
+	global = ftr_not_considering_proposal_text
+}
+
+ftr_have_set_own_realm_focus_tt = {
+	global = ftr_have_set_own_realm_focus_text
+}
+
+ftr_liege_not_considering_proposal_tt = {
+	global = ftr_liege_not_considering_proposal_text
+}
+
+ftr_have_set_liege_realm_focus_tt = {
+	global = ftr_have_set_liege_realm_focus_text
+}

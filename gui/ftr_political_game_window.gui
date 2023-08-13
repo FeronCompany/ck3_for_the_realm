@@ -242,9 +242,10 @@
 								button_standard = {
 									name = "ftr_pg_make_proposal_button"
 									text = "FTR_PG_MAKE_PROPOSAL"
-									#onclick = "[OpenGameRules]"
-									#enabled = "[GameSetup.CanStart]"
 									tooltip = "ftr_pg_make_proposal_tooltip"
+									datacontext = "[GetScriptedGui( 'ftr_make_proposal_to_liege' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 									size = { 100 33 }
     							}
 								button_standard = {

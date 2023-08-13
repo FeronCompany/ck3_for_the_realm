@@ -295,22 +295,26 @@ ftr_pg_ui_event.0004 = {
 				STARTER = root
 				VALUE = scope:ftr_political_focus_tobe
 			}
-			ftr_change_focus_result_notify_effect = {
-				LIEGE = scope:liege_c
-				STARTER = root
-				SUCCESS = 1
-				VALUE = scope:ftr_political_focus_tobe
+			hidden_effect = {
+				ftr_change_focus_result_notify_effect = {
+					LIEGE = scope:liege_c
+					STARTER = root
+					SUCCESS = 1
+					VALUE = scope:ftr_political_focus_tobe
+				}
 			}
 		}
 		else = {
 			custom_description = {
 				text = "ftr_change_focus_failed_tt"
 			}
-			ftr_change_focus_result_notify_effect = {
-				LIEGE = scope:liege_c
-				STARTER = root
-				SUCCESS = 0
-				VALUE = scope:ftr_political_focus_tobe
+			hidden_effect = {
+				ftr_change_focus_result_notify_effect = {
+					LIEGE = scope:liege_c
+					STARTER = root
+					SUCCESS = 0
+					VALUE = scope:ftr_political_focus_tobe
+				}
 			}
 		}
 	}
@@ -434,7 +438,249 @@ ftr_pg_ui_event.0005 = {
 		}
 		trigger_event = {
 			id = ftr_pg_ui_event.0004
-			days = 15
+			days = 30
+		}
+	}
+}
+
+# Make proposal list
+ftr_pg_ui_event.0100 = {
+	type = character_event
+	title = ftr_pg_ui_event.0100.t
+	desc = ftr_pg_ui_event.0100.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_make_pg_proposal_modify_value
+		}
+		custom_description = {
+			text = "ftr_flag_recently_made_proposal_tt"
+			add_character_flag = {
+				flag = ftr_make_proposal_flag
+				days = 365
+			}
+		}
+		scope:liege_c = {
+			ftr_update_powerful_subjects_effect = yes
+			add_character_flag = {
+				flag = ftr_considering_proposal_flag
+			}
+			set_variable = {
+				name = ftr_proposal_vote_approve
+				value = 1
+			}
+			set_variable = {
+				name = ftr_proposal_vote_oppose
+				value = 0
+			}
+		}
+	}
+	
+	# Options For Crown Authority Focus
+	option = { # Expansion of royal power
+		name = ftr_pg_ui_event.0100.1
+		trigger = {
+			scope:liege_c = {
+				exists = var:ftr_pg_focus
+				OR = {
+					var:ftr_pg_focus = 1 # 王权
+					var:ftr_pg_focus = 5 # 安全
+				}
+			}
+		}
+		scope:liege_c = {
+			every_in_list = {
+				variable = ftr_my_powerful_subject_list
+				trigger_event = {
+					id = ftr_pg_ui_event.0101
+					days = { 5 10 }
+				}
+			}
+			trigger_event = {
+				id = ftr_pg_ui_event.0201
+				days = 30
+			}
+		}
+		ai_chance = {
+			base = 0
+			modifier = { # liege want to expand his power
+				add = 100
+				scope:liege_c = root
+			}
+			modifier = { # loyal vassal help liege
+				add = 20
+				NOT = { scope:liege_c = root }
+				opinion = {
+					target = scope:liege_c
+					value >= 90
+				}
+				scope:liege_c = {
+					OR = {
+						has_realm_law = crown_authority_0
+						has_realm_law = crown_authority_1
+					}
+				}
+			}
+		}
+	}
+
+	# Backup option
+	option = {
+		name = ftr_pg_ui_event.0100.backup
+		ai_chance = {
+			base = 1
+		}
+	}
+}
+
+
+# Expande Crown Authority Vote
+ftr_pg_ui_event.0101 = {
+	type = character_event
+	title = ftr_pg_ui_event.0101.t
+	desc = ftr_pg_ui_event.0101.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	option = { # 同意
+		name = ftr_pg_ui_event.0101.a
+		trigger = {
+			ftr_political_influence_value >= ftr_vote_proposal_cost_value
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
+		}
+		custom_description = {
+			text = "ftr_proposal_vote_approve_tt"
+			scope:liege_c = {
+				change_variable = {
+					name = ftr_proposal_vote_approve
+					add = 1
+				}
+			}
+		}
+		ai_chance = {
+			base = 0
+			modifier = { # liege want to expand his power
+				add = 100
+				scope:liege_c = root
+			}
+			modifier = { # loyal vassal help liege
+				add = 20
+				NOT = { scope:liege_c = root }
+				opinion = {
+					target = scope:liege_c
+					value >= 70
+				}
+				OR = {
+					scope:liege_c = {
+						OR = {
+							has_realm_law = crown_authority_0
+							has_realm_law = crown_authority_1
+						}
+					}
+					is_allied_to = scope:liege_c
+				}
+			}
+		}
+	}
+	option = { # 反对
+		name = ftr_pg_ui_event.0101.b
+		trigger = {
+			ftr_political_influence_value >= ftr_vote_proposal_cost_value
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
+		}
+		custom_description = {
+			text = "ftr_proposal_vote_oppose_tt"
+			scope:liege_c = {
+				change_variable = {
+					name = ftr_proposal_vote_oppose
+					add = 1
+				}
+			}
+		}
+		ai_chance = {
+			base = 100
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:starter
+				multiplier = -1
+			}
+		}
+	}
+	option = { # 不表态
+		name = ftr_pg_ui_event.0101.c
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Expande Crown Authority Result
+ftr_pg_ui_event.0201 = {
+	type = character_event
+	title = ftr_pg_ui_event.0201.t
+	desc = ftr_pg_ui_event.0201.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:liege_c = {
+				ftr_expand_authority_effect = yes
+			}
+			hidden_effect = {
+				ftr_expand_authority_vote_result_notify_effect = {
+					STARTER = scope:starter
+					LIEGE = scope:liege_c
+					SUCCESS = 1
+				}
+			}
+		}
+		else = {
+			custom_description = {
+				text = "ftr_expand_authority_failed_tt"
+			}
+			hidden_effect = {
+				ftr_expand_authority_vote_result_notify_effect = {
+					STARTER = scope:starter
+					LIEGE = scope:liege_c
+					SUCCESS = 0
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ftr_pg_ui_event.0201.a
+	}
+
+	after = {
+		scope:liege_c = {
+			remove_character_flag = ftr_considering_proposal_flag
+			set_variable = {
+				name = ftr_proposal_vote_approve
+				value = 0
+			}
+			set_variable = {
+				name = ftr_proposal_vote_oppose
+				value = 0
+			}
 		}
 	}
 }

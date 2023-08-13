@@ -1,5 +1,73 @@
 ﻿
 
+ftr_update_powerful_subjects_effect = {
+	clear_variable_list = ftr_my_powerful_subject_list
+	every_vassal = {
+		limit = { 
+			is_powerful_vassal = yes
+			is_capable_adult = yes
+		}
+		save_scope_as = current_powerful_vassal
+		root = {
+			add_to_variable_list = {
+				name = ftr_my_powerful_subject_list
+				target = scope:current_powerful_vassal
+			}
+		}
+	}
+	every_courtier = {
+		limit = {
+			is_landed = no
+			is_capable_adult = yes
+			OR = {
+				is_councillor_of = root
+				is_diarch = yes
+			}
+		}
+		save_scope_as = current_councillor
+		root = {
+			add_to_variable_list = {
+				name = ftr_my_powerful_subject_list
+				target = scope:current_councillor
+			}
+		}
+	}
+}
+
+ftr_update_pg_member_effect = {
+	clear_variable_list = ftr_my_realm_pg_participants_list
+	every_vassal = {
+		limit = {
+			is_capable_adult = yes
+		}
+		save_scope_as = current_vassal
+		root = {
+			add_to_variable_list = {
+				name = ftr_my_realm_pg_participants_list
+				target = scope:current_vassal
+			}
+		}
+	}
+	every_courtier = {
+		limit = {
+			is_landed = no
+			is_capable_adult = yes
+			OR = {
+				is_councillor_of = root
+				house = root.house
+				is_diarch = yes
+			}
+		}
+		save_scope_as = current_courtier
+		root = {
+			add_to_variable_list = {
+				name = ftr_my_realm_pg_participants_list
+				target = scope:current_courtier
+			}
+		}
+	}
+}
+
 ftr_add_political_influence_effect = {
 	custom_description = {
 		text = ftr_add_political_influence_effect_tt
@@ -103,7 +171,7 @@ ftr_submit_change_foucus_effect = {
 	}
 }
 
-ftr_change_focus_result_notify_effect = {
+ftr_get_fg_notify_list_effect = {
 	$LIEGE$ = {
 		every_vassal = {
 			limit = {
@@ -131,6 +199,13 @@ ftr_change_focus_result_notify_effect = {
 			add_to_list = ftr_notify_list
 		}
 	}
+}
+
+ftr_change_focus_result_notify_effect = {
+	ftr_get_fg_notify_list_effect = {
+		LIEGE = $LIEGE$
+		STARTER = $STARTER$
+	}
 	every_in_list = {
 		list = ftr_notify_list
 		if = {
@@ -156,5 +231,100 @@ ftr_change_focus_result_notify_effect = {
 				right_icon = $LIEGE$
 			}
 		}
+	}
+}
+
+ftr_expand_authority_vote_result_notify_effect = {
+	ftr_get_fg_notify_list_effect = {
+		LIEGE = $LIEGE$
+		STARTER = $STARTER$
+	}
+	every_in_list = {
+		list = ftr_notify_list
+		if = {
+			limit = { $SUCCESS$ = 1 }
+			send_interface_message = {
+				title = "ftr_change_focus_broadcast_tt"
+				left_icon = $STARTER$
+				right_icon = $LIEGE$
+				custom_description = {
+					text = "ftr_expand_authority_success_notify_tt"
+					subject = $STARTER$
+					object = $LIEGE$
+				}
+				show_as_tooltip = {
+					$LIEGE$ = {
+						ftr_expand_authority_effect = yes
+					}
+				}
+			}
+		}
+		else = {
+			send_interface_message = {
+				title = "ftr_change_focus_broadcast_tt"
+				desc = "ftr_change_focus_failed_text"
+				left_icon = $STARTER$
+				right_icon = $LIEGE$
+				custom_description = {
+					text = "ftr_expand_authority_failed_notify_tt"
+					subject = $STARTER$
+					object = $LIEGE$
+				}
+			}
+		}
+	}
+}
+
+ftr_decrease_authority_effect = {
+	if = {
+		limit = { has_realm_law = crown_authority_1 }
+		add_realm_law = crown_authority_0
+	}
+	if = {
+		limit = { has_realm_law = crown_authority_2 }
+		add_realm_law = crown_authority_1
+	}
+	if = {
+		limit = { has_realm_law = crown_authority_3 }
+		add_realm_law = crown_authority_2
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_1 }
+		add_realm_law = tribal_authority_0
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_2 }
+		add_realm_law = tribal_authority_1
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_3 }
+		add_realm_law = tribal_authority_2
+	}
+}
+
+ftr_expand_authority_effect = {
+	if = {
+		limit = { has_realm_law = crown_authority_0 }
+		add_realm_law = crown_authority_1
+	}
+	if = {
+		limit = { has_realm_law = crown_authority_1 }
+		add_realm_law = crown_authority_2
+	}
+	if = {
+		limit = { has_realm_law = crown_authority_2 }
+		add_realm_law = crown_authority_3
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_0 }
+		add_realm_law = tribal_authority_1
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_1 }
+		add_realm_law = tribal_authority_2
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_2 }
+		add_realm_law = tribal_authority_3
 	}
 }

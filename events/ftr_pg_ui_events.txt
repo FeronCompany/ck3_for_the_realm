@@ -119,13 +119,18 @@ ftr_pg_ui_event.0002 = {
 			base = 10
 			modifier = { # Crown Athority too low, I want to make it higher
 				add = 40
-				has_realm_law = crown_authority_0
+				OR = {
+					has_realm_law = crown_authority_0
+					has_realm_law = tribal_authority_0
+				}
 			}
 			modifier = { # Crown Athority is enough, don't make any trouble
 				add = -10
 				OR = {
 					has_realm_law = crown_authority_2
 					has_realm_law = crown_authority_3
+					has_realm_law = tribal_authority_2
+					has_realm_law = tribal_authority_3
 				}
 			}
 		}
@@ -465,7 +470,7 @@ ftr_pg_ui_event.0100 = {
 			}
 		}
 		scope:liege_c = {
-			ftr_update_powerful_subjects_effect = yes
+			#ftr_update_powerful_subjects_effect = yes
 			add_character_flag = {
 				flag = ftr_considering_proposal_flag
 			}
@@ -489,6 +494,12 @@ ftr_pg_ui_event.0100 = {
 				OR = {
 					var:ftr_pg_focus = 1 # 王权
 					var:ftr_pg_focus = 5 # 安全
+				}
+				NOT = {
+					OR = {
+						has_realm_law = crown_authority_3
+						has_realm_law = tribal_authority_3
+					}
 				}
 			}
 		}
@@ -522,6 +533,8 @@ ftr_pg_ui_event.0100 = {
 					OR = {
 						has_realm_law = crown_authority_0
 						has_realm_law = crown_authority_1
+						has_realm_law = tribal_authority_0
+						has_realm_law = tribal_authority_1
 					}
 				}
 			}
@@ -583,6 +596,8 @@ ftr_pg_ui_event.0101 = {
 						OR = {
 							has_realm_law = crown_authority_0
 							has_realm_law = crown_authority_1
+							has_realm_law = tribal_authority_0
+							has_realm_law = tribal_authority_1
 						}
 					}
 					is_allied_to = scope:liege_c

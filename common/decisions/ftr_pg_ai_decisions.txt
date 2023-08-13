@@ -146,7 +146,7 @@ ftr_pg_ai_make_own_proposal_decision = {
 	selection_tooltip = ftr_pg_ai_make_own_proposal_decision_tooltip
 	ai_check_interval = 24
 	is_shown = {
-		#is_ai = yes
+		is_ai = yes
 		is_capable_adult = yes
 		is_landed = yes
 	}
@@ -193,7 +193,7 @@ ftr_pg_ai_make_proposal_to_liege_decision = {
 	selection_tooltip = ftr_pg_ai_make_proposal_to_liege_decision_tooltip
 	ai_check_interval = 24
 	is_shown = {
-		#is_ai = yes
+		is_ai = yes
 		is_capable_adult = yes
 	}
 	is_valid = {

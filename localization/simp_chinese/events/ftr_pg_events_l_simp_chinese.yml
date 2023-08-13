@@ -50,7 +50,7 @@
  ftr_pg_ui_event.0201.t:0 "提升王权投票结果"
  ftr_pg_ui_event.0201.desc:0 "[starter.GetShortUIName]发起的关于提高[liege_c.GetShortUIName]君权的提议如今已经完成评议，核心圈子的成员们给出了投票结果："
  ftr_expand_authority_failed_text:0 "你提升[liege_c.GetShortUIName]君权的提议被搁置了。"
- ftr_change_focus_broadcast_tt:0 "提升君权投票结果"
+ ftr_expand_authority_broadcast_tt:0 "提升君权投票结果"
  ftr_expand_authority_success_notify_text:0 "[CHARACTER.GetShortUIName]发起的关于提高[TARGET_CHARACTER.GetShortUIName]君权的提议获得了多数人的认可。"
  ftr_expand_authority_failed_notify_text:0 "[CHARACTER.GetShortUIName]发起的关于提高[TARGET_CHARACTER.GetShortUIName]君权的提议未能通过核心圈子的评议。"
  ftr_pg_ui_event.0201.a:0 "我了解了"

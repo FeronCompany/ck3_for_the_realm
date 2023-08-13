@@ -295,10 +295,22 @@ ftr_pg_ui_event.0004 = {
 				STARTER = root
 				VALUE = scope:ftr_political_focus_tobe
 			}
+			ftr_change_focus_result_notify_effect = {
+				LIEGE = scope:liege_c
+				STARTER = root
+				SUCCESS = 1
+				VALUE = scope:ftr_political_focus_tobe
+			}
 		}
 		else = {
 			custom_description = {
 				text = "ftr_change_focus_failed_tt"
+			}
+			ftr_change_focus_result_notify_effect = {
+				LIEGE = scope:liege_c
+				STARTER = root
+				SUCCESS = 0
+				VALUE = scope:ftr_political_focus_tobe
 			}
 		}
 	}

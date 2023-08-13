@@ -102,3 +102,59 @@ ftr_submit_change_foucus_effect = {
 		}
 	}
 }
+
+ftr_change_focus_result_notify_effect = {
+	$LIEGE$ = {
+		every_vassal = {
+			limit = {
+				is_capable_adult = yes
+				NOT = { $STARTER$ = this }
+			}
+			add_to_list = ftr_notify_list
+		}
+		every_courtier = {
+			limit = {
+				is_capable_adult = yes
+				OR = {
+					is_councillor_of = $LIEGE$
+					house = $LIEGE$.house
+					is_diarch = yes
+					NOT = { $STARTER$ = this }
+				}
+			}
+			add_to_list = ftr_notify_list
+		}
+		if = {
+			limit = {
+				NOT = { this = $STARTER$ }
+			}
+			add_to_list = ftr_notify_list
+		}
+	}
+	every_in_list = {
+		list = ftr_notify_list
+		if = {
+			limit = { $SUCCESS$ = 1 }
+			send_interface_message = {
+				title = "ftr_change_focus_broadcast_tt"
+				left_icon = $STARTER$
+				right_icon = $LIEGE$
+				show_as_tooltip = {
+					ftr_change_realm_political_focus_effect = {
+						LIEGE = $LIEGE$
+						STARTER = $STARTER$
+						VALUE = $VALUE$
+					}
+				}
+			}
+		}
+		else = {
+			send_interface_message = {
+				title = "ftr_change_focus_broadcast_tt"
+				desc = "ftr_change_focus_failed_text"
+				left_icon = $STARTER$
+				right_icon = $LIEGE$
+			}
+		}
+	}
+}

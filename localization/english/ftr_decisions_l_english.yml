@@ -68,3 +68,8 @@
  ftr_pg_ai_change_liege_realm_focus_decision_confirm:0 "See what they say."
  ftr_liege_not_changing_focus_text:0 "Not voting of changing focus of liege's realm."
  ftr_liege_has_changing_focus_text:0 "Have voting of changing focus of liege's realm."
+
+ ftr_add_political_influence_decision:0 "<FTR>DEBUG:Add Political Influence"
+ ftr_add_political_influence_decision_tooltip:0 "Add political influence"
+ ftr_add_political_influence_decision_desc:0 "Add political influence."
+ ftr_add_political_influence_decision_confirm:0 "Add political influence"

@@ -1,8 +1,8 @@
 ﻿
 ftr_add_political_influence_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	desc = ftr_end_tyrant_succession_decision_desc
-	selection_tooltip = ftr_end_tyrant_succession_decision_tooltip
+	desc = ftr_add_political_influence_decision_desc
+	selection_tooltip = ftr_add_political_influence_decision_tooltip
 	is_shown = {
 		#is_independent_ruler = yes
 		is_ai = no
@@ -20,6 +20,9 @@ ftr_add_political_influence_decision = {
 		#	STARTER = scope:me
 		#	VALUE = 3
 		#}
+	}
+	ai_potential = {
+		always = no
 	}
 }
 
@@ -100,7 +103,7 @@ ftr_pg_ai_change_liege_realm_focus_decision = {
 	selection_tooltip = ftr_pg_ai_change_liege_realm_focus_decision_tooltip
 	ai_check_interval = 36
 	is_shown = {
-		#is_ai = yes
+		is_ai = yes
 		is_capable_adult = yes
 	}
 	is_valid = {

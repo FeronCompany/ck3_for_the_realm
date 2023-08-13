@@ -68,3 +68,8 @@
  ftr_pg_ai_change_liege_realm_focus_decision_confirm:0 "看看大家的反应"
  ftr_liege_not_changing_focus_text:0 "领主没有正在进行中的转移焦点投票"
  ftr_liege_has_changing_focus_text:0 "领主有正在进行中的转移焦点投票"
+
+ ftr_add_political_influence_decision:0 "<FTR>DEBUG:增加影响力"
+ ftr_add_political_influence_decision_tooltip:0 "增加影响力"
+ ftr_add_political_influence_decision_desc:0 "增加影响力"
+ ftr_add_political_influence_decision_confirm:0 "增加影响力"

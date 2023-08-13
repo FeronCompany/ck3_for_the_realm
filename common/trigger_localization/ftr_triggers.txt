@@ -38,3 +38,8 @@ ftr_have_enough_pi_tt = {
 	global = ftr_have_enough_pi_text
 	global_not = ftr_not_have_enough_pi_text
 }
+
+ftr_liege_not_changing_focus_tt = {
+	global = ftr_liege_not_changing_focus_text
+	global_not = ftr_liege_has_changing_focus_text
+}

@@ -7,7 +7,7 @@
  ftr_pg_ui_event.0001.d:0 "算了吧"
 
  ftr_pg_ui_event.0002.t:0 "<FTR>转移焦点"
- ftr_pg_ui_event.0002.desc:0 "目前的政治焦点似乎并不适合我们，可以尝试以下的选择："
+ ftr_pg_ui_event.0002.desc:0 "目前我领地的政治焦点似乎并不适合我们，可以尝试以下的选择："
  ftr_pg_ui_event.0002.a:0 "王权"
  ftr_pg_ui_event.0002.b:0 "继承权"
  ftr_pg_ui_event.0002.c:0 "文化"
@@ -25,4 +25,9 @@
  ftr_pg_ui_event.0004.t:0 "投票结果"
  ftr_pg_ui_event.0004.desc:0 "关于转移焦点的讨论已经结束了，看看结果吧。"
  ftr_pg_ui_event.0004.a:0 "我了解了"
+ ftr_change_focus_vote_approve_text:0 "你投下了赞成票"
+ ftr_change_focus_vote_oppose_text:0 "你投下了反对票"
  ftr_change_focus_failed_text:0 "你对修改领地内政治焦点的努力白费了。"
+
+ ftr_pg_ui_event.0005.t:0 "<FTR>转移焦点"
+ ftr_pg_ui_event.0005.desc:0 "目前领主境内的政治焦点似乎并不适合我们，可以尝试以下的选择："

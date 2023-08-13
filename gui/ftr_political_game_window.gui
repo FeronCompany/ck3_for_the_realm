@@ -250,9 +250,10 @@
 								button_standard = {
 									name = "ftr_pg_change_focus_button"
 									text = "FTR_PG_CHANGE_FOCUS"
-									#onclick = "[OpenGameRules]"
-									#enabled = "[GameSetup.CanStart]"
 									tooltip = "ftr_pg_change_focus_tooltip"
+									datacontext = "[GetScriptedGui( 'ftr_change_liege_focus' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 									size = { 100 33 }
     							}
 							}

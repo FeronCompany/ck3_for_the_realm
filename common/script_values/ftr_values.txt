@@ -8,7 +8,8 @@ ftr_expand_influence_gold_cost_value = 250
 ftr_expand_influence_value = 20
 ftr_shift_focus_cost_value = 80
 ftr_shift_focus_modify_value = -80
-ftr_vote_focus_modify_value = -20
+ftr_vote_focus_cost_value = 10
+ftr_vote_focus_modify_value = -10
 
 ftr_payment_cost_level_value = {
 	value = 0

@@ -123,3 +123,11 @@ ftr_change_focus_failed_tt = {
 ftr_submit_change_foucus_effect_tt = {
 	global = ftr_submit_change_foucus_effect_text
 }
+
+ftr_change_focus_vote_approve_tt = {
+	global = ftr_change_focus_vote_approve_text
+}
+
+ftr_change_focus_vote_oppose_tt = {
+	global = ftr_change_focus_vote_oppose_text
+}

@@ -7,7 +7,7 @@
  ftr_pg_ui_event.0001.d:0 "Forget about it"
 
  ftr_pg_ui_event.0002.t:0 "<FTR> Change Focus"
- ftr_pg_ui_event.0002.desc:0 "The current political focus does not fit us, we can try the following options:"
+ ftr_pg_ui_event.0002.desc:0 "The current political focus in my realm does not fit us, we can try the following options:"
  ftr_pg_ui_event.0002.a:0 "Crown Authority"
  ftr_pg_ui_event.0002.b:0 "Succession"
  ftr_pg_ui_event.0002.c:0 "Culture"
@@ -25,4 +25,9 @@
  ftr_pg_ui_event.0004.t:0 "Voting Result"
  ftr_pg_ui_event.0004.desc:0 "The vote of changing focus is over, let's see the result."
  ftr_pg_ui_event.0004.a:0 "I see"
+ ftr_change_focus_vote_approve_text:0 "You voted yes"
+ ftr_change_focus_vote_oppose_text:0 "You voted no"
  ftr_change_focus_failed_text:0 "You failed to change focus of the realm."
+
+ ftr_pg_ui_event.0005.t:0 "<FTR> Change Focus"
+ ftr_pg_ui_event.0005.desc:0 "The current political focus in liege's realm does not fit us, we can try the following options:"

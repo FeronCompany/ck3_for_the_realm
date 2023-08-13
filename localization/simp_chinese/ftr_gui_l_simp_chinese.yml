@@ -8,7 +8,6 @@
  ftr_not_expanded_influence_recently_text:0 "近期已经进行过扩大影响力的操作"
  ftr_flag_expanded_influence_recently_text:0 "近两年内不能再次扩大影响力"
  ftr_add_political_influence_effect_text:0 "$VALUE|=+0$ 政治影响力"
- ftr_not_change_focus_recently_text:0 "近期已经转移过境内的政治焦点"
  FTR_PG_MY_REALM_TAB:0 "我的领地"
  FTR_PG_LIEGE_REALM_TAB:0 "领主领地"
  FTR_PG_LIEGE_TEXT:0 "领主"

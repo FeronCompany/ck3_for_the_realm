@@ -65,15 +65,18 @@ ftr_submit_change_foucus_effect = {
 		every_vassal = {
 			limit = {
 				is_capable_adult = yes
+				NOT = { scope:starter = this }
 			}
 			add_to_list = ftr_pg_focus_change_voter_list
 		}
 		every_courtier = {
 			limit = {
+				is_capable_adult = yes
 				OR = {
 					is_councillor_of = scope:liege_c
 					house = scope:liege_c.house
 					is_diarch = yes
+					NOT = { scope:starter = this }
 				}
 			}
 			add_to_list = ftr_pg_focus_change_voter_list
@@ -86,9 +89,9 @@ ftr_submit_change_foucus_effect = {
 	if = {
 		limit = {
 			NOT = { scope:liege_c = scope:starter }
-			scope:liege_c = {
-				add_to_list = ftr_pg_focus_change_voter_list
-			}
+		}
+		scope:liege_c = {
+			add_to_list = ftr_pg_focus_change_voter_list
 		}
 	}
 	every_in_list = {

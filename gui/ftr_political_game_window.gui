@@ -104,7 +104,7 @@
 							}
 						}
 						vbox = {
-							margin = { 80 0 }
+							margin = { 40 0 }
 							layoutpolicy_horizontal = expanding
 							text_label_center = {
 								margin = { 0 10 }
@@ -131,6 +131,46 @@
 									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 									size = { 100 33 }
+    							}
+							}
+						}
+						vbox = {
+							margin = { 40 0 }
+							layoutpolicy_horizontal = expanding
+							text_label_center = {
+								margin = { 0 10 }
+								text = "FTR_PG_MY_PROPOSAL_TEXT"
+								tooltip = "ftr_pg_proposal_tooltip"
+							}
+							hbox = {
+								spacing = 5
+								margin = { 0 10 }
+								button_standard = {
+									name = "ftr_pg_favor_proposal_button"
+									text = "FTR_PG_FAVOR_PROPOSAL"
+									datacontext = "[GetScriptedGui( 'ftr_favor_my_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									down = "[EqualTo_int32( GetPlayer.MakeScope.Var('ftr_my_proposal_attitude').GetValue, '(int32)1' )]"
+									size = { 75 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_reject_proposal_button"
+									text = "FTR_PG_REJECT_PROPOSAL"
+									datacontext = "[GetScriptedGui( 'ftr_reject_my_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									down = "[EqualTo_int32( GetPlayer.MakeScope.Var('ftr_my_proposal_attitude').GetValue, '(int32)2' )]"
+									size = { 75 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_abstain_proposal_button"
+									text = "FTR_PG_ABSTAIN_PROPOSAL"
+									datacontext = "[GetScriptedGui( 'ftr_abstain_my_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									down = "[EqualTo_int32( GetPlayer.MakeScope.Var('ftr_my_proposal_attitude').GetValue, '(int32)3' )]"
+									size = { 75 33 }
     							}
 							}
 						}
@@ -229,7 +269,7 @@
 							}
 						}
 						vbox = {
-							margin = { 80 0 }
+							margin = { 40 0 }
 							layoutpolicy_horizontal = expanding
 							text_label_center = {
 								margin = { 0 10 }
@@ -256,6 +296,46 @@
 									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 									size = { 100 33 }
+    							}
+							}
+						}
+						vbox = {
+							margin = { 40 0 }
+							layoutpolicy_horizontal = expanding
+							text_label_center = {
+								margin = { 0 10 }
+								text = "FTR_PG_LIEGE_PROPOSAL_TEXT"
+								tooltip = "ftr_pg_proposal_tooltip"
+							}
+							hbox = {
+								spacing = 5
+								margin = { 0 10 }
+								button_standard = {
+									name = "ftr_pg_favor_proposal_button"
+									text = "FTR_PG_FAVOR_PROPOSAL"
+									datacontext = "[GetScriptedGui( 'ftr_favor_liege_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									down = "[EqualTo_int32( GetPlayer.MakeScope.Var('ftr_liege_proposal_attitude').GetValue, '(int32)1' )]"
+									size = { 75 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_reject_proposal_button"
+									text = "FTR_PG_REJECT_PROPOSAL"
+									datacontext = "[GetScriptedGui( 'ftr_reject_liege_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									down = "[EqualTo_int32( GetPlayer.MakeScope.Var('ftr_liege_proposal_attitude').GetValue, '(int32)2' )]"
+									size = { 75 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_abstain_proposal_button"
+									text = "FTR_PG_ABSTAIN_PROPOSAL"
+									datacontext = "[GetScriptedGui( 'ftr_abstain_liege_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									down = "[EqualTo_int32( GetPlayer.MakeScope.Var('ftr_liege_proposal_attitude').GetValue, '(int32)3' )]"
+									size = { 75 33 }
     							}
 							}
 						}

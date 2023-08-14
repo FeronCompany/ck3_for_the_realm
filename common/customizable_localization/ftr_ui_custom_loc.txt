@@ -88,3 +88,20 @@ FTR_PlayerPG_Focus_Tobe = {
 		fallback = yes
 	}
 }
+
+FTR_PlayerPG_Proposal = {
+	type = character
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 1
+		}
+		localization_key = ftr_pg_proposal_expand_crown_authority
+	}
+
+	text = {
+		localization_key = ftr_pg_proposal_none
+		fallback = yes
+	}
+}

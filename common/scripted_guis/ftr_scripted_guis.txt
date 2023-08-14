@@ -133,3 +133,141 @@ ftr_make_proposal_to_liege = {
 		trigger_event = ftr_pg_ui_event.0100
 	}
 }
+
+ftr_favor_my_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		exists = var:ftr_proposal_type
+		var:ftr_proposal_type > 0 # 无议案时置为0
+		NOT = {
+			has_character_flag = ftr_change_my_proposal_attitude_flag
+		}
+	}
+	effect = {
+		set_variable = {
+			name = ftr_my_proposal_attitude
+			value = 1 # 赞成
+		}
+		add_character_flag = {
+			flag = ftr_change_my_proposal_attitude_flag
+			days = 30
+		}
+	}
+}
+
+ftr_reject_my_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		exists = var:ftr_proposal_type
+		var:ftr_proposal_type > 0 # 无议案时置为0
+		NOT = {
+			has_character_flag = ftr_change_my_proposal_attitude_flag
+		}
+	}
+	effect = {
+		set_variable = {
+			name = ftr_my_proposal_attitude
+			value = 2 # 反对
+		}
+		add_character_flag = {
+			flag = ftr_change_my_proposal_attitude_flag
+			days = 30
+		}
+	}
+}
+
+ftr_abstain_my_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		exists = var:ftr_proposal_type
+		var:ftr_proposal_type > 0 # 无议案时置为0
+		NOT = {
+			has_character_flag = ftr_change_my_proposal_attitude_flag
+		}
+	}
+	effect = {
+		set_variable = {
+			name = ftr_my_proposal_attitude
+			value = 3 # 弃权
+		}
+		add_character_flag = {
+			flag = ftr_change_my_proposal_attitude_flag
+			days = 30
+		}
+	}
+}
+
+ftr_favor_liege_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		liege = {
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type > 0 # 无议案时置为0
+		}
+		NOT = {
+			has_character_flag = ftr_change_liege_proposal_attitude_flag
+		}
+	}
+	effect = {
+		set_variable = {
+			name = ftr_liege_proposal_attitude
+			value = 1 # 赞成
+		}
+		add_character_flag = {
+			flag = ftr_change_liege_proposal_attitude_flag
+			days = 30
+		}
+	}
+}
+
+ftr_reject_liege_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		liege = {
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type > 0 # 无议案时置为0
+		}
+		NOT = {
+			has_character_flag = ftr_change_liege_proposal_attitude_flag
+		}
+	}
+	effect = {
+		set_variable = {
+			name = ftr_liege_proposal_attitude
+			value = 2 # 反对
+		}
+		add_character_flag = {
+			flag = ftr_change_liege_proposal_attitude_flag
+			days = 30
+		}
+	}
+}
+
+ftr_abstain_liege_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		liege = {
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type > 0 # 无议案时置为0
+		}
+		NOT = {
+			has_character_flag = ftr_change_liege_proposal_attitude_flag
+		}
+	}
+	effect = {
+		set_variable = {
+			name = ftr_liege_proposal_attitude
+			value = 3 # 弃权
+		}
+		add_character_flag = {
+			flag = ftr_change_liege_proposal_attitude_flag
+			days = 30
+		}
+	}
+}

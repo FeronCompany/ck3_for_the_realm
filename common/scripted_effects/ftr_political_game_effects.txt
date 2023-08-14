@@ -40,6 +40,24 @@ ftr_update_pg_member_effect = {
 		limit = {
 			is_capable_adult = yes
 		}
+		if = {
+			limit = {
+				NOT = { exists = var:ftr_liege_proposal_attitude }
+			}
+			set_variable = {
+				name = ftr_liege_proposal_attitude
+				value = 3 # 弃权
+			}
+		}
+		if = {
+			limit = {
+				NOT = { exists = var:ftr_my_proposal_attitude }
+			}
+			set_variable = {
+				name = ftr_my_proposal_attitude
+				value = 3 # 弃权
+			}
+		}
 		save_scope_as = current_vassal
 		root = {
 			add_to_variable_list = {
@@ -58,12 +76,36 @@ ftr_update_pg_member_effect = {
 				is_diarch = yes
 			}
 		}
+		if = {
+			limit = {
+				NOT = { exists = var:ftr_liege_proposal_attitude }
+			}
+			set_variable = {
+				name = ftr_liege_proposal_attitude
+				value = 3 # 弃权
+			}
+		}
+		if = {
+			limit = {
+				NOT = { exists = var:ftr_my_proposal_attitude }
+			}
+			set_variable = {
+				name = ftr_my_proposal_attitude
+				value = 3 # 弃权
+			}
+		}
 		save_scope_as = current_courtier
 		root = {
 			add_to_variable_list = {
 				name = ftr_my_realm_pg_participants_list
 				target = scope:current_courtier
 			}
+		}
+	}
+	root = {
+		add_to_variable_list = {
+			name = ftr_my_realm_pg_participants_list
+			target = root
 		}
 	}
 }

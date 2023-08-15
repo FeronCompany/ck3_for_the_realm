@@ -19,14 +19,36 @@ ftr_expand_influence = {
 ftr_update_my_powerful_subject_list = {
 	scope = character
 	effect = {
-		ftr_update_powerful_subjects_effect = yes
+		ftr_update_powerful_subjects_list_effect = yes
+		clear_variable_list = ftr_my_powerful_subject_list
+		every_in_list = {
+			list = powerful_subjects_list
+			save_scope_as = current_character
+			root = {
+				add_to_variable_list = {
+					name = ftr_my_powerful_subject_list
+					target = scope:current_character
+				}
+			}
+		}
 	}
 }
 
 ftr_update_my_realm_pg_participants_list = {
 	scope = character
 	effect = {
-		ftr_update_pg_member_effect = yes
+		ftr_update_pg_member_list_effect = yes
+		clear_variable_list = ftr_my_realm_pg_participants_list
+		every_in_list = {
+			list = pg_member_list
+			save_scope_as = current_character
+			root = {
+				add_to_variable_list = {
+					name = ftr_my_realm_pg_participants_list
+					target = scope:current_character
+				}
+			}
+		}
 	}
 }
 
@@ -105,6 +127,7 @@ ftr_make_proposal_to_liege = {
 	scope = character
 	is_valid = {
 		is_capable_adult = yes
+		ftr_powerful_subject_trigger = yes
 		ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 		custom_description = {
 			text = "ftr_not_make_proposal_recently_tt"
@@ -204,6 +227,7 @@ ftr_favor_liege_proposal = {
 	scope = character
 	is_valid = {
 		is_capable_adult = yes
+		ftr_powerful_subject_trigger = yes
 		liege = {
 			exists = var:ftr_proposal_type
 			var:ftr_proposal_type > 0 # 无议案时置为0
@@ -228,6 +252,7 @@ ftr_reject_liege_proposal = {
 	scope = character
 	is_valid = {
 		is_capable_adult = yes
+		ftr_powerful_subject_trigger = yes
 		liege = {
 			exists = var:ftr_proposal_type
 			var:ftr_proposal_type > 0 # 无议案时置为0
@@ -252,6 +277,7 @@ ftr_abstain_liege_proposal = {
 	scope = character
 	is_valid = {
 		is_capable_adult = yes
+		ftr_powerful_subject_trigger = yes
 		liege = {
 			exists = var:ftr_proposal_type
 			var:ftr_proposal_type > 0 # 无议案时置为0

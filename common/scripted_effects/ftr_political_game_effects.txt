@@ -1,19 +1,12 @@
 ﻿
 
-ftr_update_powerful_subjects_effect = {
-	clear_variable_list = ftr_my_powerful_subject_list
+ftr_update_powerful_subjects_list_effect = {
 	every_vassal = {
 		limit = { 
 			is_powerful_vassal = yes
 			is_capable_adult = yes
 		}
-		save_scope_as = current_powerful_vassal
-		root = {
-			add_to_variable_list = {
-				name = ftr_my_powerful_subject_list
-				target = scope:current_powerful_vassal
-			}
-		}
+		add_to_list = powerful_subjects_list
 	}
 	every_courtier = {
 		limit = {
@@ -24,18 +17,14 @@ ftr_update_powerful_subjects_effect = {
 				is_diarch = yes
 			}
 		}
-		save_scope_as = current_councillor
-		root = {
-			add_to_variable_list = {
-				name = ftr_my_powerful_subject_list
-				target = scope:current_councillor
-			}
-		}
+		add_to_list = powerful_subjects_list
 	}
 }
 
-ftr_update_pg_member_effect = {
-	clear_variable_list = ftr_my_realm_pg_participants_list
+ftr_update_pg_member_list_effect = {
+	root = {
+		add_to_list = pg_member_list
+	}
 	every_vassal = {
 		limit = {
 			is_capable_adult = yes
@@ -58,13 +47,7 @@ ftr_update_pg_member_effect = {
 				value = 3 # 弃权
 			}
 		}
-		save_scope_as = current_vassal
-		root = {
-			add_to_variable_list = {
-				name = ftr_my_realm_pg_participants_list
-				target = scope:current_vassal
-			}
-		}
+		add_to_list = pg_member_list
 	}
 	every_courtier = {
 		limit = {
@@ -94,19 +77,7 @@ ftr_update_pg_member_effect = {
 				value = 3 # 弃权
 			}
 		}
-		save_scope_as = current_courtier
-		root = {
-			add_to_variable_list = {
-				name = ftr_my_realm_pg_participants_list
-				target = scope:current_courtier
-			}
-		}
-	}
-	root = {
-		add_to_variable_list = {
-			name = ftr_my_realm_pg_participants_list
-			target = root
-		}
+		add_to_list = pg_member_list
 	}
 }
 

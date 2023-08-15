@@ -88,3 +88,5 @@
  ftr_pg_ai_make_proposal_to_liege_decision_confirm:0 "向领主提交议案"
  ftr_liege_not_considering_proposal_text:0 "领主的领地内没有正在商讨的议案"
  ftr_have_set_liege_realm_focus_text:0 "领主领地内存在政治焦点"
+
+ ftr_powerful_subject_trigger_text:0 "你是领主核心圈子的成员"

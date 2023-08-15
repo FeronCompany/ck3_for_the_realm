@@ -63,3 +63,7 @@ ftr_liege_not_considering_proposal_tt = {
 ftr_have_set_liege_realm_focus_tt = {
 	global = ftr_have_set_liege_realm_focus_text
 }
+
+ftr_powerful_subject_trigger_tt = {
+	global = ftr_powerful_subject_trigger_text
+}

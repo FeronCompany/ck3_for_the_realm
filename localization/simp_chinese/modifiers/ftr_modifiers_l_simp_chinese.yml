@@ -73,3 +73,9 @@
 
  ftr_refuse_aid_opinion:0 "拒绝提供赈灾资金"
  ftr_refuse_aid_opinion_desc:0 "领主拒绝提供赈灾资金"
+
+ ftr_disrespect_voting_result_opinion:0 "不尊重投票结果"
+ ftr_disrespect_voting_result_opinion_desc:0 "不尊重投票结果"
+
+ ftr_reject_foolish_proposal_opinion:0 "回绝愚蠢的提议"
+ ftr_reject_foolish_proposal_opinion_desc:0 "回绝愚蠢的提议"

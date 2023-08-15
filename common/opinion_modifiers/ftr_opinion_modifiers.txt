@@ -86,3 +86,15 @@ ftr_refuse_aid_opinion = {
 	years = 10
 	decaying = yes
 }
+
+ftr_disrespect_voting_result_opinion = {
+	opinion = -60
+	years = 10
+	decaying = yes
+}
+
+ftr_reject_foolish_proposal_opinion = {
+	opinion = 20
+	years = 10
+	decaying = yes
+}

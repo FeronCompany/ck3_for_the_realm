@@ -1,6 +1,9 @@
 ﻿
 
 ftr_update_powerful_subjects_list_effect = {
+	root = {
+		add_to_list = powerful_subjects_list
+	}
 	every_vassal = {
 		limit = { 
 			is_powerful_vassal = yes

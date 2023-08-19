@@ -1,0 +1,345 @@
+﻿
+
+ftr_update_powerful_subjects_list_effect = {
+	root = {
+		add_to_list = powerful_subjects_list
+	}
+	every_vassal = {
+		limit = { 
+			is_powerful_vassal = yes
+			is_capable_adult = yes
+		}
+		add_to_list = powerful_subjects_list
+	}
+	every_courtier = {
+		limit = {
+			is_landed = no
+			is_capable_adult = yes
+			OR = {
+				is_councillor_of = root
+				is_diarch = yes
+			}
+		}
+		add_to_list = powerful_subjects_list
+	}
+}
+
+ftr_update_pg_member_list_effect = {
+	root = {
+		add_to_list = pg_member_list
+	}
+	every_vassal = {
+		limit = {
+			is_capable_adult = yes
+		}
+		if = {
+			limit = {
+				NOT = { exists = var:ftr_liege_proposal_attitude }
+			}
+			set_variable = {
+				name = ftr_liege_proposal_attitude
+				value = 3 # 弃权
+			}
+		}
+		if = {
+			limit = {
+				NOT = { exists = var:ftr_my_proposal_attitude }
+			}
+			set_variable = {
+				name = ftr_my_proposal_attitude
+				value = 3 # 弃权
+			}
+		}
+		add_to_list = pg_member_list
+	}
+	every_courtier = {
+		limit = {
+			is_landed = no
+			is_capable_adult = yes
+			OR = {
+				is_councillor_of = root
+				house = root.house
+				is_diarch = yes
+			}
+		}
+		if = {
+			limit = {
+				NOT = { exists = var:ftr_liege_proposal_attitude }
+			}
+			set_variable = {
+				name = ftr_liege_proposal_attitude
+				value = 3 # 弃权
+			}
+		}
+		if = {
+			limit = {
+				NOT = { exists = var:ftr_my_proposal_attitude }
+			}
+			set_variable = {
+				name = ftr_my_proposal_attitude
+				value = 3 # 弃权
+			}
+		}
+		add_to_list = pg_member_list
+	}
+}
+
+ftr_add_political_influence_effect = {
+	custom_description = {
+		text = ftr_add_political_influence_effect_tt
+		value = $VALUE$
+	}
+	if = {
+		limit = {
+			exists = var:ftr_political_influence
+		}
+		change_variable = {
+			name = ftr_political_influence
+			add = $VALUE$
+		}
+	}
+	else = {
+		set_variable = {
+			name = ftr_political_influence
+			value = $VALUE$
+		}
+	}
+	if = {
+		limit = {
+			exists = var:ftr_political_influence
+			var:ftr_political_influence < 0
+		}
+		set_variable = {
+			name = ftr_political_influence
+			value = 0
+		}
+	}
+}
+
+ftr_change_realm_political_focus_effect = {
+	$LIEGE$ = {
+		set_variable = {
+			name = ftr_pg_focus
+			value = $VALUE$
+		}
+	}
+	custom_description = {
+		text = ftr_change_realm_political_focus_effect_tt
+		subject = $STARTER$
+		object = $LIEGE$
+		value = $VALUE$
+	}
+}
+
+ftr_submit_change_foucus_effect = {
+	custom_description = {
+		text = ftr_submit_change_foucus_effect_tt
+	}
+	$LIEGE$ = {
+		save_scope_as = liege_c
+	}
+	$STARTER$ = {
+		save_scope_as = starter
+	}
+	save_scope_value_as = {
+		name = ftr_political_focus_tobe
+		value = $VALUE$
+	}
+	scope:liege_c = {
+		every_vassal = {
+			limit = {
+				is_capable_adult = yes
+				NOT = { scope:starter = this }
+			}
+			add_to_list = ftr_pg_focus_change_voter_list
+		}
+		every_courtier = {
+			limit = {
+				is_capable_adult = yes
+				OR = {
+					is_councillor_of = scope:liege_c
+					house = scope:liege_c.house
+					is_diarch = yes
+					NOT = { scope:starter = this }
+				}
+			}
+			add_to_list = ftr_pg_focus_change_voter_list
+		}
+		set_variable = {
+			name = ftr_pg_focus_vote
+			value = scope:ftr_political_focus_tobe
+		}
+	}
+	if = {
+		limit = {
+			NOT = { scope:liege_c = scope:starter }
+		}
+		scope:liege_c = {
+			add_to_list = ftr_pg_focus_change_voter_list
+		}
+	}
+	every_in_list = {
+		list = ftr_pg_focus_change_voter_list
+		trigger_event = {
+			id = ftr_pg_ui_event.0003
+			days = { 5 10 }
+		}
+	}
+}
+
+ftr_get_fg_notify_list_effect = {
+	$LIEGE$ = {
+		every_vassal = {
+			limit = {
+				is_capable_adult = yes
+				NOT = { $STARTER$ = this }
+			}
+			add_to_list = ftr_notify_list
+		}
+		every_courtier = {
+			limit = {
+				is_capable_adult = yes
+				OR = {
+					is_councillor_of = $LIEGE$
+					house = $LIEGE$.house
+					is_diarch = yes
+					NOT = { $STARTER$ = this }
+				}
+			}
+			add_to_list = ftr_notify_list
+		}
+		if = {
+			limit = {
+				NOT = { this = $STARTER$ }
+			}
+			add_to_list = ftr_notify_list
+		}
+	}
+}
+
+ftr_change_focus_result_notify_effect = {
+	ftr_get_fg_notify_list_effect = {
+		LIEGE = $LIEGE$
+		STARTER = $STARTER$
+	}
+	every_in_list = {
+		list = ftr_notify_list
+		if = {
+			limit = { $SUCCESS$ = 1 }
+			send_interface_message = {
+				title = "ftr_change_focus_broadcast_tt"
+				left_icon = $STARTER$
+				right_icon = $LIEGE$
+				show_as_tooltip = {
+					ftr_change_realm_political_focus_effect = {
+						LIEGE = $LIEGE$
+						STARTER = $STARTER$
+						VALUE = $VALUE$
+					}
+				}
+			}
+		}
+		else = {
+			send_interface_message = {
+				title = "ftr_change_focus_broadcast_tt"
+				desc = "ftr_change_focus_failed_text"
+				left_icon = $STARTER$
+				right_icon = $LIEGE$
+			}
+		}
+	}
+}
+
+ftr_expand_authority_vote_result_notify_effect = {
+	ftr_get_fg_notify_list_effect = {
+		LIEGE = $LIEGE$
+		STARTER = $STARTER$
+	}
+	every_in_list = {
+		list = ftr_notify_list
+		if = {
+			limit = { $SUCCESS$ = 1 }
+			send_interface_message = {
+				title = "ftr_expand_authority_broadcast_tt"
+				left_icon = $STARTER$
+				right_icon = $LIEGE$
+				custom_description = {
+					text = "ftr_expand_authority_success_notify_tt"
+					subject = $STARTER$
+					object = $LIEGE$
+				}
+				show_as_tooltip = {
+					$LIEGE$ = {
+						ftr_expand_authority_effect = yes
+					}
+				}
+			}
+		}
+		else = {
+			send_interface_message = {
+				title = "ftr_expand_authority_broadcast_tt"
+				left_icon = $STARTER$
+				right_icon = $LIEGE$
+				custom_description = {
+					text = "ftr_expand_authority_failed_notify_tt"
+					subject = $STARTER$
+					object = $LIEGE$
+				}
+			}
+		}
+	}
+}
+
+ftr_decrease_authority_effect = {
+	if = {
+		limit = { has_realm_law = crown_authority_1 }
+		add_realm_law = crown_authority_0
+	}
+	if = {
+		limit = { has_realm_law = crown_authority_2 }
+		add_realm_law = crown_authority_1
+	}
+	if = {
+		limit = { has_realm_law = crown_authority_3 }
+		add_realm_law = crown_authority_2
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_1 }
+		add_realm_law = tribal_authority_0
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_2 }
+		add_realm_law = tribal_authority_1
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_3 }
+		add_realm_law = tribal_authority_2
+	}
+}
+
+ftr_expand_authority_effect = {
+	if = {
+		limit = { has_realm_law = crown_authority_0 }
+		add_realm_law = crown_authority_1
+	}
+	if = {
+		limit = { has_realm_law = crown_authority_1 }
+		add_realm_law = crown_authority_2
+	}
+	if = {
+		limit = { has_realm_law = crown_authority_2 }
+		add_realm_law = crown_authority_3
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_0 }
+		add_realm_law = tribal_authority_1
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_1 }
+		add_realm_law = tribal_authority_2
+	}
+	if = {
+		limit = { has_realm_law = tribal_authority_2 }
+		add_realm_law = tribal_authority_3
+	}
+}

@@ -1,0 +1,55 @@
+﻿widget = {
+	name = "ftr_hud_political_game"
+	size = { 50 50 }
+	allow_outside = yes
+	parentanchor = vcenter|right
+	position = { 6 80 }
+	layer = hud_layer
+	alwaystransparent = yes
+	visible = "[And(Not(IsObserver),IsDefaultGUIMode)]"
+	#visible = "[InGameTopbar.ShouldBeVisible]"
+	#background elements
+	using = Animation_ShowHide_Quick
+	widget = {
+		visible = "[Not(IsRightWindowOpen)]"
+		size = { 100% 100% }
+		state = {
+			name = _show
+			alpha = 1
+			duration = 0.1
+			using = Animation_Curve_Default
+		}
+		state = {
+			name = _hide
+			duration = 0.6
+			alpha = 0
+			using = Animation_Curve_Default
+		}
+		widget_hud_main_tab = {
+			name = "tab_position_open"
+			tooltip = "tab_position_open_tooltip"
+			datacontext = "[GetScriptedGui('is_china_government_or_vassal')]"
+			visible = "[And(Not(IsObserver), ScriptedGui.IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+			blockoverride "maintab_button"
+			{
+				texture = "gfx/interface/icons/icon_ftr_political_game.dds"
+				onclick = "[GetVariableSystem.Toggle( 'ftr_political_game_toggle')]"
+				onclick = "[GetVariableSystem.Clear('ftr_show_my_realm_tab_toggle')]"
+				onclick = "[GetVariableSystem.Clear('ftr_show_liege_realm_tab_toggle')]"
+				onclick = "[GetVariableSystem.Toggle('ftr_show_my_realm_tab_toggle')]"
+				onclick = "[GetScriptedGui('ftr_update_my_powerful_subject_list').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ]"
+				onclick = "[GetScriptedGui('ftr_update_my_realm_pg_participants_list').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ]"
+				datacontext = "[GetVariableSystem]"
+				down = "[GetVariableSystem.Clear('ftr_political_game_toggle')]"
+			}
+			state = {
+				name = _mouse_hierarchy_enter
+				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('hud_tab_glow_institutions_leave','hud_tab_glow_institutions_enter')]"
+			}
+			state = {
+				name = _mouse_hierarchy_leave
+				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('hud_tab_glow_institutions_enter','hud_tab_glow_institutions_leave')]"
+			}
+		}
+	}
+}

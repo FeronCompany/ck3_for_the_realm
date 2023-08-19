@@ -1,0 +1,12 @@
+﻿
+
+ftr_powerful_subject_trigger = {
+	custom_description = {
+		text = "ftr_powerful_subject_trigger_tt"
+		OR = {
+			is_powerful_vassal = yes
+			is_diarch = yes
+			is_councillor_of = liege
+		}
+	}
+}

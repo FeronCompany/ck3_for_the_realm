@@ -1,0 +1,471 @@
+﻿window = {
+	name = "ftr_political_game_window"
+	parentanchor = center
+	size = { 1200 900 }
+	position = { 0 0 }
+	layer = windows_layer
+	visible = "[GetVariableSystem.Exists( 'ftr_political_game_toggle' )]"
+	using = Window_Background
+	using = Window_Decoration
+
+	margin_widget = {
+		size = { 100% 100% }
+		margin = { 10 26 }
+		margin_right = 13
+		widget = {
+			size = { 100% 100% }
+			vbox = {
+				using = Window_Margins
+				header_with_picture = {
+					layoutpolicy_horizontal = expanding
+					minimumsize = { 0 120 }
+					blockoverride "header_text" {
+						#text = "[GetPlayer.GetPrimaryTitle.GetNameNoTooltip|U]"
+						text = "ftr_political_game_title"
+					}
+					blockoverride "size" {
+						size = { 100% 120 }
+					}
+					blockoverride "illustration_texture" {
+						texture = "gfx/interface/illustrations/window_headers/header_my_realm.dds"
+					}
+					blockoverride "button_close"
+					{
+						onclick = "[GetVariableSystem.Toggle( 'ftr_political_game_toggle')]"
+					}
+					hbox = {
+						position = { 0 15 }
+						text_label_left = {
+							margin = { 10 5 }
+							autoresize = yes
+							text = "FTR_SHOW_MY_PG_POWER_TEXT"
+							tooltip = "ftr_show_pg_power_tooltip"
+						}
+						button_standard = {
+							name = "ftr_get_pg_power"
+							text = "FTR_GET_PG_POWER_TEXT"
+							tooltip = "ftr_get_pg_power_tooltip"
+							datacontext = "[GetScriptedGui( 'ftr_expand_influence' )]"
+							onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							size = { 150 50 }
+    					}
+					}
+				}
+
+				hbox = {
+					name = "political_game_outer_tabs"
+					layoutpolicy_horizontal = expanding
+					button_tab = {
+						name = "th_my_realm_tab"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						onclick = "[GetVariableSystem.Clear('ftr_show_my_realm_tab_toggle')]"
+						onclick = "[GetVariableSystem.Clear('ftr_show_liege_realm_tab_toggle')]"
+						onclick = "[GetVariableSystem.Toggle('ftr_show_my_realm_tab_toggle')]"
+						onclick = "[GetScriptedGui('ftr_update_my_powerful_subject_list').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ]"
+						onclick = "[GetScriptedGui('ftr_update_my_realm_pg_participants_list').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ]"
+						down = "[GetVariableSystem.Exists( 'ftr_show_my_realm_tab_toggle' )]"
+						text = "FTR_PG_MY_REALM_TAB"
+					}
+					button_tab = {
+						name = "th_liege_realm_tab"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						visible = "[Not(GetPlayer.IsIndependentRuler)]"
+						onclick = "[GetVariableSystem.Clear('ftr_show_my_realm_tab_toggle')]"
+						onclick = "[GetVariableSystem.Clear('ftr_show_liege_realm_tab_toggle')]"
+						onclick = "[GetVariableSystem.Toggle('ftr_show_liege_realm_tab_toggle')]"
+						onclick = "[GetScriptedGui('ftr_update_my_powerful_subject_list').Execute( GuiScope.SetRoot( GetPlayer.GetLiege.MakeScope ).End ) ]"
+						onclick = "[GetScriptedGui('ftr_update_my_realm_pg_participants_list').Execute( GuiScope.SetRoot( GetPlayer.GetLiege.MakeScope ).End ) ]"
+						down = "[GetVariableSystem.Exists( 'ftr_show_liege_realm_tab_toggle' )]"
+						text = "FTR_PG_LIEGE_REALM_TAB"
+					}
+				}
+
+				vbox = {
+					name = "tab_my_realm"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.Exists( 'ftr_show_my_realm_tab_toggle' )]"
+					using = Animation_Tab_Switch
+					hbox = { # 领主与摄政列表
+						margin = { 10 10 }
+						size = { 100% 100 }
+						vbox = {
+							portrait_head_small = {
+								name = "player_head_portrait"
+								visible = "[Character.IsValid]"
+								datacontext = "[GetPlayer]"
+								tooltip_enabled = "[Character.IsValid]"
+							}
+							text_label_center = {
+								text = "FTR_PG_LIEGE_TEXT"
+							}
+						}
+						vbox = {
+							margin = { 40 0 }
+							layoutpolicy_horizontal = expanding
+							text_label_center = {
+								margin = { 0 10 }
+								text = "FTR_PG_MY_PG_FOCUS_TEXT"
+								tooltip = "ftr_pg_focus_tooltip"
+							}
+							hbox = {
+								spacing = 20
+								margin = { 0 10 }
+								button_standard = {
+									name = "ftr_pg_make_proposal_button"
+									text = "FTR_PG_MAKE_PROPOSAL"
+									tooltip = "ftr_pg_make_proposal_tooltip"
+									datacontext = "[GetScriptedGui( 'ftr_make_my_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									size = { 100 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_change_focus_button"
+									text = "FTR_PG_CHANGE_FOCUS"
+									tooltip = "ftr_pg_change_focus_tooltip"
+									datacontext = "[GetScriptedGui( 'ftr_change_my_focus' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									size = { 100 33 }
+    							}
+							}
+						}
+						vbox = {
+							margin = { 40 0 }
+							layoutpolicy_horizontal = expanding
+							text_label_center = {
+								margin = { 0 10 }
+								text = "FTR_PG_MY_PROPOSAL_TEXT"
+								tooltip = "ftr_pg_proposal_tooltip"
+							}
+							hbox = {
+								margin = { 0 10 }
+								button_standard = {
+									name = "ftr_pg_favor_proposal_button"
+									text = "FTR_PG_FAVOR_PROPOSAL"
+									tooltip = "ftr_pg_favor_proposal_tooltip"
+									datacontext = "[GetScriptedGui( 'ftr_favor_my_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									size = { 75 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_reject_proposal_button"
+									text = "FTR_PG_REJECT_PROPOSAL"
+									tooltip = "ftr_pg_reject_proposal_tooltip"
+									datacontext = "[GetScriptedGui( 'ftr_reject_my_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									size = { 75 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_abstain_proposal_button"
+									text = "FTR_PG_ABSTAIN_PROPOSAL"
+									datacontext = "[GetScriptedGui( 'ftr_abstain_my_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									size = { 75 33 }
+    							}
+							}
+						}
+						vbox = {
+							portrait_head_small = {
+								name = "regent_head_portrait"
+								#visible = "[GetPlayer.GetDiarchy.IsValid]"
+								datacontext = "[GetPlayer.GetDiarchy.GetDiarch]"
+								tooltip_enabled = "[GetPlayer.GetDiarchy.IsValid]"
+							}
+							text_label_center = {
+								text = "FTR_PG_REGENT_TEXT"
+							}
+						}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						vbox = { # 核心圈子
+							margin = { 30 10 }
+							layoutpolicy_vertical = expanding
+							text_label_center = {
+								margin = { 10 10 }
+								text = "FTR_POWERFUL_SUBJECTS_TEXT"
+								tooltip = "ftr_powerfult_subjects_tooltip"
+							}
+							dynamicgridbox = {
+								datamodel = "[GetPlayer.MakeScope.GetList('ftr_my_powerful_subject_list')]"
+								#layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								datamodel_wrap = 3
+								flipdirection = yes
+								item = {
+									portrait_head_small = {
+										name = "powerful_portrait"
+										datacontext = "[Scope.GetCharacter]"
+										tooltip_enabled = "[Character.IsValid]"
+									}
+								}
+							}
+							expand = {}
+						}
+						vbox = { # 全体博弈参与者列表
+							margin = { 20 10 }
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							text_label_center = {
+								margin = { 10 10 }
+								text = "FTR_ALL_PG_PARTICIPANTS_TEXT"
+								tooltip = "ftr_all_pg_participants_tooltip"
+							}
+							scrollbox = {
+								name = "memeber_list"
+								layoutpolicy_vertical = expanding
+								layoutpolicy_horizontal = expanding
+								blockoverride "scrollbox_content"
+								{
+									vbox = {
+										margin = { 10 0 }
+										datamodel = "[GetPlayer.MakeScope.GetList('ftr_my_realm_pg_participants_list')]"
+										layoutpolicy_horizontal = expanding
+										item = {
+											ftr_widget_fg_member_list_item = {
+												datacontext = "[CharacterListItem.GetCharacter]"
+											}
+										}
+									}
+									expand = {}
+								}
+							}
+							expand = {}
+						}
+						expand = {}
+					}
+				}
+
+				vbox = {
+					name = "tab_liege_realm"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.Exists( 'ftr_show_liege_realm_tab_toggle' )]"
+					using = Animation_Tab_Switch
+					hbox = { # 领主与摄政列表
+						margin = { 10 10 }
+						size = { 100% 100 }
+						vbox = {
+							portrait_head_small = {
+								name = "player_head_portrait"
+								datacontext = "[GetPlayer.GetLiege]"
+								visible = "[Character.IsValid]"
+								tooltip_enabled = "[Character.IsValid]"
+							}
+							text_label_center = {
+								text = "FTR_PG_LIEGE_TEXT"
+							}
+						}
+						vbox = {
+							margin = { 40 0 }
+							layoutpolicy_horizontal = expanding
+							text_label_center = {
+								margin = { 0 10 }
+								text = "FTR_PG_LIEGE_PG_FOCUS_TEXT"
+								tooltip = "ftr_pg_focus_tooltip"
+							}
+							hbox = {
+								spacing = 20
+								margin = { 0 10 }
+								button_standard = {
+									name = "ftr_pg_make_proposal_button"
+									text = "FTR_PG_MAKE_PROPOSAL"
+									tooltip = "ftr_pg_make_proposal_tooltip"
+									datacontext = "[GetScriptedGui( 'ftr_make_proposal_to_liege' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									size = { 100 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_change_focus_button"
+									text = "FTR_PG_CHANGE_FOCUS"
+									tooltip = "ftr_pg_change_focus_tooltip"
+									datacontext = "[GetScriptedGui( 'ftr_change_liege_focus' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									size = { 100 33 }
+    							}
+							}
+						}
+						vbox = {
+							margin = { 40 0 }
+							layoutpolicy_horizontal = expanding
+							text_label_center = {
+								margin = { 0 10 }
+								text = "FTR_PG_LIEGE_PROPOSAL_TEXT"
+								tooltip = "ftr_pg_proposal_tooltip"
+							}
+							hbox = {
+								margin = { 0 10 }
+								button_standard = {
+									name = "ftr_pg_favor_proposal_button"
+									text = "FTR_PG_FAVOR_PROPOSAL"
+									tooltip = "ftr_pg_favor_proposal_tooltip"
+									datacontext = "[GetScriptedGui( 'ftr_favor_liege_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									size = { 75 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_reject_proposal_button"
+									text = "FTR_PG_REJECT_PROPOSAL"
+									tooltip = "ftr_pg_reject_proposal_tooltip"
+									datacontext = "[GetScriptedGui( 'ftr_reject_liege_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									size = { 75 33 }
+    							}
+								button_standard = {
+									name = "ftr_pg_abstain_proposal_button"
+									text = "FTR_PG_ABSTAIN_PROPOSAL"
+									datacontext = "[GetScriptedGui( 'ftr_abstain_liege_proposal' )]"
+									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									size = { 75 33 }
+    							}
+							}
+						}
+						vbox = {
+							portrait_head_small = {
+								name = "regent_head_portrait"
+								datacontext = "[GetPlayer.GetLiege.GetDiarchy.GetDiarch]"
+								tooltip_enabled = "[GetPlayer.GetLiege.GetDiarchy.IsValid]"
+							}
+							text_label_center = {
+								text = "FTR_PG_REGENT_TEXT"
+							}
+						}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						vbox = { # 核心圈子
+							margin = { 30 10 }
+							layoutpolicy_vertical = expanding
+							text_label_center = {
+								margin = { 10 10 }
+								text = "FTR_POWERFUL_SUBJECTS_TEXT"
+								tooltip = "ftr_powerfult_subjects_tooltip"
+							}
+							dynamicgridbox = {
+								datamodel = "[GetPlayer.GetLiege.MakeScope.GetList('ftr_my_powerful_subject_list')]"
+								#layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								datamodel_wrap = 3
+								flipdirection = yes
+								item = {
+									portrait_head_small = {
+										name = "powerful_portrait"
+										datacontext = "[Scope.GetCharacter]"
+										tooltip_enabled = "[Character.IsValid]"
+									}
+								}
+							}
+							expand = {}
+						}
+						vbox = { # 全体博弈参与者列表
+							margin = { 20 10 }
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							text_label_center = {
+								margin = { 10 10 }
+								text = "FTR_ALL_PG_PARTICIPANTS_TEXT"
+								tooltip = "ftr_all_pg_participants_tooltip"
+							}
+							scrollbox = {
+								name = "memeber_list"
+								layoutpolicy_vertical = expanding
+								layoutpolicy_horizontal = expanding
+								blockoverride "scrollbox_content"
+								{
+									vbox = {
+										margin = { 10 0 }
+										datamodel = "[GetPlayer.GetLiege.MakeScope.GetList('ftr_my_realm_pg_participants_list')]"
+										layoutpolicy_horizontal = expanding
+										item = {
+											ftr_widget_fg_member_list_item = {
+												datacontext = "[CharacterListItem.GetCharacter]"
+											}
+										}
+									}
+									expand = {}
+								}
+							}
+							expand = {}
+						}
+						expand = {}
+					}
+				}
+			}
+		}
+	}
+}
+
+types Lists
+{
+	type ftr_widget_fg_member_list_item = hbox {
+		datacontext = "[Scope.GetCharacter]"
+		layoutpolicy_horizontal = expanding
+		spacing = 10
+		portrait_head_small = {
+			tooltip_enabled = "[Character.IsValid]"
+		}
+		text_label_center = {
+			margin = { 10 10 }
+			text = "FTR_SHOW_CHARACTER_PG_POWER_TEXT"
+			tooltip = "ftr_show_pg_power_tooltip"
+		}
+		button_standard = {
+			name = "ftr_pg_bribe_button"
+			text = "FTR_PG_BRIBE_TEXT"
+			#onclick = "[OpenGameRules]"
+			#enabled = "[GameSetup.CanStart]"
+			tooltip = "ftr_pg_bribe_tooltip"
+			size = { 80 50 }
+		}
+		button_standard = {
+			name = "ftr_pg_endorse_button"
+			text = "FTR_PG_ENDORSE_TEXT"
+			#onclick = "[OpenGameRules]"
+			#enabled = "[GameSetup.CanStart]"
+			tooltip = "ftr_pg_endorse_tooltip"
+			size = { 80 50 }
+		}
+		button_standard = {
+			name = "ftr_pg_charge_button"
+			text = "FTR_PG_CHARGE_TEXT"
+			#onclick = "[OpenGameRules]"
+			#enabled = "[GameSetup.CanStart]"
+			tooltip = "ftr_pg_charge_tooltip"
+			size = { 80 50 }
+		}
+		button_standard = {
+			name = "ftr_pg_slander_button"
+			text = "FTR_PG_SLANDER_TEXT"
+			#onclick = "[OpenGameRules]"
+			#enabled = "[GameSetup.CanStart]"
+			tooltip = "ftr_pg_slander_tooltip"
+			size = { 80 50 }
+		}
+		button_standard = {
+			name = "ftr_pg_isolate_button"
+			text = "FTR_PG_ISOLATE_TEXT"
+			#onclick = "[OpenGameRules]"
+			#enabled = "[GameSetup.CanStart]"
+			tooltip = "ftr_pg_isolate_tooltip"
+			size = { 80 50 }
+		}
+		expand = {}
+	}
+}

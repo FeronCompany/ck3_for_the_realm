@@ -71,5 +71,11 @@
  ftr_approve_aid_opinion:0 "Approve to aid in disaster"
  ftr_approve_aid_opinion_desc:0 "Liege approved to aid in disaster"
 
- ftr_murderer_crime:0 "Refuse to aid in disaster"
- ftr_murderer_crime_desc:0 "Liege refused to aid in disaster"
+ ftr_refuse_aid_opinion:0 "Refuse to aid in disaster"
+ ftr_refuse_aid_opinion_desc:0 "Liege refused to aid in disaster"
+
+ ftr_disrespect_voting_result_opinion:0 "Disrespect Voting Result"
+ ftr_disrespect_voting_result_opinion_desc:0 "Disrespect voting result"
+
+ ftr_reject_foolish_proposal_opinion:0 "Reject Foolish Proposal"
+ ftr_reject_foolish_proposal_opinion_desc:0 "Reject foolish proposal."

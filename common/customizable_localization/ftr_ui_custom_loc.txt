@@ -1,0 +1,107 @@
+﻿
+FTR_PlayerPG_Focus = {
+	type = character
+
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus
+			var:ftr_pg_focus = 1
+		}
+		localization_key = ftr_pg_focus_crown_authority
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus
+			var:ftr_pg_focus = 2
+		}
+		localization_key = ftr_pg_focus_succession
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus
+			var:ftr_pg_focus = 3
+		}
+		localization_key = ftr_pg_focus_culture
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus
+			var:ftr_pg_focus = 4
+		}
+		localization_key = ftr_pg_focus_religion
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus
+			var:ftr_pg_focus = 5
+		}
+		localization_key = ftr_pg_focus_safety
+	}
+
+	text = {
+		localization_key = ftr_pg_focus_none
+		fallback = yes
+	}
+}
+
+FTR_PlayerPG_Focus_Tobe = {
+	type = character
+
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus_vote
+			var:ftr_pg_focus_vote = 1
+		}
+		localization_key = ftr_pg_focus_crown_authority
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus_vote
+			var:ftr_pg_focus_vote = 2
+		}
+		localization_key = ftr_pg_focus_succession
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus_vote
+			var:ftr_pg_focus_vote = 3
+		}
+		localization_key = ftr_pg_focus_culture
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus_vote
+			var:ftr_pg_focus_vote = 4
+		}
+		localization_key = ftr_pg_focus_religion
+	}
+	text = {
+		trigger = { 
+			exists = var:ftr_pg_focus_vote
+			var:ftr_pg_focus_vote = 5
+		}
+		localization_key = ftr_pg_focus_safety
+	}
+
+	text = {
+		localization_key = ftr_pg_focus_none
+		fallback = yes
+	}
+}
+
+FTR_PlayerPG_Proposal = {
+	type = character
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 1
+		}
+		localization_key = ftr_pg_proposal_expand_crown_authority
+	}
+
+	text = {
+		localization_key = ftr_pg_proposal_none
+		fallback = yes
+	}
+}

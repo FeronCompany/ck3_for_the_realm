@@ -1,4 +1,20 @@
 ﻿
+
+ftr_expand_influence_prestige_cost_value = 500
+ftr_expand_influence_prestige_modify_value = -500
+ftr_expand_influence_piety_cost_value = 300
+ftr_expand_influence_piety_modify_value = -300
+ftr_expand_influence_gold_cost_value = 250
+ftr_expand_influence_value = 20
+ftr_shift_focus_cost_value = 80
+ftr_shift_focus_modify_value = -80
+ftr_vote_focus_cost_value = 10
+ftr_vote_focus_modify_value = -10
+ftr_vote_proposal_cost_value = 20
+ftr_vote_proposal_modify_value = -20
+ftr_make_pg_proposal_cost_value = 50
+ftr_make_pg_proposal_modify_value = -50
+
 ftr_payment_cost_level_value = {
 	value = 0
 	if = {
@@ -122,5 +138,15 @@ ftr_province_fund_value = {
 	add = {
 		value = scope:unlucky_county.development_level
 		multiply = 10
+	}
+}
+
+ftr_political_influence_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = var:ftr_political_influence
+		}
+		add = var:ftr_political_influence
 	}
 }

@@ -1,0 +1,345 @@
+﻿
+
+ftr_expand_influence = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		custom_description = {
+			text = "ftr_not_expanded_influence_recently_tt"
+			NOT = {
+				has_character_flag = ftr_expand_influence_flag
+			}
+		}
+	}
+	effect = {
+		trigger_event = ftr_pg_ui_event.0001
+	}
+}
+
+ftr_update_my_powerful_subject_list = {
+	scope = character
+	effect = {
+		ftr_update_powerful_subjects_list_effect = yes
+		clear_variable_list = ftr_my_powerful_subject_list
+		every_in_list = {
+			list = powerful_subjects_list
+			save_scope_as = current_character
+			root = {
+				add_to_variable_list = {
+					name = ftr_my_powerful_subject_list
+					target = scope:current_character
+				}
+			}
+		}
+	}
+}
+
+ftr_update_my_realm_pg_participants_list = {
+	scope = character
+	effect = {
+		ftr_update_pg_member_list_effect = yes
+		clear_variable_list = ftr_my_realm_pg_participants_list
+		every_in_list = {
+			list = pg_member_list
+			save_scope_as = current_character
+			root = {
+				add_to_variable_list = {
+					name = ftr_my_realm_pg_participants_list
+					target = scope:current_character
+				}
+			}
+		}
+	}
+}
+
+ftr_change_my_focus = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		ftr_political_influence_value >= ftr_shift_focus_cost_value
+		custom_description = {
+			text = "ftr_not_change_focus_recently_tt"
+			NOT = {
+				has_character_flag = ftr_change_focus_flag
+			}
+		}
+		NOT = {
+			has_character_flag = ftr_changing_focus_flag
+		}
+	}
+	effect = {
+		trigger_event = ftr_pg_ui_event.0002
+	}
+}
+
+ftr_change_liege_focus = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		ftr_political_influence_value >= ftr_shift_focus_cost_value
+		custom_description = {
+			text = "ftr_not_change_focus_recently_tt"
+			NOT = {
+				has_character_flag = ftr_change_focus_flag
+			}
+		}
+		liege = {
+			NOT = {
+				has_character_flag = ftr_changing_focus_flag
+			}
+		}
+	}
+	effect = {
+		trigger_event = ftr_pg_ui_event.0005
+	}
+}
+
+ftr_make_my_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+		custom_description = {
+			text = "ftr_not_make_proposal_recently_tt"
+			NOT = {
+				has_character_flag = ftr_make_proposal_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_not_considering_proposal_tt"
+			NOT = {
+				trigger_if = {
+					limit = { exists = var:ftr_proposal_type }
+					var:ftr_proposal_type > 0
+				}
+			}
+		}
+		custom_description = {
+			text = "ftr_have_set_own_realm_focus_tt"
+			exists = var:ftr_pg_focus
+		}
+	}
+	effect = {
+		save_scope_as = starter
+		save_scope_as = liege_c
+		trigger_event = ftr_pg_ui_event.0100
+	}
+}
+
+ftr_make_proposal_to_liege = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		ftr_powerful_subject_trigger = yes
+		ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+		custom_description = {
+			text = "ftr_not_make_proposal_recently_tt"
+			NOT = {
+				has_character_flag = ftr_make_proposal_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_liege_not_considering_proposal_tt"
+			liege = {
+				NOT = {
+					trigger_if = {
+						limit = { exists = var:ftr_proposal_type }
+						var:ftr_proposal_type > 0
+					}
+				}
+			}
+		}
+		custom_description = {
+			text = "ftr_have_set_liege_realm_focus_tt"
+			liege = { exists = var:ftr_pg_focus }
+		}
+	}
+	effect = {
+		save_scope_as = starter
+		liege = {
+			save_scope_as = liege_c
+		}
+		trigger_event = ftr_pg_ui_event.0100
+	}
+}
+
+ftr_favor_my_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		exists = var:ftr_proposal_type
+		var:ftr_proposal_type > 0
+		trigger_if = {
+			limit = { exists = var:ftr_my_proposal_attitude }
+			NOT = { var:ftr_my_proposal_attitude = 1 }
+		}
+		NOT = {
+			has_character_flag = ftr_change_my_proposal_attitude_flag
+		}
+		ftr_political_influence_value >= ftr_vote_proposal_cost_value
+	}
+	effect = {
+		set_variable = {
+			name = ftr_my_proposal_attitude
+			value = 1 # 赞成
+		}
+		add_character_flag = {
+			flag = ftr_change_my_proposal_attitude_flag
+			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
+		}
+	}
+}
+
+ftr_reject_my_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		exists = var:ftr_proposal_type
+		var:ftr_proposal_type > 0
+		trigger_if = {
+			limit = { exists = var:ftr_my_proposal_attitude }
+			NOT = { var:ftr_my_proposal_attitude = 2 }
+		}
+		NOT = {
+			has_character_flag = ftr_change_my_proposal_attitude_flag
+		}
+		ftr_political_influence_value >= ftr_vote_proposal_cost_value
+	}
+	effect = {
+		set_variable = {
+			name = ftr_my_proposal_attitude
+			value = 2 # 反对
+		}
+		add_character_flag = {
+			flag = ftr_change_my_proposal_attitude_flag
+			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
+		}
+	}
+}
+
+ftr_abstain_my_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		exists = var:ftr_proposal_type
+		var:ftr_proposal_type > 0
+		trigger_if = {
+			limit = { exists = var:ftr_my_proposal_attitude }
+			NOT = { var:ftr_my_proposal_attitude = 3 }
+		}
+		NOT = {
+			has_character_flag = ftr_change_my_proposal_attitude_flag
+		}
+	}
+	effect = {
+		set_variable = {
+			name = ftr_my_proposal_attitude
+			value = 3 # 弃权
+		}
+		add_character_flag = {
+			flag = ftr_change_my_proposal_attitude_flag
+			days = 30
+		}
+	}
+}
+
+ftr_favor_liege_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		ftr_powerful_subject_trigger = yes
+		liege = {
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type > 0
+		}
+		trigger_if = {
+			limit = { exists = var:ftr_liege_proposal_attitude }
+			NOT = { var:ftr_liege_proposal_attitude = 1 }
+		}
+		NOT = {
+			has_character_flag = ftr_change_liege_proposal_attitude_flag
+		}
+		ftr_political_influence_value >= ftr_vote_proposal_cost_value
+	}
+	effect = {
+		set_variable = {
+			name = ftr_liege_proposal_attitude
+			value = 1 # 赞成
+		}
+		add_character_flag = {
+			flag = ftr_change_liege_proposal_attitude_flag
+			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
+		}
+	}
+}
+
+ftr_reject_liege_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		ftr_powerful_subject_trigger = yes
+		liege = {
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type > 0
+		}
+		trigger_if = {
+			limit = { exists = var:ftr_liege_proposal_attitude }
+			NOT = { var:ftr_liege_proposal_attitude = 2 }
+		}
+		NOT = {
+			has_character_flag = ftr_change_liege_proposal_attitude_flag
+		}
+		ftr_political_influence_value >= ftr_vote_proposal_cost_value
+	}
+	effect = {
+		set_variable = {
+			name = ftr_liege_proposal_attitude
+			value = 2 # 反对
+		}
+		add_character_flag = {
+			flag = ftr_change_liege_proposal_attitude_flag
+			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
+		}
+	}
+}
+
+ftr_abstain_liege_proposal = {
+	scope = character
+	is_valid = {
+		is_capable_adult = yes
+		ftr_powerful_subject_trigger = yes
+		liege = {
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type > 0
+		}
+		trigger_if = {
+			limit = { exists = var:ftr_liege_proposal_attitude }
+			NOT = { var:ftr_liege_proposal_attitude = 3 }
+		}
+		NOT = {
+			has_character_flag = ftr_change_liege_proposal_attitude_flag
+		}
+	}
+	effect = {
+		set_variable = {
+			name = ftr_liege_proposal_attitude
+			value = 3 # 弃权
+		}
+		add_character_flag = {
+			flag = ftr_change_liege_proposal_attitude_flag
+			days = 30
+		}
+	}
+}

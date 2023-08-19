@@ -19,3 +19,51 @@ official_cannot_revok_other_officials_text = {
 officials_blocked_from_joining = {
 	global_not = officials_blocked_from_joining_text
 }
+
+ftr_not_expanded_influence_recently_tt = {
+	global_not = ftr_not_expanded_influence_recently_text
+}
+
+ftr_not_change_focus_recently_tt = {
+	global = ftr_not_change_focus_recently_text
+	global_not = ftr_has_change_focus_recently_text
+}
+
+ftr_not_changing_focus_tt = {
+	global = ftr_not_changing_focus_text
+	global_not = ftr_has_changing_focus_text
+}
+
+ftr_have_enough_pi_tt = {
+	global = ftr_have_enough_pi_text
+	global_not = ftr_not_have_enough_pi_text
+}
+
+ftr_liege_not_changing_focus_tt = {
+	global = ftr_liege_not_changing_focus_text
+	global_not = ftr_liege_has_changing_focus_text
+}
+
+ftr_not_make_proposal_recently_tt = {
+	global = ftr_not_make_proposal_recently_text
+}
+
+ftr_not_considering_proposal_tt = {
+	global = ftr_not_considering_proposal_text
+}
+
+ftr_have_set_own_realm_focus_tt = {
+	global = ftr_have_set_own_realm_focus_text
+}
+
+ftr_liege_not_considering_proposal_tt = {
+	global = ftr_liege_not_considering_proposal_text
+}
+
+ftr_have_set_liege_realm_focus_tt = {
+	global = ftr_have_set_liege_realm_focus_text
+}
+
+ftr_powerful_subject_trigger_tt = {
+	global = ftr_powerful_subject_trigger_text
+}

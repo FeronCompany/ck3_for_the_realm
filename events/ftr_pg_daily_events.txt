@@ -1,0 +1,3 @@
+﻿
+namespace = ftr_pg_daily_event
+

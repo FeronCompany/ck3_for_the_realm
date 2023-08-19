@@ -1,0 +1,240 @@
+﻿
+ftr_add_political_influence_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_add_political_influence_decision_desc
+	selection_tooltip = ftr_add_political_influence_decision_tooltip
+	is_shown = {
+		#is_independent_ruler = yes
+		is_ai = no
+	}
+	cost = {
+		#prestige = { value = 100 }
+	}
+	effect = {
+		ftr_add_political_influence_effect = {
+			VALUE = 100
+		}
+		#save_scope_as = me
+		#ftr_change_realm_political_focus_effect = {
+		#	LIEGE = scope:me
+		#	STARTER = scope:me
+		#	VALUE = 3
+		#}
+	}
+	ai_potential = {
+		always = no
+	}
+}
+
+ftr_pg_ai_expande_influence_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_ai_expande_influence_decision_desc
+	selection_tooltip = ftr_pg_ai_expande_influence_decision_tooltip
+	ai_check_interval = 24
+	is_shown = {
+		is_ai = yes
+		is_capable_adult = yes
+		custom_description = {
+			text = "ftr_not_expanded_influence_recently_tt"
+			NOT = {
+				has_character_flag = ftr_expand_influence_flag
+			}
+		}
+	}
+	effect = {
+		trigger_event = ftr_pg_ui_event.0001
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 100
+	}
+}
+
+ftr_pg_ai_change_my_realm_focus_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_ai_change_my_realm_focus_decision_desc
+	selection_tooltip = ftr_pg_ai_change_my_realm_focus_decision_tooltip
+	ai_check_interval = 24
+	is_shown = {
+		is_ai = yes
+		is_capable_adult = yes
+		is_landed = yes
+	}
+	is_valid = {
+		custom_description = {
+			text = "ftr_have_enough_pi_tt"
+			value = ftr_shift_focus_cost_value
+			ftr_political_influence_value >= ftr_shift_focus_cost_value
+		}
+		custom_description = {
+			text = "ftr_not_change_focus_recently_tt"
+			NOT = {
+				has_character_flag = ftr_change_focus_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_not_changing_focus_tt"
+			NOT = {
+				has_character_flag = ftr_changing_focus_flag
+			}
+		}
+	}
+
+	effect = {
+		trigger_event = ftr_pg_ui_event.0002
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = 30
+			exists = var:ftr_pg_focus
+			var:ftr_pg_focus = 2
+		}
+	}
+}
+
+ftr_pg_ai_change_liege_realm_focus_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_ai_change_liege_realm_focus_decision_desc
+	selection_tooltip = ftr_pg_ai_change_liege_realm_focus_decision_tooltip
+	ai_check_interval = 36
+	is_shown = {
+		is_ai = yes
+		is_capable_adult = yes
+	}
+	is_valid = {
+		custom_description = {
+			text = "ftr_have_enough_pi_tt"
+			value = ftr_shift_focus_cost_value
+			ftr_political_influence_value >= ftr_shift_focus_cost_value
+		}
+		custom_description = {
+			text = "ftr_not_change_focus_recently_tt"
+			NOT = {
+				has_character_flag = ftr_change_focus_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_liege_not_changing_focus_tt"
+			liege = {
+				NOT = {
+					has_character_flag = ftr_changing_focus_flag
+				}
+			}
+		}
+	}
+
+	effect = {
+		trigger_event = ftr_pg_ui_event.0005
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 33
+	}
+}
+
+ftr_pg_ai_make_own_proposal_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_ai_make_own_proposal_decision_desc
+	selection_tooltip = ftr_pg_ai_make_own_proposal_decision_tooltip
+	ai_check_interval = 24
+	is_shown = {
+		is_ai = yes
+		is_capable_adult = yes
+		is_landed = yes
+	}
+	is_valid = {
+		custom_description = {
+			text = "ftr_have_enough_pi_tt"
+			value = ftr_make_pg_proposal_cost_value
+			ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+		}
+		custom_description = {
+			text = "ftr_not_make_proposal_recently_tt"
+			NOT = {
+				has_character_flag = ftr_make_proposal_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_not_considering_proposal_tt"
+			NOT = {
+				exists = var:ftr_proposal_type
+				var:ftr_proposal_type > 0
+			}
+		}
+		custom_description = {
+			text = "ftr_have_set_own_realm_focus_tt"
+			exists = var:ftr_pg_focus
+		}
+	}
+
+	effect = {
+		save_scope_as = starter
+		save_scope_as = liege_c
+		trigger_event = ftr_pg_ui_event.0100
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 33
+	}
+}
+
+ftr_pg_ai_make_proposal_to_liege_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_ai_make_proposal_to_liege_decision_desc
+	selection_tooltip = ftr_pg_ai_make_proposal_to_liege_decision_tooltip
+	ai_check_interval = 24
+	is_shown = {
+		is_ai = yes
+		is_capable_adult = yes
+	}
+	is_valid = {
+		custom_description = {
+			text = "ftr_have_enough_pi_tt"
+			value = ftr_make_pg_proposal_cost_value
+			ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+		}
+		custom_description = {
+			text = "ftr_not_make_proposal_recently_tt"
+			NOT = {
+				has_character_flag = ftr_make_proposal_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_liege_not_considering_proposal_tt"
+			liege = {
+				NOT = {
+					exists = var:ftr_proposal_type
+					var:ftr_proposal_type > 0
+				}
+			}
+		}
+		custom_description = {
+			text = "ftr_have_set_liege_realm_focus_tt"
+			liege = { exists = var:ftr_pg_focus }
+		}
+	}
+
+	effect = {
+		save_scope_as = starter
+		liege = {
+			save_scope_as = liege_c
+		}
+		trigger_event = ftr_pg_ui_event.0100
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 33
+	}
+}

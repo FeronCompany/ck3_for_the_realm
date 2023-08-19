@@ -99,3 +99,63 @@ auto_convert_culture_by_bribe_tt = {
 auto_convert_culture_elite_run_tt = {
 	global = auto_convert_culture_elite_run_text
 }
+
+ftr_add_political_influence_effect_tt = {
+	global = ftr_add_political_influence_effect_text
+}
+
+ftr_flag_expanded_influence_recently_tt = {
+	global = ftr_flag_expanded_influence_recently_text
+}
+
+ftr_change_realm_political_focus_effect_tt = {
+	global = ftr_change_realm_political_focus_effect_text
+}
+
+ftr_flag_recently_changed_focus_tt = {
+	global = ftr_flag_recently_changed_focus_text
+}
+
+ftr_change_focus_failed_tt = {
+	global = ftr_change_focus_failed_text
+}
+
+ftr_submit_change_foucus_effect_tt = {
+	global = ftr_submit_change_foucus_effect_text
+}
+
+ftr_change_focus_vote_approve_tt = {
+	global = ftr_change_focus_vote_approve_text
+}
+
+ftr_change_focus_vote_oppose_tt = {
+	global = ftr_change_focus_vote_oppose_text
+}
+
+ftr_flag_recently_made_proposal_tt = {
+	global = ftr_flag_recently_made_proposal_text
+}
+
+ftr_expand_authority_failed_tt = {
+	global = ftr_expand_authority_failed_text
+}
+
+ftr_expand_authority_success_notify_tt = {
+	global = ftr_expand_authority_success_notify_text
+}
+
+ftr_expand_authority_failed_notify_tt = {
+	global = ftr_expand_authority_failed_notify_text
+}
+
+ftr_proposal_vote_approve_tt = {
+	global = ftr_proposal_vote_approve_text
+}
+
+ftr_proposal_vote_oppose_tt = {
+	global = ftr_proposal_vote_oppose_text
+}
+
+ftr_expand_authority_proposal_notify_tt = {
+	global = ftr_expand_authority_proposal_notify_text
+}

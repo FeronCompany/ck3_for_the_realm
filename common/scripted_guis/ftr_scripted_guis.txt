@@ -108,7 +108,8 @@ ftr_make_my_proposal = {
 		custom_description = {
 			text = "ftr_not_considering_proposal_tt"
 			NOT = {
-				has_character_flag = ftr_considering_proposal_flag
+				exists = var:ftr_proposal_type
+				var:ftr_proposal_type > 0
 			}
 		}
 		custom_description = {
@@ -139,7 +140,8 @@ ftr_make_proposal_to_liege = {
 			text = "ftr_liege_not_considering_proposal_tt"
 			liege = {
 				NOT = {
-					has_character_flag = ftr_considering_proposal_flag
+					exists = var:ftr_proposal_type
+					var:ftr_proposal_type > 0
 				}
 			}
 		}
@@ -166,6 +168,7 @@ ftr_favor_my_proposal = {
 		NOT = {
 			has_character_flag = ftr_change_my_proposal_attitude_flag
 		}
+		ftr_political_influence_value >= ftr_vote_proposal_cost_value
 	}
 	effect = {
 		set_variable = {
@@ -175,6 +178,9 @@ ftr_favor_my_proposal = {
 		add_character_flag = {
 			flag = ftr_change_my_proposal_attitude_flag
 			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
 		}
 	}
 }
@@ -188,6 +194,7 @@ ftr_reject_my_proposal = {
 		NOT = {
 			has_character_flag = ftr_change_my_proposal_attitude_flag
 		}
+		ftr_political_influence_value >= ftr_vote_proposal_cost_value
 	}
 	effect = {
 		set_variable = {
@@ -197,6 +204,9 @@ ftr_reject_my_proposal = {
 		add_character_flag = {
 			flag = ftr_change_my_proposal_attitude_flag
 			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
 		}
 	}
 }
@@ -235,6 +245,7 @@ ftr_favor_liege_proposal = {
 		NOT = {
 			has_character_flag = ftr_change_liege_proposal_attitude_flag
 		}
+		ftr_political_influence_value >= ftr_vote_proposal_cost_value
 	}
 	effect = {
 		set_variable = {
@@ -244,6 +255,9 @@ ftr_favor_liege_proposal = {
 		add_character_flag = {
 			flag = ftr_change_liege_proposal_attitude_flag
 			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
 		}
 	}
 }
@@ -260,6 +274,7 @@ ftr_reject_liege_proposal = {
 		NOT = {
 			has_character_flag = ftr_change_liege_proposal_attitude_flag
 		}
+		ftr_political_influence_value >= ftr_vote_proposal_cost_value
 	}
 	effect = {
 		set_variable = {
@@ -269,6 +284,9 @@ ftr_reject_liege_proposal = {
 		add_character_flag = {
 			flag = ftr_change_liege_proposal_attitude_flag
 			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
 		}
 	}
 }

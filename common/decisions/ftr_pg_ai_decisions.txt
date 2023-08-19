@@ -165,7 +165,8 @@ ftr_pg_ai_make_own_proposal_decision = {
 		custom_description = {
 			text = "ftr_not_considering_proposal_tt"
 			NOT = {
-				has_character_flag = ftr_considering_proposal_flag
+				exists = var:ftr_proposal_type
+				var:ftr_proposal_type > 0
 			}
 		}
 		custom_description = {
@@ -212,7 +213,8 @@ ftr_pg_ai_make_proposal_to_liege_decision = {
 			text = "ftr_liege_not_considering_proposal_tt"
 			liege = {
 				NOT = {
-					has_character_flag = ftr_considering_proposal_flag
+					exists = var:ftr_proposal_type
+					var:ftr_proposal_type > 0
 				}
 			}
 		}

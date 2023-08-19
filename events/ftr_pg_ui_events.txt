@@ -494,7 +494,7 @@ ftr_pg_ui_event.0100 = {
 		}
 		scope:starter = {
 			if = {
-				NOT = { this = scope:liege_c }
+				limit = { NOT = { this = scope:liege_c } }
 				set_variable = {
 					name = ftr_liege_proposal_attitude
 					value = 1 # 支持
@@ -508,6 +508,10 @@ ftr_pg_ui_event.0100 = {
 			}
 		}
 		scope:liege_c = {
+			set_variable = {
+				name = ftr_proposal_type
+				value = 1 # 提升君权
+			}
 			every_in_list = {
 				list = powerful_subject_list
 				hidden_effect = {
@@ -574,9 +578,9 @@ ftr_pg_ui_event.0201 = {
 
 	immediate = {
 		scope:liege_c = {
-			set_local_variable = { name = count_yes value = 0 }
-			set_local_variable = { name = count_no value = 0 }
-			ftr_update_my_powerful_subject_list = yes
+			set_variable = { name = count_yes value = 0 }
+			set_variable = { name = count_no value = 0 }
+			ftr_update_powerful_subjects_list_effect = yes
 			every_in_list = {
 				list = powerful_subjects_list
 				if = {
@@ -586,18 +590,18 @@ ftr_pg_ui_event.0201 = {
 							exists = var:ftr_liege_proposal_attitude
 							var:ftr_liege_proposal_attitude = 1
 						}
-						change_local_variable = {
+						change_variable = {
 							name = count_yes
 							add = 1
 						}
 						add_to_list = approve_list
 					}
-					else if = {
+					else_if = {
 						limit = {
 							exists = var:ftr_liege_proposal_attitude
 							var:ftr_liege_proposal_attitude = 2
 						}
-						change_local_variable = {
+						change_variable = {
 							name = count_no
 							add = 1
 						}
@@ -609,18 +613,18 @@ ftr_pg_ui_event.0201 = {
 							exists = var:ftr_my_proposal_attitude
 							var:ftr_my_proposal_attitude = 1
 						}
-						change_local_variable = {
+						change_variable = {
 							name = count_yes
 							add = 1
 						}
 						add_to_list = approve_list
 					}
-					else if = {
+					else_if = {
 						limit = {
 							exists = var:ftr_my_proposal_attitude
 							var:ftr_my_proposal_attitude = 2
 						}
-						change_local_variable = {
+						change_variable = {
 							name = count_no
 							add = 1
 						}
@@ -634,7 +638,9 @@ ftr_pg_ui_event.0201 = {
 		name = ftr_pg_ui_event.0201.a
 		if = {
 			limit = {
-				var:count_yes > var:count_no
+				scope:liege_c = {
+					var:count_yes > var:count_no
+				}
 			}
 			scope:liege_c = {
 				ftr_expand_authority_effect = yes
@@ -645,7 +651,9 @@ ftr_pg_ui_event.0201 = {
 	option = { # Ignore it
 		name = ftr_pg_ui_event.0201.b
 		trigger = {
-			var:count_yes > var:count_no
+			scope:liege_c = {
+				var:count_yes > var:count_no
+			}
 		}
 		every_in_list = {
 			list = approve_list
@@ -671,8 +679,8 @@ ftr_pg_ui_event.0201 = {
 				name = ftr_proposal_type
 				value = 0
 			}
-			remove_local_variable = count_yes
-			remove_local_variable = count_no
+			remove_variable = count_yes
+			remove_variable = count_no
 			every_in_list = {
 				list = powerful_subjects_list
 				if = {

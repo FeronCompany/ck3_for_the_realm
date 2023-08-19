@@ -590,9 +590,11 @@ ftr_pg_ui_event.0201 = {
 							exists = var:ftr_liege_proposal_attitude
 							var:ftr_liege_proposal_attitude = 1
 						}
-						change_variable = {
-							name = count_yes
-							add = 1
+						scope:liege_c = {
+							change_variable = {
+								name = count_yes
+								add = 1
+							}
 						}
 						add_to_list = approve_list
 					}
@@ -601,9 +603,11 @@ ftr_pg_ui_event.0201 = {
 							exists = var:ftr_liege_proposal_attitude
 							var:ftr_liege_proposal_attitude = 2
 						}
-						change_variable = {
-							name = count_no
-							add = 1
+						scope:liege_c = {
+							change_variable = {
+								name = count_no
+								add = 1
+							}
 						}
 					}
 				}
@@ -613,9 +617,11 @@ ftr_pg_ui_event.0201 = {
 							exists = var:ftr_my_proposal_attitude
 							var:ftr_my_proposal_attitude = 1
 						}
-						change_variable = {
-							name = count_yes
-							add = 1
+						scope:liege_c = {
+							change_variable = {
+								name = count_yes
+								add = 1
+							}
 						}
 						add_to_list = approve_list
 					}
@@ -624,9 +630,11 @@ ftr_pg_ui_event.0201 = {
 							exists = var:ftr_my_proposal_attitude
 							var:ftr_my_proposal_attitude = 2
 						}
-						change_variable = {
-							name = count_no
-							add = 1
+						scope:liege_c = {
+							change_variable = {
+								name = count_no
+								add = 1
+							}
 						}
 					}
 				}

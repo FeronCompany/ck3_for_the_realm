@@ -108,8 +108,10 @@ ftr_make_my_proposal = {
 		custom_description = {
 			text = "ftr_not_considering_proposal_tt"
 			NOT = {
-				exists = var:ftr_proposal_type
-				var:ftr_proposal_type > 0
+				trigger_if = {
+					limit = { exists = var:ftr_proposal_type }
+					var:ftr_proposal_type > 0
+				}
 			}
 		}
 		custom_description = {
@@ -140,8 +142,10 @@ ftr_make_proposal_to_liege = {
 			text = "ftr_liege_not_considering_proposal_tt"
 			liege = {
 				NOT = {
-					exists = var:ftr_proposal_type
-					var:ftr_proposal_type > 0
+					trigger_if = {
+						limit = { exists = var:ftr_proposal_type }
+						var:ftr_proposal_type > 0
+					}
 				}
 			}
 		}
@@ -164,7 +168,11 @@ ftr_favor_my_proposal = {
 	is_valid = {
 		is_capable_adult = yes
 		exists = var:ftr_proposal_type
-		var:ftr_proposal_type > 0 # 无议案时置为0
+		var:ftr_proposal_type > 0
+		trigger_if = {
+			limit = { exists = var:ftr_my_proposal_attitude }
+			NOT = { var:ftr_my_proposal_attitude = 1 }
+		}
 		NOT = {
 			has_character_flag = ftr_change_my_proposal_attitude_flag
 		}
@@ -190,7 +198,11 @@ ftr_reject_my_proposal = {
 	is_valid = {
 		is_capable_adult = yes
 		exists = var:ftr_proposal_type
-		var:ftr_proposal_type > 0 # 无议案时置为0
+		var:ftr_proposal_type > 0
+		trigger_if = {
+			limit = { exists = var:ftr_my_proposal_attitude }
+			NOT = { var:ftr_my_proposal_attitude = 2 }
+		}
 		NOT = {
 			has_character_flag = ftr_change_my_proposal_attitude_flag
 		}
@@ -216,7 +228,11 @@ ftr_abstain_my_proposal = {
 	is_valid = {
 		is_capable_adult = yes
 		exists = var:ftr_proposal_type
-		var:ftr_proposal_type > 0 # 无议案时置为0
+		var:ftr_proposal_type > 0
+		trigger_if = {
+			limit = { exists = var:ftr_my_proposal_attitude }
+			NOT = { var:ftr_my_proposal_attitude = 3 }
+		}
 		NOT = {
 			has_character_flag = ftr_change_my_proposal_attitude_flag
 		}
@@ -240,7 +256,11 @@ ftr_favor_liege_proposal = {
 		ftr_powerful_subject_trigger = yes
 		liege = {
 			exists = var:ftr_proposal_type
-			var:ftr_proposal_type > 0 # 无议案时置为0
+			var:ftr_proposal_type > 0
+		}
+		trigger_if = {
+			limit = { exists = var:ftr_liege_proposal_attitude }
+			NOT = { var:ftr_liege_proposal_attitude = 1 }
 		}
 		NOT = {
 			has_character_flag = ftr_change_liege_proposal_attitude_flag
@@ -269,7 +289,11 @@ ftr_reject_liege_proposal = {
 		ftr_powerful_subject_trigger = yes
 		liege = {
 			exists = var:ftr_proposal_type
-			var:ftr_proposal_type > 0 # 无议案时置为0
+			var:ftr_proposal_type > 0
+		}
+		trigger_if = {
+			limit = { exists = var:ftr_liege_proposal_attitude }
+			NOT = { var:ftr_liege_proposal_attitude = 2 }
 		}
 		NOT = {
 			has_character_flag = ftr_change_liege_proposal_attitude_flag
@@ -298,7 +322,11 @@ ftr_abstain_liege_proposal = {
 		ftr_powerful_subject_trigger = yes
 		liege = {
 			exists = var:ftr_proposal_type
-			var:ftr_proposal_type > 0 # 无议案时置为0
+			var:ftr_proposal_type > 0
+		}
+		trigger_if = {
+			limit = { exists = var:ftr_liege_proposal_attitude }
+			NOT = { var:ftr_liege_proposal_attitude = 3 }
 		}
 		NOT = {
 			has_character_flag = ftr_change_liege_proposal_attitude_flag

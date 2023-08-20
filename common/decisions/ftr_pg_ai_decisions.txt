@@ -106,6 +106,7 @@ ftr_pg_ai_change_liege_realm_focus_decision = {
 	is_shown = {
 		is_ai = yes
 		is_capable_adult = yes
+		is_independent_ruler = no
 	}
 	is_valid = {
 		custom_description = {
@@ -196,6 +197,7 @@ ftr_pg_ai_make_proposal_to_liege_decision = {
 	is_shown = {
 		is_ai = yes
 		is_capable_adult = yes
+		is_independent_ruler = no
 	}
 	is_valid = {
 		custom_description = {
@@ -230,6 +232,386 @@ ftr_pg_ai_make_proposal_to_liege_decision = {
 			save_scope_as = liege_c
 		}
 		trigger_event = ftr_pg_ui_event.0100
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 33
+	}
+}
+
+ftr_pg_my_proposal_vote_yes_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_my_proposal_vote_yes_decision_desc
+	selection_tooltip = ftr_pg_my_proposal_vote_yes_decision_tooltip
+	ai_check_interval = 12
+	is_shown = {
+		is_ai = yes
+	}
+	is_valid = {
+		is_capable_adult = yes
+		custom_description = {
+			text = "ftr_my_realm_has_valid_proposal_tt"
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type > 0
+		}
+		custom_description = {
+			text = "ftr_my_realm_not_vote_yes_tt"
+			trigger_if = {
+				limit = { exists = var:ftr_my_proposal_attitude }
+				NOT = { var:ftr_my_proposal_attitude = 1 }
+			}
+		}
+		custom_description = {
+			text = "ftr_my_realm_not_change_attitude_tt"
+			NOT = {
+				has_character_flag = ftr_change_my_proposal_attitude_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_have_enough_pi_tt"
+			value = ftr_vote_proposal_cost_value
+			ftr_political_influence_value >= ftr_vote_proposal_cost_value
+		}
+	}
+
+	effect = {
+		set_variable = {
+			name = ftr_my_proposal_attitude
+			value = 1 # 赞成
+		}
+		add_character_flag = {
+			flag = ftr_change_my_proposal_attitude_flag
+			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
+		}
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 0
+		# modifier for Expand Crown Authority
+		modifier = {
+			add = 100 # As liege, of course support
+			var:ftr_proposal_type = 1
+		}
+	}
+}
+
+ftr_pg_my_proposal_vote_no_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_my_proposal_vote_no_decision_desc
+	selection_tooltip = ftr_pg_my_proposal_vote_no_decision_tooltip
+	ai_check_interval = 12
+	is_shown = {
+		is_ai = yes
+	}
+	is_valid = {
+		is_capable_adult = yes
+		custom_description = {
+			text = "ftr_my_realm_has_valid_proposal_tt"
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type > 0
+		}
+		custom_description = {
+			text = "ftr_my_realm_not_vote_no_tt"
+			trigger_if = {
+				limit = { exists = var:ftr_my_proposal_attitude }
+				NOT = { var:ftr_my_proposal_attitude = 2 }
+			}
+		}
+		custom_description = {
+			text = "ftr_my_realm_not_change_attitude_tt"
+			NOT = {
+				has_character_flag = ftr_change_my_proposal_attitude_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_have_enough_pi_tt"
+			value = ftr_vote_proposal_cost_value
+			ftr_political_influence_value >= ftr_vote_proposal_cost_value
+		}
+	}
+
+	effect = {
+		set_variable = {
+			name = ftr_my_proposal_attitude
+			value = 2
+		}
+		add_character_flag = {
+			flag = ftr_change_my_proposal_attitude_flag
+			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
+		}
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 33
+		# TODO...
+	}
+}
+
+ftr_pg_my_proposal_vote_abstain_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_my_proposal_vote_abstain_decision_desc
+	selection_tooltip = ftr_pg_my_proposal_vote_abstain_decision_tooltip
+	ai_check_interval = 12
+	is_shown = {
+		is_ai = yes
+	}
+	is_valid = {
+		is_capable_adult = yes
+		custom_description = {
+			text = "ftr_my_realm_has_valid_proposal_tt"
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type > 0
+		}
+		custom_description = {
+			text = "ftr_my_realm_not_vote_abstain_tt"
+			trigger_if = {
+				limit = { exists = var:ftr_my_proposal_attitude }
+				NOT = { var:ftr_my_proposal_attitude = 3 }
+			}
+		}
+		custom_description = {
+			text = "ftr_my_realm_not_change_attitude_tt"
+			NOT = {
+				has_character_flag = ftr_change_my_proposal_attitude_flag
+			}
+		}
+	}
+
+	effect = {
+		set_variable = {
+			name = ftr_my_proposal_attitude
+			value = 3
+		}
+		add_character_flag = {
+			flag = ftr_change_my_proposal_attitude_flag
+			days = 30
+		}
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 33
+		# TODO...
+	}
+}
+
+ftr_pg_liege_proposal_vote_yes_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_liege_proposal_vote_yes_decision_desc
+	selection_tooltip = ftr_pg_liege_proposal_vote_yes_decision_tooltip
+	ai_check_interval = 12
+	is_shown = {
+		is_ai = yes
+		is_independent_ruler = no
+	}
+	is_valid = {
+		is_capable_adult = yes
+		custom_description = {
+			text = "ftr_is_inner_circle_member_of_liege_tt"
+			ftr_powerful_subject_trigger = yes
+		}
+		custom_description = {
+			text = "ftr_liege_realm_has_valid_proposal_tt"
+			liege = {
+				exists = var:ftr_proposal_type
+				var:ftr_proposal_type > 0
+			}
+		}
+		custom_description = {
+			text = "ftr_liege_realm_not_vote_yes_tt"
+			trigger_if = {
+				limit = { exists = var:ftr_liege_proposal_attitude }
+				NOT = { var:ftr_liege_proposal_attitude = 1 }
+			}
+		}
+		custom_description = {
+			text = "ftr_liege_realm_not_change_attitude_tt"
+			NOT = {
+				has_character_flag = ftr_change_liege_proposal_attitude_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_have_enough_pi_tt"
+			value = ftr_vote_proposal_cost_value
+			ftr_political_influence_value >= ftr_vote_proposal_cost_value
+		}
+	}
+
+	effect = {
+		set_variable = {
+			name = ftr_liege_proposal_attitude
+			value = 1 # 赞成
+		}
+		add_character_flag = {
+			flag = ftr_change_liege_proposal_attitude_flag
+			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
+		}
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 0
+		# modifier for Expand Crown Authority
+		modifier = {
+			add = 33
+			liege = {
+				var:ftr_proposal_type = 1
+				OR = {
+					has_realm_law = crown_authority_0
+					has_realm_law = crown_authority_1
+					has_realm_law = tribal_authority_0
+					has_realm_law = tribal_authority_1
+				}
+			}
+			opinion = {
+				target = liege
+				value >= 90
+			}
+		}
+	}
+}
+
+ftr_pg_liege_proposal_vote_no_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_liege_proposal_vote_no_decision_desc
+	selection_tooltip = ftr_pg_liege_proposal_vote_no_decision_tooltip
+	ai_check_interval = 12
+	is_shown = {
+		is_ai = yes
+		is_independent_ruler = no
+	}
+	is_valid = {
+		is_capable_adult = yes
+		custom_description = {
+			text = "ftr_is_inner_circle_member_of_liege_tt"
+			ftr_powerful_subject_trigger = yes
+		}
+		custom_description = {
+			text = "ftr_liege_realm_has_valid_proposal_tt"
+			liege = {
+				exists = var:ftr_proposal_type
+				var:ftr_proposal_type > 0
+			}
+		}
+		custom_description = {
+			text = "ftr_liege_realm_not_vote_no_tt"
+			trigger_if = {
+				limit = { exists = var:ftr_liege_proposal_attitude }
+				NOT = { var:ftr_liege_proposal_attitude = 2 }
+			}
+		}
+		custom_description = {
+			text = "ftr_liege_realm_not_change_attitude_tt"
+			NOT = {
+				has_character_flag = ftr_change_liege_proposal_attitude_flag
+			}
+		}
+		custom_description = {
+			text = "ftr_have_enough_pi_tt"
+			value = ftr_vote_proposal_cost_value
+			ftr_political_influence_value >= ftr_vote_proposal_cost_value
+		}
+	}
+
+	effect = {
+		set_variable = {
+			name = ftr_liege_proposal_attitude
+			value = 2
+		}
+		add_character_flag = {
+			flag = ftr_change_liege_proposal_attitude_flag
+			days = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_vote_proposal_modify_value
+		}
+	}
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 0
+		# modifier for Expand Crown Authority
+		modifier = {
+			add = 33
+			liege = {
+				var:ftr_proposal_type = 1
+				OR = {
+					has_realm_law = crown_authority_3
+					has_realm_law = tribal_authority_3
+				}
+			}
+			opinion = {
+				target = liege
+				value < 70
+			}
+		}
+	}
+}
+
+ftr_pg_liege_proposal_vote_abstain_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_pg_liege_proposal_vote_abstain_decision_desc
+	selection_tooltip = ftr_pg_liege_proposal_vote_abstain_decision_tooltip
+	ai_check_interval = 12
+	is_shown = {
+		is_ai = yes
+		is_independent_ruler = no
+	}
+	is_valid = {
+		is_capable_adult = yes
+		custom_description = {
+			text = "ftr_is_inner_circle_member_of_liege_tt"
+			ftr_powerful_subject_trigger = yes
+		}
+		custom_description = {
+			text = "ftr_liege_realm_has_valid_proposal_tt"
+			liege = {
+				exists = var:ftr_proposal_type
+				var:ftr_proposal_type > 0
+			}
+		}
+		custom_description = {
+			text = "ftr_liege_realm_not_abstain_no_tt"
+			trigger_if = {
+				limit = { exists = var:ftr_liege_proposal_attitude }
+				NOT = { var:ftr_liege_proposal_attitude = 3 }
+			}
+		}
+		custom_description = {
+			text = "ftr_liege_realm_not_change_attitude_tt"
+			NOT = {
+				has_character_flag = ftr_change_liege_proposal_attitude_flag
+			}
+		}
+	}
+
+	effect = {
+		set_variable = {
+			name = ftr_liege_proposal_attitude
+			value = 3
+		}
+		add_character_flag = {
+			flag = ftr_change_liege_proposal_attitude_flag
+			days = 30
+		}
 	}
 	ai_potential = {
 		always = yes

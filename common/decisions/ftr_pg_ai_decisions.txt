@@ -93,7 +93,7 @@ ftr_pg_ai_change_my_realm_focus_decision = {
 		modifier = {
 			add = 30
 			exists = var:ftr_pg_focus
-			var:ftr_pg_focus = 2
+			var:ftr_pg_focus = 1
 		}
 	}
 }

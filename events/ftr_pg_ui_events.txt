@@ -136,54 +136,29 @@ ftr_pg_ui_event.0002 = {
 		}
 	}
 
-	option = { # 继承权succession
-		name = ftr_pg_ui_event.0002.b
-		ftr_submit_change_foucus_effect = {
-			LIEGE = root
-			STARTER = root
-			VALUE = 2
-		}
-		ai_chance = { # AI liege don't want to talk about succession
-			base = 0
-		}
-	}
-
 	option = { # 文化
 		name = ftr_pg_ui_event.0002.c
 		ftr_submit_change_foucus_effect = {
 			LIEGE = root
 			STARTER = root
-			VALUE = 3
+			VALUE = 2
 		}
 		ai_chance = { # I have vassals in different culture
 			base = 10
 			modifier = {
 				add = 10
-				any_vassal = {
-					count >= 2
-					NOT = {
-						culture = root.culture
+				OR = {
+					any_vassal = {
+						count >= 2
+						NOT = {
+							culture = root.culture
+						}
 					}
-				}
-			}
-		}
-	}
-
-	option = { # 宗教
-		name = ftr_pg_ui_event.0002.d
-		ftr_submit_change_foucus_effect = {
-			LIEGE = root
-			STARTER = root
-			VALUE = 4
-		}
-		ai_chance = { # I have vassals in different religion
-			base = 10
-			modifier = {
-				add = 10
-				any_vassal = {
-					count >= 2
-					NOT = {
-						religion = root.religion
+					any_vassal = {
+						count >= 2
+						NOT = {
+							religion = root.religion
+						}
 					}
 				}
 			}
@@ -195,7 +170,7 @@ ftr_pg_ui_event.0002 = {
 		ftr_submit_change_foucus_effect = {
 			LIEGE = root
 			STARTER = root
-			VALUE = 5
+			VALUE = 3
 		}
 		ai_chance = { # AI liege likes this topic
 			base = 30
@@ -389,36 +364,12 @@ ftr_pg_ui_event.0005 = {
 		}
 	}
 
-	option = { # 继承权succession
-		name = ftr_pg_ui_event.0002.b
-		ftr_submit_change_foucus_effect = {
-			LIEGE = liege
-			STARTER = root
-			VALUE = 2
-		}
-		ai_chance = { # AI subjects like this topic
-			base = 15
-		}
-	}
-
 	option = { # 文化
 		name = ftr_pg_ui_event.0002.c
 		ftr_submit_change_foucus_effect = {
 			LIEGE = liege
 			STARTER = root
-			VALUE = 3
-		}
-		ai_chance = {
-			base = 10
-		}
-	}
-
-	option = { # 宗教
-		name = ftr_pg_ui_event.0002.d
-		ftr_submit_change_foucus_effect = {
-			LIEGE = liege
-			STARTER = root
-			VALUE = 4
+			VALUE = 2
 		}
 		ai_chance = {
 			base = 10
@@ -430,7 +381,7 @@ ftr_pg_ui_event.0005 = {
 		ftr_submit_change_foucus_effect = {
 			LIEGE = liege
 			STARTER = root
-			VALUE = 5
+			VALUE = 3
 		}
 		ai_chance = {
 			base = 10
@@ -482,7 +433,7 @@ ftr_pg_ui_event.0100 = {
 				exists = var:ftr_pg_focus
 				OR = {
 					var:ftr_pg_focus = 1 # 王权
-					var:ftr_pg_focus = 5 # 安全
+					var:ftr_pg_focus = 3 # 安全
 				}
 				NOT = {
 					OR = {

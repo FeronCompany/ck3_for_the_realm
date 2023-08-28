@@ -343,3 +343,96 @@ ftr_expand_authority_effect = {
 		add_realm_law = tribal_authority_3
 	}
 }
+
+ftr_count_vote_result_effect = {
+	scope:liege_c = {
+		set_variable = { name = count_yes value = 0 }
+		set_variable = { name = count_no value = 0 }
+		ftr_update_powerful_subjects_list_effect = yes
+		every_in_list = {
+			list = powerful_subjects_list
+			if = {
+				limit = { NOT = { this = scope:liege_c } }
+				if = {
+					limit = {
+						exists = var:ftr_liege_proposal_attitude
+						var:ftr_liege_proposal_attitude = 1
+					}
+					scope:liege_c = {
+						change_variable = {
+							name = count_yes
+							add = 1
+						}
+					}
+					add_to_list = approve_list
+				}
+				else_if = {
+					limit = {
+						exists = var:ftr_liege_proposal_attitude
+						var:ftr_liege_proposal_attitude = 2
+					}
+					scope:liege_c = {
+						change_variable = {
+							name = count_no
+							add = 1
+						}
+					}
+				}
+			}
+			else = {
+				if = {
+					limit = {
+						exists = var:ftr_my_proposal_attitude
+						var:ftr_my_proposal_attitude = 1
+					}
+					scope:liege_c = {
+						change_variable = {
+							name = count_yes
+							add = 1
+						}
+					}
+					add_to_list = approve_list
+				}
+				else_if = {
+					limit = {
+						exists = var:ftr_my_proposal_attitude
+						var:ftr_my_proposal_attitude = 2
+					}
+					scope:liege_c = {
+						change_variable = {
+							name = count_no
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+ftr_clear_vote_result_effect = {
+	scope:liege_c = {
+		set_variable = {
+			name = ftr_proposal_type
+			value = 0
+		}
+		remove_variable = count_yes
+		remove_variable = count_no
+		every_in_list = {
+			list = powerful_subjects_list
+			if = {
+				limit = { NOT = { this = scope:liege_c } }
+				set_variable = {
+					name = ftr_liege_proposal_attitude
+					value = 3
+				}
+			}
+			else = {
+				set_variable = {
+					name = ftr_my_proposal_attitude
+					value = 3
+				}
+			}
+		}
+	}
+}

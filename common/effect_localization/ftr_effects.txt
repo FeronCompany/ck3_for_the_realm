@@ -159,3 +159,7 @@ ftr_proposal_vote_oppose_tt = {
 ftr_expand_authority_proposal_notify_tt = {
 	global = ftr_expand_authority_proposal_notify_text
 }
+
+ftr_weaken_authority_proposal_notify_tt = {
+	global = ftr_weaken_authority_proposal_notify_text
+}

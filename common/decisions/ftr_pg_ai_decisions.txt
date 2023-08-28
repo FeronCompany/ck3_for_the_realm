@@ -299,6 +299,11 @@ ftr_pg_my_proposal_vote_yes_decision = {
 			add = 100 # As liege, of course support
 			var:ftr_proposal_type = 1
 		}
+		# modifier for Weaken Crown Authority
+		modifier = {
+			add = -100 # As liege, don't like it
+			var:ftr_proposal_type = 2
+		}
 	}
 }
 
@@ -404,7 +409,11 @@ ftr_pg_my_proposal_vote_abstain_decision = {
 	}
 	ai_will_do = {
 		base = 33
-		# TODO...
+		# modifier for Weaken Crown Authority
+		modifier = {
+			add = -100 # As liege, don't like it
+			var:ftr_proposal_type = 2
+		}
 	}
 }
 
@@ -483,6 +492,23 @@ ftr_pg_liege_proposal_vote_yes_decision = {
 			opinion = {
 				target = liege
 				value >= 90
+			}
+		}
+		# modifier for Weaken Crown Authority
+		modifier = {
+			add = 33
+			liege = {
+				var:ftr_proposal_type = 2
+				OR = {
+					has_realm_law = crown_authority_2
+					has_realm_law = crown_authority_3
+					has_realm_law = tribal_authority_2
+					has_realm_law = tribal_authority_3
+				}
+			}
+			opinion = {
+				target = scope:liege_c
+				value < 60
 			}
 		}
 	}

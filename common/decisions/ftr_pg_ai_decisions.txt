@@ -310,6 +310,12 @@ ftr_pg_my_proposal_vote_yes_decision = {
 			var:ftr_proposal_type = 3
 			has_trait = zealous
 		}
+		# modifier for Religious Tolerance
+		modifier = {
+			add = 33
+			var:ftr_proposal_type = 4
+			has_trait = cynical
+		}
 	}
 }
 
@@ -366,7 +372,12 @@ ftr_pg_my_proposal_vote_no_decision = {
 	}
 	ai_will_do = {
 		base = 33
-		# TODO...
+		# modifier for Religious Tolerance
+		modifier = {
+			add = 33
+			var:ftr_proposal_type = 4
+			has_trait = zealous
+		}
 	}
 }
 
@@ -524,6 +535,12 @@ ftr_pg_liege_proposal_vote_yes_decision = {
 			has_trait = zealous
 			faith = liege.faith
 		}
+		# modifier for Religious Tolerance
+		modifier = {
+			add = 33
+			var:ftr_proposal_type = 4
+			NOT = { faith = liege.faith }
+		}
 	}
 }
 
@@ -601,6 +618,13 @@ ftr_pg_liege_proposal_vote_no_decision = {
 				target = liege
 				value < 70
 			}
+		}
+		# modifier for Religious Tolerance
+		modifier = {
+			add = 33
+			var:ftr_proposal_type = 4
+			has_trait = zealous
+			faith = liege.faith
 		}
 	}
 }

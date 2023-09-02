@@ -183,3 +183,7 @@ ftr_purge_heresy_fail_tt = {
 ftr_purge_heresy_amoung_vassals_tt = {
 	global = ftr_purge_heresy_amoung_vassals_text
 }
+
+ftr_religious_tolerance_notify_tt = {
+	global = ftr_religious_tolerance_notify_text
+}

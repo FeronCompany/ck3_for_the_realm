@@ -38,9 +38,11 @@
  ftr_expand_authority_proposal_notify_text:0 "[CHARACTER.GetShortUIName] made a proposal about to expand crown authority in [TARGET_CHARACTER.GetShortUIName]'s realm."
  ftr_weaken_authority_proposal_notify_text:0 "[CHARACTER.GetShortUIName] made a proposal about to weaken crown authority in [TARGET_CHARACTER.GetShortUIName]'s realm."
  ftr_purge_heresy_proposal_notify_text:0 "[CHARACTER.GetShortUIName] made a proposal about to purge heresy in [TARGET_CHARACTER.GetShortUIName]'s realm."
+ ftr_religious_tolerance_notify_text:0 "[CHARACTER.GetShortUIName] made a proposal about religious tolerance in [TARGET_CHARACTER.GetShortUIName]'s realm."
  ftr_pg_ui_event.0100.1:0 "Expand crown authority"
  ftr_pg_ui_event.0100.2:0 "Weaken crown authority"
  ftr_pg_ui_event.0100.3:0 "Purge Heresy"
+ ftr_pg_ui_event.0100.4:0 "Religious Tolerance"
  ftr_pg_ui_event.0100.backup:0 "Nothing to do"
 
  ftr_pg_ui_event.0201.t:0 "Result of Voting for Expand Crown Authority"
@@ -67,6 +69,11 @@
  ftr_purge_heresy_succ_text:0 "Purge heresy success"
  ftr_purge_heresy_fail_text:0 "Purge heresy failed"
  ftr_purge_heresy_amoung_vassals_text:0 "Vassals who do not share your faith will be asked to convert or be accused of being traitors."
+
+ ftr_pg_ui_event.0204.t:0 "Result of Voting for Religious Tolerance"
+ ftr_pg_ui_event.0204.desc:0 "The proposal initiated by [starter.GetShortUIName] to tolerate heresy in [liege_c.GetShortUIName]'s realm has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('count_yes').GetValue]\nDisapprove:[liege_c.MakeScope.Var('count_no').GetValue]"
+ ftr_pg_ui_event.0204.a:0 "Agree with the result"
+ ftr_pg_ui_event.0204.b:0 "Ignore result"
 
  ftr_pg_ui_event.0300.t:0 "Purge Heresy"
  ftr_pg_ui_event.0300.desc:0 "My liege [liege_c.GetShortUIName]'s realm pass an act of purging heresy, now I'm demanded to convert to liege's faith."

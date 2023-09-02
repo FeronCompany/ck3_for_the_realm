@@ -425,7 +425,6 @@ ftr_pg_ui_event.0100 = {
 		}
 	}
 	
-	# Options For Crown Authority Focus
 	option = { # Expansion of royal power
 		name = ftr_pg_ui_event.0100.1
 		trigger = {
@@ -657,6 +656,68 @@ ftr_pg_ui_event.0100 = {
 		}
 	}
 
+	option = { # Religious Tolerance
+		name = ftr_pg_ui_event.0100.4
+		trigger = {
+			scope:liege_c = {
+				exists = var:ftr_pg_focus
+				OR = {
+					var:ftr_pg_focus = 2
+				}
+				OR = {
+					any_realm_county = {
+						NOT = { faith = scope:liege_c.faith }
+					}
+					any_vassal = {
+						NOT = { faith = scope:liege_c.faith }
+					}
+				}
+				NOT = {
+					OR = {
+						has_character_modifier = ftr_purge_heresy_modifier
+						has_character_modifier = ftr_faith_tolerance_modifier
+					}
+				}
+			}
+		}
+		scope:liege_c = {
+			set_variable = {
+				name = ftr_proposal_type
+				value = 4 # 宗教宽容
+			}
+			every_in_list = {
+				list = powerful_subject_list
+				hidden_effect = {
+					send_interface_message = {
+						title = "ftr_make_proposal_tt"
+						left_icon = scope:starter
+						right_icon = scope:liege_c
+						custom_description = {
+							text = "ftr_religious_tolerance_notify_tt"
+							subject = scope:starter
+							object = scope:liege_c
+						}
+					}
+				}
+			}
+			trigger_event = {
+				id = ftr_pg_ui_event.0204 # Make final decision
+				days = 90
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = -50
+				faith = scope:liege_c.faith
+			}
+			modifier = {
+				add = 50
+				NOT = { faith = scope:liege_c.faith }
+			}
+		}
+	}
+
 	# Backup option
 	option = {
 		name = ftr_pg_ui_event.0100.backup
@@ -872,6 +933,67 @@ ftr_pg_ui_event.0203 = {
 
 	option = { # Ignore it
 		name = ftr_pg_ui_event.0203.b
+		trigger = {
+			scope:liege_c = {
+				var:count_yes > var:count_no
+			}
+		}
+		every_in_list = {
+			list = approve_list
+			custom = ftr_pg_ui_event.0201.b.custom_yes
+			add_opinion = {
+				target = root
+				modifier = ftr_disrespect_voting_result_opinion
+			}
+		}
+		every_in_list = {
+			list = disapprove_list
+			custom = ftr_pg_ui_event.0201.b.custom_no
+			add_opinion = {
+				target = root
+				modifier = ftr_reject_foolish_proposal_opinion
+			}
+		}
+	}
+
+	after = {
+		ftr_clear_vote_result_effect = yes
+	}
+}
+
+# Religious Tolerance Result
+ftr_pg_ui_event.0204 = {
+	type = character_event
+	title = ftr_pg_ui_event.0204.t
+	desc = ftr_pg_ui_event.0204.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {
+		ftr_count_vote_result_effect = yes
+	}
+
+	option = { # Agree with result
+		name = ftr_pg_ui_event.0204.a
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:count_yes > var:count_no
+				}
+			}
+			scope:liege_c = {
+				add_character_modifier = {
+					modifier = ftr_faith_tolerance_modifier
+					years = 10
+				}
+			}
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_ui_event.0204.b
 		trigger = {
 			scope:liege_c = {
 				var:count_yes > var:count_no

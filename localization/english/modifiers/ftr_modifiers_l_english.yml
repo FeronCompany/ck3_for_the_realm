@@ -29,6 +29,9 @@
  enact_war_tax_modifier:0 "Enact War Tax"
  enact_war_tax_modifier_desc:0 "Everything for war."
 
+ enact_war_tax_by_negotiation_modifier:0 "Enact War Tax"
+ enact_war_tax_by_negotiation_modifier_desc:0 "Everything for war."
+
  ftr_grant_here_privilage_opinion:0 "Grant Hereditary Privilege"
  ftr_grant_here_privilage_opinion_desc:0 "Liege grant hereditary privilege"
 

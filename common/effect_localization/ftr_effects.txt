@@ -187,3 +187,7 @@ ftr_purge_heresy_amoung_vassals_tt = {
 ftr_religious_tolerance_notify_tt = {
 	global = ftr_religious_tolerance_notify_text
 }
+
+ftr_war_tax_notify_tt = {
+	global = ftr_war_tax_notify_text
+}

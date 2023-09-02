@@ -316,6 +316,15 @@ ftr_pg_my_proposal_vote_yes_decision = {
 			var:ftr_proposal_type = 4
 			has_trait = cynical
 		}
+		# modifier for War Tax
+		modifier = {
+			add = 33
+			var:ftr_proposal_type = 5
+			OR = {
+				has_trait = greedy
+				gold < 500
+			}
+		}
 	}
 }
 
@@ -377,6 +386,12 @@ ftr_pg_my_proposal_vote_no_decision = {
 			add = 33
 			var:ftr_proposal_type = 4
 			has_trait = zealous
+		}
+		# modifier for War Tax
+		modifier = {
+			add = -33
+			var:ftr_proposal_type = 5
+			gold > 2000
 		}
 	}
 }
@@ -541,6 +556,20 @@ ftr_pg_liege_proposal_vote_yes_decision = {
 			var:ftr_proposal_type = 4
 			NOT = { faith = liege.faith }
 		}
+		# modifier for War Tax
+		modifier = {
+			add = 33
+			var:ftr_proposal_type = 5
+			gold > 200
+			liege = {
+				gold < 500
+				is_at_war = yes
+			}
+			opinion = {
+				target = liege
+				value >= 40
+			}
+		}
 	}
 }
 
@@ -625,6 +654,21 @@ ftr_pg_liege_proposal_vote_no_decision = {
 			var:ftr_proposal_type = 4
 			has_trait = zealous
 			faith = liege.faith
+		}
+		# modifier for War Tax
+		modifier = {
+			add = 33
+			var:ftr_proposal_type = 5
+			OR = {
+				gold <= 100
+				liege = {
+					gold >= 500
+				}
+				opinion = {
+					target = liege
+					value < 40
+				}
+			}
 		}
 	}
 }

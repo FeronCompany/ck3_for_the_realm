@@ -39,6 +39,13 @@ enact_war_tax_modifier = {
 	county_opinion_add = -20
 }
 
+enact_war_tax_by_negotiation_modifier = {
+	icon = economy_negative
+	monthly_war_income_mult = 0.5
+	direct_vassal_opinion = -10
+	county_opinion_add = -10
+}
+
 # county modifier
 cultural_diversity_county_modifier = {
 	icon = county_modifier_opinion_positive

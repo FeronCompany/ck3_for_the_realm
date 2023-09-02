@@ -13,3 +13,6 @@
 
  ftr_exempt_tax_modifier:0 "<FTR> Tax Relief"
  ftr_exempt_tax_modifier_desc:0 "The lord ordered a reduction in local taxes, and the economic difficulties caused by the disaster to the local people were alleviated."
+
+ ftr_try_purge_heresy_modifier:0 "<FTR> Try Purge Heresy"
+ ftr_try_purge_heresy_modifier_desc:0 "The lord try to purge heresy in this county."

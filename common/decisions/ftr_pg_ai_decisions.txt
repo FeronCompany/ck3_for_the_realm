@@ -304,6 +304,12 @@ ftr_pg_my_proposal_vote_yes_decision = {
 			add = -100 # As liege, don't like it
 			var:ftr_proposal_type = 2
 		}
+		# modifier for Purge Heresy
+		modifier = {
+			add = 33
+			var:ftr_proposal_type = 3
+			has_trait = zealous
+		}
 	}
 }
 
@@ -510,6 +516,13 @@ ftr_pg_liege_proposal_vote_yes_decision = {
 				target = scope:liege_c
 				value < 60
 			}
+		}
+		# modifier for Purge Heresy
+		modifier = {
+			add = 20
+			var:ftr_proposal_type = 3
+			has_trait = zealous
+			faith = liege.faith
 		}
 	}
 }

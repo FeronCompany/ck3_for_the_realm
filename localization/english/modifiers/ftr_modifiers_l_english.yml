@@ -79,3 +79,9 @@
 
  ftr_reject_foolish_proposal_opinion:0 "Reject Foolish Proposal"
  ftr_reject_foolish_proposal_opinion_desc:0 "Reject foolish proposal."
+
+ ftr_purge_heresy_modifier:0 "<FTR> Purge Heresy"
+ ftr_purge_heresy_modifier_desc:0 "Purge heresy"
+
+ ftr_faith_tolerance_modifier:0 "<FTR> Tolerance to Heresy"
+ ftr_faith_tolerance_modifier_desc:0 "Tolerance to Heresy"

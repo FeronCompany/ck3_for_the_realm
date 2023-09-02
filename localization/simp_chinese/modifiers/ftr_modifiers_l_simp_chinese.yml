@@ -79,3 +79,9 @@
 
  ftr_reject_foolish_proposal_opinion:0 "回绝愚蠢的提议"
  ftr_reject_foolish_proposal_opinion_desc:0 "回绝愚蠢的提议"
+
+ ftr_purge_heresy_modifier:0 "<FTR>清洗异端"
+ ftr_purge_heresy_modifier_desc:0 "清洗异端"
+
+ ftr_faith_tolerance_modifier:0 "<FTR>容忍异教徒"
+ ftr_faith_tolerance_modifier_desc:0 "容忍异教徒"

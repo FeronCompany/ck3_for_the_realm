@@ -13,3 +13,6 @@
 
  ftr_exempt_tax_modifier:0 "<FTR>税收减免"
  ftr_exempt_tax_modifier_desc:0 "领主下令减免当地的税款，灾情对当地人造成的经济困难得到了缓解。"
+
+ ftr_try_purge_heresy_modifier:0 "<FTR>试图清洗异端"
+ ftr_try_purge_heresy_modifier_desc:0 "领主尝试清洗本地与其信仰不同之人，招来抵制"

@@ -524,6 +524,9 @@ ftr_pg_ui_event.0100 = {
 						has_realm_law = tribal_authority_0
 					}
 				}
+				NOT = {
+					has_variable = crown_authority_cooldown
+				}
 			}
 		}
 		scope:starter = {
@@ -587,6 +590,69 @@ ftr_pg_ui_event.0100 = {
 						has_realm_law = tribal_authority_3
 					}
 				}
+			}
+		}
+	}
+
+	option = { # Purge heresy
+		name = ftr_pg_ui_event.0100.3
+		trigger = {
+			scope:liege_c = {
+				exists = var:ftr_pg_focus
+				OR = {
+					var:ftr_pg_focus = 2
+				}
+				OR = {
+					any_realm_county = {
+						NOT = { faith = scope:liege_c.faith }
+					}
+					any_vassal = {
+						NOT = { faith = scope:liege_c.faith }
+					}
+				}
+				NOT = {
+					OR = {
+						has_character_modifier = ftr_purge_heresy_modifier
+						has_character_modifier = ftr_faith_tolerance_modifier
+					}
+				}
+			}
+		}
+		scope:liege_c = {
+			set_variable = {
+				name = ftr_proposal_type
+				value = 3 # 清洗异端
+			}
+			every_in_list = {
+				list = powerful_subject_list
+				hidden_effect = {
+					send_interface_message = {
+						title = "ftr_make_proposal_tt"
+						left_icon = scope:starter
+						right_icon = scope:liege_c
+						custom_description = {
+							text = "ftr_purge_heresy_proposal_notify_tt"
+							subject = scope:starter
+							object = scope:liege_c
+						}
+					}
+				}
+			}
+			trigger_event = {
+				id = ftr_pg_ui_event.0203 # Make final decision
+				days = 90
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 50
+				faith = scope:liege_c.faith
+				has_trait = zealous
+			}
+			modifier = {
+				add = -50
+				NOT = { faith = scope:liege_c.faith }
 			}
 		}
 	}
@@ -713,5 +779,174 @@ ftr_pg_ui_event.0202 = {
 
 	after = {
 		ftr_clear_vote_result_effect = yes
+	}
+}
+
+# Purge Heresy Result
+ftr_pg_ui_event.0203 = {
+	type = character_event
+	title = ftr_pg_ui_event.0203.t
+	desc = ftr_pg_ui_event.0203.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {
+		ftr_count_vote_result_effect = yes
+	}
+
+	option = { # Agree with result
+		name = ftr_pg_ui_event.0203.a
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:count_yes > var:count_no
+				}
+			}
+			scope:liege_c = {
+				add_character_modifier = {
+					modifier = ftr_purge_heresy_modifier
+					years = 10
+				}
+				custom_description = {
+					text = "ftr_purge_heresy_in_counties_tt"
+					every_realm_county = {
+						limit = {
+							holder = scope:liege_c
+							NOT = { faith = scope:liege_c.faith }
+						}
+						save_scope_as = current_county
+						random_list = {
+							0 = {
+								modifier = {
+									add = {
+										value = scope:liege_c.martial
+										multiply = 2
+									}
+								}
+								scope:liege_c = {
+									send_interface_message = {
+										title = "ftr_purge_heresy_succ_tt"
+										left_icon = scope:liege_c
+										right_icon = scope:current_county
+										scope:current_county = {
+											set_county_faith = scope:liege_c.faith
+										}
+									}
+								}
+							}
+							50 = {
+								scope:liege_c = {
+									send_interface_message = {
+										title = "ftr_purge_heresy_fail_tt"
+										left_icon = scope:liege_c
+										right_icon = scope:current_county
+										scope:current_county = {
+											add_county_modifier = {
+												modifier = ftr_try_purge_heresy_modifier
+												years = 5
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				custom_description = {
+					text = "ftr_purge_heresy_amoung_vassals_tt"
+					every_vassal = {
+						limit = {
+							NOT = { faith = scope:liege_c.faith }
+						}
+						trigger_event = {
+							id = ftr_pg_ui_event.0300
+							days = 10
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_ui_event.0203.b
+		trigger = {
+			scope:liege_c = {
+				var:count_yes > var:count_no
+			}
+		}
+		every_in_list = {
+			list = approve_list
+			custom = ftr_pg_ui_event.0201.b.custom_yes
+			add_opinion = {
+				target = root
+				modifier = ftr_disrespect_voting_result_opinion
+			}
+		}
+		every_in_list = {
+			list = disapprove_list
+			custom = ftr_pg_ui_event.0201.b.custom_no
+			add_opinion = {
+				target = root
+				modifier = ftr_reject_foolish_proposal_opinion
+			}
+		}
+	}
+
+	after = {
+		ftr_clear_vote_result_effect = yes
+	}
+}
+
+# Liege demand to convert
+ftr_pg_ui_event.0300 = {
+	type = character_event
+	title = ftr_pg_ui_event.0300.t
+	desc = ftr_pg_ui_event.0300.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	left_portrait = {
+		character = scope:liege_c
+	}
+
+	option = { # Agree
+		name = ftr_pg_ui_event.0300.a
+		set_character_faith = scope:liege_c.faith
+		scope:liege_c = {
+			send_interface_message = {
+				title = "ftr_pg_ui_event.0300.agree_tt"
+				left_icon = root
+			}
+		}
+	}
+	option = { # Refuse
+		name = ftr_pg_ui_event.0300.b
+		scope:liege_c = {
+			send_interface_message = {
+				title = "ftr_pg_ui_event.0300.disagree_tt"
+				left_icon = root
+			}
+			add_opinion = {
+				target = root
+				modifier = illegal_resisted_conversion_opinion
+				years = 10
+			}
+		}
+	}
+	option = { # Politely Refuse
+		name = ftr_pg_ui_event.0300.c
+		trigger = {
+			diplomacy >= 12
+		}
+		scope:liege_c = {
+			send_interface_message = {
+				title = "ftr_pg_ui_event.0300.disagree_politely_tt"
+				left_icon = root
+			}
+		}
 	}
 }

@@ -30,3 +30,8 @@ ftr_exempt_tax_modifier = {
 	development_growth_factor = 0.1
 	tax_mult = -0.2
 }
+
+ftr_try_purge_heresy_modifier = {
+	icon = county_modifier_opinion_negative
+	county_opinion_add = -50
+}

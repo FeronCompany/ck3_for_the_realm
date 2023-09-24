@@ -1128,7 +1128,7 @@ ftr_pg_ui_event.0300 = {
 	left_portrait = {
 		character = root
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:liege_c
 	}
 

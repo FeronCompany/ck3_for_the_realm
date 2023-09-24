@@ -68,8 +68,8 @@
  ftr_pg_ui_event.0203.a:0 "支持投票结果"
  ftr_pg_ui_event.0203.b:0 "反对投票结果"
  ftr_purge_heresy_in_counties_text:0 "与你信仰不同的直辖领地将开展一轮对异端分子的清洗"
- ftr_purge_heresy_succ_text:0 "清洗异端成功"
- ftr_purge_heresy_fail_text:0 "清洗异端失败"
+ ftr_purge_heresy_succ_tt:0 "清洗异端成功"
+ ftr_purge_heresy_fail_tt:0 "清洗异端失败"
  ftr_purge_heresy_amoung_vassals_text:0 "与你信仰不同的封臣将被要求改信你的信仰，否则将被指控为叛徒"
 
  ftr_pg_ui_event.0204.t:0 "宗教包容投票结果"

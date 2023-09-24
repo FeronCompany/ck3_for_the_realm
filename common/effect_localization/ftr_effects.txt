@@ -172,14 +172,6 @@ ftr_purge_heresy_in_counties_tt = {
 	global = ftr_purge_heresy_in_counties_text
 }
 
-ftr_purge_heresy_succ_tt = {
-	global = ftr_purge_heresy_succ_text
-}
-
-ftr_purge_heresy_fail_tt = {
-	global = ftr_purge_heresy_fail_text
-}
-
 ftr_purge_heresy_amoung_vassals_tt = {
 	global = ftr_purge_heresy_amoung_vassals_text
 }

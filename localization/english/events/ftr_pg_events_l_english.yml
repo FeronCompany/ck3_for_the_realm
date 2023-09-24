@@ -68,8 +68,8 @@
  ftr_pg_ui_event.0203.a:0 "Agree with the result"
  ftr_pg_ui_event.0203.b:0 "Ignore result"
  ftr_purge_heresy_in_counties_text:0 "There will be a round of purges of heretics in counties that has different faith with you."
- ftr_purge_heresy_succ_text:0 "Purge heresy success"
- ftr_purge_heresy_fail_text:0 "Purge heresy failed"
+ ftr_purge_heresy_succ_tt:0 "Purge heresy success"
+ ftr_purge_heresy_fail_tt:0 "Purge heresy failed"
  ftr_purge_heresy_amoung_vassals_text:0 "Vassals who do not share your faith will be asked to convert or be accused of being traitors."
 
  ftr_pg_ui_event.0204.t:0 "Result of Voting for Religious Tolerance"

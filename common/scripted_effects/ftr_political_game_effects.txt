@@ -295,11 +295,11 @@ ftr_decrease_authority_effect = {
 		limit = { has_realm_law = crown_authority_1 }
 		add_realm_law = crown_authority_0
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = crown_authority_2 }
 		add_realm_law = crown_authority_1
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = crown_authority_3 }
 		add_realm_law = crown_authority_2
 	}
@@ -307,11 +307,11 @@ ftr_decrease_authority_effect = {
 		limit = { has_realm_law = tribal_authority_1 }
 		add_realm_law = tribal_authority_0
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = tribal_authority_2 }
 		add_realm_law = tribal_authority_1
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = tribal_authority_3 }
 		add_realm_law = tribal_authority_2
 	}
@@ -322,11 +322,11 @@ ftr_expand_authority_effect = {
 		limit = { has_realm_law = crown_authority_0 }
 		add_realm_law = crown_authority_1
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = crown_authority_1 }
 		add_realm_law = crown_authority_2
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = crown_authority_2 }
 		add_realm_law = crown_authority_3
 	}
@@ -334,11 +334,11 @@ ftr_expand_authority_effect = {
 		limit = { has_realm_law = tribal_authority_0 }
 		add_realm_law = tribal_authority_1
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = tribal_authority_1 }
 		add_realm_law = tribal_authority_2
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = tribal_authority_2 }
 		add_realm_law = tribal_authority_3
 	}

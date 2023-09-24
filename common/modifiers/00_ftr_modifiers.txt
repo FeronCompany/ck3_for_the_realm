@@ -75,3 +75,12 @@ ftr_faith_tolerance_modifier = {
 	different_faith_opinion = 10
 	different_faith_county_opinion_mult = 0.1
 }
+
+ftr_liege_grant_privilege_modifier = {
+	icon = economy_positive
+	direct_vassal_opinion = 20
+	monthly_prestige = 0.5
+	vassal_tax_mult = 0.05
+	domain_tax_mult = 0.05
+	monthly_income = 1
+}

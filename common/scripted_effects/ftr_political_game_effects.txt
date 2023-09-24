@@ -436,3 +436,73 @@ ftr_clear_vote_result_effect = {
 		}
 	}
 }
+
+ftr_pg_bribe_cooperation_effect = {
+	if = {
+		limit = { scope:bribe_goal = 1 }
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+			add_opinion = {
+				target = scope:recipient
+				modifier = ftr_pg_cooperation_opinion
+			}
+		}
+		scope:recipient = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+			add_opinion = {
+				target = scope:actor
+				modifier = ftr_pg_cooperation_opinion
+			}
+		}
+	}
+	else_if = {
+		limit = { scope:bribe_goal = 2 }
+		scope:actor = {
+			every_vassal = {
+				custom = custom.every_vassal
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_gain_support_from_vassal_opinion
+				}
+			}
+		}
+		scope:recipient = {
+			add_prestige = 200
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+	}
+	else_if = {
+		limit = { scope:bribe_goal = 3 }
+		scope:actor = {
+			add_character_modifier = {
+				modifier = ftr_liege_grant_privilege_modifier
+				years = 2
+			}
+		}
+		scope:recipient = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+	}
+	else_if = {
+		limit = { scope:bribe_goal = 4 }
+		scope:actor.liege = {
+			trigger_event = {
+				id = ftr_pg_interaction_event.0005
+				days = 10
+			}
+		}
+		scope:recipient = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+	}
+}

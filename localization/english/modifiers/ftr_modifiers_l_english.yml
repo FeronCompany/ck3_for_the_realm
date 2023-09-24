@@ -88,3 +88,15 @@
 
  ftr_faith_tolerance_modifier:0 "<FTR> Tolerance to Heresy"
  ftr_faith_tolerance_modifier_desc:0 "Tolerance to Heresy"
+
+ ftr_pg_cooperation_opinion:0 "<FTR> Political Cooperation"
+ ftr_pg_cooperation_opinion_desc:0 "Political cooperation"
+
+ ftr_gain_support_from_vassal_opinion:0 "<FTR> Gained Support from Vassal"
+ ftr_gain_support_from_vassal_opinion_desc:0 "Gained support from vassals"
+
+ ftr_accept_send_reward_opinion:0 "<FTR> Reward My Contibution"
+ ftr_accept_send_reward_opinion_desc:0 "Reward My Contibution"
+
+ ftr_reject_send_reward_opinion:0 "<FTR> Refuse Reward Contribution"
+ ftr_reject_send_reward_opinion_desc:0 "Refuse Reward Contribution"

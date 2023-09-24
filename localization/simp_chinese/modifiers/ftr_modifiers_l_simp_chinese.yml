@@ -88,3 +88,15 @@
 
  ftr_faith_tolerance_modifier:0 "<FTR>容忍异教徒"
  ftr_faith_tolerance_modifier_desc:0 "容忍异教徒"
+
+ ftr_pg_cooperation_opinion:0 "<FTR>合作共赢"
+ ftr_pg_cooperation_opinion_desc:0 "合作共赢"
+
+ ftr_gain_support_from_vassal_opinion:0 "<FTR>获得封臣支持"
+ ftr_gain_support_from_vassal_opinion_desc:0 "获得封臣支持"
+
+ ftr_accept_send_reward_opinion:0 "<FTR>论功行赏"
+ ftr_accept_send_reward_opinion_desc:0 "论功行赏"
+
+ ftr_reject_send_reward_opinion:0 "<FTR>赏罚不公"
+ ftr_reject_send_reward_opinion_desc:0 "赏罚不公"

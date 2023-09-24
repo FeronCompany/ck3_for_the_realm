@@ -1,0 +1,105 @@
+﻿
+######### Bribe ##########
+ftr_bribe_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	cooldown_against_recipient = { years = 5 }
+	desc = ftr_bribe_interaction_desc
+	ai_targets = {
+		ai_recipients = liege
+		ai_recipients = peer_vassals
+		max = 5
+	}
+	ai_frequency = 12
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		scope:actor = {
+			is_landed = yes
+		}
+		OR = {
+			scope:actor.liege = scope:recipient
+			scope:recipient = {
+				liege = scope:actor
+				is_landed = yes
+			}
+			AND = {
+				scope:actor = {
+					is_independent_ruler = no
+				}
+				scope:actor.liege = scope:recipient.liege
+				scope:recipient = {
+					OR = {
+						is_landed = yes
+						is_councillor = yes
+					}
+				}
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  { is_at_war_with = scope:recipient }
+			is_imprisoned = no
+			is_capable_adult = yes
+			gold > gift_value
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			is_capable_adult = yes
+		}
+	}
+	on_accept = {
+		scope:actor = {
+			pay_short_term_gold = {
+				gold = gift_value
+				target = scope:recipient
+			}
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+			trigger_event = ftr_pg_interaction_event.0001
+		}
+	}
+	on_decline = {}
+	#auto_accept = yes
+	ai_accept = {
+		base = -40
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 1
+			desc = AI_OPINION_REASON
+		}
+	}
+	ai_will_do = {
+		base = -40
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 0.25
+			desc = AI_OPINION_REASON
+		}
+		modifier = {
+			add = -20
+			scope:actor = {
+				has_trait = greedy
+			}
+		}
+		modifier = {
+			add = 40
+			scope:actor = {
+				gold > gift_value
+				ftr_political_influence_value < 40
+			}
+		}
+		modifier = {
+			add = 10
+			scope:actor.liege = scope:recipient
+		}
+		modifier = {
+			add = 10
+			scope:actor.liege = scope:recipient.liege
+			scope:recipient = { is_councillor = yes }
+		}
+	}
+}

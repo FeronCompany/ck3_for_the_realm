@@ -75,6 +75,13 @@ ftr_murderer_crime = {
 	revoke_title_reason = yes
 }
 
+ftr_corruption_crime = {
+	opinion = -20
+	imprisonment_reason = yes
+	banish_reason = yes
+	revoke_title_reason = yes
+}
+
 ftr_approve_aid_opinion = {
 	opinion = 20
 	years = 5

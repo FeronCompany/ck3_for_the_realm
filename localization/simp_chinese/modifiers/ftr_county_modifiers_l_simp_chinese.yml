@@ -16,3 +16,6 @@
 
  ftr_try_purge_heresy_modifier:0 "<FTR>试图清洗异端"
  ftr_try_purge_heresy_modifier_desc:0 "领主尝试清洗本地与其信仰不同之人，招来抵制"
+
+ ftr_corruption_county_modifier:0 "<FTR>腐败猖獗"
+ ftr_corruption_county_modifier_desc:0 "贪官污吏假公济私，地方民众苦不堪言"

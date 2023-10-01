@@ -56,6 +56,18 @@
  ftr_reward_me_during_tournament:0 "Get Reward"
  ftr_reward_me_during_tournament_desc:0 "Reward me during tournament"
 
+ ftr_liege_grant_privilege_modifier:0 "Privilege Granted by Liege"
+ ftr_liege_grant_privilege_modifier_desc:0 "Privilege Granted by Liege"
+
+ ftr_tax_privilege_modifier:0 "Tax Privilege"
+ ftr_tax_privilege_modifier_desc:0 "Tax Privilege"
+
+ ftr_levy_privilege_modifier:0 "Levy Privilege"
+ ftr_levy_privilege_modifier_desc:0 "Levy Privilege"
+
+ ftr_insider_information_modifier:0 "Insider Information"
+ ftr_insider_information_modifier_desc:0 "Insider Information"
+
  ftr_refuse_depose_bureacrat_opinion:0 "Reject Impeachment"
  ftr_refuse_depose_bureacrat_opinion_desc:0 "Liege rejected impeachment."
 
@@ -100,3 +112,6 @@
 
  ftr_reject_send_reward_opinion:0 "<FTR> Refuse Reward Contribution"
  ftr_reject_send_reward_opinion_desc:0 "Refuse Reward Contribution"
+
+ ftr_corruption_crime:0 "<FTR>Corruption"
+ ftr_corruption_crime_desc:0 "Corruption"

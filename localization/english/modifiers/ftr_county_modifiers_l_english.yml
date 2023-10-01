@@ -16,3 +16,6 @@
 
  ftr_try_purge_heresy_modifier:0 "<FTR> Try Purge Heresy"
  ftr_try_purge_heresy_modifier_desc:0 "The lord try to purge heresy in this county."
+
+ ftr_corruption_county_modifier:0 "<FTR> Rampant Corruption"
+ ftr_corruption_county_modifier_desc:0 "Corrupt officials use public office for personal gain, and local people suffer greatly."

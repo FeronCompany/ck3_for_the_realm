@@ -505,4 +505,118 @@ ftr_pg_bribe_cooperation_effect = {
 			}
 		}
 	}
+	else_if = {
+		limit = { scope:bribe_goal = 5 }
+		scope:actor = {
+			add_character_modifier = {
+				modifier = ftr_tax_privilege_modifier
+				years = 2
+			}
+		}
+		scope:recipient = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+		hidden_effect = {
+			scope:actor.liege = {
+				random_sub_realm_county = {
+					limit = { holder = scope:actor.liege }
+					save_scope_as = corruption_county
+					add_county_modifier = {
+						modifier = ftr_corruption_county_modifier
+						years = 2
+					}
+				}
+				random_list = {
+					10 = {
+						modifier = {
+							add = {
+								value = scope:recipient.intrigue
+								multiply = 2
+							}
+						}
+					}
+					10 = {
+						modifier = {
+							add = {
+								value = scope:actor.liege.intrigue
+								multiply = 1
+							}
+						}
+						scope:actor.liege = {
+							trigger_event = {
+								id = ftr_pg_interaction_event.0006
+								days = { 30 60 }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { scope:bribe_goal = 6 }
+		scope:actor = {
+			add_character_modifier = {
+				modifier = ftr_levy_privilege_modifier
+				years = 2
+			}
+		}
+		scope:recipient = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+		hidden_effect = {
+			scope:actor.liege = {
+				random_sub_realm_county = {
+					limit = { holder = scope:actor.liege }
+					save_scope_as = corruption_county
+					add_county_modifier = {
+						modifier = ftr_corruption_county_modifier
+						years = 2
+					}
+				}
+				random_list = {
+					10 = {
+						modifier = {
+							add = {
+								value = scope:recipient.intrigue
+								multiply = 2
+							}
+						}
+					}
+					10 = {
+						modifier = {
+							add = {
+								value = scope:actor.liege.intrigue
+								multiply = 1
+							}
+						}
+						scope:actor.liege = {
+							trigger_event = {
+								id = ftr_pg_interaction_event.0006
+								days = { 30 60 }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { scope:bribe_goal = 7 }
+		scope:actor = {
+			add_character_modifier = {
+				modifier = ftr_insider_information_modifier
+				years = 2
+			}
+		}
+		scope:recipient = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+	}
 }

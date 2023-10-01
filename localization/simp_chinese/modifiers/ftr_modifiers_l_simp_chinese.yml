@@ -56,6 +56,18 @@
  ftr_reward_me_during_tournament:0 "收到打赏"
  ftr_reward_me_during_tournament_desc:0 "在比武大会中打赏了我"
 
+ ftr_liege_grant_privilege_modifier:0 "领主恩惠"
+ ftr_liege_grant_privilege_modifier_desc:0 "领主恩惠"
+
+ ftr_tax_privilege_modifier:0 "税收特权"
+ ftr_tax_privilege_modifier_desc:0 "税收特权"
+
+ ftr_levy_privilege_modifier:0 "征兵特权"
+ ftr_levy_privilege_modifier_desc:0 "征兵特权"
+
+ ftr_insider_information_modifier:0 "内幕消息"
+ ftr_insider_information_modifier_desc:0 "内幕消息"
+
  ftr_refuse_depose_bureacrat_opinion:0 "否决弹劾案"
  ftr_refuse_depose_bureacrat_opinion_desc:0 "君主否决弹劾案"
 
@@ -100,3 +112,6 @@
 
  ftr_reject_send_reward_opinion:0 "<FTR>赏罚不公"
  ftr_reject_send_reward_opinion_desc:0 "赏罚不公"
+
+ ftr_corruption_crime:0 "<FTR>贪污腐败"
+ ftr_corruption_crime_desc:0 "贪污腐败"

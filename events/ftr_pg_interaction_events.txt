@@ -410,3 +410,54 @@ ftr_pg_interaction_event.0005 = {
 		}
 	}
 }
+
+# Liege Deal With Corruption
+ftr_pg_interaction_event.0006 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0006.t
+	desc = ftr_pg_interaction_event.0006.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {
+		add_opinion = {
+			target = scope:recipient
+			modifier = ftr_corruption_crime
+		}
+	}
+
+	option = { # Arrest
+		name = ftr_pg_interaction_event.0006.a
+		imprison = {
+			target = scope:recipient
+			type = dungeon
+		}
+		scope:recipient = {
+			send_interface_toast = {
+				title = ftr_pg_imprison_for_corruption_tt
+				left_icon = root
+				right_icon = scope:recipient
+			}
+		}
+	}
+
+	option = { # Pardon
+		name = ftr_pg_interaction_event.0006.b
+		consume_all_criminal_reasons_effect = {
+			LIEGE = root
+			CRIMINAL = scope:recipient
+		}
+		scope:recipient = {
+			add_opinion = {
+				target = root
+				modifier = grateful_opinion
+				opinion = 15
+			}
+		}
+	}
+}

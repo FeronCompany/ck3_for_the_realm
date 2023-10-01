@@ -84,3 +84,23 @@ ftr_liege_grant_privilege_modifier = {
 	domain_tax_mult = 0.05
 	monthly_income = 1
 }
+
+ftr_tax_privilege_modifier = {
+	icon = economy_positive
+	vassal_tax_mult = 0.05
+	domain_tax_mult = 0.05
+	monthly_income = 3
+}
+
+ftr_levy_privilege_modifier = {
+	icon = martial_positive
+	levy_reinforcement_rate_even_if_baron = 0.1
+	knight_effectiveness_mult = 0.25
+	monthly_war_income_mult = 0.4
+}
+
+ftr_insider_information_modifier = {
+	icon = martial_positive
+	monthly_income = 5
+	intrigue = 3
+}

@@ -5,3 +5,9 @@
 
  ftr_bribe_interaction:0 "<FTR>贿赂"
  ftr_bribe_interaction_desc:0 "花一笔小钱贿赂对方，获取对方的信任。"
+
+ ftr_charge_interaction:0 "<FTR>公开指控"
+ ftr_charge_interaction_desc:0 "在公共场合指控对方的罪行。"
+
+ ftr_slander_interaction:0 "<FTR>散布谣言"
+ ftr_slander_interaction_desc:0 "散播对目标不利的谣言，使其疲于应对。"

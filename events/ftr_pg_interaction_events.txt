@@ -461,3 +461,126 @@ ftr_pg_interaction_event.0006 = {
 		}
 	}
 }
+
+# Liege Deal With Charge
+ftr_pg_interaction_event.0100 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0100.t
+	desc = ftr_pg_interaction_event.0100.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:actor
+	}
+	lower_right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # Arrest
+		name = ftr_pg_interaction_event.0100.a
+		imprison = {
+			target = scope:recipient
+			type = dungeon
+		}
+		hidden_effect = {
+			ftr_update_pg_member_list_effect = yes
+			every_in_list = {
+				list = pg_member_list
+				send_interface_message = {
+					title = ftr_arrest_for_charge_tt
+					left_icon = root
+					right_icon = scope:recipient
+					custom_description = {
+						text = "ftr_arrest_for_charge_content_tt"
+						object = scope:actor
+						subject = scope:recipient
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Do nothing
+		name = ftr_pg_interaction_event.0100.b
+		add_character_modifier = {
+			modifier = ftr_indulge_criminal_modifier
+			years = 5
+		}
+		hidden_effect = {
+			ftr_update_pg_member_list_effect = yes
+			every_in_list = {
+				list = pg_member_list
+				send_interface_message = {
+					title = ftr_indulge_for_charge_tt
+					left_icon = root
+					right_icon = scope:recipient
+					custom_description = {
+						text = "ftr_indulge_for_charge_content_tt"
+						object = scope:actor
+						subject = scope:recipient
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Give him a chance
+		name = ftr_pg_interaction_event.0100.c
+		trigger = {
+			diplomacy >= 15
+		}
+		consume_all_criminal_reasons_effect = {
+			LIEGE = root
+			CRIMINAL = scope:recipient
+		}
+		scope:recipient = {
+			add_opinion = {
+				target = root
+				modifier = grateful_opinion
+				opinion = 30
+			}
+		}
+		hidden_effect = {
+			ftr_update_pg_member_list_effect = yes
+			every_in_list = {
+				list = pg_member_list
+				send_interface_message = {
+					title = ftr_pardon_for_charge_tt
+					left_icon = root
+					right_icon = scope:recipient
+					custom_description = {
+						text = "ftr_pardon_for_charge_content_tt"
+						object = scope:actor
+						subject = scope:recipient
+					}
+				}
+			}
+		}
+	}
+}
+
+# Slander Result
+ftr_pg_interaction_event.0101 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0101.t
+	desc = ftr_pg_interaction_event.0101.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {
+		ftr_slander_effect = yes
+	}
+
+	option = { # OK
+		name = ftr_pg_interaction_event.0101.a
+	}
+}

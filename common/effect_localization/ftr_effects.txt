@@ -183,3 +183,15 @@ ftr_religious_tolerance_notify_tt = {
 ftr_war_tax_notify_tt = {
 	global = ftr_war_tax_notify_text
 }
+
+ftr_arrest_for_charge_tt = {
+	global = ftr_arrest_for_charge_text
+}
+
+ftr_indulge_for_charge_tt = {
+	global = ftr_indulge_for_charge_text
+}
+
+ftr_pardon_for_charge_tt = {
+	global = ftr_pardon_for_charge_text
+}

@@ -441,18 +441,12 @@ ftr_pg_bribe_cooperation_effect = {
 	if = {
 		limit = { scope:bribe_goal = 1 }
 		scope:actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_bribe_influence_gain_value
-			}
 			add_opinion = {
 				target = scope:recipient
 				modifier = ftr_pg_cooperation_opinion
 			}
 		}
 		scope:recipient = {
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_bribe_influence_gain_value
-			}
 			add_opinion = {
 				target = scope:actor
 				modifier = ftr_pg_cooperation_opinion
@@ -616,6 +610,56 @@ ftr_pg_bribe_cooperation_effect = {
 		scope:recipient = {
 			ftr_add_political_influence_effect = {
 				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+	}
+}
+
+ftr_slander_effect = {
+	random_list = {
+		10 = {
+			# success
+			modifier = {
+				add = {
+					value = scope:actor.intrigue
+					multiply = 3
+				}
+			}
+			scope:recipient = {
+				add_character_modifier = {
+					modifier = ftr_rumor_around_modifier
+					years = 2
+				}
+			}
+		}
+		20 = {
+			# failed
+			modifier = {
+				add = {
+					value = scope:recipient.intrigue
+					multiply = 2
+				}
+			}
+		}
+		10 = {
+			# exposed
+			modifier = {
+				add = {
+					value = scope:recipient.intrigue
+					multiply = 1
+				}
+			}
+			modifier = {
+				add = 20
+				scope:actor = {
+					has_character_modifier = ftr_rumor_spreader_modifier
+				}
+			}
+			scope:actor = {
+				add_character_modifier = {
+					modifier = ftr_rumor_spreader_modifier
+					years = 30
+				}
 			}
 		}
 	}

@@ -115,3 +115,12 @@
 
  ftr_corruption_crime:0 "<FTR>贪污腐败"
  ftr_corruption_crime_desc:0 "贪污腐败"
+
+ ftr_indulge_criminal_modifier:0 "<FTR>姑息罪犯"
+ ftr_indulge_criminal_modifier_desc:0 "姑息罪犯"
+
+ ftr_rumor_around_modifier:0 "<FTR>谣言缠身"
+ ftr_rumor_around_modifier_desc:0 "谣言缠身"
+
+ ftr_rumor_spreader_modifier:0 "<FTR>造谣生事"
+ ftr_rumor_spreader_modifier_desc:0 "造谣生事"

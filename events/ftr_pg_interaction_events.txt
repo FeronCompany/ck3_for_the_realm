@@ -130,15 +130,12 @@ ftr_pg_interaction_event.0002 = {
 	
 	option = { # 欣然同意
 		name = ftr_pg_interaction_event.0002.a
-		ftr_pg_bribe_cooperation_effect = yes
 		scope:actor = {
 			send_interface_toast = {
 				title = ftr_pg_bribe_cooperation_accept_tt
 				left_icon = scope:actor
 				right_icon = scope:recipient
-				show_as_tooltip = {
-					ftr_pg_bribe_cooperation_effect = yes
-				}
+				ftr_pg_bribe_cooperation_effect = yes
 			}
 		}
 	}
@@ -157,6 +154,7 @@ ftr_pg_interaction_event.0002 = {
 				right_icon = scope:recipient
 				custom_description = {
 					text = "ftr_pg_bribe_cooperation_reject_content_tt"
+					subject = scope:recipient
 				}
 			}
 		}
@@ -221,15 +219,12 @@ ftr_pg_interaction_event.0003 = {
 				target = scope:recipient
 			}
 		}
-		ftr_pg_bribe_cooperation_effect = yes
 		scope:recipient = {
 			send_interface_toast = {
 				title = ftr_pg_bribe_more_gold_accept_tt
 				left_icon = scope:actor
 				right_icon = scope:recipient
-				show_as_tooltip = {
-					ftr_pg_bribe_cooperation_effect = yes
-				}
+				ftr_pg_bribe_cooperation_effect = yes
 			}
 		}
 	}
@@ -262,24 +257,15 @@ ftr_pg_interaction_event.0004 = {
 	option = { # Accept
 		name = ftr_pg_interaction_event.0004.a
 		scope:recipient = {
-			had_sex_with_effect = {
-				CHARACTER = scope:beauty
-				PREGNANCY_CHANCE = seduce_pregnancy_chance
-			}
-		}
-		ftr_pg_bribe_cooperation_effect = yes
-		scope:recipient = {
 			send_interface_toast = {
 				title = ftr_pg_bribe_by_beauty_accept_tt
 				left_icon = scope:actor
 				right_icon = scope:recipient
-				show_as_tooltip = {
-					had_sex_with_effect = {
-						CHARACTER = scope:beauty
-						PREGNANCY_CHANCE = seduce_pregnancy_chance
-					}
-					ftr_pg_bribe_cooperation_effect = yes
+				had_sex_with_effect = {
+					CHARACTER = scope:beauty
+					PREGNANCY_CHANCE = seduce_pregnancy_chance
 				}
+				ftr_pg_bribe_cooperation_effect = yes
 			}
 		}
 	}

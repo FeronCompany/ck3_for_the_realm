@@ -630,6 +630,9 @@ ftr_slander_effect = {
 					modifier = ftr_rumor_around_modifier
 					years = 2
 				}
+				ftr_add_political_influence_effect = {
+					VALUE = ftr_slander_damage_value
+				}
 			}
 		}
 		20 = {
@@ -659,6 +662,16 @@ ftr_slander_effect = {
 				add_character_modifier = {
 					modifier = ftr_rumor_spreader_modifier
 					years = 30
+				}
+				ftr_add_political_influence_effect = {
+					VALUE = ftr_slander_damage_value
+				}
+			}
+			scope:recipient = {
+				add_opinion = {
+					modifier = angry_opinion
+					target = scope:actor
+					opinion = -60
 				}
 			}
 		}

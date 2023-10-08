@@ -82,50 +82,43 @@ FTR_Bribe_Goal = {
 	type = character
 
 	text = {
-		trigger = { 
-			exists = scope:bribe_goal
+		trigger = {
 			scope:bribe_goal = 1
 		}
 		localization_key = ftr_pg_bribe_goal_promote_friendship
 	}
 	text = {
-		trigger = { 
-			exists = scope:bribe_goal
+		trigger = {
 			scope:bribe_goal = 2
 		}
 		localization_key = ftr_pg_bribe_goal_vassal_support
 	}
 	text = {
-		trigger = { 
-			exists = scope:bribe_goal
+		trigger = {
 			scope:bribe_goal = 3
 		}
 		localization_key = ftr_pg_bribe_goal_liege_grant_privilege
 	}
 	text = {
-		trigger = { 
-			exists = scope:bribe_goal
+		trigger = {
 			scope:bribe_goal = 4
 		}
 		localization_key = ftr_pg_bribe_goal_chancellor
 	}
 	text = {
-		trigger = { 
-			exists = scope:bribe_goal
+		trigger = {
 			scope:bribe_goal = 5
 		}
 		localization_key = ftr_pg_bribe_goal_steward
 	}
 	text = {
-		trigger = { 
-			exists = scope:bribe_goal
+		trigger = {
 			scope:bribe_goal = 6
 		}
 		localization_key = ftr_pg_bribe_goal_marshal
 	}
 	text = {
-		trigger = { 
-			exists = scope:bribe_goal
+		trigger = {
 			scope:bribe_goal = 7
 		}
 		localization_key = ftr_pg_bribe_goal_spymaster

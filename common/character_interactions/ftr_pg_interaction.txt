@@ -132,21 +132,29 @@ ftr_charge_interaction = {
 		scope:actor = {
 			is_imprisoned = no
 			is_capable_adult = yes
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_charge_cost_value
+				ftr_political_influence_value >= ftr_charge_cost_value
+			}
 		}
 		scope:recipient = {
 			is_imprisoned = no
 			is_capable_adult = yes
-		}
-		custom_description = {
-			text = "ftr_have_enough_pi_tt"
-			value = ftr_charge_cost_value
-			ftr_political_influence_value >= ftr_charge_cost_value
+			is_at_war = no
 		}
 	}
 	on_accept = {
 		scope:actor = {
 			ftr_add_political_influence_effect = {
 				VALUE = ftr_charge_modify_value
+			}
+		}
+		scope:recipient = {
+			add_opinion = {
+				modifier = angry_opinion
+				target = scope:actor
+				opinion = -60
 			}
 		}
 		scope:actor.liege = {
@@ -185,15 +193,15 @@ ftr_slander_interaction = {
 		scope:actor = {
 			is_imprisoned = no
 			is_capable_adult = yes
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_slander_cost_value
+				ftr_political_influence_value >= ftr_slander_cost_value
+			}
 		}
 		scope:recipient = {
 			is_imprisoned = no
 			is_capable_adult = yes
-		}
-		custom_description = {
-			text = "ftr_have_enough_pi_tt"
-			value = ftr_slander_cost_value
-			ftr_political_influence_value >= ftr_slander_cost_value
 		}
 	}
 	on_accept = {

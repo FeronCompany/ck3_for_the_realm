@@ -110,7 +110,7 @@
  ftr_pg_bribe_goal_spymaster:0 "obtain business intelligence"
 
  ftr_pg_interaction_event.0002.t:0 "Expected Visitor"
- ftr_pg_interaction_event.0002.desc:0 "[actor.GetShortUIName] personally visited, and after a moment of greeting, [actor.GetShortUIName] finally explained [actor.GetHerHis] purpose. [actor.GetSheHe] hope to [actor.Custom( 'FTR_Bribe_Goal' )|g]"
+ ftr_pg_interaction_event.0002.desc:0 "[actor.GetShortUIName] personally visited, and after a moment of greeting, [actor.GetShortUIName] finally explained [actor.GetHerHis] purpose. [actor.GetSheHe] hope to [SCOPE.Custom( 'FTR_Bribe_Goal' )|g]"
  ftr_pg_interaction_event.0002.a:0 "Agree, of course"
  ftr_pg_interaction_event.0002.b:0 "It is difficult to do, so how about more gold?"
  ftr_pg_interaction_event.0002.c:0 "I cannot do that."
@@ -131,7 +131,7 @@
  ftr_pg_interaction_event.0004.a:0 "What? OK."
  ftr_pg_interaction_event.0004.b:0 "No way!"
  ftr_pg_bribe_by_beauty_accept_tt:0 "[beauty.GetShortUIName] has negotiated cooperation matters of [actor.GetShortUIName] with you on the bed."
- ftr_pg_bribe_by_beauty_reject_tt:0 "[actor.GetShortUIName] refused your demand"
+ ftr_pg_bribe_by_beauty_reject_tt:0 "[TARGET_CHARACTER.GetShortUIName] refused request of [CHARACTER.GetShortUIName]"
 
  ftr_pg_interaction_event.0005.t:0 "Reward for Merit"
  ftr_pg_interaction_event.0005.desc:0 "During the morning court meeting, [recipient.GetShortUIName] talked endlessly about the performance of the vassals this year, and specifically reminded me of [actor.GetShortUIName]'s outstanding performance in the [actor.GetHerHis] position. According to the rules, as a lord, it is necessary for me to reward [actor.GetShortUIName]."

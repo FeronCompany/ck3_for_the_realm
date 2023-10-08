@@ -154,7 +154,8 @@ ftr_pg_interaction_event.0002 = {
 				right_icon = scope:recipient
 				custom_description = {
 					text = "ftr_pg_bribe_cooperation_reject_content_tt"
-					subject = scope:recipient
+					object = scope:recipient
+					subject = scope:actor
 				}
 			}
 		}
@@ -482,8 +483,8 @@ ftr_pg_interaction_event.0100 = {
 					right_icon = scope:recipient
 					custom_description = {
 						text = "ftr_arrest_for_charge_content_tt"
-						object = scope:actor
-						subject = scope:recipient
+						object = scope:recipient
+						subject = scope:actor
 					}
 				}
 			}
@@ -506,8 +507,8 @@ ftr_pg_interaction_event.0100 = {
 					right_icon = scope:recipient
 					custom_description = {
 						text = "ftr_indulge_for_charge_content_tt"
-						object = scope:actor
-						subject = scope:recipient
+						object = scope:recipient
+						subject = scope:actor
 					}
 				}
 			}
@@ -540,8 +541,8 @@ ftr_pg_interaction_event.0100 = {
 					right_icon = scope:recipient
 					custom_description = {
 						text = "ftr_pardon_for_charge_content_tt"
-						object = scope:actor
-						subject = scope:recipient
+						object = scope:recipient
+						subject = scope:actor
 					}
 				}
 			}

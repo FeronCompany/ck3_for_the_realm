@@ -110,14 +110,14 @@
  ftr_pg_bribe_goal_spymaster:0 "从间谍总管处获得内幕消息"
 
  ftr_pg_interaction_event.0002.t:0 "登门拜访"
- ftr_pg_interaction_event.0002.desc:0 "[actor.GetShortUIName]亲自来访，片刻寒暄之后，[actor.GetShortUIName]终于说明了自己的来意。[actor.GetSheHe]希望[actor.Custom( 'FTR_Bribe_Goal' )|g]"
+ ftr_pg_interaction_event.0002.desc:0 "[actor.GetShortUIName]亲自来访，片刻寒暄之后，[actor.GetShortUIName]终于说明了自己的来意。[actor.GetSheHe]希望[SCOPE.Custom( 'FTR_Bribe_Goal' )|g]"
  ftr_pg_interaction_event.0002.a:0 "欣然同意"
  ftr_pg_interaction_event.0002.b:0 "这个嘛……得加钱"
  ftr_pg_interaction_event.0002.c:0 "断然拒绝"
  ftr_pg_interaction_event.0002.d:0 "听说你家有位美女……"
  ftr_pg_bribe_cooperation_accept_tt:0 "同意合作"
  ftr_pg_bribe_cooperation_reject_tt:0 "拒绝合作"
- ftr_pg_bribe_cooperation_reject_content_text:0 "[TARGET_CHARACTER.GetShortUIName]拒绝了你的提议"
+ ftr_pg_bribe_cooperation_reject_content_text:0 "[TARGET_CHARACTER.GetShortUIName]拒绝了[CHARACTER.GetShortUIName]的提议"
 
  ftr_pg_interaction_event.0003.t:0 "得加钱"
  ftr_pg_interaction_event.0003.desc:0 "[recipient.GetShortUIName]听说了你的请求，表示必须支付更多报酬才能办事。"

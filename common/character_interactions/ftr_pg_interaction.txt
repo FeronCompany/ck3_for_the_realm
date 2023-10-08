@@ -230,5 +230,16 @@ ftr_slander_interaction = {
 			multiplier = -2
 			desc = AI_OPINION_REASON
 		}
+		modifier = {
+			add = -50
+			OR = {
+				has_trait = just
+				has_trait = honest
+			}
+		}
+		modifier = {
+			add = 20
+			has_trait = deceitful
+		}
 	}
 }

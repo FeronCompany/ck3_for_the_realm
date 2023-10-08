@@ -1,30 +1,30 @@
 ﻿
-ftr_add_political_influence_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	desc = ftr_add_political_influence_decision_desc
-	selection_tooltip = ftr_add_political_influence_decision_tooltip
-	is_shown = {
-		#is_independent_ruler = yes
-		is_ai = no
-	}
-	cost = {
-		#prestige = { value = 100 }
-	}
-	effect = {
-		ftr_add_political_influence_effect = {
-			VALUE = 100
-		}
-		#save_scope_as = me
-		#ftr_change_realm_political_focus_effect = {
-		#	LIEGE = scope:me
-		#	STARTER = scope:me
-		#	VALUE = 3
-		#}
-	}
-	ai_potential = {
-		always = no
-	}
-}
+#ftr_add_political_influence_decision = {
+#	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+#	desc = ftr_add_political_influence_decision_desc
+#	selection_tooltip = ftr_add_political_influence_decision_tooltip
+#	is_shown = {
+#		#is_independent_ruler = yes
+#		is_ai = no
+#	}
+#	cost = {
+#		#prestige = { value = 100 }
+#	}
+#	effect = {
+#		ftr_add_political_influence_effect = {
+#			VALUE = 100
+#		}
+#		#save_scope_as = me
+#		#ftr_change_realm_political_focus_effect = {
+#		#	LIEGE = scope:me
+#		#	STARTER = scope:me
+#		#	VALUE = 3
+#		#}
+#	}
+#	ai_potential = {
+#		always = no
+#	}
+#}
 
 ftr_pg_ai_expande_influence_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"

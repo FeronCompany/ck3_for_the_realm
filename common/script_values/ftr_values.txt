@@ -20,6 +20,8 @@ ftr_charge_cost_value = 20
 ftr_slander_modify_value = -20
 ftr_slander_cost_value = 20
 ftr_slander_damage_value = -50
+ftr_pardon_modify_value = -20
+ftr_pardon_cost_value = 20
 
 ftr_payment_cost_level_value = {
 	value = 0

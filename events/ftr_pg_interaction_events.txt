@@ -21,6 +21,7 @@ ftr_pg_interaction_event.0001 = {
 			name = bribe_goal
 			value = 1
 		}
+		ai_chance = 5
 	}
 	option = { # 获得臣民认可
 		name = ftr_pg_interaction_event.0001.b
@@ -31,6 +32,7 @@ ftr_pg_interaction_event.0001 = {
 			name = bribe_goal
 			value = 2
 		}
+		ai_chance = 10
 	}
 	option = { # 获得君主恩惠
 		name = ftr_pg_interaction_event.0001.c
@@ -41,6 +43,7 @@ ftr_pg_interaction_event.0001 = {
 			name = bribe_goal
 			value = 3
 		}
+		ai_chance = 20
 	}
 	option = { # 同僚-掌玺大臣：在君主面前美言几句
 		name = ftr_pg_interaction_event.0001.d
@@ -57,6 +60,7 @@ ftr_pg_interaction_event.0001 = {
 			name = bribe_goal
 			value = 4
 		}
+		ai_chance = 20
 	}
 	option = { # 同僚-财政总管：获得税收特权
 		name = ftr_pg_interaction_event.0001.e
@@ -73,6 +77,7 @@ ftr_pg_interaction_event.0001 = {
 			name = bribe_goal
 			value = 5
 		}
+		ai_chance = 20
 	}
 	option = { # 同僚-军事总管：获得征兵特权
 		name = ftr_pg_interaction_event.0001.f
@@ -89,6 +94,7 @@ ftr_pg_interaction_event.0001 = {
 			name = bribe_goal
 			value = 6
 		}
+		ai_chance = 20
 	}
 	option = { # 同僚-间谍总管：获得商业情报
 		name = ftr_pg_interaction_event.0001.g
@@ -105,6 +111,7 @@ ftr_pg_interaction_event.0001 = {
 			name = bribe_goal
 			value = 7
 		}
+		ai_chance = 20
 	}
 
 	after = {
@@ -138,11 +145,29 @@ ftr_pg_interaction_event.0002 = {
 				ftr_pg_bribe_cooperation_effect = yes
 			}
 		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = -20
+				has_trait = just
+			}
+		}
 	}
 	option = { # 得加钱
 		name = ftr_pg_interaction_event.0002.b
 		scope:actor = {
 			trigger_event = ftr_pg_interaction_event.0003
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				add = -20
+				has_trait = just
+			}
+			modifier = {
+				add = 20
+				has_trait = greedy
+			}
 		}
 	}
 	option = { # 断然拒绝
@@ -159,6 +184,7 @@ ftr_pg_interaction_event.0002 = {
 				}
 			}
 		}
+		ai_chance = 5
 	}
 	option = { # 有请美女
 		name = ftr_pg_interaction_event.0002.d
@@ -195,6 +221,20 @@ ftr_pg_interaction_event.0002 = {
 				save_scope_as = beauty
 			}
 			trigger_event = ftr_pg_interaction_event.0004
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = -20
+				OR = {
+					has_trait = just
+					has_trait = chaste
+				}
+			}
+			modifier = {
+				add = 100
+				has_trait = lustful
+			}
 		}
 	}
 }
@@ -322,6 +362,7 @@ ftr_pg_interaction_event.0005 = {
 				}
 			}
 		}
+		ai_chance = 5
 	}
 
 	option = { # Reward with honor
@@ -344,6 +385,7 @@ ftr_pg_interaction_event.0005 = {
 				}
 			}
 		}
+		ai_chance = 5
 	}
 
 	option = { # Reject
@@ -362,6 +404,7 @@ ftr_pg_interaction_event.0005 = {
 				}
 			}
 		}
+		ai_chance = 5
 	}
 
 	option = { # Reject with skill
@@ -378,6 +421,7 @@ ftr_pg_interaction_event.0005 = {
 				}
 			}
 		}
+		ai_chance = 50
 	}
 
 	option = { # See through plot
@@ -395,6 +439,7 @@ ftr_pg_interaction_event.0005 = {
 				}
 			}
 		}
+		ai_chance = 100
 	}
 }
 
@@ -431,6 +476,14 @@ ftr_pg_interaction_event.0006 = {
 				right_icon = scope:recipient
 			}
 		}
+		ai_chance = {
+			base = 20
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:recipient
+				multiplier = -0.25
+			}
+		}
 	}
 
 	option = { # Pardon
@@ -445,6 +498,9 @@ ftr_pg_interaction_event.0006 = {
 				modifier = grateful_opinion
 				opinion = 15
 			}
+		}
+		ai_chance = {
+			base = 10
 		}
 	}
 }
@@ -489,6 +545,14 @@ ftr_pg_interaction_event.0100 = {
 				}
 			}
 		}
+		ai_chance = {
+			base = 20
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:recipient
+				multiplier = -0.25
+			}
+		}
 	}
 
 	option = { # Do nothing
@@ -513,12 +577,25 @@ ftr_pg_interaction_event.0100 = {
 				}
 			}
 		}
+		ai_chance = {
+			base = -5
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:recipient
+				multiplier = 0.1
+			}
+		}
 	}
 
 	option = { # Give him a chance
 		name = ftr_pg_interaction_event.0100.c
 		trigger = {
-			diplomacy >= 15
+			diplomacy >= 12
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_pardon_cost_value
+				ftr_political_influence_value >= ftr_pardon_cost_value
+			}
 		}
 		consume_all_criminal_reasons_effect = {
 			LIEGE = root
@@ -530,6 +607,9 @@ ftr_pg_interaction_event.0100 = {
 				modifier = grateful_opinion
 				opinion = 30
 			}
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_pardon_modify_value
 		}
 		hidden_effect = {
 			ftr_update_pg_member_list_effect = yes
@@ -546,6 +626,9 @@ ftr_pg_interaction_event.0100 = {
 					}
 				}
 			}
+		}
+		ai_chance = {
+			base = 5
 		}
 	}
 }

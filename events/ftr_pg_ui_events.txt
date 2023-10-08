@@ -110,6 +110,11 @@ ftr_pg_ui_event.0002 = {
 
 	option = { # 王权
 		name = ftr_pg_ui_event.0002.a
+		trigger = {
+			NOT = {
+				var:ftr_pg_focus = 1
+			}
+		}
 		ftr_submit_change_foucus_effect = {
 			LIEGE = root
 			STARTER = root
@@ -138,6 +143,11 @@ ftr_pg_ui_event.0002 = {
 
 	option = { # 文化
 		name = ftr_pg_ui_event.0002.b
+		trigger = {
+			NOT = {
+				var:ftr_pg_focus = 2
+			}
+		}
 		ftr_submit_change_foucus_effect = {
 			LIEGE = root
 			STARTER = root
@@ -167,6 +177,11 @@ ftr_pg_ui_event.0002 = {
 
 	option = { # 国家安全
 		name = ftr_pg_ui_event.0002.c
+		trigger = {
+			NOT = {
+				var:ftr_pg_focus = 3
+			}
+		}
 		ftr_submit_change_foucus_effect = {
 			LIEGE = root
 			STARTER = root
@@ -175,6 +190,10 @@ ftr_pg_ui_event.0002 = {
 		ai_chance = { # AI liege likes this topic
 			base = 30
 		}
+	}
+
+	option = { # default
+		name = ftr_pg_ui_event.0002.00
 	}
 
 	after = {
@@ -354,6 +373,13 @@ ftr_pg_ui_event.0005 = {
 
 	option = { # 王权
 		name = ftr_pg_ui_event.0002.a
+		trigger = {
+			NOT = {
+				liege = {
+					var:ftr_pg_focus = 1
+				}
+			}
+		}
 		ftr_submit_change_foucus_effect = {
 			LIEGE = liege
 			STARTER = root
@@ -366,6 +392,13 @@ ftr_pg_ui_event.0005 = {
 
 	option = { # 文化
 		name = ftr_pg_ui_event.0002.b
+		trigger = {
+			NOT = {
+				liege = {
+					var:ftr_pg_focus = 2
+				}
+			}
+		}
 		ftr_submit_change_foucus_effect = {
 			LIEGE = liege
 			STARTER = root
@@ -378,6 +411,13 @@ ftr_pg_ui_event.0005 = {
 
 	option = { # 国家安全
 		name = ftr_pg_ui_event.0002.c
+		trigger = {
+			NOT = {
+				liege = {
+					var:ftr_pg_focus = 3
+				}
+			}
+		}
 		ftr_submit_change_foucus_effect = {
 			LIEGE = liege
 			STARTER = root
@@ -386,6 +426,10 @@ ftr_pg_ui_event.0005 = {
 		ai_chance = {
 			base = 10
 		}
+	}
+
+	option = { # default
+		name = ftr_pg_ui_event.0002.00
 	}
 
 	after = {

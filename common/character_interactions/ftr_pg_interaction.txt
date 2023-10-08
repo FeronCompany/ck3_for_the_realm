@@ -187,7 +187,7 @@ ftr_slander_interaction = {
 	ai_frequency = 36
 	is_shown = {
 		NOT = { scope:actor = scope:recipient }
-		scope:actor.liege = scope:recipient.liege
+		scope:actor.top_liege = scope:recipient.top_liege
 	}
 	is_valid_showing_failures_only = {
 		scope:actor = {

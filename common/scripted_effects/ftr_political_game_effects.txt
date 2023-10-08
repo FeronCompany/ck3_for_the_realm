@@ -622,7 +622,13 @@ ftr_slander_effect = {
 			modifier = {
 				add = {
 					value = scope:actor.intrigue
-					multiply = 3
+					multiply = 2
+				}
+			}
+			modifier = {
+				add = -50
+				scope:actor = {
+					has_character_modifier = ftr_rumor_spreader_modifier
 				}
 			}
 			scope:recipient = {
@@ -652,6 +658,12 @@ ftr_slander_effect = {
 					multiply = 2
 				}
 			}
+			scope:actor = {
+				send_interface_message = {
+					title = "ftr_slander_failed_notify_tt"
+					left_icon = scope:recipient
+				}
+			}
 		}
 		10 = {
 			# exposed
@@ -661,15 +673,9 @@ ftr_slander_effect = {
 					multiply = 1
 				}
 			}
-			modifier = {
-				add = 20
-				scope:actor = {
-					has_character_modifier = ftr_rumor_spreader_modifier
-				}
-			}
 			scope:recipient = {
 				send_interface_message = {
-					title = "ftr_slander_success_notify_tt"
+					title = "ftr_slander_exposed_notify_tt"
 					left_icon = scope:recipient
 					right_icon = scope:actor
 					ftr_slander_failed_effect = yes
@@ -678,7 +684,7 @@ ftr_slander_effect = {
 			hidden_effect = {
 				scope:actor = {
 					send_interface_message = {
-						title = "ftr_slander_success_notify_tt"
+						title = "ftr_slander_exposed_notify_tt"
 						left_icon = scope:recipient
 						right_icon = scope:actor
 						show_as_tooltip = {

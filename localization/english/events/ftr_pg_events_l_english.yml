@@ -172,3 +172,4 @@
  ftr_pg_interaction_event.0101.t:0 "Spread Rumor"
  ftr_pg_interaction_event.0101.desc:0 "Some time ago, my scouts spread rumors about [recipient.GetShortUIName] in various corners of the capital. How are the rumors spreading now?"
  ftr_pg_interaction_event.0101.a:0 "I understand."
+ ftr_slander_success_notify_tt:0 "Slander Success"

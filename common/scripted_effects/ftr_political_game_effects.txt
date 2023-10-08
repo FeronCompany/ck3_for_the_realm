@@ -626,12 +626,21 @@ ftr_slander_effect = {
 				}
 			}
 			scope:recipient = {
-				add_character_modifier = {
-					modifier = ftr_rumor_around_modifier
-					years = 2
+				send_interface_message = {
+					title = "ftr_slander_success_notify_tt"
+					left_icon = scope:recipient
+					ftr_slander_success_effect = yes
 				}
-				ftr_add_political_influence_effect = {
-					VALUE = ftr_slander_damage_value
+			}
+			hidden_effect = {
+				scope:actor = {
+					send_interface_message = {
+						title = "ftr_slander_success_notify_tt"
+						left_icon = scope:recipient
+						show_as_tooltip = {
+							ftr_slander_success_effect = yes
+						}
+					}
 				}
 			}
 		}
@@ -658,22 +667,57 @@ ftr_slander_effect = {
 					has_character_modifier = ftr_rumor_spreader_modifier
 				}
 			}
-			scope:actor = {
-				add_character_modifier = {
-					modifier = ftr_rumor_spreader_modifier
-					years = 30
-				}
-				ftr_add_political_influence_effect = {
-					VALUE = ftr_slander_damage_value
-				}
-			}
 			scope:recipient = {
-				add_opinion = {
-					modifier = angry_opinion
-					target = scope:actor
-					opinion = -60
+				send_interface_message = {
+					title = "ftr_slander_success_notify_tt"
+					left_icon = scope:recipient
+					right_icon = scope:actor
+					ftr_slander_failed_effect = yes
 				}
 			}
+			hidden_effect = {
+				scope:actor = {
+					send_interface_message = {
+						title = "ftr_slander_success_notify_tt"
+						left_icon = scope:recipient
+						right_icon = scope:actor
+						show_as_tooltip = {
+							ftr_slander_failed_effect = yes
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+ftr_slander_success_effect = {
+	scope:recipient = {
+		add_character_modifier = {
+			modifier = ftr_rumor_around_modifier
+			years = 2
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_slander_damage_value
+		}
+	}
+}
+
+ftr_slander_failed_effect = {
+	scope:actor = {
+		add_character_modifier = {
+			modifier = ftr_rumor_spreader_modifier
+			years = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_slander_damage_value
+		}
+	}
+	scope:recipient = {
+		add_opinion = {
+			modifier = angry_opinion
+			target = scope:actor
+			opinion = -60
 		}
 	}
 }

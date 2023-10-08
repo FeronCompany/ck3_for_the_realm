@@ -552,22 +552,9 @@ ftr_pg_interaction_event.0100 = {
 
 # Slander Result
 ftr_pg_interaction_event.0101 = {
-	type = character_event
-	title = ftr_pg_interaction_event.0101.t
-	desc = ftr_pg_interaction_event.0101.desc
-	theme = realm
-	left_portrait = {
-		character = root
-	}
-	right_portrait = {
-		character = scope:recipient
-	}
+	hidden = yes
 
 	immediate = {
 		ftr_slander_effect = yes
-	}
-
-	option = { # OK
-		name = ftr_pg_interaction_event.0101.a
 	}
 }

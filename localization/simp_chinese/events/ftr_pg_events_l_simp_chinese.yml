@@ -172,3 +172,4 @@
  ftr_pg_interaction_event.0101.t:0 "散布谣言"
  ftr_pg_interaction_event.0101.desc:0 "之前一段时间我的探子在首都的各个角落散布关于[recipient.GetShortUIName]的谣言，如今谣言究竟传播的如何了呢。"
  ftr_pg_interaction_event.0101.a:0 "我了解了"
+ ftr_slander_success_notify_tt:0 "谣言四起"

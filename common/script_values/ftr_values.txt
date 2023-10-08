@@ -14,6 +14,14 @@ ftr_vote_proposal_cost_value = 20
 ftr_vote_proposal_modify_value = -20
 ftr_make_pg_proposal_cost_value = 50
 ftr_make_pg_proposal_modify_value = -50
+ftr_bribe_influence_gain_value = 10
+ftr_charge_modify_value = -20
+ftr_charge_cost_value = 20
+ftr_slander_modify_value = -20
+ftr_slander_cost_value = 20
+ftr_slander_damage_value = -50
+ftr_pardon_modify_value = -20
+ftr_pardon_cost_value = 20
 
 ftr_payment_cost_level_value = {
 	value = 0

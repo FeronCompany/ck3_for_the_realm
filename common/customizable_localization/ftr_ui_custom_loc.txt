@@ -14,26 +14,12 @@ FTR_PlayerPG_Focus = {
 			exists = var:ftr_pg_focus
 			var:ftr_pg_focus = 2
 		}
-		localization_key = ftr_pg_focus_succession
-	}
-	text = {
-		trigger = { 
-			exists = var:ftr_pg_focus
-			var:ftr_pg_focus = 3
-		}
 		localization_key = ftr_pg_focus_culture
 	}
 	text = {
 		trigger = { 
 			exists = var:ftr_pg_focus
-			var:ftr_pg_focus = 4
-		}
-		localization_key = ftr_pg_focus_religion
-	}
-	text = {
-		trigger = { 
-			exists = var:ftr_pg_focus
-			var:ftr_pg_focus = 5
+			var:ftr_pg_focus = 3
 		}
 		localization_key = ftr_pg_focus_safety
 	}
@@ -59,26 +45,12 @@ FTR_PlayerPG_Focus_Tobe = {
 			exists = var:ftr_pg_focus_vote
 			var:ftr_pg_focus_vote = 2
 		}
-		localization_key = ftr_pg_focus_succession
-	}
-	text = {
-		trigger = { 
-			exists = var:ftr_pg_focus_vote
-			var:ftr_pg_focus_vote = 3
-		}
 		localization_key = ftr_pg_focus_culture
 	}
 	text = {
 		trigger = { 
 			exists = var:ftr_pg_focus_vote
-			var:ftr_pg_focus_vote = 4
-		}
-		localization_key = ftr_pg_focus_religion
-	}
-	text = {
-		trigger = { 
-			exists = var:ftr_pg_focus_vote
-			var:ftr_pg_focus_vote = 5
+			var:ftr_pg_focus_vote = 3
 		}
 		localization_key = ftr_pg_focus_safety
 	}
@@ -102,6 +74,58 @@ FTR_PlayerPG_Proposal = {
 
 	text = {
 		localization_key = ftr_pg_proposal_none
+		fallback = yes
+	}
+}
+
+FTR_Bribe_Goal = {
+	type = character
+
+	text = {
+		trigger = {
+			scope:bribe_goal = 1
+		}
+		localization_key = ftr_pg_bribe_goal_promote_friendship
+	}
+	text = {
+		trigger = {
+			scope:bribe_goal = 2
+		}
+		localization_key = ftr_pg_bribe_goal_vassal_support
+	}
+	text = {
+		trigger = {
+			scope:bribe_goal = 3
+		}
+		localization_key = ftr_pg_bribe_goal_liege_grant_privilege
+	}
+	text = {
+		trigger = {
+			scope:bribe_goal = 4
+		}
+		localization_key = ftr_pg_bribe_goal_chancellor
+	}
+	text = {
+		trigger = {
+			scope:bribe_goal = 5
+		}
+		localization_key = ftr_pg_bribe_goal_steward
+	}
+	text = {
+		trigger = {
+			scope:bribe_goal = 6
+		}
+		localization_key = ftr_pg_bribe_goal_marshal
+	}
+	text = {
+		trigger = {
+			scope:bribe_goal = 7
+		}
+		localization_key = ftr_pg_bribe_goal_spymaster
+	}
+
+	text = {
+		localization_key = ftr_pg_bribe_goal_default
 		fallback = yes
 	}
 }

@@ -1,0 +1,643 @@
+﻿
+
+namespace = ftr_pg_interaction_event
+
+# Choose Bribe Goal
+ftr_pg_interaction_event.0001 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0001.t
+	desc = ftr_pg_interaction_event.0001.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+	
+	option = { # 增进关系
+		name = ftr_pg_interaction_event.0001.a
+		save_scope_value_as = {
+			name = bribe_goal
+			value = 1
+		}
+		ai_chance = 5
+	}
+	option = { # 获得臣民认可
+		name = ftr_pg_interaction_event.0001.b
+		trigger = {
+			scope:recipient.liege = scope:actor
+		}
+		save_scope_value_as = {
+			name = bribe_goal
+			value = 2
+		}
+		ai_chance = 10
+	}
+	option = { # 获得君主恩惠
+		name = ftr_pg_interaction_event.0001.c
+		trigger = {
+			scope:actor.liege = scope:recipient
+		}
+		save_scope_value_as = {
+			name = bribe_goal
+			value = 3
+		}
+		ai_chance = 20
+	}
+	option = { # 同僚-掌玺大臣：在君主面前美言几句
+		name = ftr_pg_interaction_event.0001.d
+		trigger = {
+			scope:actor = {
+				is_independent_ruler = no
+				liege = scope:recipient.liege
+			}
+			scope:recipient = {
+				has_council_position = councillor_chancellor
+			}
+		}
+		save_scope_value_as = {
+			name = bribe_goal
+			value = 4
+		}
+		ai_chance = 20
+	}
+	option = { # 同僚-财政总管：获得税收特权
+		name = ftr_pg_interaction_event.0001.e
+		trigger = {
+			scope:actor = {
+				is_independent_ruler = no
+				liege = scope:recipient.liege
+			}
+			scope:recipient = {
+				has_council_position = councillor_steward
+			}
+		}
+		save_scope_value_as = {
+			name = bribe_goal
+			value = 5
+		}
+		ai_chance = 20
+	}
+	option = { # 同僚-军事总管：获得征兵特权
+		name = ftr_pg_interaction_event.0001.f
+		trigger = {
+			scope:actor = {
+				is_independent_ruler = no
+				liege = scope:recipient.liege
+			}
+			scope:recipient = {
+				has_council_position = councillor_marshal
+			}
+		}
+		save_scope_value_as = {
+			name = bribe_goal
+			value = 6
+		}
+		ai_chance = 20
+	}
+	option = { # 同僚-间谍总管：获得商业情报
+		name = ftr_pg_interaction_event.0001.g
+		trigger = {
+			scope:actor = {
+				is_independent_ruler = no
+				liege = scope:recipient.liege
+			}
+			scope:recipient = {
+				has_council_position = councillor_spymaster
+			}
+		}
+		save_scope_value_as = {
+			name = bribe_goal
+			value = 7
+		}
+		ai_chance = 20
+	}
+
+	after = {
+		scope:recipient = {
+			trigger_event = ftr_pg_interaction_event.0002
+		}
+	}
+}
+
+
+# Consider bribe goal
+ftr_pg_interaction_event.0002 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0002.t
+	desc = ftr_pg_interaction_event.0002.desc
+	theme = realm
+	left_portrait = {
+		character = scope:actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+	
+	option = { # 欣然同意
+		name = ftr_pg_interaction_event.0002.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_pg_bribe_cooperation_accept_tt
+				left_icon = scope:actor
+				right_icon = scope:recipient
+				ftr_pg_bribe_cooperation_effect = yes
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = -20
+				has_trait = just
+			}
+		}
+	}
+	option = { # 得加钱
+		name = ftr_pg_interaction_event.0002.b
+		scope:actor = {
+			trigger_event = ftr_pg_interaction_event.0003
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				add = -20
+				has_trait = just
+			}
+			modifier = {
+				add = 20
+				has_trait = greedy
+			}
+		}
+	}
+	option = { # 断然拒绝
+		name = ftr_pg_interaction_event.0002.c
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_pg_bribe_cooperation_reject_tt
+				left_icon = scope:actor
+				right_icon = scope:recipient
+				custom_description = {
+					text = "ftr_pg_bribe_cooperation_reject_content_tt"
+					object = scope:recipient
+					subject = scope:actor
+				}
+			}
+		}
+		ai_chance = 5
+	}
+	option = { # 有请美女
+		name = ftr_pg_interaction_event.0002.d
+		trigger = {
+			scope:recipient = {
+				is_male = yes
+			}
+			scope:actor = {
+				liege = scope:recipient
+				any_courtier = {
+					is_female = yes
+					age <= 30
+					age >= 16
+					OR = {
+						has_trait = beauty_good_1
+						has_trait = beauty_good_2
+						has_trait = beauty_good_3
+					}
+				}
+			}
+		}
+		scope:actor = {
+			random_courtier = {
+				limit = {
+					is_female = yes
+					age <= 30
+					age >= 16
+					OR = {
+						has_trait = beauty_good_1
+						has_trait = beauty_good_2
+						has_trait = beauty_good_3
+					}
+				}
+				save_scope_as = beauty
+			}
+			trigger_event = ftr_pg_interaction_event.0004
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = -20
+				OR = {
+					has_trait = just
+					has_trait = chaste
+				}
+			}
+			modifier = {
+				add = 100
+				has_trait = lustful
+			}
+		}
+	}
+}
+
+# Consider more bribe money
+ftr_pg_interaction_event.0003 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0003.t
+	desc = ftr_pg_interaction_event.0003.desc
+	theme = realm
+	left_portrait = {
+		character = scope:actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	option = { # Accept
+		name = ftr_pg_interaction_event.0003.a
+		scope:actor = {
+			pay_short_term_gold = {
+				gold = gift_value
+				target = scope:recipient
+			}
+		}
+		scope:recipient = {
+			send_interface_toast = {
+				title = ftr_pg_bribe_more_gold_accept_tt
+				left_icon = scope:actor
+				right_icon = scope:recipient
+				ftr_pg_bribe_cooperation_effect = yes
+			}
+		}
+	}
+
+	option = { # Reject
+		name = ftr_pg_interaction_event.0003.b
+		scope:recipient = {
+			send_interface_toast = {
+				title = ftr_pg_bribe_more_gold_reject_tt
+				left_icon = scope:actor
+				right_icon = scope:recipient
+			}
+		}
+	}
+}
+
+# Consider send beauty
+ftr_pg_interaction_event.0004 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0004.t
+	desc = ftr_pg_interaction_event.0004.desc
+	theme = realm
+	left_portrait = {
+		character = scope:beauty
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	option = { # Accept
+		name = ftr_pg_interaction_event.0004.a
+		scope:recipient = {
+			send_interface_toast = {
+				title = ftr_pg_bribe_by_beauty_accept_tt
+				left_icon = scope:actor
+				right_icon = scope:recipient
+				had_sex_with_effect = {
+					CHARACTER = scope:beauty
+					PREGNANCY_CHANCE = seduce_pregnancy_chance
+				}
+				ftr_pg_bribe_cooperation_effect = yes
+			}
+		}
+	}
+
+	option = { # Reject
+		name = ftr_pg_interaction_event.0004.b
+		scope:recipient = {
+			send_interface_toast = {
+				title = ftr_pg_bribe_by_beauty_reject_tt
+				left_icon = scope:actor
+				right_icon = scope:recipient
+			}
+		}
+	}
+}
+
+# Consider reward contribution
+ftr_pg_interaction_event.0005 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0005.t
+	desc = ftr_pg_interaction_event.0005.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+	lower_right_portrait = {
+		character = scope:actor
+	}
+
+	option = { # Money reward
+		name = ftr_pg_interaction_event.0005.a
+		scope:actor = {
+			send_interface_message = {
+				title = ftr_liege_send_reward_for_contribution_text
+				left_icon = root
+				root = {
+					add_opinion = {
+						target = scope:actor
+						modifier = pleased_opinion
+						opinion = 30
+					}
+					pay_short_term_gold = {
+						gold = gift_value
+						target = scope:actor
+					}
+				}
+				add_opinion = {
+					target = root
+					modifier = ftr_accept_send_reward_opinion
+				}
+			}
+		}
+		ai_chance = 5
+	}
+
+	option = { # Reward with honor
+		name = ftr_pg_interaction_event.0005.b
+		scope:actor = {
+			send_interface_message = {
+				title = ftr_liege_send_reward_for_contribution_text
+				left_icon = root
+				root = {
+					add_opinion = {
+						target = scope:actor
+						modifier = pleased_opinion
+						opinion = 30
+					}
+					add_prestige = 500
+				}
+				add_opinion = {
+					target = root
+					modifier = ftr_accept_send_reward_opinion
+				}
+			}
+		}
+		ai_chance = 5
+	}
+
+	option = { # Reject
+		name = ftr_pg_interaction_event.0005.c
+		add_prestige = -300
+		scope:actor = {
+			add_opinion = {
+				target = root
+				modifier = ftr_reject_send_reward_opinion
+			}
+			send_interface_message = {
+				title = ftr_liege_refuse_reward_text
+				left_icon = root
+				custom_description = {
+					text = "ftr_liege_refuse_reward_content_tt"
+				}
+			}
+		}
+		ai_chance = 5
+	}
+
+	option = { # Reject with skill
+		name = ftr_pg_interaction_event.0005.d
+		trigger = {
+			diplomacy > 15
+		}
+		scope:actor = {
+			send_interface_message = {
+				title = ftr_liege_refuse_reward_politely_text
+				left_icon = root
+				custom_description = {
+					text = "ftr_liege_refuse_reward_politely_content_tt"
+				}
+			}
+		}
+		ai_chance = 50
+	}
+
+	option = { # See through plot
+		name = ftr_pg_interaction_event.0005.e
+		trigger = {
+			intrigue > 15
+		}
+		add_dread = minor_dread_gain
+		scope:actor = {
+			send_interface_message = {
+				title = ftr_liege_see_through_plot_text
+				left_icon = root
+				custom_description = {
+					text = "ftr_liege_see_through_plot_content_tt"
+				}
+			}
+		}
+		ai_chance = 100
+	}
+}
+
+# Liege Deal With Corruption
+ftr_pg_interaction_event.0006 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0006.t
+	desc = ftr_pg_interaction_event.0006.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {
+		add_opinion = {
+			target = scope:recipient
+			modifier = ftr_corruption_crime
+		}
+	}
+
+	option = { # Arrest
+		name = ftr_pg_interaction_event.0006.a
+		imprison = {
+			target = scope:recipient
+			type = dungeon
+		}
+		scope:recipient = {
+			send_interface_toast = {
+				title = ftr_pg_imprison_for_corruption_tt
+				left_icon = root
+				right_icon = scope:recipient
+			}
+		}
+		ai_chance = {
+			base = 20
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:recipient
+				multiplier = -0.25
+			}
+		}
+	}
+
+	option = { # Pardon
+		name = ftr_pg_interaction_event.0006.b
+		consume_all_criminal_reasons_effect = {
+			LIEGE = root
+			CRIMINAL = scope:recipient
+		}
+		scope:recipient = {
+			add_opinion = {
+				target = root
+				modifier = grateful_opinion
+				opinion = 15
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Liege Deal With Charge
+ftr_pg_interaction_event.0100 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0100.t
+	desc = ftr_pg_interaction_event.0100.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:actor
+	}
+	lower_right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # Arrest
+		name = ftr_pg_interaction_event.0100.a
+		imprison = {
+			target = scope:recipient
+			type = dungeon
+		}
+		hidden_effect = {
+			ftr_update_pg_member_list_effect = yes
+			every_in_list = {
+				list = pg_member_list
+				send_interface_message = {
+					title = ftr_arrest_for_charge_tt
+					left_icon = root
+					right_icon = scope:recipient
+					custom_description = {
+						text = "ftr_arrest_for_charge_content_tt"
+						object = scope:recipient
+						subject = scope:actor
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 20
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:recipient
+				multiplier = -0.25
+			}
+		}
+	}
+
+	option = { # Do nothing
+		name = ftr_pg_interaction_event.0100.b
+		add_character_modifier = {
+			modifier = ftr_indulge_criminal_modifier
+			years = 5
+		}
+		hidden_effect = {
+			ftr_update_pg_member_list_effect = yes
+			every_in_list = {
+				list = pg_member_list
+				send_interface_message = {
+					title = ftr_indulge_for_charge_tt
+					left_icon = root
+					right_icon = scope:recipient
+					custom_description = {
+						text = "ftr_indulge_for_charge_content_tt"
+						object = scope:recipient
+						subject = scope:actor
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = -5
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:recipient
+				multiplier = 0.1
+			}
+		}
+	}
+
+	option = { # Give him a chance
+		name = ftr_pg_interaction_event.0100.c
+		trigger = {
+			diplomacy >= 12
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_pardon_cost_value
+				ftr_political_influence_value >= ftr_pardon_cost_value
+			}
+		}
+		consume_all_criminal_reasons_effect = {
+			LIEGE = root
+			CRIMINAL = scope:recipient
+		}
+		scope:recipient = {
+			add_opinion = {
+				target = root
+				modifier = grateful_opinion
+				opinion = 30
+			}
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_pardon_modify_value
+		}
+		hidden_effect = {
+			ftr_update_pg_member_list_effect = yes
+			every_in_list = {
+				list = pg_member_list
+				send_interface_message = {
+					title = ftr_pardon_for_charge_tt
+					left_icon = root
+					right_icon = scope:recipient
+					custom_description = {
+						text = "ftr_pardon_for_charge_content_tt"
+						object = scope:recipient
+						subject = scope:actor
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 5
+		}
+	}
+}
+
+# Slander Result
+ftr_pg_interaction_event.0101 = {
+	hidden = yes
+
+	immediate = {
+		ftr_slander_effect = yes
+	}
+}

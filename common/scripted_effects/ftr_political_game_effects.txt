@@ -295,11 +295,11 @@ ftr_decrease_authority_effect = {
 		limit = { has_realm_law = crown_authority_1 }
 		add_realm_law = crown_authority_0
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = crown_authority_2 }
 		add_realm_law = crown_authority_1
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = crown_authority_3 }
 		add_realm_law = crown_authority_2
 	}
@@ -307,11 +307,11 @@ ftr_decrease_authority_effect = {
 		limit = { has_realm_law = tribal_authority_1 }
 		add_realm_law = tribal_authority_0
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = tribal_authority_2 }
 		add_realm_law = tribal_authority_1
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = tribal_authority_3 }
 		add_realm_law = tribal_authority_2
 	}
@@ -322,11 +322,11 @@ ftr_expand_authority_effect = {
 		limit = { has_realm_law = crown_authority_0 }
 		add_realm_law = crown_authority_1
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = crown_authority_1 }
 		add_realm_law = crown_authority_2
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = crown_authority_2 }
 		add_realm_law = crown_authority_3
 	}
@@ -334,12 +334,396 @@ ftr_expand_authority_effect = {
 		limit = { has_realm_law = tribal_authority_0 }
 		add_realm_law = tribal_authority_1
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = tribal_authority_1 }
 		add_realm_law = tribal_authority_2
 	}
-	if = {
+	else_if = {
 		limit = { has_realm_law = tribal_authority_2 }
 		add_realm_law = tribal_authority_3
+	}
+}
+
+ftr_count_vote_result_effect = {
+	scope:liege_c = {
+		set_variable = { name = count_yes value = 0 }
+		set_variable = { name = count_no value = 0 }
+		ftr_update_powerful_subjects_list_effect = yes
+		every_in_list = {
+			list = powerful_subjects_list
+			if = {
+				limit = { NOT = { this = scope:liege_c } }
+				if = {
+					limit = {
+						exists = var:ftr_liege_proposal_attitude
+						var:ftr_liege_proposal_attitude = 1
+					}
+					scope:liege_c = {
+						change_variable = {
+							name = count_yes
+							add = 1
+						}
+					}
+					add_to_list = approve_list
+				}
+				else_if = {
+					limit = {
+						exists = var:ftr_liege_proposal_attitude
+						var:ftr_liege_proposal_attitude = 2
+					}
+					scope:liege_c = {
+						change_variable = {
+							name = count_no
+							add = 1
+						}
+					}
+				}
+			}
+			else = {
+				if = {
+					limit = {
+						exists = var:ftr_my_proposal_attitude
+						var:ftr_my_proposal_attitude = 1
+					}
+					scope:liege_c = {
+						change_variable = {
+							name = count_yes
+							add = 1
+						}
+					}
+					add_to_list = approve_list
+				}
+				else_if = {
+					limit = {
+						exists = var:ftr_my_proposal_attitude
+						var:ftr_my_proposal_attitude = 2
+					}
+					scope:liege_c = {
+						change_variable = {
+							name = count_no
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+ftr_clear_vote_result_effect = {
+	scope:liege_c = {
+		set_variable = {
+			name = ftr_proposal_type
+			value = 0
+		}
+		remove_variable = count_yes
+		remove_variable = count_no
+		every_in_list = {
+			list = powerful_subjects_list
+			if = {
+				limit = { NOT = { this = scope:liege_c } }
+				set_variable = {
+					name = ftr_liege_proposal_attitude
+					value = 3
+				}
+			}
+			else = {
+				set_variable = {
+					name = ftr_my_proposal_attitude
+					value = 3
+				}
+			}
+		}
+	}
+}
+
+ftr_pg_bribe_cooperation_effect = {
+	if = {
+		limit = { scope:bribe_goal = 1 }
+		scope:actor = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = ftr_pg_cooperation_opinion
+			}
+		}
+		scope:recipient = {
+			add_opinion = {
+				target = scope:actor
+				modifier = ftr_pg_cooperation_opinion
+			}
+		}
+	}
+	else_if = {
+		limit = { scope:bribe_goal = 2 }
+		scope:actor = {
+			every_vassal = {
+				custom = custom.every_vassal
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_gain_support_from_vassal_opinion
+				}
+			}
+		}
+		scope:recipient = {
+			add_prestige = 200
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+	}
+	else_if = {
+		limit = { scope:bribe_goal = 3 }
+		scope:actor = {
+			add_character_modifier = {
+				modifier = ftr_liege_grant_privilege_modifier
+				years = 2
+			}
+		}
+		scope:recipient = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+	}
+	else_if = {
+		limit = { scope:bribe_goal = 4 }
+		scope:actor.liege = {
+			trigger_event = {
+				id = ftr_pg_interaction_event.0005
+				days = 10
+			}
+		}
+		scope:recipient = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+	}
+	else_if = {
+		limit = { scope:bribe_goal = 5 }
+		scope:actor = {
+			add_character_modifier = {
+				modifier = ftr_tax_privilege_modifier
+				years = 2
+			}
+		}
+		scope:recipient = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+		hidden_effect = {
+			scope:actor.liege = {
+				random_sub_realm_county = {
+					limit = { holder = scope:actor.liege }
+					save_scope_as = corruption_county
+					add_county_modifier = {
+						modifier = ftr_corruption_county_modifier
+						years = 2
+					}
+				}
+				random_list = {
+					10 = {
+						modifier = {
+							add = {
+								value = scope:recipient.intrigue
+								multiply = 2
+							}
+						}
+					}
+					10 = {
+						modifier = {
+							add = {
+								value = scope:actor.liege.intrigue
+								multiply = 1
+							}
+						}
+						scope:actor.liege = {
+							trigger_event = {
+								id = ftr_pg_interaction_event.0006
+								days = { 30 60 }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { scope:bribe_goal = 6 }
+		scope:actor = {
+			add_character_modifier = {
+				modifier = ftr_levy_privilege_modifier
+				years = 2
+			}
+		}
+		scope:recipient = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+		hidden_effect = {
+			scope:actor.liege = {
+				random_sub_realm_county = {
+					limit = { holder = scope:actor.liege }
+					save_scope_as = corruption_county
+					add_county_modifier = {
+						modifier = ftr_corruption_county_modifier
+						years = 2
+					}
+				}
+				random_list = {
+					10 = {
+						modifier = {
+							add = {
+								value = scope:recipient.intrigue
+								multiply = 2
+							}
+						}
+					}
+					10 = {
+						modifier = {
+							add = {
+								value = scope:actor.liege.intrigue
+								multiply = 1
+							}
+						}
+						scope:actor.liege = {
+							trigger_event = {
+								id = ftr_pg_interaction_event.0006
+								days = { 30 60 }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { scope:bribe_goal = 7 }
+		scope:actor = {
+			add_character_modifier = {
+				modifier = ftr_insider_information_modifier
+				years = 2
+			}
+		}
+		scope:recipient = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_bribe_influence_gain_value
+			}
+		}
+	}
+}
+
+ftr_slander_effect = {
+	random_list = {
+		10 = {
+			# success
+			modifier = {
+				add = {
+					value = scope:actor.intrigue
+					multiply = 2
+				}
+			}
+			modifier = {
+				add = -50
+				scope:actor = {
+					has_character_modifier = ftr_rumor_spreader_modifier
+				}
+			}
+			scope:recipient = {
+				send_interface_message = {
+					title = "ftr_slander_success_notify_tt"
+					left_icon = scope:recipient
+					ftr_slander_success_effect = yes
+				}
+			}
+			hidden_effect = {
+				scope:actor = {
+					send_interface_message = {
+						title = "ftr_slander_success_notify_tt"
+						left_icon = scope:recipient
+						show_as_tooltip = {
+							ftr_slander_success_effect = yes
+						}
+					}
+				}
+			}
+		}
+		20 = {
+			# failed
+			modifier = {
+				add = {
+					value = scope:recipient.intrigue
+					multiply = 2
+				}
+			}
+			scope:actor = {
+				send_interface_message = {
+					title = "ftr_slander_failed_notify_tt"
+					left_icon = scope:recipient
+				}
+			}
+		}
+		10 = {
+			# exposed
+			modifier = {
+				add = {
+					value = scope:recipient.intrigue
+					multiply = 1
+				}
+			}
+			scope:recipient = {
+				send_interface_message = {
+					title = "ftr_slander_exposed_notify_tt"
+					left_icon = scope:recipient
+					right_icon = scope:actor
+					ftr_slander_failed_effect = yes
+				}
+			}
+			hidden_effect = {
+				scope:actor = {
+					send_interface_message = {
+						title = "ftr_slander_exposed_notify_tt"
+						left_icon = scope:recipient
+						right_icon = scope:actor
+						show_as_tooltip = {
+							ftr_slander_failed_effect = yes
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+ftr_slander_success_effect = {
+	scope:recipient = {
+		add_character_modifier = {
+			modifier = ftr_rumor_around_modifier
+			years = 2
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_slander_damage_value
+		}
+	}
+}
+
+ftr_slander_failed_effect = {
+	scope:actor = {
+		add_character_modifier = {
+			modifier = ftr_rumor_spreader_modifier
+			years = 30
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_slander_damage_value
+		}
+	}
+	scope:recipient = {
+		add_opinion = {
+			modifier = angry_opinion
+			target = scope:actor
+			opinion = -60
+		}
 	}
 }

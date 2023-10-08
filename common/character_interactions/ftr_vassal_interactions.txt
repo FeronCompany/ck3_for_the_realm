@@ -446,7 +446,7 @@ ftr_request_depose_interaction = {
 	}
 	#auto_accept = yes
 	ai_will_do = {
-		base = 0
+		base = -20
 		modifier = {
 			add = 10
 			scope:actor = {

@@ -2,3 +2,12 @@
  ftr_frame_interaction:0 "<FTR> Frame"
  ftr_frame_interaction_desc:0 "Falsify evidence against the target and damage its image."
  FTR_FRAME_EFFECT:2 "You can choose the specific method of framing..."
+
+ ftr_bribe_interaction:0 "<FTR> Bribe"
+ ftr_bribe_interaction_desc:0 "Bribe and gain target's trust with gold."
+
+ ftr_charge_interaction:0 "<FTR> Public Charge"
+ ftr_charge_interaction_desc:0 "Accusing target of crimes in public."
+
+ ftr_slander_interaction:0 "<FTR> Spread Rumors"
+ ftr_slander_interaction_desc:0 "Spreading rumors that are unfavorable to the target makes it exhausted."

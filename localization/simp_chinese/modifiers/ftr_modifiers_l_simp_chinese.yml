@@ -29,6 +29,9 @@
  enact_war_tax_modifier:0 "颁布战争税法案"
  enact_war_tax_modifier_desc:0 "不惜一切代价取得战争胜利。"
 
+ enact_war_tax_by_negotiation_modifier:0 "颁布战争税法案"
+ enact_war_tax_by_negotiation_modifier_desc:0 "不惜一切代价取得战争胜利。"
+
  ftr_grant_here_privilage_opinion:0 "授予封建特权"
  ftr_grant_here_privilage_opinion_desc:0 "君主授予封建特权"
 
@@ -52,6 +55,18 @@
 
  ftr_reward_me_during_tournament:0 "收到打赏"
  ftr_reward_me_during_tournament_desc:0 "在比武大会中打赏了我"
+
+ ftr_liege_grant_privilege_modifier:0 "领主恩惠"
+ ftr_liege_grant_privilege_modifier_desc:0 "领主恩惠"
+
+ ftr_tax_privilege_modifier:0 "税收特权"
+ ftr_tax_privilege_modifier_desc:0 "税收特权"
+
+ ftr_levy_privilege_modifier:0 "征兵特权"
+ ftr_levy_privilege_modifier_desc:0 "征兵特权"
+
+ ftr_insider_information_modifier:0 "内幕消息"
+ ftr_insider_information_modifier_desc:0 "内幕消息"
 
  ftr_refuse_depose_bureacrat_opinion:0 "否决弹劾案"
  ftr_refuse_depose_bureacrat_opinion_desc:0 "君主否决弹劾案"
@@ -79,3 +94,33 @@
 
  ftr_reject_foolish_proposal_opinion:0 "回绝愚蠢的提议"
  ftr_reject_foolish_proposal_opinion_desc:0 "回绝愚蠢的提议"
+
+ ftr_purge_heresy_modifier:0 "<FTR>清洗异端"
+ ftr_purge_heresy_modifier_desc:0 "清洗异端"
+
+ ftr_faith_tolerance_modifier:0 "<FTR>容忍异教徒"
+ ftr_faith_tolerance_modifier_desc:0 "容忍异教徒"
+
+ ftr_pg_cooperation_opinion:0 "<FTR>合作共赢"
+ ftr_pg_cooperation_opinion_desc:0 "合作共赢"
+
+ ftr_gain_support_from_vassal_opinion:0 "<FTR>获得封臣支持"
+ ftr_gain_support_from_vassal_opinion_desc:0 "获得封臣支持"
+
+ ftr_accept_send_reward_opinion:0 "<FTR>论功行赏"
+ ftr_accept_send_reward_opinion_desc:0 "论功行赏"
+
+ ftr_reject_send_reward_opinion:0 "<FTR>赏罚不公"
+ ftr_reject_send_reward_opinion_desc:0 "赏罚不公"
+
+ ftr_corruption_crime:0 "<FTR>贪污腐败"
+ ftr_corruption_crime_desc:0 "贪污腐败"
+
+ ftr_indulge_criminal_modifier:0 "<FTR>姑息罪犯"
+ ftr_indulge_criminal_modifier_desc:0 "姑息罪犯"
+
+ ftr_rumor_around_modifier:0 "<FTR>谣言缠身"
+ ftr_rumor_around_modifier_desc:0 "谣言缠身"
+
+ ftr_rumor_spreader_modifier:0 "<FTR>造谣生事"
+ ftr_rumor_spreader_modifier_desc:0 "造谣生事"

@@ -67,3 +67,47 @@ ftr_have_set_liege_realm_focus_tt = {
 ftr_powerful_subject_trigger_tt = {
 	global = ftr_powerful_subject_trigger_text
 }
+
+ftr_my_realm_has_valid_proposal_tt = {
+	global = ftr_my_realm_has_valid_proposal_text
+}
+
+ftr_my_realm_not_vote_yes_tt = {
+	global = ftr_my_realm_not_vote_yes_text
+}
+
+ftr_my_realm_not_change_attitude_tt = {
+	global = ftr_my_realm_not_change_attitude_text
+}
+
+ftr_my_realm_not_vote_no_tt = {
+	global = ftr_my_realm_not_vote_no_text
+}
+
+ftr_my_realm_not_vote_abstain_tt = {
+	global = ftr_my_realm_not_vote_abstain_text
+}
+
+ftr_liege_realm_has_valid_proposal_tt = {
+	global = ftr_liege_realm_has_valid_proposal_text
+}
+
+ftr_liege_realm_not_change_attitude_tt = {
+	global = ftr_liege_realm_not_change_attitude_text
+}
+
+ftr_liege_realm_not_vote_yes_tt = {
+	global = ftr_liege_realm_not_vote_yes_text
+}
+
+ftr_is_inner_circle_member_of_liege_tt = {
+	global = ftr_is_inner_circle_member_of_liege_text
+}
+
+ftr_liege_realm_not_vote_no_tt = {
+	global = ftr_liege_realm_not_vote_no_text
+}
+
+ftr_liege_realm_not_abstain_no_tt = {
+	global = ftr_liege_realm_not_abstain_no_text
+}

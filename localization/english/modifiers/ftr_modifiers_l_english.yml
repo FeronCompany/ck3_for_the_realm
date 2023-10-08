@@ -29,6 +29,9 @@
  enact_war_tax_modifier:0 "Enact War Tax"
  enact_war_tax_modifier_desc:0 "Everything for war."
 
+ enact_war_tax_by_negotiation_modifier:0 "Enact War Tax"
+ enact_war_tax_by_negotiation_modifier_desc:0 "Everything for war."
+
  ftr_grant_here_privilage_opinion:0 "Grant Hereditary Privilege"
  ftr_grant_here_privilage_opinion_desc:0 "Liege grant hereditary privilege"
 
@@ -52,6 +55,18 @@
 
  ftr_reward_me_during_tournament:0 "Get Reward"
  ftr_reward_me_during_tournament_desc:0 "Reward me during tournament"
+
+ ftr_liege_grant_privilege_modifier:0 "Privilege Granted by Liege"
+ ftr_liege_grant_privilege_modifier_desc:0 "Privilege Granted by Liege"
+
+ ftr_tax_privilege_modifier:0 "Tax Privilege"
+ ftr_tax_privilege_modifier_desc:0 "Tax Privilege"
+
+ ftr_levy_privilege_modifier:0 "Levy Privilege"
+ ftr_levy_privilege_modifier_desc:0 "Levy Privilege"
+
+ ftr_insider_information_modifier:0 "Insider Information"
+ ftr_insider_information_modifier_desc:0 "Insider Information"
 
  ftr_refuse_depose_bureacrat_opinion:0 "Reject Impeachment"
  ftr_refuse_depose_bureacrat_opinion_desc:0 "Liege rejected impeachment."
@@ -79,3 +94,33 @@
 
  ftr_reject_foolish_proposal_opinion:0 "Reject Foolish Proposal"
  ftr_reject_foolish_proposal_opinion_desc:0 "Reject foolish proposal."
+
+ ftr_purge_heresy_modifier:0 "<FTR> Purge Heresy"
+ ftr_purge_heresy_modifier_desc:0 "Purge heresy"
+
+ ftr_faith_tolerance_modifier:0 "<FTR> Tolerance to Heresy"
+ ftr_faith_tolerance_modifier_desc:0 "Tolerance to Heresy"
+
+ ftr_pg_cooperation_opinion:0 "<FTR> Political Cooperation"
+ ftr_pg_cooperation_opinion_desc:0 "Political cooperation"
+
+ ftr_gain_support_from_vassal_opinion:0 "<FTR> Gained Support from Vassal"
+ ftr_gain_support_from_vassal_opinion_desc:0 "Gained support from vassals"
+
+ ftr_accept_send_reward_opinion:0 "<FTR> Reward My Contibution"
+ ftr_accept_send_reward_opinion_desc:0 "Reward My Contibution"
+
+ ftr_reject_send_reward_opinion:0 "<FTR> Refuse Reward Contribution"
+ ftr_reject_send_reward_opinion_desc:0 "Refuse Reward Contribution"
+
+ ftr_corruption_crime:0 "<FTR>Corruption"
+ ftr_corruption_crime_desc:0 "Corruption"
+
+ ftr_indulge_criminal_modifier:0 "<FTR> Indulge Criminal"
+ ftr_indulge_criminal_modifier_desc:0 "Indulge Criminal"
+
+ ftr_rumor_around_modifier:0 "<FTR> Rumor Around"
+ ftr_rumor_around_modifier_desc:0 "Rumor Around"
+
+ ftr_rumor_spreader_modifier:0 "<FTR> Rumor Spreader"
+ ftr_rumor_spreader_modifier_desc:0 "Rumor Spreader"

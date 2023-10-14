@@ -74,3 +74,10 @@
  ftr_coup_interaction:0 "<FTR> Planning a Coup"
  ftr_coup_interaction_desc:0 "Planning a coup against [recipient.GetName|U] to seize power."
  ftr_coup_interaction_notification:0 "You started a coup scheme against [recipient.GetName|U]."
+
+ ftr_fine_interaction:0 "<FTR> Fine"
+ ftr_fine_interaction_desc:0 "Collect a certain amount of fine and pardon the crimes of [recipient.GetName|U]"
+ ftr_fine_interaction_text:0 "[actor.GetName|U] hopes you can honestly pay a fine to [actor.GetHerHim] to atone for your crimes. If you don't comply, you may face imprisonment in the future."
+ ftr_fine_accept_notification:0 "[recipient.GetShortUIName|U] accept to pay fine to [actor.GetShortUIName|U]"
+ FTR_FINE_GOLD_NOT_ENOUGH:0 "Poor Financial Condition: $VALUE|=+0$"
+ FTR_FINE_TRAIT:0 "Recognize the situation: $VALUE|=+0$"

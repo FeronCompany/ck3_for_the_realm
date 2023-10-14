@@ -158,3 +158,31 @@ ftr_political_influence_value = {
 		add = var:ftr_political_influence
 	}
 }
+
+ftr_fine_gold_value = {
+	value = 50
+	if = {
+		limit = {
+			scope:recipient.primary_title.tier = tier_barony
+		}
+		add = 25
+	}
+	else_if = {
+		limit = {
+			scope:recipient.primary_title.tier = tier_county
+		}
+		add = 50
+	}
+	else_if = {
+		limit = {
+			scope:recipient.primary_title.tier = tier_duchy
+		}
+		add = 100
+	}
+	else_if = {
+		limit = {
+			scope:recipient.primary_title.tier = tier_kindom
+		}
+		add = 200
+	}
+}

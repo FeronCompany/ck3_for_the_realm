@@ -104,7 +104,7 @@ ftr_pg_ai_change_liege_realm_focus_decision = {
 	selection_tooltip = ftr_pg_ai_change_liege_realm_focus_decision_tooltip
 	ai_check_interval = 36
 	is_shown = {
-		#is_ai = yes
+		is_ai = yes
 		is_capable_adult = yes
 		is_independent_ruler = no
 	}
@@ -301,28 +301,33 @@ ftr_pg_my_proposal_vote_yes_decision = {
 		# modifier for Expand Crown Authority
 		modifier = {
 			add = 100 # As liege, of course support
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 1
 		}
 		# modifier for Weaken Crown Authority
 		modifier = {
 			add = -100 # As liege, don't like it
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 2
 		}
 		# modifier for Purge Heresy
 		modifier = {
 			add = 33
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 3
 			has_trait = zealous
 		}
 		# modifier for Religious Tolerance
 		modifier = {
 			add = 33
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 4
 			has_trait = cynical
 		}
 		# modifier for War Tax
 		modifier = {
 			add = 33
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 5
 			OR = {
 				has_trait = greedy
@@ -388,12 +393,14 @@ ftr_pg_my_proposal_vote_no_decision = {
 		# modifier for Religious Tolerance
 		modifier = {
 			add = 33
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 4
 			has_trait = zealous
 		}
 		# modifier for War Tax
 		modifier = {
 			add = -33
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 5
 			gold > 2000
 		}
@@ -448,6 +455,7 @@ ftr_pg_my_proposal_vote_abstain_decision = {
 		# modifier for Weaken Crown Authority
 		modifier = {
 			add = -100 # As liege, don't like it
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 2
 		}
 	}
@@ -517,6 +525,7 @@ ftr_pg_liege_proposal_vote_yes_decision = {
 		modifier = {
 			add = 33
 			liege = {
+				exists = var:ftr_proposal_type
 				var:ftr_proposal_type = 1
 				OR = {
 					has_realm_law = crown_authority_0
@@ -534,6 +543,7 @@ ftr_pg_liege_proposal_vote_yes_decision = {
 		modifier = {
 			add = 33
 			liege = {
+				exists = var:ftr_proposal_type
 				var:ftr_proposal_type = 2
 				OR = {
 					has_realm_law = crown_authority_2
@@ -550,6 +560,7 @@ ftr_pg_liege_proposal_vote_yes_decision = {
 		# modifier for Purge Heresy
 		modifier = {
 			add = 20
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 3
 			has_trait = zealous
 			faith = liege.faith
@@ -557,12 +568,14 @@ ftr_pg_liege_proposal_vote_yes_decision = {
 		# modifier for Religious Tolerance
 		modifier = {
 			add = 33
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 4
 			NOT = { faith = liege.faith }
 		}
 		# modifier for War Tax
 		modifier = {
 			add = 33
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 5
 			gold > 200
 			liege = {
@@ -641,6 +654,7 @@ ftr_pg_liege_proposal_vote_no_decision = {
 		modifier = {
 			add = 33
 			liege = {
+				exists = var:ftr_proposal_type
 				var:ftr_proposal_type = 1
 				OR = {
 					has_realm_law = crown_authority_3
@@ -655,6 +669,7 @@ ftr_pg_liege_proposal_vote_no_decision = {
 		# modifier for Religious Tolerance
 		modifier = {
 			add = 33
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 4
 			has_trait = zealous
 			faith = liege.faith
@@ -662,6 +677,7 @@ ftr_pg_liege_proposal_vote_no_decision = {
 		# modifier for War Tax
 		modifier = {
 			add = 33
+			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 5
 			OR = {
 				gold <= 100

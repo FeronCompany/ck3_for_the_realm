@@ -99,16 +99,21 @@ ftr_pg_ui_event.0002 = {
 		character = root
 	}
 
-	immediate = {}
+	immediate = {
+		if = {
+			limit = { NOT = { exists = var:ftr_pg_focus } }
+		}
+		set_variable = {
+			name = ftr_pg_focus
+			value = 0
+		}
+	}
 
 	option = { # 王权
 		name = ftr_pg_ui_event.0002.a
 		trigger = {
 			NOT = {
-				AND = {
-					exists = var:ftr_pg_focus
-					var:ftr_pg_focus = 1
-				}
+				var:ftr_pg_focus = 1
 			}
 		}
 		ftr_submit_change_foucus_effect = {
@@ -142,10 +147,7 @@ ftr_pg_ui_event.0002 = {
 		name = ftr_pg_ui_event.0002.b
 		trigger = {
 			NOT = {
-				AND = {
-					exists = var:ftr_pg_focus
-					var:ftr_pg_focus = 2
-				}
+				var:ftr_pg_focus = 2
 			}
 		}
 		ftr_submit_change_foucus_effect = {
@@ -180,10 +182,7 @@ ftr_pg_ui_event.0002 = {
 		name = ftr_pg_ui_event.0002.c
 		trigger = {
 			NOT = {
-				AND = {
-					exists = var:ftr_pg_focus
-					var:ftr_pg_focus = 3
-				}
+				var:ftr_pg_focus = 3
 			}
 		}
 		ftr_submit_change_foucus_effect = {
@@ -344,16 +343,23 @@ ftr_pg_ui_event.0005 = {
 		character = root
 	}
 
-	immediate = {}
+	immediate = {
+		liege = {
+			if = {
+				limit = { NOT = { exists = var:ftr_pg_focus } }
+			}
+			set_variable = {
+				name = ftr_pg_focus
+				value = 0
+			}
+		}
+	}
 
 	option = { # 王权
 		name = ftr_pg_ui_event.0002.a
 		trigger = {
-			NOT = {
-				liege = {
-					exists = var:ftr_pg_focus
-					var:ftr_pg_focus = 1
-				}
+			liege = {
+				NOT = { var:ftr_pg_focus = 1 }
 			}
 		}
 		ftr_submit_change_foucus_effect = {
@@ -370,11 +376,8 @@ ftr_pg_ui_event.0005 = {
 	option = { # 文化
 		name = ftr_pg_ui_event.0002.b
 		trigger = {
-			NOT = {
-				liege = {
-					exists = var:ftr_pg_focus
-					var:ftr_pg_focus = 2
-				}
+			liege = {
+				NOT = { var:ftr_pg_focus = 2 }
 			}
 		}
 		ftr_submit_change_foucus_effect = {
@@ -391,11 +394,8 @@ ftr_pg_ui_event.0005 = {
 	option = { # 国家安全
 		name = ftr_pg_ui_event.0002.c
 		trigger = {
-			NOT = {
-				liege = {
-					exists = var:ftr_pg_focus
-					var:ftr_pg_focus = 3
-				}
+			liege = {
+				NOT = { var:ftr_pg_focus = 3 }
 			}
 		}
 		ftr_submit_change_foucus_effect = {
@@ -426,21 +426,7 @@ ftr_pg_ui_event.0100 = {
 		character = root
 	}
 
-	immediate = {
-		ftr_add_political_influence_effect = {
-			VALUE = ftr_make_pg_proposal_modify_value
-		}
-		custom_description = {
-			text = "ftr_flag_recently_made_proposal_tt"
-			add_character_flag = {
-				flag = ftr_make_proposal_flag
-				days = 365
-			}
-		}
-		scope:liege_c = {
-			ftr_update_powerful_subjects_list_effect = yes
-		}
-	}
+	immediate = {}
 	
 	option = { # Expansion of royal power
 		name = ftr_pg_ui_event.0100.1
@@ -461,6 +447,7 @@ ftr_pg_ui_event.0100 = {
 				}
 			}
 		}
+		ftr_try_make_proposal_effect = yes
 		scope:starter = {
 			if = {
 				limit = { NOT = { this = scope:liege_c } }
@@ -545,6 +532,7 @@ ftr_pg_ui_event.0100 = {
 				}
 			}
 		}
+		ftr_try_make_proposal_effect = yes
 		scope:starter = {
 			if = {
 				limit = { NOT = { this = scope:liege_c } }
@@ -635,6 +623,7 @@ ftr_pg_ui_event.0100 = {
 				}
 			}
 		}
+		ftr_try_make_proposal_effect = yes
 		scope:liege_c = {
 			set_variable = {
 				name = ftr_proposal_type
@@ -698,6 +687,7 @@ ftr_pg_ui_event.0100 = {
 				}
 			}
 		}
+		ftr_try_make_proposal_effect = yes
 		scope:liege_c = {
 			set_variable = {
 				name = ftr_proposal_type
@@ -749,6 +739,7 @@ ftr_pg_ui_event.0100 = {
 				NOT = { has_character_modifier = enact_war_tax_by_negotiation_modifier }
 			}
 		}
+		ftr_try_make_proposal_effect = yes
 		scope:liege_c = {
 			set_variable = {
 				name = ftr_proposal_type

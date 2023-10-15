@@ -41,7 +41,11 @@ ftr_bribe_interaction = {
 			NOT =  { is_at_war_with = scope:recipient }
 			is_imprisoned = no
 			is_capable_adult = yes
-			gold > gift_value
+			custom_description = {
+				text = ftr_enough_gold_tt
+				value = gift_value
+				gold >= gift_value
+			}
 		}
 		scope:recipient = {
 			is_imprisoned = no
@@ -88,7 +92,7 @@ ftr_bribe_interaction = {
 		modifier = {
 			add = 40
 			scope:actor = {
-				gold > gift_value
+				gold >= gift_value
 				ftr_political_influence_value < 40
 			}
 		}

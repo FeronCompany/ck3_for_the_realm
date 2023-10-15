@@ -20,6 +20,13 @@ ftr_pg_ui_event.0001 = {
 		ftr_add_political_influence_effect = {
 			VALUE = ftr_expand_influence_value
 		}
+		custom_description = {
+			text = "ftr_flag_expanded_influence_recently_tt"
+			add_character_flag = {
+				flag = ftr_expand_influence_flag
+				days = 730
+			}
+		}
 		ai_chance = {
 			base = 50
 			modifier = {
@@ -37,6 +44,13 @@ ftr_pg_ui_event.0001 = {
 		ftr_add_political_influence_effect = {
 			VALUE = ftr_expand_influence_value
 		}
+		custom_description = {
+			text = "ftr_flag_expanded_influence_recently_tt"
+			add_character_flag = {
+				flag = ftr_expand_influence_flag
+				days = 730
+			}
+		}
 		ai_chance = {
 			base = 50
 		}
@@ -49,6 +63,13 @@ ftr_pg_ui_event.0001 = {
 		remove_short_term_gold = ftr_expand_influence_gold_cost_value
 		ftr_add_political_influence_effect = {
 			VALUE = ftr_expand_influence_value
+		}
+		custom_description = {
+			text = "ftr_flag_expanded_influence_recently_tt"
+			add_character_flag = {
+				flag = ftr_expand_influence_flag
+				days = 730
+			}
 		}
 		ai_chance = {
 			base = 50
@@ -65,15 +86,7 @@ ftr_pg_ui_event.0001 = {
 		}
 	}
 
-	after = {
-		custom_description = {
-			text = "ftr_flag_expanded_influence_recently_tt"
-			add_character_flag = {
-				flag = ftr_expand_influence_flag
-				days = 730
-			}
-		}
-	}
+	after = {}
 }
 
 # Change My Realm Political Focus
@@ -86,33 +99,16 @@ ftr_pg_ui_event.0002 = {
 		character = root
 	}
 
-	immediate = {
-		custom_description = {
-			text = "ftr_flag_recently_changed_focus_tt"
-			add_character_flag = {
-				flag = ftr_change_focus_flag
-				days = 365
-			}
-		}
-		
-		add_character_flag = {
-			flag = ftr_changing_focus_flag
-		}
-		set_variable = {
-			name = ftr_focus_vote_approve
-			value = 1
-		}
-		set_variable = {
-			name = ftr_focus_vote_oppose
-			value = 0
-		}
-	}
+	immediate = {}
 
 	option = { # 王权
 		name = ftr_pg_ui_event.0002.a
 		trigger = {
 			NOT = {
-				var:ftr_pg_focus = 1
+				AND = {
+					exists = var:ftr_pg_focus
+					var:ftr_pg_focus = 1
+				}
 			}
 		}
 		ftr_submit_change_foucus_effect = {
@@ -120,6 +116,7 @@ ftr_pg_ui_event.0002 = {
 			STARTER = root
 			VALUE = 1
 		}
+		ftr_try_change_my_focus_effect = yes
 		ai_chance = {
 			base = 10
 			modifier = { # Crown Athority too low, I want to make it higher
@@ -145,7 +142,10 @@ ftr_pg_ui_event.0002 = {
 		name = ftr_pg_ui_event.0002.b
 		trigger = {
 			NOT = {
-				var:ftr_pg_focus = 2
+				AND = {
+					exists = var:ftr_pg_focus
+					var:ftr_pg_focus = 2
+				}
 			}
 		}
 		ftr_submit_change_foucus_effect = {
@@ -153,6 +153,7 @@ ftr_pg_ui_event.0002 = {
 			STARTER = root
 			VALUE = 2
 		}
+		ftr_try_change_my_focus_effect = yes
 		ai_chance = { # I have vassals in different culture
 			base = 10
 			modifier = {
@@ -179,7 +180,10 @@ ftr_pg_ui_event.0002 = {
 		name = ftr_pg_ui_event.0002.c
 		trigger = {
 			NOT = {
-				var:ftr_pg_focus = 3
+				AND = {
+					exists = var:ftr_pg_focus
+					var:ftr_pg_focus = 3
+				}
 			}
 		}
 		ftr_submit_change_foucus_effect = {
@@ -187,6 +191,7 @@ ftr_pg_ui_event.0002 = {
 			STARTER = root
 			VALUE = 3
 		}
+		ftr_try_change_my_focus_effect = yes
 		ai_chance = { # AI liege likes this topic
 			base = 30
 		}
@@ -196,15 +201,7 @@ ftr_pg_ui_event.0002 = {
 		name = ftr_pg_ui_event.0002.00
 	}
 
-	after = {
-		ftr_add_political_influence_effect = {
-			VALUE = ftr_shift_focus_modify_value
-		}
-		trigger_event = {
-			id = ftr_pg_ui_event.0004
-			days = 30
-		}
-	}
+	after = {}
 }
 
 # Vote for change focus
@@ -347,35 +344,14 @@ ftr_pg_ui_event.0005 = {
 		character = root
 	}
 
-	immediate = {
-		custom_description = {
-			text = "ftr_flag_recently_changed_focus_tt"
-			add_character_flag = {
-				flag = ftr_change_focus_flag
-				days = 365
-			}
-		}
-		
-		liege = {
-			add_character_flag = {
-				flag = ftr_changing_focus_flag
-			}
-			set_variable = {
-				name = ftr_focus_vote_approve
-				value = 1
-			}
-			set_variable = {
-				name = ftr_focus_vote_oppose
-				value = 0
-			}
-		}
-	}
+	immediate = {}
 
 	option = { # 王权
 		name = ftr_pg_ui_event.0002.a
 		trigger = {
 			NOT = {
 				liege = {
+					exists = var:ftr_pg_focus
 					var:ftr_pg_focus = 1
 				}
 			}
@@ -385,6 +361,7 @@ ftr_pg_ui_event.0005 = {
 			STARTER = root
 			VALUE = 1
 		}
+		ftr_try_change_liege_focus_effect = yes
 		ai_chance = { # ai subjects like this topic
 			base = 15
 		}
@@ -395,6 +372,7 @@ ftr_pg_ui_event.0005 = {
 		trigger = {
 			NOT = {
 				liege = {
+					exists = var:ftr_pg_focus
 					var:ftr_pg_focus = 2
 				}
 			}
@@ -404,6 +382,7 @@ ftr_pg_ui_event.0005 = {
 			STARTER = root
 			VALUE = 2
 		}
+		ftr_try_change_liege_focus_effect = yes
 		ai_chance = {
 			base = 10
 		}
@@ -414,6 +393,7 @@ ftr_pg_ui_event.0005 = {
 		trigger = {
 			NOT = {
 				liege = {
+					exists = var:ftr_pg_focus
 					var:ftr_pg_focus = 3
 				}
 			}
@@ -423,6 +403,7 @@ ftr_pg_ui_event.0005 = {
 			STARTER = root
 			VALUE = 3
 		}
+		ftr_try_change_liege_focus_effect = yes
 		ai_chance = {
 			base = 10
 		}
@@ -432,15 +413,7 @@ ftr_pg_ui_event.0005 = {
 		name = ftr_pg_ui_event.0002.00
 	}
 
-	after = {
-		ftr_add_political_influence_effect = {
-			VALUE = ftr_shift_focus_modify_value
-		}
-		trigger_event = {
-			id = ftr_pg_ui_event.0004
-			days = 30
-		}
-	}
+	after = {}
 }
 
 # Make proposal list

@@ -1,13 +1,13 @@
 ﻿
 
-ftr_expand_influence_prestige_cost_value = 500
-ftr_expand_influence_prestige_modify_value = -500
-ftr_expand_influence_piety_cost_value = 300
-ftr_expand_influence_piety_modify_value = -300
+ftr_expand_influence_prestige_cost_value = 250
+ftr_expand_influence_prestige_modify_value = -250
+ftr_expand_influence_piety_cost_value = 150
+ftr_expand_influence_piety_modify_value = -150
 ftr_expand_influence_gold_cost_value = 250
 ftr_expand_influence_value = 20
-ftr_shift_focus_cost_value = 80
-ftr_shift_focus_modify_value = -80
+ftr_shift_focus_cost_value = 40
+ftr_shift_focus_modify_value = -40
 ftr_vote_focus_cost_value = 10
 ftr_vote_focus_modify_value = -10
 ftr_vote_proposal_cost_value = 20
@@ -181,7 +181,7 @@ ftr_fine_gold_value = {
 	}
 	else_if = {
 		limit = {
-			scope:recipient.primary_title.tier = tier_kindom
+			scope:recipient.primary_title.tier = tier_kingdom
 		}
 		add = 200
 	}

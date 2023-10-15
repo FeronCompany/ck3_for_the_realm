@@ -5,6 +5,8 @@
 
  ftr_bribe_interaction:0 "<FTR>贿赂"
  ftr_bribe_interaction_desc:0 "花一笔小钱贿赂对方，获取对方的信任。"
+ ftr_enough_gold_text:0 "你的金币不少于$VALUE|0$"
+ ftr_not_enough_gold_text:0 "你的金币不足$VALUE|0$"
 
  ftr_charge_interaction:0 "<FTR>公开指控"
  ftr_charge_interaction_desc:0 "在公共场合指控对方的罪行。"

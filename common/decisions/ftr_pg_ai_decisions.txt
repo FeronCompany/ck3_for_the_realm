@@ -104,7 +104,7 @@ ftr_pg_ai_change_liege_realm_focus_decision = {
 	selection_tooltip = ftr_pg_ai_change_liege_realm_focus_decision_tooltip
 	ai_check_interval = 36
 	is_shown = {
-		is_ai = yes
+		#is_ai = yes
 		is_capable_adult = yes
 		is_independent_ruler = no
 	}
@@ -166,8 +166,10 @@ ftr_pg_ai_make_own_proposal_decision = {
 		custom_description = {
 			text = "ftr_not_considering_proposal_tt"
 			NOT = {
-				exists = var:ftr_proposal_type
-				var:ftr_proposal_type > 0
+				AND = {
+					exists = var:ftr_proposal_type
+					var:ftr_proposal_type > 0
+				}
 			}
 		}
 		custom_description = {
@@ -215,8 +217,10 @@ ftr_pg_ai_make_proposal_to_liege_decision = {
 			text = "ftr_liege_not_considering_proposal_tt"
 			liege = {
 				NOT = {
-					exists = var:ftr_proposal_type
-					var:ftr_proposal_type > 0
+					AND = {
+						exists = var:ftr_proposal_type
+						var:ftr_proposal_type > 0
+					}
 				}
 			}
 		}

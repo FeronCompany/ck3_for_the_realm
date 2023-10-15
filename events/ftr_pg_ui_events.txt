@@ -102,10 +102,10 @@ ftr_pg_ui_event.0002 = {
 	immediate = {
 		if = {
 			limit = { NOT = { exists = var:ftr_pg_focus } }
-		}
-		set_variable = {
-			name = ftr_pg_focus
-			value = 0
+			set_variable = {
+				name = ftr_pg_focus
+				value = 0
+			}
 		}
 	}
 
@@ -347,10 +347,10 @@ ftr_pg_ui_event.0005 = {
 		liege = {
 			if = {
 				limit = { NOT = { exists = var:ftr_pg_focus } }
-			}
-			set_variable = {
-				name = ftr_pg_focus
-				value = 0
+				set_variable = {
+					name = ftr_pg_focus
+					value = 0
+				}
 			}
 		}
 	}

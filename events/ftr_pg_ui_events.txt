@@ -866,13 +866,15 @@ ftr_pg_ui_event.0201 = {
 				hidden_effect = {
 					ftr_update_powerful_subjects_list_effect = yes
 					every_in_list = {
-						list = powerful_subject_list
+						list = powerful_subjects_list
 						send_interface_message = {
 							title = "ftr_proposal_result_agree_tt"
 							left_icon = scope:starter
 							right_icon = scope:liege_c
 							custom_description = {
 								text = "ftr_expand_authority_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
 							}
 							show_as_tooltip = {
 								scope:liege_c = { ftr_expand_authority_effect = yes }
@@ -887,13 +889,15 @@ ftr_pg_ui_event.0201 = {
 				hidden_effect = {
 					ftr_update_powerful_subjects_list_effect = yes
 					every_in_list = {
-						list = powerful_subject_list
+						list = powerful_subjects_list
 						send_interface_message = {
 							title = "ftr_proposal_boycotted_tt"
 							left_icon = scope:starter
 							right_icon = scope:liege_c
 							custom_description = {
 								text = "ftr_expand_authority_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
 							}
 						}
 					}
@@ -916,13 +920,15 @@ ftr_pg_ui_event.0201 = {
 			hidden_effect = {
 				ftr_update_powerful_subjects_list_effect = yes
 				every_in_list = {
-					list = powerful_subject_list
+					list = powerful_subjects_list
 					send_interface_message = {
 						title = "ftr_proposal_rejected_tt"
 						left_icon = scope:starter
 						right_icon = scope:liege_c
 						custom_description = {
 							text = "ftr_expand_authority_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
 						}
 					}
 				}
@@ -958,13 +964,15 @@ ftr_pg_ui_event.0202 = {
 				hidden_effect = {
 					ftr_update_powerful_subjects_list_effect = yes
 					every_in_list = {
-						list = powerful_subject_list
+						list = powerful_subjects_list
 						send_interface_message = {
 							title = "ftr_proposal_result_agree_tt"
 							left_icon = scope:starter
 							right_icon = scope:liege_c
 							custom_description = {
 								text = "ftr_weaken_authority_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
 							}
 							show_as_tooltip = {
 								scope:liege_c = { ftr_decrease_authority_effect = yes }
@@ -979,13 +987,15 @@ ftr_pg_ui_event.0202 = {
 				hidden_effect = {
 					ftr_update_powerful_subjects_list_effect = yes
 					every_in_list = {
-						list = powerful_subject_list
+						list = powerful_subjects_list
 						send_interface_message = {
 							title = "ftr_proposal_boycotted_tt"
 							left_icon = scope:starter
 							right_icon = scope:liege_c
 							custom_description = {
 								text = "ftr_weaken_authority_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
 							}
 						}
 					}
@@ -1008,13 +1018,15 @@ ftr_pg_ui_event.0202 = {
 			hidden_effect = {
 				ftr_update_powerful_subjects_list_effect = yes
 				every_in_list = {
-					list = powerful_subject_list
+					list = powerful_subjects_list
 					send_interface_message = {
 						title = "ftr_proposal_rejected_tt"
 						left_icon = scope:starter
 						right_icon = scope:liege_c
 						custom_description = {
 							text = "ftr_weaken_authority_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
 						}
 					}
 				}
@@ -1110,13 +1122,15 @@ ftr_pg_ui_event.0203 = {
 				hidden_effect = {
 					ftr_update_powerful_subjects_list_effect = yes
 					every_in_list = {
-						list = powerful_subject_list
+						list = powerful_subjects_list
 						send_interface_message = {
 							title = "ftr_proposal_result_agree_tt"
 							left_icon = scope:starter
 							right_icon = scope:liege_c
 							custom_description = {
 								text = "ftr_purge_heresy_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
 							}
 						}
 					}
@@ -1128,13 +1142,15 @@ ftr_pg_ui_event.0203 = {
 				hidden_effect = {
 					ftr_update_powerful_subjects_list_effect = yes
 					every_in_list = {
-						list = powerful_subject_list
+						list = powerful_subjects_list
 						send_interface_message = {
 							title = "ftr_proposal_boycotted_tt"
 							left_icon = scope:starter
 							right_icon = scope:liege_c
 							custom_description = {
 								text = "ftr_purge_heresy_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
 							}
 						}
 					}
@@ -1157,13 +1173,15 @@ ftr_pg_ui_event.0203 = {
 			hidden_effect = {
 				ftr_update_powerful_subjects_list_effect = yes
 				every_in_list = {
-					list = powerful_subject_list
+					list = powerful_subjects_list
 					send_interface_message = {
 						title = "ftr_proposal_rejected_tt"
 						left_icon = scope:starter
 						right_icon = scope:liege_c
 						custom_description = {
 							text = "ftr_purge_heresy_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
 						}
 					}
 				}
@@ -1202,13 +1220,15 @@ ftr_pg_ui_event.0204 = {
 				hidden_effect = {
 					ftr_update_powerful_subjects_list_effect = yes
 					every_in_list = {
-						list = powerful_subject_list
+						list = powerful_subjects_list
 						send_interface_message = {
 							title = "ftr_proposal_result_agree_tt"
 							left_icon = scope:starter
 							right_icon = scope:liege_c
 							custom_description = {
 								text = "ftr_faith_tolerance_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
 							}
 						}
 					}
@@ -1220,13 +1240,15 @@ ftr_pg_ui_event.0204 = {
 				hidden_effect = {
 					ftr_update_powerful_subjects_list_effect = yes
 					every_in_list = {
-						list = powerful_subject_list
+						list = powerful_subjects_list
 						send_interface_message = {
 							title = "ftr_proposal_boycotted_tt"
 							left_icon = scope:starter
 							right_icon = scope:liege_c
 							custom_description = {
 								text = "ftr_faith_tolerance_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
 							}
 						}
 					}
@@ -1249,13 +1271,15 @@ ftr_pg_ui_event.0204 = {
 			hidden_effect = {
 				ftr_update_powerful_subjects_list_effect = yes
 				every_in_list = {
-					list = powerful_subject_list
+					list = powerful_subjects_list
 					send_interface_message = {
 						title = "ftr_proposal_rejected_tt"
 						left_icon = scope:starter
 						right_icon = scope:liege_c
 						custom_description = {
 							text = "ftr_faith_tolerance_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
 						}
 					}
 				}
@@ -1294,13 +1318,15 @@ ftr_pg_ui_event.0205 = {
 				hidden_effect = {
 					ftr_update_powerful_subjects_list_effect = yes
 					every_in_list = {
-						list = powerful_subject_list
+						list = powerful_subjects_list
 						send_interface_message = {
 							title = "ftr_proposal_result_agree_tt"
 							left_icon = scope:starter
 							right_icon = scope:liege_c
 							custom_description = {
 								text = "ftr_enact_war_tax_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
 							}
 						}
 					}
@@ -1312,13 +1338,15 @@ ftr_pg_ui_event.0205 = {
 				hidden_effect = {
 					ftr_update_powerful_subjects_list_effect = yes
 					every_in_list = {
-						list = powerful_subject_list
+						list = powerful_subjects_list
 						send_interface_message = {
 							title = "ftr_proposal_boycotted_tt"
 							left_icon = scope:starter
 							right_icon = scope:liege_c
 							custom_description = {
 								text = "ftr_enact_war_tax_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
 							}
 						}
 					}
@@ -1338,13 +1366,15 @@ ftr_pg_ui_event.0205 = {
 			hidden_effect = {
 				ftr_update_powerful_subjects_list_effect = yes
 				every_in_list = {
-					list = powerful_subject_list
+					list = powerful_subjects_list
 					send_interface_message = {
 						title = "ftr_proposal_rejected_tt"
 						left_icon = scope:starter
 						right_icon = scope:liege_c
 						custom_description = {
 							text = "ftr_enact_war_tax_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
 						}
 					}
 				}

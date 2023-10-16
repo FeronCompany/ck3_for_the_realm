@@ -1,9 +1,7 @@
 ﻿
 
 ftr_update_powerful_subjects_list_effect = {
-	root = {
-		add_to_list = powerful_subjects_list
-	}
+	add_to_list = powerful_subjects_list
 	every_vassal = {
 		limit = { 
 			is_powerful_vassal = yes
@@ -207,7 +205,8 @@ ftr_submit_proposal_effect = {
 		}
 		ftr_update_powerful_subjects_list_effect = yes
 		every_in_list = {
-			list = powerful_subject_list
+			list = powerful_subjects_list
+			limit = { NOT = { this = scope:starter } }
 			trigger_event = {
 				id = ftr_pg_ui_event.0101
 				days = { 5 15 }

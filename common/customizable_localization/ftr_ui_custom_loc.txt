@@ -69,7 +69,39 @@ FTR_PlayerPG_Proposal = {
 			exists = var:ftr_proposal_type
 			var:ftr_proposal_type = 1
 		}
-		localization_key = ftr_pg_proposal_expand_crown_authority
+		localization_key = ftr_pg_ui_event.0100.1
+	}
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 2
+		}
+		localization_key = ftr_pg_ui_event.0100.2
+	}
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 3
+		}
+		localization_key = ftr_pg_ui_event.0100.3
+	}
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 4
+		}
+		localization_key = ftr_pg_ui_event.0100.4
+	}
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 5
+		}
+		localization_key = ftr_pg_ui_event.0100.5
 	}
 
 	text = {

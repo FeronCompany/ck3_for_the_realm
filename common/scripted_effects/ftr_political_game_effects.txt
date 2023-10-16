@@ -180,7 +180,7 @@ ftr_try_change_liege_focus_effect = {
 	}
 }
 
-ftr_try_make_proposal_effect = {
+ftr_submit_proposal_effect = {
 	ftr_add_political_influence_effect = {
 		VALUE = ftr_make_pg_proposal_modify_value
 	}
@@ -192,7 +192,27 @@ ftr_try_make_proposal_effect = {
 		}
 	}
 	scope:liege_c = {
+		set_variable = {
+			name = ftr_proposal_type
+			value = $PROPOSAL_TYPE$
+			days = 180
+		}
+		set_variable = {
+			name = ftr_proposal_vote_approve
+			value = 1
+		}
+		set_variable = {
+			name = ftr_proposal_vote_oppose
+			value = 0
+		}
 		ftr_update_powerful_subjects_list_effect = yes
+		every_in_list = {
+			list = powerful_subject_list
+			trigger_event = {
+				id = ftr_pg_ui_event.0101
+				days = { 5 15 }
+			}
+		}
 	}
 }
 
@@ -421,99 +441,6 @@ ftr_expand_authority_effect = {
 	else_if = {
 		limit = { has_realm_law = tribal_authority_2 }
 		add_realm_law = tribal_authority_3
-	}
-}
-
-ftr_count_vote_result_effect = {
-	scope:liege_c = {
-		set_variable = { name = count_yes value = 0 }
-		set_variable = { name = count_no value = 0 }
-		ftr_update_powerful_subjects_list_effect = yes
-		every_in_list = {
-			list = powerful_subjects_list
-			if = {
-				limit = { NOT = { this = scope:liege_c } }
-				if = {
-					limit = {
-						exists = var:ftr_liege_proposal_attitude
-						var:ftr_liege_proposal_attitude = 1
-					}
-					scope:liege_c = {
-						change_variable = {
-							name = count_yes
-							add = 1
-						}
-					}
-					add_to_list = approve_list
-				}
-				else_if = {
-					limit = {
-						exists = var:ftr_liege_proposal_attitude
-						var:ftr_liege_proposal_attitude = 2
-					}
-					scope:liege_c = {
-						change_variable = {
-							name = count_no
-							add = 1
-						}
-					}
-				}
-			}
-			else = {
-				if = {
-					limit = {
-						exists = var:ftr_my_proposal_attitude
-						var:ftr_my_proposal_attitude = 1
-					}
-					scope:liege_c = {
-						change_variable = {
-							name = count_yes
-							add = 1
-						}
-					}
-					add_to_list = approve_list
-				}
-				else_if = {
-					limit = {
-						exists = var:ftr_my_proposal_attitude
-						var:ftr_my_proposal_attitude = 2
-					}
-					scope:liege_c = {
-						change_variable = {
-							name = count_no
-							add = 1
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-ftr_clear_vote_result_effect = {
-	scope:liege_c = {
-		set_variable = {
-			name = ftr_proposal_type
-			value = 0
-		}
-		remove_variable = count_yes
-		remove_variable = count_no
-		every_in_list = {
-			list = powerful_subjects_list
-			if = {
-				limit = { NOT = { this = scope:liege_c } }
-				set_variable = {
-					name = ftr_liege_proposal_attitude
-					value = 3
-				}
-			}
-			else = {
-				set_variable = {
-					name = ftr_my_proposal_attitude
-					value = 3
-				}
-			}
-		}
 	}
 }
 

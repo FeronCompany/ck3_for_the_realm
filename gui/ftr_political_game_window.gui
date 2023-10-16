@@ -111,28 +111,15 @@
 								text = "FTR_PG_MY_PG_FOCUS_TEXT"
 								tooltip = "ftr_pg_focus_tooltip"
 							}
-							hbox = {
-								spacing = 20
-								margin = { 0 10 }
-								button_standard = {
-									name = "ftr_pg_change_focus_button"
-									text = "FTR_PG_CHANGE_FOCUS"
-									tooltip = "ftr_pg_change_focus_tooltip"
-									datacontext = "[GetScriptedGui( 'ftr_change_my_focus' )]"
-									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									size = { 100 33 }
-    							}
-								button_standard = {
-									name = "ftr_pg_make_proposal_button"
-									text = "FTR_PG_MAKE_PROPOSAL"
-									tooltip = "ftr_pg_make_proposal_tooltip"
-									datacontext = "[GetScriptedGui( 'ftr_make_my_proposal' )]"
-									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									size = { 100 33 }
-    							}
-							}
+							button_standard = {
+								name = "ftr_pg_change_focus_button"
+								text = "FTR_PG_CHANGE_FOCUS"
+								tooltip = "ftr_pg_change_focus_tooltip"
+								datacontext = "[GetScriptedGui( 'ftr_change_my_focus' )]"
+								onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								size = { 150 33 }
+    						}
 						}
 						vbox = {
 							margin = { 40 0 }
@@ -142,35 +129,15 @@
 								text = "FTR_PG_MY_PROPOSAL_TEXT"
 								tooltip = "ftr_pg_proposal_tooltip"
 							}
-							hbox = {
-								margin = { 0 10 }
-								button_standard = {
-									name = "ftr_pg_favor_proposal_button"
-									text = "FTR_PG_FAVOR_PROPOSAL"
-									tooltip = "ftr_pg_favor_proposal_tooltip"
-									datacontext = "[GetScriptedGui( 'ftr_favor_my_proposal' )]"
-									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									size = { 75 33 }
-    							}
-								button_standard = {
-									name = "ftr_pg_reject_proposal_button"
-									text = "FTR_PG_REJECT_PROPOSAL"
-									tooltip = "ftr_pg_reject_proposal_tooltip"
-									datacontext = "[GetScriptedGui( 'ftr_reject_my_proposal' )]"
-									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									size = { 75 33 }
-    							}
-								button_standard = {
-									name = "ftr_pg_abstain_proposal_button"
-									text = "FTR_PG_ABSTAIN_PROPOSAL"
-									datacontext = "[GetScriptedGui( 'ftr_abstain_my_proposal' )]"
-									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									size = { 75 33 }
-    							}
-							}
+							button_standard = {
+								name = "ftr_pg_make_proposal_button"
+								text = "FTR_PG_MAKE_PROPOSAL"
+								tooltip = "ftr_pg_make_proposal_tooltip"
+								datacontext = "[GetScriptedGui( 'ftr_make_my_proposal' )]"
+								onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								size = { 150 33 }
+    						}
 						}
 						vbox = {
 							portrait_head_small = {
@@ -274,28 +241,15 @@
 								text = "FTR_PG_LIEGE_PG_FOCUS_TEXT"
 								tooltip = "ftr_pg_focus_tooltip"
 							}
-							hbox = {
-								spacing = 20
-								margin = { 0 10 }
-								button_standard = {
-									name = "ftr_pg_change_focus_button"
-									text = "FTR_PG_CHANGE_FOCUS"
-									tooltip = "ftr_pg_change_focus_tooltip"
-									datacontext = "[GetScriptedGui( 'ftr_change_liege_focus' )]"
-									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									size = { 100 33 }
-    							}
-								button_standard = {
-									name = "ftr_pg_make_proposal_button"
-									text = "FTR_PG_MAKE_PROPOSAL"
-									tooltip = "ftr_pg_make_proposal_tooltip"
-									datacontext = "[GetScriptedGui( 'ftr_make_proposal_to_liege' )]"
-									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									size = { 100 33 }
-    							}
-							}
+							button_standard = {
+								name = "ftr_pg_change_focus_button"
+								text = "FTR_PG_CHANGE_FOCUS"
+								tooltip = "ftr_pg_change_focus_tooltip"
+								datacontext = "[GetScriptedGui( 'ftr_change_liege_focus' )]"
+								onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								size = { 150 33 }
+    						}
 						}
 						vbox = {
 							margin = { 40 0 }
@@ -305,35 +259,15 @@
 								text = "FTR_PG_LIEGE_PROPOSAL_TEXT"
 								tooltip = "ftr_pg_proposal_tooltip"
 							}
-							hbox = {
-								margin = { 0 10 }
-								button_standard = {
-									name = "ftr_pg_favor_proposal_button"
-									text = "FTR_PG_FAVOR_PROPOSAL"
-									tooltip = "ftr_pg_favor_proposal_tooltip"
-									datacontext = "[GetScriptedGui( 'ftr_favor_liege_proposal' )]"
-									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									size = { 75 33 }
-    							}
-								button_standard = {
-									name = "ftr_pg_reject_proposal_button"
-									text = "FTR_PG_REJECT_PROPOSAL"
-									tooltip = "ftr_pg_reject_proposal_tooltip"
-									datacontext = "[GetScriptedGui( 'ftr_reject_liege_proposal' )]"
-									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									size = { 75 33 }
-    							}
-								button_standard = {
-									name = "ftr_pg_abstain_proposal_button"
-									text = "FTR_PG_ABSTAIN_PROPOSAL"
-									datacontext = "[GetScriptedGui( 'ftr_abstain_liege_proposal' )]"
-									onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									size = { 75 33 }
-    							}
-							}
+							button_standard = {
+								name = "ftr_pg_make_proposal_button"
+								text = "FTR_PG_MAKE_PROPOSAL"
+								tooltip = "ftr_pg_make_proposal_tooltip"
+								datacontext = "[GetScriptedGui( 'ftr_make_proposal_to_liege' )]"
+								onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								size = { 150 33 }
+    						}
 						}
 						vbox = {
 							portrait_head_small = {

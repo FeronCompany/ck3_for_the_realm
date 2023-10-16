@@ -223,3 +223,63 @@ ftr_liege_refuse_reward_politely_content_tt = {
 ftr_liege_see_through_plot_content_tt = {
 	global = ftr_liege_see_through_plot_content_text
 }
+
+ftr_expand_authority_agree_content_tt = {
+	global = ftr_expand_authority_agree_content_text
+}
+
+ftr_expand_authority_boycotted_content_tt = {
+	global = ftr_expand_authority_boycotted_content_text
+}
+
+ftr_expand_authority_rejected_content_tt = {
+	global = ftr_expand_authority_rejected_content_text
+}
+
+ftr_weaken_authority_agree_content_tt = {
+	global = ftr_weaken_authority_agree_content_text
+}
+
+ftr_weaken_authority_boycotted_content_tt = {
+	global = ftr_weaken_authority_boycotted_content_text
+}
+
+ftr_weaken_authority_rejected_content_tt = {
+	global = ftr_weaken_authority_rejected_content_text
+}
+
+ftr_purge_heresy_agree_content_tt = {
+	global = ftr_purge_heresy_agree_content_text
+}
+
+ftr_purge_heresy_boycotted_content_tt = {
+	global = ftr_purge_heresy_boycotted_content_text
+}
+
+ftr_purge_heresy_rejected_content_tt = {
+	global = ftr_purge_heresy_rejected_content_text
+}
+
+ftr_faith_tolerance_agree_content_tt = {
+	global = ftr_faith_tolerance_agree_content_text
+}
+
+ftr_faith_tolerance_boycotted_content_tt = {
+	global = ftr_faith_tolerance_boycotted_content_text
+}
+
+ftr_faith_tolerance_rejected_content_tt = {
+	global = ftr_faith_tolerance_rejected_content_text
+}
+
+ftr_enact_war_tax_agree_content_tt = {
+	global = ftr_enact_war_tax_agree_content_text
+}
+
+ftr_enact_war_tax_boycotted_content_tt = {
+	global = ftr_enact_war_tax_boycotted_content_text
+}
+
+ftr_enact_war_tax_rejected_content_tt = {
+	global = ftr_enact_war_tax_rejected_content_text
+}

@@ -84,12 +84,12 @@
  ftr_enact_war_tax_rejected_content_text:0 "A proposal by [CHARACTER.GetShortUIName] to impose a war tax within [TARGET_CHARACTER.GetShortUIName] was approved by the majority, but ultimately [TARGET_CHARACTER.GetShortUIName] did not approve the proposal."
 
  ftr_pg_ui_event.0202.t:0 "Result of Voting for Weaken Crown Authority"
- ftr_pg_ui_event.0202.desc:0 "The proposal initiated by [starter.GetShortUIName] to weaken crown authority of [liege_c.GetShortUIName] has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('count_yes').GetValue]\nDisapprove:[liege_c.MakeScope.Var('count_no').GetValue]"
+ ftr_pg_ui_event.0202.desc:0 "The proposal initiated by [starter.GetShortUIName] to weaken crown authority of [liege_c.GetShortUIName] has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0202.a:0 "Agree with the result"
  ftr_pg_ui_event.0202.b:0 "Ignore result"
 
  ftr_pg_ui_event.0203.t:0 "Result of Voting for Purge Heresy"
- ftr_pg_ui_event.0203.desc:0 "The proposal initiated by [starter.GetShortUIName] to purge heresy in [liege_c.GetShortUIName]'s realm has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('count_yes').GetValue]\nDisapprove:[liege_c.MakeScope.Var('count_no').GetValue]"
+ ftr_pg_ui_event.0203.desc:0 "The proposal initiated by [starter.GetShortUIName] to purge heresy in [liege_c.GetShortUIName]'s realm has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0203.a:0 "Agree with the result"
  ftr_pg_ui_event.0203.b:0 "Ignore result"
  ftr_purge_heresy_in_counties_text:0 "There will be a round of purges of heretics in counties that has different faith with you."
@@ -98,12 +98,12 @@
  ftr_purge_heresy_amoung_vassals_text:0 "Vassals who do not share your faith will be asked to convert or be accused of being traitors."
 
  ftr_pg_ui_event.0204.t:0 "Result of Voting for Religious Tolerance"
- ftr_pg_ui_event.0204.desc:0 "The proposal initiated by [starter.GetShortUIName] to tolerate heresy in [liege_c.GetShortUIName]'s realm has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('count_yes').GetValue]\nDisapprove:[liege_c.MakeScope.Var('count_no').GetValue]"
+ ftr_pg_ui_event.0204.desc:0 "The proposal initiated by [starter.GetShortUIName] to tolerate heresy in [liege_c.GetShortUIName]'s realm has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0204.a:0 "Agree with the result"
  ftr_pg_ui_event.0204.b:0 "Ignore result"
 
  ftr_pg_ui_event.0205.t:0 "Result of Voting for War Tax"
- ftr_pg_ui_event.0205.desc:0 "The proposal initiated by [starter.GetShortUIName] to collect war tax in [liege_c.GetShortUIName]'s realm has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('count_yes').GetValue]\nDisapprove:[liege_c.MakeScope.Var('count_no').GetValue]"
+ ftr_pg_ui_event.0205.desc:0 "The proposal initiated by [starter.GetShortUIName] to collect war tax in [liege_c.GetShortUIName]'s realm has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0205.a:0 "Agree with the result"
  ftr_pg_ui_event.0205.b:0 "Ignore result"
 

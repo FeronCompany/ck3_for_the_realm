@@ -84,12 +84,12 @@
  ftr_enact_war_tax_rejected_content_text:0 "[CHARACTER.GetShortUIName]发起的关于在[TARGET_CHARACTER.GetShortUIName]境内征收战争税的提议获得了多数人的认可，但最终[TARGET_CHARACTER.GetShortUIName]未批准这一议案。"
 
  ftr_pg_ui_event.0202.t:0 "削弱王权投票结果"
- ftr_pg_ui_event.0202.desc:0 "[starter.GetShortUIName]发起的关于削弱[liege_c.GetShortUIName]君权的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('count_yes').GetValue]\n反对票：[liege_c.MakeScope.Var('count_no').GetValue]"
+ ftr_pg_ui_event.0202.desc:0 "[starter.GetShortUIName]发起的关于削弱[liege_c.GetShortUIName]君权的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0202.a:0 "支持投票结果"
  ftr_pg_ui_event.0202.b:0 "反对投票结果"
 
  ftr_pg_ui_event.0203.t:0 "清洗异端投票结果"
- ftr_pg_ui_event.0203.desc:0 "[starter.GetShortUIName]发起的关于清洗[liege_c.GetShortUIName]境内异端分子的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('count_yes').GetValue]\n反对票：[liege_c.MakeScope.Var('count_no').GetValue]"
+ ftr_pg_ui_event.0203.desc:0 "[starter.GetShortUIName]发起的关于清洗[liege_c.GetShortUIName]境内异端分子的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0203.a:0 "支持投票结果"
  ftr_pg_ui_event.0203.b:0 "反对投票结果"
  ftr_purge_heresy_in_counties_text:0 "与你信仰不同的直辖领地将开展一轮对异端分子的清洗"
@@ -98,12 +98,12 @@
  ftr_purge_heresy_amoung_vassals_text:0 "与你信仰不同的封臣将被要求改信你的信仰，否则将被指控为叛徒"
 
  ftr_pg_ui_event.0204.t:0 "宗教包容投票结果"
- ftr_pg_ui_event.0204.desc:0 "[starter.GetShortUIName]发起的关于[liege_c.GetShortUIName]境内实行宗教包容的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('count_yes').GetValue]\n反对票：[liege_c.MakeScope.Var('count_no').GetValue]"
+ ftr_pg_ui_event.0204.desc:0 "[starter.GetShortUIName]发起的关于[liege_c.GetShortUIName]境内实行宗教包容的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0204.a:0 "支持投票结果"
  ftr_pg_ui_event.0204.b:0 "反对投票结果"
 
  ftr_pg_ui_event.0205.t:0 "战争税投票结果"
- ftr_pg_ui_event.0205.desc:0 "[starter.GetShortUIName]发起的关于[liege_c.GetShortUIName]境内征收战争税的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('count_yes').GetValue]\n反对票：[liege_c.MakeScope.Var('count_no').GetValue]"
+ ftr_pg_ui_event.0205.desc:0 "[starter.GetShortUIName]发起的关于[liege_c.GetShortUIName]境内征收战争税的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0205.a:0 "支持投票结果"
  ftr_pg_ui_event.0205.b:0 "反对投票结果"
 

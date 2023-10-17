@@ -823,8 +823,10 @@ ftr_pg_ui_event.0101 = {
 			}
 			modifier = {
 				add = -33
-				scope:liege_c = { var:ftr_proposal_type = 5 }
-				scope:liege = { gold > 2000 }
+				scope:liege_c = {
+					var:ftr_proposal_type = 5
+					gold > 2000
+				}
 			}
 		}
 	}

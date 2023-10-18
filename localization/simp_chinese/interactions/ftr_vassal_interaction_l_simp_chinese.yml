@@ -74,3 +74,10 @@
  ftr_coup_interaction:0 "<FTR>策划政变"
  ftr_coup_interaction_desc:0 "策划一场针对[recipient.GetName|U]政变以夺取权力"
  ftr_coup_interaction_notification:0 "您开始着手策划一场针对[recipient.GetName|U]政变"
+
+ ftr_fine_interaction:0 "<FTR>罚款"
+ ftr_fine_interaction_desc:0 "收取一定金额的罚款并赦免[recipient.GetName|U]的罪行"
+ ftr_fine_interaction_text:0 "[actor.GetName|U]希望你能老实向[actor.GetHerHim]上交一笔罚款以赎清自己的罪行，如若不从，将来可能面临牢狱之灾。"
+ ftr_fine_accept_notification:0 "[recipient.GetShortUIName|U]同意向[actor.GetShortUIName|U]支付罚金"
+ FTR_FINE_GOLD_NOT_ENOUGH:0 "囊中羞涩： $VALUE|=+0$"
+ FTR_FINE_TRAIT:0 "识大体： $VALUE|=+0$"

@@ -5,6 +5,8 @@
 
  ftr_bribe_interaction:0 "<FTR> Bribe"
  ftr_bribe_interaction_desc:0 "Bribe and gain target's trust with gold."
+ ftr_enough_gold_text:0 "You have more than $VALUE|0$ gold"
+ ftr_not_enough_gold_text:0 "You don't have more than $VALUE|0$ gold"
 
  ftr_charge_interaction:0 "<FTR> Public Charge"
  ftr_charge_interaction_desc:0 "Accusing target of crimes in public."

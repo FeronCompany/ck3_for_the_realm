@@ -698,3 +698,141 @@ ftr_coup_interaction = {
 		}
 	}
 }
+
+######### Fine ##########
+ftr_fine_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	greeting = positive
+	notification_text = ftr_fine_interaction_text
+	desc = ftr_fine_interaction_desc
+	ai_frequency = 12
+
+	is_shown = {
+		scope:recipient = {
+			is_vassal_of = scope:actor
+		}
+		scope:actor = {
+			has_imprisonment_reason = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			NOT = {
+				is_at_war_with = scope:actor
+			}
+			is_imprisoned = no
+		}
+		scope:actor = {
+			is_imprisoned = no
+		}
+	}
+	
+	on_accept = {
+		scope:recipient = {
+			pay_short_term_gold = {
+				target = scope:actor
+				gold = ftr_fine_gold_value
+			}
+		}
+		consume_all_criminal_reasons_effect = {
+			LIEGE = scope:actor
+			CRIMINAL = scope:recipient
+		}
+		hidden_effect = {
+			scope:actor = {
+				send_interface_toast = {
+					title = ftr_fine_accept_notification
+					left_icon = scope:actor					
+					right_icon = scope:recipient
+					show_as_tooltip = {
+						scope:recipient = {
+							pay_short_term_gold = {
+								target = scope:actor
+								gold = ftr_fine_gold_value
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	ai_accept = {
+		base = -20
+		modifier = {
+			add = -30
+			scope:recipient = {
+				gold < ftr_fine_gold_value
+			}
+			desc = FTR_FINE_GOLD_NOT_ENOUGH
+		}
+		modifier = {
+			add = 20
+			scope:recipient = {
+				OR = {
+					has_trait = craven
+					has_trait = calm
+					has_trait = humble
+					has_trait = shrewd
+					has_trait = loyal
+				}
+			}
+			desc = FTR_FINE_TRAIT
+		}
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 1
+		}
+	}
+	on_auto_accept = {}
+	on_decline = {}
+	#auto_accept = yes
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = -50
+			scope:recipient = {
+				gold < ftr_fine_gold_value
+			}
+		}
+		modifier = { # I need money
+			add = 20
+			scope:recipient = {
+				gold <= 200
+			}
+		}
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 1
+		}
+		modifier = { # As reasonable liege, fine a powerful vassal is better than arrest
+			add = 10
+			scope:recipient = {
+				is_powerful_vassal = yes
+			}
+			scope:actor = {
+				OR = {
+					has_trait = craven
+					has_trait = calm
+				}
+			}
+		}
+		modifier = { # As ambitious liege, fine powerful vassal is not enough
+			add = -50
+			scope:recipient = {
+				is_powerful_vassal = yes
+			}
+			scope:actor = {
+				OR = {
+					has_trait = callous
+					has_trait = sadistic
+					has_trait = arbitrary
+					has_trait = arrogant
+					has_trait = ambitious
+				}
+			}
+		}
+	}
+}

@@ -7,7 +7,7 @@
  ftr_get_pg_power_tooltip:0 "Try to expand political influence. Condition:\n +Is capable adault\n +Not expand influence recently"
  ftr_not_expanded_influence_recently_text:0 "You have expanded your influence recently."
  ftr_flag_expanded_influence_recently_text:0 "Cannot expand influence in two years."
- ftr_add_political_influence_effect_text:0 "$VALUE|=+0$ political influence"
+ ftr_add_political_influence_effect_text:0 "[CHARACTER.GetShortUIName] $VALUE|=+0$ political influence"
  FTR_PG_MY_REALM_TAB:0 "My realm"
  FTR_PG_LIEGE_REALM_TAB:0 "Realm of liege"
  FTR_PG_LIEGE_TEXT:0 "Liege"

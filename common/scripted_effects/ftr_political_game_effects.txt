@@ -1,9 +1,7 @@
 ﻿
 
 ftr_update_powerful_subjects_list_effect = {
-	root = {
-		add_to_list = powerful_subjects_list
-	}
+	add_to_list = powerful_subjects_list
 	every_vassal = {
 		limit = { 
 			is_powerful_vassal = yes
@@ -85,9 +83,11 @@ ftr_update_pg_member_list_effect = {
 }
 
 ftr_add_political_influence_effect = {
+	save_scope_as = pi_change_character
 	custom_description = {
 		text = ftr_add_political_influence_effect_tt
 		value = $VALUE$
+		subject = scope:pi_change_character
 	}
 	if = {
 		limit = {
@@ -112,6 +112,105 @@ ftr_add_political_influence_effect = {
 		set_variable = {
 			name = ftr_political_influence
 			value = 0
+		}
+	}
+}
+
+ftr_try_change_my_focus_effect = {
+	custom_description = {
+		text = "ftr_flag_recently_changed_focus_tt"
+		add_character_flag = {
+			flag = ftr_change_focus_flag
+			days = 365
+		}
+	}
+	
+	add_character_flag = {
+		flag = ftr_changing_focus_flag
+		days = 120
+	}
+	set_variable = {
+		name = ftr_focus_vote_approve
+		value = 1
+	}
+	set_variable = {
+		name = ftr_focus_vote_oppose
+		value = 0
+	}
+	ftr_add_political_influence_effect = {
+		VALUE = ftr_shift_focus_modify_value
+	}
+	trigger_event = {
+		id = ftr_pg_ui_event.0004
+		days = 30
+	}
+}
+
+ftr_try_change_liege_focus_effect = {
+	custom_description = {
+		text = "ftr_flag_recently_changed_focus_tt"
+		add_character_flag = {
+			flag = ftr_change_focus_flag
+			days = 365
+		}
+	}
+	
+	liege = {
+		add_character_flag = {
+			flag = ftr_changing_focus_flag
+			days = 120
+		}
+		set_variable = {
+			name = ftr_focus_vote_approve
+			value = 1
+		}
+		set_variable = {
+			name = ftr_focus_vote_oppose
+			value = 0
+		}
+	}
+	ftr_add_political_influence_effect = {
+		VALUE = ftr_shift_focus_modify_value
+	}
+	trigger_event = {
+		id = ftr_pg_ui_event.0004
+		days = 30
+	}
+}
+
+ftr_submit_proposal_effect = {
+	ftr_add_political_influence_effect = {
+		VALUE = ftr_make_pg_proposal_modify_value
+	}
+	custom_description = {
+		text = "ftr_flag_recently_made_proposal_tt"
+		add_character_flag = {
+			flag = ftr_make_proposal_flag
+			days = 365
+		}
+	}
+	scope:liege_c = {
+		set_variable = {
+			name = ftr_proposal_type
+			value = $PROPOSAL_TYPE$
+			days = 180
+		}
+		set_variable = {
+			name = ftr_proposal_vote_approve
+			value = 1
+		}
+		set_variable = {
+			name = ftr_proposal_vote_oppose
+			value = 0
+		}
+		ftr_update_powerful_subjects_list_effect = yes
+		every_in_list = {
+			list = powerful_subjects_list
+			limit = { NOT = { this = scope:starter } }
+			trigger_event = {
+				id = ftr_pg_ui_event.0101
+				days = { 5 15 }
+			}
 		}
 	}
 }
@@ -341,99 +440,6 @@ ftr_expand_authority_effect = {
 	else_if = {
 		limit = { has_realm_law = tribal_authority_2 }
 		add_realm_law = tribal_authority_3
-	}
-}
-
-ftr_count_vote_result_effect = {
-	scope:liege_c = {
-		set_variable = { name = count_yes value = 0 }
-		set_variable = { name = count_no value = 0 }
-		ftr_update_powerful_subjects_list_effect = yes
-		every_in_list = {
-			list = powerful_subjects_list
-			if = {
-				limit = { NOT = { this = scope:liege_c } }
-				if = {
-					limit = {
-						exists = var:ftr_liege_proposal_attitude
-						var:ftr_liege_proposal_attitude = 1
-					}
-					scope:liege_c = {
-						change_variable = {
-							name = count_yes
-							add = 1
-						}
-					}
-					add_to_list = approve_list
-				}
-				else_if = {
-					limit = {
-						exists = var:ftr_liege_proposal_attitude
-						var:ftr_liege_proposal_attitude = 2
-					}
-					scope:liege_c = {
-						change_variable = {
-							name = count_no
-							add = 1
-						}
-					}
-				}
-			}
-			else = {
-				if = {
-					limit = {
-						exists = var:ftr_my_proposal_attitude
-						var:ftr_my_proposal_attitude = 1
-					}
-					scope:liege_c = {
-						change_variable = {
-							name = count_yes
-							add = 1
-						}
-					}
-					add_to_list = approve_list
-				}
-				else_if = {
-					limit = {
-						exists = var:ftr_my_proposal_attitude
-						var:ftr_my_proposal_attitude = 2
-					}
-					scope:liege_c = {
-						change_variable = {
-							name = count_no
-							add = 1
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-ftr_clear_vote_result_effect = {
-	scope:liege_c = {
-		set_variable = {
-			name = ftr_proposal_type
-			value = 0
-		}
-		remove_variable = count_yes
-		remove_variable = count_no
-		every_in_list = {
-			list = powerful_subjects_list
-			if = {
-				limit = { NOT = { this = scope:liege_c } }
-				set_variable = {
-					name = ftr_liege_proposal_attitude
-					value = 3
-				}
-			}
-			else = {
-				set_variable = {
-					name = ftr_my_proposal_attitude
-					value = 3
-				}
-			}
-		}
 	}
 }
 

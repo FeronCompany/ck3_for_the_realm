@@ -17,14 +17,17 @@
  request_combat_guidance_interaction_desc:0 "Request combat guidance in exchange of money"
  request_combat_guidance_interaction_notification:0 "Combat Guidance"
  GUIDE_ME_ON_PROWESS:0 "[actor.GetName|U] is requesting combat guidance from you."
+ ftr_guidance_accepted_notify_tt:0 "[recipient.GetShortUIName|U] agree to give you combat guidance"
 
  religious_debate_interaction:0 "<FTR> Religious Debate"
  religious_debate_interaction_desc:0 "Start a religious debate with the target."
  religious_debate_interaction_notification:0 "Religious Debate"
- FOR_THE_FAITH:0 "For the faith!"
+ FTR_START_RELIOUS_DEBATE_EFFECT:0 "You will start a religious debate with [CHARACTER.GetShortUIName]"
+ FOR_THE_FAITH:0 "Religious Fanaticism"
  NOT_CARE_ABOUT_RELIGION:0 "Not care about religion."
  SOMEONE_START_RELIGIOUS_DEBATE:0 "[actor.GetShortUIName|U] wants to start a religious debate with you."
  RECENT_RELIGIOUS_DEBATE:0 "Recent religious debate"
+ FTR_LEARNING_GOOD:0 "Good At Learning"
 
  ftr_convert_bureacrat_to_feudal_interaction:0 "<FTR> Grant Hereditary Privilege"
  ftr_convert_bureacrat_to_feudal_interaction_desc:0 "Grant hereditary privilege to your vassal."

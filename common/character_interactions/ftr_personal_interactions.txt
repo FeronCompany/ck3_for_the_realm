@@ -288,31 +288,27 @@ request_combat_guidance_interaction = {
 	}
 
 	on_accept = {
-		hidden_effect = {
-			scope:actor = {
-				send_interface_toast = {
-					title = request_combat_guidance_interaction_notification
-					left_icon = scope:actor					
-					right_icon = scope:recipient
-					start_scheme = {
-						type = combat_guide
-						target = scope:recipient
-					}
-					pay_short_term_gold = {
-						gold = 150
-						target = scope:recipient
-					}
-					stress_impact = {
-						greedy = medium_stress_impact_gain
-						lazy = medium_stress_impact_gain
-					}
-				}
-			}
-		}
 		scope:actor = {
 			add_opinion = {
 				target = scope:recipient
 				modifier = ftr_guide_me_on_prowess_opinion
+			}
+			pay_short_term_gold = {
+				gold = 150
+				target = scope:recipient
+			}
+			stress_impact = {
+				greedy = medium_stress_impact_gain
+				lazy = medium_stress_impact_gain
+			}
+			send_interface_toast = {
+				title = ftr_guidance_accepted_notify_tt
+				left_icon = scope:actor					
+				right_icon = scope:recipient
+				start_scheme = {
+					type = combat_guide
+					target = scope:recipient
+				}
 			}
 		}
 	}
@@ -333,8 +329,11 @@ religious_debate_interaction = {
 		ai_recipients = vassals
 		ai_recipients = peer_vassals
 		ai_recipients = liege
+		ai_recipients = neighboring_rulers
+		max = 5
 	}
 	ai_frequency = 36
+	cooldown = { years = 2 }
 
 	is_shown = {
 		NOT = { scope:actor.faith = scope:recipient.faith }
@@ -370,10 +369,9 @@ religious_debate_interaction = {
 	on_accept = {
 		custom_description = {
 			text = ftr_start_religious_debate_text
-			hidden_effect = {
-				scope:actor = {
-					trigger_event = ftr_interaction_event.0001
-				}
+			subject = scope:recipient
+			scope:actor = {
+				trigger_event = ftr_interaction_event.0001
 			}
 		}
 	}
@@ -391,6 +389,15 @@ religious_debate_interaction = {
 				}
 			}
 			desc = "FOR_THE_FAITH"
+		}
+		modifier = {
+			add = 20
+			trigger = {
+				scope:recipient = {
+					learning >= 12
+				}
+			}
+			desc = "FTR_LEARNING_GOOD"
 		}
 		modifier = {
 			add = -50
@@ -434,7 +441,7 @@ religious_debate_interaction = {
 			add = -100
 			trigger = {
 				scope:actor = {
-					has_character_flag = flag_recent_start_religious_debate
+					learning < 12
 				}
 			}
 		}

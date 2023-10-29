@@ -220,7 +220,12 @@ ftr_pg_interaction_event.0002 = {
 				}
 				save_scope_as = beauty
 			}
-			trigger_event = ftr_pg_interaction_event.0004
+			custom_description = {
+				text = "ftr_bribe_request_beauty_tt"
+				subject = scope:actor
+				object = scope:beauty
+				trigger_event = ftr_pg_interaction_event.0004
+			}
 		}
 		ai_chance = {
 			base = 10
@@ -254,17 +259,17 @@ ftr_pg_interaction_event.0003 = {
 
 	option = { # Accept
 		name = ftr_pg_interaction_event.0003.a
-		scope:actor = {
-			pay_short_term_gold = {
-				gold = gift_value
-				target = scope:recipient
-			}
-		}
 		scope:recipient = {
 			send_interface_toast = {
 				title = ftr_pg_bribe_more_gold_accept_tt
 				left_icon = scope:actor
 				right_icon = scope:recipient
+				scope:actor = {
+					pay_short_term_gold = {
+						gold = gift_value
+						target = scope:recipient
+					}
+				}
 				ftr_pg_bribe_cooperation_effect = yes
 			}
 		}

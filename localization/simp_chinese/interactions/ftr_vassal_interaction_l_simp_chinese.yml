@@ -17,14 +17,17 @@
  request_combat_guidance_interaction_desc:0 "花点学费学习格斗技巧"
  request_combat_guidance_interaction_notification:0 "学习格斗技巧"
  GUIDE_ME_ON_PROWESS:0 "[actor.GetName|U]试图向您学习一些格斗技巧。"
+ ftr_guidance_accepted_notify_tt:0 "[recipient.GetShortUIName|U]同意教授你格斗技巧"
 
  religious_debate_interaction:0 "<FTR>宗教辩论"
  religious_debate_interaction_desc:0 "向目标发起一场宗教辩论."
  religious_debate_interaction_notification:0 "宗教辩论"
- FOR_THE_FAITH:0 "为了信仰!"
+ FTR_START_RELIOUS_DEBATE_EFFECT:0 "你将与[CHARACTER.GetShortUIName]开启一场宗教辩论"
+ FOR_THE_FAITH:0 "宗教狂热"
  NOT_CARE_ABOUT_RELIGION:0 "不在乎宗教事务"
  SOMEONE_START_RELIGIOUS_DEBATE:0 "[actor.GetShortUIName|U] 想与你进行一场宗教辩论."
  RECENT_RELIGIOUS_DEBATE:0 "近期的宗教辩论"
+ FTR_LEARNING_GOOD:0 "学识充足"
 
  ftr_convert_bureacrat_to_feudal_interaction:0 "<FTR>赐予世袭罔替"
  ftr_convert_bureacrat_to_feudal_interaction_desc:0 "赐予该臣子世袭罔替之特权"

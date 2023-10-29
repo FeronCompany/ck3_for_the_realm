@@ -26,7 +26,7 @@
  ftr_pg_ui_event.0004.a:0 "I see"
  ftr_change_focus_vote_approve_text:0 "You voted yes"
  ftr_change_focus_vote_oppose_text:0 "You voted no"
- ftr_change_focus_failed_text:0 "You failed to change focus of the realm."
+ ftr_change_focus_failed_text:0 "[CHARACTER.GetShortUIName] failed to change political focus in [TARGET_CHARACTER.GetShortUIName]'s realm."
  ftr_change_focus_broadcast_tt:0 "Change Focus Vote Result"
 
  ftr_pg_ui_event.0005.t:0 "<FTR> Change Focus"
@@ -143,6 +143,7 @@
  ftr_pg_bribe_cooperation_accept_tt:0 "Cooperation Accepted"
  ftr_pg_bribe_cooperation_reject_tt:0 "Cooperation Rejected"
  ftr_pg_bribe_cooperation_reject_content_text:0 "[TARGET_CHARACTER.GetShortUIName] refused your proposal."
+ ftr_bribe_request_beauty_text:0 "You imply that [CHARACTER.GetShortUIName] sent [TARGET_CHARACTER.GetShortUIName] to consult with you separately"
 
  ftr_pg_interaction_event.0003.t:0 "More Gold"
  ftr_pg_interaction_event.0003.desc:0 "[recipient.GetShortUIName] heard about your request and said that you must pay more to get things done."

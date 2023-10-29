@@ -17,6 +17,7 @@
  request_combat_guidance_interaction_desc:0 "花点学费学习格斗技巧"
  request_combat_guidance_interaction_notification:0 "学习格斗技巧"
  GUIDE_ME_ON_PROWESS:0 "[actor.GetName|U]试图向您学习一些格斗技巧。"
+ ftr_guidance_accepted_notify_tt:0 "[recipient.GetShortUIName|U]同意教授你格斗技巧"
 
  religious_debate_interaction:0 "<FTR>宗教辩论"
  religious_debate_interaction_desc:0 "向目标发起一场宗教辩论."

@@ -301,9 +301,14 @@ request_combat_guidance_interaction = {
 				greedy = medium_stress_impact_gain
 				lazy = medium_stress_impact_gain
 			}
-			start_scheme = {
-				type = combat_guide
-				target = scope:recipient
+			send_interface_toast = {
+				title = ftr_guidance_accepted_notify_tt
+				left_icon = scope:actor					
+				right_icon = scope:recipient
+				start_scheme = {
+					type = combat_guide
+					target = scope:recipient
+				}
 			}
 		}
 	}

@@ -4,6 +4,5 @@
  only_county_can_be_trade_text:0 "只可以交易伯爵领"
  capital_cannot_be_trade_text:0 "不能交易首都"
  is_neighbor_to_realm_text:0 "只可交易临近省份"
- FTR_START_RELIOUS_DEBATE_EFFECT:0 "开启宗教辩论"
  official_cannot_revok_other_officials_text:0 "官僚不能直接剥夺其他官僚的头衔"
  officials_blocked_from_joining_text:0 "不能创建或加入针对集权制官僚的派系"

@@ -1,6 +1,6 @@
 ﻿l_english:
- ftr_interaction_event.0001.opening:0 "Lord [actor.GetShortUIName|U]"
- ftr_interaction_event.0001.desc:0 "I can't wait to start a religious debate with you. Just wait a few days and you shall convert to the true faith."
+ ftr_interaction_event.0001.opening:0 "Lord [actor.GetTitledFirstName|U]"
+ ftr_interaction_event.0001.desc:0 "Recently, I heard that you have been walking in the mist of old lies, like a lost lamb unable to find your future direction. Converting to the wrong faith is certainly a misfortune, but if I stand idly by, it will be even greater misfortune. As a generous ruler, I can't wait to discuss religious issues with you. Don't close your eyes and listen, I promise you will be convinced of the greatness and wisdom of correct faith after listening to my words!"
  ftr_interaction_event.0001.a:0 "Wait and see."
 
  ftr_interaction_event.0002.t:0 "Debate begin"

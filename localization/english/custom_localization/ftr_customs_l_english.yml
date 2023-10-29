@@ -4,6 +4,5 @@
  only_county_can_be_trade_text:0 "Only county can be trade."
  capital_cannot_be_trade_text:0 "Capital cannot be trade."
  is_neighbor_to_realm_text:0 "Must be neighbor provinces."
- FTR_START_RELIOUS_DEBATE_EFFECT:0 "Start religious debate."
  official_cannot_revok_other_officials_text:0 "Officials cannot revoke titles from other officials."
  officials_blocked_from_joining_text:0 "Cannot create or join factions against centralism officials."

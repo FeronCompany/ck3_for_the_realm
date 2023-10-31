@@ -286,6 +286,12 @@ ftr_depose_bureacrat_interaction = {
 			}
 		}
 		modifier = {
+			add = -10
+			scope:secondary_actor = {
+				is_landed = no
+			}
+		}
+		modifier = {
 			add = 40
 			scope:actor = {
 				OR = {
@@ -306,7 +312,7 @@ ftr_depose_bureacrat_interaction = {
 		}
 	}
 	ai_accept = {
-		base = -20
+		base = 0
 
 		opinion_modifier = { # Opinion Factor
 			who = scope:recipient
@@ -314,7 +320,15 @@ ftr_depose_bureacrat_interaction = {
 			multiplier = 0.5
 			desc = AI_OPINION_REASON
 		}
-		
+
+		modifier = {
+			add = -20
+			scope:secondary_actor = {
+				is_landed = no
+			}
+			desc = FTR_DEPOSE_LOST_EVERYTHING
+		}
+
 		modifier = {
 			add = 10
 			scope:actor = {
@@ -377,7 +391,7 @@ ftr_depose_bureacrat_interaction = {
 			trigger = {
 				scope:recipient = { highest_held_title_tier = tier_kingdom }
 			}
-			add = -50
+			add = -40
 		}
 		modifier = {
 			add = intimidated_halved_reason_value

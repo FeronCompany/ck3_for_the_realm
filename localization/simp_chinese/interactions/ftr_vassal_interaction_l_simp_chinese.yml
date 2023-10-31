@@ -37,6 +37,7 @@
  ftr_depose_bureacrat_interaction_desc:0 "罢免官职"
  ftr_depose_bureacrat_interaction_notification:0 "您的君主罢免了您"
  actor_secondary_ftr_depose_bureacrat_interaction:0 "备选官员"
+ FTR_DEPOSE_LOST_EVERYTHING:0 "失去一切头衔：$VALUE|=+0$"
 
  ftr_vassal_mediation_interaction:0 "<FTR>调停私斗"
  ftr_vassal_mediation_interaction_desc:0 "封臣们不应有对外战争之外的私斗"

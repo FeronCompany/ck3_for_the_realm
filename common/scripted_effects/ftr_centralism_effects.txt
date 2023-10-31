@@ -67,7 +67,7 @@ ftr_war_for_depose_effect = {
 								}
 								opinion = {
 									target = scope:actor
-									value < 40
+									value < 30
 								}
 							}
 							NOR = {

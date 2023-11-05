@@ -47,6 +47,7 @@
  ftr_pg_ui_event.0100.4:0 "Religious Tolerance"
  ftr_pg_ui_event.0100.5:0 "War Tax"
  ftr_pg_ui_event.0100.6:0 "Praise Liege's Achievements"
+ ftr_pg_ui_event.0100.7:0 "Support the Regent"
  ftr_pg_ui_event.0100.backup:0 "Nothing to do"
 
  ftr_pg_ui_event.0101.t:0 "<FTR> Vote for Proposal"
@@ -86,6 +87,9 @@
  ftr_praised_by_subjects_agree_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] to celebrate the achievements of [TARGET_CHARACTER.GetShortUIName] was approved by the majority, and [TARGET_CHARACTER.GetShortUIName] gladly accepted the proposal."
  ftr_praised_by_subjects_boycotted_content_text:0 "The proposal by [CHARACTER.GetShortUIName] to celebrate the achievements of [TARGET_CHARACTER.GetShortUIName] failed to gain majority approval."
  ftr_praised_by_subjects_rejected_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] to celebrate the achievements of [TARGET_CHARACTER.GetShortUIName] was approved by the majority, but ultimately [TARGET_CHARACTER.GetShortUIName] humbly declined the proposal."
+ ftr_praise_regent_agree_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] to appreciate the great achievements of [TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName] as regent was approved by the majority, and [TARGET_CHARACTER.GetShortUIName] gladly accepted the proposal."
+ ftr_praise_regent_boycotted_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] to praise [TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName] for his great achievements as regent failed to gain the approval of the majority."
+ ftr_praise_regent_rejected_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] to praise [TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName] for his great achievements as regent was approved by the majority, but ultimately [TARGET_CHARACTER.GetShortUIName] rejected the proposal."
 
  ftr_pg_ui_event.0202.t:0 "Result of Voting for Weaken Crown Authority"
  ftr_pg_ui_event.0202.desc:0 "The proposal initiated by [starter.GetShortUIName] to weaken crown authority of [liege_c.GetShortUIName] has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
@@ -115,6 +119,11 @@
  ftr_pg_ui_event.0206.desc:0 "The proposal initiated by [starter.GetShortUIName] to praise [liege_c.GetShortUIName]'s achievements has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0206.a:0 "Agree with the result"
  ftr_pg_ui_event.0206.b:0 "Ignore result"
+
+ ftr_pg_ui_event.0207.t:0 "Result of Praising Regent's Achievements"
+ ftr_pg_ui_event.0207.desc:0 "The proposal initiated by [starter.GetShortUIName] to praise [liege_c.GetDiarchy.GetDiarch.GetShortUIName]'s achievements as a regent has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_ui_event.0207.a:0 "Agree with the result"
+ ftr_pg_ui_event.0207.b:0 "Ignore result"
 
  ftr_pg_ui_event.0300.t:0 "Purge Heresy"
  ftr_pg_ui_event.0300.desc:0 "My liege [liege_c.GetShortUIName]'s realm pass an act of purging heresy, now I'm demanded to convert to liege's faith."

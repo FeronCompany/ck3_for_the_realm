@@ -4,7 +4,7 @@ ftr_add_political_influence_decision = {
 	desc = ftr_add_political_influence_decision_desc
 	selection_tooltip = ftr_add_political_influence_decision_tooltip
 	is_shown = {
-		#is_independent_ruler = yes
+		debug_only = yes
 		is_ai = no
 	}
 	cost = {

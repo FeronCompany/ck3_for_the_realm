@@ -127,3 +127,6 @@
 
  ftr_praised_by_subjects_modifier:0 "<FTR> Praised by Subjects"
  ftr_praised_by_subjects_modifier_desc:0 "Praised by Subjects"
+
+ ftr_regent_praised_by_peer_vassals_modifier:0 "<FTR> Regent Praised by Peer Vassals"
+ ftr_regent_praised_by_peer_vassals_modifier_desc:0 "Regent Praised by Peer Vassals"

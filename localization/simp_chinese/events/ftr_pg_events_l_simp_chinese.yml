@@ -47,6 +47,7 @@
  ftr_pg_ui_event.0100.4:0 "宗教宽容"
  ftr_pg_ui_event.0100.5:0 "战争税"
  ftr_pg_ui_event.0100.6:0 "歌功颂德"
+ ftr_pg_ui_event.0100.7:0 "表彰摄政"
  ftr_pg_ui_event.0100.backup:0 "无事可做"
 
  ftr_pg_ui_event.0101.t:0 "<FTR>议案投票"
@@ -86,6 +87,9 @@
  ftr_praised_by_subjects_agree_content_text:0 "[CHARACTER.GetShortUIName]发起的关于歌颂[TARGET_CHARACTER.GetShortUIName]的丰功伟绩的提议获得了多数人的认可，[TARGET_CHARACTER.GetShortUIName]欣然接受了这一提议。"
  ftr_praised_by_subjects_boycotted_content_text:0 "[CHARACTER.GetShortUIName]发起的关于歌颂[TARGET_CHARACTER.GetShortUIName]的丰功伟绩的提议未能获得多数人的认可。"
  ftr_praised_by_subjects_rejected_content_text:0 "[CHARACTER.GetShortUIName]发起的关于歌颂[TARGET_CHARACTER.GetShortUIName]的丰功伟绩的提议获得了多数人的认可，但最终[TARGET_CHARACTER.GetShortUIName]谦虚地婉拒了这一提议。"
+ ftr_praise_regent_agree_content_text:0 "[CHARACTER.GetShortUIName]发起的关于赞赏[TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName]作为摄政的丰功伟绩的提议获得了多数人的认可，[TARGET_CHARACTER.GetShortUIName]欣然接受了这一提议。"
+ ftr_praise_regent_boycotted_content_text:0 "[CHARACTER.GetShortUIName]发起的关于赞赏[TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName]作为摄政的丰功伟绩的提议未能获得多数人的认可。"
+ ftr_praise_regent_rejected_content_text:0 "[CHARACTER.GetShortUIName]发起的关于赞赏[TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName]作为摄政的丰功伟绩的提议获得了多数人的认可，但最终[TARGET_CHARACTER.GetShortUIName]回绝了这一提议。"
 
  ftr_pg_ui_event.0202.t:0 "削弱王权投票结果"
  ftr_pg_ui_event.0202.desc:0 "[starter.GetShortUIName]发起的关于削弱[liege_c.GetShortUIName]君权的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
@@ -115,6 +119,11 @@
  ftr_pg_ui_event.0206.desc:0 "[starter.GetShortUIName]发起的关于歌颂[liege_c.GetShortUIName]的伟大成就的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0206.a:0 "支持投票结果"
  ftr_pg_ui_event.0206.b:0 "反对投票结果"
+
+ ftr_pg_ui_event.0207.t:0 "表彰摄政投票结果"
+ ftr_pg_ui_event.0207.desc:0 "[starter.GetShortUIName]发起的关于表彰[liege_c.GetDiarchy.GetDiarch.GetShortUIName]作为摄政的伟大成就的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_ui_event.0207.a:0 "支持投票结果"
+ ftr_pg_ui_event.0207.b:0 "反对投票结果"
 
  ftr_pg_ui_event.0300.t:0 "清洗异端"
  ftr_pg_ui_event.0300.desc:0 "我的领主[liege_c.GetShortUIName]的领地内通过了清洗异端的决议，现在我被要求改信[liege_c.GetShortUIName]的信仰。"

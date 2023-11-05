@@ -311,3 +311,15 @@ ftr_praise_regent_boycotted_content_tt = {
 ftr_praise_regent_rejected_content_tt = {
 	global = ftr_praise_regent_rejected_content_text
 }
+
+ftr_admonish_liege_agree_content_tt = {
+	global = ftr_admonish_liege_agree_content_text
+}
+
+ftr_admonish_liege_boycotted_content_tt = {
+	global = ftr_admonish_liege_boycotted_content_text
+}
+
+ftr_admonish_liege_rejected_content_tt = {
+	global = ftr_admonish_liege_rejected_content_text
+}

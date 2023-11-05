@@ -48,6 +48,7 @@
  ftr_pg_ui_event.0100.5:0 "War Tax"
  ftr_pg_ui_event.0100.6:0 "Praise Liege's Achievements"
  ftr_pg_ui_event.0100.7:0 "Support the Regent"
+ ftr_pg_ui_event.0100.8:0 "Admonish the Liege"
  ftr_pg_ui_event.0100.backup:0 "Nothing to do"
 
  ftr_pg_ui_event.0101.t:0 "<FTR> Vote for Proposal"
@@ -90,6 +91,9 @@
  ftr_praise_regent_agree_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] to appreciate the great achievements of [TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName] as regent was approved by the majority, and [TARGET_CHARACTER.GetShortUIName] gladly accepted the proposal."
  ftr_praise_regent_boycotted_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] to praise [TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName] for his great achievements as regent failed to gain the approval of the majority."
  ftr_praise_regent_rejected_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] to praise [TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName] for his great achievements as regent was approved by the majority, but ultimately [TARGET_CHARACTER.GetShortUIName] rejected the proposal."
+ ftr_admonish_liege_agree_content_text:0 "[CHARACTER.GetShortUIName] attempted to unite with the core circle to persuade [TARGET_CHARACTER.GetShortUIName] to correct his bad style, [TARGET_CHARACTER.GetShortUIName] accept the proposal humbly."
+ ftr_admonish_liege_boycotted_content_text:0 "[CHARACTER.GetShortUIName] attempted to unite with the core circle to persuade [TARGET_CHARACTER.GetShortUIName] to correct his bad style, but failed to gain the approval of the majority."
+ ftr_admonish_liege_rejected_content_text:0 "[CHARACTER.GetShortUIName] attempted to unite with the core circle to persuade [TARGET_CHARACTER.GetShortUIName] to correct his bad style, but ultimately [TARGET_CHARACTER.GetShortUIName] rejected the proposal."
 
  ftr_pg_ui_event.0202.t:0 "Result of Voting for Weaken Crown Authority"
  ftr_pg_ui_event.0202.desc:0 "The proposal initiated by [starter.GetShortUIName] to weaken crown authority of [liege_c.GetShortUIName] has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
@@ -124,6 +128,15 @@
  ftr_pg_ui_event.0207.desc:0 "The proposal initiated by [starter.GetShortUIName] to praise [liege_c.GetDiarchy.GetDiarch.GetShortUIName]'s achievements as a regent has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0207.a:0 "Agree with the result"
  ftr_pg_ui_event.0207.b:0 "Ignore result"
+
+ ftr_pg_ui_event.0208.t:0 "Result of Admonish Liege"
+ ftr_pg_ui_event.0208.desc:0 "The proposal of [starter.GetShortUIName] to try to unite with the inner circle to persuade [liege_c.GetDiarchy.GetDiarch.GetShortUIName] to correct bad style has now been reviewed. Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_ui_event.0208.a:0 "Agree with the result"
+ ftr_pg_ui_event.0208.b:0 "Ignore result"
+
+ ftr_pg_ui_event.0301.t:0 "Admonish Liege"
+ ftr_pg_ui_event.0301.desc:0 "After the end of a court meeting one day, my subject [starter.GetShortUIName] ruthlessly scolded me for my mistakes in front of me. In front of [starter.GetHerHim], I seemed like a child who had made a mistake. I also heard that [starter.GetSheHe] secretly contacted other subjects to oppose me after leaving. I couldn't help but doubt whether [starter.GetSheHe] really had good intentions as [starter.GetSheHe] said on the surface. If [starter.GetSheHe] has bad intentions, I need to prepare early."
+ ftr_pg_ui_event.0301.a:0 "I will look into it."
 
  ftr_pg_ui_event.0300.t:0 "Purge Heresy"
  ftr_pg_ui_event.0300.desc:0 "My liege [liege_c.GetShortUIName]'s realm pass an act of purging heresy, now I'm demanded to convert to liege's faith."

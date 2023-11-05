@@ -130,3 +130,9 @@
 
  ftr_regent_praised_by_peer_vassals_modifier:0 "<FTR> Regent Praised by Peer Vassals"
  ftr_regent_praised_by_peer_vassals_modifier_desc:0 "Regent Praised by Peer Vassals"
+
+ ftr_liege_accept_admonish_modifier:0 "<FTR> Accept Admonish"
+ ftr_liege_accept_admonish_modifier_desc:0 "Accept admonish"
+
+ ftr_liege_reject_admonish_modifier:0 "<FTR> Reject Admonish"
+ ftr_liege_reject_admonish_modifier_desc:0 "Reject admonish"

@@ -130,3 +130,9 @@
 
  ftr_regent_praised_by_peer_vassals_modifier:0 "<FTR>被同僚认可的摄政"
  ftr_regent_praised_by_peer_vassals_modifier_desc:0 "被同僚认可的摄政"
+
+ ftr_liege_accept_admonish_modifier:0 "<FTR>开言纳谏"
+ ftr_liege_accept_admonish_modifier_desc:0 "开言纳谏"
+
+ ftr_liege_reject_admonish_modifier:0 "<FTR>闭目塞听"
+ ftr_liege_reject_admonish_modifier_desc:0 "闭目塞听"

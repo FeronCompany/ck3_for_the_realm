@@ -48,6 +48,7 @@
  ftr_pg_ui_event.0100.5:0 "战争税"
  ftr_pg_ui_event.0100.6:0 "歌功颂德"
  ftr_pg_ui_event.0100.7:0 "表彰摄政"
+ ftr_pg_ui_event.0100.8:0 "劝谏领主"
  ftr_pg_ui_event.0100.backup:0 "无事可做"
 
  ftr_pg_ui_event.0101.t:0 "<FTR>议案投票"
@@ -90,6 +91,9 @@
  ftr_praise_regent_agree_content_text:0 "[CHARACTER.GetShortUIName]发起的关于赞赏[TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName]作为摄政的丰功伟绩的提议获得了多数人的认可，[TARGET_CHARACTER.GetShortUIName]欣然接受了这一提议。"
  ftr_praise_regent_boycotted_content_text:0 "[CHARACTER.GetShortUIName]发起的关于赞赏[TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName]作为摄政的丰功伟绩的提议未能获得多数人的认可。"
  ftr_praise_regent_rejected_content_text:0 "[CHARACTER.GetShortUIName]发起的关于赞赏[TARGET_CHARACTER.GetDiarchy.GetDiarch.GetShortUIName]作为摄政的丰功伟绩的提议获得了多数人的认可，但最终[TARGET_CHARACTER.GetShortUIName]回绝了这一提议。"
+ ftr_admonish_liege_agree_content_text:0 "[CHARACTER.GetShortUIName]试图联合核心圈子一起劝谏[TARGET_CHARACTER.GetShortUIName]改正自己的不良作风，[TARGET_CHARACTER.GetShortUIName]开言纳谏，虚心地接受了这一提议。"
+ ftr_admonish_liege_boycotted_content_text:0 "[CHARACTER.GetShortUIName]试图联合核心圈子一起劝谏[TARGET_CHARACTER.GetShortUIName]改正自己的不良作风，然而提议未能获得多数人的认可。"
+ ftr_admonish_liege_rejected_content_text:0 "[CHARACTER.GetShortUIName]试图联合核心圈子一起劝谏[TARGET_CHARACTER.GetShortUIName]改正自己的不良作风，但最终[TARGET_CHARACTER.GetShortUIName]回绝了这一提议。"
 
  ftr_pg_ui_event.0202.t:0 "削弱王权投票结果"
  ftr_pg_ui_event.0202.desc:0 "[starter.GetShortUIName]发起的关于削弱[liege_c.GetShortUIName]君权的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
@@ -125,6 +129,11 @@
  ftr_pg_ui_event.0207.a:0 "支持投票结果"
  ftr_pg_ui_event.0207.b:0 "反对投票结果"
 
+ ftr_pg_ui_event.0208.t:0 "劝谏领主投票结果"
+ ftr_pg_ui_event.0208.desc:0 "[starter.GetShortUIName]试图联合核心圈子一起劝谏[liege_c.GetDiarchy.GetDiarch.GetShortUIName]改正自己的不良作风的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_ui_event.0208.a:0 "支持投票结果"
+ ftr_pg_ui_event.0208.b:0 "反对投票结果"
+
  ftr_pg_ui_event.0300.t:0 "清洗异端"
  ftr_pg_ui_event.0300.desc:0 "我的领主[liege_c.GetShortUIName]的领地内通过了清洗异端的决议，现在我被要求改信[liege_c.GetShortUIName]的信仰。"
  ftr_pg_ui_event.0300.a:0 "好，我同意"
@@ -133,6 +142,10 @@
  ftr_pg_ui_event.0300.agree_tt:0 "异端封臣同意改信"
  ftr_pg_ui_event.0300.disagree_tt:0 "异端封臣拒绝改信"
  ftr_pg_ui_event.0300.disagree_politely_tt:0 "异端封臣虽未改信，但情有可原"
+
+ ftr_pg_ui_event.0301.t:0 "直言劝谏"
+ ftr_pg_ui_event.0301.desc:0 "在某日朝会结束后，我的臣民[starter.GetShortUIName]当着我的面不留情面地数落我的过失，我在[starter.GetHerHim]面前仿佛就是一个犯了错的孩子。我又听说[starter.GetSheHe]离开后居然暗地里联络其他臣民来反对我。我不由得怀疑[starter.GetSheHe]是否真的是如[starter.GetSheHe]表面说的那样出于好心，如果[starter.GetSheHe]居心不良，我有必要早做准备。"
+ ftr_pg_ui_event.0301.a:0 "我会持续观察"
 
  ftr_pg_interaction_event.0001.t:0 "登门拜访"
  ftr_pg_interaction_event.0001.desc:0 "[recipient.GetShortUIName]已经收下了我的好处费，那么是时候思考下从[recipient.GetShortUIName]那里交换什么回来了。"

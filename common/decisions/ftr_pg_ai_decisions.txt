@@ -1,5 +1,5 @@
 ﻿
-ftr_add_political_influence_decision = {
+ftr_add_political_influence_decision = { # Debug decision
 	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
 	desc = ftr_add_political_influence_decision_desc
 	selection_tooltip = ftr_add_political_influence_decision_tooltip

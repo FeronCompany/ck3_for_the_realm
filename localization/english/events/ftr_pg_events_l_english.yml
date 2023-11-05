@@ -22,7 +22,7 @@
  ftr_pg_ui_event.0003.c:0 "None of my business"
 
  ftr_pg_ui_event.0004.t:0 "Voting Result"
- ftr_pg_ui_event.0004.desc:0 "The vote of changing focus is over, let's see the result."
+ ftr_pg_ui_event.0004.desc:0 "The vote of changing focus is over, let's see the result.\nApprove:[liege_c.MakeScope.Var('ftr_focus_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_focus_vote_oppose').GetValue]"
  ftr_pg_ui_event.0004.a:0 "I see"
  ftr_change_focus_vote_approve_text:0 "You voted yes"
  ftr_change_focus_vote_oppose_text:0 "You voted no"

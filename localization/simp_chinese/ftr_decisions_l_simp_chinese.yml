@@ -57,8 +57,8 @@
  ftr_pg_ai_change_my_realm_focus_decision_confirm:0 "看看大家的反应"
  ftr_not_change_focus_recently_text:0 "近期没有尝试改变政治焦点"
  ftr_has_change_focus_recently_text:0 "近期尝试过改变政治焦点"
- ftr_not_changing_focus_text:0 "没有正在进行中的转移焦点投票"
- ftr_has_changing_focus_text:0 "有正在进行中的转移焦点投票"
+ ftr_not_recently_changed_focus_text:0 "近期没有人尝试改变政治焦点"
+ ftr_has_recently_changed_focus_text:0 "近期有人尝试过改变政治焦点"
  ftr_have_enough_pi_text:0 "政治影响力高于$VALUE|0$"
  ftr_not_have_enough_pi_text:0 "政治影响力不足$VALUE|0$"
 

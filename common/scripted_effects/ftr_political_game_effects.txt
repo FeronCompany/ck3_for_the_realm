@@ -117,17 +117,9 @@ ftr_add_political_influence_effect = {
 }
 
 ftr_try_change_my_focus_effect = {
-	custom_description = {
-		text = "ftr_flag_recently_changed_focus_tt"
-		add_character_flag = {
-			flag = ftr_change_focus_flag
-			days = 365
-		}
-	}
-	
 	add_character_flag = {
-		flag = ftr_changing_focus_flag
-		days = 120
+		flag = ftr_liege_recently_changed_focus_flag
+		days = 365
 	}
 	set_variable = {
 		name = ftr_focus_vote_approve
@@ -147,18 +139,10 @@ ftr_try_change_my_focus_effect = {
 }
 
 ftr_try_change_liege_focus_effect = {
-	custom_description = {
-		text = "ftr_flag_recently_changed_focus_tt"
-		add_character_flag = {
-			flag = ftr_change_focus_flag
-			days = 365
-		}
-	}
-	
 	liege = {
 		add_character_flag = {
-			flag = ftr_changing_focus_flag
-			days = 120
+			flag = ftr_liege_recently_changed_focus_flag
+			days = 365
 		}
 		set_variable = {
 			name = ftr_focus_vote_approve

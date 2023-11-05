@@ -320,7 +320,6 @@ ftr_pg_ui_event.0004 = {
 
 	after = {
 		scope:liege_c = {
-			remove_character_flag = ftr_changing_focus_flag
 			set_variable = {
 				name = ftr_focus_vote_approve
 				value = 0

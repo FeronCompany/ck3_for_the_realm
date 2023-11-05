@@ -22,7 +22,7 @@
  ftr_pg_ui_event.0003.c:0 "关我什么事？"
 
  ftr_pg_ui_event.0004.t:0 "投票结果"
- ftr_pg_ui_event.0004.desc:0 "关于转移焦点的讨论已经结束了，看看结果吧。"
+ ftr_pg_ui_event.0004.desc:0 "关于转移焦点的讨论已经结束了，看看结果吧。\n赞成票：[liege_c.MakeScope.Var('ftr_focus_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_focus_vote_oppose').GetValue]"
  ftr_pg_ui_event.0004.a:0 "我了解了"
  ftr_change_focus_vote_approve_text:0 "你投下了赞成票"
  ftr_change_focus_vote_oppose_text:0 "你投下了反对票"

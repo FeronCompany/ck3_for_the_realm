@@ -323,3 +323,15 @@ ftr_admonish_liege_boycotted_content_tt = {
 ftr_admonish_liege_rejected_content_tt = {
 	global = ftr_admonish_liege_rejected_content_text
 }
+
+ftr_stop_civil_war_agree_content_tt = {
+	global = ftr_stop_civil_war_agree_content_text
+}
+
+ftr_stop_civil_war_boycotted_content_tt = {
+	global = ftr_stop_civil_war_boycotted_content_text
+}
+
+ftr_stop_civil_war_rejected_content_tt = {
+	global = ftr_stop_civil_war_rejected_content_text
+}

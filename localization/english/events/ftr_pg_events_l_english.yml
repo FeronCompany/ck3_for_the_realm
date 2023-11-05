@@ -49,6 +49,7 @@
  ftr_pg_ui_event.0100.6:0 "Praise Liege's Achievements"
  ftr_pg_ui_event.0100.7:0 "Support the Regent"
  ftr_pg_ui_event.0100.8:0 "Admonish the Liege"
+ ftr_pg_ui_event.0100.9:0 "Mediate Civil War"
  ftr_pg_ui_event.0100.backup:0 "Nothing to do"
 
  ftr_pg_ui_event.0101.t:0 "<FTR> Vote for Proposal"
@@ -94,6 +95,9 @@
  ftr_admonish_liege_agree_content_text:0 "[CHARACTER.GetShortUIName] attempted to unite with the core circle to persuade [TARGET_CHARACTER.GetShortUIName] to correct his bad style, [TARGET_CHARACTER.GetShortUIName] accept the proposal humbly."
  ftr_admonish_liege_boycotted_content_text:0 "[CHARACTER.GetShortUIName] attempted to unite with the core circle to persuade [TARGET_CHARACTER.GetShortUIName] to correct his bad style, but failed to gain the approval of the majority."
  ftr_admonish_liege_rejected_content_text:0 "[CHARACTER.GetShortUIName] attempted to unite with the core circle to persuade [TARGET_CHARACTER.GetShortUIName] to correct his bad style, but ultimately [TARGET_CHARACTER.GetShortUIName] rejected the proposal."
+ ftr_stop_civil_war_agree_content_text:0 "[CHARACTER.GetShortUIName] was recently at a disadvantage in the civil war and had to request mediation from the lord [TARGET_CHARACTER.GetShortUIName]. After detailed discussion in the inner circle, [TARGET_CHARACTER.GetShortUIName] accepted the proposal."
+ ftr_stop_civil_war_boycotted_content_text:0 "[CHARACTER.GetShortUIName] was recently at a disadvantage in the civil war and had to request mediation from the lord [TARGET_CHARACTER.GetShortUIName], but most people believed that there was no need to participate in mediation."
+ ftr_stop_civil_war_rejected_content_text:0 "[CHARACTER.GetShortUIName] was recently at a disadvantage in the civil war and had to request mediation from the lord [TARGET_CHARACTER.GetShortUIName], but ultimately [TARGET_CHARACTER.GetShortUIName] refused the request."
 
  ftr_pg_ui_event.0202.t:0 "Result of Voting for Weaken Crown Authority"
  ftr_pg_ui_event.0202.desc:0 "The proposal initiated by [starter.GetShortUIName] to weaken crown authority of [liege_c.GetShortUIName] has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
@@ -130,13 +134,14 @@
  ftr_pg_ui_event.0207.b:0 "Ignore result"
 
  ftr_pg_ui_event.0208.t:0 "Result of Admonish Liege"
- ftr_pg_ui_event.0208.desc:0 "The proposal of [starter.GetShortUIName] to try to unite with the inner circle to persuade [liege_c.GetDiarchy.GetDiarch.GetShortUIName] to correct bad style has now been reviewed. Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_ui_event.0208.desc:0 "The proposal of [starter.GetShortUIName] to try to unite with the inner circle to persuade [liege_c.GetShortUIName] to correct bad style has now been reviewed. Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0208.a:0 "Agree with the result"
  ftr_pg_ui_event.0208.b:0 "Ignore result"
 
- ftr_pg_ui_event.0301.t:0 "Admonish Liege"
- ftr_pg_ui_event.0301.desc:0 "After the end of a court meeting one day, my subject [starter.GetShortUIName] ruthlessly scolded me for my mistakes in front of me. In front of [starter.GetHerHim], I seemed like a child who had made a mistake. I also heard that [starter.GetSheHe] secretly contacted other subjects to oppose me after leaving. I couldn't help but doubt whether [starter.GetSheHe] really had good intentions as [starter.GetSheHe] said on the surface. If [starter.GetSheHe] has bad intentions, I need to prepare early."
- ftr_pg_ui_event.0301.a:0 "I will look into it."
+ ftr_pg_ui_event.0209.t:0 "Result of Mediating Civil War"
+ ftr_pg_ui_event.0209.desc:0 "The proposal of [starter.GetShortUIName] requesting [liege_c.GetShortUIName] to help mediate the civil war has now been reviewed, and members of the inner circle have given their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_ui_event.0209.a:0 "Agree with the result"
+ ftr_pg_ui_event.0209.b:0 "Ignore result"
 
  ftr_pg_ui_event.0300.t:0 "Purge Heresy"
  ftr_pg_ui_event.0300.desc:0 "My liege [liege_c.GetShortUIName]'s realm pass an act of purging heresy, now I'm demanded to convert to liege's faith."
@@ -146,6 +151,14 @@
  ftr_pg_ui_event.0300.agree_tt:0 "Heresy vassal agree to convert faith"
  ftr_pg_ui_event.0300.disagree_tt:0 "Heresy vassal refuse to convert faith"
  ftr_pg_ui_event.0300.disagree_politely_tt:0 "Heresy vassal refuse to convert faith but reasonable"
+
+ ftr_pg_ui_event.0301.t:0 "Admonish Liege"
+ ftr_pg_ui_event.0301.desc:0 "After the end of a court meeting one day, my subject [starter.GetShortUIName] ruthlessly scolded me for my mistakes in front of me. In front of [starter.GetHerHim], I seemed like a child who had made a mistake. I also heard that [starter.GetSheHe] secretly contacted other subjects to oppose me after leaving. I couldn't help but doubt whether [starter.GetSheHe] really had good intentions as [starter.GetSheHe] said on the surface. If [starter.GetSheHe] has bad intentions, I need to prepare early."
+ ftr_pg_ui_event.0301.a:0 "I will look into it."
+
+ ftr_pg_ui_event.0302.t:0 "Mediate Civil War"
+ ftr_pg_ui_event.0302.desc:0 "The war is still in full swing, and suddenly there is news that the war is over. [starter.GetShortUIName]recently requested mediation from the lord [liege_c.GetShortUIName] and received the lord's promise. Although the war is tense now, we have to put away our weapons and wait for the next chance to fight."
+ ftr_pg_ui_event.0302.a:0 "Is this considered peace?"
 
  ftr_pg_interaction_event.0001.t:0 "Pay A Visit"
  ftr_pg_interaction_event.0001.desc:0 "[recipient.GetShortUIName] has already received my commission, so it's time to think about what to exchange from [recipient.GetShortUIName]."

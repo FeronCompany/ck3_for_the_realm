@@ -820,6 +820,49 @@ ftr_pg_ui_event.0100 = {
 		}
 	}
 
+	option = { # Stop Civil War
+		name = ftr_pg_ui_event.0100.9
+		trigger = {
+			scope:liege_c = {
+				exists = var:ftr_pg_focus
+				OR = {
+					var:ftr_pg_focus = 1
+					var:ftr_pg_focus = 3
+				}
+				NOT = { root = this }
+			}
+			is_at_war = yes
+			any_character_war = {
+				primary_defender = root
+				primary_attacker = {
+					NOT = { this = scope:liege_c }
+					OR = {
+						liege = scope:liege_c
+						liege = root
+					}
+				}
+			}
+		}
+		ftr_submit_proposal_effect = {
+			PROPOSAL_TYPE = 9
+		}
+		scope:liege_c = {
+			trigger_event = {
+				id = ftr_pg_ui_event.0209 # Make final decision
+				days = 40
+			}
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 50
+				scope:war_to_stop = {
+					attacker_war_score >= 40
+				}
+			}
+		}
+	}
+
 	# Backup option
 	option = {
 		name = ftr_pg_ui_event.0100.backup
@@ -993,6 +1036,17 @@ ftr_pg_ui_event.0101 = {
 					has_trait = zealous
 				}
 			}
+			modifier = {
+				add = 33
+				scope:liege_c = {
+					var:ftr_proposal_type = 9
+				}
+				opinion = {
+					target = scope:starter
+					value >= 40
+				}
+				NOT = { is_at_war_with = scope:starter }
+			}
 		}
 	}
 	option = { # 反对
@@ -1082,6 +1136,19 @@ ftr_pg_ui_event.0101 = {
 				root = scope:liege_c
 				scope:liege_c = {
 					var:ftr_proposal_type = 8
+				}
+			}
+			modifier = {
+				add = 33
+				scope:liege_c = {
+					var:ftr_proposal_type = 9
+				}
+				OR = {
+					opinion = {
+						target = scope:starter
+						value < 10
+					}
+					is_at_war_with = scope:starter
 				}
 			}
 		}
@@ -2075,6 +2142,127 @@ ftr_pg_ui_event.0208 = {
 	after = {}
 }
 
+# Stop Civil War
+ftr_pg_ui_event.0209 = {
+	type = character_event
+	title = ftr_pg_ui_event.0209.t
+	desc = ftr_pg_ui_event.0209.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {}
+
+	option = { # Agree with result
+		name = ftr_pg_ui_event.0209.a
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:starter = {
+				every_character_war = {
+					limit = {
+						primary_defender = scope:starter
+						primary_attacker = {
+							NOT = { this = scope:liege_c }
+							OR = {
+								liege = scope:liege_c
+								liege = scope:starter
+							}
+						}
+					}
+					every_war_participant = {
+						trigger_event = {
+							id = ftr_pg_ui_event.0302
+							days = 5
+						}
+					}
+					end_war = white_peace
+				}
+			}
+			scope:liege_c = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_stop_civil_war_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:liege_c = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_stop_civil_war_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 20
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_ui_event.0209.b
+		trigger = {
+			scope:liege_c = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_reject_proposal_modify_value
+		}
+		scope:liege_c = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:starter
+						right_icon = scope:liege_c
+						custom_description = {
+							text = "ftr_stop_civil_war_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	after = {}
+}
+
 # Liege demand to convert
 ftr_pg_ui_event.0300 = {
 	type = character_event
@@ -2142,5 +2330,25 @@ ftr_pg_ui_event.0301 = {
 
 	option = { # I see
 		name = ftr_pg_ui_event.0301.a
+	}
+}
+
+# Vassal Mediate Civil War
+ftr_pg_ui_event.0302 = {
+	type = character_event
+	title = ftr_pg_ui_event.0302.t
+	desc = ftr_pg_ui_event.0302.desc
+	theme = realm
+	left_portrait = {
+		character = scope:liege_c
+		animation = war_attacker
+	}
+	right_portrait = {
+		character = scope:starter
+		animation = happiness
+	}
+
+	option = { # I see
+		name = ftr_pg_ui_event.0302.a
 	}
 }

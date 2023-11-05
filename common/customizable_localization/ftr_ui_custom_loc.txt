@@ -129,6 +129,14 @@ FTR_PlayerPG_Proposal = {
 	}
 
 	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 9
+		}
+		localization_key = ftr_pg_ui_event.0100.9
+	}
+
+	text = {
 		localization_key = ftr_pg_proposal_none
 		fallback = yes
 	}

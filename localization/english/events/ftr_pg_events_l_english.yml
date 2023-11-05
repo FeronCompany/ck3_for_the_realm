@@ -46,6 +46,7 @@
  ftr_pg_ui_event.0100.3:0 "Purge Heresy"
  ftr_pg_ui_event.0100.4:0 "Religious Tolerance"
  ftr_pg_ui_event.0100.5:0 "War Tax"
+ ftr_pg_ui_event.0100.6:0 "Praise Liege's Achievements"
  ftr_pg_ui_event.0100.backup:0 "Nothing to do"
 
  ftr_pg_ui_event.0101.t:0 "<FTR> Vote for Proposal"
@@ -82,6 +83,9 @@
  ftr_enact_war_tax_agree_content_text:0 "The proposal by [CHARACTER.GetShortUIName] to impose a war tax within [TARGET_CHARACTER.GetShortUIName] was approved by a majority, and [TARGET_CHARACTER.GetShortUIName] finally approved the proposal."
  ftr_enact_war_tax_boycotted_content_text:0 "The proposal by [CHARACTER.GetShortUIName] to impose a war tax in [TARGET_CHARACTER.GetShortUIName] failed to gain majority approval."
  ftr_enact_war_tax_rejected_content_text:0 "A proposal by [CHARACTER.GetShortUIName] to impose a war tax within [TARGET_CHARACTER.GetShortUIName] was approved by the majority, but ultimately [TARGET_CHARACTER.GetShortUIName] did not approve the proposal."
+ ftr_praised_by_subjects_agree_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] to celebrate the achievements of [TARGET_CHARACTER.GetShortUIName] was approved by the majority, and [TARGET_CHARACTER.GetShortUIName] gladly accepted the proposal."
+ ftr_praised_by_subjects_boycotted_content_text:0 "The proposal by [CHARACTER.GetShortUIName] to celebrate the achievements of [TARGET_CHARACTER.GetShortUIName] failed to gain majority approval."
+ ftr_praised_by_subjects_rejected_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] to celebrate the achievements of [TARGET_CHARACTER.GetShortUIName] was approved by the majority, but ultimately [TARGET_CHARACTER.GetShortUIName] humbly declined the proposal."
 
  ftr_pg_ui_event.0202.t:0 "Result of Voting for Weaken Crown Authority"
  ftr_pg_ui_event.0202.desc:0 "The proposal initiated by [starter.GetShortUIName] to weaken crown authority of [liege_c.GetShortUIName] has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
@@ -106,6 +110,11 @@
  ftr_pg_ui_event.0205.desc:0 "The proposal initiated by [starter.GetShortUIName] to collect war tax in [liege_c.GetShortUIName]'s realm has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0205.a:0 "Agree with the result"
  ftr_pg_ui_event.0205.b:0 "Ignore result"
+
+ ftr_pg_ui_event.0206.t:0 "Result of Praising Liege's Achievements"
+ ftr_pg_ui_event.0206.desc:0 "The proposal initiated by [starter.GetShortUIName] to praise [liege_c.GetShortUIName]'s achievements has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_ui_event.0206.a:0 "Agree with the result"
+ ftr_pg_ui_event.0206.b:0 "Ignore result"
 
  ftr_pg_ui_event.0300.t:0 "Purge Heresy"
  ftr_pg_ui_event.0300.desc:0 "My liege [liege_c.GetShortUIName]'s realm pass an act of purging heresy, now I'm demanded to convert to liege's faith."

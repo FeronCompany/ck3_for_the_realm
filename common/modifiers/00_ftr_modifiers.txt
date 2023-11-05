@@ -121,3 +121,9 @@ ftr_rumor_spreader_modifier = {
 	icon = diplomacy_negative
 	general_opinion = -15
 }
+
+ftr_praised_by_subjects_modifier = {
+	icon = diplomacy_positive
+	monthly_prestige = 0.5
+	direct_vassal_opinion = 5
+}

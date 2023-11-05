@@ -287,3 +287,15 @@ ftr_enact_war_tax_rejected_content_tt = {
 ftr_bribe_request_beauty_tt = {
 	global = ftr_bribe_request_beauty_text
 }
+
+ftr_praised_by_subjects_agree_content_tt = {
+	global = ftr_praised_by_subjects_agree_content_text
+}
+
+ftr_praised_by_subjects_boycotted_content_tt = {
+	global = ftr_praised_by_subjects_boycotted_content_text
+}
+
+ftr_praised_by_subjects_rejected_content_tt = {
+	global = ftr_praised_by_subjects_rejected_content_text
+}

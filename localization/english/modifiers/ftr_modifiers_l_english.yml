@@ -136,3 +136,6 @@
 
  ftr_liege_reject_admonish_modifier:0 "<FTR> Reject Admonish"
  ftr_liege_reject_admonish_modifier_desc:0 "Reject admonish"
+
+ ftr_raise_levy_standards_modifier:0 "<FTR> Raise Levy Standards"
+ ftr_raise_levy_standards_modifier_desc:0 "Raise levy standards"

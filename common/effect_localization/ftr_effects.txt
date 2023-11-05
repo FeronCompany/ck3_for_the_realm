@@ -335,3 +335,35 @@ ftr_stop_civil_war_boycotted_content_tt = {
 ftr_stop_civil_war_rejected_content_tt = {
 	global = ftr_stop_civil_war_rejected_content_text
 }
+
+ftr_try_to_build_professional_army_tt = {
+	global = ftr_try_to_build_professional_army_text
+}
+
+ftr_try_to_cancel_professional_army_tt = {
+	global = ftr_try_to_cancel_professional_army_text
+}
+
+ftr_raise_levy_standards_agree_content_tt = {
+	global = ftr_raise_levy_standards_agree_content_text
+}
+
+ftr_raise_levy_standards_boycotted_content_tt = {
+	global = ftr_raise_levy_standards_boycotted_content_text
+}
+
+ftr_raise_levy_standards_rejected_content_tt = {
+	global = ftr_raise_levy_standards_rejected_content_text
+}
+
+ftr_lower_levy_standards_agree_content_tt = {
+	global = ftr_lower_levy_standards_agree_content_text
+}
+
+ftr_lower_levy_standards_boycotted_content_tt = {
+	global = ftr_lower_levy_standards_boycotted_content_text
+}
+
+ftr_lower_levy_standards_rejected_content_tt = {
+	global = ftr_lower_levy_standards_rejected_content_text
+}

@@ -41,6 +41,8 @@
  ftr_purge_heresy_proposal_notify_text:0 "[CHARACTER.GetShortUIName] made a proposal about to purge heresy in [TARGET_CHARACTER.GetShortUIName]'s realm."
  ftr_religious_tolerance_notify_text:0 "[CHARACTER.GetShortUIName] made a proposal about religious tolerance in [TARGET_CHARACTER.GetShortUIName]'s realm."
  ftr_war_tax_notify_text:0 "[CHARACTER.GetShortUIName] made a proposal about war tax in [TARGET_CHARACTER.GetShortUIName]'s realm."
+ ftr_try_to_build_professional_army_text:0 "[CHARACTER.GetShortUIName] proposes to raise the levy standards in the territory of [TARGET_CHARACTER.GetShortUIName]."
+ ftr_try_to_cancel_professional_army_text:0 "[CHARACTER.GetShortUIName] proposes to lower the levy standards in the territory of [TARGET_CHARACTER.GetShortUIName]."
  ftr_pg_ui_event.0100.1:0 "Expand crown authority"
  ftr_pg_ui_event.0100.2:0 "Weaken crown authority"
  ftr_pg_ui_event.0100.3:0 "Purge Heresy"
@@ -50,6 +52,8 @@
  ftr_pg_ui_event.0100.7:0 "Support the Regent"
  ftr_pg_ui_event.0100.8:0 "Admonish the Liege"
  ftr_pg_ui_event.0100.9:0 "Mediate Civil War"
+ ftr_pg_ui_event.0100.10:0 "Raise Levy Standards"
+ ftr_pg_ui_event.0100.10:0 "Lower Levy Standards"
  ftr_pg_ui_event.0100.backup:0 "Nothing to do"
 
  ftr_pg_ui_event.0101.t:0 "<FTR> Vote for Proposal"
@@ -98,6 +102,12 @@
  ftr_stop_civil_war_agree_content_text:0 "[CHARACTER.GetShortUIName] was recently at a disadvantage in the civil war and had to request mediation from the lord [TARGET_CHARACTER.GetShortUIName]. After detailed discussion in the inner circle, [TARGET_CHARACTER.GetShortUIName] accepted the proposal."
  ftr_stop_civil_war_boycotted_content_text:0 "[CHARACTER.GetShortUIName] was recently at a disadvantage in the civil war and had to request mediation from the lord [TARGET_CHARACTER.GetShortUIName], but most people believed that there was no need to participate in mediation."
  ftr_stop_civil_war_rejected_content_text:0 "[CHARACTER.GetShortUIName] was recently at a disadvantage in the civil war and had to request mediation from the lord [TARGET_CHARACTER.GetShortUIName], but ultimately [TARGET_CHARACTER.GetShortUIName] refused the request."
+ ftr_raise_levy_standards_content_text:0 "The proposal by [CHARACTER.GetShortUIName] for raising levy standards in [TARGET_CHARACTER.GetShortUIName] was approved by the majority and finally approved by [TARGET_CHARACTER.GetShortUIName]."
+ ftr_raise_levy_standards_boycotted_content_text:0 "The proposal by [CHARACTER.GetShortUIName] for raising levy standards in [TARGET_CHARACTER.GetShortUIName] failed to gain majority approval."
+ ftr_raise_levy_standards_rejected_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] for raising levy standards in [TARGET_CHARACTER.GetShortUIName] was approved by the majority, but ultimately [TARGET_CHARACTER.GetShortUIName] did not approve the proposal."
+ ftr_lower_levy_standards_content_text:0 "The proposal by [CHARACTER.GetShortUIName] for lower levy standards in [TARGET_CHARACTER.GetShortUIName] was approved by the majority and finally approved by [TARGET_CHARACTER.GetShortUIName]."
+ ftr_lower_levy_standards_boycotted_content_text:0 "The proposal by [CHARACTER.GetShortUIName] for lower levy standards in [TARGET_CHARACTER.GetShortUIName] failed to gain majority approval."
+ ftr_lower_levy_standards_rejected_content_text:0 "The proposal initiated by [CHARACTER.GetShortUIName] for lower levy standards in [TARGET_CHARACTER.GetShortUIName] was approved by the majority, but ultimately [TARGET_CHARACTER.GetShortUIName] did not approve the proposal."
 
  ftr_pg_ui_event.0202.t:0 "Result of Voting for Weaken Crown Authority"
  ftr_pg_ui_event.0202.desc:0 "The proposal initiated by [starter.GetShortUIName] to weaken crown authority of [liege_c.GetShortUIName] has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
@@ -142,6 +152,16 @@
  ftr_pg_ui_event.0209.desc:0 "The proposal of [starter.GetShortUIName] requesting [liege_c.GetShortUIName] to help mediate the civil war has now been reviewed, and members of the inner circle have given their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
  ftr_pg_ui_event.0209.a:0 "Agree with the result"
  ftr_pg_ui_event.0209.b:0 "Ignore result"
+
+ ftr_pg_ui_event.0210.t:0 "Result of Voting for Raising Levy Standards"
+ ftr_pg_ui_event.0210.desc:0 "The proposal initiated by [starter.GetShortUIName] to raise levy standards in [liege_c.GetShortUIName]'s realm has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_ui_event.0210.a:0 "Agree with the result"
+ ftr_pg_ui_event.0210.b:0 "Ignore result"
+
+ ftr_pg_ui_event.0211.t:0 "Result of Voting for Lower Levy Standards"
+ ftr_pg_ui_event.0211.desc:0 "The proposal initiated by [starter.GetShortUIName] to lower levy standards in [liege_c.GetShortUIName]'s realm has now been reviewed, Members of the inner circle gave their votes:\nApprove:[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisapprove:[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_ui_event.0211.a:0 "Agree with the result"
+ ftr_pg_ui_event.0211.b:0 "Ignore result"
 
  ftr_pg_ui_event.0300.t:0 "Purge Heresy"
  ftr_pg_ui_event.0300.desc:0 "My liege [liege_c.GetShortUIName]'s realm pass an act of purging heresy, now I'm demanded to convert to liege's faith."

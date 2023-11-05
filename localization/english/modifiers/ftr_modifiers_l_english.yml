@@ -139,3 +139,6 @@
 
  ftr_raise_levy_standards_modifier:0 "<FTR> Raise Levy Standards"
  ftr_raise_levy_standards_modifier_desc:0 "Raise levy standards"
+
+ ftr_promote_culture_superiority_modifier:0 "<FTR> Promote Culture Superiority"
+ ftr_promote_culture_superiority_modifier_desc:0 "Promote culture superiority"

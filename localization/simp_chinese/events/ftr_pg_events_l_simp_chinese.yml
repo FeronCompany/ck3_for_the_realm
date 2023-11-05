@@ -43,6 +43,7 @@
  ftr_war_tax_notify_text:0 "[CHARACTER.GetShortUIName]在[TARGET_CHARACTER.GetShortUIName]的领地内发起了征收战争税的提议。"
  ftr_try_to_build_professional_army_text:0 "[CHARACTER.GetShortUIName]提议[TARGET_CHARACTER.GetShortUIName]的领地内提高征兵标准。"
  ftr_try_to_cancel_professional_army_text:0 "[CHARACTER.GetShortUIName]提议[TARGET_CHARACTER.GetShortUIName]的领地内降低征兵标准。"
+ ftr_try_to_promote_culture_superiority_text:0 "[CHARACTER.GetShortUIName]提议宣扬[TARGET_CHARACTER.GetShortUIName]的文化优越性，如果通过，[TARGET_CHARACTER.GetShortUIName]的封臣可能会开始学习[TARGET_CHARACTER.GetShortUIName]的语言。"
  ftr_pg_ui_event.0100.1:0 "提升君权"
  ftr_pg_ui_event.0100.2:0 "削弱君权"
  ftr_pg_ui_event.0100.3:0 "清洗异端"
@@ -54,6 +55,7 @@
  ftr_pg_ui_event.0100.9:0 "调停内战"
  ftr_pg_ui_event.0100.10:0 "提高征兵标准"
  ftr_pg_ui_event.0100.11:0 "降低征兵标准"
+ ftr_pg_ui_event.0100.12:0 "宣扬文化优越性"
  ftr_pg_ui_event.0100.backup:0 "无事可做"
 
  ftr_pg_ui_event.0101.t:0 "<FTR>议案投票"
@@ -108,6 +110,9 @@
  ftr_lower_levy_standards_agree_content_text:0 "[CHARACTER.GetShortUIName]发起的关于在[TARGET_CHARACTER.GetShortUIName]境内降低征兵标准的提议获得了多数人的认可，[TARGET_CHARACTER.GetShortUIName]最终批准了这一议案。"
  ftr_lower_levy_standards_boycotted_content_text:0 "[CHARACTER.GetShortUIName]发起的关于在[TARGET_CHARACTER.GetShortUIName]境内降低征兵标准的提议未能获得多数人的认可。"
  ftr_lower_levy_standards_rejected_content_text:0 "[CHARACTER.GetShortUIName]发起的关于在[TARGET_CHARACTER.GetShortUIName]境内降低征兵标准的提议获得了多数人的认可，但最终[TARGET_CHARACTER.GetShortUIName]未批准这一议案。"
+ ftr_culture_superiority_agree_content_text:0 "[CHARACTER.GetShortUIName]发起的关于在[TARGET_CHARACTER.GetShortUIName]境内宣扬文化优越性的提议获得了多数人的认可，[TARGET_CHARACTER.GetShortUIName]最终批准了这一议案。"
+ ftr_culture_superiority_boycotted_content_text:0 "[CHARACTER.GetShortUIName]发起的关于在[TARGET_CHARACTER.GetShortUIName]境内宣扬文化优越性的提议未能获得多数人的认可。"
+ ftr_culture_superiority_rejected_content_text:0 "[CHARACTER.GetShortUIName]发起的关于在[TARGET_CHARACTER.GetShortUIName]境内宣扬文化优越性的提议获得了多数人的认可，但最终[TARGET_CHARACTER.GetShortUIName]未批准这一议案。"
 
  ftr_pg_ui_event.0202.t:0 "削弱王权投票结果"
  ftr_pg_ui_event.0202.desc:0 "[starter.GetShortUIName]发起的关于削弱[liege_c.GetShortUIName]君权的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
@@ -163,6 +168,11 @@
  ftr_pg_ui_event.0211.a:0 "支持投票结果"
  ftr_pg_ui_event.0211.b:0 "反对投票结果"
 
+ ftr_pg_ui_event.0212.t:0 "宣扬文化优越性投票结果"
+ ftr_pg_ui_event.0212.desc:0 "[starter.GetShortUIName]发起的关于[liege_c.GetShortUIName]境内宣扬文化优越性的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[liege_c.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[liege_c.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_ui_event.0212.a:0 "支持投票结果"
+ ftr_pg_ui_event.0212.b:0 "反对投票结果"
+
  ftr_pg_ui_event.0300.t:0 "清洗异端"
  ftr_pg_ui_event.0300.desc:0 "我的领主[liege_c.GetShortUIName]的领地内通过了清洗异端的决议，现在我被要求改信[liege_c.GetShortUIName]的信仰。"
  ftr_pg_ui_event.0300.a:0 "好，我同意"
@@ -179,6 +189,11 @@
  ftr_pg_ui_event.0302.t:0 "调停内战"
  ftr_pg_ui_event.0302.desc:0 "战争还在如火如荼地进行着，突然传来战争结束的消息。[starter.GetShortUIName]不久之前向领主[liege_c.GetShortUIName]请求调停内战并且得到领主的许诺。如今虽然战事胶着，我们也不得不收起武器，等待下一次机会一决雌雄。"
  ftr_pg_ui_event.0302.a:0 "这算是和平吗？"
+
+ ftr_pg_ui_event.0303.t:0 "学习领主语言"
+ ftr_pg_ui_event.0303.desc:0 "最近[starter.GetShortUIName]在领主[liege_c.GetShortUIName]面前进谗言，要宣扬文化优越性。我们这些忠心耿耿的异文化封臣不得不分出宝贵的精力来进行语言学习，否则就会被视为对领主的不敬。这种傲慢的言论本身就让人感到荒谬了，可是[liege_c.GetShortUIName]居然同意了这样的提案。如今我不得不选择是否学习领主的语言了。"
+ ftr_pg_ui_event.0303.a:0 "学吧"
+ ftr_pg_ui_event.0303.b:0 "学习？学个屁！"
 
  ftr_pg_interaction_event.0001.t:0 "登门拜访"
  ftr_pg_interaction_event.0001.desc:0 "[recipient.GetShortUIName]已经收下了我的好处费，那么是时候思考下从[recipient.GetShortUIName]那里交换什么回来了。"

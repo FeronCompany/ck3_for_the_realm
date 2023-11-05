@@ -153,3 +153,10 @@ ftr_raise_levy_standards_modifier = {
 	levy_reinforcement_rate = -0.25
 	levy_size = -0.25
 }
+
+ftr_promote_culture_superiority_modifier = {
+	icon = diplomacy_positive
+	monthly_prestige = 0.5
+	same_culture_opinion = 5
+	different_culture_opinion = -10
+}

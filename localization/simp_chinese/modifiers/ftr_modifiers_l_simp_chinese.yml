@@ -139,3 +139,6 @@
 
  ftr_raise_levy_standards_modifier:0 "<FTR>提高征兵标准"
  ftr_raise_levy_standards_modifier_desc:0 "提高征兵标准"
+
+ ftr_promote_culture_superiority_modifier:0 "<FTR>宣扬文化优越性"
+ ftr_promote_culture_superiority_modifier_desc:0 "宣扬文化优越性"

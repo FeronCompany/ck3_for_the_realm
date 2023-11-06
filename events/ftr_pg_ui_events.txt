@@ -320,7 +320,6 @@ ftr_pg_ui_event.0004 = {
 
 	after = {
 		scope:liege_c = {
-			remove_character_flag = ftr_changing_focus_flag
 			set_variable = {
 				name = ftr_focus_vote_approve
 				value = 0
@@ -655,6 +654,326 @@ ftr_pg_ui_event.0100 = {
 		}
 	}
 
+	option = { # Praise Liege's Achievements
+		name = ftr_pg_ui_event.0100.6
+		trigger = {
+			scope:liege_c = {
+				exists = var:ftr_pg_focus
+				OR = {
+					var:ftr_pg_focus = 1
+				}
+				NOT = { has_character_modifier = ftr_praised_by_subjects_modifier }
+			}
+			#NOT = { root = scope:liege_c }
+		}
+		ftr_submit_proposal_effect = {
+			PROPOSAL_TYPE = 6
+		}
+		scope:liege_c = {
+			trigger_event = {
+				id = ftr_pg_ui_event.0206 # Make final decision
+				days = 40
+			}
+		}
+		ai_chance = {
+			base = -20
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:liege_c
+				multiplier = 0.5
+			}
+			modifier = {
+				add = -20
+				OR = {
+					has_trait = arrogant
+					has_trait = cynical
+				}
+			}
+			modifier = {
+				add = {
+					value = -10
+					multiply = scope:liege_c.num_sinful_traits
+				}
+				scope:liege_c.num_sinful_traits > 0
+			}
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = humble
+					has_trait = cynical
+				}
+			}
+		}
+	}
+
+	option = { # Praise Regent's Achievements
+		name = ftr_pg_ui_event.0100.7
+		trigger = {
+			scope:liege_c = {
+				exists = var:ftr_pg_focus
+				OR = {
+					var:ftr_pg_focus = 1
+				}
+				has_active_diarchy = yes
+				diarch = {
+					NOT = { has_character_modifier = ftr_regent_praised_by_peer_vassals_modifier }
+					#NOT = { root = this }
+				}
+			}
+		}
+		ftr_submit_proposal_effect = {
+			PROPOSAL_TYPE = 7
+		}
+		scope:liege_c = {
+			trigger_event = {
+				id = ftr_pg_ui_event.0207 # Make final decision
+				days = 40
+			}
+		}
+		ai_chance = {
+			base = -30
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:liege_c.diarch
+				multiplier = 0.5
+			}
+			modifier = {
+				add = -20
+				OR = {
+					has_trait = arrogant
+					has_trait = cynical
+				}
+			}
+			modifier = {
+				add = {
+					value = -10
+					multiply = scope:liege_c.diarch.num_sinful_traits
+				}
+				scope:liege_c.diarch.num_sinful_traits > 0
+			}
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = humble
+					has_trait = cynical
+				}
+			}
+		}
+	}
+
+	option = { # Admonish the Liege
+		name = ftr_pg_ui_event.0100.8
+		trigger = {
+			scope:liege_c = {
+				exists = var:ftr_pg_focus
+				OR = {
+					var:ftr_pg_focus = 1
+				}
+				num_sinful_traits > 0
+				NOT = { root = this }
+				NOT = { has_character_modifier = ftr_liege_accept_admonish_modifier }
+				NOT = { has_character_modifier = ftr_liege_reject_admonish_modifier }
+			}
+		}
+		ftr_submit_proposal_effect = {
+			PROPOSAL_TYPE = 8
+		}
+		scope:liege_c = {
+			trigger_event = {
+				id = ftr_pg_ui_event.0301 # Warn liege of the discussing
+				days = 4
+			}
+			trigger_event = {
+				id = ftr_pg_ui_event.0208 # Make final decision
+				days = 40
+			}
+		}
+		ai_chance = {
+			base = 0
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:liege_c
+				multiplier = -0.5
+			}
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = arrogant
+					has_trait = just
+					has_trait = zealous
+				}
+			}
+			modifier = {
+				add = {
+					value = 10
+					multiply = scope:liege_c.num_sinful_traits
+				}
+				scope:liege_c.num_sinful_traits > 0
+			}
+			modifier = {
+				add = -20
+				OR = {
+					has_trait = humble
+					has_trait = cynical
+				}
+			}
+		}
+	}
+
+	option = { # Stop Civil War
+		name = ftr_pg_ui_event.0100.9
+		trigger = {
+			scope:liege_c = {
+				exists = var:ftr_pg_focus
+				OR = {
+					var:ftr_pg_focus = 1
+					var:ftr_pg_focus = 3
+				}
+				NOT = { root = this }
+			}
+			is_at_war = yes
+			any_character_war = {
+				primary_defender = root
+				primary_attacker = {
+					NOT = { this = scope:liege_c }
+					OR = {
+						liege = scope:liege_c
+						liege = root
+					}
+				}
+			}
+		}
+		ftr_submit_proposal_effect = {
+			PROPOSAL_TYPE = 9
+		}
+		scope:liege_c = {
+			trigger_event = {
+				id = ftr_pg_ui_event.0209 # Make final decision
+				days = 40
+			}
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 50
+				scope:war_to_stop = {
+					attacker_war_score >= 40
+				}
+			}
+		}
+	}
+
+	option = { # Professional Army
+		name = ftr_pg_ui_event.0100.10
+		trigger = {
+			scope:liege_c = {
+				exists = var:ftr_pg_focus
+				OR = {
+					var:ftr_pg_focus = 3
+				}
+				NOT = { has_character_modifier = ftr_raise_levy_standards_modifier }
+			}
+		}
+		ftr_submit_proposal_effect = {
+			PROPOSAL_TYPE = 10
+		}
+		custom_description = {
+			text = "ftr_try_to_build_professional_army_tt"
+			subject = scope:starter
+			object = scope:liege_c
+		}
+		scope:liege_c = {
+			trigger_event = {
+				id = ftr_pg_ui_event.0210 # Make final decision
+				days = 40
+			}
+		}
+		ai_chance = {
+			base = 5
+			modifier = {
+				add = -10
+				scope:liege_c = { is_at_war = yes }
+			}
+		}
+	}
+
+	option = { # Lower Levy Standards
+		name = ftr_pg_ui_event.0100.11
+		trigger = {
+			scope:liege_c = {
+				exists = var:ftr_pg_focus
+				OR = {
+					var:ftr_pg_focus = 3
+				}
+				has_character_modifier = ftr_raise_levy_standards_modifier
+			}
+		}
+		ftr_submit_proposal_effect = {
+			PROPOSAL_TYPE = 11
+		}
+		custom_description = {
+			text = "ftr_try_to_cancel_professional_army_tt"
+			subject = scope:starter
+			object = scope:liege_c
+		}
+		scope:liege_c = {
+			trigger_event = {
+				id = ftr_pg_ui_event.0211 # Make final decision
+				days = 40
+			}
+		}
+		ai_chance = {
+			base = 5
+			modifier = {
+				add = 5
+				scope:liege_c = { is_at_war = yes }
+			}
+		}
+	}
+
+	option = { # Cultural Superiority
+		name = ftr_pg_ui_event.0100.12
+		trigger = {
+			scope:liege_c = {
+				exists = var:ftr_pg_focus
+				OR = {
+					var:ftr_pg_focus = 2
+				}
+				NOT = { has_character_modifier = ftr_promote_culture_superiority_modifier }
+				OR = {
+					any_vassal = {
+						can_start_scheme = { type = learn_language target = prev }
+					}
+					any_courtier = {
+						can_start_scheme = { type = learn_language target = prev }
+					}
+					any_realm_county = {
+						holder = scope:liege_c
+						NOT = { culture = scope:liege_c.culture }
+					}
+				}
+			}
+			scope:liege_c.culture = scope:starter.culture
+		}
+		ftr_submit_proposal_effect = {
+			PROPOSAL_TYPE = 12
+		}
+		custom_description = {
+			text = "ftr_try_to_promote_culture_superiority_tt"
+			subject = scope:starter
+			object = scope:liege_c
+		}
+		scope:liege_c = {
+			trigger_event = {
+				id = ftr_pg_ui_event.0212 # Make final decision
+				days = 40
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
 	# Backup option
 	option = {
 		name = ftr_pg_ui_event.0100.backup
@@ -777,6 +1096,92 @@ ftr_pg_ui_event.0101 = {
 					value >= 40
 				}
 			}
+			modifier = {
+				add = 33
+				NOT = { root = scope:liege_c }
+				scope:liege_c = {
+					var:ftr_proposal_type = 6
+				}
+				opinion = {
+					target = scope:liege_c
+					value >= 60
+				}
+			}
+			modifier = {
+				add = 33
+				root = scope:liege_c
+				scope:liege_c = {
+					var:ftr_proposal_type = 6
+				}
+			}
+			modifier = {
+				add = 33
+				NOT = { root = scope:liege_c.diarch }
+				scope:liege_c = {
+					var:ftr_proposal_type = 7
+				}
+				opinion = {
+					target = scope:liege_c.diarch
+					value >= 70
+				}
+			}
+			modifier = {
+				add = 33
+				root = scope:liege_c.diarch
+				scope:liege_c = {
+					var:ftr_proposal_type = 7
+				}
+			}
+			modifier = {
+				add = 33
+				NOT = { root = scope:liege_c }
+				scope:liege_c = {
+					var:ftr_proposal_type = 8
+				}
+				OR = {
+					opinion = {
+						target = scope:liege_c
+						value < 50
+					}
+					has_trait = just
+					has_trait = zealous
+				}
+			}
+			modifier = {
+				add = 33
+				scope:liege_c = {
+					var:ftr_proposal_type = 9
+				}
+				opinion = {
+					target = scope:starter
+					value >= 40
+				}
+				NOT = { is_at_war_with = scope:starter }
+			}
+			modifier = {
+				add = 10
+				scope:liege_c = {
+					var:ftr_proposal_type = 10
+					is_at_war = no
+				}
+			}
+			modifier = {
+				add = 10
+				scope:liege_c = {
+					var:ftr_proposal_type = 11
+				}
+			}
+			modifier = {
+				add = 33
+				scope:liege_c = {
+					var:ftr_proposal_type = 12
+				}
+				culture = scope:liege_c.culture
+				opinion = {
+					target = scope:liege_c
+					value >= 0
+				}
+			}
 		}
 	}
 	option = { # 反对
@@ -822,10 +1227,94 @@ ftr_pg_ui_event.0101 = {
 				has_trait = zealous
 			}
 			modifier = {
-				add = -33
+				add = 33
 				scope:liege_c = {
 					var:ftr_proposal_type = 5
 					gold > 2000
+				}
+			}
+			modifier = {
+				add = 33
+				NOT = { root = scope:liege_c }
+				scope:liege_c = {
+					var:ftr_proposal_type = 6
+				}
+				opinion = {
+					target = scope:liege_c
+					value < 0
+				}
+			}
+			modifier = {
+				add = 33
+				NOT = { root = scope:liege_c.diarch }
+				scope:liege_c = {
+					var:ftr_proposal_type = 7
+				}
+				opinion = {
+					target = scope:liege_c.diarch
+					value < 20
+				}
+			}
+			modifier = {
+				add = 33
+				NOT = { root = scope:liege_c }
+				scope:liege_c = {
+					var:ftr_proposal_type = 8
+				}
+				opinion = {
+					target = scope:liege_c
+					value >= 70
+				}
+			}
+			modifier = {
+				add = 33
+				root = scope:liege_c
+				scope:liege_c = {
+					var:ftr_proposal_type = 8
+				}
+			}
+			modifier = {
+				add = 33
+				scope:liege_c = {
+					var:ftr_proposal_type = 9
+				}
+				OR = {
+					opinion = {
+						target = scope:starter
+						value < 10
+					}
+					is_at_war_with = scope:starter
+				}
+			}
+			modifier = {
+				add = 33
+				scope:liege_c = {
+					var:ftr_proposal_type = 10
+					is_at_war = yes
+				}
+			}
+			modifier = {
+				add = 10
+				scope:liege_c = {
+					var:ftr_proposal_type = 10
+					is_at_war = no
+				}
+			}
+			modifier = {
+				add = 10
+				scope:liege_c = {
+					var:ftr_proposal_type = 11
+				}
+			}
+			modifier = {
+				add = 33
+				scope:liege_c = {
+					var:ftr_proposal_type = 12
+				}
+				NOT = { culture = scope:liege_c.culture }
+				opinion = {
+					target = scope:liege_c
+					value < 40
 				}
 			}
 		}
@@ -906,6 +1395,9 @@ ftr_pg_ui_event.0201 = {
 				}
 			}
 		}
+		ai_chance = {
+			base = 20
+		}
 	}
 
 	option = { # Ignore it
@@ -935,6 +1427,9 @@ ftr_pg_ui_event.0201 = {
 					}
 				}
 			}
+		}
+		ai_chance = {
+			base = 2
 		}
 	}
 
@@ -1004,6 +1499,9 @@ ftr_pg_ui_event.0202 = {
 				}
 			}
 		}
+		ai_chance = {
+			base = 5
+		}
 	}
 
 	option = { # Ignore it
@@ -1033,6 +1531,9 @@ ftr_pg_ui_event.0202 = {
 					}
 				}
 			}
+		}
+		ai_chance = {
+			base = 20
 		}
 	}
 
@@ -1071,7 +1572,7 @@ ftr_pg_ui_event.0203 = {
 							holder = scope:liege_c
 							NOT = { faith = scope:liege_c.faith }
 						}
-						save_scope_as = current_county
+						save_temporary_scope_as = current_county
 						random_list = {
 							0 = {
 								modifier = {
@@ -1112,12 +1613,23 @@ ftr_pg_ui_event.0203 = {
 				custom_description = {
 					text = "ftr_purge_heresy_amoung_vassals_tt"
 					every_vassal = {
-						limit = {
-							NOT = { faith = scope:liege_c.faith }
+						if = {
+							limit = {
+								NOT = { faith = scope:liege_c.faith }
+							}
+							trigger_event = {
+								id = ftr_pg_ui_event.0300
+								days = 10
+							}
 						}
-						trigger_event = {
-							id = ftr_pg_ui_event.0300
-							days = 10
+						else = {
+							if = {
+								limit = { primary_title.tier > tier_barony }
+								trigger_event = {
+									id = ftr_pg_ui_event.0304
+									days = 10
+								}
+							}
 						}
 					}
 				}
@@ -1159,6 +1671,17 @@ ftr_pg_ui_event.0203 = {
 				}
 			}
 		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = zealous
+					has_trait = arbitrary
+					has_trait = arrogant
+				}
+			}
+		}
 	}
 
 	option = { # Ignore it
@@ -1186,6 +1709,15 @@ ftr_pg_ui_event.0203 = {
 							object = scope:liege_c
 						}
 					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 5
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = cynical
 				}
 			}
 		}
@@ -1257,6 +1789,15 @@ ftr_pg_ui_event.0204 = {
 				}
 			}
 		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = cynical
+				}
+			}
+		}
 	}
 
 	option = { # Ignore it
@@ -1284,6 +1825,17 @@ ftr_pg_ui_event.0204 = {
 							object = scope:liege_c
 						}
 					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = zealous
+					has_trait = arbitrary
+					has_trait = arrogant
 				}
 			}
 		}
@@ -1355,6 +1907,13 @@ ftr_pg_ui_event.0205 = {
 				}
 			}
 		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 20
+				gold < 200
+			}
+		}
 	}
 
 	option = { # Ignore it
@@ -1381,6 +1940,820 @@ ftr_pg_ui_event.0205 = {
 					}
 				}
 			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 20
+				gold > 1000
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Praise Liege Result
+ftr_pg_ui_event.0206 = {
+	type = character_event
+	title = ftr_pg_ui_event.0206.t
+	desc = ftr_pg_ui_event.0206.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {}
+
+	option = { # Agree with result
+		name = ftr_pg_ui_event.0206.a
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:liege_c = {
+				add_character_modifier = {
+					modifier = ftr_praised_by_subjects_modifier
+					years = 5
+				}
+				if = {
+					limit = { has_active_diarchy = yes }
+					update_diarchy_swing_with_perspective_effect = {
+						SWING = minor_sop_swing_liege_gain
+						LIEGE = scope:liege_c
+					}
+				}
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_praised_by_subjects_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:liege_c = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_praised_by_subjects_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 30
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = ambitious
+					has_trait = arrogant
+				}
+			}
+			modifier = {
+				add = 50
+				has_active_diarchy = yes
+			}
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_ui_event.0206.b
+		trigger = {
+			scope:liege_c = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		scope:liege_c = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:starter
+						right_icon = scope:liege_c
+						custom_description = {
+							text = "ftr_praised_by_subjects_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = humble
+					has_trait = content
+				}
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Praise Regent Result
+ftr_pg_ui_event.0207 = {
+	type = character_event
+	title = ftr_pg_ui_event.0207.t
+	desc = ftr_pg_ui_event.0207.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	trigger = {
+		has_active_diarchy = yes
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:liege_c.diarch = {
+				change_strife_opinion = massive_strife_loss
+			}
+		}
+	}
+
+	option = { # Agree with result
+		name = ftr_pg_ui_event.0207.a
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:liege_c = {
+				diarch = {
+					add_character_modifier = {
+						modifier = ftr_regent_praised_by_peer_vassals_modifier
+						years = 5
+					}
+					update_diarchy_swing_with_perspective_effect = {
+						SWING = minor_sop_swing_diarch_gain
+						LIEGE = scope:liege_c
+					}
+				}
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_praise_regent_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:liege_c = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_praise_regent_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = -20
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:liege_c.diarch
+				multiplier = 0.5
+			}
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_ui_event.0207.b
+		trigger = {
+			scope:liege_c = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_reject_proposal_modify_value
+		}
+		scope:liege_c = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:starter
+						right_icon = scope:liege_c
+						custom_description = {
+							text = "ftr_praise_regent_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	after = {}
+}
+
+# Admonish Liege Result
+ftr_pg_ui_event.0208 = {
+	type = character_event
+	title = ftr_pg_ui_event.0208.t
+	desc = ftr_pg_ui_event.0208.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {}
+
+	option = { # Agree with result
+		name = ftr_pg_ui_event.0208.a
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:liege_c = {
+				add_character_modifier = {
+					modifier = ftr_liege_accept_admonish_modifier
+					years = 5
+				}
+				add_prestige = -500
+				add_dread = minor_dread_loss
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_admonish_liege_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:liege_c = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_admonish_liege_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 20
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_ui_event.0208.b
+		trigger = {
+			scope:liege_c = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		add_character_modifier = {
+			modifier = ftr_liege_reject_admonish_modifier
+			years = 5
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_reject_proposal_modify_value
+		}
+		scope:liege_c = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:starter
+						right_icon = scope:liege_c
+						custom_description = {
+							text = "ftr_admonish_liege_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	after = {}
+}
+
+# Stop Civil War
+ftr_pg_ui_event.0209 = {
+	type = character_event
+	title = ftr_pg_ui_event.0209.t
+	desc = ftr_pg_ui_event.0209.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {}
+
+	option = { # Agree with result
+		name = ftr_pg_ui_event.0209.a
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:starter = {
+				every_character_war = {
+					limit = {
+						primary_defender = scope:starter
+						primary_attacker = {
+							NOT = { this = scope:liege_c }
+							OR = {
+								liege = scope:liege_c
+								liege = scope:starter
+							}
+						}
+					}
+					every_war_participant = {
+						trigger_event = {
+							id = ftr_pg_ui_event.0302
+							days = 5
+						}
+					}
+					end_war = white_peace
+				}
+			}
+			scope:liege_c = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_stop_civil_war_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:liege_c = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_stop_civil_war_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 20
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_ui_event.0209.b
+		trigger = {
+			scope:liege_c = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_reject_proposal_modify_value
+		}
+		scope:liege_c = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:starter
+						right_icon = scope:liege_c
+						custom_description = {
+							text = "ftr_stop_civil_war_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	after = {}
+}
+
+# Raise Levy Standards
+ftr_pg_ui_event.0210 = {
+	type = character_event
+	title = ftr_pg_ui_event.0210.t
+	desc = ftr_pg_ui_event.0210.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {}
+
+	option = { # Agree with result
+		name = ftr_pg_ui_event.0210.a
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:liege_c = {
+				add_character_modifier = {
+					modifier = ftr_raise_levy_standards_modifier
+				}
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_raise_levy_standards_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:liege_c = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_raise_levy_standards_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_ui_event.0210.b
+		trigger = {
+			scope:liege_c = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		scope:liege_c = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:starter
+						right_icon = scope:liege_c
+						custom_description = {
+							text = "ftr_raise_levy_standards_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	after = {}
+}
+
+# Lower Levy Standards
+ftr_pg_ui_event.0211 = {
+	type = character_event
+	title = ftr_pg_ui_event.0211.t
+	desc = ftr_pg_ui_event.0211.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {}
+
+	option = { # Agree with result
+		name = ftr_pg_ui_event.0211.a
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:liege_c = {
+				if = {
+					limit = { has_character_modifier = ftr_raise_levy_standards_modifier }
+					remove_character_modifier = ftr_raise_levy_standards_modifier
+				}
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_lower_levy_standards_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:liege_c = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_lower_levy_standards_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_ui_event.0211.b
+		trigger = {
+			scope:liege_c = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		scope:liege_c = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:starter
+						right_icon = scope:liege_c
+						custom_description = {
+							text = "ftr_lower_levy_standards_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	after = {}
+}
+
+# Promote Culture Superiority
+ftr_pg_ui_event.0212 = {
+	type = character_event
+	title = ftr_pg_ui_event.0212.t
+	desc = ftr_pg_ui_event.0212.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {}
+
+	option = { # Agree with result
+		name = ftr_pg_ui_event.0212.a
+		if = {
+			limit = {
+				scope:liege_c = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:liege_c = {
+				add_character_modifier = {
+					modifier = ftr_promote_culture_superiority_modifier
+					years = 5
+				}
+				every_courtier = {
+					limit = { can_start_scheme = { type = learn_language target = prev } }
+					start_scheme = {
+						type = learn_language
+						target = scope:liege_c
+					}
+				}
+				every_vassal = {
+					#limit = { can_start_scheme = { type = learn_language target = prev } }
+					limit = { NOT = { knows_language_of_culture = scope:liege_c.culture } }
+					trigger_event = {
+						id = ftr_pg_ui_event.0303
+						days = 5
+					}
+				}
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_culture_superiority_agree_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:liege_c = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:starter
+							right_icon = scope:liege_c
+							custom_description = {
+								text = "ftr_culture_superiority_boycotted_content_tt"
+								subject = scope:starter
+								object = scope:liege_c
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_ui_event.0212.b
+		trigger = {
+			scope:liege_c = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_reject_proposal_modify_value
+		}
+		scope:liege_c = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:starter
+						right_icon = scope:liege_c
+						custom_description = {
+							text = "ftr_culture_superiority_rejected_content_tt"
+							subject = scope:starter
+							object = scope:liege_c
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
 		}
 	}
 
@@ -1434,6 +2807,165 @@ ftr_pg_ui_event.0300 = {
 				title = "ftr_pg_ui_event.0300.disagree_politely_tt"
 				left_icon = root
 			}
+		}
+	}
+}
+
+# Vassal try to admonish me
+ftr_pg_ui_event.0301 = {
+	type = character_event
+	title = ftr_pg_ui_event.0301.t
+	desc = ftr_pg_ui_event.0301.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:starter
+		animation = anger
+	}
+
+	option = { # I see
+		name = ftr_pg_ui_event.0301.a
+	}
+}
+
+# Vassal Mediate Civil War
+ftr_pg_ui_event.0302 = {
+	type = character_event
+	title = ftr_pg_ui_event.0302.t
+	desc = ftr_pg_ui_event.0302.desc
+	theme = realm
+	left_portrait = {
+		character = scope:liege_c
+		animation = war_attacker
+	}
+	right_portrait = {
+		character = scope:starter
+		animation = happiness
+	}
+
+	option = { # I see
+		name = ftr_pg_ui_event.0302.a
+	}
+}
+
+# Liege Request to Learn its language
+ftr_pg_ui_event.0303 = {
+	type = character_event
+	title = ftr_pg_ui_event.0303.t
+	desc = ftr_pg_ui_event.0303.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:liege_c
+		animation = personality_zealous
+	}
+
+	option = { # I agree
+		name = ftr_pg_ui_event.0303.a
+		start_scheme = {
+			type = learn_language
+			target = scope:liege_c
+		}
+	}
+	option = { # I hear nothing
+		name = ftr_pg_ui_event.0303.b
+		add_prestige = -150
+		scope:liege_c = {
+			send_interface_toast = {
+				title = "ftr_vassal_refuse_to_learn_language_tt"
+				left_icon = root
+				custom_description = {
+					text = "ftr_vassal_refuse_to_learn_language_content_tt"
+					subject = root
+				}
+			}
+		}
+	}
+}
+
+# Liege Start to Purge Heresy, Do You Follow?
+ftr_pg_ui_event.0304 = {
+	type = character_event
+	title = ftr_pg_ui_event.0304.t
+	desc = ftr_pg_ui_event.0304.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:liege_c
+		animation = personality_zealous
+	}
+
+	option = { # I agree
+		name = ftr_pg_ui_event.0304.a
+		every_sub_realm_county = {
+			limit = {
+				holder = root
+				NOT = { faith = root.faith }
+			}
+			save_temporary_scope_as = current_county
+			random_list = {
+				0 = {
+					modifier = {
+						add = {
+							value = root.martial
+							multiply = 2
+						}
+					}
+					root = {
+						send_interface_message = {
+							title = "ftr_purge_heresy_succ_tt"
+							left_icon = root
+							right_icon = scope:current_county
+							scope:current_county = {
+								set_county_faith = root.faith
+							}
+						}
+					}
+				}
+				50 = {
+					root = {
+						send_interface_message = {
+							title = "ftr_purge_heresy_fail_tt"
+							left_icon = root
+							right_icon = scope:current_county
+							scope:current_county = {
+								add_county_modifier = {
+									modifier = ftr_try_purge_heresy_modifier
+									years = 5
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 50
+				has_trait = zealous
+			}
+			modifier = {
+				add = -30
+				OR = {
+					has_trait = cynical
+					has_trait = compassionate
+					has_trait = forgiving
+				}
+			}
+		}
+	}
+	option = { # I hear nothing
+		name = ftr_pg_ui_event.0304.b
+		add_piety = -150
+		ai_chance = {
+			base = 20
 		}
 	}
 }

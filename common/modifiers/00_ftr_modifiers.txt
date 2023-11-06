@@ -121,3 +121,42 @@ ftr_rumor_spreader_modifier = {
 	icon = diplomacy_negative
 	general_opinion = -15
 }
+
+ftr_praised_by_subjects_modifier = {
+	icon = diplomacy_positive
+	monthly_prestige = 0.5
+	direct_vassal_opinion = 5
+}
+
+ftr_regent_praised_by_peer_vassals_modifier = {
+	icon = diplomacy_positive
+	monthly_prestige = 0.5
+	fellow_vassal_opinion = 5
+}
+
+ftr_liege_accept_admonish_modifier = {
+	icon = diplomacy_positive
+	monthly_prestige = 0.5
+	direct_vassal_opinion = 10
+}
+
+ftr_liege_reject_admonish_modifier = {
+	icon = diplomacy_negative
+	monthly_prestige = -0.25
+	direct_vassal_opinion = -20
+}
+
+ftr_raise_levy_standards_modifier = {
+	icon = martial_positive
+	army_toughness_mult = 0.1
+	army_damage_mult = 0.1
+	levy_reinforcement_rate = -0.25
+	levy_size = -0.25
+}
+
+ftr_promote_culture_superiority_modifier = {
+	icon = diplomacy_positive
+	monthly_prestige = 0.5
+	same_culture_opinion = 5
+	different_culture_opinion = -10
+}

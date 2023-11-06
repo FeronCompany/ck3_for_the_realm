@@ -124,3 +124,21 @@
 
  ftr_rumor_spreader_modifier:0 "<FTR>造谣生事"
  ftr_rumor_spreader_modifier_desc:0 "造谣生事"
+
+ ftr_praised_by_subjects_modifier:0 "<FTR>被臣民歌颂"
+ ftr_praised_by_subjects_modifier_desc:0 "被臣民歌颂"
+
+ ftr_regent_praised_by_peer_vassals_modifier:0 "<FTR>被同僚认可的摄政"
+ ftr_regent_praised_by_peer_vassals_modifier_desc:0 "被同僚认可的摄政"
+
+ ftr_liege_accept_admonish_modifier:0 "<FTR>开言纳谏"
+ ftr_liege_accept_admonish_modifier_desc:0 "开言纳谏"
+
+ ftr_liege_reject_admonish_modifier:0 "<FTR>闭目塞听"
+ ftr_liege_reject_admonish_modifier_desc:0 "闭目塞听"
+
+ ftr_raise_levy_standards_modifier:0 "<FTR>提高征兵标准"
+ ftr_raise_levy_standards_modifier_desc:0 "提高征兵标准"
+
+ ftr_promote_culture_superiority_modifier:0 "<FTR>宣扬文化优越性"
+ ftr_promote_culture_superiority_modifier_desc:0 "宣扬文化优越性"

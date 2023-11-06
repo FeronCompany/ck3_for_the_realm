@@ -57,14 +57,8 @@ ftr_change_my_focus = {
 	is_valid = {
 		is_capable_adult = yes
 		ftr_political_influence_value >= ftr_shift_focus_cost_value
-		custom_description = {
-			text = "ftr_not_change_focus_recently_tt"
-			NOT = {
-				has_character_flag = ftr_change_focus_flag
-			}
-		}
 		NOT = {
-			has_character_flag = ftr_changing_focus_flag
+			has_character_flag = ftr_liege_recently_changed_focus_flag
 		}
 	}
 	effect = {
@@ -77,15 +71,9 @@ ftr_change_liege_focus = {
 	is_valid = {
 		is_capable_adult = yes
 		ftr_political_influence_value >= ftr_shift_focus_cost_value
-		custom_description = {
-			text = "ftr_not_change_focus_recently_tt"
-			NOT = {
-				has_character_flag = ftr_change_focus_flag
-			}
-		}
 		liege = {
 			NOT = {
-				has_character_flag = ftr_changing_focus_flag
+				has_character_flag = ftr_liege_recently_changed_focus_flag
 			}
 		}
 	}

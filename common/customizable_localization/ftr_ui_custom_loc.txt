@@ -105,6 +105,62 @@ FTR_PlayerPG_Proposal = {
 	}
 
 	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 6
+		}
+		localization_key = ftr_pg_ui_event.0100.6
+	}
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 7
+		}
+		localization_key = ftr_pg_ui_event.0100.7
+	}
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 8
+		}
+		localization_key = ftr_pg_ui_event.0100.8
+	}
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 9
+		}
+		localization_key = ftr_pg_ui_event.0100.9
+	}
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 10
+		}
+		localization_key = ftr_pg_ui_event.0100.10
+	}
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 11
+		}
+		localization_key = ftr_pg_ui_event.0100.11
+	}
+
+	text = {
+		trigger = { 
+			exists = var:ftr_proposal_type
+			var:ftr_proposal_type = 12
+		}
+		localization_key = ftr_pg_ui_event.0100.12
+	}
+
+	text = {
 		localization_key = ftr_pg_proposal_none
 		fallback = yes
 	}

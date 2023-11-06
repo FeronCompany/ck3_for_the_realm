@@ -615,7 +615,7 @@ ftr_request_depose_interaction = {
 		}
 		modifier = {
 			add = {
-				add = 10
+				value = 10
 				multiply = scope:secondary_recipient.num_sinful_traits
 			}
 			scope:secondary_recipient.num_sinful_traits > 0

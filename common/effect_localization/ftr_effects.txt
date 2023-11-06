@@ -383,3 +383,7 @@ ftr_culture_superiority_boycotted_content_tt = {
 ftr_culture_superiority_rejected_content_tt = {
 	global = ftr_culture_superiority_rejected_content_text
 }
+
+ftr_vassal_refuse_to_learn_language_content_tt = {
+	global = ftr_vassal_refuse_to_learn_language_content_text
+}

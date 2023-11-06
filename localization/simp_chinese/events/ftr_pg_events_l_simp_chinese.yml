@@ -194,6 +194,13 @@
  ftr_pg_ui_event.0303.desc:0 "最近[starter.GetShortUIName]在领主[liege_c.GetShortUIName]面前进谗言，要宣扬文化优越性。我们这些忠心耿耿的异文化封臣不得不分出宝贵的精力来进行语言学习，否则就会被视为对领主的不敬。这种傲慢的言论本身就让人感到荒谬了，可是[liege_c.GetShortUIName]居然同意了这样的提案。如今我不得不选择是否学习领主的语言了。"
  ftr_pg_ui_event.0303.a:0 "学吧"
  ftr_pg_ui_event.0303.b:0 "学习？学个屁！"
+ ftr_vassal_refuse_to_learn_language_tt:0 "封臣拒绝学习语言"
+ ftr_vassal_refuse_to_learn_language_content_text:0 "[CHARACTER.GetShortUIName]拒绝分出精力来学习你的语言"
+
+ ftr_pg_ui_event.0304.t:0 "清洗异端"
+ ftr_pg_ui_event.0304.desc:0 "最近[starter.GetShortUIName]在领主[liege_c.GetShortUIName]面前建议对境内的异教徒和异端分子进行清理。经过核心圈子讨论后，[liege_c.GetShortUIName]最终下定决心批准这一议案。如今清洗异教徒的命令已经下达全境，作为[liege_c.GetShortUIName]忠心的臣子，我也不得不做出表态了。"
+ ftr_pg_ui_event.0304.a:0 "开干吧"
+ ftr_pg_ui_event.0304.b:0 "三思而行吧"
 
  ftr_pg_interaction_event.0001.t:0 "登门拜访"
  ftr_pg_interaction_event.0001.desc:0 "[recipient.GetShortUIName]已经收下了我的好处费，那么是时候思考下从[recipient.GetShortUIName]那里交换什么回来了。"

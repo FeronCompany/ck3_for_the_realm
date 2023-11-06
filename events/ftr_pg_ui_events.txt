@@ -1572,7 +1572,7 @@ ftr_pg_ui_event.0203 = {
 							holder = scope:liege_c
 							NOT = { faith = scope:liege_c.faith }
 						}
-						save_scope_as = current_county
+						save_temporary_scope_as = current_county
 						random_list = {
 							0 = {
 								modifier = {
@@ -1613,12 +1613,23 @@ ftr_pg_ui_event.0203 = {
 				custom_description = {
 					text = "ftr_purge_heresy_amoung_vassals_tt"
 					every_vassal = {
-						limit = {
-							NOT = { faith = scope:liege_c.faith }
+						if = {
+							limit = {
+								NOT = { faith = scope:liege_c.faith }
+							}
+							trigger_event = {
+								id = ftr_pg_ui_event.0300
+								days = 10
+							}
 						}
-						trigger_event = {
-							id = ftr_pg_ui_event.0300
-							days = 10
+						else = {
+							if = {
+								limit = { primary_title.tier > tier_barony }
+								trigger_event = {
+									id = ftr_pg_ui_event.0304
+									days = 10
+								}
+							}
 						}
 					}
 				}
@@ -2663,7 +2674,8 @@ ftr_pg_ui_event.0212 = {
 					}
 				}
 				every_vassal = {
-					limit = { can_start_scheme = { type = learn_language target = prev } }
+					#limit = { can_start_scheme = { type = learn_language target = prev } }
+					limit = { NOT = { knows_language_of_culture = scope:liege_c.culture } }
 					trigger_event = {
 						id = ftr_pg_ui_event.0303
 						days = 5
@@ -2862,5 +2874,98 @@ ftr_pg_ui_event.0303 = {
 	option = { # I hear nothing
 		name = ftr_pg_ui_event.0303.b
 		add_prestige = -150
+		scope:liege_c = {
+			send_interface_toast = {
+				title = "ftr_vassal_refuse_to_learn_language_tt"
+				left_icon = root
+				custom_description = {
+					text = "ftr_vassal_refuse_to_learn_language_content_tt"
+					subject = root
+				}
+			}
+		}
+	}
+}
+
+# Liege Start to Purge Heresy, Do You Follow?
+ftr_pg_ui_event.0304 = {
+	type = character_event
+	title = ftr_pg_ui_event.0304.t
+	desc = ftr_pg_ui_event.0304.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:liege_c
+		animation = personality_zealous
+	}
+
+	option = { # I agree
+		name = ftr_pg_ui_event.0304.a
+		every_sub_realm_county = {
+			limit = {
+				holder = root
+				NOT = { faith = root.faith }
+			}
+			save_temporary_scope_as = current_county
+			random_list = {
+				0 = {
+					modifier = {
+						add = {
+							value = root.martial
+							multiply = 2
+						}
+					}
+					root = {
+						send_interface_message = {
+							title = "ftr_purge_heresy_succ_tt"
+							left_icon = root
+							right_icon = scope:current_county
+							scope:current_county = {
+								set_county_faith = root.faith
+							}
+						}
+					}
+				}
+				50 = {
+					root = {
+						send_interface_message = {
+							title = "ftr_purge_heresy_fail_tt"
+							left_icon = root
+							right_icon = scope:current_county
+							scope:current_county = {
+								add_county_modifier = {
+									modifier = ftr_try_purge_heresy_modifier
+									years = 5
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 50
+				has_trait = zealous
+			}
+			modifier = {
+				add = -30
+				OR = {
+					has_trait = cynical
+					has_trait = compassionate
+					has_trait = forgiving
+				}
+			}
+		}
+	}
+	option = { # I hear nothing
+		name = ftr_pg_ui_event.0304.b
+		add_piety = -150
+		ai_chance = {
+			base = 20
+		}
 	}
 }

@@ -194,6 +194,13 @@
  ftr_pg_ui_event.0303.desc:0 "Recently, [starter.GetShortUIName] has been spreading rumors in front of the lord [liege_c.GetShortUIName], promoting cultural superiority. We loyal intercultural vassals have to allocate precious energy to language learning, otherwise we will be seen as disrespectful to the lord. This arrogant statement itself is absurd, but [liege_c.GetShortUIName] actually agreed to such a proposal. Now I have to choose whether to learn the lord's language or not."
  ftr_pg_ui_event.0303.a:0 "Start to learn"
  ftr_pg_ui_event.0303.b:0 "Learn? Learn a piece of shit!"
+ ftr_vassal_refuse_to_learn_language_tt:0 "Vassal Refuse to Learn Language"
+ ftr_vassal_refuse_to_learn_language_content_text:0 "[CHARACTER.GetShortUIName] refuse to allocate energy to your language."
+
+ ftr_pg_ui_event.0304.t:0 "Purge Heresy"
+ ftr_pg_ui_event.0304.desc:0 "Recently, [starter.GetShortUIName] suggested to Lord [liege_c.GetShortUIName] to cleanse the infidels and heretics in the territory. After discussion in the inner circle, [liege_c.GetShortUIName] finally decided to approve this proposal. Now that the order to cleanse the infidels has been issued throughout the territory, as a loyal subject of [liege_c.GetShortUIName], I also have to make a statement."
+ ftr_pg_ui_event.0304.a:0 "Let do this"
+ ftr_pg_ui_event.0304.b:0 "I don't think so."
 
  ftr_pg_interaction_event.0001.t:0 "Pay A Visit"
  ftr_pg_interaction_event.0001.desc:0 "[recipient.GetShortUIName] has already received my commission, so it's time to think about what to exchange from [recipient.GetShortUIName]."

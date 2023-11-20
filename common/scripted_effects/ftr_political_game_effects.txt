@@ -337,46 +337,6 @@ ftr_change_focus_result_notify_effect = {
 	}
 }
 
-ftr_expand_authority_vote_result_notify_effect = {
-	ftr_get_fg_notify_list_effect = {
-		LIEGE = $LIEGE$
-		STARTER = $STARTER$
-	}
-	every_in_list = {
-		list = ftr_notify_list
-		if = {
-			limit = { $SUCCESS$ = 1 }
-			send_interface_message = {
-				title = "ftr_expand_authority_broadcast_tt"
-				left_icon = $STARTER$
-				right_icon = $LIEGE$
-				custom_description = {
-					text = "ftr_expand_authority_success_notify_tt"
-					subject = $STARTER$
-					object = $LIEGE$
-				}
-				show_as_tooltip = {
-					$LIEGE$ = {
-						ftr_expand_authority_effect = yes
-					}
-				}
-			}
-		}
-		else = {
-			send_interface_message = {
-				title = "ftr_expand_authority_broadcast_tt"
-				left_icon = $STARTER$
-				right_icon = $LIEGE$
-				custom_description = {
-					text = "ftr_expand_authority_failed_notify_tt"
-					subject = $STARTER$
-					object = $LIEGE$
-				}
-			}
-		}
-	}
-}
-
 ftr_decrease_authority_effect = {
 	if = {
 		limit = { has_realm_law = crown_authority_1 }

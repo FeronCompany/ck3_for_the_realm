@@ -1367,9 +1367,6 @@ ftr_pg_ui_event.0201 = {
 								subject = scope:starter
 								object = scope:liege_c
 							}
-							show_as_tooltip = {
-								scope:liege_c = { ftr_expand_authority_effect = yes }
-							}
 						}
 					}
 				}
@@ -1470,9 +1467,6 @@ ftr_pg_ui_event.0202 = {
 								text = "ftr_weaken_authority_agree_content_tt"
 								subject = scope:starter
 								object = scope:liege_c
-							}
-							show_as_tooltip = {
-								scope:liege_c = { ftr_decrease_authority_effect = yes }
 							}
 						}
 					}

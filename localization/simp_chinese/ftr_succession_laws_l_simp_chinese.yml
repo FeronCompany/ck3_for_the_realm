@@ -28,3 +28,6 @@
  tyrant_elective_candidates_tooltip:0 "君主近亲与直属封臣"
  elector_is_councillor_desc:0 "担任内阁职位 $VALUE|=+0$"
  ftr_elector_holder_desc:0 "君主钦定 $VALUE|=+0$"
+ warlord_succession_law:1 "军阀推举制"
+ warlord_succession_law_subname:0 "军阀的亲族和下属都有角逐尊位的资格"
+ warlord_succession_law_effects:1 "军阀政体的继承没有法度可言，军阀的亲族与下属都觊觎尊位"

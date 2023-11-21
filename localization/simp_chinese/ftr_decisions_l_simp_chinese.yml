@@ -131,3 +131,8 @@
  ftr_pg_liege_proposal_vote_abstain_decision_desc:0 "对目前领主领地内正在讨论的议案表示弃权。"
  ftr_pg_liege_proposal_vote_abstain_decision_confirm:0 "投下弃权票"
  ftr_liege_realm_not_abstain_no_text:0 "未在领主领地内的议案中投下弃权票"
+
+ ftr_warlord_gain_power_decision:0 "<FTR>拥兵自重"
+ ftr_warlord_gain_power_decision_tooltip:0 "大丈夫立于天地之间，岂能郁郁久居人下？"
+ ftr_warlord_gain_power_decision_desc:0 "我们的国家陷入混乱，我们的领主孱弱不堪。如今之计，唯有拥兵自重割据一方才能保全自身，为拯救国家与人民积蓄力量。"
+ ftr_warlord_gain_power_decision_confirm:0 "时机已到！"

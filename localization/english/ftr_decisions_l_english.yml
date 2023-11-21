@@ -131,3 +131,8 @@
  ftr_pg_liege_proposal_vote_abstain_decision_desc:0 "Vote abstain to proposal in [liege.GetShortUIName]'s realm."
  ftr_pg_liege_proposal_vote_abstain_decision_confirm:0 "Vote Abstain"
  ftr_liege_realm_not_abstain_no_text:0 "Has not abstained from voting on a motion in [liege.GetShortUIName]'s realm"
+
+ ftr_warlord_gain_power_decision:0 "<FTR> Transformed Into A Warlord"
+ ftr_warlord_gain_power_decision_tooltip:0 "I stand between heaven and earth, how can I be depressed and live under others for a long time?"
+ ftr_warlord_gain_power_decision_desc:0 "Our country is in chaos, and our lord is weak. The only way to save ourselves and accumulate strength to save the country and the people is to gain control of the army and become a warlord."
+ ftr_warlord_gain_power_decision_confirm:0 "It is time!"

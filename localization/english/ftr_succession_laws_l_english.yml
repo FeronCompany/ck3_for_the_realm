@@ -28,3 +28,6 @@
  tyrant_elective_candidates_tooltip:0 "Close relatives of holder and direct vassals"
  elector_is_councillor_desc:0 "Is Councillor $VALUE|=+0$"
  ftr_elector_holder_desc:0 "Holder Appoint $VALUE|=+0$"
+ warlord_succession_law:1 "Warlord Succession"
+ warlord_succession_law_subname:0 "The relatives and subordinates of the warlord are eligible to compete for the throne."
+ warlord_succession_law_effects:1 "There is no law for the succession of warlord, and the relatives and subordinates of warlord covet the throne."

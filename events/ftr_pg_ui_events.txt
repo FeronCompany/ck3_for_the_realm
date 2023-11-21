@@ -856,7 +856,15 @@ ftr_pg_ui_event.0100 = {
 			base = 0
 			modifier = {
 				add = 50
-				scope:war_to_stop = {
+				any_character_war = {
+					primary_defender = root
+					primary_attacker = {
+						NOT = { this = scope:liege_c }
+						OR = {
+							liege = scope:liege_c
+							liege = root
+						}
+					}
 					attacker_war_score >= 40
 				}
 			}

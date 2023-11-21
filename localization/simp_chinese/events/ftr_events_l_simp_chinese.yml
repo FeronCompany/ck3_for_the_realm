@@ -185,13 +185,19 @@
  ftr_realm_event.1003.desc:0 "你的君主[liege.GetName]已经决定授予你世袭罔替的封建特权。现在你不再是君主的官僚，而是一位封建附庸。"
  ftr_realm_event.1003.a:0 "谢主隆恩！"
 
- ftr_realm_event.1004.t:0 "<FTR> 罢官"
+ ftr_realm_event.1004.t:0 "<FTR>罢官"
  ftr_realm_event.1004.desc:0 "您的君主[liege.GetName]已经决定将您罢官。"
  ftr_realm_event.1004.a:0 "这不可能！"
 
  ftr_realm_event.1005.t:0 "<FTR>案牍劳形"
  ftr_realm_event.1005.desc:0 "您的君主[top_liege.GetName]感念您的辛劳，担心您无法同时管理过多领地，特派遣[successor.GetName]来为您分担一部分工作。"
  ftr_realm_event.1005.a:0 "其实我也没那么累……"
+
+ ftr_realm_event.1008.t:0 "<FTR>封臣拥兵自重"
+ ftr_realm_event.1008.desc:0 "我的封臣[warlord_vassal.GetShortUIName]最近公然窃取了当地的军权，蜕变为一名可耻的军阀。我虽然愤怒于[warlord_vassal.GetHerHis]背叛，但却无暇处理此事，只能暂时接受现状。"
+ ftr_realm_event.1008.a:0 "你给我等着"
+ ftr_vassal_transform_to_warlord_tt:0 "拥兵自重"
+ ftr_vassal_transform_to_warlord_desc:0 "[warlord_vassal.GetShortUIName]近期趁着[root.GetShortUIName]国内空虚，拥兵自重成为军阀。"
 
  ftr_war_tax.0001.t:0 "<FTR>战争税"
  ftr_war_tax.0001.desc:0 "战争税的问题已经摆上了桌面，大臣们对于具体的实施方案莫衷一是。所以采用哪种征税形式比较好呢？"

@@ -136,3 +136,6 @@
  ftr_warlord_gain_power_decision_tooltip:0 "大丈夫立于天地之间，岂能郁郁久居人下？"
  ftr_warlord_gain_power_decision_desc:0 "我们的国家陷入混乱，我们的领主孱弱不堪。如今之计，唯有拥兵自重割据一方才能保全自身，为拯救国家与人民积蓄力量。"
  ftr_warlord_gain_power_decision_confirm:0 "时机已到！"
+ ftr_liege_is_not_centralism_text:0 "领主不是集权制政体"
+ ftr_liege_war_against_vassals_text:0 "领主正与其封臣交战"
+ ftr_has_40_percent_of_lieges_army_text:0 "拥有超过领主当前兵力的40%"

@@ -163,7 +163,10 @@ ftr_clear_bureaucrat_title_law_decision = {
 	effect = {
 		every_held_title = {
 			limit = {
-				has_title_law = bureacratic_succession_law
+				OR = {
+					has_title_law = bureacratic_succession_law
+					has_title_law = warlord_succession_law
+				}
 			}
 			clear_title_laws = yes
 		}
@@ -236,31 +239,47 @@ ftr_warlord_gain_power_decision = {
 		primary_title.tier >= tier_duchy
 	}
 	is_valid = {
-		prestige_level >= 3
+		is_at_war = no
 		OR = {
-			liege = {
-				NOT = { government_has_flag = government_is_centralism }
+			custom_description = {
+				text = "ftr_liege_is_not_centralism_tt"
+				NOT = { 
+					liege = { government_has_flag = government_is_centralism }
+				}
 			}
-			liege = {
-				is_independent_ruler = yes
-				is_at_war = yes
-				any_character_war = { # In civil war
-					OR = {
-						AND = {
-							primary_defender = this
-							primary_attacker.liege = this
-						}
-						AND = {
-							primary_attacker = this
-							primary_defender.liege = this
+			AND = {
+				liege = {
+					is_independent_ruler = yes
+					custom_description = {
+						text = "ftr_liege_war_against_vassals_tt"
+						is_at_war = yes
+						any_character_war = { # In civil war
+							OR = {
+								AND = {
+									primary_defender = prev
+									primary_attacker.liege = prev
+								}
+								AND = {
+									primary_attacker = prev
+									primary_defender.liege = prev
+								}
+							}
 						}
 					}
 				}
+				prestige_level >= 3
+				is_powerful_vassal = yes
+				NOT = { is_councillor_of = liege }
+				custom_description = {
+					text = "ftr_has_40_percent_of_lieges_army_tt"
+					current_military_strength > liege.ftr_forty_percent_of_current_military_strength
+				}
+				opinion = {
+					target = liege
+					value < 50
+				}
 			}
 		}
-		is_at_war = no
-		is_powerful_vassal = yes
-		current_military_strength > liege.ftr_forty_percent_of_current_military_strength
 	}
 
 	cost = {

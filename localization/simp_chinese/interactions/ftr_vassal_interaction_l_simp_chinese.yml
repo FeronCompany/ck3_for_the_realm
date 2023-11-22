@@ -85,3 +85,7 @@
  ftr_fine_accept_notification:0 "[recipient.GetShortUIName|U]同意向[actor.GetShortUIName|U]支付罚金"
  FTR_FINE_GOLD_NOT_ENOUGH:0 "囊中羞涩： $VALUE|=+0$"
  FTR_FINE_TRAIT:0 "识大体： $VALUE|=+0$"
+
+ ftr_transform_warlord_interaction:0 "<FTR>收回兵权"
+ ftr_transform_warlord_interaction_desc:0 "结束[recipient.GetName|U]的军阀统治使其成为官僚"
+ ftr_transform_warlord_interaction_notification:0 "[actor.GetName|U]希望你能老实交出兵权，否则便视为造反。"

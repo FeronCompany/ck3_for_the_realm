@@ -3,16 +3,28 @@ ftr_succession_order_laws = {
 	flag = succession_order_laws
 	autocracy_succession_law = {
 		can_keep = {
-			government_has_flag = government_is_centralism
+			OR = {
+				government_has_flag = government_is_centralism
+				government_has_flag = government_is_warlord
+			}
 		}
 		can_have = {
-			government_has_flag = government_is_centralism
+			OR = {
+				government_has_flag = government_is_centralism
+				government_has_flag = government_is_warlord
+			}
 		}
 		can_pass = {
-			government_has_flag = government_is_centralism
+			OR = {
+				government_has_flag = government_is_centralism
+				government_has_flag = government_is_warlord
+			}
 		}
 		should_start_with = {
-			government_has_flag = government_is_centralism
+			OR = {
+				government_has_flag = government_is_centralism
+				government_has_flag = government_is_warlord
+			}
 		}
 		succession = {
 			order_of_succession = inheritance

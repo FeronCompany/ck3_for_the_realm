@@ -85,3 +85,7 @@
  ftr_fine_accept_notification:0 "[recipient.GetShortUIName|U] accept to pay fine to [actor.GetShortUIName|U]"
  FTR_FINE_GOLD_NOT_ENOUGH:0 "Poor Financial Condition: $VALUE|=+0$"
  FTR_FINE_TRAIT:0 "Recognize the situation: $VALUE|=+0$"
+
+ ftr_transform_warlord_interaction:0 "<FTR> Abolition of Warlord"
+ ftr_transform_warlord_interaction_desc:0 "End the warlord rule of [recipient.GetName|U] and make it a bureaucracy"
+ ftr_transform_warlord_interaction_notification:0 "[actor.GetName|U] hopes you can honestly surrender your military power, otherwise it will be regarded as rebellion."

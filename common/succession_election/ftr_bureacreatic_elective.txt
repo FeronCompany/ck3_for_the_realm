@@ -44,6 +44,12 @@
 	
 	electors = {
 		add = {
+			type = holder
+			limit = {
+				is_capable_adult = yes
+			}
+		}
+		add = {
 			type = holder_direct_vassals
 			limit = {
 				is_adult = yes
@@ -59,7 +65,7 @@
 		elector_self_voting_pattern_feudal_elective_modifier = yes
 
 		##########################	Holder voting pattern	##########################
-		holder_voting_pattern_feudal_elective_modifier = yes
+		#holder_voting_pattern_feudal_elective_modifier = yes
 
 		##########################	Elector voting patterns (circumstances)	##########################
 		elector_voting_pattern_circumstances_feudal_elective_modifier = yes
@@ -71,7 +77,7 @@
 		elector_voting_pattern_traits_feudal_elective_modifier = yes
 
 		##########################	Elector voting patterns (opinion)	##########################
-		elector_voting_pattern_opinion_feudal_elective_modifier = yes
+		#elector_voting_pattern_opinion_feudal_elective_modifier = yes
 	}
 
 	candidates = {
@@ -80,14 +86,6 @@
 			limit = {
 				is_adult = yes
 				is_vassal_of = scope:holder
-				NOT = { has_trait = incapable }
-				government_has_flag = government_is_centralism
-			}
-		}
-		add = {
-			type = holder_direct_vassals
-			limit = {
-				is_adult = yes
 				NOT = { has_trait = incapable }
 				government_has_flag = government_is_centralism
 			}

@@ -597,7 +597,7 @@ ftr_request_depose_interaction = {
 		}
 	}
 	ai_accept = {
-		base = -40
+		base = -30
 		opinion_modifier = {
 			opinion_target = scope:actor
 			who = scope:recipient
@@ -615,7 +615,7 @@ ftr_request_depose_interaction = {
 		}
 		modifier = {
 			add = {
-				value = 10
+				value = 20
 				multiply = scope:secondary_recipient.num_sinful_traits
 			}
 			scope:secondary_recipient.num_sinful_traits > 0

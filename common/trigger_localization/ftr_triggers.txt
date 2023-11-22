@@ -116,3 +116,15 @@ ftr_liege_realm_not_vote_no_tt = {
 ftr_liege_realm_not_abstain_no_tt = {
 	global = ftr_liege_realm_not_abstain_no_text
 }
+
+ftr_liege_is_not_centralism_tt = {
+	global = ftr_liege_is_not_centralism_text
+}
+
+ftr_liege_war_against_vassals_tt = {
+	global = ftr_liege_war_against_vassals_text
+}
+
+ftr_has_40_percent_of_lieges_army_tt = {
+	global = ftr_has_40_percent_of_lieges_army_text
+}

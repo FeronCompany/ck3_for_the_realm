@@ -136,3 +136,6 @@
  ftr_warlord_gain_power_decision_tooltip:0 "I stand between heaven and earth, how can I be depressed and live under others for a long time?"
  ftr_warlord_gain_power_decision_desc:0 "Our country is in chaos, and our lord is weak. The only way to save ourselves and accumulate strength to save the country and the people is to gain control of the army and become a warlord."
  ftr_warlord_gain_power_decision_confirm:0 "It is time!"
+ ftr_liege_is_not_centralism_text:0 "Liege is not centralism government."
+ ftr_liege_war_against_vassals_text:0 "Liege is at war with vassals."
+ ftr_has_40_percent_of_lieges_army_text:0 "Has more than 40% of liege's army strength."

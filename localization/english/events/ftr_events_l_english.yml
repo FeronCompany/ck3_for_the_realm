@@ -193,7 +193,7 @@
  ftr_realm_event.1008.desc:0 "My vassal [warlord_vassal.GetShortUIName] recently openly stole the local military power and transformed into a shameful warlord. Although I am angry about the betrayal of [warlord_vassal.GetHerHis], I have no time to deal with it and can only temporarily accept the status quo."
  ftr_realm_event.1008.a:0 "Just wait"
  ftr_vassal_transform_to_warlord_tt:0 "Vassal Transformed to Warlord"
- ftr_vassal_transform_to_warlord_desc:0 "[warlord_vassal.GetShortUIName] recently taking advantage of the domestic emptiness of [root.GetShortUIName] and transformed into a warlord."
+ ftr_vassal_transform_to_warlord_content_text:0 "[CHARACTER.GetShortUIName] recently taking advantage of the domestic emptiness of [TARGET_CHARACTER.GetShortUIName] and transformed into a warlord."
 
  ftr_war_tax.0001.t:0 "<FTR>War Tax"
  ftr_war_tax.0001.desc:0 "The issue of the war tax is on the table, and ministers are divided on the specific implementation plan. So which form of taxation is better?"

@@ -197,7 +197,7 @@
  ftr_realm_event.1008.desc:0 "我的封臣[warlord_vassal.GetShortUIName]最近公然窃取了当地的军权，蜕变为一名可耻的军阀。我虽然愤怒于[warlord_vassal.GetHerHis]背叛，但却无暇处理此事，只能暂时接受现状。"
  ftr_realm_event.1008.a:0 "你给我等着"
  ftr_vassal_transform_to_warlord_tt:0 "拥兵自重"
- ftr_vassal_transform_to_warlord_desc:0 "[warlord_vassal.GetShortUIName]近期趁着[root.GetShortUIName]国内空虚，拥兵自重成为军阀。"
+ ftr_vassal_transform_to_warlord_content_text:0 "[CHARACTER.GetShortUIName]近期趁着[TARGET_CHARACTER.GetShortUIName]国内空虚，拥兵自重成为军阀。"
 
  ftr_war_tax.0001.t:0 "<FTR>战争税"
  ftr_war_tax.0001.desc:0 "战争税的问题已经摆上了桌面，大臣们对于具体的实施方案莫衷一是。所以采用哪种征税形式比较好呢？"

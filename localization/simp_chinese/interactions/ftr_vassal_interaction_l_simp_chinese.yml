@@ -89,3 +89,4 @@
  ftr_transform_warlord_interaction:0 "<FTR>收回兵权"
  ftr_transform_warlord_interaction_desc:0 "结束[recipient.GetName|U]的军阀统治使其成为官僚"
  ftr_transform_warlord_interaction_notification:0 "[actor.GetName|U]希望你能老实交出兵权，否则便视为造反。"
+ FTR_LIEGE_IS_AT_WAR:0 "领主身处战争：$VALUE|=+0$"

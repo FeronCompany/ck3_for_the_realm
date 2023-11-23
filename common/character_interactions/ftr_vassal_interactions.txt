@@ -495,7 +495,7 @@ ftr_request_depose_interaction = {
 	}
 	is_shown = {
 		scope:actor = {
-			government_has_flag = government_is_centralism
+			#government_has_flag = government_is_centralism
 			is_independent_ruler = no
 			primary_title.tier > tier_county
 		}
@@ -1067,9 +1067,9 @@ ftr_transform_warlord_interaction = {
 			every_held_title = {
 				if = {
 					limit = { tier >= tier_duchy }
+					clear_title_laws = yes
+					add_title_law = bureacratic_succession_law
 				}
-				clear_title_laws = yes
-				add_title_law = bureacratic_succession_law
 			}
 		}
 	}
@@ -1122,6 +1122,12 @@ ftr_transform_warlord_interaction = {
 	}
 	ai_will_do = {
 		base = 0
+		modifier = {
+			add = -40
+			scope:actor = {
+				is_at_war = yes
+			}
+		}
 		modifier = {
 			add = -20
 			scope:actor = {
@@ -1182,6 +1188,14 @@ ftr_transform_warlord_interaction = {
 			opinion_target = scope:actor
 			multiplier = 0.5
 			desc = AI_OPINION_REASON
+		}
+
+		modifier = {
+			add = -20
+			scope:actor = {
+				is_at_war = yes
+			}
+			desc = FTR_LIEGE_IS_AT_WAR
 		}
 
 		modifier = {

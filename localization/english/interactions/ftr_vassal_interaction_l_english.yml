@@ -89,3 +89,4 @@
  ftr_transform_warlord_interaction:0 "<FTR> Abolition of Warlord"
  ftr_transform_warlord_interaction_desc:0 "End the warlord rule of [recipient.GetName|U] and make it a bureaucracy"
  ftr_transform_warlord_interaction_notification:0 "[actor.GetName|U] hopes you can honestly surrender your military power, otherwise it will be regarded as rebellion."
+ FTR_LIEGE_IS_AT_WAR:0 "Liege is at war: $VALUE|=+0$"

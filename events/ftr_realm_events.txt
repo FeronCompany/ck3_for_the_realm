@@ -570,9 +570,13 @@ ftr_realm_event.1008 = {
 			every_vassal = {
 				send_interface_message = {
 					title = ftr_vassal_transform_to_warlord_tt
-					desc = ftr_vassal_transform_to_warlord_desc
 					left_icon = root
 					right_icon = scope:warlord_vassal
+					custom_description = {
+						text = ftr_vassal_transform_to_warlord_content_tt
+						subject = scope:warlord_vassal
+						object = root
+					}
 				}
 			}
 		}

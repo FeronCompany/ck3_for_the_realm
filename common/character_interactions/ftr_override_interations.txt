@@ -88,6 +88,7 @@ revoke_title_interaction = {
 				AND = {
 					scope:actor = {
 						is_independent_ruler = no
+						government_has_flag = government_is_centralism
 					}
 					scope:recipient = {
 						government_has_flag = government_is_centralism

@@ -125,7 +125,7 @@ feudal_convert_to_centralism_decision = {
 		change_government = centralism_government
 		add_realm_law = autocracy_succession_law
 		every_held_title = {
-			if = {
+			limit = {
 				has_title_law = warlord_succession_law
 			}
 			clear_title_laws = yes

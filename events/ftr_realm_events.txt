@@ -588,3 +588,24 @@ ftr_realm_event.1008 = {
 
 	after = {}
 }
+
+# Clear title law for other government types
+ftr_realm_event.1009 = {
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					is_independent_ruler = yes
+					AND = {
+						NOT = { government_has_flag = government_is_warlord }
+						NOT = { government_has_flag = government_is_centralism }
+					}
+				}
+			}
+			scope:title = {
+				clear_title_laws = yes
+			}
+		}
+	}
+}

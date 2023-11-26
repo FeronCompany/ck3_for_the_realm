@@ -69,6 +69,13 @@ ftr_title_gain_warlord_effects = {
 }
 ftr_title_conquerd_effects = {
 	trigger = {
+		scope:title = {
+			tier >= tier_duchy
+			OR = {
+				has_title_law = bureacratic_succession_law
+				has_title_law = warlord_succession_law
+			}
+		}
 		OR = {
 			scope:transfer_type = flag:revoked
 			scope:transfer_type = flag:conquest
@@ -81,24 +88,16 @@ ftr_title_conquerd_effects = {
 		}
 		OR = {
 			is_independent_ruler = yes
-			NOT = {
-				government_has_flag = government_is_warlord
-				government_has_flag = government_is_centralism
+			AND = {
+				NOT = { government_has_flag = government_is_warlord }
+				NOT = { government_has_flag = government_is_centralism }
 			}
 		}
 	}
 	effect = {
-		if = {
-			every_held_title = {
-				limit = {
-					tier >= tier_duchy
-					OR = {
-						has_title_law = bureacratic_succession_law
-						has_title_law = warlord_succession_law
-					}
-				}
-				clear_title_laws = yes
-			}
+		trigger_event = {
+			id = ftr_realm_event.1009
+			days = 1
 		}
 	}
 }

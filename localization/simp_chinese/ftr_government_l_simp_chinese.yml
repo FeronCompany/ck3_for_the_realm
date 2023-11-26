@@ -34,6 +34,7 @@
  centralism_levies_high_short:0 "高"
  centralism_levies_extortionate:0 "大规模$game_concept_levy$贡献"
  centralism_levies_extortionate_short:0 "大规模"
+ bureaucratic_tax_collector_obligations: "官僚统治力"
  
  centralism_special_contract:3 "地方法规"
  normal_state:0 "一般行政区"

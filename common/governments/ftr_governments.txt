@@ -10,8 +10,7 @@
 	required_county_holdings = { castle_holding city_holding }
 
 	vassal_contract = {
-		centralism_government_taxes
-		centralism_government_levies
+		bureaucratic_tax_collector_obligations
 		centralism_special_contract
 		religious_rights
 		fortification_rights

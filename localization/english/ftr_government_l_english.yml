@@ -28,6 +28,7 @@
  centralism_levies_high_short:0 "High"
  centralism_levies_extortionate:0 "Extortionate $game_concept_levy$ contribution"
  centralism_levies_extortionate_short:0 "Extortionate"
+ bureaucratic_tax_collector_obligations: "Bureaucracy"
  
  centralism_special_contract:3 "Local policy"
  normal_state:0 "Normal district"

@@ -19,6 +19,7 @@
  elector_vote_martial_desc:0 "军事 $VALUE|=+0$"
  elector_vote_intrigue_desc:0 "密谋 $VALUE|=+0$"
  elector_vote_prestige_desc:0 "威望 $VALUE|=+0$"
+ elector_vote_army_strength_desc:0 "军力 $VALUE|=+0$"
  tyrant_succession_law:1 "僭主制继承"
  tyrant_succession_law_subname:0 "僭主的亲族和下属都有角逐尊位的资格"
  tyrant_succession_law_effects:1 "僭主政体的继承没有法度可言，僭主的亲族与下属都觊觎尊位"

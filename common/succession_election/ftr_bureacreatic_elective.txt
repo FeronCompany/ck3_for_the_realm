@@ -114,31 +114,17 @@ tyrant_elective = {
 	elector_vote_strength = {
 		base = 10
 		modifier = {
-			desc = elector_vote_diplomacy_desc
+			desc = elector_vote_army_strength_desc
 			add = {
-				add = diplomacy
-				multiply = 1
-			}
-		}
-		modifier = {
-			desc = elector_vote_martial_desc
-			add = {
-				add = martial
-				multiply = 1
-			}
-		}
-		modifier = {
-			desc = elector_vote_intrigue_desc
-			add = {
-				add = intrigue
-				multiply = 1
+				add = current_military_strength
+				multiply = 0.02
 			}
 		}
 		modifier = {
 			desc = elector_vote_prestige_desc
 			add = {
-				add = prestige
-				multiply = 0.01
+				add = prestige_level
+				multiply = 50
 			}
 		}
 		modifier = {

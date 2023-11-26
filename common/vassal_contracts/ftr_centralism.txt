@@ -7,7 +7,7 @@ bureaucratic_tax_collector_obligations = {
 				scope:liege = {
 					add = {
 						value = ftr_bureaucracy_value
-						divide = 300
+						divide = 250
 					}
 				}
 			}
@@ -17,7 +17,7 @@ bureaucratic_tax_collector_obligations = {
 				scope:liege = {
 					add = {
 						value = ftr_bureaucracy_value
-						divide = 450
+						divide = 300
 					}
 				}
 			}

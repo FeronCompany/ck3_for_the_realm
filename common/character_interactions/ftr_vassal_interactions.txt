@@ -1041,7 +1041,6 @@ ftr_transform_warlord_interaction = {
 		}
 		scope:actor = {
 			government_has_flag = government_is_centralism
-			is_independent_ruler = yes
 		}
 	}
 	is_valid_showing_failures_only = {

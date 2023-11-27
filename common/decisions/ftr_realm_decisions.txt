@@ -189,7 +189,10 @@ ftr_end_tyrant_succession_decision = {
 	is_shown = {
 		is_independent_ruler = yes
 		any_held_title = {
-			has_title_law = tyrant_succession_law
+			OR = {
+				has_title_law = warlord_succession_law
+				has_title_law = tyrant_succession_law
+			}
 		}
 	}
 	is_valid = {
@@ -213,7 +216,10 @@ ftr_end_tyrant_succession_decision = {
 	effect = {
 		every_held_title = {
 			limit = {
-				has_title_law = tyrant_succession_law
+				OR = {
+					has_title_law = tyrant_succession_law
+					has_title_law = warlord_succession_law
+				}
 			}
 			clear_title_laws = yes
 		}

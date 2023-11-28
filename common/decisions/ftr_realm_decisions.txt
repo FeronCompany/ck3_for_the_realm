@@ -66,33 +66,35 @@ feudal_convert_to_centralism_decision = {
 			government_has_flag = government_is_feudal
 			government_has_flag = government_is_warlord
 		}
-		primary_title.tier > tier_duchy
+		primary_title.tier >= tier_kingdom
 	}
 	is_valid = {
 		is_independent_ruler = yes
 		OR = {
-			AND = {
+			has_realm_law = crown_authority_1
+			has_realm_law = crown_authority_2
+			has_realm_law = crown_authority_3
+		}
+		custom_description = {
+			text = "ftr_have_enough_pi_tt"
+			value = ftr_reform_to_centralism_influence_cost_value
+			ftr_political_influence_value >= ftr_reform_to_centralism_influence_cost_value
+		}
+		custom_description = {
+			text = "ftr_have_enough_bureaucracy_value_tt"
+			value = ftr_reform_to_centralism_bureaucracy_gap_value
+			ftr_bureaucracy_value >= ftr_reform_to_centralism_bureaucracy_gap_value
+		}
+		OR = {
+			culture = {
 				OR = {
-					has_realm_law = crown_authority_1
-					has_realm_law = crown_authority_2
-					has_realm_law = crown_authority_3
-				}
-				culture = {
-					OR = {
-						has_cultural_tradition = tradition_byzantine_succession
-						has_cultural_tradition = tradition_philosopher_culture
-					}
+					has_cultural_tradition = tradition_byzantine_succession
+					has_cultural_tradition = tradition_ftr_meritocracy
 				}
 			}
-			AND = {
-				OR = {
-					has_realm_law = crown_authority_2
-					has_realm_law = crown_authority_3
-				}
-				culture = {
-					has_innovation = innovation_primogeniture
-					has_innovation = innovation_court_officials
-				}
+			culture = {
+				has_innovation = innovation_primogeniture
+				has_innovation = innovation_court_officials
 			}
 		}
 	}
@@ -102,14 +104,6 @@ feudal_convert_to_centralism_decision = {
 	}
 
 	effect = {
-		if = {
-			limit = {
-				has_trait = content
-			}
-			stress_impact = {
-				content = medium_stress_impact_gain
-			}
-		}
 		hidden_effect = {
 			save_scope_as = liege
 			every_vassal = {
@@ -129,6 +123,12 @@ feudal_convert_to_centralism_decision = {
 				has_title_law = warlord_succession_law
 			}
 			clear_title_laws = yes
+		}
+		stress_impact = {
+			content = medium_stress_impact_gain
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_reform_to_centralism_influence_change_value
 		}
 	}
 	

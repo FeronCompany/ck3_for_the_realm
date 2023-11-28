@@ -1,5 +1,8 @@
 ﻿
 
+ftr_reform_to_centralism_influence_cost_value = 100
+ftr_reform_to_centralism_influence_change_value = -100
+ftr_reform_to_centralism_bureaucracy_gap_value = 90
 ftr_personal_bureaucracy_contribute_value = 25
 
 ftr_bureaucracy_value = {

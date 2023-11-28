@@ -14,6 +14,8 @@
  feudal_convert_to_centralism_decision_tooltip:0 "Implement reform, restore power to the central government, and replace feudal lords with officials to rule the country."
  feudal_convert_to_centralism_decision_desc:0 "The feudal system has completed its historical mission, and the country is at the crossroads of change. Concentration of power in the center is the only way, both internally and externally. It is time to witness history."
  feudal_convert_to_centralism_decision_confirm:0 "l'etat, c'est moi"
+ ftr_have_enough_bureaucracy_value_text:0 "Have more than $VALUE|0$ bureaucracy value"
+ ftr_not_have_enough_bureaucracy_value_text:0 "Not have more than $VALUE|0$ bureaucracy value"
 
  restore_byzantine_decision:0 "<FTR> Restore Byzantium Empire"
  restore_byzantine_decision_tooltip:0 "Restore Byzantium Empire"

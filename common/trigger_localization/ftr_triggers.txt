@@ -128,3 +128,8 @@ ftr_liege_war_against_vassals_tt = {
 ftr_has_40_percent_of_lieges_army_tt = {
 	global = ftr_has_40_percent_of_lieges_army_text
 }
+
+ftr_have_enough_bureaucracy_value_tt = {
+	global = ftr_have_enough_bureaucracy_value_text
+	global_not = ftr_not_have_enough_bureaucracy_value_text
+}

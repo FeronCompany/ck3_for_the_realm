@@ -14,6 +14,8 @@
  feudal_convert_to_centralism_decision_tooltip:0 "实施变法，将权力收回中央，用官吏代替封建主统治国家。"
  feudal_convert_to_centralism_decision_desc:0 "封建制业已完成其历史使命，国家正处在变革的十字路口。集中权力于中央，不论对内还是对外都是一条必由之路。是时候见证历史了。"
  feudal_convert_to_centralism_decision_confirm:0 "朕即国家！"
+ ftr_have_enough_bureaucracy_value_text:0 "有超过$VALUE|0$的官僚度"
+ ftr_not_have_enough_bureaucracy_value_text:0 "没有有超过$VALUE|0$的官僚度"
 
  restore_byzantine_decision:0 "<FTR>重建东罗马帝国"
  restore_byzantine_decision_tooltip:0 "恢复东罗马帝国荣光。"

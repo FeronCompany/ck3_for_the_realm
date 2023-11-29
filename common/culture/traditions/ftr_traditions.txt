@@ -17,15 +17,7 @@ tradition_ftr_meritocracy = {
 		monthly_learning_lifestyle_xp_gain_mult = 0.2
 		learning_per_prestige_level = 1
 	}
-	can_pick = {
-		custom_description = {
-			text = culture_not_bellicose
-			NOT = {
-				culture_pillar:ethos_bellicose = { is_in_list = traits }
-			}
-		}
-		NOT = { has_cultural_tradition = tradition_warrior_culture }
-	}
+	can_pick = {}
 	cost = {
 		prestige = {
 			add = {
@@ -38,12 +30,12 @@ tradition_ftr_meritocracy = {
 					NOR = {
 						culture_pillar:ethos_courtly = { is_in_list = traits }
 						culture_pillar:ethos_communal = { is_in_list = traits }
-						culture_pillar:ethos_stoic = { is_in_list = traits }
+						culture_pillar:ethos_bureaucratic = { is_in_list = traits }
 					}
 				}
 				add = {
 					value = tradition_incompatible_ethos_penalty
-					desc = not_courtly_communal_or_spiritual_desc
+					desc = ftr_not_courtly_communal_or_bureaucratic_desc
 				}
 			}
 			if = {
@@ -59,7 +51,7 @@ tradition_ftr_meritocracy = {
 								count >= 5
 								culture = prev
 								primary_title.tier >= tier_county
-								has_trait = scholar
+								ftr_bureaucracy_value >= ftr_bureaucracy_tradition_gap_value
 							}
 						}
 					}
@@ -69,7 +61,7 @@ tradition_ftr_meritocracy = {
 				}
 				add = {
 					value = tradition_unfulfilled_criteria_penalty
-					desc = rulers_with_scholar_desc
+					desc = ftr_rulers_with_high_bureaucracy_value_desc
 				}
 			}
 
@@ -97,7 +89,7 @@ tradition_ftr_meritocracy = {
 				NOR = {
 					culture_pillar:ethos_communal = { is_in_list = traits }
 					culture_pillar:ethos_courtly = { is_in_list = traits }
-					culture_pillar:ethos_stoic = { is_in_list = traits }
+					culture_pillar:ethos_bureaucratic = { is_in_list = traits }
 				}
 			}
 			multiply = 0

@@ -85,16 +85,14 @@ feudal_convert_to_centralism_decision = {
 			value = ftr_reform_to_centralism_bureaucracy_gap_value
 			ftr_bureaucracy_value >= ftr_reform_to_centralism_bureaucracy_gap_value
 		}
-		OR = {
-			culture = {
-				OR = {
-					has_cultural_tradition = tradition_byzantine_succession
-					has_cultural_tradition = tradition_ftr_meritocracy
+		culture = {
+			OR = {
+				has_cultural_tradition = tradition_byzantine_succession
+				has_cultural_tradition = tradition_ftr_meritocracy
+				AND = {
+					has_innovation = innovation_primogeniture
+					has_innovation = innovation_court_officials
 				}
-			}
-			culture = {
-				has_innovation = innovation_primogeniture
-				has_innovation = innovation_court_officials
 			}
 		}
 	}

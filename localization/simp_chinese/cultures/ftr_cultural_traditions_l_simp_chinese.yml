@@ -1,4 +1,6 @@
 ﻿l_simp_chinese:
  tradition_ftr_meritocracy_name: "<FTR>选贤举能"
  tradition_ftr_meritocracy_desc: "该文化坚信社会应当交由富有能力和道德的贤才来统治。"
+ ftr_not_courtly_communal_or_bureaucratic_desc: "该[culture|E]没有$ethos_courtly_name$、$ethos_communal_name$或$ethos_bureaucratic_name$的[ethos|E]"
+ ftr_rulers_with_high_bureaucracy_value_desc: "该[culture|E]没有#V 5#!个拥有超过[EmptyScope.ScriptValue('ftr_bureaucracy_tradition_gap_value')|0]官僚度的[rulers|E]"
  

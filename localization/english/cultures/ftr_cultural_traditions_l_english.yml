@@ -1,0 +1,6 @@
+﻿l_english:
+ tradition_ftr_meritocracy_name: "<FTR> Meritocracy"
+ tradition_ftr_meritocracy_desc: "The people of this culture firmly believe that society should be ruled by capable and moral talents."
+ ftr_not_courtly_communal_or_bureaucratic_desc: "The [culture|E] does not have the $ethos_courtly_name$, $ethos_communal_name$ or $ethos_bureaucratic_name$ [ethos|E]"
+ ftr_rulers_with_high_bureaucracy_value_desc: "The [culture|E] does not have #V 5#! [rulers|E] with more than [EmptyScope.ScriptValue('ftr_bureaucracy_tradition_gap_value')|0] bureaucracy value"
+ 

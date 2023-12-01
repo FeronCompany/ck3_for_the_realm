@@ -13,3 +13,7 @@
 
  ftr_slander_interaction:0 "<FTR>散布谣言"
  ftr_slander_interaction_desc:0 "散播对目标不利的谣言，使其疲于应对。"
+
+ ftr_break_alliance_interaction:0 "<FTR>结束同盟"
+ ftr_break_alliance_interaction_desc:0 "结束与该角色的盟约"
+ ftr_clan_unity_break_allience_change.desc:0 "[actor.GetShortUIName]结束了与[recipient.GetShortUIName]的盟约"

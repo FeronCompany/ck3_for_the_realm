@@ -158,6 +158,27 @@
 						vbox = { # 核心圈子
 							margin = { 30 10 }
 							layoutpolicy_vertical = expanding
+							text_label_center = {#
+								margin = { 10 10 }
+								text = "FTR_BUREAUCRACY_VALUE_TEXT"
+								tooltip = "ftr_bureaucracy_value_tooltip"
+							}
+							progressbar_standard = {
+								name = "ftr_bureaucracy_bar"
+								size = { 200 25 }
+								min = 0
+								max = 150
+								value = "[GetPlayer.MakeScope.ScriptValue( 'ftr_bureaucracy_value' )]"
+								text_single = {
+									parentanchor = center
+									position = { 0 -4 }
+									text = "FTR_MY_BUREAUCRACY_BAR_TEXT"
+									default_format = "#high"
+								}
+							}
+							spacer = {
+								size = { 100 15 }
+							}
 							text_label_center = {
 								margin = { 10 10 }
 								text = "FTR_POWERFUL_SUBJECTS_TEXT"
@@ -287,6 +308,27 @@
 						vbox = { # 核心圈子
 							margin = { 30 10 }
 							layoutpolicy_vertical = expanding
+							text_label_center = {#
+								margin = { 10 10 }
+								text = "FTR_BUREAUCRACY_VALUE_TEXT"
+								tooltip = "ftr_bureaucracy_value_tooltip"
+							}
+							progressbar_standard = {
+								name = "ftr_bureaucracy_bar"
+								size = { 200 25 }
+								min = 0
+								max = 150
+								value = "[GetPlayer.GetLiege.MakeScope.ScriptValue( 'ftr_bureaucracy_value' )]"
+								text_single = {
+									parentanchor = center
+									position = { 0 -4 }
+									text = "FTR_LIEGE_BUREAUCRACY_BAR_TEXT"
+									default_format = "#high"
+								}
+							}
+							spacer = {
+								size = { 100 15 }
+							}
 							text_label_center = {
 								margin = { 10 10 }
 								text = "FTR_POWERFUL_SUBJECTS_TEXT"

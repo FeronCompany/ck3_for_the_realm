@@ -1,0 +1,98 @@
+﻿
+
+tradition_ftr_meritocracy = {
+	category = societal
+	layers = {
+		0 = diplo
+		1 = mena
+		4 = diplomat.dds
+	}
+	parameters = {
+		pensive_trait_more_common = yes
+		poet_trait_more_common = yes
+		better_knights_from_decision = yes
+		can_recruit_prisoners_easily = yes
+	}
+	character_modifier = {
+		monthly_learning_lifestyle_xp_gain_mult = 0.2
+		learning_per_prestige_level = 1
+	}
+	can_pick = {}
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_courtly = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_bureaucratic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = ftr_not_courtly_communal_or_bureaucratic_desc
+				}
+			}
+			if = {
+				limit = {
+					trigger_if = {
+						limit = {
+							scope:character = {
+								is_ai = no
+							}
+						}
+						NOT = {
+							any_ruler = {
+								count >= 5
+								culture = prev
+								primary_title.tier >= tier_county
+								ftr_bureaucracy_value >= ftr_bureaucracy_tradition_gap_value
+							}
+						}
+					}
+					trigger_else = {
+						always = no
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = ftr_rulers_with_high_bureaucracy_value_desc
+				}
+			}
+
+			if = {
+				limit = {
+					scope:character = {
+						has_variable = tradition_philosopher_culture_travel_discount
+					}
+				}
+
+				add = {
+					value = tradition_travel_discount
+					desc = tradition_travel_discount_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOR = {
+					culture_pillar:ethos_communal = { is_in_list = traits }
+					culture_pillar:ethos_courtly = { is_in_list = traits }
+					culture_pillar:ethos_bureaucratic = { is_in_list = traits }
+				}
+			}
+			multiply = 0
+		}
+	}
+}

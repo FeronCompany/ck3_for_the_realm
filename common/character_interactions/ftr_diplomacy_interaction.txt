@@ -511,6 +511,19 @@ ftr_break_alliance_interaction = {
 			}
 			trigger_event = ftr_interaction_event.1003
 		}
+		if = {
+			limit = {
+				scope:actor = { government_has_flag = government_is_clan }
+				scope:actor.house = scope:recipient.house
+			}
+			scope:actor.house = {
+				add_unity_value = {
+					value = major_unity_loss
+					character = root
+					desc = ftr_clan_unity_break_allience_change.desc
+				}
+			}
+		}
 	}
 
 	auto_accept = yes

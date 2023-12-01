@@ -1,23 +1,21 @@
-﻿
-bureaucratic_tax_collector_obligations = {
+﻿warlord_government_obligations = {
 	obligation_levels = {
 		default = {
 			levies = {
 				value = 0
 				scope:liege = {
 					add = {
-						value = ftr_bureaucracy_value
-						divide = 200
+						value = 0.05
+						multiply = prestige_level
 					}
 				}
 			}
-
 			tax = {
 				value = 0
 				scope:liege = {
 					add = {
-						value = ftr_bureaucracy_value
-						divide = 300
+						value = 0.02
+						multiply = prestige_level
 					}
 				}
 			}

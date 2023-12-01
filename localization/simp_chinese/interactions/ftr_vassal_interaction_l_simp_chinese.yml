@@ -72,9 +72,6 @@
  FTR_BUY_VASSAL_RELIGION_DIFFERENCE:0 "信仰差异： $VALUE|=+0$"
  recipient_secondary_ftr_buy_vassal_interaction:0 "待购封臣"
 
- ftr_break_alliance_interaction:0 "<FTR>结束同盟"
- ftr_break_alliance_interaction_desc:0 "结束与该角色的盟约"
-
  ftr_coup_interaction:0 "<FTR>策划政变"
  ftr_coup_interaction_desc:0 "策划一场针对[recipient.GetName|U]政变以夺取权力"
  ftr_coup_interaction_notification:0 "您开始着手策划一场针对[recipient.GetName|U]政变"
@@ -85,3 +82,8 @@
  ftr_fine_accept_notification:0 "[recipient.GetShortUIName|U]同意向[actor.GetShortUIName|U]支付罚金"
  FTR_FINE_GOLD_NOT_ENOUGH:0 "囊中羞涩： $VALUE|=+0$"
  FTR_FINE_TRAIT:0 "识大体： $VALUE|=+0$"
+
+ ftr_transform_warlord_interaction:0 "<FTR>收回兵权"
+ ftr_transform_warlord_interaction_desc:0 "结束[recipient.GetName|U]的军阀统治使其成为官僚"
+ ftr_transform_warlord_interaction_notification:0 "[actor.GetName|U]希望你能老实交出兵权，否则便视为造反。"
+ FTR_LIEGE_IS_AT_WAR:0 "领主身处战争：$VALUE|=+0$"

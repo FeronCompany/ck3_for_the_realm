@@ -187,3 +187,10 @@ ftr_fine_gold_value = {
 		add = 200
 	}
 }
+
+ftr_forty_percent_of_current_military_strength = {
+	value = {
+		add = current_military_strength
+		multiply = 0.4
+	}
+}

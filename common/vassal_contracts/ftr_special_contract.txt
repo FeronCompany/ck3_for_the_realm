@@ -20,27 +20,6 @@ centralism_special_contract = {
 			}
 			score = 0
 		}
-		adv_scutage = {
-			is_shown = { scope:vassal = { government_has_flag = government_is_centralism } }
-			position = { 1 0 }
-			parent = normal_state
-			tax_factor = 0.5
-			levies_factor = -0.75
-			vassal_modifier = {
-				domain_limit = -15
-			}
-			liege_modifier = {
-				men_at_arms_cap = 1
-			}
-
-			ai_liege_desire = {
-				value = 1
-			}
-			ai_vassal_desire = {
-				value = 1
-			}
-			score = 0
-		}
 	}
 }
 

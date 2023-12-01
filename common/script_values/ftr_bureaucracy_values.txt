@@ -1,0 +1,59 @@
+﻿
+
+ftr_reform_to_centralism_influence_cost_value = 100
+ftr_reform_to_centralism_influence_change_value = -100
+ftr_reform_to_centralism_bureaucracy_gap_value = 90
+ftr_personal_bureaucracy_contribute_value = 25
+ftr_bureaucracy_tradition_gap_value = 84
+
+ftr_bureaucracy_value = {
+	value = 0
+	add = ftr_personal_average_attribute_value
+	if = {
+		limit = { exists = cp:councillor_chancellor }
+		add = {
+			value = cp:councillor_chancellor.diplomacy
+			max = ftr_personal_bureaucracy_contribute_value
+		}
+	}
+	if = {
+		limit = { exists = cp:councillor_steward }
+		add = {
+			value = cp:councillor_steward.stewardship
+			max = ftr_personal_bureaucracy_contribute_value
+		}
+	}
+	if = {
+		limit = { exists = cp:councillor_marshal }
+		add = {
+			value = cp:councillor_marshal.martial
+			max = ftr_personal_bureaucracy_contribute_value
+		}
+	}
+	if = {
+		limit = { exists = cp:councillor_spymaster }
+		add = {
+			value = cp:councillor_spymaster.intrigue
+			max = ftr_personal_bureaucracy_contribute_value
+		}
+	}
+	if = {
+		limit = { exists = cp:councillor_court_chaplain }
+		add = {
+			value = cp:councillor_court_chaplain.learning
+			max = ftr_personal_bureaucracy_contribute_value
+		}
+	}
+}
+
+ftr_personal_average_attribute_value = {
+	value = 0
+	add = diplomacy
+	add = stewardship
+	add = martial
+	add = intrigue
+	add = learning
+	divide = 5
+	ceiling = yes
+	max = ftr_personal_bureaucracy_contribute_value
+}

@@ -76,6 +76,11 @@
  ftr_add_political_influence_decision_desc:0 "Add political influence."
  ftr_add_political_influence_decision_confirm:0 "Add political influence"
 
+ ftr_change_government_to_feudal_decision:0 "<FTR>DEBUG:Change To Feudal"
+ ftr_change_government_to_feudal_decision_tooltip:0 "Change To Feudal"
+ ftr_change_government_to_feudal_decision_desc:0 "Change To Feudal"
+ ftr_change_government_to_feudal_decision_confirm:0 "Change To Feudal"
+
  ftr_pg_ai_make_own_proposal_decision:0 "<FTR> Make Proposal"
  ftr_pg_ai_make_own_proposal_decision_tooltip:0 "Make proposal in your realm"
  ftr_pg_ai_make_own_proposal_decision_desc:0 "Make proposal in your realm for consideration by members of your inner circle."

@@ -76,6 +76,11 @@
  ftr_add_political_influence_decision_desc:0 "增加影响力"
  ftr_add_political_influence_decision_confirm:0 "增加影响力"
 
+ ftr_change_government_to_feudal_decision:0 "<FTR>DEBUG:转变为封建政体"
+ ftr_change_government_to_feudal_decision_tooltip:0 "转变为封建政体"
+ ftr_change_government_to_feudal_decision_desc:0 "转变为封建政体"
+ ftr_change_government_to_feudal_decision_confirm:0 "转变为封建政体"
+
  ftr_pg_ai_make_own_proposal_decision:0 "<FTR>提交本地议案"
  ftr_pg_ai_make_own_proposal_decision_tooltip:0 "提交本地议案"
  ftr_pg_ai_make_own_proposal_decision_desc:0 "在你的领地内提交议案，交给领地内核心圈子成员审议。"

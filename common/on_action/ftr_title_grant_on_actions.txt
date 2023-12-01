@@ -77,6 +77,8 @@ ftr_title_conquerd_effects = {
 			}
 		}
 		OR = {
+			scope:transfer_type = flag:granted
+			scope:transfer_type = flag:created
 			scope:transfer_type = flag:revoked
 			scope:transfer_type = flag:conquest
 			scope:transfer_type = flag:conquest_holy_war

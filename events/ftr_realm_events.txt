@@ -609,3 +609,24 @@ ftr_realm_event.1009 = {
 		}
 	}
 }
+
+# Autoremove bureacratic_succession_law for independent_ruler
+ftr_realm_event.1010 = {
+	hidden = yes
+	trigger = {
+		is_independent_ruler = yes
+		any_held_title = {
+			tier >= tier_duchy
+			has_title_law = bureacratic_succession_law
+		}
+	}
+	immediate = {
+		every_held_title = {
+			limit = {
+				tier >= tier_duchy
+				has_title_law = bureacratic_succession_law
+			}
+			clear_title_laws = yes
+		}
+	}
+}

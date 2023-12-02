@@ -369,7 +369,7 @@ ftr_depose_bureacrat_interaction = {
 					limit = {
 						scope:recipient = { NOT = { ai_greed = 0 } }
 					}
-					value = -1
+					value = -0.8
 				}
 			}
 			ai_honor  = {
@@ -382,7 +382,7 @@ ftr_depose_bureacrat_interaction = {
 							has_realm_law_flag = vassal_refusal_is_treason
 						}
 					}
-					value = 0.3
+					value = 0.4
 				}
 			}
 		}

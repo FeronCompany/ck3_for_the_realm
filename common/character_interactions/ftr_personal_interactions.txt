@@ -217,7 +217,7 @@ request_combat_guidance_interaction = {
 	}
 
 	ai_accept = {
-		base = -40
+		base = -20
 		opinion_modifier = {
 			opinion_target = scope:actor
 			who = scope:recipient
@@ -228,7 +228,7 @@ request_combat_guidance_interaction = {
 			add = 50
 			trigger = {
 				scope:recipient = {
-					gold < 20
+					gold < 200
 				}
 			}
 			desc = GOLD_REASON

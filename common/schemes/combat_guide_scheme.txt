@@ -36,10 +36,9 @@
 		modifier = {
 			add = {
 				value = scope:owner.learning
-				multiply = 5
+				multiply = 2
 			}
 			desc = SCHEME_LEARNING_MODIFIER
-			scope:owner.learning > 0
 		}
 		modifier = {
 			add = {
@@ -48,7 +47,6 @@
 				multiply = 2
 			}
 			desc = SCHEME_YOUTH_MODIFIER
-			scope:owner.age < 30
 		}
 		modifier = {
 			scope:owner = { has_trait = ambitious }
@@ -61,7 +59,15 @@
 			add = 10
 		}
 		modifier = {
-			scope:owner = { has_trait = strong }
+			scope:owner = {
+				OR = {
+					has_trait = strong
+					has_trait = athletic
+					has_trait = physique_good_1
+					has_trait = physique_good_2
+					has_trait = physique_good_3
+				}
+			}
 			desc = "SCHEME_TRAIT_STRONG"
 			add = 30
 		}
@@ -71,9 +77,23 @@
 			add = -20
 		}
 		modifier = {
-			scope:owner = { has_trait = weak }
+			scope:owner = {
+				OR = {
+					has_trait = weak
+					has_trait = physique_bad_1
+					has_trait = physique_bad_2
+					has_trait = physique_bad_3
+				}
+			}
 			desc = "SCHEME_TRAIT_WEAK"
 			add = -30
+		}
+		modifier = {
+			add = {
+				value = scope:owner.health
+				multiply = 8
+			}
+			desc = FTR_COMBAT_TRAIN_HEALTH_BONUS
 		}
 	}
 

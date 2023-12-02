@@ -133,3 +133,8 @@ ftr_have_enough_bureaucracy_value_tt = {
 	global = ftr_have_enough_bureaucracy_value_text
 	global_not = ftr_not_have_enough_bureaucracy_value_text
 }
+
+has_ftr_army_types_cooldown = {
+	global = has_ftr_army_types_cooldown
+	global_not = not_has_ftr_army_types_cooldown
+}

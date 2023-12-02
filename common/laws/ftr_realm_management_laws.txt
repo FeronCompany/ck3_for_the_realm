@@ -1,0 +1,124 @@
+﻿
+@ftr_army_types_cooldown_years = 20
+
+ftr_army_types = {
+	default = ftr_army_type_0
+	#cumulative = yes
+	flag = ftr_army_type_law
+	
+	ftr_army_type_0 = { # 征召民兵
+		modifier = {
+			courtly_opinion = 5
+			glory_hound_opinion = 10
+			parochial_opinion = -5
+			#minority_opinion = -5
+			barons_and_minor_landholders_opinion = -5
+		}
+		#flag = ftr_allow_buy_court_defence
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			is_at_war = no
+			custom_description = {
+				subject = root
+				text = "has_ftr_army_types_cooldown"
+				NOT = {
+					has_variable = ftr_army_types_cooldown
+				}
+			}
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_army_types_cooldown
+				years = @ftr_army_types_cooldown_years
+			}
+		}
+
+		#ai_will_do = {}
+	}
+
+	ftr_army_type_1 = { # 常备军
+		modifier = {
+			levy_size = -0.33
+			tax_mult = 0.33
+			vassal_levy_contribution_mult = -0.25
+			vassal_tax_contribution_mult = 0.25
+			men_at_arms_limit = 8
+			men_at_arms_cap = 3
+			men_at_arms_maintenance = -0.05
+			courtly_opinion = -10
+			parochial_opinion = 5
+			minority_opinion = 5
+			barons_and_minor_landholders_opinion = 5
+		}
+		#flag = ftr_allow_buy_court_defence
+
+		can_keep = { is_independent_ruler = yes }
+
+		can_pass = {
+			is_independent_ruler = yes
+			is_at_war = no
+			custom_description = {
+				subject = root
+				text = "has_ftr_army_types_cooldown"
+				NOT = {
+					has_variable = ftr_army_types_cooldown
+				}
+			}
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_army_types_cooldown
+				years = @ftr_army_types_cooldown_years
+			}
+		}
+	}
+
+	ftr_army_type_2 = { # 高标准征召兵
+		modifier = {
+			levy_size = -0.33
+			vassal_levy_contribution_mult = -0.25
+			levy_maintenance = -0.2
+			levy_reinforcement_rate = 0.2
+			levy_attack = 4
+			levy_toughness = 8
+
+			courtly_opinion = -10
+			glory_hound_opinion = -5
+			parochial_opinion = 5
+			minority_opinion = 5
+			barons_and_minor_landholders_opinion = 5 
+		}
+		#flag = ftr_allow_buy_court_defence
+
+		can_keep = { is_independent_ruler = yes }
+
+		can_pass = {
+			is_independent_ruler = yes
+			is_at_war = no
+			custom_description = {
+				subject = root
+				text = "has_ftr_army_types_cooldown"
+				NOT = {
+					has_variable = ftr_army_types_cooldown
+				}
+			}
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_army_types_cooldown
+				years = @ftr_army_types_cooldown_years
+			}
+		}
+	}
+}

@@ -1,5 +1,5 @@
 ﻿
-@ftr_army_types_cooldown_years = 20
+@ftr_army_types_cooldown_years = 30
 @ftr_councillor_power_cooldown_years = 10
 
 ftr_army_types = {
@@ -38,7 +38,17 @@ ftr_army_types = {
 			}
 		}
 
-		#ai_will_do = {}
+		ai_will_do = {
+			value = 1
+			if = {
+				limit = { max_military_strength < 10000 }
+				add = 1
+			}
+			if = {
+				limit = { gold < 200 }
+				add = 1
+			}
+		}
 	}
 
 	ftr_army_type_1 = { # 常备军
@@ -59,7 +69,6 @@ ftr_army_types = {
 		can_keep = { is_independent_ruler = yes }
 
 		can_pass = {
-			is_independent_ruler = yes
 			is_at_war = no
 			custom_description = {
 				subject = root
@@ -76,6 +85,22 @@ ftr_army_types = {
 			set_variable = {
 				name = ftr_army_types_cooldown
 				years = @ftr_army_types_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = { max_military_strength >= 20000 }
+				add = 1
+			}
+			if = {
+				limit = { gold >= 500 }
+				add = 1
+			}
+			if = {
+				limit = { gold >= 1000 }
+				add = 1
 			}
 		}
 	}
@@ -99,7 +124,6 @@ ftr_army_types = {
 		can_keep = { is_independent_ruler = yes }
 
 		can_pass = {
-			is_independent_ruler = yes
 			is_at_war = no
 			custom_description = {
 				subject = root
@@ -116,6 +140,18 @@ ftr_army_types = {
 			set_variable = {
 				name = ftr_army_types_cooldown
 				years = @ftr_army_types_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = { max_military_strength >= 15000 }
+				add = 1
+			}
+			if = {
+				limit = { gold >= 300 }
+				add = 1
 			}
 		}
 	}
@@ -153,7 +189,27 @@ ftr_council_power = {
 			}
 		}
 
-		#ai_will_do = {}
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = {
+					OR = {
+						has_trait = ambitious
+						has_trait = arrogant
+					}
+				}
+				add = 1
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = diligent
+						has_trait = arbitrary
+					}
+				}
+				add = 2
+			}
+		}
 	}
 	
 	ftr_council_power_1 = { # 政务官内阁
@@ -187,7 +243,20 @@ ftr_council_power = {
 			}
 		}
 
-		#ai_will_do = {}
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = {
+					OR = {
+						has_trait = lazy
+						has_trait = content
+						has_trait = humble
+						has_trait = trusting
+					}
+				}
+				add = 1
+			}
+		}
 	}
 	
 	ftr_council_power_2 = { # 决策者内阁
@@ -221,6 +290,26 @@ ftr_council_power = {
 			}
 		}
 
-		#ai_will_do = {}
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = {
+					OR = {
+						has_trait = humble
+						has_trait = trusting
+					}
+				}
+				add = 1
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = lazy
+						has_trait = content
+					}
+				}
+				add = 2
+			}
+		}
 	}
 }

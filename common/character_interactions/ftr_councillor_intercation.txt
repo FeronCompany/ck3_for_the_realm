@@ -1,0 +1,59 @@
+﻿
+######### Challenge Council Position ##########
+#ftr_challenge_council_position_interaction = {
+#	category = interaction_category_vassal
+#	common_interaction = yes
+#	desc = ftr_challenge_council_position_interaction_desc
+#	is_shown = {
+#		NOT = { scope:actor = scope:recipient }
+#		scope:actor = {
+#			OR = {
+#				is_vassal_of = scope:recipient
+#				is_courtier_of = scope:recipient
+#			}
+#			NOT = { is_councillor_of = scope:recipient }
+#			culture = {
+#				OR = {
+#					has_cultural_tradition = tradition_ftr_meritocracy
+#					has_cultural_tradition = tradition_only_the_strong
+#					has_cultural_tradition = tradition_warriors_by_merit
+#					has_cultural_tradition = tradition_talent_acquisition
+#				}
+#			}
+#			NOT = {
+#				OR = {
+#					has_usable_hook = scope:recipient
+#					vassal_contract_has_flag = can_demand_council_seat
+#				}
+#			}
+#		}
+#	}
+#	is_valid_showing_failures_only = {
+#		scope:actor = {
+#			NOT =  {
+#				is_at_war_with = scope:recipient
+#			}
+#			is_imprisoned = no
+#		}
+#		is_adult = yes
+#		is_capable = yes
+#	}
+#	on_accept = {
+#		#
+#	}
+#	ai_accept = {
+#		base = 0
+#	}
+#	on_decline = {}
+#	auto_accept = {
+#		scope:recipient = {
+#			custom_description = {
+#				text = "prisoner_revocation"
+#				is_imprisoned_by = scope:actor
+#			}
+#		}
+#	}
+#	ai_will_do = {
+#		base = 0
+#	}
+#}

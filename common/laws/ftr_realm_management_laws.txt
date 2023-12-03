@@ -1,10 +1,11 @@
 ﻿
 @ftr_army_types_cooldown_years = 20
+@ftr_councillor_power_cooldown_years = 10
 
 ftr_army_types = {
 	default = ftr_army_type_0
 	#cumulative = yes
-	flag = ftr_army_type_law
+	flag = ftr_realm_policy
 	
 	ftr_army_type_0 = { # 征召民兵
 		modifier = {
@@ -14,7 +15,6 @@ ftr_army_types = {
 			#minority_opinion = -5
 			barons_and_minor_landholders_opinion = -5
 		}
-		#flag = ftr_allow_buy_court_defence
 
 		can_keep = { always = yes }
 
@@ -49,13 +49,12 @@ ftr_army_types = {
 			vassal_tax_contribution_mult = 0.25
 			men_at_arms_limit = 8
 			men_at_arms_cap = 3
-			men_at_arms_maintenance = -0.05
+			men_at_arms_maintenance = -0.1
 			courtly_opinion = -10
 			parochial_opinion = 5
 			minority_opinion = 5
 			barons_and_minor_landholders_opinion = 5
 		}
-		#flag = ftr_allow_buy_court_defence
 
 		can_keep = { is_independent_ruler = yes }
 
@@ -85,7 +84,7 @@ ftr_army_types = {
 		modifier = {
 			levy_size = -0.33
 			vassal_levy_contribution_mult = -0.25
-			levy_maintenance = -0.2
+			levy_maintenance = 0.1
 			levy_reinforcement_rate = 0.2
 			levy_attack = 4
 			levy_toughness = 8
@@ -96,7 +95,6 @@ ftr_army_types = {
 			minority_opinion = 5
 			barons_and_minor_landholders_opinion = 5 
 		}
-		#flag = ftr_allow_buy_court_defence
 
 		can_keep = { is_independent_ruler = yes }
 
@@ -120,5 +118,109 @@ ftr_army_types = {
 				years = @ftr_army_types_cooldown_years
 			}
 		}
+	}
+}
+
+ftr_council_power = {
+	default = ftr_council_power_0
+	cumulative = yes
+	flag = ftr_realm_policy
+	
+	ftr_council_power_0 = { # 事务官内阁
+		modifier = {
+			#
+		}
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			is_at_war = no
+			custom_description = {
+				subject = root
+				text = "has_ftr_councillor_power_cooldown"
+				NOT = {
+					has_variable = ftr_councillor_power_cooldown
+				}
+			}
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_councillor_power_cooldown
+				years = @ftr_councillor_power_cooldown_years
+			}
+		}
+
+		#ai_will_do = {}
+	}
+	
+	ftr_council_power_1 = { # 政务官内阁
+		modifier = {
+			councillor_opinion = 10
+			domain_limit = 1
+			tax_slot_add = 1
+			vassal_limit = 10
+		}
+		flag = ftr_unlock_councillor_envoy_task
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			is_at_war = no
+			custom_description = {
+				subject = root
+				text = "has_ftr_councillor_power_cooldown"
+				NOT = {
+					has_variable = ftr_councillor_power_cooldown
+				}
+			}
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_councillor_power_cooldown
+				years = @ftr_councillor_power_cooldown_years
+			}
+		}
+
+		#ai_will_do = {}
+	}
+	
+	ftr_council_power_2 = { # 决策者内阁
+		modifier = {
+			councillor_opinion = 10
+			domain_limit = 1
+			tax_slot_add = 1
+			vassal_limit = 10
+		}
+		flag = ftr_councillor_can_appoint
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			is_at_war = no
+			custom_description = {
+				subject = root
+				text = "has_ftr_councillor_power_cooldown"
+				NOT = {
+					has_variable = ftr_councillor_power_cooldown
+				}
+			}
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_councillor_power_cooldown
+				years = @ftr_councillor_power_cooldown_years
+			}
+		}
+
+		#ai_will_do = {}
 	}
 }

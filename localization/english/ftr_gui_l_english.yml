@@ -53,3 +53,6 @@
  ftr_bureaucracy_value_tooltip:0 "Bureaucratic degree reflects the comprehensive business ability of the councillors of the lord in the current realm. For centralized vassals, the higher the bureaucratic degree of the lord, the more levies and taxation they will provide to the lord."
  FTR_MY_BUREAUCRACY_BAR_TEXT:0 "[GetPlayer.MakeScope.ScriptValue( 'ftr_bureaucracy_value' )|0g]/150"
  FTR_LIEGE_BUREAUCRACY_BAR_TEXT:0 "[GetPlayer.GetLiege.MakeScope.ScriptValue( 'ftr_bureaucracy_value' )|0g]/150"
+
+ MY_REALM_WINDOW_REALM_POLICY_TAB:0 "Realm Policy"
+ MY_REALM_WINDOW_CURRENT_REALM_POLICY:0 "Current Realm Policy"

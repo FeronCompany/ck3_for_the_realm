@@ -398,6 +398,7 @@ window = {
 					}
 				}
 
+				################## OVERRIDE START #################
 				hbox = {
 					name = "vassals_succession_tabs"
 					layoutpolicy_horizontal = expanding
@@ -406,10 +407,12 @@ window = {
 						name = "tutorial_highlight_domain_tab"
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
-						down = "[MyRealmWindow.IsShowingDomain]"
+						#down = "[MyRealmWindow.IsShowingDomain]"
+						down = "[And(MyRealmWindow.IsShowingDomain, Not(GetVariableSystem.Exists( 'realm_policy_window_toggle' )))]"
 
 						onclick = "[MyRealmWindow.ShowDomain]"
 						onclick = "[MyRealmWindow.SendTabClickedTelemetry( 'domain' )]"
+						onclick = "[GetVariableSystem.Clear('realm_policy_window_toggle')]"
 
 						text = "MY_REALM_WINDOW_DOMAIN_TAB"
 					}
@@ -418,10 +421,12 @@ window = {
 						name = "tutorial_highlight_vassals_tab"
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
-						down = "[MyRealmWindow.IsShowingVassals]"
+						#down = "[MyRealmWindow.IsShowingVassals]"
+						down = "[And(MyRealmWindow.IsShowingVassals, Not(GetVariableSystem.Exists( 'realm_policy_window_toggle' )))]"
 
 						onclick = "[MyRealmWindow.ShowVassals]"
 						onclick = "[MyRealmWindow.SendTabClickedTelemetry( 'vassals' )]"
+						onclick = "[GetVariableSystem.Clear('realm_policy_window_toggle')]"
 
 						text = "MY_REALM_WINDOW_VASSALS_TAB"
 					}
@@ -430,21 +435,40 @@ window = {
 						name = "tutorial_highlight_succession_tab"
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
-						down = "[MyRealmWindow.IsShowingSuccession]"
+						#down = "[MyRealmWindow.IsShowingSuccession]"
+						down = "[And(MyRealmWindow.IsShowingSuccession, Not(GetVariableSystem.Exists( 'realm_policy_window_toggle' )))]"
 
 						onclick = "[MyRealmWindow.ShowSuccession]"
 						onclick = "[MyRealmWindow.SendTabClickedTelemetry( 'succession' )]"
+						onclick = "[GetVariableSystem.Clear('realm_policy_window_toggle')]"
 
 						text = "MY_REALM_WINDOW_SUCCESSION_TAB"
 					}
+
+					button_tab = {
+						name = "tutorial_highlight_realm_policy_tab"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						down = "[GetVariableSystem.Exists( 'realm_policy_window_toggle' )]"
+
+						onclick = "[GetVariableSystem.Clear('realm_policy_window_toggle')]"
+						onclick = "[GetVariableSystem.Toggle( 'realm_policy_window_toggle' )]"
+						onclick = "[MyRealmWindow.ShowSuccession]"
+
+						text = "MY_REALM_WINDOW_REALM_POLICY_TAB"
+					}
 				}
+				################## OVERRIDE END #################
 
 				### DOMAIN TAB
 				vbox = {
 					name = "tab_domain"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
-					visible = "[MyRealmWindow.IsShowingDomain]"
+					################## OVERRIDE START #################
+					#visible = "[MyRealmWindow.IsShowingDomain]"
+					visible = "[And(MyRealmWindow.IsShowingDomain, Not(GetVariableSystem.Exists( 'realm_policy_window_toggle' )))]"
+					################## OVERRIDE END #################
 
 					using = Animation_Tab_Switch
 
@@ -863,7 +887,10 @@ window = {
 					name = "tab_vassals"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
-					visible = "[MyRealmWindow.IsShowingVassals]"
+					################## OVERRIDE START #################
+					#visible = "[MyRealmWindow.IsShowingVassals]"
+					visible = "[And(MyRealmWindow.IsShowingVassals, Not(GetVariableSystem.Exists( 'realm_policy_window_toggle' )))]"
+					################## OVERRIDE END #################
 
 					state = {
 						name = _show
@@ -1118,7 +1145,10 @@ window = {
 				### SUCCESSION TAB
 				vbox = {
 					name = "tab_succession"
-					visible = "[MyRealmWindow.IsShowingSuccession]"
+					################## OVERRIDE START #################
+					#visible = "[MyRealmWindow.IsShowingSuccession]"
+					visible = "[And(MyRealmWindow.IsShowingSuccession, Not(GetVariableSystem.Exists( 'realm_policy_window_toggle' )))]"
+					################## OVERRIDE END #################
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
 
@@ -1151,7 +1181,10 @@ window = {
 
 							item = {
 								hbox = {
-									visible = "[And( Not( GuiLawGroup.GetLawGroup.HasFlag( 'realm_law' ) ), GuiLawGroup.IsAvailable )]"
+									################## OVERRIDE START #################
+									#visible = "[And( Not( GuiLawGroup.GetLawGroup.HasFlag( 'realm_law' ) ), GuiLawGroup.IsAvailable )]"
+									visible = "[And(And( Not( GuiLawGroup.GetLawGroup.HasFlag( 'realm_law' ) ), GuiLawGroup.IsAvailable ), Not( GuiLawGroup.GetLawGroup.HasFlag( 'ftr_realm_policy' )))]"
+									################## OVERRIDE END #################
 									layoutpolicy_horizontal = growing
 
 									vbox = {
@@ -1841,8 +1874,92 @@ window = {
 					}
 				}
 
+				##################### OVERRIDE START #######################
+				### REALM POLICY TAB
 				vbox = {
-					visible = "[Or( MyRealmWindow.IsShowingDomain, MyRealmWindow.IsShowingVassals)]"
+					name = "tab_realm_policy"
+					visible = "[GetVariableSystem.Exists( 'realm_policy_window_toggle' )]"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					state = {
+						name = _show
+						using = Animation_FadeIn_Quick
+					}
+
+					state = {
+						name = _hide
+						alpha = 0
+					}
+
+					vbox = {
+						margin = { 5 15 }
+						margin_bottom = 10
+						spacing = 4
+						layoutpolicy_horizontal = expanding
+
+						text_label_center = {
+							text = "MY_REALM_WINDOW_CURRENT_REALM_POLICY"
+							margin_bottom = 5
+						}
+
+						vbox = {
+							datamodel = "[MyRealmWindow.GetRealmLaws]"
+							spacing = 5
+							margin_bottom = 5
+							ignoreinvisible = yes
+							layoutpolicy_horizontal = expanding
+
+							item = {
+								vbox = {
+									visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'ftr_realm_policy' ), GuiLawGroup.IsAvailable )]"
+									layoutpolicy_horizontal = growing
+
+									vbox = {
+										layoutpolicy_horizontal = growing
+
+										text_single = {
+											min_width = 60
+											max_width = 60
+											layoutpolicy_horizontal = growing
+											raw_text = "[GuiLawGroup.GetLawGroup.GetNameSingular]"
+											margin_bottom = 7
+											align = center
+										}
+									}
+
+									hbox = {
+										datamodel = "[GuiLawGroup.GetLaws]"
+										item = {
+											vbox = {
+												button_law_choice_base = {
+													datacontext = "[GuiLaw.GetLaw]"
+													size = { 100 40 }
+													enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
+													down = "[GuiLaw.IsEnacted]"
+													alwaystransparent = "[GuiLaw.IsEnacted]"
+													onclick = "[GuiLaw.Enact]"
+													tooltipwidget = { pass_law_tooltip = {} }
+													using = tooltip_below
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					expand = {
+						layoutpolicy_vertical = expanding
+					}
+				}
+				##################### OVERRIDE END #######################
+
+				vbox = {
+					##################### OVERRIDE START #######################
+					#visible = "[Or( MyRealmWindow.IsShowingDomain, MyRealmWindow.IsShowingVassals)]"
+					visible = "[And(Or( MyRealmWindow.IsShowingDomain, MyRealmWindow.IsShowingVassals), Not(GetVariableSystem.Exists( 'realm_policy_window_toggle' )))]"
+					##################### OVERRIDE END #######################
 					layoutpolicy_horizontal = expanding
 					margin = { 15 5 }
 					margin_bottom = 15

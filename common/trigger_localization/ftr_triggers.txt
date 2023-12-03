@@ -138,3 +138,8 @@ has_ftr_army_types_cooldown = {
 	global = has_ftr_army_types_cooldown
 	global_not = not_has_ftr_army_types_cooldown
 }
+
+has_ftr_councillor_power_cooldown = {
+	global = has_ftr_councillor_power_cooldown
+	global_not = not_has_ftr_councillor_power_cooldown
+}

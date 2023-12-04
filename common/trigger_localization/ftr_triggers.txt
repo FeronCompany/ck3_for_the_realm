@@ -143,3 +143,13 @@ has_ftr_councillor_power_cooldown = {
 	global = has_ftr_councillor_power_cooldown
 	global_not = not_has_ftr_councillor_power_cooldown
 }
+
+has_ftr_proposal_right_cooldown = {
+	global = has_ftr_proposal_right_cooldown
+	global_not = not_has_ftr_proposal_right_cooldown
+}
+
+has_ftr_economic_policy_cooldown = {
+	global = has_ftr_economic_policy_cooldown
+	global_not = not_has_ftr_economic_policy_cooldown
+}

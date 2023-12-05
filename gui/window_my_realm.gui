@@ -1892,55 +1892,63 @@ window = {
 						alpha = 0
 					}
 
-					vbox = {
-						margin = { 5 15 }
-						margin_bottom = 10
-						spacing = 4
+					scrollbox = {
+						name = "ftr_realm_policies_scroll"
 						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						blockoverride "scrollbox_content"
+						{
+							vbox = {
+								margin = { 5 15 }
+								margin_bottom = 10
+								spacing = 4
+								layoutpolicy_horizontal = expanding
 
-						text_label_center = {
-							text = "MY_REALM_WINDOW_CURRENT_REALM_POLICY"
-							margin_bottom = 5
-						}
+								text_label_center = {
+									text = "MY_REALM_WINDOW_CURRENT_REALM_POLICY"
+									margin_bottom = 5
+								}
 
-						vbox = {
-							datamodel = "[MyRealmWindow.GetRealmLaws]"
-							spacing = 5
-							margin_bottom = 5
-							ignoreinvisible = yes
-							layoutpolicy_horizontal = expanding
-
-							item = {
 								vbox = {
-									visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'ftr_realm_policy' ), GuiLawGroup.IsAvailable )]"
-									layoutpolicy_horizontal = growing
+									datamodel = "[MyRealmWindow.GetRealmLaws]"
+									spacing = 5
+									margin_bottom = 5
+									ignoreinvisible = yes
+									layoutpolicy_horizontal = expanding
 
-									vbox = {
-										layoutpolicy_horizontal = growing
-
-										text_single = {
-											min_width = 60
-											max_width = 60
+									item = {
+										vbox = {
+											visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'ftr_realm_policy' ), GuiLawGroup.IsAvailable )]"
 											layoutpolicy_horizontal = growing
-											raw_text = "[GuiLawGroup.GetLawGroup.GetNameSingular]"
-											margin_bottom = 7
-											align = center
-										}
-									}
 
-									hbox = {
-										datamodel = "[GuiLawGroup.GetLaws]"
-										item = {
 											vbox = {
-												button_law_choice_base = {
-													datacontext = "[GuiLaw.GetLaw]"
-													size = { 100 50 }
-													enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
-													down = "[GuiLaw.IsEnacted]"
-													alwaystransparent = "[GuiLaw.IsEnacted]"
-													onclick = "[GuiLaw.Enact]"
-													tooltipwidget = { pass_law_tooltip = {} }
-													using = tooltip_below
+												layoutpolicy_horizontal = growing
+
+												text_single = {
+													min_width = 60
+													max_width = 60
+													layoutpolicy_horizontal = growing
+													raw_text = "[GuiLawGroup.GetLawGroup.GetNameSingular]"
+													margin_bottom = 7
+													align = center
+												}
+											}
+
+											hbox = {
+												datamodel = "[GuiLawGroup.GetLaws]"
+												item = {
+													vbox = {
+														button_law_choice_base = {
+															datacontext = "[GuiLaw.GetLaw]"
+															size = { 100 50 }
+															enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
+															down = "[GuiLaw.IsEnacted]"
+															alwaystransparent = "[GuiLaw.IsEnacted]"
+															onclick = "[GuiLaw.Enact]"
+															tooltipwidget = { pass_law_tooltip = {} }
+															using = tooltip_below
+														}
+													}
 												}
 											}
 										}
@@ -1948,9 +1956,6 @@ window = {
 								}
 							}
 						}
-					}
-					expand = {
-						layoutpolicy_vertical = expanding
 					}
 				}
 				##################### OVERRIDE END #######################

@@ -27,8 +27,6 @@
  #FTR_POWERFUL_SUBJECTS_TEXT:0 "核心圈子"
  FTR_POWERFUL_SUBJECTS_TEXT:0 "核心圈子"
  ftr_powerfult_subjects_tooltip:0 "核心圈子成员包括领地内的内阁成员和强力封臣，核心圈子成员拥有提案权和转移焦点权。"
- FTR_ALL_PG_PARTICIPANTS_TEXT:0 "全体参与者"
- ftr_all_pg_participants_tooltip:0 "所有政治博弈参与者，这其中包括核心圈子成员、其他普通封臣以及领地内的家族成员。"
  FTR_SHOW_CHARACTER_PG_POWER_TEXT:0 "[Character.MakeScope.ScriptValue('ftr_political_influence_value')|0]"
  ftr_pg_bribe_tooltip:0 "消耗一定金钱收买[Character.GetShortUIName]，获得[Character.GetHerHis]的部分政治影响力。"
  FTR_PG_BRIBE_TEXT:0 "收买"

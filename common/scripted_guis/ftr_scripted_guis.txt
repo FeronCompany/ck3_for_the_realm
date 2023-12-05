@@ -150,3 +150,21 @@ ftr_make_proposal_to_liege = {
 		trigger_event = ftr_pg_ui_event.0100
 	}
 }
+
+my_proposal_ftr_army_type_0 = {
+	scope = character
+	is_valid = {}
+	effect = {}
+}
+
+my_proposal_ftr_army_type_1 = {
+	scope = character
+	is_valid = {}
+	effect = {}
+}
+
+my_proposal_ftr_army_type_2 = {
+	scope = character
+	is_valid = {}
+	effect = {}
+}

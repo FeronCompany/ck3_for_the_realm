@@ -155,7 +155,7 @@
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
-						vbox = { # 核心圈子
+						vbox = { # 官僚度与法律
 							margin = { 30 10 }
 							layoutpolicy_vertical = expanding
 							text_label_center = {#
@@ -177,37 +177,52 @@
 								}
 							}
 							spacer = {
-								size = { 100 15 }
+								size = { 450 15 }
 							}
 							text_label_center = {
 								margin = { 10 10 }
-								text = "FTR_POWERFUL_SUBJECTS_TEXT"
-								tooltip = "ftr_powerfult_subjects_tooltip"
+								text = "MY_REALM_WINDOW_REALM_POLICY_TAB"
 							}
-							dynamicgridbox = {
-								datamodel = "[GetPlayer.MakeScope.GetList('ftr_my_powerful_subject_list')]"
-								#layoutpolicy_horizontal = expanding
+							scrollbox = {
+								name = "ftr_realm_policies_scroll"
+								layoutpolicy_horizontal = expanding
 								layoutpolicy_vertical = expanding
-								datamodel_wrap = 3
-								flipdirection = yes
-								item = {
-									portrait_head_small = {
-										name = "powerful_portrait"
-										datacontext = "[Scope.GetCharacter]"
-										tooltip_enabled = "[Character.IsValid]"
+								blockoverride "scrollbox_content"
+								{
+									ftr_realm_policies_pg_list = {
+										datacontext = "[GetPlayer]"
 									}
 								}
 							}
+							#text_label_center = {
+							#	margin = { 10 10 }
+							#	text = "FTR_POWERFUL_SUBJECTS_TEXT"
+							#	tooltip = "ftr_powerfult_subjects_tooltip"
+							#}
+							#dynamicgridbox = {
+							#	datamodel = "[GetPlayer.MakeScope.GetList('ftr_my_powerful_subject_list')]"
+							#	#layoutpolicy_horizontal = expanding
+							#	layoutpolicy_vertical = expanding
+							#	datamodel_wrap = 3
+							#	flipdirection = yes
+							#	item = {
+							#		portrait_head_small = {
+							#			name = "powerful_portrait"
+							#			datacontext = "[Scope.GetCharacter]"
+							#			tooltip_enabled = "[Character.IsValid]"
+							#		}
+							#	}
+							#}
 							expand = {}
 						}
-						vbox = { # 全体博弈参与者列表
+						vbox = { # 核心圈子交互
 							margin = { 20 10 }
 							layoutpolicy_horizontal = expanding
 							layoutpolicy_vertical = expanding
 							text_label_center = {
 								margin = { 10 10 }
-								text = "FTR_ALL_PG_PARTICIPANTS_TEXT"
-								tooltip = "ftr_all_pg_participants_tooltip"
+								text = "FTR_POWERFUL_SUBJECTS_TEXT"
+								tooltip = "ftr_powerfult_subjects_tooltip"
 							}
 							scrollbox = {
 								name = "memeber_list"
@@ -217,7 +232,7 @@
 								{
 									vbox = {
 										margin = { 10 0 }
-										datamodel = "[GetPlayer.MakeScope.GetList('ftr_my_realm_pg_participants_list')]"
+										datamodel = "[GetPlayer.MakeScope.GetList('ftr_my_powerful_subject_list')]"
 										layoutpolicy_horizontal = expanding
 										item = {
 											ftr_widget_fg_member_list_item = {
@@ -305,7 +320,7 @@
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
-						vbox = { # 核心圈子
+						vbox = { # 官僚度与法律
 							margin = { 30 10 }
 							layoutpolicy_vertical = expanding
 							text_label_center = {#
@@ -327,7 +342,7 @@
 								}
 							}
 							spacer = {
-								size = { 100 15 }
+								size = { 450 15 }
 							}
 							text_label_center = {
 								margin = { 10 10 }
@@ -350,14 +365,14 @@
 							}
 							expand = {}
 						}
-						vbox = { # 全体博弈参与者列表
+						vbox = { # 核心圈子交互
 							margin = { 20 10 }
 							layoutpolicy_horizontal = expanding
 							layoutpolicy_vertical = expanding
 							text_label_center = {
 								margin = { 10 10 }
-								text = "FTR_ALL_PG_PARTICIPANTS_TEXT"
-								tooltip = "ftr_all_pg_participants_tooltip"
+								text = "FTR_POWERFUL_SUBJECTS_TEXT"
+								tooltip = "ftr_powerfult_subjects_tooltip"
 							}
 							scrollbox = {
 								name = "memeber_list"
@@ -367,7 +382,7 @@
 								{
 									vbox = {
 										margin = { 10 0 }
-										datamodel = "[GetPlayer.GetLiege.MakeScope.GetList('ftr_my_realm_pg_participants_list')]"
+										datamodel = "[GetPlayer.GetLiege.MakeScope.GetList('ftr_my_powerful_subject_list')]"
 										layoutpolicy_horizontal = expanding
 										item = {
 											ftr_widget_fg_member_list_item = {
@@ -428,5 +443,43 @@ types Lists
 			size = { 50 50 }
 		}
 		expand = {}
+	}
+
+	type ftr_realm_policies_pg_list = vbox {
+		vbox = { # 兵制
+			text_label_center = {
+				margin = { 10 10 }
+				text = "ftr_army_types"
+			}
+			hbox = {
+				button_standard = {
+					name = "ftr_army_type_0_button"
+					text = "ftr_army_type_0"
+					datacontext = "[GetScriptedGui( 'my_proposal_ftr_army_type_0' )]"
+					onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( Character.MakeScope ).End )]"
+					enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( Character.MakeScope ).End )]"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_army_type'), '(CFixedPoint)0')]"
+					size = { 100 33 }
+    			}
+				button_standard = {
+					name = "ftr_army_type_1_button"
+					text = "ftr_army_type_1"
+					datacontext = "[GetScriptedGui( 'my_proposal_ftr_army_type_1' )]"
+					onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( Character.MakeScope ).End )]"
+					enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( Character.MakeScope ).End )]"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_army_type'), '(CFixedPoint)1')]"
+					size = { 100 33 }
+    			}
+				button_standard = {
+					name = "ftr_army_type_2_button"
+					text = "ftr_army_type_2"
+					datacontext = "[GetScriptedGui( 'my_proposal_ftr_army_type_2' )]"
+					onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( Character.MakeScope ).End )]"
+					enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( Character.MakeScope ).End )]"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_army_type'), '(CFixedPoint)2')]"
+					size = { 100 33 }
+    			}
+			}
+		}
 	}
 }

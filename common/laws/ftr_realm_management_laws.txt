@@ -21,15 +21,7 @@ ftr_army_types = {
 		can_keep = { always = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_army_types_cooldown"
-				NOT = {
-					has_variable = ftr_army_types_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
+			can_pass_ftr_army_type_0 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -72,15 +64,7 @@ ftr_army_types = {
 		can_keep = { is_independent_ruler = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_army_types_cooldown"
-				NOT = {
-					has_variable = ftr_army_types_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
+			can_pass_ftr_army_type_1 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -128,15 +112,7 @@ ftr_army_types = {
 		can_keep = { is_independent_ruler = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_army_types_cooldown"
-				NOT = {
-					has_variable = ftr_army_types_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
+			can_pass_ftr_army_type_2 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -175,16 +151,7 @@ ftr_council_power = {
 		can_keep = { always = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_councillor_power_cooldown"
-				NOT = {
-					has_variable = ftr_councillor_power_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
-			has_realm_law = ftr_council_power_1
+			can_pass_ftr_council_power_0 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -231,15 +198,7 @@ ftr_council_power = {
 		can_keep = { always = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_councillor_power_cooldown"
-				NOT = {
-					has_variable = ftr_councillor_power_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
+			can_pass_ftr_council_power_1 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -279,15 +238,7 @@ ftr_council_power = {
 		can_keep = { always = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_councillor_power_cooldown"
-				NOT = {
-					has_variable = ftr_councillor_power_cooldown
-				}
-			}
-			has_realm_law = ftr_council_power_1
+			can_pass_ftr_council_power_2 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -337,16 +288,7 @@ ftr_proposal_right = {
 		can_keep = { always = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_proposal_right_cooldown"
-				NOT = {
-					has_variable = ftr_proposal_right_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
-			has_realm_law = ftr_proposal_right_1
+			can_pass_ftr_proposal_right_0 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -380,19 +322,7 @@ ftr_proposal_right = {
 		can_keep = { always = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_proposal_right_cooldown"
-				NOT = {
-					has_variable = ftr_proposal_right_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
-			trigger_if = {
-				limit = { has_realm_law = ftr_proposal_right_3 }
-				has_realm_law = ftr_proposal_right_2
-			}
+			can_pass_ftr_proposal_right_1 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -419,19 +349,7 @@ ftr_proposal_right = {
 		can_keep = { always = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_proposal_right_cooldown"
-				NOT = {
-					has_variable = ftr_proposal_right_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
-			trigger_if = {
-				limit = { has_realm_law = ftr_proposal_right_0 }
-				has_realm_law = ftr_proposal_right_1
-			}
+			can_pass_ftr_proposal_right_2 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -457,16 +375,7 @@ ftr_proposal_right = {
 		can_keep = { always = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_proposal_right_cooldown"
-				NOT = {
-					has_variable = ftr_proposal_right_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
-			has_realm_law = ftr_proposal_right_2
+			can_pass_ftr_proposal_right_3 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -497,15 +406,7 @@ ftr_economic_policy = {
 		can_keep = { always = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_economic_policy_cooldown"
-				NOT = {
-					has_variable = ftr_economic_policy_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
+			can_pass_ftr_economic_policy_0 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -531,15 +432,7 @@ ftr_economic_policy = {
 		can_keep = { always = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_economic_policy_cooldown"
-				NOT = {
-					has_variable = ftr_economic_policy_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
+			can_pass_ftr_economic_policy_1 = yes
 		}
 
 		pass_cost = { prestige = 500 }
@@ -578,15 +471,7 @@ ftr_economic_policy = {
 		can_keep = { always = yes }
 
 		can_pass = {
-			is_at_war = no
-			custom_description = {
-				subject = root
-				text = "has_ftr_economic_policy_cooldown"
-				NOT = {
-					has_variable = ftr_economic_policy_cooldown
-				}
-			}
-			NOT = { has_realm_law = ftr_council_power_2 }
+			can_pass_ftr_economic_policy_2 = yes
 		}
 
 		pass_cost = { prestige = 500 }

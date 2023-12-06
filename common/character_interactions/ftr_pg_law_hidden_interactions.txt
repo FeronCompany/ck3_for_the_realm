@@ -1,1 +1,186 @@
 ﻿
+
+ftr_change_law_army_type_0_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	cooldown_against_recipient = { years = 10 }
+	hidden = yes
+	desc = ftr_change_law_army_type_0_interaction_desc
+	ai_maybe = yes
+	can_send_despite_rejection = yes
+	ai_targets = {
+		ai_recipients = self
+		ai_recipients = liege
+	}
+	ai_frequency = 24
+	is_shown = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:actor.liege = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  { is_at_war_with = scope:recipient }
+			is_imprisoned = no
+			is_capable_adult = yes
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			is_capable_adult = yes
+			NOT = { has_realm_law = ftr_army_type_0 }
+			can_pass_ftr_army_type_0 = yes
+		}
+	}
+
+	on_accept = {
+		scope:recipient = {
+			add_realm_law = ftr_army_type_0
+		}
+	}
+	on_decline = {}
+	auto_accept = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:recipient = {
+				is_imprisoned_by = scope:actor
+			}
+		}
+	}
+	ai_accept = {
+		base = 20
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 1
+			desc = AI_OPINION_REASON
+		}
+	}
+	ai_will_do = {
+		base = -40
+	}
+}
+
+ftr_change_law_army_type_1_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	cooldown_against_recipient = { years = 10 }
+	hidden = yes
+	desc = ftr_change_law_army_type_1_interaction_desc
+	ai_maybe = yes
+	can_send_despite_rejection = yes
+	ai_targets = {
+		ai_recipients = self
+		ai_recipients = liege
+	}
+	ai_frequency = 24
+	is_shown = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:actor.liege = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  { is_at_war_with = scope:recipient }
+			is_imprisoned = no
+			is_capable_adult = yes
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			is_capable_adult = yes
+			NOT = { has_realm_law = ftr_army_type_1 }
+			is_independent_ruler = yes
+			can_pass_ftr_army_type_1 = yes
+		}
+	}
+
+	on_accept = {
+		scope:recipient = {
+			add_realm_law = ftr_army_type_1
+		}
+	}
+	on_decline = {}
+	auto_accept = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:recipient = {
+				is_imprisoned_by = scope:actor
+			}
+		}
+	}
+	ai_accept = {
+		base = 20
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 1
+			desc = AI_OPINION_REASON
+		}
+	}
+	ai_will_do = {
+		base = -40
+	}
+}
+
+ftr_change_law_army_type_2_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	cooldown_against_recipient = { years = 10 }
+	hidden = yes
+	desc = ftr_change_law_army_type_2_interaction_desc
+	ai_maybe = yes
+	can_send_despite_rejection = yes
+	ai_targets = {
+		ai_recipients = self
+		ai_recipients = liege
+	}
+	ai_frequency = 24
+	is_shown = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:actor.liege = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  { is_at_war_with = scope:recipient }
+			is_imprisoned = no
+			is_capable_adult = yes
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			is_capable_adult = yes
+			NOT = { has_realm_law = ftr_army_type_2 }
+			is_independent_ruler = yes
+			can_pass_ftr_army_type_2 = yes
+		}
+	}
+
+	on_accept = {
+		scope:recipient = {
+			add_realm_law = ftr_army_type_2
+		}
+	}
+	on_decline = {}
+	auto_accept = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:recipient = {
+				is_imprisoned_by = scope:actor
+			}
+		}
+	}
+	ai_accept = {
+		base = 20
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 1
+			desc = AI_OPINION_REASON
+		}
+	}
+	ai_will_do = {
+		base = -40
+	}
+}

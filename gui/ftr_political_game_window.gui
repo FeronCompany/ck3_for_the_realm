@@ -346,20 +346,16 @@
 							}
 							text_label_center = {
 								margin = { 10 10 }
-								text = "FTR_POWERFUL_SUBJECTS_TEXT"
-								tooltip = "ftr_powerfult_subjects_tooltip"
+								text = "MY_REALM_WINDOW_REALM_POLICY_TAB"
 							}
-							dynamicgridbox = {
-								datamodel = "[GetPlayer.GetLiege.MakeScope.GetList('ftr_my_powerful_subject_list')]"
-								#layoutpolicy_horizontal = expanding
+							scrollbox = {
+								name = "ftr_realm_policies_scroll"
+								layoutpolicy_horizontal = expanding
 								layoutpolicy_vertical = expanding
-								datamodel_wrap = 3
-								flipdirection = yes
-								item = {
-									portrait_head_small = {
-										name = "powerful_portrait"
-										datacontext = "[Scope.GetCharacter]"
-										tooltip_enabled = "[Character.IsValid]"
+								blockoverride "scrollbox_content"
+								{
+									ftr_realm_policies_pg_list = {
+										datacontext = "[GetPlayer.GetLiege]"
 									}
 								}
 							}
@@ -413,10 +409,10 @@ types Lists
 			tooltip_enabled = "[Character.IsValid]"
 		}
 		text_label_center = {
-			margin = { 10 10 }
 			text = "FTR_SHOW_CHARACTER_PG_POWER_TEXT"
 			tooltip = "ftr_show_pg_power_tooltip"
-			size = { 80 60 }
+			max_width = 80
+			min_width = 80
 		}
 		button_icon = {
 			name = "ftr_pg_bribe_button"
@@ -455,30 +451,111 @@ types Lists
 				button_standard = {
 					name = "ftr_army_type_0_button"
 					text = "ftr_army_type_0"
-					datacontext = "[GetScriptedGui( 'my_proposal_ftr_army_type_0' )]"
 					onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( Character.MakeScope ).End )]"
 					enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( Character.MakeScope ).End )]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_army_type'), '(CFixedPoint)0')]"
 					size = { 100 33 }
-    			}
+				}
 				button_standard = {
 					name = "ftr_army_type_1_button"
 					text = "ftr_army_type_1"
-					datacontext = "[GetScriptedGui( 'my_proposal_ftr_army_type_1' )]"
 					onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( Character.MakeScope ).End )]"
 					enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( Character.MakeScope ).End )]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_army_type'), '(CFixedPoint)1')]"
 					size = { 100 33 }
-    			}
+				}
 				button_standard = {
 					name = "ftr_army_type_2_button"
 					text = "ftr_army_type_2"
-					datacontext = "[GetScriptedGui( 'my_proposal_ftr_army_type_2' )]"
 					onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( Character.MakeScope ).End )]"
 					enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( Character.MakeScope ).End )]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_army_type'), '(CFixedPoint)2')]"
 					size = { 100 33 }
-    			}
+				}
+			}
+		}
+		vbox = { # 内阁权力
+			text_label_center = {
+				margin = { 10 10 }
+				text = "ftr_council_power"
+			}
+			hbox = {
+				button_standard = {
+					name = "ftr_council_power_0_button"
+					text = "ftr_council_power_0"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_council_power'), '(CFixedPoint)0')]"
+					size = { 100 33 }
+				}
+				button_standard = {
+					name = "ftr_council_power_1_button"
+					text = "ftr_council_power_1"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_council_power'), '(CFixedPoint)1')]"
+					size = { 100 33 }
+				}
+				button_standard = {
+					name = "ftr_council_power_2_button"
+					text = "ftr_council_power_2"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_council_power'), '(CFixedPoint)2')]"
+					size = { 100 33 }
+				}
+			}
+		}
+		vbox = { # 提议权
+			text_label_center = {
+				margin = { 10 10 }
+				text = "ftr_proposal_right"
+			}
+			hbox = {
+				button_standard = {
+					name = "ftr_proposal_right_0_button"
+					text = "ftr_proposal_right_0"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)0')]"
+					size = { 100 33 }
+				}
+				button_standard = {
+					name = "ftr_proposal_right_1_button"
+					text = "ftr_proposal_right_1"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)1')]"
+					size = { 100 33 }
+				}
+				button_standard = {
+					name = "ftr_proposal_right_2_button"
+					text = "ftr_proposal_right_2"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)2')]"
+					size = { 100 33 }
+				}
+				button_standard = {
+					name = "ftr_proposal_right_3_button"
+					text = "ftr_proposal_right_3"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)3')]"
+					size = { 100 33 }
+				}
+			}
+		}
+		vbox = { # 经济政策
+			text_label_center = {
+				margin = { 10 10 }
+				text = "ftr_economic_policy"
+			}
+			hbox = {
+				button_standard = {
+					name = "ftr_economic_policy_0_button"
+					text = "ftr_economic_policy_0"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_economic_policy'), '(CFixedPoint)0')]"
+					size = { 100 33 }
+				}
+				button_standard = {
+					name = "ftr_economic_policy_1_button"
+					text = "ftr_economic_policy_1"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_economic_policy'), '(CFixedPoint)1')]"
+					size = { 100 33 }
+				}
+				button_standard = {
+					name = "ftr_economic_policy_2_button"
+					text = "ftr_economic_policy_2"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_economic_policy'), '(CFixedPoint)2')]"
+					size = { 100 33 }
+				}
 			}
 		}
 	}

@@ -194,21 +194,3 @@ ftr_forty_percent_of_current_military_strength = {
 		multiply = 0.4
 	}
 }
-
-ftr_get_army_type = {
-	if = {
-		limit = { has_realm_law = ftr_army_type_0 }
-		value = 0
-	}
-	else_if = {
-		limit = { has_realm_law = ftr_army_type_1 }
-		value = 1
-	}
-	else_if = {
-		limit = { has_realm_law = ftr_army_type_2 }
-		value = 2
-	}
-	else = {
-		value = 0
-	}
-}

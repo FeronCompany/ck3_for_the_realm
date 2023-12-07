@@ -1,0 +1,4 @@
+﻿
+
+namespace = ftr_pg_law_event
+

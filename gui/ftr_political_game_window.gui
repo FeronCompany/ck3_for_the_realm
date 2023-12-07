@@ -452,25 +452,27 @@ types Lists
 					name = "ftr_army_type_0_button"
 					text = "ftr_army_type_0"
 					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_army_type_0_interaction')]"
-					enabled = "[Character.IsPlayerInteractionValid('ftr_change_law_army_type_0_interaction')]"
+					#enabled = "[Character.IsPlayerInteractionValid('ftr_change_law_army_type_0_interaction')]"
 					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_army_type_0_interaction')]"
-					#down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_army_type'), '(CFixedPoint)0')]"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_army_type'), '(CFixedPoint)0')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_army_type_1_button"
 					text = "ftr_army_type_1"
 					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_army_type_1_interaction')]"
-					enabled = "[Character.IsPlayerInteractionValid('ftr_change_law_army_type_1_interaction')]"
+					#enabled = "[Character.IsPlayerInteractionValid('ftr_change_law_army_type_1_interaction')]"
 					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_army_type_1_interaction')]"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_army_type'), '(CFixedPoint)1')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_army_type_2_button"
 					text = "ftr_army_type_2"
 					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_army_type_2_interaction')]"
-					enabled = "[Character.IsPlayerInteractionValid('ftr_change_law_army_type_2_interaction')]"
+					#enabled = "[Character.IsPlayerInteractionValid('ftr_change_law_army_type_2_interaction')]"
 					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_army_type_2_interaction')]"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_army_type'), '(CFixedPoint)2')]"
 					size = { 100 33 }
 				}
 			}
@@ -484,16 +486,19 @@ types Lists
 				button_standard = {
 					name = "ftr_council_power_0_button"
 					text = "ftr_council_power_0"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_council_power'), '(CFixedPoint)0')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_council_power_1_button"
 					text = "ftr_council_power_1"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_council_power'), '(CFixedPoint)1')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_council_power_2_button"
 					text = "ftr_council_power_2"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_council_power'), '(CFixedPoint)2')]"
 					size = { 100 33 }
 				}
 			}
@@ -507,21 +512,25 @@ types Lists
 				button_standard = {
 					name = "ftr_proposal_right_0_button"
 					text = "ftr_proposal_right_0"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)0')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_proposal_right_1_button"
 					text = "ftr_proposal_right_1"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)1')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_proposal_right_2_button"
 					text = "ftr_proposal_right_2"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)2')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_proposal_right_3_button"
 					text = "ftr_proposal_right_3"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)3')]"
 					size = { 100 33 }
 				}
 			}
@@ -535,16 +544,19 @@ types Lists
 				button_standard = {
 					name = "ftr_economic_policy_0_button"
 					text = "ftr_economic_policy_0"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_economic_policy'), '(CFixedPoint)0')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_economic_policy_1_button"
 					text = "ftr_economic_policy_1"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_economic_policy'), '(CFixedPoint)1')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_economic_policy_2_button"
 					text = "ftr_economic_policy_2"
+					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_economic_policy'), '(CFixedPoint)2')]"
 					size = { 100 33 }
 				}
 			}

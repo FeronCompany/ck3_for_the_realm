@@ -22,6 +22,7 @@ ftr_army_types = {
 
 		can_pass = {
 			can_pass_ftr_army_type_0 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }
@@ -65,6 +66,7 @@ ftr_army_types = {
 
 		can_pass = {
 			can_pass_ftr_army_type_1 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }
@@ -113,6 +115,7 @@ ftr_army_types = {
 
 		can_pass = {
 			can_pass_ftr_army_type_2 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }
@@ -152,6 +155,7 @@ ftr_council_power = {
 
 		can_pass = {
 			can_pass_ftr_council_power_0 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }
@@ -199,6 +203,7 @@ ftr_council_power = {
 
 		can_pass = {
 			can_pass_ftr_council_power_1 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }
@@ -289,6 +294,7 @@ ftr_proposal_right = {
 
 		can_pass = {
 			can_pass_ftr_proposal_right_0 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }
@@ -323,6 +329,7 @@ ftr_proposal_right = {
 
 		can_pass = {
 			can_pass_ftr_proposal_right_1 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }
@@ -350,6 +357,7 @@ ftr_proposal_right = {
 
 		can_pass = {
 			can_pass_ftr_proposal_right_2 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }
@@ -376,6 +384,7 @@ ftr_proposal_right = {
 
 		can_pass = {
 			can_pass_ftr_proposal_right_3 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }
@@ -407,6 +416,7 @@ ftr_economic_policy = {
 
 		can_pass = {
 			can_pass_ftr_economic_policy_0 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }
@@ -433,6 +443,7 @@ ftr_economic_policy = {
 
 		can_pass = {
 			can_pass_ftr_economic_policy_1 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }
@@ -472,6 +483,7 @@ ftr_economic_policy = {
 
 		can_pass = {
 			can_pass_ftr_economic_policy_2 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
 		}
 
 		pass_cost = { prestige = 500 }

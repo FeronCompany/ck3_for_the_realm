@@ -24,6 +24,7 @@ ftr_change_law_army_type_0_interaction = {
 			NOT =  { is_at_war_with = scope:recipient }
 			is_imprisoned = no
 			is_capable_adult = yes
+			ftr_can_make_proposal_trigger = yes
 		}
 		scope:recipient = {
 			is_imprisoned = no
@@ -34,16 +35,47 @@ ftr_change_law_army_type_0_interaction = {
 	}
 
 	on_accept = {
-		scope:recipient = {
-			add_realm_law = ftr_army_type_0
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+		if = {
+			limit = { scope:recipient = { has_realm_law = ftr_council_power_2 } }
+			custom_description = {
+				text = "ftr_proposal_will_be_reviewed_tt"
+				subject = scope:recipient
+				# TODO ...
+				#
+				#
+			}
+			show_as_tooltip = {
+				scope:recipient = {
+					add_realm_law = ftr_army_type_0
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				add_realm_law = ftr_army_type_0
+			}
 		}
 	}
-	on_decline = {}
+	on_decline = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+	}
 	auto_accept = {
 		OR = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
+			}
+			scope:recipient = {
+				has_realm_law = ftr_council_power_2
 			}
 		}
 	}
@@ -85,6 +117,7 @@ ftr_change_law_army_type_1_interaction = {
 			NOT =  { is_at_war_with = scope:recipient }
 			is_imprisoned = no
 			is_capable_adult = yes
+			ftr_can_make_proposal_trigger = yes
 		}
 		scope:recipient = {
 			is_imprisoned = no
@@ -96,16 +129,30 @@ ftr_change_law_army_type_1_interaction = {
 	}
 
 	on_accept = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
 		scope:recipient = {
 			add_realm_law = ftr_army_type_1
 		}
 	}
-	on_decline = {}
+	on_decline = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+	}
 	auto_accept = {
 		OR = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
+			}
+			scope:recipient = {
+				has_realm_law = ftr_council_power_2
 			}
 		}
 	}
@@ -147,6 +194,7 @@ ftr_change_law_army_type_2_interaction = {
 			NOT =  { is_at_war_with = scope:recipient }
 			is_imprisoned = no
 			is_capable_adult = yes
+			ftr_can_make_proposal_trigger = yes
 		}
 		scope:recipient = {
 			is_imprisoned = no
@@ -158,16 +206,30 @@ ftr_change_law_army_type_2_interaction = {
 	}
 
 	on_accept = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
 		scope:recipient = {
 			add_realm_law = ftr_army_type_2
 		}
 	}
-	on_decline = {}
+	on_decline = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+	}
 	auto_accept = {
 		OR = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
+			}
+			scope:recipient = {
+				has_realm_law = ftr_council_power_2
 			}
 		}
 	}

@@ -391,3 +391,7 @@ ftr_vassal_refuse_to_learn_language_content_tt = {
 ftr_vassal_transform_to_warlord_content_tt = {
 	global = ftr_vassal_transform_to_warlord_content_text
 }
+
+ftr_proposal_will_be_reviewed_tt = {
+	global = ftr_proposal_will_be_reviewed_tt
+}

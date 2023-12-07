@@ -9,7 +9,6 @@ can_pass_ftr_army_type_0 = {
 			has_variable = ftr_army_types_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
 }
 
 can_pass_ftr_army_type_1 = {
@@ -21,7 +20,6 @@ can_pass_ftr_army_type_1 = {
 			has_variable = ftr_army_types_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
 }
 
 can_pass_ftr_army_type_2 = {
@@ -33,7 +31,6 @@ can_pass_ftr_army_type_2 = {
 			has_variable = ftr_army_types_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
 }
 
 can_pass_ftr_council_power_0 = {
@@ -44,7 +41,6 @@ can_pass_ftr_council_power_0 = {
 			has_variable = ftr_councillor_power_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
 	has_realm_law = ftr_council_power_1
 }
 
@@ -56,7 +52,6 @@ can_pass_ftr_council_power_1 = {
 			has_variable = ftr_councillor_power_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
 }
 
 can_pass_ftr_council_power_2 = {
@@ -78,7 +73,6 @@ can_pass_ftr_proposal_right_0 = {
 			has_variable = ftr_proposal_right_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
 	has_realm_law = ftr_proposal_right_1
 }
 
@@ -90,7 +84,6 @@ can_pass_ftr_proposal_right_1 = {
 			has_variable = ftr_proposal_right_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
 	trigger_if = {
 		limit = { has_realm_law = ftr_proposal_right_3 }
 		has_realm_law = ftr_proposal_right_2
@@ -105,7 +98,6 @@ can_pass_ftr_proposal_right_2 = {
 			has_variable = ftr_proposal_right_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
 	trigger_if = {
 		limit = { has_realm_law = ftr_proposal_right_0 }
 		has_realm_law = ftr_proposal_right_1
@@ -120,7 +112,6 @@ can_pass_ftr_proposal_right_3 = {
 			has_variable = ftr_proposal_right_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
 	has_realm_law = ftr_proposal_right_2
 }
 
@@ -132,7 +123,6 @@ can_pass_ftr_economic_policy_0 = {
 			has_variable = ftr_economic_policy_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
 }
 
 can_pass_ftr_economic_policy_1 = {
@@ -143,7 +133,6 @@ can_pass_ftr_economic_policy_1 = {
 			has_variable = ftr_economic_policy_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
 }
 
 can_pass_ftr_economic_policy_2 = {
@@ -154,5 +143,39 @@ can_pass_ftr_economic_policy_2 = {
 			has_variable = ftr_economic_policy_cooldown
 		}
 	}
-	NOT = { has_realm_law = ftr_council_power_2 }
+}
+
+ftr_can_make_proposal_trigger = {
+	custom_description = {
+		text = "ftr_can_make_proposal_trigger_tt"
+		trigger_if = {
+			limit = { liege = scope:recipient }
+			trigger_if = {
+				limit = { liege = { has_realm_law = ftr_proposal_right_1 } }
+				OR = {
+					is_councillor_of = liege
+					is_heir_of = liege
+					is_spouse_of = liege
+				}
+			}
+			trigger_if = {
+				limit = { liege = { has_realm_law = ftr_proposal_right_2 } }
+				OR = {
+					is_councillor_of = liege
+					is_heir_of = liege
+					is_spouse_of = liege
+					is_powerful_vassal_of = liege
+				}
+			}
+			trigger_if = {
+				limit = { liege = { has_realm_law = ftr_proposal_right_3 } }
+				OR = {
+					is_councillor_of = liege
+					is_heir_of = liege
+					is_spouse_of = liege
+					is_vassal_of = liege
+				}
+			}
+		}
+	}
 }

@@ -11,7 +11,6 @@ ftr_update_powerful_subjects_list_effect = {
 	}
 	every_courtier = {
 		limit = {
-			is_landed = no
 			is_capable_adult = yes
 			OR = {
 				is_councillor_of = root

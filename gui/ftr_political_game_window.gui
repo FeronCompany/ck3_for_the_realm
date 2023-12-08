@@ -518,24 +518,32 @@ types Lists
 				button_standard = {
 					name = "ftr_proposal_right_0_button"
 					text = "ftr_proposal_right_0"
+					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_proposal_right_0_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_proposal_right_0_interaction')]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)0')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_proposal_right_1_button"
 					text = "ftr_proposal_right_1"
+					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_proposal_right_1_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_proposal_right_1_interaction')]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)1')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_proposal_right_2_button"
 					text = "ftr_proposal_right_2"
+					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_proposal_right_2_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_proposal_right_2_interaction')]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)2')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_proposal_right_3_button"
 					text = "ftr_proposal_right_3"
+					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_proposal_right_3_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_proposal_right_3_interaction')]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_proposal_right'), '(CFixedPoint)3')]"
 					size = { 100 33 }
 				}

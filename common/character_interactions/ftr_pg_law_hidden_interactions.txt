@@ -949,3 +949,514 @@ ftr_change_law_council_power_2_interaction = {
 		}
 	}
 }
+
+ftr_change_law_proposal_right_0_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	cooldown_against_recipient = { years = 10 }
+	hidden = yes
+	desc = ftr_change_law_proposal_right_0_interaction_desc
+	ai_maybe = yes
+	can_send_despite_rejection = yes
+	ai_targets = {
+		ai_recipients = self
+		ai_recipients = liege
+	}
+	ai_frequency = 24
+	is_shown = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:actor.liege = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  { is_at_war_with = scope:recipient }
+			is_imprisoned = no
+			is_capable_adult = yes
+			ftr_can_make_proposal_trigger = yes
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			is_capable_adult = yes
+			NOT = { has_realm_law = ftr_proposal_right_0 }
+			can_pass_ftr_proposal_right_0 = yes
+		}
+	}
+	can_send = {
+		scope:actor = {
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_make_pg_proposal_cost_value
+				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+			}
+		}
+		ftr_can_accept_proposal_trigger = yes
+	}
+
+	on_accept = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+		if = {
+			limit = { scope:recipient = { has_realm_law = ftr_council_power_2 } }
+			custom_description = {
+				text = "ftr_proposal_will_be_reviewed_tt"
+				subject = scope:recipient
+				scope:recipient = {
+					ftr_accept_proposal_effect = yes
+					# get list: powerful_subjects_list
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						limit = { NOT = { this = scope:actor } }
+						trigger_event = {
+							id = ftr_pg_law_event.0007
+							days = { 5 10 }
+						}
+					}
+					trigger_event = {
+						id = ftr_pg_law_event.0107
+						days = 30
+					}
+				}
+			}
+			show_as_tooltip = {
+				scope:recipient = {
+					add_realm_law = ftr_proposal_right_0
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				add_realm_law = ftr_proposal_right_0
+			}
+		}
+	}
+	on_decline = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+	}
+	auto_accept = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:recipient = {
+				is_imprisoned_by = scope:actor
+			}
+			scope:recipient = {
+				has_realm_law = ftr_council_power_2
+			}
+		}
+	}
+	ai_accept = {
+		base = 0
+		opinion_modifier = {
+			trigger = { NOT = { scope:actor = scope:recipient } }
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 1
+			desc = AI_OPINION_REASON
+		}
+	}
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 20
+			scope:actor = scope:recipient
+		}
+	}
+}
+
+ftr_change_law_proposal_right_1_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	cooldown_against_recipient = { years = 10 }
+	hidden = yes
+	desc = ftr_change_law_proposal_right_1_interaction_desc
+	ai_maybe = yes
+	can_send_despite_rejection = yes
+	ai_targets = {
+		ai_recipients = self
+		ai_recipients = liege
+	}
+	ai_frequency = 24
+	is_shown = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:actor.liege = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  { is_at_war_with = scope:recipient }
+			is_imprisoned = no
+			is_capable_adult = yes
+			ftr_can_make_proposal_trigger = yes
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			is_capable_adult = yes
+			NOT = { has_realm_law = ftr_proposal_right_1 }
+			can_pass_ftr_proposal_right_1 = yes
+		}
+	}
+	can_send = {
+		scope:actor = {
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_make_pg_proposal_cost_value
+				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+			}
+		}
+		ftr_can_accept_proposal_trigger = yes
+	}
+
+	on_accept = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+		if = {
+			limit = { scope:recipient = { has_realm_law = ftr_council_power_2 } }
+			custom_description = {
+				text = "ftr_proposal_will_be_reviewed_tt"
+				subject = scope:recipient
+				scope:recipient = {
+					ftr_accept_proposal_effect = yes
+					# get list: powerful_subjects_list
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						limit = { NOT = { this = scope:actor } }
+						trigger_event = {
+							id = ftr_pg_law_event.0008
+							days = { 5 10 }
+						}
+					}
+					trigger_event = {
+						id = ftr_pg_law_event.0108
+						days = 30
+					}
+				}
+			}
+			show_as_tooltip = {
+				scope:recipient = {
+					add_realm_law = ftr_proposal_right_1
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				add_realm_law = ftr_proposal_right_1
+			}
+		}
+	}
+	on_decline = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+	}
+	auto_accept = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:recipient = {
+				is_imprisoned_by = scope:actor
+			}
+			scope:recipient = {
+				has_realm_law = ftr_council_power_2
+			}
+		}
+	}
+	ai_accept = {
+		base = 20
+		opinion_modifier = {
+			trigger = { NOT = { scope:actor = scope:recipient } }
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 1
+			desc = AI_OPINION_REASON
+		}
+	}
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 20
+			scope:actor = scope:recipient
+			scope:recipient = {
+				has_realm_law = ftr_proposal_right_2
+			}
+		}
+		modifier = {
+			add = 20
+			NOT = { scope:actor = scope:recipient }
+			scope:recipient = {
+				has_realm_law = ftr_proposal_right_0
+			}
+		}
+	}
+}
+
+ftr_change_law_proposal_right_2_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	cooldown_against_recipient = { years = 10 }
+	hidden = yes
+	desc = ftr_change_law_proposal_right_2_interaction_desc
+	ai_maybe = yes
+	can_send_despite_rejection = yes
+	ai_targets = {
+		ai_recipients = self
+		ai_recipients = liege
+	}
+	ai_frequency = 24
+	is_shown = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:actor.liege = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  { is_at_war_with = scope:recipient }
+			is_imprisoned = no
+			is_capable_adult = yes
+			ftr_can_make_proposal_trigger = yes
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			is_capable_adult = yes
+			NOT = { has_realm_law = ftr_proposal_right_2 }
+			can_pass_ftr_proposal_right_2 = yes
+		}
+	}
+	can_send = {
+		scope:actor = {
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_make_pg_proposal_cost_value
+				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+			}
+		}
+		ftr_can_accept_proposal_trigger = yes
+	}
+
+	on_accept = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+		if = {
+			limit = { scope:recipient = { has_realm_law = ftr_council_power_2 } }
+			custom_description = {
+				text = "ftr_proposal_will_be_reviewed_tt"
+				subject = scope:recipient
+				scope:recipient = {
+					ftr_accept_proposal_effect = yes
+					# get list: powerful_subjects_list
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						limit = { NOT = { this = scope:actor } }
+						trigger_event = {
+							id = ftr_pg_law_event.0009
+							days = { 5 10 }
+						}
+					}
+					trigger_event = {
+						id = ftr_pg_law_event.0109
+						days = 30
+					}
+				}
+			}
+			show_as_tooltip = {
+				scope:recipient = {
+					add_realm_law = ftr_proposal_right_2
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				add_realm_law = ftr_proposal_right_2
+			}
+		}
+	}
+	on_decline = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+	}
+	auto_accept = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:recipient = {
+				is_imprisoned_by = scope:actor
+			}
+			scope:recipient = {
+				has_realm_law = ftr_council_power_2
+			}
+		}
+	}
+	ai_accept = {
+		base = 20
+		opinion_modifier = {
+			trigger = { NOT = { scope:actor = scope:recipient } }
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 1
+			desc = AI_OPINION_REASON
+		}
+	}
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 20
+			scope:actor = scope:recipient
+			scope:recipient = {
+				has_realm_law = ftr_proposal_right_3
+			}
+		}
+		modifier = {
+			add = 20
+			NOT = { scope:actor = scope:recipient }
+			scope:recipient = {
+				has_realm_law = ftr_proposal_right_1
+			}
+		}
+	}
+}
+
+ftr_change_law_proposal_right_3_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	cooldown_against_recipient = { years = 10 }
+	hidden = yes
+	desc = ftr_change_law_proposal_right_3_interaction_desc
+	ai_maybe = yes
+	can_send_despite_rejection = yes
+	ai_targets = {
+		ai_recipients = self
+		ai_recipients = liege
+	}
+	ai_frequency = 24
+	is_shown = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:actor.liege = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  { is_at_war_with = scope:recipient }
+			is_imprisoned = no
+			is_capable_adult = yes
+			ftr_can_make_proposal_trigger = yes
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			is_capable_adult = yes
+			NOT = { has_realm_law = ftr_proposal_right_3 }
+			can_pass_ftr_proposal_right_3 = yes
+		}
+	}
+	can_send = {
+		scope:actor = {
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_make_pg_proposal_cost_value
+				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+			}
+		}
+		ftr_can_accept_proposal_trigger = yes
+	}
+
+	on_accept = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+		if = {
+			limit = { scope:recipient = { has_realm_law = ftr_council_power_2 } }
+			custom_description = {
+				text = "ftr_proposal_will_be_reviewed_tt"
+				subject = scope:recipient
+				scope:recipient = {
+					ftr_accept_proposal_effect = yes
+					# get list: powerful_subjects_list
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						limit = { NOT = { this = scope:actor } }
+						trigger_event = {
+							id = ftr_pg_law_event.0010
+							days = { 5 10 }
+						}
+					}
+					trigger_event = {
+						id = ftr_pg_law_event.0110
+						days = 30
+					}
+				}
+			}
+			show_as_tooltip = {
+				scope:recipient = {
+					add_realm_law = ftr_proposal_right_3
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				add_realm_law = ftr_proposal_right_3
+			}
+		}
+	}
+	on_decline = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+		}
+	}
+	auto_accept = {
+		OR = {
+			scope:actor = scope:recipient
+			scope:recipient = {
+				is_imprisoned_by = scope:actor
+			}
+			scope:recipient = {
+				has_realm_law = ftr_council_power_2
+			}
+		}
+	}
+	ai_accept = {
+		base = 0
+		opinion_modifier = {
+			trigger = { NOT = { scope:actor = scope:recipient } }
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 1
+			desc = AI_OPINION_REASON
+		}
+	}
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 20
+			NOT = { scope:actor = scope:recipient }
+			scope:recipient = {
+				has_realm_law = ftr_proposal_right_2
+			}
+		}
+	}
+}

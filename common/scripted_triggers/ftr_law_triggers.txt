@@ -41,7 +41,10 @@ can_pass_ftr_council_power_0 = {
 			has_variable = ftr_councillor_power_cooldown
 		}
 	}
-	has_realm_law = ftr_council_power_1
+	trigger_if = {
+		limit = { has_realm_law = ftr_council_power_2 }
+		has_realm_law = ftr_council_power_1
+	}
 }
 
 can_pass_ftr_council_power_1 = {
@@ -62,7 +65,10 @@ can_pass_ftr_council_power_2 = {
 			has_variable = ftr_councillor_power_cooldown
 		}
 	}
-	has_realm_law = ftr_council_power_1
+	trigger_if = {
+		limit = { has_realm_law = ftr_council_power_0 }
+		has_realm_law = ftr_council_power_1
+	}
 }
 
 can_pass_ftr_proposal_right_0 = {

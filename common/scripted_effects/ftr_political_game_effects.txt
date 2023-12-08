@@ -6,8 +6,10 @@ ftr_update_powerful_subjects_list_effect = {
 		limit = {
 			OR = {
 				is_powerful_vassal = yes
-				is_councillor_of = root
+				is_councillor_of = prev
 				is_diarch = yes
+				is_heir_of = prev
+				is_spouse_of = prev
 			}
 			is_capable_adult = yes
 		}
@@ -17,8 +19,10 @@ ftr_update_powerful_subjects_list_effect = {
 		limit = {
 			is_capable_adult = yes
 			OR = {
-				is_councillor_of = root
+				is_councillor_of = prev
 				is_diarch = yes
+				is_heir_of = prev
+				is_spouse_of = prev
 			}
 		}
 		add_to_list = powerful_subjects_list

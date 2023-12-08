@@ -486,18 +486,24 @@ types Lists
 				button_standard = {
 					name = "ftr_council_power_0_button"
 					text = "ftr_council_power_0"
+					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_council_power_0_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_council_power_0_interaction')]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_council_power'), '(CFixedPoint)0')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_council_power_1_button"
 					text = "ftr_council_power_1"
+					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_council_power_1_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_council_power_1_interaction')]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_council_power'), '(CFixedPoint)1')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_council_power_2_button"
 					text = "ftr_council_power_2"
+					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_council_power_2_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_council_power_2_interaction')]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_council_power'), '(CFixedPoint)2')]"
 					size = { 100 33 }
 				}

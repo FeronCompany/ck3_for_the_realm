@@ -1765,3 +1765,501 @@ ftr_pg_law_event.0110 = {
 
 	after = {}
 }
+
+################# 自由放任 ###################
+ftr_pg_law_event.0011 = {
+	type = character_event
+	title = ftr_pg_law_event.0011.t
+	desc = ftr_pg_law_event.0011.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	trigger = {
+		scope:recipient = {
+			NOT = { has_realm_law = ftr_economic_policy_0 }
+		}
+	}
+	
+	option = { # 同意
+		name = ftr_pg_law_event.0011.a
+		scope:recipient = {
+			change_variable = {
+				name = ftr_proposal_vote_approve
+				add = 1
+			}
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+	option = { # 反对
+		name = ftr_pg_law_event.0011.b
+		scope:recipient = {
+			change_variable = {
+				name = ftr_proposal_vote_oppose
+				add = 1
+			}
+		}
+		ai_chance = {
+			base = 50
+			opinion_modifier = {
+				trigger = { NOT = { scope:actor = root } }
+				who = root
+				opinion_target = scope:actor
+				multiplier = -1
+			}
+		}
+	}
+	option = { # 不表态
+		name = ftr_pg_law_event.0011.c
+		ai_chance = {
+			base = 50
+		}
+	}
+}
+
+ftr_pg_law_event.0111 = {
+	type = character_event
+	title = ftr_pg_law_event.0111.t
+	desc = ftr_pg_law_event.0111.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	trigger = {
+		scope:recipient = {
+			NOT = { has_realm_law = ftr_economic_policy_0 }
+		}
+	}
+
+	immediate = {}
+
+	option = { # Agree with result
+		name = ftr_pg_law_event.0111.a
+		if = {
+			limit = {
+				scope:recipient = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:recipient = {
+				if = {
+					limit = { NOT = { has_realm_law = ftr_economic_policy_0 } }
+					add_realm_law = ftr_economic_policy_0
+				}
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					scope:actor = { add_to_list = powerful_subjects_list }
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:actor
+							right_icon = scope:recipient
+							custom_description = {
+								text = "ftr_pg_law_event.0111.agree.tt"
+								subject = scope:actor
+								object = scope:recipient
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					scope:actor = { add_to_list = powerful_subjects_list }
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:actor
+							right_icon = scope:recipient
+							custom_description = {
+								text = "ftr_pg_law_event.0111.boycotted.tt"
+								subject = scope:actor
+								object = scope:recipient
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_law_event.0111.b
+		trigger = {
+			scope:recipient = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_reject_proposal_modify_value
+		}
+		scope:recipient = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				scope:actor = { add_to_list = powerful_subjects_list }
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:actor
+						right_icon = scope:recipient
+						custom_description = {
+							text = "ftr_pg_law_event.0111.rejected.tt"
+							subject = scope:actor
+							object = scope:recipient
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	after = {}
+}
+
+################# 操纵物价 ###################
+ftr_pg_law_event.0012 = {
+	type = character_event
+	title = ftr_pg_law_event.0012.t
+	desc = ftr_pg_law_event.0012.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	trigger = {
+		scope:recipient = {
+			NOT = { has_realm_law = ftr_economic_policy_1 }
+		}
+	}
+	
+	option = { # 同意
+		name = ftr_pg_law_event.0012.a
+		scope:recipient = {
+			change_variable = {
+				name = ftr_proposal_vote_approve
+				add = 1
+			}
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+	option = { # 反对
+		name = ftr_pg_law_event.0012.b
+		scope:recipient = {
+			change_variable = {
+				name = ftr_proposal_vote_oppose
+				add = 1
+			}
+		}
+		ai_chance = {
+			base = 50
+			opinion_modifier = {
+				trigger = { NOT = { scope:actor = root } }
+				who = root
+				opinion_target = scope:actor
+				multiplier = -1
+			}
+		}
+	}
+	option = { # 不表态
+		name = ftr_pg_law_event.0012.c
+		ai_chance = {
+			base = 50
+		}
+	}
+}
+
+ftr_pg_law_event.0112 = {
+	type = character_event
+	title = ftr_pg_law_event.0112.t
+	desc = ftr_pg_law_event.0112.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	trigger = {
+		scope:recipient = {
+			NOT = { has_realm_law = ftr_economic_policy_1 }
+		}
+	}
+
+	immediate = {}
+
+	option = { # Agree with result
+		name = ftr_pg_law_event.0112.a
+		if = {
+			limit = {
+				scope:recipient = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:recipient = {
+				if = {
+					limit = { NOT = { has_realm_law = ftr_economic_policy_1 } }
+					add_realm_law = ftr_economic_policy_1
+				}
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					scope:actor = { add_to_list = powerful_subjects_list }
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:actor
+							right_icon = scope:recipient
+							custom_description = {
+								text = "ftr_pg_law_event.0112.agree.tt"
+								subject = scope:actor
+								object = scope:recipient
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					scope:actor = { add_to_list = powerful_subjects_list }
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:actor
+							right_icon = scope:recipient
+							custom_description = {
+								text = "ftr_pg_law_event.0112.boycotted.tt"
+								subject = scope:actor
+								object = scope:recipient
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_law_event.0112.b
+		trigger = {
+			scope:recipient = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_reject_proposal_modify_value
+		}
+		scope:recipient = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				scope:actor = { add_to_list = powerful_subjects_list }
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:actor
+						right_icon = scope:recipient
+						custom_description = {
+							text = "ftr_pg_law_event.0112.rejected.tt"
+							subject = scope:actor
+							object = scope:recipient
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	after = {}
+}
+
+################# 垄断经营 ###################
+ftr_pg_law_event.0013 = {
+	type = character_event
+	title = ftr_pg_law_event.0013.t
+	desc = ftr_pg_law_event.0013.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	trigger = {
+		scope:recipient = {
+			NOT = { has_realm_law = ftr_economic_policy_2 }
+		}
+	}
+	
+	option = { # 同意
+		name = ftr_pg_law_event.0013.a
+		scope:recipient = {
+			change_variable = {
+				name = ftr_proposal_vote_approve
+				add = 1
+			}
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+	option = { # 反对
+		name = ftr_pg_law_event.0013.b
+		scope:recipient = {
+			change_variable = {
+				name = ftr_proposal_vote_oppose
+				add = 1
+			}
+		}
+		ai_chance = {
+			base = 50
+			opinion_modifier = {
+				trigger = { NOT = { scope:actor = root } }
+				who = root
+				opinion_target = scope:actor
+				multiplier = -1
+			}
+		}
+	}
+	option = { # 不表态
+		name = ftr_pg_law_event.0013.c
+		ai_chance = {
+			base = 50
+		}
+	}
+}
+
+ftr_pg_law_event.0113 = {
+	type = character_event
+	title = ftr_pg_law_event.0113.t
+	desc = ftr_pg_law_event.0113.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	trigger = {
+		scope:recipient = {
+			NOT = { has_realm_law = ftr_economic_policy_2 }
+		}
+	}
+
+	immediate = {}
+
+	option = { # Agree with result
+		name = ftr_pg_law_event.0113.a
+		if = {
+			limit = {
+				scope:recipient = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:recipient = {
+				if = {
+					limit = { NOT = { has_realm_law = ftr_economic_policy_2 } }
+					add_realm_law = ftr_economic_policy_2
+				}
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					scope:actor = { add_to_list = powerful_subjects_list }
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:actor
+							right_icon = scope:recipient
+							custom_description = {
+								text = "ftr_pg_law_event.0113.agree.tt"
+								subject = scope:actor
+								object = scope:recipient
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					scope:actor = { add_to_list = powerful_subjects_list }
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:actor
+							right_icon = scope:recipient
+							custom_description = {
+								text = "ftr_pg_law_event.0113.boycotted.tt"
+								subject = scope:actor
+								object = scope:recipient
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_law_event.0113.b
+		trigger = {
+			scope:recipient = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_reject_proposal_modify_value
+		}
+		scope:recipient = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				scope:actor = { add_to_list = powerful_subjects_list }
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:actor
+						right_icon = scope:recipient
+						custom_description = {
+							text = "ftr_pg_law_event.0113.rejected.tt"
+							subject = scope:actor
+							object = scope:recipient
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	after = {}
+}

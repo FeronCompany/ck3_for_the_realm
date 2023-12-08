@@ -558,18 +558,24 @@ types Lists
 				button_standard = {
 					name = "ftr_economic_policy_0_button"
 					text = "ftr_economic_policy_0"
+					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_economic_policy_0_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_economic_policy_0_interaction')]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_economic_policy'), '(CFixedPoint)0')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_economic_policy_1_button"
 					text = "ftr_economic_policy_1"
+					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_economic_policy_1_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_economic_policy_1_interaction')]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_economic_policy'), '(CFixedPoint)1')]"
 					size = { 100 33 }
 				}
 				button_standard = {
 					name = "ftr_economic_policy_2_button"
 					text = "ftr_economic_policy_2"
+					onclick = "[Character.OpenPlayerInteraction('ftr_change_law_economic_policy_2_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_change_law_economic_policy_2_interaction')]"
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_economic_policy'), '(CFixedPoint)2')]"
 					size = { 100 33 }
 				}

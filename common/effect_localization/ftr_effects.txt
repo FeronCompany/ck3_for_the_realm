@@ -515,3 +515,39 @@ ftr_pg_law_event.0110.boycotted.tt = {
 ftr_pg_law_event.0110.rejected.tt = {
 	global = ftr_pg_law_event.0110.rejected.tt
 }
+
+ftr_pg_law_event.0111.agree.tt = {
+	global = ftr_pg_law_event.0111.agree.tt
+}
+
+ftr_pg_law_event.0111.boycotted.tt = {
+	global = ftr_pg_law_event.0111.boycotted.tt
+}
+
+ftr_pg_law_event.0111.rejected.tt = {
+	global = ftr_pg_law_event.0111.rejected.tt
+}
+
+ftr_pg_law_event.0112.agree.tt = {
+	global = ftr_pg_law_event.0112.agree.tt
+}
+
+ftr_pg_law_event.0112.boycotted.tt = {
+	global = ftr_pg_law_event.0112.boycotted.tt
+}
+
+ftr_pg_law_event.0112.rejected.tt = {
+	global = ftr_pg_law_event.0112.rejected.tt
+}
+
+ftr_pg_law_event.0113.agree.tt = {
+	global = ftr_pg_law_event.0113.agree.tt
+}
+
+ftr_pg_law_event.0113.boycotted.tt = {
+	global = ftr_pg_law_event.0113.boycotted.tt
+}
+
+ftr_pg_law_event.0113.rejected.tt = {
+	global = ftr_pg_law_event.0113.rejected.tt
+}

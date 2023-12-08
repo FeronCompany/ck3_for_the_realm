@@ -209,8 +209,8 @@ ftr_submit_proposal_effect = {
 ftr_accept_proposal_effect = {
 	add_character_flag = {
 		flag = ftr_recently_deal_proposal
-		#years = 2
-		days = 90
+		years = 2
+		#days = 90
 	}
 	set_variable = {
 		name = ftr_proposal_vote_approve

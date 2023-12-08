@@ -287,3 +287,17 @@
  ftr_slander_success_notify_tt:0 "Slander Success"
  ftr_slander_failed_notify_tt:0 "Slander Failed"
  ftr_slander_exposed_notify_tt:0 "Slander Exposed"
+
+ ftr_pg_law_event.0001.t:0 "Vote for Realm Policy"
+ ftr_pg_law_event.0001.desc:0 "During the discussion at the court meeting, [actor.GetShortUIName] proposed that a system of recruiting militias should be implemented within the territory. Over-reliance on mercenaries who take money to do things cannot protect our territory, [actor.GetShortUIName] emphasized."
+ ftr_pg_law_event.0001.a:0 "Agree"
+ ftr_pg_law_event.0001.b:0 "Disagree"
+ ftr_pg_law_event.0001.c:0 "I don't care"
+
+ ftr_pg_law_event.0101.t:0 "Result of Vote"
+ ftr_pg_law_event.0101.desc:0 "The proposal initiated by [actor.GetShortUIName] to implement a system of recruiting levy within the realm of [recipient.GetShortUIName] has now been reviewed, and members of the inner circle have given their voting results:\nAgree:[recipient.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\nDisagree:[recipient.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_law_event.0101.a:0 "Acknowlage the result"
+ ftr_pg_law_event.0101.b:0 "Ignore the proposal"
+ ftr_pg_law_event.0101.agree.tt:0 "The proposal initiated by [actor.GetShortUIName] to implement a system of recruiting levy within the realm of [recipient.GetShortUIName] has now been passed by the inner circle, [recipient.GetShortUIName] signed this act."
+ ftr_pg_law_event.0101.boycotted.tt:0 "The proposal initiated by [actor.GetShortUIName] to implement a system of recruiting levy within the realm of [recipient.GetShortUIName] failed to pass the review of the inner circle."
+ ftr_pg_law_event.0101.rejected.tt:0 "The proposal initiated by [actor.GetShortUIName] to implement a system of recruiting levy within the realm of [recipient.GetShortUIName] has now been passed by the inner circle, but [recipient.GetShortUIName] refuse to sign this act."

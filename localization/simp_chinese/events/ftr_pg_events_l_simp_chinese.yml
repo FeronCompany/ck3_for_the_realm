@@ -287,3 +287,17 @@
  ftr_slander_success_notify_tt:0 "谣言四起"
  ftr_slander_failed_notify_tt:0 "谣言无人听信"
  ftr_slander_exposed_notify_tt:0 "谣言被看穿"
+
+ ftr_pg_law_event.0001.t:0 "变法投票"
+ ftr_pg_law_event.0001.desc:0 "在朝会讨论中，[actor.GetShortUIName]提出应当在领地内实施征召民兵制度。过度依赖那些拿钱办事的佣兵是无法保卫我们的领地的，[actor.GetShortUIName]强调道。"
+ ftr_pg_law_event.0001.a:0 "我支持"
+ ftr_pg_law_event.0001.b:0 "我反对"
+ ftr_pg_law_event.0001.c:0 "与我无关"
+
+ ftr_pg_law_event.0101.t:0 "变法投票结果"
+ ftr_pg_law_event.0101.desc:0 "[actor.GetShortUIName]发起的关于在[recipient.GetShortUIName]境内施行征召民兵制度的提议如今已经完成评议，核心圈子的成员们给出了投票结果：\n赞成票：[recipient.MakeScope.Var('ftr_proposal_vote_approve').GetValue]\n反对票：[recipient.MakeScope.Var('ftr_proposal_vote_oppose').GetValue]"
+ ftr_pg_law_event.0101.a:0 "承认结果"
+ ftr_pg_law_event.0101.b:0 "无视决议"
+ ftr_pg_law_event.0101.agree.tt:0 "[CHARACTER.GetShortUIName]发起的关于在[TARGET_CHARACTER.GetShortUIName]境内施行征召民兵制度的提议通过了核心圈子的评议，[TARGET_CHARACTER.GetShortUIName]正式签署了法令并颁布施行。"
+ ftr_pg_law_event.0101.boycotted.tt:0 "[CHARACTER.GetShortUIName]发起的关于在[TARGET_CHARACTER.GetShortUIName]境内施行征召民兵制度的提议未能通过核心圈子的评议。"
+ ftr_pg_law_event.0101.rejected.tt:0 "[CHARACTER.GetShortUIName]发起的关于在[TARGET_CHARACTER.GetShortUIName]境内施行征召民兵制度的提议通过了核心圈子的评议，但[TARGET_CHARACTER.GetShortUIName]拒绝签署该法案。"

@@ -179,3 +179,13 @@ ftr_can_make_proposal_trigger = {
 		}
 	}
 }
+
+ftr_can_accept_proposal_trigger = {
+	custom_description = {
+		text = "ftr_can_accept_proposal_tt"
+		subject = scope:recipient
+		scope:recipient = {
+			NOT = { has_character_flag = ftr_recently_deal_proposal }
+		}
+	}
+}

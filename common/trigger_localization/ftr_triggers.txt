@@ -158,3 +158,8 @@ ftr_can_make_proposal_trigger_tt = {
 	global = ftr_can_make_proposal_trigger_tt
 	global_not = not_ftr_can_make_proposal_trigger_tt
 }
+
+ftr_can_accept_proposal_tt = {
+	global = ftr_can_accept_proposal_tt
+	global_not = not_ftr_can_accept_proposal_tt
+}

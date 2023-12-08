@@ -395,3 +395,15 @@ ftr_vassal_transform_to_warlord_content_tt = {
 ftr_proposal_will_be_reviewed_tt = {
 	global = ftr_proposal_will_be_reviewed_tt
 }
+
+ftr_pg_law_event.0101.agree.tt = {
+	global = ftr_pg_law_event.0101.agree.tt
+}
+
+ftr_pg_law_event.0101.boycotted.tt = {
+	global = ftr_pg_law_event.0101.boycotted.tt
+}
+
+ftr_pg_law_event.0101.rejected.tt = {
+	global = ftr_pg_law_event.0101.rejected.tt
+}

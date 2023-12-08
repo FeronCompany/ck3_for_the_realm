@@ -2,3 +2,192 @@
 
 namespace = ftr_pg_law_event
 
+################# 征召民兵 ###################
+ftr_pg_law_event.0001 = {
+	type = character_event
+	title = ftr_pg_law_event.0001.t
+	desc = ftr_pg_law_event.0001.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	trigger = {
+		scope:recipient = {
+			NOT = { has_realm_law = ftr_army_type_0 }
+		}
+	}
+	
+	option = { # 同意
+		name = ftr_pg_law_event.0001.a
+		scope:recipient = {
+			change_variable = {
+				name = ftr_proposal_vote_approve
+				add = 1
+			}
+		}
+		ai_chance = {
+			base = 50
+			modifier = {
+				add = -50
+				scope:recipient = { is_at_war = yes }
+			}
+			modifier = {
+				add = -50
+				root = scope:recipient
+				gold >= 100
+			}
+			modifier = {
+				add = 150
+				NOT = { root = scope:recipient }
+				OR = {
+					has_vassal_stance = courtly
+					has_vassal_stance = glory_hound
+				}
+			}
+		}
+	}
+	option = { # 反对
+		name = ftr_pg_law_event.0001.b
+		scope:recipient = {
+			change_variable = {
+				name = ftr_proposal_vote_oppose
+				add = 1
+			}
+		}
+		ai_chance = {
+			base = 50
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:actor
+				multiplier = -1
+			}
+			modifier = {
+				add = 150
+				NOT = { root = scope:recipient }
+				OR = {
+					has_vassal_stance = parochial
+					has_vassal_stance = barons_and_minor_landholders
+				}
+			}
+		}
+	}
+	option = { # 不表态
+		name = ftr_pg_law_event.0001.c
+		ai_chance = {
+			base = 150
+		}
+	}
+}
+
+ftr_pg_law_event.0101 = {
+	type = character_event
+	title = ftr_pg_law_event.0101.t
+	desc = ftr_pg_law_event.0101.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+
+	trigger = {
+		scope:recipient = {
+			NOT = { has_realm_law = ftr_army_type_0 }
+		}
+	}
+
+	immediate = {}
+
+	option = { # Agree with result
+		name = ftr_pg_law_event.0101.a
+		if = {
+			limit = {
+				scope:recipient = {
+					var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+				}
+			}
+			scope:recipient = {
+				if = {
+					limit = { NOT = { has_realm_law = ftr_army_type_0 } }
+					add_realm_law = ftr_army_type_0
+				}
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					scope:actor = { add_to_list = powerful_subjects_list }
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_result_agree_tt"
+							left_icon = scope:actor
+							right_icon = scope:recipient
+							custom_description = {
+								text = "ftr_pg_law_event.0101.agree.tt"
+								subject = scope:actor
+								object = scope:recipient
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				hidden_effect = {
+					ftr_update_powerful_subjects_list_effect = yes
+					scope:actor = { add_to_list = powerful_subjects_list }
+					every_in_list = {
+						list = powerful_subjects_list
+						send_interface_message = {
+							title = "ftr_proposal_boycotted_tt"
+							left_icon = scope:actor
+							right_icon = scope:recipient
+							custom_description = {
+								text = "ftr_pg_law_event.0101.boycotted.tt"
+								subject = scope:actor
+								object = scope:recipient
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { # Ignore it
+		name = ftr_pg_law_event.0101.b
+		trigger = {
+			scope:recipient = {
+				var:ftr_proposal_vote_approve > var:ftr_proposal_vote_oppose
+			}
+		}
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_reject_proposal_modify_value
+		}
+		scope:recipient = {
+			hidden_effect = {
+				ftr_update_powerful_subjects_list_effect = yes
+				scope:actor = { add_to_list = powerful_subjects_list }
+				every_in_list = {
+					list = powerful_subjects_list
+					send_interface_message = {
+						title = "ftr_proposal_rejected_tt"
+						left_icon = scope:actor
+						right_icon = scope:recipient
+						custom_description = {
+							text = "ftr_pg_law_event.0101.rejected.tt"
+							subject = scope:actor
+							object = scope:recipient
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	after = {}
+}

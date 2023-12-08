@@ -411,8 +411,8 @@ types Lists
 		text_label_center = {
 			text = "FTR_SHOW_CHARACTER_PG_POWER_TEXT"
 			tooltip = "ftr_show_pg_power_tooltip"
-			max_width = 80
-			min_width = 80
+			max_width = 60
+			min_width = 60
 		}
 		button_icon = {
 			name = "ftr_pg_bribe_button"

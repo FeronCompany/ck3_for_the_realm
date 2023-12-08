@@ -3,8 +3,12 @@
 ftr_update_powerful_subjects_list_effect = {
 	add_to_list = powerful_subjects_list
 	every_vassal = {
-		limit = { 
-			is_powerful_vassal = yes
+		limit = {
+			OR = {
+				is_powerful_vassal = yes
+				is_councillor_of = root
+				is_diarch = yes
+			}
 			is_capable_adult = yes
 		}
 		add_to_list = powerful_subjects_list
@@ -195,6 +199,22 @@ ftr_submit_proposal_effect = {
 				days = { 5 15 }
 			}
 		}
+	}
+}
+
+ftr_accept_proposal_effect = {
+	add_character_flag = {
+		flag = ftr_recently_deal_proposal
+		#years = 2
+		days = 90
+	}
+	set_variable = {
+		name = ftr_proposal_vote_approve
+		value = 1
+	}
+	set_variable = {
+		name = ftr_proposal_vote_oppose
+		value = 0
 	}
 }
 

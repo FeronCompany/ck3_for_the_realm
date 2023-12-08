@@ -20,6 +20,8 @@ ftr_change_law_army_type_0_interaction = {
 		}
 	}
 	is_valid_showing_failures_only = {
+	}
+	can_send = {
 		scope:actor = {
 			NOT =  { is_at_war_with = scope:recipient }
 			is_imprisoned = no
@@ -32,6 +34,14 @@ ftr_change_law_army_type_0_interaction = {
 			NOT = { has_realm_law = ftr_army_type_0 }
 			can_pass_ftr_army_type_0 = yes
 		}
+		scope:actor = {
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_make_pg_proposal_cost_value
+				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+			}
+		}
+		ftr_can_accept_proposal_trigger = yes
 	}
 
 	on_accept = {
@@ -45,9 +55,23 @@ ftr_change_law_army_type_0_interaction = {
 			custom_description = {
 				text = "ftr_proposal_will_be_reviewed_tt"
 				subject = scope:recipient
-				# TODO ...
-				#
-				#
+				scope:recipient = {
+					ftr_accept_proposal_effect = yes
+					# get list: powerful_subjects_list
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						limit = { NOT = { this = scope:actor } }
+						trigger_event = {
+							id = ftr_pg_law_event.0001
+							days = { 5 10 }
+						}
+					}
+					trigger_event = {
+						id = ftr_pg_law_event.0101
+						days = 30
+					}
+				}
 			}
 			show_as_tooltip = {
 				scope:recipient = {
@@ -80,12 +104,32 @@ ftr_change_law_army_type_0_interaction = {
 		}
 	}
 	ai_accept = {
-		base = 20
+		base = 0
 		opinion_modifier = {
 			opinion_target = scope:actor
 			who = scope:recipient
 			multiplier = 1
 			desc = AI_OPINION_REASON
+		}
+		# I cannot affort men-at-arms
+		modifier = {
+			add = 100
+			scope:recipient = {
+				OR = {
+					max_military_strength < 8000
+					gold < 200
+				}
+			}
+			desc = FTR_GOLD_AND_MILITARY_REASON
+		}
+		# When I have gold and large army, prefer not
+		modifier = {
+			add = -50
+			scope:recipient = {
+				max_military_strength >= 15000
+				gold >= 300
+			}
+			desc = FTR_GOLD_AND_MILITARY_REASON
 		}
 	}
 	ai_will_do = {
@@ -113,6 +157,8 @@ ftr_change_law_army_type_1_interaction = {
 		}
 	}
 	is_valid_showing_failures_only = {
+	}
+	can_send = {
 		scope:actor = {
 			NOT =  { is_at_war_with = scope:recipient }
 			is_imprisoned = no
@@ -126,6 +172,14 @@ ftr_change_law_army_type_1_interaction = {
 			is_independent_ruler = yes
 			can_pass_ftr_army_type_1 = yes
 		}
+		scope:actor = {
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_make_pg_proposal_cost_value
+				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+			}
+		}
+		ftr_can_accept_proposal_trigger = yes
 	}
 
 	on_accept = {
@@ -134,8 +188,39 @@ ftr_change_law_army_type_1_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
-		scope:recipient = {
-			add_realm_law = ftr_army_type_1
+		if = {
+			limit = { scope:recipient = { has_realm_law = ftr_council_power_2 } }
+			custom_description = {
+				text = "ftr_proposal_will_be_reviewed_tt"
+				subject = scope:recipient
+				scope:recipient = {
+					ftr_accept_proposal_effect = yes
+					# get list: powerful_subjects_list
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						limit = { NOT = { this = scope:actor } }
+						trigger_event = {
+							id = ftr_pg_law_event.0002
+							days = { 5 10 }
+						}
+					}
+					trigger_event = {
+						id = ftr_pg_law_event.0102
+						days = 30
+					}
+				}
+			}
+			show_as_tooltip = {
+				scope:recipient = {
+					add_realm_law = ftr_army_type_1
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				add_realm_law = ftr_army_type_1
+			}
 		}
 	}
 	on_decline = {
@@ -157,12 +242,32 @@ ftr_change_law_army_type_1_interaction = {
 		}
 	}
 	ai_accept = {
-		base = 20
+		base = 0
 		opinion_modifier = {
 			opinion_target = scope:actor
 			who = scope:recipient
 			multiplier = 1
 			desc = AI_OPINION_REASON
+		}
+		# I cannot affort men-at-arms
+		modifier = {
+			add = -50
+			scope:recipient = {
+				OR = {
+					max_military_strength < 8000
+					gold < 200
+				}
+			}
+			desc = FTR_GOLD_AND_MILITARY_REASON
+		}
+		# When I have gold and large army
+		modifier = {
+			add = 100
+			scope:recipient = {
+				max_military_strength >= 15000
+				gold >= 400
+			}
+			desc = FTR_GOLD_AND_MILITARY_REASON
 		}
 	}
 	ai_will_do = {
@@ -190,6 +295,8 @@ ftr_change_law_army_type_2_interaction = {
 		}
 	}
 	is_valid_showing_failures_only = {
+	}
+	can_send = {
 		scope:actor = {
 			NOT =  { is_at_war_with = scope:recipient }
 			is_imprisoned = no
@@ -203,6 +310,14 @@ ftr_change_law_army_type_2_interaction = {
 			is_independent_ruler = yes
 			can_pass_ftr_army_type_2 = yes
 		}
+		scope:actor = {
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_make_pg_proposal_cost_value
+				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+			}
+		}
+		ftr_can_accept_proposal_trigger = yes
 	}
 
 	on_accept = {
@@ -211,8 +326,39 @@ ftr_change_law_army_type_2_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
-		scope:recipient = {
-			add_realm_law = ftr_army_type_2
+		if = {
+			limit = { scope:recipient = { has_realm_law = ftr_council_power_2 } }
+			custom_description = {
+				text = "ftr_proposal_will_be_reviewed_tt"
+				subject = scope:recipient
+				scope:recipient = {
+					ftr_accept_proposal_effect = yes
+					# get list: powerful_subjects_list
+					ftr_update_powerful_subjects_list_effect = yes
+					every_in_list = {
+						list = powerful_subjects_list
+						limit = { NOT = { this = scope:actor } }
+						trigger_event = {
+							id = ftr_pg_law_event.0003
+							days = { 5 10 }
+						}
+					}
+					trigger_event = {
+						id = ftr_pg_law_event.0103
+						days = 30
+					}
+				}
+			}
+			show_as_tooltip = {
+				scope:recipient = {
+					add_realm_law = ftr_army_type_2
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				add_realm_law = ftr_army_type_2
+			}
 		}
 	}
 	on_decline = {
@@ -234,12 +380,32 @@ ftr_change_law_army_type_2_interaction = {
 		}
 	}
 	ai_accept = {
-		base = 20
+		base = 0
 		opinion_modifier = {
 			opinion_target = scope:actor
 			who = scope:recipient
 			multiplier = 1
 			desc = AI_OPINION_REASON
+		}
+		# I cannot affort men-at-arms
+		modifier = {
+			add = -50
+			scope:recipient = {
+				OR = {
+					max_military_strength < 8000
+					gold < 200
+				}
+			}
+			desc = FTR_GOLD_AND_MILITARY_REASON
+		}
+		# When I have gold and large army
+		modifier = {
+			add = 100
+			scope:recipient = {
+				max_military_strength >= 15000
+				gold >= 400
+			}
+			desc = FTR_GOLD_AND_MILITARY_REASON
 		}
 	}
 	ai_will_do = {

@@ -148,34 +148,37 @@ can_pass_ftr_economic_policy_2 = {
 ftr_can_make_proposal_trigger = {
 	custom_description = {
 		text = "ftr_can_make_proposal_trigger_tt"
-		trigger_if = {
-			limit = { liege = scope:recipient }
+		OR = {
 			trigger_if = {
-				limit = { liege = { has_realm_law = ftr_proposal_right_1 } }
-				OR = {
-					is_councillor_of = liege
-					is_heir_of = liege
-					is_spouse_of = liege
+				limit = { scope:actor.liege = scope:recipient }
+				trigger_if = {
+					limit = { scope:recipient = { has_realm_law = ftr_proposal_right_1 } }
+					OR = {
+						is_councillor_of = scope:recipient
+						is_heir_of = scope:recipient
+						is_spouse_of = scope:recipient
+					}
+				}
+				trigger_if = {
+					limit = { scope:recipient = { has_realm_law = ftr_proposal_right_2 } }
+					OR = {
+						is_councillor_of = scope:recipient
+						is_heir_of = scope:recipient
+						is_spouse_of = scope:recipient
+						is_powerful_vassal_of = scope:recipient
+					}
+				}
+				trigger_if = {
+					limit = { scope:recipient = { has_realm_law = ftr_proposal_right_3 } }
+					OR = {
+						is_councillor_of = scope:recipient
+						is_heir_of = scope:recipient
+						is_spouse_of = scope:recipient
+						is_vassal_of = scope:recipient
+					}
 				}
 			}
-			trigger_if = {
-				limit = { liege = { has_realm_law = ftr_proposal_right_2 } }
-				OR = {
-					is_councillor_of = liege
-					is_heir_of = liege
-					is_spouse_of = liege
-					is_powerful_vassal_of = liege
-				}
-			}
-			trigger_if = {
-				limit = { liege = { has_realm_law = ftr_proposal_right_3 } }
-				OR = {
-					is_councillor_of = liege
-					is_heir_of = liege
-					is_spouse_of = liege
-					is_vassal_of = liege
-				}
-			}
+			scope:recipient = scope:actor
 		}
 	}
 }

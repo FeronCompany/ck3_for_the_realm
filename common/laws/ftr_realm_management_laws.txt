@@ -439,7 +439,13 @@ ftr_economic_policy = {
 			development_growth_factor = -0.33
 		}
 
-		can_keep = { always = yes }
+		can_keep = {
+			custom_description = {
+				text = "ftr_have_enough_bureaucracy_value_tt"
+				value = ftr_economic_policy_1_bureaucracy_gap_value
+				ftr_bureaucracy_value >= ftr_economic_policy_1_bureaucracy_gap_value
+			}
+		}
 
 		can_pass = {
 			can_pass_ftr_economic_policy_1 = yes
@@ -479,7 +485,13 @@ ftr_economic_policy = {
 			county_opinion_add = -10
 		}
 
-		can_keep = { always = yes }
+		can_keep = {
+			custom_description = {
+				text = "ftr_have_enough_bureaucracy_value_tt"
+				value = ftr_economic_policy_2_bureaucracy_gap_value
+				ftr_bureaucracy_value >= ftr_economic_policy_2_bureaucracy_gap_value
+			}
+		}
 
 		can_pass = {
 			can_pass_ftr_economic_policy_2 = yes

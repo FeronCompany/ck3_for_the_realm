@@ -116,6 +116,12 @@
  ftr_corruption_crime:0 "<FTR>Corruption"
  ftr_corruption_crime_desc:0 "Corruption"
 
+ ftr_political_opponent_opinion:0 "<FTR> Political Opponent"
+ ftr_political_opponent_opinion_desc:0 "The two sides are at odds in terms of political stance"
+
+ ftr_political_alliance_opinion:0 "<FTR> Political Allience"
+ ftr_political_alliance_opinion_desc:0 "Both sides advance and retreat together in political positions"
+
  ftr_indulge_criminal_modifier:0 "<FTR> Indulge Criminal"
  ftr_indulge_criminal_modifier_desc:0 "Indulge Criminal"
 

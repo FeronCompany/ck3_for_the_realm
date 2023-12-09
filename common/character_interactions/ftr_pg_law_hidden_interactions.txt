@@ -1633,6 +1633,13 @@ ftr_change_law_economic_policy_1_interaction = {
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
 		}
+		scope:recipient = {
+			custom_description = {
+				text = "ftr_have_enough_bureaucracy_value_tt"
+				value = ftr_economic_policy_1_bureaucracy_gap_value
+				ftr_bureaucracy_value >= ftr_economic_policy_1_bureaucracy_gap_value
+			}
+		}
 		ftr_can_accept_proposal_trigger = yes
 	}
 
@@ -1783,6 +1790,13 @@ ftr_change_law_economic_policy_2_interaction = {
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
 		}
+		scope:recipient = {
+			custom_description = {
+				text = "ftr_have_enough_bureaucracy_value_tt"
+				value = ftr_economic_policy_2_bureaucracy_gap_value
+				ftr_bureaucracy_value >= ftr_economic_policy_2_bureaucracy_gap_value
+			}
+		}
 		ftr_can_accept_proposal_trigger = yes
 	}
 
@@ -1869,6 +1883,232 @@ ftr_change_law_economic_policy_2_interaction = {
 			scope:recipient = {
 				gold < 100
 			}
+		}
+	}
+}
+
+######### Support Liege During Regency ##########
+ftr_diarch_support_liege_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	desc = ftr_diarch_support_liege_interaction_desc
+	hidden = yes
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_frequency = 24
+	cooldown_against_recipient = { years = 2 }
+	is_shown = {
+		scope:actor = {
+			is_vassal_of = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {
+		NOT = { scope:actor = scope:recipient }
+		scope:actor = {
+			NOT =  {
+				is_at_war_with = scope:recipient
+			}
+			is_capable_adult = yes
+			NOT = { is_diarch_of_target = scope:recipient }
+			custom_description = {
+				text = "ftr_show_stance_in_regency_tt"
+				NOT = { has_character_flag = ftr_show_stance_in_regency }
+			}
+		}
+		scope:recipient = {
+			has_active_diarchy = yes
+			has_diarchy_active_parameter = diarchy_is_regency
+		}
+	}
+	can_send = {
+		scope:actor = {
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_make_pg_proposal_cost_value
+				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+			}
+		}
+	}
+	on_accept = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+			add_opinion = {
+				target = scope:recipient.diarch
+				modifier = ftr_political_opponent_opinion
+			}
+			add_character_flag = {
+				flag = ftr_show_stance_in_regency
+				years = 1
+			}
+		}
+		scope:recipient = {
+			update_diarchy_swing_with_perspective_effect = {
+				SWING = minor_sop_swing_liege_gain
+				LIEGE = scope:recipient
+			}
+			add_opinion = {
+				target = scope:actor
+				modifier = ftr_political_alliance_opinion
+			}
+			diarch = {
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_political_opponent_opinion
+				}
+				progress_towards_rival_effect = {
+					REASON = rival_at_university
+					CHARACTER = scope:actor
+					OPINION = 0
+				}
+			}
+			hidden_effect = {
+				# Notify all subjects: pg_member_list
+				ftr_update_pg_member_list_effect = yes
+				every_in_list = {
+					list = pg_member_list
+					send_interface_message = {
+						title = "ftr_vassal_support_liege_against_regent_tt"
+						left_icon = scope:actor
+						right_icon = scope:recipient
+						custom_description = {
+							text = "ftr_vassal_support_liege_against_regent_content"
+							subject = scope:actor
+							object = scope:recipient
+						}
+					}
+				}
+			}
+		}
+	}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = -20
+		opinion_modifier = {
+			opinion_target = scope:recipient
+			who = scope:actor
+			multiplier = 0.5
+		}
+		opinion_modifier = {
+			opinion_target = scope:recipient.diarch
+			who = scope:actor
+			multiplier = -0.5
+		}
+	}
+}
+
+######### Support Diarch During Regency ##########
+ftr_diarch_support_diarch_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	desc = ftr_diarch_support_diarch_interaction_desc
+	hidden = yes
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_frequency = 24
+	cooldown_against_recipient = { years = 2 }
+	is_shown = {
+		scope:actor = {
+			is_vassal_of = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {
+		NOT = { scope:actor = scope:recipient }
+		scope:actor = {
+			NOT =  {
+				is_at_war_with = scope:recipient
+			}
+			is_capable_adult = yes
+			NOT = { is_diarch_of_target = scope:recipient }
+			custom_description = {
+				text = "ftr_show_stance_in_regency_tt"
+				NOT = { has_character_flag = ftr_show_stance_in_regency }
+			}
+		}
+		scope:recipient = {
+			has_active_diarchy = yes
+			has_diarchy_active_parameter = diarchy_is_regency
+		}
+	}
+	can_send = {
+		scope:actor = {
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_make_pg_proposal_cost_value
+				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
+			}
+		}
+	}
+	on_accept = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_make_pg_proposal_modify_value
+			}
+			add_opinion = {
+				target = scope:recipient
+				modifier = ftr_political_opponent_opinion
+			}
+			add_character_flag = {
+				flag = ftr_show_stance_in_regency
+				years = 1
+			}
+		}
+		scope:recipient = {
+			update_diarchy_swing_with_perspective_effect = {
+				SWING = minor_sop_swing_diarch_gain
+				LIEGE = scope:recipient
+			}
+			add_opinion = {
+				target = scope:actor
+				modifier = ftr_political_opponent_opinion
+			}
+			progress_towards_rival_effect = {
+				REASON = rival_at_university
+				CHARACTER = scope:actor
+				OPINION = 0
+			}
+			diarch = {
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_political_alliance_opinion
+				}
+			}
+			hidden_effect = {
+				# Notify all subjects: pg_member_list
+				ftr_update_pg_member_list_effect = yes
+				every_in_list = {
+					list = pg_member_list
+					send_interface_message = {
+						title = "ftr_vassal_support_regent_against_liege_tt"
+						left_icon = scope:actor
+						right_icon = scope:recipient.diarch
+						custom_description = {
+							text = "ftr_vassal_support_regent_against_liege_content"
+							subject = scope:actor
+							object = scope:recipient.diarch
+						}
+					}
+				}
+			}
+		}
+	}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = -20
+		opinion_modifier = {
+			opinion_target = scope:recipient
+			who = scope:actor
+			multiplier = -0.5
+		}
+		opinion_modifier = {
+			opinion_target = scope:recipient.diarch
+			who = scope:actor
+			multiplier = 0.5
 		}
 	}
 }

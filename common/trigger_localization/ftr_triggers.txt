@@ -163,3 +163,8 @@ ftr_can_accept_proposal_tt = {
 	global = ftr_can_accept_proposal_tt
 	global_not = not_ftr_can_accept_proposal_tt
 }
+
+ftr_show_stance_in_regency_tt = {
+	global = ftr_show_stance_in_regency_tt
+	global_not = not_ftr_show_stance_in_regency_tt
+}

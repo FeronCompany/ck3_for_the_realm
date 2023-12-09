@@ -89,67 +89,8 @@
 					layoutpolicy_vertical = expanding
 					visible = "[GetVariableSystem.Exists( 'ftr_show_my_realm_tab_toggle' )]"
 					using = Animation_Tab_Switch
-					hbox = { # 领主与摄政列表
-						margin = { 10 10 }
-						size = { 100% 100 }
-						vbox = {
-							portrait_head_small = {
-								name = "player_head_portrait"
-								visible = "[Character.IsValid]"
-								datacontext = "[GetPlayer]"
-								tooltip_enabled = "[Character.IsValid]"
-							}
-							text_label_center = {
-								text = "FTR_PG_LIEGE_TEXT"
-							}
-						}
-						vbox = {
-							margin = { 40 0 }
-							layoutpolicy_horizontal = expanding
-							text_label_center = {
-								margin = { 0 10 }
-								text = "FTR_PG_MY_PG_FOCUS_TEXT"
-								tooltip = "ftr_pg_focus_tooltip"
-							}
-							button_standard = {
-								name = "ftr_pg_change_focus_button"
-								text = "FTR_PG_CHANGE_FOCUS"
-								tooltip = "ftr_pg_change_focus_tooltip"
-								datacontext = "[GetScriptedGui( 'ftr_change_my_focus' )]"
-								onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-								enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-								size = { 150 33 }
-    						}
-						}
-						vbox = {
-							margin = { 40 0 }
-							layoutpolicy_horizontal = expanding
-							text_label_center = {
-								margin = { 0 10 }
-								text = "FTR_PG_MY_PROPOSAL_TEXT"
-								tooltip = "ftr_pg_proposal_tooltip"
-							}
-							button_standard = {
-								name = "ftr_pg_make_proposal_button"
-								text = "FTR_PG_MAKE_PROPOSAL"
-								tooltip = "ftr_pg_make_proposal_tooltip"
-								datacontext = "[GetScriptedGui( 'ftr_make_my_proposal' )]"
-								onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-								enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-								size = { 150 33 }
-    						}
-						}
-						vbox = {
-							portrait_head_small = {
-								name = "regent_head_portrait"
-								#visible = "[GetPlayer.GetDiarchy.IsValid]"
-								datacontext = "[GetPlayer.GetDiarchy.GetDiarch]"
-								tooltip_enabled = "[GetPlayer.GetDiarchy.IsValid]"
-							}
-							text_label_center = {
-								text = "FTR_PG_REGENT_TEXT"
-							}
-						}
+					ftr_liege_and_diarchy_box = {
+						datacontext = "[GetPlayer]"
 					}
 
 					hbox = {
@@ -255,66 +196,8 @@
 					layoutpolicy_vertical = expanding
 					visible = "[GetVariableSystem.Exists( 'ftr_show_liege_realm_tab_toggle' )]"
 					using = Animation_Tab_Switch
-					hbox = { # 领主与摄政列表
-						margin = { 10 10 }
-						size = { 100% 100 }
-						vbox = {
-							portrait_head_small = {
-								name = "player_head_portrait"
-								datacontext = "[GetPlayer.GetLiege]"
-								visible = "[Character.IsValid]"
-								tooltip_enabled = "[Character.IsValid]"
-							}
-							text_label_center = {
-								text = "FTR_PG_LIEGE_TEXT"
-							}
-						}
-						vbox = {
-							margin = { 40 0 }
-							layoutpolicy_horizontal = expanding
-							text_label_center = {
-								margin = { 0 10 }
-								text = "FTR_PG_LIEGE_PG_FOCUS_TEXT"
-								tooltip = "ftr_pg_focus_tooltip"
-							}
-							button_standard = {
-								name = "ftr_pg_change_focus_button"
-								text = "FTR_PG_CHANGE_FOCUS"
-								tooltip = "ftr_pg_change_focus_tooltip"
-								datacontext = "[GetScriptedGui( 'ftr_change_liege_focus' )]"
-								onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-								enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-								size = { 150 33 }
-    						}
-						}
-						vbox = {
-							margin = { 40 0 }
-							layoutpolicy_horizontal = expanding
-							text_label_center = {
-								margin = { 0 10 }
-								text = "FTR_PG_LIEGE_PROPOSAL_TEXT"
-								tooltip = "ftr_pg_proposal_tooltip"
-							}
-							button_standard = {
-								name = "ftr_pg_make_proposal_button"
-								text = "FTR_PG_MAKE_PROPOSAL"
-								tooltip = "ftr_pg_make_proposal_tooltip"
-								datacontext = "[GetScriptedGui( 'ftr_make_proposal_to_liege' )]"
-								onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-								enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-								size = { 150 33 }
-    						}
-						}
-						vbox = {
-							portrait_head_small = {
-								name = "regent_head_portrait"
-								datacontext = "[GetPlayer.GetLiege.GetDiarchy.GetDiarch]"
-								tooltip_enabled = "[GetPlayer.GetLiege.GetDiarchy.IsValid]"
-							}
-							text_label_center = {
-								text = "FTR_PG_REGENT_TEXT"
-							}
-						}
+					ftr_liege_and_diarchy_box = {
+						datacontext = "[GetPlayer.GetLiege]"
 					}
 
 					hbox = {
@@ -579,6 +462,81 @@ types Lists
 					down = "[EqualTo_CFixedPoint(Character.MakeScope.ScriptValue('ftr_get_economic_policy'), '(CFixedPoint)2')]"
 					size = { 100 33 }
 				}
+			}
+		}
+	}
+
+	type ftr_liege_and_diarchy_box = hbox {
+		margin = { 10 10 }
+		size = { 100% 100 }
+		vbox = {
+			portrait_head_small = {
+				name = "player_head_portrait"
+				visible = "[Character.IsValid]"
+				datacontext = "[Character]"
+				tooltip_enabled = "[Character.IsValid]"
+			}
+			text_label_center = {
+				text = "FTR_PG_LIEGE_TEXT"
+			}
+		}
+		vbox = {
+			margin = { 10 0 }
+			hbox = {
+				margin = { 0 5 }
+				button_standard = {
+					name = "ftr_pg_support_liege_button"
+					text = "FTR_PG_SUPPORT_LIEGE_BUTTON_TEXT"
+					onclick = "[Character.OpenPlayerInteraction('ftr_diarch_support_liege_interaction')]"
+					enabled = "[Character.IsPlayerInteractionValid('ftr_diarch_support_liege_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_diarch_support_liege_interaction')]"
+					size = { 100 40 }
+				}
+				spacer = {
+					size = { 80 15 }
+				}
+				button_standard = {
+					name = "ftr_pg_support_diarch_button"
+					text = "FTR_PG_SUPPORT_DIARCH_BUTTON_TEXT"
+					onclick = "[Character.OpenPlayerInteraction('ftr_diarch_support_diarch_interaction')]"
+					enabled = "[Character.IsPlayerInteractionValid('ftr_diarch_support_diarch_interaction')]"
+					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_diarch_support_diarch_interaction')]"
+					size = { 100 40 }
+				}
+			}
+			progressbar_standard = {
+				name = "ftr_diarch_power_bar"
+				size = { 300 25 }
+				min = 0
+				max = 100
+				value = "[Character.MakeScope.ScriptValue( 'ftr_get_diarchy_swing' )]"
+				text_single = {
+					parentanchor = center
+					position = { 0 -4 }
+					text = "FTR_DIARCHY_BAR_TEXT"
+					default_format = "#high"
+				}
+				tooltip = "ftr_diarchy_bar_tooltip"
+			}
+		}
+		vbox = { # 草拟吗的P社，为啥 Character.GetDiarchy.GetDiarch 拿不到摄政，丢雷楼某啊！！！！
+			visible = "[ObjectsEqual(GetPlayer, Character.Self)]"
+			portrait_head_small = {
+				name = "regent_head_portrait_my"
+				datacontext = "[GetPlayer.GetDiarchy.GetDiarch]"
+			}
+			text_label_center = {
+				text = "FTR_PG_REGENT_TEXT"
+			}
+		}
+		vbox = {
+			visible = "[ObjectsEqual(GetPlayer.GetLiege, Character.Self)]"
+			portrait_head_small = {
+				name = "regent_head_portrait_liege"
+				datacontext = "[GetPlayer.GetLiege.GetDiarchy.GetDiarch]"
+			}
+			text_label_center = {
+				text = "FTR_PG_REGENT_TEXT"
 			}
 		}
 	}

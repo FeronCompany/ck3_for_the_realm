@@ -113,8 +113,8 @@ ftr_indulge_criminal_modifier = {
 
 ftr_rumor_around_modifier = {
 	icon = diplomacy_negative
-	diplomacy = -5
-	intrigue = -3
+	general_opinion = -20
+	monthly_prestige = -0.5
 }
 
 ftr_rumor_spreader_modifier = {

@@ -194,3 +194,7 @@ ftr_forty_percent_of_current_military_strength = {
 		multiply = 0.4
 	}
 }
+
+ftr_get_diarchy_swing = {
+	value = diarchy_swing
+}

@@ -143,11 +143,6 @@ can_pass_ftr_economic_policy_1 = {
 			has_variable = ftr_economic_policy_cooldown
 		}
 	}
-	custom_description = {
-		text = "ftr_have_enough_bureaucracy_value_tt"
-		value = ftr_economic_policy_1_bureaucracy_gap_value
-		ftr_bureaucracy_value >= ftr_economic_policy_1_bureaucracy_gap_value
-	}
 }
 
 can_pass_ftr_economic_policy_2 = {
@@ -157,11 +152,6 @@ can_pass_ftr_economic_policy_2 = {
 		NOT = {
 			has_variable = ftr_economic_policy_cooldown
 		}
-	}
-	custom_description = {
-		text = "ftr_have_enough_bureaucracy_value_tt"
-		value = ftr_economic_policy_2_bureaucracy_gap_value
-		ftr_bureaucracy_value >= ftr_economic_policy_2_bureaucracy_gap_value
 	}
 	trigger_if = {
 		limit = { has_realm_law = ftr_economic_policy_0 }

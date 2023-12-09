@@ -52,6 +52,10 @@
  ftr_bureaucracy_value_tooltip:0 "官僚度反映了当前领地内领主宫廷官员的综合业务能力。对集权制封臣而言，领主的官僚度越高，他们就会给领主提供更多征召兵和赋税"
  FTR_MY_BUREAUCRACY_BAR_TEXT:0 "[GetPlayer.MakeScope.ScriptValue( 'ftr_bureaucracy_value' )|0g]/150"
  FTR_LIEGE_BUREAUCRACY_BAR_TEXT:0 "[GetPlayer.GetLiege.MakeScope.ScriptValue( 'ftr_bureaucracy_value' )|0g]/150"
+ FTR_PG_SUPPORT_LIEGE_BUTTON_TEXT:0 "拥护领主"
+ FTR_PG_SUPPORT_DIARCH_BUTTON_TEXT:0 "拥护摄政"
+ FTR_DIARCHY_BAR_TEXT:0 "[Character.MakeScope.ScriptValue( 'ftr_get_diarchy_swing' )|0g]/100"
+ ftr_diarchy_bar_tooltip:0 "权力天平 [Character.MakeScope.ScriptValue( 'ftr_get_diarchy_swing' )|0g]/100"
 
  MY_REALM_WINDOW_REALM_POLICY_TAB:0 "领地政策"
  MY_REALM_WINDOW_CURRENT_REALM_POLICY:0 "当前领地政策"

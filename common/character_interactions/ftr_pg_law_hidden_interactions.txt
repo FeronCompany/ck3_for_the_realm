@@ -1959,7 +1959,7 @@ ftr_diarch_support_liege_interaction = {
 					modifier = ftr_political_opponent_opinion
 				}
 				progress_towards_rival_effect = {
-					REASON = rival_at_university
+					REASON = rival_from_stance
 					CHARACTER = scope:actor
 					OPINION = 0
 				}
@@ -1996,6 +1996,13 @@ ftr_diarch_support_liege_interaction = {
 			opinion_target = scope:recipient.diarch
 			who = scope:actor
 			multiplier = -0.5
+		}
+		modifier = {
+			add = 50
+			scope:actor = {
+				is_allied_to = scope:recipient
+				NOT = { is_allied_to = scope:recipient.diarch }
+			}
 		}
 	}
 }
@@ -2067,7 +2074,7 @@ ftr_diarch_support_diarch_interaction = {
 				modifier = ftr_political_opponent_opinion
 			}
 			progress_towards_rival_effect = {
-				REASON = rival_at_university
+				REASON = rival_from_stance
 				CHARACTER = scope:actor
 				OPINION = 0
 			}
@@ -2076,6 +2083,7 @@ ftr_diarch_support_diarch_interaction = {
 					target = scope:actor
 					modifier = ftr_political_alliance_opinion
 				}
+				change_strife_opinion = medium_strife_loss
 			}
 			hidden_effect = {
 				# Notify all subjects: pg_member_list
@@ -2109,6 +2117,13 @@ ftr_diarch_support_diarch_interaction = {
 			opinion_target = scope:recipient.diarch
 			who = scope:actor
 			multiplier = 0.5
+		}
+		modifier = {
+			add = 50
+			scope:actor = {
+				is_allied_to = scope:recipient.diarch
+				NOT = { is_allied_to = scope:recipient }
+			}
 		}
 	}
 }

@@ -1,0 +1,16 @@
+﻿
+
+adult_education_activity_cost = {
+	########## OVERRIDE ##########
+	#value = root.major_gold_value_static_max
+	value = root.medium_gold_value_static_max
+	########## OVERRIDE ##########
+	if = {
+		limit = {
+			root = {
+				government_has_flag = government_is_tribal
+			}
+		}
+		multiply = 0.5
+	}
+}

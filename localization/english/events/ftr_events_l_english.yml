@@ -440,7 +440,7 @@
  ftr_envoy.convinced_result:0 "Successfully convert the target"
  ftr_envoy.not_convinced_result:0 "Failed to convert the target"
 
- ftr_councillor_event.0001.opening:0 "My Dear Vassal [secondary_actor.GetTitledFirstName|U]:"
+ ftr_councillor_event.0001.opening:0 "[secondary_actor.Custom2('AppropriateGreeting', ROOT.Char)]"
  ftr_councillor_event.0001.desc:0 "I plan to arrange for you to make a friendly visit to the capital of [recipient.GetShortUIName] as a special envoy in the near future."
  ftr_councillor_event.0001.desc.1:0 " am preparing to arrange for you to make a friendly visit to the capital of [recipient.GetShortUIName] as an envoy in the near future, with the goal of improving relations with [recipient.GetShortUIName]."
  ftr_councillor_event.0001.desc.2:0 "I plan to arrange for you to make a friendly visit to the capital of [recipient.GetShortUIName] as an envoy in the near future, with the goal of earning some extra money there."
@@ -508,8 +508,8 @@
  ftr_councillor_event.0010.t:0 "Deterioration of Relations"
  ftr_councillor_event.0010.desc:0 "The friendly visit of the Special Envoy [secondary_actor.GetShortUIName] in the capital of [recipient.GetShortUIName] turned out unsatisfactorily and bilateral relations deteriorated significantly."
  ftr_councillor_event.0010.a:0 "Sigh"
- ftr_envoy_end_rivalry_result_tt:0 "Deterioration of Relations"
- ftr_envoy_end_rivalry_result_content_tt:0 "The friendly visit of the Special Envoy [secondary_actor.GetShortUIName] in the capital of [recipient.GetShortUIName] turned out unsatisfactorily and bilateral relations deteriorated significantly."
+ ftr_envoy_rivalry_result_tt:0 "Deterioration of Relations"
+ ftr_envoy_rivalry_result_content_tt:0 "The friendly visit of the Special Envoy [secondary_actor.GetShortUIName] in the capital of [recipient.GetShortUIName] turned out unsatisfactorily and bilateral relations deteriorated significantly."
 
  ftr_councillor_event.0011.t:0 "Extra Income"
  ftr_councillor_event.0011.desc:0 "The trade activities of the Special Envoy [secondary_actor.GetShortUIName] in the capital of [recipient.GetShortUIName] have yielded additional results, with a significant increase in trade revenues."
@@ -555,4 +555,16 @@
  ftr_councillor_event.0018.a:0 "Stop"
  ftr_envoy_not_convinced_result_tt:0 "Refuse to Convert"
  ftr_envoy_not_convinced_result_content_tt:0 "[secondary_actor.GetShortUIName] failed to convince [recipient.GetShortUIName] in the religious debate."
+
+ ftr_councillor_event.0019.t:0 "Non-Aggression"
+ ftr_councillor_event.0019.desc:0 "The friendly visit of the Special Envoy [secondary_actor.GetShortUIName] in the capital of [recipient.GetShortUIName] was fruitful, and finally [actor.GetShortUIName] and [recipient.GetShortUIName] concluded a non-aggression agreement."
+ ftr_councillor_event.0019.a:0 "Nice"
+ ftr_envoy_truce_result_tt:0 "Non-Aggression"
+ ftr_envoy_truce_result_content_tt:0 "The friendly visit of the Special Envoy [secondary_actor.GetShortUIName] in the capital of [recipient.GetShortUIName] was fruitful, and finally [actor.GetShortUIName] and [recipient.GetShortUIName] concluded a non-aggression agreement."
+
+ ftr_councillor_event.0020.t:0 "Forge Alliances"
+ ftr_councillor_event.0020.desc:0 "The friendly visit of the Envoy [secondary_actor.GetShortUIName] in the capital of [recipient.GetShortUIName] was fruitful, and finally [actor.GetShortUIName] and [recipient.GetShortUIName] concluded a covenant."
+ ftr_councillor_event.0020.a:0 "Nice"
+ ftr_envoy_ally_result_tt:0 "Forge Alliances"
+ ftr_envoy_ally_result_content_tt:0 "The friendly visit of the Envoy [secondary_actor.GetShortUIName] in the capital of [recipient.GetShortUIName] was fruitful, and finally [actor.GetShortUIName] and [recipient.GetShortUIName] concluded a covenant."
 

@@ -28,7 +28,6 @@ ftr_change_law_army_type_0_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_army_type_0 }
 			can_pass_ftr_army_type_0 = yes
 		}
@@ -97,6 +96,9 @@ ftr_change_law_army_type_0_interaction = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
+			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
 			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
@@ -175,7 +177,6 @@ ftr_change_law_army_type_1_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_army_type_1 }
 			is_independent_ruler = yes
 			can_pass_ftr_army_type_1 = yes
@@ -245,6 +246,9 @@ ftr_change_law_army_type_1_interaction = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
+			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
 			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
@@ -321,7 +325,6 @@ ftr_change_law_army_type_2_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_army_type_2 }
 			is_independent_ruler = yes
 			can_pass_ftr_army_type_2 = yes
@@ -391,6 +394,9 @@ ftr_change_law_army_type_2_interaction = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
+			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
 			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
@@ -467,7 +473,6 @@ ftr_change_law_council_power_0_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_council_power_0 }
 			can_pass_ftr_council_power_0 = yes
 		}
@@ -536,6 +541,9 @@ ftr_change_law_council_power_0_interaction = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
+			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
 			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
@@ -629,7 +637,6 @@ ftr_change_law_council_power_1_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_council_power_1 }
 			can_pass_ftr_council_power_1 = yes
 		}
@@ -698,6 +705,9 @@ ftr_change_law_council_power_1_interaction = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
+			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
 			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
@@ -808,7 +818,6 @@ ftr_change_law_council_power_2_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_council_power_2 }
 			can_pass_ftr_council_power_2 = yes
 		}
@@ -877,6 +886,9 @@ ftr_change_law_council_power_2_interaction = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
+			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
 			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
@@ -978,7 +990,6 @@ ftr_change_law_proposal_right_0_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_proposal_right_0 }
 			can_pass_ftr_proposal_right_0 = yes
 		}
@@ -1048,6 +1059,9 @@ ftr_change_law_proposal_right_0_interaction = {
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
 			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
+			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
 			}
@@ -1100,7 +1114,6 @@ ftr_change_law_proposal_right_1_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_proposal_right_1 }
 			can_pass_ftr_proposal_right_1 = yes
 		}
@@ -1170,6 +1183,9 @@ ftr_change_law_proposal_right_1_interaction = {
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
 			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
+			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
 			}
@@ -1232,7 +1248,6 @@ ftr_change_law_proposal_right_2_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_proposal_right_2 }
 			can_pass_ftr_proposal_right_2 = yes
 		}
@@ -1302,6 +1317,9 @@ ftr_change_law_proposal_right_2_interaction = {
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
 			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
+			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
 			}
@@ -1364,7 +1382,6 @@ ftr_change_law_proposal_right_3_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_proposal_right_3 }
 			can_pass_ftr_proposal_right_3 = yes
 		}
@@ -1434,6 +1451,9 @@ ftr_change_law_proposal_right_3_interaction = {
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
 			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
+			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
 			}
@@ -1489,7 +1509,6 @@ ftr_change_law_economic_policy_0_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_economic_policy_0 }
 			can_pass_ftr_economic_policy_0 = yes
 		}
@@ -1559,6 +1578,9 @@ ftr_change_law_economic_policy_0_interaction = {
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
 			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
+			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
 			}
@@ -1620,7 +1642,6 @@ ftr_change_law_economic_policy_1_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_economic_policy_1 }
 			can_pass_ftr_economic_policy_1 = yes
 		}
@@ -1696,6 +1717,9 @@ ftr_change_law_economic_policy_1_interaction = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
+			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
 			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2
@@ -1777,7 +1801,6 @@ ftr_change_law_economic_policy_2_interaction = {
 		}
 		scope:recipient = {
 			is_imprisoned = no
-			is_capable_adult = yes
 			NOT = { has_realm_law = ftr_economic_policy_2 }
 			can_pass_ftr_economic_policy_2 = yes
 		}
@@ -1853,6 +1876,9 @@ ftr_change_law_economic_policy_2_interaction = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				is_imprisoned_by = scope:actor
+			}
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
 			}
 			scope:recipient = {
 				has_realm_law = ftr_council_power_2

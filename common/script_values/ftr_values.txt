@@ -200,7 +200,7 @@ ftr_get_diarchy_swing = {
 }
 
 ftr_send_envoy_cost = {
-	base = 25
+	value = 25
 	add = {
 		value = 100
 		multiply = activity_cost_scale_by_era
@@ -210,7 +210,7 @@ ftr_send_envoy_cost = {
 ftr_trade_income_liege_share = 0.7
 ftr_trade_income_envoy_share = 0.3
 ftr_trade_income_value = {
-	base = 10
+	value = 10
 	add = {
 		value = 25
 		multiply = scope:envoy.stewardship

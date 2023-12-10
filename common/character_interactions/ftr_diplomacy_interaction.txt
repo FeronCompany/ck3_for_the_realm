@@ -560,7 +560,7 @@ ftr_send_envoy_interaction = {
 	category = interaction_category_diplomacy
 	common_interaction = yes
 	greeting = positive
-	notification_text = ftr_send_envoy_interaction_text
+	#notification_text = ftr_send_envoy_interaction_text
 	desc = ftr_send_envoy_interaction_desc
 	ai_frequency = 48
 	ai_targets = {
@@ -792,7 +792,7 @@ ftr_send_envoy_interaction = {
 						is_landed = yes
 					}
 				}
-				eighty_percent_of_current_military_strength > scope.current_military_strength
+				eighty_percent_of_current_military_strength > scope:actor.current_military_strength
 				opinion = {
 					target = scope:actor
 					value < 30
@@ -817,7 +817,7 @@ ftr_send_envoy_interaction = {
 						is_landed = yes
 					}
 				}
-				current_military_strength < scope.eighty_percent_of_current_military_strength
+				current_military_strength < scope:actor.eighty_percent_of_current_military_strength
 			}
 			scope:actor = {
 				opinion = {

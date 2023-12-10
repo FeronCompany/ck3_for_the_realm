@@ -3,7 +3,7 @@
 can_pass_ftr_army_type_0 = {
 	NOT = { is_at_war = yes }
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_army_types_cooldown"
 		NOT = {
 			has_variable = ftr_army_types_cooldown
@@ -14,7 +14,7 @@ can_pass_ftr_army_type_0 = {
 can_pass_ftr_army_type_1 = {
 	NOT = { is_at_war = yes }
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_army_types_cooldown"
 		NOT = {
 			has_variable = ftr_army_types_cooldown
@@ -25,7 +25,7 @@ can_pass_ftr_army_type_1 = {
 can_pass_ftr_army_type_2 = {
 	NOT = { is_at_war = yes }
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_army_types_cooldown"
 		NOT = {
 			has_variable = ftr_army_types_cooldown
@@ -35,7 +35,7 @@ can_pass_ftr_army_type_2 = {
 
 can_pass_ftr_council_power_0 = {
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_councillor_power_cooldown"
 		NOT = {
 			has_variable = ftr_councillor_power_cooldown
@@ -49,7 +49,7 @@ can_pass_ftr_council_power_0 = {
 
 can_pass_ftr_council_power_1 = {
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_councillor_power_cooldown"
 		NOT = {
 			has_variable = ftr_councillor_power_cooldown
@@ -59,7 +59,7 @@ can_pass_ftr_council_power_1 = {
 
 can_pass_ftr_council_power_2 = {
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_councillor_power_cooldown"
 		NOT = {
 			has_variable = ftr_councillor_power_cooldown
@@ -73,7 +73,7 @@ can_pass_ftr_council_power_2 = {
 
 can_pass_ftr_proposal_right_0 = {
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_proposal_right_cooldown"
 		NOT = {
 			has_variable = ftr_proposal_right_cooldown
@@ -84,7 +84,7 @@ can_pass_ftr_proposal_right_0 = {
 
 can_pass_ftr_proposal_right_1 = {
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_proposal_right_cooldown"
 		NOT = {
 			has_variable = ftr_proposal_right_cooldown
@@ -98,7 +98,7 @@ can_pass_ftr_proposal_right_1 = {
 
 can_pass_ftr_proposal_right_2 = {
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_proposal_right_cooldown"
 		NOT = {
 			has_variable = ftr_proposal_right_cooldown
@@ -112,7 +112,7 @@ can_pass_ftr_proposal_right_2 = {
 
 can_pass_ftr_proposal_right_3 = {
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_proposal_right_cooldown"
 		NOT = {
 			has_variable = ftr_proposal_right_cooldown
@@ -123,7 +123,7 @@ can_pass_ftr_proposal_right_3 = {
 
 can_pass_ftr_economic_policy_0 = {
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_economic_policy_cooldown"
 		NOT = {
 			has_variable = ftr_economic_policy_cooldown
@@ -137,7 +137,7 @@ can_pass_ftr_economic_policy_0 = {
 
 can_pass_ftr_economic_policy_1 = {
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_economic_policy_cooldown"
 		NOT = {
 			has_variable = ftr_economic_policy_cooldown
@@ -147,7 +147,7 @@ can_pass_ftr_economic_policy_1 = {
 
 can_pass_ftr_economic_policy_2 = {
 	custom_description = {
-		subject = root
+		subject = this
 		text = "has_ftr_economic_policy_cooldown"
 		NOT = {
 			has_variable = ftr_economic_policy_cooldown

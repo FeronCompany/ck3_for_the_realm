@@ -247,12 +247,6 @@ ftr_councillor_event.0003 = {
 						id = ftr_councillor_event.0019
 						days = { 15 25 }
 					}
-					#add_truce_both_ways = {
-					#	character = scope:defender
-					#	days = 1825
-					#	war = root.war
-					#	result = victory
-					#}
 				}
 				2 = { # 结盟
 					trigger = {
@@ -392,9 +386,10 @@ ftr_councillor_event.0004 = {
 					}
 					20 = { # 被怀疑为间谍
 						modifier = {
-							subtract = {
+							add = {
 								value = scope:secondary_actor.intrigue
-								max = 20
+								multiply = -1
+								min = -20
 							}
 						}
 						desc = ftr_envoy.suspect_spy_result
@@ -466,9 +461,10 @@ ftr_councillor_event.0004 = {
 					}
 					20 = { # 被怀疑为间谍
 						modifier = {
-							subtract = {
+							add = {
 								value = scope:secondary_actor.intrigue
-								max = 20
+								multiply = -1
+								min = -20
 							}
 						}
 						desc = ftr_envoy.suspect_spy_result
@@ -1247,6 +1243,76 @@ ftr_councillor_event.0018 = {
 				left_icon = scope:secondary_actor
 				right_icon = scope:recipient
 				custom_tooltip = ftr_envoy_not_convinced_result_content_tt
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- truce_result
+ftr_councillor_event.0019 = {
+	type = character_event
+	title = ftr_councillor_event.0019.t
+	desc = ftr_councillor_event.0019.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0019.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_truce_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_truce_result_content_tt
+				add_truce_both_ways = {
+					character = scope:recipient
+					years = 10
+					name = TRUCE_PURCHASED
+				}
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- ally_result
+ftr_councillor_event.0020 = {
+	type = character_event
+	title = ftr_councillor_event.0020.t
+	desc = ftr_councillor_event.0020.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0020.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_ally_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_ally_result_content_tt
+				create_alliance = {
+					target = scope:recipient
+					allied_through_owner = scope:actor
+					allied_through_target = scope:recipient
+				}
 			}
 		}
 	}

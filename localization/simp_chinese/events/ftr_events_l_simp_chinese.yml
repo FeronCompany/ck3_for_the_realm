@@ -443,7 +443,7 @@
  ftr_envoy.convinced_result:0 "成功促使目标皈依"
  ftr_envoy.not_convinced_result:0 "未能使目标皈依"
 
- ftr_councillor_event.0001.opening:0 "我亲爱的子民[secondary_actor.GetShortUIName]："
+ ftr_councillor_event.0001.opening:0 "[secondary_actor.Custom2('AppropriateGreeting', ROOT.Char)]"
  ftr_councillor_event.0001.desc:0 "我准备近期安排你作为特使前往[recipient.GetShortUIName]的首府进行一次友好访问。"
  ftr_councillor_event.0001.desc.1:0 "我准备近期安排你作为特使前往[recipient.GetShortUIName]的首府进行一次友好访问，目标是与[recipient.GetShortUIName]改善关系。"
  ftr_councillor_event.0001.desc.2:0 "我准备近期安排你作为特使前往[recipient.GetShortUIName]的首府进行一次友好访问，目标是在[recipient.GetShortUIName]那里赚些外快。"
@@ -511,8 +511,8 @@
  ftr_councillor_event.0010.t:0 "关系恶化"
  ftr_councillor_event.0010.desc:0 "[secondary_actor.GetShortUIName]在[recipient.GetShortUIName]首都的友好访问结果不尽如人意，双边关系显著恶化了。"
  ftr_councillor_event.0010.a:0 "哎"
- ftr_envoy_end_rivalry_result_tt:0 "关系恶化"
- ftr_envoy_end_rivalry_result_content_tt:0 "[secondary_actor.GetShortUIName]在[recipient.GetShortUIName]首都的友好访问结果不尽如人意，双边关系显著恶化了。"
+ ftr_envoy_rivalry_result_tt:0 "关系恶化"
+ ftr_envoy_rivalry_result_content_tt:0 "[secondary_actor.GetShortUIName]在[recipient.GetShortUIName]首都的友好访问结果不尽如人意，双边关系显著恶化了。"
 
  ftr_councillor_event.0011.t:0 "意外收获"
  ftr_councillor_event.0011.desc:0 "[secondary_actor.GetShortUIName]在[recipient.GetShortUIName]首都的贸易活动收获了额外的成果，贸易收入显著增加了。"
@@ -558,4 +558,16 @@
  ftr_councillor_event.0018.a:0 "得了吧你"
  ftr_envoy_not_convinced_result_tt:0 "拒绝改信"
  ftr_envoy_not_convinced_result_content_tt:0 "[secondary_actor.GetShortUIName]未能在宗教辩论中说服[recipient.GetShortUIName]。"
+
+ ftr_councillor_event.0019.t:0 "互不侵犯"
+ ftr_councillor_event.0019.desc:0 "[secondary_actor.GetShortUIName]在[recipient.GetShortUIName]首都的友好访问收获颇丰，最终[actor.GetShortUIName]和[recipient.GetShortUIName]缔结了互不侵犯协议。"
+ ftr_councillor_event.0019.a:0 "好"
+ ftr_envoy_truce_result_tt:0 "互不侵犯"
+ ftr_envoy_truce_result_content_tt:0 "[secondary_actor.GetShortUIName]在[recipient.GetShortUIName]首都的友好访问收获颇丰，最终[actor.GetShortUIName]和[recipient.GetShortUIName]缔结了互不侵犯协议。"
+
+ ftr_councillor_event.0020.t:0 "缔结同盟"
+ ftr_councillor_event.0020.desc:0 "[secondary_actor.GetShortUIName]在[recipient.GetShortUIName]首都的友好访问收获颇丰，最终[actor.GetShortUIName]和[recipient.GetShortUIName]缔结盟约。"
+ ftr_councillor_event.0020.a:0 "好"
+ ftr_envoy_ally_result_tt:0 "缔结同盟"
+ ftr_envoy_ally_result_content_tt:0 "[secondary_actor.GetShortUIName]在[recipient.GetShortUIName]首都的友好访问收获颇丰，最终[actor.GetShortUIName]和[recipient.GetShortUIName]缔结盟约。"
 

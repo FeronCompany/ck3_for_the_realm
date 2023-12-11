@@ -530,7 +530,7 @@ types Lists
 			}
 		}
 		vbox = {
-			visible = "[ObjectsEqual(GetPlayer.GetLiege, Character.Self)]"
+			visible = "[And(ObjectsEqual(GetPlayer.GetLiege, Character.Self), Not(ObjectsEqual(GetPlayer.GetLiege, GetPlayer)))]"
 			portrait_head_small = {
 				name = "regent_head_portrait_liege"
 				datacontext = "[GetPlayer.GetLiege.GetDiarchy.GetDiarch]"

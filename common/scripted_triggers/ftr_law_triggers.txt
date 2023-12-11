@@ -79,7 +79,15 @@ can_pass_ftr_proposal_right_0 = {
 			has_variable = ftr_proposal_right_cooldown
 		}
 	}
-	has_realm_law = ftr_proposal_right_1
+	trigger_if = {
+		limit = {
+			OR = {
+				has_realm_law = ftr_proposal_right_2
+				has_realm_law = ftr_proposal_right_3
+			}
+		}
+		has_realm_law = ftr_proposal_right_1
+	}
 }
 
 can_pass_ftr_proposal_right_1 = {
@@ -118,7 +126,15 @@ can_pass_ftr_proposal_right_3 = {
 			has_variable = ftr_proposal_right_cooldown
 		}
 	}
-	has_realm_law = ftr_proposal_right_2
+	trigger_if = {
+		limit = {
+			OR = {
+				has_realm_law = ftr_proposal_right_0
+				has_realm_law = ftr_proposal_right_1
+			}
+		}
+		has_realm_law = ftr_proposal_right_2
+	}
 }
 
 can_pass_ftr_economic_policy_0 = {
@@ -166,11 +182,20 @@ ftr_can_make_proposal_trigger = {
 			trigger_if = {
 				limit = { scope:actor.liege = scope:recipient }
 				trigger_if = {
+					limit = { scope:recipient = { has_realm_law = ftr_proposal_right_0 } }
+					OR = {
+						is_diarch_of_target = scope:recipient
+						is_heir_of = scope:recipient
+						is_spouse_of = scope:recipient
+					}
+				}
+				trigger_if = {
 					limit = { scope:recipient = { has_realm_law = ftr_proposal_right_1 } }
 					OR = {
 						is_councillor_of = scope:recipient
 						is_heir_of = scope:recipient
 						is_spouse_of = scope:recipient
+						is_diarch_of_target = scope:recipient
 					}
 				}
 				trigger_if = {
@@ -180,6 +205,7 @@ ftr_can_make_proposal_trigger = {
 						is_heir_of = scope:recipient
 						is_spouse_of = scope:recipient
 						is_powerful_vassal_of = scope:recipient
+						is_diarch_of_target = scope:recipient
 					}
 				}
 				trigger_if = {
@@ -189,6 +215,7 @@ ftr_can_make_proposal_trigger = {
 						is_heir_of = scope:recipient
 						is_spouse_of = scope:recipient
 						is_vassal_of = scope:recipient
+						is_diarch_of_target = scope:recipient
 					}
 				}
 			}

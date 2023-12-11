@@ -31,7 +31,7 @@
  not_has_ftr_proposal_right_cooldown: "[CHARACTER.GetShortUIName] has not modified proposal right recently."
  ftr_proposal_right_0: "Dictatorship"
  ftr_proposal_right_0_subname: "Dictatorship"
- ftr_proposal_right_0_effects_not_in_prev: "Only liege can make proposal"
+ ftr_proposal_right_0_effects_not_in_prev: "Only liege, liege's heir, liege's spouse and diarch can make proposal"
  ftr_proposal_right_1: "Back-Room Politics"
  ftr_proposal_right_1_subname: "Back-Room Politics"
  ftr_proposal_right_1_effects: "$EFFECT_LIST_BULLET$Council members, spouse of liege and royal family can make proposal"

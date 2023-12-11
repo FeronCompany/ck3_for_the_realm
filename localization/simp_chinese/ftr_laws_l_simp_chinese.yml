@@ -31,7 +31,7 @@
  not_has_ftr_proposal_right_cooldown: "[CHARACTER.GetShortUIName]近期没有调整过提案权"
  ftr_proposal_right_0: "独裁政治"
  ftr_proposal_right_0_subname: "独裁政治"
- ftr_proposal_right_0_effects_not_in_prev: "只有君主本人和摄政可以提案"
+ ftr_proposal_right_0_effects_not_in_prev: "只有君主本人、君主继承人、君主的配偶和摄政可以提案"
  ftr_proposal_right_1: "密室政治"
  ftr_proposal_right_1_subname: "密室政治"
  ftr_proposal_right_1_effects: "$EFFECT_LIST_BULLET$内阁成员、君主配偶、宗室成员都可以参与提案"

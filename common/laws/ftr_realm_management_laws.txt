@@ -196,6 +196,10 @@ ftr_council_power = {
 			domain_limit = 1
 			tax_slot_add = 1
 			vassal_limit = 10
+			title_creation_cost_mult = 0.2
+			faith_conversion_piety_cost_mult = 0.2
+			faith_creation_piety_cost_mult = 0.2
+			long_reign_bonus_mult = -0.2
 		}
 		flag = ftr_unlock_councillor_envoy_task
 
@@ -237,6 +241,10 @@ ftr_council_power = {
 			domain_limit = 1
 			tax_slot_add = 1
 			vassal_limit = 10
+			title_creation_cost_mult = 0.2
+			faith_conversion_piety_cost_mult = 0.2
+			faith_creation_piety_cost_mult = 0.2
+			long_reign_bonus_mult = -0.2
 		}
 		flag = ftr_councillor_can_appoint
 
@@ -323,6 +331,8 @@ ftr_proposal_right = {
 	ftr_proposal_right_1 = { # 密室政治
 		modifier = {
 			councillor_opinion = 10
+			short_reign_duration_mult = -0.1
+			tyranny_gain_mult = 0.1
 		}
 
 		can_keep = { always = yes }
@@ -351,6 +361,8 @@ ftr_proposal_right = {
 			vassal_opinion = 5
 			powerful_vassal_opinion = 5
 			councillor_opinion = -5
+			short_reign_duration_mult = -0.1
+			tyranny_gain_mult = 0.1
 		}
 
 		can_keep = { always = yes }
@@ -378,6 +390,8 @@ ftr_proposal_right = {
 		modifier = {
 			vassal_opinion = 5
 			powerful_vassal_opinion = -5
+			short_reign_duration_mult = -0.1
+			tyranny_gain_mult = 0.1
 		}
 
 		can_keep = { always = yes }

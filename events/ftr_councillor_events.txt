@@ -270,7 +270,33 @@ ftr_councillor_event.0003 = {
 				}
 			}
 		}
-		ai_chance = 50
+		ai_chance = {
+			base = 20
+			opinion_modifier = {
+				who = scope:recipient
+				opinion_target = scope:secondary_actor
+				multiplier = 0.25
+			}
+			opinion_modifier = {
+				who = scope:recipient
+				opinion_target = scope:actor
+				multiplier = 0.1
+			}
+			modifier = {
+				add = {
+					scope:recipient = {
+						every_ally = {
+							add = -10
+						}
+					}
+				}
+				scope:recipient = {
+					any_ally = {
+						count >= 2
+					}
+				}
+			}
+		}
 	}
 
 	option = { # Symbolically Welcome
@@ -1071,6 +1097,40 @@ ftr_councillor_event.0013 = {
 				custom_tooltip = ftr_envoy_suspect_spy_result_1_content_tt
 			}
 		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = -50
+				scope:recipient = { is_vassal_of = scope:actor }
+			}
+			opinion_modifier = {
+				who = scope:recipient
+				opinion_target = scope:actor
+				multiplier = -0.25
+			}
+			modifier = {
+				add = 50
+				scope:recipient = {
+					OR = {
+						has_trait = callous
+						has_trait = paranoid
+						has_trait = impatient
+						has_trait = arbitrary
+						has_trait = wrathful
+						has_trait = vengeful
+					}
+				}
+			}
+			modifier = {
+				add = -30
+				scope:recipient = {
+					OR = {
+						has_trait = forgiving
+						has_trait = compassionate
+					}
+				}
+			}
+		}
 	}
 
 	option = { # Warn
@@ -1083,6 +1143,7 @@ ftr_councillor_event.0013 = {
 				custom_tooltip = ftr_envoy_suspect_spy_result_2_content_tt
 			}
 		}
+		ai_chance = 20
 	}
 
 	after = {}
@@ -1182,6 +1243,27 @@ ftr_councillor_event.0017 = {
 				}
 			}
 		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 20
+				scope:recipient = { is_vassal_of = scope:actor }
+			}
+			opinion_modifier = {
+				trigger = {
+					scope:recipient = { is_vassal_of = scope:actor }
+				}
+				who = scope:recipient
+				opinion_target = scope:actor
+				multiplier = 0.25
+			}
+			modifier = {
+				add = -50
+				scope:recipient = {
+					has_trait = zealous
+				}
+			}
+		}
 	}
 
 	option = { # Never!
@@ -1202,6 +1284,7 @@ ftr_councillor_event.0017 = {
 				custom_tooltip = ftr_envoy_convinced_result_2_content_tt
 			}
 		}
+		ai_chance = 20
 	}
 
 	after = {}

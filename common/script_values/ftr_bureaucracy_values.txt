@@ -10,12 +10,16 @@ ftr_economic_policy_2_bureaucracy_gap_value = 90
 
 ftr_bureaucracy_value = {
 	value = 0
-	add = ftr_personal_average_attribute_value
+	add = {
+		value = ftr_personal_average_attribute_value
+		desc = ftr_bureaucracy_value.personal_attribute
+	}
 	if = {
 		limit = { exists = cp:councillor_chancellor }
 		add = {
 			value = cp:councillor_chancellor.diplomacy
 			max = ftr_personal_bureaucracy_contribute_value
+			desc = ftr_bureaucracy_value.chancellor_attribute
 		}
 	}
 	if = {
@@ -23,6 +27,7 @@ ftr_bureaucracy_value = {
 		add = {
 			value = cp:councillor_steward.stewardship
 			max = ftr_personal_bureaucracy_contribute_value
+			desc = ftr_bureaucracy_value.steward_attribute
 		}
 	}
 	if = {
@@ -30,6 +35,7 @@ ftr_bureaucracy_value = {
 		add = {
 			value = cp:councillor_marshal.martial
 			max = ftr_personal_bureaucracy_contribute_value
+			desc = ftr_bureaucracy_value.marshal_attribute
 		}
 	}
 	if = {
@@ -37,6 +43,7 @@ ftr_bureaucracy_value = {
 		add = {
 			value = cp:councillor_spymaster.intrigue
 			max = ftr_personal_bureaucracy_contribute_value
+			desc = ftr_bureaucracy_value.spymaster_attribute
 		}
 	}
 	if = {
@@ -44,6 +51,7 @@ ftr_bureaucracy_value = {
 		add = {
 			value = cp:councillor_court_chaplain.learning
 			max = ftr_personal_bureaucracy_contribute_value
+			desc = ftr_bureaucracy_value.chaplain_attribute
 		}
 	}
 }

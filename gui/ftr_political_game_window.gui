@@ -110,6 +110,12 @@
 								min = 0
 								max = 150
 								value = "[GetPlayer.MakeScope.ScriptValue( 'ftr_bureaucracy_value' )]"
+								tooltip_enabled = "[ValueBreakdown.HasTooltip]"
+								tooltipwidget = {
+									widget_value_breakdown_tooltip = {
+										datacontext = "[GuiScope.SetRoot( GetPlayer.MakeScope ).GetScriptValueBreakdown( 'ftr_bureaucracy_value' )]"
+									}
+								}
 								text_single = {
 									parentanchor = center
 									position = { 0 -4 }
@@ -217,6 +223,12 @@
 								min = 0
 								max = 150
 								value = "[GetPlayer.GetLiege.MakeScope.ScriptValue( 'ftr_bureaucracy_value' )]"
+								tooltip_enabled = "[ValueBreakdown.HasTooltip]"
+								tooltipwidget = {
+									widget_value_breakdown_tooltip = {
+										datacontext = "[GuiScope.SetRoot( GetPlayer.GetLiege.MakeScope ).GetScriptValueBreakdown( 'ftr_bureaucracy_value' )]"
+									}
+								}
 								text_single = {
 									parentanchor = center
 									position = { 0 -4 }

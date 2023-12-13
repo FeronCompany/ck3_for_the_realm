@@ -27,3 +27,9 @@
  ftr_envoy_trade_tt:0 "促进贸易"
  ftr_envoy_threat_tt:0 "敲诈威胁"
  ftr_envoy_religious_tt:0 "传播正信"
+
+ ftr_diarch_replace_council_position_interaction:0 "<FTR>操纵内阁"
+ ftr_diarch_replace_council_position_interaction_desc:0 "摄政利用职权操纵内阁人选"
+ actor_secondary_ftr_diarch_replace_council_position_interaction:0 "内阁候选人"
+ ftr_diarchy_swing_greater_than_50:0 "摄政摆动值需大于50"
+ ftr_new_councillor_added_tt:0 "[secondary_actor.GetShortUIName]将成为[liege.GetShortUIName]的新任内阁成员"

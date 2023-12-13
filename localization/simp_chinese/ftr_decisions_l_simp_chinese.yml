@@ -81,6 +81,11 @@
  ftr_change_government_to_feudal_decision_desc:0 "转变为封建政体"
  ftr_change_government_to_feudal_decision_confirm:0 "转变为封建政体"
 
+ ftr_strengthen_diarch_power_decision:0 "<FTR>DEBUG:加强摄政权力"
+ ftr_strengthen_diarch_power_decision_tooltip:0 "加强摄政权力"
+ ftr_strengthen_diarch_power_decision_desc:0 "加强摄政权力"
+ ftr_strengthen_diarch_power_decision_confirm:0 "加强摄政权力"
+
  ftr_pg_ai_make_own_proposal_decision:0 "<FTR>提交本地议案"
  ftr_pg_ai_make_own_proposal_decision_tooltip:0 "提交本地议案"
  ftr_pg_ai_make_own_proposal_decision_desc:0 "在你的领地内提交议案，交给领地内核心圈子成员审议。"

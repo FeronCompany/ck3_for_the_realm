@@ -27,3 +27,9 @@
  ftr_envoy_trade_tt:0 "Improve Trade"
  ftr_envoy_threat_tt:0 "Extortion"
  ftr_envoy_religious_tt:0 "Spread True Faith"
+
+ ftr_diarch_replace_council_position_interaction:0 "<FTR> Manipulate Council Position"
+ ftr_diarch_replace_council_position_interaction_desc:0 "Regent manipulate council position"
+ actor_secondary_ftr_diarch_replace_council_position_interaction:0 "Councillor Candidate"
+ ftr_diarchy_swing_greater_than_50:0 "Diarchy swing must be greater than 50"
+ ftr_new_councillor_added_tt:0 "[secondary_actor.GetShortUIName] will be the new councillor of [liege.GetShortUIName]"

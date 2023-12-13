@@ -596,6 +596,7 @@ ftr_send_envoy_interaction = {
 		}
 		scope:recipient = {
 			primary_title.tier >= tier_county
+			NOT = { this = scope:actor }
 		}
 	}
 	is_valid_showing_failures_only = {
@@ -641,6 +642,7 @@ ftr_send_envoy_interaction = {
 	can_be_picked = {
 		is_available = yes
 		is_at_home = yes
+		NOT = { is_diarch_of_target = scope:actor }
 	}
 
 	options_heading = ftr_envoy_types_tt

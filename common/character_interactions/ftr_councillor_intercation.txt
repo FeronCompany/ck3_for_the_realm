@@ -1,0 +1,353 @@
+﻿
+######### Challenge Council Position ##########
+#ftr_challenge_council_position_interaction = {
+#	category = interaction_category_vassal
+#	common_interaction = yes
+#	desc = ftr_challenge_council_position_interaction_desc
+#	is_shown = {
+#		NOT = { scope:actor = scope:recipient }
+#		scope:actor = {
+#			OR = {
+#				is_vassal_of = scope:recipient
+#				is_courtier_of = scope:recipient
+#			}
+#			NOT = { is_councillor_of = scope:recipient }
+#			culture = {
+#				OR = {
+#					has_cultural_tradition = tradition_ftr_meritocracy
+#					has_cultural_tradition = tradition_only_the_strong
+#					has_cultural_tradition = tradition_warriors_by_merit
+#					has_cultural_tradition = tradition_talent_acquisition
+#				}
+#			}
+#			NOT = {
+#				OR = {
+#					has_usable_hook = scope:recipient
+#					vassal_contract_has_flag = can_demand_council_seat
+#				}
+#			}
+#		}
+#	}
+#	is_valid_showing_failures_only = {
+#		scope:actor = {
+#			NOT =  {
+#				is_at_war_with = scope:recipient
+#			}
+#			is_imprisoned = no
+#		}
+#		is_adult = yes
+#		is_capable = yes
+#	}
+#	on_accept = {
+#		#
+#	}
+#	ai_accept = {
+#		base = 0
+#	}
+#	on_decline = {}
+#	auto_accept = {
+#		scope:recipient = {
+#			custom_description = {
+#				text = "prisoner_revocation"
+#				is_imprisoned_by = scope:actor
+#			}
+#		}
+#	}
+#	ai_will_do = {
+#		base = 0
+#	}
+#}
+
+######### Diarch Replace Council Position ##########
+ftr_diarch_replace_council_position_interaction = {
+	category = interaction_category_diarch
+	common_interaction = yes
+	cooldown = { years = 2 }
+	desc = ftr_diarch_replace_council_position_interaction_desc
+	is_shown = {
+		scope:actor = {
+			is_independent_ruler = no
+			is_diarch_of_target = scope:actor.liege
+			NOT = { this = scope:recipient }
+		}
+		scope:recipient = {
+			is_independent_ruler = no
+			is_councillor_of = scope:actor.liege
+			NOT = {
+				has_council_position = councillor_court_chaplain
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  {
+				is_at_war_with = scope:recipient
+			}
+			is_imprisoned = no
+			is_adult = yes
+			is_capable = yes
+			custom_tooltip = {
+				text = ftr_diarchy_swing_greater_than_50
+				liege = {
+					diarchy_swing >= 50
+				}
+			}
+			liege = {
+				NOT = { has_realm_law = ftr_council_power_2 }
+			}
+		}
+		scope:recipient = {
+			NOT = {
+				is_blocked_from_being_fired_from_council_trigger = {
+					COURT_OWNER = scope:actor.liege
+				}
+			}
+		}
+	}
+	populate_actor_list = {
+		scope:actor = {
+			every_courtier = {
+				limit = {
+					is_adult = yes
+					is_physically_able = yes
+					is_councillor = no
+					can_be_granted_titles_by = { RULER = scope:actor }
+				}
+				add_to_list = characters
+			}
+		}
+		scope:actor.liege = {
+			every_vassal = {
+				limit = {
+					is_adult = yes
+					is_physically_able = yes
+					is_councillor = no
+				}
+				add_to_list = characters
+			}
+			every_courtier = {
+				limit = {
+					is_adult = yes
+					is_physically_able = yes
+					is_councillor = no
+					can_be_granted_titles_by = { RULER = scope:actor.liege }
+				}
+				add_to_list = characters
+			}
+		}
+	}
+	cost = {
+		prestige = 250
+	}
+
+	on_accept = {
+		scope:actor.liege = {
+			save_scope_as = liege
+		}
+		if = { 
+			limit = { scope:secondary_actor = { is_courtier_of = scope:actor } }
+			scope:liege = { add_courtier = scope:secondary_actor }
+		}
+		scope:liege = {
+			if = {
+				limit = { scope:recipient = { has_council_position = councillor_chancellor } }
+				fire_councillor = scope:recipient
+				custom_tooltip = {
+					text = ftr_new_councillor_added_tt
+					assign_council_task = {
+						target = scope:secondary_actor
+						council_task = council_task:councillor_chancellor
+					}
+				}
+				scope:actor = {
+					change_strife_opinion = {
+						value = 0
+						add = scope:recipient.diplomacy
+						subtract = scope:secondary_actor.diplomacy
+						multiply = 3
+					}
+				}
+			}
+			else_if = {
+				limit = { scope:recipient = { has_council_position = councillor_marshal } }
+				fire_councillor = scope:recipient
+				custom_tooltip = {
+					text = ftr_new_councillor_added_tt
+					assign_council_task = {
+						target = scope:secondary_actor
+						council_task = council_task:councillor_marshal
+					}
+				}
+				scope:actor = {
+					change_strife_opinion = {
+						value = 0
+						add = scope:recipient.martial
+						subtract = scope:secondary_actor.martial
+						multiply = 3
+					}
+				}
+			}
+			else_if = {
+				limit = { scope:recipient = { has_council_position = councillor_steward } }
+				fire_councillor = scope:recipient
+				custom_tooltip = {
+					text = ftr_new_councillor_added_tt
+					assign_council_task = {
+						target = scope:secondary_actor
+						council_task = council_task:councillor_steward
+					}
+				}
+				scope:actor = {
+					change_strife_opinion = {
+						value = 0
+						add = scope:recipient.stewardship
+						subtract = scope:secondary_actor.stewardship
+						multiply = 3
+					}
+				}
+			}
+			else_if = {
+				limit = { scope:recipient = { has_council_position = councillor_spymaster } }
+				fire_councillor = scope:recipient
+				custom_tooltip = {
+					text = ftr_new_councillor_added_tt
+					assign_council_task = {
+						target = scope:secondary_actor
+						council_task = council_task:councillor_spymaster
+					}
+				}
+				scope:actor = {
+					change_strife_opinion = {
+						value = 0
+						add = scope:recipient.intrigue
+						subtract = scope:secondary_actor.intrigue
+						multiply = 3
+					}
+				}
+			}
+		}
+		scope:actor = {
+			if = {
+				limit = {
+					can_add_hook = {
+						type = favor_hook
+						target = scope:secondary_actor
+					}
+				}
+				add_hook = {
+					type = favor_hook
+					target = scope:secondary_actor
+				}
+			}
+		}
+		scope:secondary_actor = {
+			block_firing_councillor_effect = { COURT_OWNER = scope:liege }
+			add_opinion = {
+				target = scope:actor
+				opinion = 40
+				modifier = grateful_opinion
+			}
+		}
+		scope:recipient = {
+			add_opinion = {
+				target = scope:actor
+				modifier = annoyed_opinion
+				opinion = -20
+			}
+		}
+		hidden_effect = {
+			scope:liege = {
+				ftr_update_pg_member_list_effect = yes
+				every_in_list = {
+					list = pg_member_list
+					send_interface_message = {
+						title = "ftr_diarch_manipulate_council_tt"
+						left_icon = scope:actor
+						right_icon = scope:secondary_actor
+						custom_tooltip = ftr_diarch_manipulate_council_content
+					}
+				}
+			}
+		}
+	}
+	#ai_accept = {
+	#	base = 0
+	#}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 20
+			scope:actor = {
+				OR = {
+					has_trait = ambitious
+				}
+			}
+		}
+		opinion_modifier = {
+			opinion_target = scope:recipient
+			who = scope:actor
+			multiplier = -0.5
+		}
+		opinion_modifier = {
+			opinion_target = scope:secondary_actor
+			who = scope:actor
+			multiplier = 0.25
+		}
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = -0.25
+		}
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:secondary_actor
+			multiplier = 0.1
+		}
+		modifier = {
+			add = {
+				value = 5
+				add = scope:secondary_actor.diplomacy
+				subtract = scope:recipient.diplomacy
+				multiply = 5
+			}
+			scope:recipient = {
+				has_council_position = councillor_chancellor
+			}
+		}
+		modifier = {
+			add = {
+				value = 5
+				add = scope:secondary_actor.martial
+				subtract = scope:recipient.martial
+				multiply = 5
+			}
+			scope:recipient = {
+				has_council_position = councillor_marshal
+			}
+		}
+		modifier = {
+			add = {
+				value = 5
+				add = scope:secondary_actor.intrigue
+				subtract = scope:recipient.intrigue
+				multiply = 5
+			}
+			scope:recipient = {
+				has_council_position = councillor_spymaster
+			}
+		}
+		modifier = {
+			add = {
+				value = 5
+				add = scope:secondary_actor.stewardship
+				subtract = scope:recipient.stewardship
+				multiply = 5
+			}
+			scope:recipient = {
+				has_council_position = councillor_steward
+			}
+		}
+	}
+}

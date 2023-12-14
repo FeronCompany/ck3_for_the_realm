@@ -116,6 +116,12 @@
  ftr_corruption_crime:0 "<FTR>贪污腐败"
  ftr_corruption_crime_desc:0 "贪污腐败"
 
+ ftr_political_opponent_opinion:0 "<FTR>政敌"
+ ftr_political_opponent_opinion_desc:0 "双方在政治立场上势同水火"
+
+ ftr_political_alliance_opinion:0 "<FTR>政治同盟"
+ ftr_political_alliance_opinion_desc:0 "双方在政治立场上同进同退"
+
  ftr_indulge_criminal_modifier:0 "<FTR>姑息罪犯"
  ftr_indulge_criminal_modifier_desc:0 "姑息罪犯"
 

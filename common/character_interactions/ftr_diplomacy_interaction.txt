@@ -554,3 +554,303 @@ ftr_break_alliance_interaction = {
 		}
 	}
 }
+
+######### Send Envoy ##########
+ftr_send_envoy_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	greeting = positive
+	#notification_text = ftr_send_envoy_interaction_text
+	desc = ftr_send_envoy_interaction_desc
+	ai_frequency = 48
+	ai_targets = {
+		ai_recipients = liege
+		ai_recipients = vassals
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 5
+	}
+	cooldown_against_recipient = { years = 10 }
+
+	is_shown = {
+		OR = {
+			scope:actor = { is_vassal_of = scope:recipient }
+			scope:recipient = { is_vassal_of = scope:actor }
+			scope:actor = {
+				is_landed = yes
+				is_independent_ruler = yes
+				character_is_realm_neighbor = scope:recipient
+			}
+			scope:actor = {
+				liege = scope:recipient.liege
+				NOT = { this = scope:recipient.liege }
+				is_landed = yes
+			}
+		}
+		scope:actor = {
+			primary_title.tier >= tier_county
+			OR = {
+				has_realm_law = ftr_council_power_1
+				has_realm_law = ftr_council_power_2
+			}
+		}
+		scope:recipient = {
+			primary_title.tier >= tier_county
+			NOT = { this = scope:actor }
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			is_at_war = no
+			is_imprisoned = no
+		}
+		scope:actor = {
+			is_imprisoned = no
+		}
+	}
+	populate_actor_list = {
+		scope:actor = {
+			every_courtier = {
+				limit = {
+					OR = {
+						is_councillor_of = scope:actor
+						AND = {
+							is_heir_of = scope:actor
+							is_capable_adult = yes
+							is_imprisoned = no
+						}
+					}
+				}
+				add_to_list = characters
+			}
+			every_vassal = {
+				limit = {
+					OR = {
+						is_councillor_of = scope:actor
+						AND = {
+							is_heir_of = scope:actor
+							is_capable_adult = yes
+							is_imprisoned = no
+						}
+					}
+					NOT = { this = scope:recipient }
+				}
+				add_to_list = characters
+			}
+		}
+	}
+	can_be_picked = {
+		is_available = yes
+		is_at_home = yes
+		NOT = { is_diarch_of_target = scope:actor }
+	}
+
+	options_heading = ftr_envoy_types_tt
+	send_option = { # 改善关系
+		flag = ftr_envoy_improve_relation
+		localization = ftr_envoy_improve_relation_tt
+		starts_enabled = { always = yes	}
+	}
+	send_option = { # 促进贸易
+		flag = ftr_envoy_trade
+		localization = ftr_envoy_trade_tt
+	}
+	send_option = { # 敲诈威胁
+		flag = ftr_envoy_threat
+		localization = ftr_envoy_threat_tt
+	}
+	send_option = { # 传播宗教
+		is_valid = {
+			NOT = { scope:recipient.faith = scope:actor.faith }
+		}
+		flag = ftr_envoy_religious
+		localization = ftr_envoy_religious_tt
+	}
+	send_options_exclusive = yes
+	
+	on_accept = {
+		scope:actor = {
+			pay_short_term_gold = {
+				target = scope:secondary_actor
+				gold = ftr_send_envoy_cost
+			}
+		}
+		if = {
+			limit = { scope:ftr_envoy_improve_relation = yes }
+			save_scope_value_as = {
+				name = ftr_envoy_task_scope
+				value = 1
+			}
+		}
+		else_if = {
+			limit = { scope:ftr_envoy_trade = yes }
+			save_scope_value_as = {
+				name = ftr_envoy_task_scope
+				value = 2
+			}
+		}
+		else_if = {
+			limit = { scope:ftr_envoy_threat = yes }
+			save_scope_value_as = {
+				name = ftr_envoy_task_scope
+				value = 3
+			}
+		}
+		else_if = {
+			limit = { scope:ftr_envoy_religious = yes }
+			save_scope_value_as = {
+				name = ftr_envoy_task_scope
+				value = 4
+			}
+		}
+		else = { # Backup
+			save_scope_value_as = {
+				name = ftr_envoy_task_scope
+				value = 1
+			}
+		}
+		scope:secondary_actor = {
+			trigger_event = {
+				id = ftr_councillor_event.0001
+				days = 3
+			}
+		}
+	}
+	ai_accept = {
+		base = 20
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 1
+		}
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:secondary_actor
+			multiplier = 0.25
+		}
+		modifier = {
+			add = 20
+			scope:recipient = {
+				is_vassal_of = scope:actor
+			}
+			desc = FTR_YOU_ARE_THE_LIEGE
+		}
+	}
+	can_send = {
+		scope:actor = {
+			gold >= ftr_send_envoy_cost
+		}
+		exists = scope:secondary_actor
+	}
+	on_auto_accept = {}
+	on_decline = {}
+	#auto_accept = yes
+	ai_will_do = {
+		base = -10
+		modifier = { # 安抚封臣
+			add = 30
+			scope:recipient = {
+				is_vassal_of = scope:actor
+				opinion = {
+					target = scope:actor
+					value < 40
+				}
+			}
+			scope:ftr_envoy_improve_relation = yes
+		}
+		modifier = { # 异教封臣
+			add = 50
+			scope:recipient = {
+				is_vassal_of = scope:actor
+				NOT = { faith = scope:actor.faith } 
+			}
+			scope:ftr_envoy_religious = yes
+		}
+		modifier = { # 讨好君主
+			add = 30
+			scope:recipient = {
+				this = scope:actor.liege
+				opinion = {
+					target = scope:actor
+					value < 20
+				}
+			}
+			scope:ftr_envoy_improve_relation = yes
+		}
+		modifier = { # 讨好强邻
+			add = 30
+			scope:recipient = {
+				OR = {
+					character_is_realm_neighbor = scope:actor
+					AND = { # 同僚封臣且领主无力阻止内战
+						liege = scope:recipient.liege
+						liege = {
+							OR = {
+								has_realm_law = crown_authority_0
+								has_realm_law = crown_authority_1
+							}
+						}
+						NOT = { this = scope:actor.liege }
+						is_landed = yes
+					}
+				}
+				eighty_percent_of_current_military_strength > scope:actor.current_military_strength
+				opinion = {
+					target = scope:actor
+					value < 30
+				}
+			}
+			scope:ftr_envoy_improve_relation = yes
+		}
+		modifier = { # 威胁弱邻
+			add = 30
+			scope:recipient = {
+				OR = {
+					character_is_realm_neighbor = scope:actor
+					AND = { # 同僚封臣且领主无力阻止内战
+						liege = scope:recipient.liege
+						liege = {
+							OR = {
+								has_realm_law = crown_authority_0
+								has_realm_law = crown_authority_1
+							}
+						}
+						NOT = { this = scope:actor.liege }
+						is_landed = yes
+					}
+				}
+				current_military_strength < scope:actor.eighty_percent_of_current_military_strength
+			}
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value < 30
+				}
+			}
+			scope:ftr_envoy_threat = yes
+		}
+		modifier = { # 搞钱
+			add = 30
+			scope:actor = {
+				OR = {
+					gold < 200
+					has_trait = greedy
+					has_trait = diligent
+					has_trait = ambitious
+					has_trait = avaricious
+				}
+			}
+			scope:ftr_envoy_trade = yes
+		}
+		opinion_modifier = {
+			who = scope:actor
+			opinion_target = scope:secondary_actor
+			multiplier = 0.25
+		}
+		opinion_modifier = {
+			who = scope:actor
+			opinion_target = scope:recipient
+			multiplier = 0.25
+		}
+	}
+}

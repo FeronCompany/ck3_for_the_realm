@@ -1,0 +1,549 @@
+﻿
+@ftr_army_types_cooldown_years = 30
+@ftr_councillor_power_cooldown_years = 10
+@ftr_proposal_right_cooldown_years = 10
+@ftr_economic_policy_cooldown_years = 20
+
+ftr_army_types = {
+	default = ftr_army_type_0
+	#cumulative = yes
+	flag = ftr_realm_policy
+	
+	ftr_army_type_0 = { # 征召民兵
+		modifier = {
+			courtly_opinion = 5
+			glory_hound_opinion = 10
+			parochial_opinion = -5
+			#minority_opinion = -5
+			barons_and_minor_landholders_opinion = -5
+		}
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			can_pass_ftr_army_type_0 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_army_types_cooldown
+				years = @ftr_army_types_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 1
+			if = {
+				limit = { max_military_strength < 10000 }
+				add = 1
+			}
+			if = {
+				limit = { gold < 200 }
+				add = 1
+			}
+		}
+	}
+
+	ftr_army_type_1 = { # 常备军
+		modifier = {
+			levy_size = -0.33
+			tax_mult = 0.33
+			vassal_levy_contribution_mult = -0.25
+			vassal_tax_contribution_mult = 0.25
+			men_at_arms_limit = 8
+			men_at_arms_cap = 3
+			men_at_arms_maintenance = -0.1
+			courtly_opinion = -10
+			parochial_opinion = 5
+			minority_opinion = 5
+			barons_and_minor_landholders_opinion = 5
+		}
+
+		can_keep = { is_independent_ruler = yes }
+
+		can_pass = {
+			can_pass_ftr_army_type_1 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_army_types_cooldown
+				years = @ftr_army_types_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = { max_military_strength >= 20000 }
+				add = 1
+			}
+			if = {
+				limit = { gold >= 500 }
+				add = 1
+			}
+			if = {
+				limit = { gold >= 1000 }
+				add = 1
+			}
+		}
+	}
+
+	ftr_army_type_2 = { # 高标准征召兵
+		modifier = {
+			levy_size = -0.33
+			vassal_levy_contribution_mult = -0.25
+			levy_maintenance = 0.1
+			levy_reinforcement_rate = 0.2
+			levy_attack = 4
+			levy_toughness = 8
+
+			courtly_opinion = -10
+			glory_hound_opinion = -5
+			parochial_opinion = 5
+			minority_opinion = 5
+			barons_and_minor_landholders_opinion = 5 
+		}
+
+		can_keep = { is_independent_ruler = yes }
+
+		can_pass = {
+			can_pass_ftr_army_type_2 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_army_types_cooldown
+				years = @ftr_army_types_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = { max_military_strength >= 15000 }
+				add = 1
+			}
+			if = {
+				limit = { gold >= 300 }
+				add = 1
+			}
+		}
+	}
+}
+
+ftr_council_power = {
+	default = ftr_council_power_0
+	cumulative = yes
+	flag = ftr_realm_policy
+	
+	ftr_council_power_0 = { # 事务官内阁
+		modifier = {
+			vassal_limit = -10
+		}
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			can_pass_ftr_council_power_0 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_councillor_power_cooldown
+				years = @ftr_councillor_power_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = {
+					OR = {
+						has_trait = ambitious
+						has_trait = arrogant
+					}
+				}
+				add = 1
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = diligent
+						has_trait = arbitrary
+					}
+				}
+				add = 2
+			}
+		}
+	}
+	
+	ftr_council_power_1 = { # 政务官内阁
+		modifier = {
+			councillor_opinion = 10
+			domain_limit = 1
+			tax_slot_add = 1
+			vassal_limit = 10
+			title_creation_cost_mult = 0.2
+			faith_conversion_piety_cost_mult = 0.2
+			faith_creation_piety_cost_mult = 0.2
+			long_reign_bonus_mult = -0.2
+		}
+		flag = ftr_unlock_councillor_envoy_task
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			can_pass_ftr_council_power_1 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_councillor_power_cooldown
+				years = @ftr_councillor_power_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = {
+					OR = {
+						has_trait = lazy
+						has_trait = content
+						has_trait = humble
+						has_trait = trusting
+					}
+				}
+				add = 1
+			}
+		}
+	}
+	
+	ftr_council_power_2 = { # 决策者内阁
+		modifier = {
+			councillor_opinion = 10
+			domain_limit = 1
+			tax_slot_add = 1
+			vassal_limit = 10
+			title_creation_cost_mult = 0.2
+			faith_conversion_piety_cost_mult = 0.2
+			faith_creation_piety_cost_mult = 0.2
+			long_reign_bonus_mult = -0.2
+		}
+		flag = ftr_councillor_can_appoint
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			can_pass_ftr_council_power_2 = yes
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_councillor_power_cooldown
+				years = @ftr_councillor_power_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = {
+					OR = {
+						has_trait = humble
+						has_trait = trusting
+					}
+				}
+				add = 1
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = lazy
+						has_trait = content
+					}
+				}
+				add = 2
+			}
+		}
+	}
+}
+
+ftr_proposal_right = {
+	default = ftr_proposal_right_1
+	cumulative = yes
+	flag = ftr_realm_policy
+	
+	ftr_proposal_right_0 = { # 独裁政治
+		modifier = {
+			vassal_opinion = -5
+			councillor_opinion = -5
+		}
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			can_pass_ftr_proposal_right_0 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_proposal_right_cooldown
+				years = @ftr_proposal_right_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 1
+			if = {
+				limit = {
+					OR = {
+						has_trait = arbitrary
+						has_trait = arrogant
+					}
+				}
+				add = 1
+			}
+		}
+	}
+	
+	ftr_proposal_right_1 = { # 密室政治
+		modifier = {
+			councillor_opinion = 10
+			short_reign_duration_mult = -0.1
+			tyranny_gain_mult = 0.1
+		}
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			can_pass_ftr_proposal_right_1 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_proposal_right_cooldown
+				years = @ftr_proposal_right_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 1
+		}
+	}
+	
+	ftr_proposal_right_2 = { # 寡头政治
+		modifier = {
+			vassal_opinion = 5
+			powerful_vassal_opinion = 5
+			councillor_opinion = -5
+			short_reign_duration_mult = -0.1
+			tyranny_gain_mult = 0.1
+		}
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			can_pass_ftr_proposal_right_2 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_proposal_right_cooldown
+				years = @ftr_proposal_right_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 1
+		}
+	}
+	
+	ftr_proposal_right_3 = { # 全民议政
+		modifier = {
+			vassal_opinion = 5
+			powerful_vassal_opinion = -5
+			short_reign_duration_mult = -0.1
+			tyranny_gain_mult = 0.1
+		}
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			can_pass_ftr_proposal_right_3 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_proposal_right_cooldown
+				years = @ftr_proposal_right_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 1
+		}
+	}
+}
+
+ftr_economic_policy = {
+	default = ftr_economic_policy_0
+	#cumulative = yes
+	flag = ftr_realm_policy
+	
+	ftr_economic_policy_0 = { # 自由放任
+		modifier = {
+			county_opinion_add = 5
+		}
+
+		can_keep = { always = yes }
+
+		can_pass = {
+			can_pass_ftr_economic_policy_0 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_economic_policy_cooldown
+				years = @ftr_economic_policy_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 1
+		}
+	}
+	
+	ftr_economic_policy_1 = { # 操纵物价
+		modifier = {
+			tax_mult = 0.15
+			development_growth_factor = -0.33
+		}
+
+		can_keep = {
+			custom_description = {
+				text = "ftr_have_enough_bureaucracy_value_tt"
+				value = ftr_economic_policy_1_bureaucracy_gap_value
+				ftr_bureaucracy_value >= ftr_economic_policy_1_bureaucracy_gap_value
+			}
+		}
+
+		can_pass = {
+			can_pass_ftr_economic_policy_1 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_economic_policy_cooldown
+				years = @ftr_economic_policy_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = {
+					gold < 0
+				}
+				add = 2
+			}
+			if = {
+				limit = {
+					has_trait = greedy
+				}
+				add = 1
+			}
+		}
+	}
+	
+	ftr_economic_policy_2 = { # 垄断经营
+		modifier = {
+			tax_mult = 0.5
+			development_growth_factor = -0.66
+			county_opinion_add = -10
+		}
+
+		can_keep = {
+			custom_description = {
+				text = "ftr_have_enough_bureaucracy_value_tt"
+				value = ftr_economic_policy_2_bureaucracy_gap_value
+				ftr_bureaucracy_value >= ftr_economic_policy_2_bureaucracy_gap_value
+			}
+		}
+
+		can_pass = {
+			can_pass_ftr_economic_policy_2 = yes
+			NOT = { has_realm_law = ftr_council_power_2 }
+		}
+
+		pass_cost = { prestige = 500 }
+
+		on_pass = {
+			set_variable = {
+				name = ftr_economic_policy_cooldown
+				years = @ftr_economic_policy_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = {
+					gold < -200
+				}
+				add = 3
+			}
+			if = {
+				limit = {
+					has_trait = greedy
+				}
+				add = 1
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = callous
+						has_trait = sadistic
+					}
+				}
+				add = 1
+			}
+		}
+	}
+}

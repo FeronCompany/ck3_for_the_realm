@@ -13,3 +13,9 @@
 
  rival_during_tournament:0 "[TARGET_CHARACTER.GetShortUIName|U]在比赛中与[CHARACTER.GetShortUIName]发生争吵。"
  rival_during_tournament_corresponding:0 "[CHARACTER.GetShortUIName|U]在比赛中与[TARGET_CHARACTER.GetShortUIName]发生争吵。"
+
+ rival_from_stance:0 "[TARGET_CHARACTER.GetShortUIName|U]与[CHARACTER.GetShortUIName]政治立场冲突"
+ rival_from_stance_corresponding:0 "[CHARACTER.GetShortUIName|U]与[TARGET_CHARACTER.GetShortUIName]政治立场冲突"
+
+ ftr_rival_envoy_visit:0 "[TARGET_CHARACTER.GetShortUIName|U]与[CHARACTER.GetShortUIName]在外交场合不欢而散"
+ ftr_rival_envoy_visit_corresponding:0 "[CHARACTER.GetShortUIName|U]与[TARGET_CHARACTER.GetShortUIName]在外交场合不欢而散"

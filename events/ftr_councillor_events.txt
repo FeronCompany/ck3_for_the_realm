@@ -1,0 +1,1404 @@
+﻿
+
+namespace = ftr_councillor_event
+
+# 0001~0099 Councilor envoy events
+
+ftr_councillor_event.0001 = {
+	type = letter_event
+	opening = {
+		desc = ftr_councillor_event.0001.opening
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:ftr_envoy_task_scope
+					scope:ftr_envoy_task_scope = 1
+				}
+				desc = ftr_councillor_event.0001.desc.1
+			}
+			triggered_desc = {
+				trigger = {
+					exists = scope:ftr_envoy_task_scope
+					scope:ftr_envoy_task_scope = 2
+				}
+				desc = ftr_councillor_event.0001.desc.2
+			}
+			triggered_desc = {
+				trigger = {
+					exists = scope:ftr_envoy_task_scope
+					scope:ftr_envoy_task_scope = 3
+				}
+				desc = ftr_councillor_event.0001.desc.3
+			}
+			triggered_desc = {
+				trigger = {
+					exists = scope:ftr_envoy_task_scope
+					scope:ftr_envoy_task_scope = 4
+				}
+				desc = ftr_councillor_event.0001.desc.4
+			}
+			desc = ftr_councillor_event.0001.desc
+		}
+	}
+	sender = scope:actor
+
+	immediate = {
+		show_as_tooltip = {
+			scope:actor = {
+				pay_short_term_gold = {
+					target = root
+					gold = ftr_send_envoy_cost
+				}
+			}
+		}
+	}
+
+	option = { # 立刻出发
+		name = ftr_councillor_event.0001.a
+		trigger = {
+			is_available = yes
+			is_at_home = yes
+		}
+		stress_impact = {
+			shy = medium_stress_impact_gain
+			lazy = medium_stress_impact_gain
+			craven = medium_stress_impact_gain
+		}
+		start_travel_plan = {
+			players_use_planner = no
+			destination = scope:recipient.capital_province
+			#on_start_on_action = pay_homage_start
+			#on_travel_planner_cancel_on_action = pay_homage_travel_planner_exit
+			on_arrival_event = ftr_councillor_event.0002
+			on_arrival_destinations = all_but_last
+		}
+	}
+
+	option = { # 取消行动
+		name = ftr_councillor_event.0001.b
+		trigger = {
+			OR = {
+				is_available = no
+				is_at_home = no
+			}
+		}
+		pay_short_term_gold = {
+			target = scope:actor
+			gold = ftr_send_envoy_cost
+		}
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_task_canceled_tt
+				left_icon = root
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_task_canceled_content_tt
+			}
+		}
+	}
+}
+
+# Arrived
+ftr_councillor_event.0002 = {
+	type = character_event
+	title = ftr_councillor_event.0002.t
+	desc = ftr_councillor_event.0002.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {
+		current_travel_plan ?= {
+			delay_travel_plan = { days = 30 }
+		}
+		hidden_effect = {
+			scope:recipient = {
+				if = {
+					limit = {
+						exists = scope:ftr_envoy_task_scope
+						scope:ftr_envoy_task_scope = 1
+					}
+					trigger_event = {
+						id = ftr_councillor_event.0003
+						days = 3
+					}
+				}
+				else_if = {
+					limit = {
+						exists = scope:ftr_envoy_task_scope
+						scope:ftr_envoy_task_scope = 2
+					}
+					trigger_event = {
+						id = ftr_councillor_event.0004
+						days = 3
+					}
+				}
+				else_if = {
+					limit = {
+						exists = scope:ftr_envoy_task_scope
+						scope:ftr_envoy_task_scope = 3
+					}
+					trigger_event = {
+						id = ftr_councillor_event.0005
+						days = 3
+					}
+				}
+				else_if = {
+					limit = {
+						exists = scope:ftr_envoy_task_scope
+						scope:ftr_envoy_task_scope = 4
+					}
+					trigger_event = {
+						id = ftr_councillor_event.0006
+						days = 3
+					}
+				}
+			}
+		}
+	}
+
+	option = { # OK
+		name = ftr_councillor_event.0002.a
+	}
+
+	after = {}
+}
+
+# Greeting guest -- Improve relation
+ftr_councillor_event.0003 = {
+	type = character_event
+	title = ftr_councillor_event.0003.t
+	desc = ftr_councillor_event.0003.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:secondary_actor
+	}
+
+	immediate = {}
+
+	option = { # Welcome
+		name = ftr_councillor_event.0003.a
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_warm_welcomed_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_warm_welcomed_content_tt
+				add_opinion = {
+					modifier = honored_opinion
+					opinion = 20
+					target = scope:recipient
+				}
+			}
+			random_list = {
+				2 = {
+					modifier = {
+						add = {
+							value = scope:secondary_actor.diplomacy
+							multiply = 5
+						} 
+					}
+					desc = ftr_envoy.friendly_result
+					trigger_event = {
+						id = ftr_councillor_event.0007
+						days = { 15 25 }
+					}
+				}
+				2 = { # 结束仇敌关系
+					trigger = {
+						scope:actor = {
+							OR = {
+								has_relation_rival = scope:recipient
+								has_relation_nemesis = scope:recipient
+							}
+						}
+					}
+					modifier = { add = scope:secondary_actor.diplomacy }
+					desc = ftr_envoy.end_rivalry_result
+					trigger_event = {
+						id = ftr_councillor_event.0008
+						days = { 15 25 }
+					}
+				}
+				10 = { # 互不侵犯
+					trigger = {
+						scope:actor = {
+							NOT = {
+								has_truce = scope:recipient
+							}
+						}
+						scope:recipient = {
+							NOT = {
+								has_truce = scope:actor
+							}
+						}
+					}
+					modifier = { add = scope:secondary_actor.diplomacy }
+					desc = ftr_envoy.truce_result
+					trigger_event = {
+						id = ftr_councillor_event.0019
+						days = { 15 25 }
+					}
+				}
+				2 = { # 结盟
+					trigger = {
+						scope:actor = {
+							NOT = { is_allied_to = scope:recipient }
+						}
+					}
+					modifier = { add = scope:secondary_actor.diplomacy }
+					desc = ftr_envoy.ally_result
+					trigger_event = {
+						id = ftr_councillor_event.0020
+						days = { 15 25 }
+					}
+				}
+				10 = { # 无功而返
+					desc = ftr_envoy.vain_result
+					trigger_event = {
+						id = ftr_councillor_event.0009
+						days = { 15 25 }
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 20
+			opinion_modifier = {
+				who = scope:recipient
+				opinion_target = scope:secondary_actor
+				multiplier = 0.25
+			}
+			opinion_modifier = {
+				who = scope:recipient
+				opinion_target = scope:actor
+				multiplier = 0.1
+			}
+			modifier = {
+				add = {
+					scope:recipient = {
+						every_ally = {
+							add = -10
+						}
+					}
+				}
+				scope:recipient = {
+					any_ally = {
+						count >= 2
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Symbolically Welcome
+		name = ftr_councillor_event.0003.b
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_symbolically_welcomed_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_symbolically_welcomed_content_tt
+			}
+			random_list = {
+				2 = {
+					modifier = {
+						add = {
+							value = scope:secondary_actor.diplomacy
+							multiply = 5
+						} 
+					}
+					desc = ftr_envoy.friendly_result
+					trigger_event = {
+						id = ftr_councillor_event.0007
+						days = { 15 25 }
+					}
+				}
+				2 = { # 结怨
+					desc = ftr_envoy.rivalry_result
+					trigger_event = {
+						id = ftr_councillor_event.0010
+						days = { 15 25 }
+					}
+				}
+				10 = { # 无功而返
+					desc = ftr_envoy.vain_result
+					trigger_event = {
+						id = ftr_councillor_event.0009
+						days = { 15 25 }
+					}
+				}
+			}
+		}
+		ai_chance = 40
+	}
+
+	option = { # Begone
+		name = ftr_councillor_event.0003.c
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_begone_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_begone_content_tt
+				add_opinion = {
+					modifier = insult_opinion
+					opinion = -20
+					target = scope:recipient
+				}
+			}
+			trigger_event = {
+				id = ftr_councillor_event.0010
+				days = { 15 25 }
+			}
+		}
+		ai_chance = 10
+	}
+
+	after = {}
+}
+
+# Greeting guest -- Trade
+ftr_councillor_event.0004 = {
+	type = character_event
+	title = ftr_councillor_event.0004.t
+	desc = ftr_councillor_event.0004.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:secondary_actor
+	}
+
+	immediate = {}
+
+	option = { # Just Open Market
+		name = ftr_councillor_event.0004.a
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_warm_welcomed_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_warm_welcomed_content_tt
+				add_opinion = {
+					modifier = honored_opinion
+					opinion = 20
+					target = scope:recipient
+				}
+			}
+			hidden_effect = {
+				random_list = {
+					2 = { # 赚钱
+						modifier = {
+							add = {
+								value = scope:secondary_actor.stewardship
+								multiply = 5
+							} 
+						}
+						desc = ftr_envoy.trade_succ_result
+						trigger_event = {
+							id = ftr_councillor_event.0012
+							days = { 15 25 }
+						}
+					}
+					20 = { # 被怀疑为间谍
+						modifier = {
+							add = {
+								value = scope:secondary_actor.intrigue
+								multiply = -1
+								min = -20
+							}
+						}
+						desc = ftr_envoy.suspect_spy_result
+						scope:recipient = {
+							trigger_event = {
+								id = ftr_councillor_event.0013
+								days = { 15 25 }
+							}
+						}
+					}
+					10 = { # 无功而返
+						desc = ftr_envoy.vain_result
+						trigger_event = {
+							id = ftr_councillor_event.0009
+							days = { 15 25 }
+						}
+					}
+				}
+				random_list = {
+					0 = { # get unexpected money
+						modifier = {
+							add = {
+								value = scope:secondary_actor.stewardship
+								multiply = 5
+							} 
+						}
+						trigger_event = {
+							id = ftr_councillor_event.0011
+							days = { 15 25 }
+						}
+					}
+					10 = {
+						# Nothing happen
+					}
+				}
+			}
+		}
+		ai_chance = 50
+	}
+
+	option = { # Try to Get Market Information
+		name = ftr_councillor_event.0004.b
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_warm_welcomed_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_warm_welcomed_content_tt
+				add_opinion = {
+					modifier = honored_opinion
+					opinion = 20
+					target = scope:recipient
+				}
+			}
+			hidden_effect = {
+				random_list = {
+					2 = { # 赚钱
+						modifier = {
+							add = {
+								value = scope:secondary_actor.stewardship
+								multiply = 5
+							} 
+						}
+						desc = ftr_envoy.trade_succ_result
+						trigger_event = {
+							id = ftr_councillor_event.0012
+							days = { 15 25 }
+						}
+					}
+					20 = { # 被怀疑为间谍
+						modifier = {
+							add = {
+								value = scope:secondary_actor.intrigue
+								multiply = -1
+								min = -20
+							}
+						}
+						desc = ftr_envoy.suspect_spy_result
+						trigger_event = {
+							id = ftr_councillor_event.0013
+							days = { 15 25 }
+						}
+					}
+					10 = { # 无功而返
+						desc = ftr_envoy.vain_result
+						trigger_event = {
+							id = ftr_councillor_event.0009
+							days = { 15 25 }
+						}
+					}
+				}
+				random_list = {
+					0 = { # get unexpected money
+						modifier = {
+							add = {
+								value = scope:secondary_actor.stewardship
+								multiply = 5
+							} 
+						}
+						trigger_event = {
+							id = ftr_councillor_event.0011
+							days = { 15 25 }
+						}
+						desc = ftr_envoy.extra_money_result
+					}
+					10 = {
+						# Nothing happen
+					}
+				}
+			}
+		}
+		scope:recipient = {
+			random_list = {
+				10 = { # 套到情报
+					modifier = {
+						add = {
+							value = scope:recipient.intrigue
+							multiply = 5
+						} 
+					}
+					trigger_event = {
+						id = ftr_councillor_event.0015
+						days = { 5 10 }
+					}
+					desc = ftr_envoy.intel_get_result
+				}
+				10 = { # 没有套到
+					modifier = {
+						add = {
+							value = scope:secondary_actor.intrigue
+							multiply = 5
+						} 
+					}
+					trigger_event = {
+						id = ftr_councillor_event.0016
+						days = { 5 10 }
+					}
+					desc = ftr_envoy.intel_lost_result
+				}
+			}
+		}
+		ai_chance = 40
+	}
+
+	option = { # Begone
+		name = ftr_councillor_event.0004.c
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_begone_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_begone_content_tt
+				add_opinion = {
+					modifier = insult_opinion
+					opinion = -20
+					target = scope:recipient
+				}
+			}
+			trigger_event = {
+				id = ftr_councillor_event.0010
+				days = { 15 25 }
+			}
+		}
+		ai_chance = 10
+	}
+
+	after = {}
+}
+
+# Greeting guest -- Threat
+ftr_councillor_event.0005 = {
+	type = character_event
+	title = ftr_councillor_event.0005.t
+	desc = ftr_councillor_event.0005.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0005.a
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_accept_threat_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_accept_threat_content_tt
+				scope:recipient = {
+					pay_short_term_gold = {
+						target = scope:actor
+						gold = ftr_send_envoy_cost
+					}
+					add_truce_both_ways = {
+						character = scope:actor
+						years = 10
+						name = TRUCE_PURCHASED
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			scope:actor = {
+				send_interface_toast = {
+					title = ftr_envoy_accept_threat_tt
+					left_icon = scope:secondary_actor
+					right_icon = scope:recipient
+					custom_tooltip = ftr_envoy_accept_threat_content_tt
+					show_as_tooltip = {
+						scope:recipient = {
+							pay_short_term_gold = {
+								target = scope:actor
+								gold = ftr_send_envoy_cost
+							}
+							add_truce_both_ways = {
+								character = scope:actor
+								years = 10
+								name = TRUCE_PURCHASED
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 50
+				scope:recipient = {
+					has_trait = craven
+				}
+			}
+			modifier = {
+				add = -50
+				scope:recipient = {
+					OR = {
+						has_trait = brave
+						has_trait = arrogant
+						has_trait = wrathful
+					}
+				}
+			}
+			modifier = {
+				add = 20
+				scope:recipient = { is_vassal_of = scope:actor }
+			}
+			modifier = {
+				add = {
+					value = scope:secondary_actor.martial
+					multiply = 1
+				}
+			}
+			modifier = {
+				add = {
+					value = scope:secondary_actor.intrigue
+					multiply = 1
+				}
+			}
+		}
+	}
+
+	option = { # Begone
+		name = ftr_councillor_event.0005.b
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_begone_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_begone_content_tt
+				add_opinion = {
+					modifier = insult_opinion
+					opinion = -20
+					target = scope:recipient
+				}
+			}
+			trigger_event = {
+				id = ftr_councillor_event.0010
+				days = { 15 25 }
+			}
+		}
+		ai_chance = 50
+	}
+
+	after = {}
+}
+
+# Greeting guest -- Convert
+ftr_councillor_event.0006 = {
+	type = character_event
+	title = ftr_councillor_event.0006.t
+	desc = ftr_councillor_event.0006.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0006.a
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_debate_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_debate_content_tt
+			}
+		}
+		random_list = {
+			10 = { # 赢得辩论
+				modifier = {
+					add = {
+						value = scope:recipient.diplomacy
+						multiply = 1
+					}
+				}
+				modifier = {
+					add = {
+						value = scope:recipient.learning
+						multiply = 2
+					}
+				}
+				desc = ftr_envoy.not_convinced_result
+				scope:recipient = {
+					trigger_event = {
+						id = ftr_councillor_event.0018
+						days = { 15 25 }
+					}
+				}
+			}
+			10 = { # 输掉辩论
+				modifier = {
+					add = {
+						value = scope:secondary_actor.diplomacy
+						multiply = 1
+					}
+				}
+				modifier = {
+					add = {
+						value = scope:secondary_actor.learning
+						multiply = 2
+					}
+				}
+				desc = ftr_envoy.convinced_result
+				scope:recipient = {
+					trigger_event = {
+						id = ftr_councillor_event.0017
+						days = { 15 25 }
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+			opinion_modifier = {
+				who = scope:recipient
+				opinion_target = scope:secondary_actor
+				multiplier = 1
+			}
+			opinion_modifier = {
+				who = scope:recipient
+				opinion_target = scope:actor
+				multiplier = 0.25
+			}
+		}
+	}
+
+	option = { # Begone
+		name = ftr_councillor_event.0006.b
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_begone_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_begone_content_tt
+				add_opinion = {
+					modifier = insult_opinion
+					opinion = -20
+					target = scope:recipient
+				}
+			}
+			trigger_event = {
+				id = ftr_councillor_event.0010
+				days = { 15 25 }
+			}
+		}
+		ai_chance = 50
+	}
+
+	after = {}
+}
+
+# Envoy result -- friendly_result
+ftr_councillor_event.0007 = {
+	type = character_event
+	title = ftr_councillor_event.0007.t
+	desc = ftr_councillor_event.0007.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0007.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_friendly_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_friendly_result_content_tt
+				progress_towards_friend_effect = {
+					REASON = friend_court_visit
+					CHARACTER = scope:recipient
+					OPINION = 40
+				}
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- end_rivalry_result
+ftr_councillor_event.0008 = {
+	type = character_event
+	title = ftr_councillor_event.0008.t
+	desc = ftr_councillor_event.0008.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0008.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_end_rivalry_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_end_rivalry_result_content_tt
+				if = {
+					limit = { has_relation_rival = scope:recipient }
+					remove_relation_rival = scope:recipient
+				}
+				if = {
+					limit = { has_relation_nemesis = scope:recipient }
+					remove_relation_nemesis = scope:recipient
+				}
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- vain_result
+ftr_councillor_event.0009 = {
+	type = character_event
+	title = ftr_councillor_event.0009.t
+	desc = ftr_councillor_event.0009.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0009.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_vain_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_vain_result_content_tt
+			}
+			add_opinion = {
+				modifier = frustrated_opinion
+				opinion = -20
+				target = scope:secondary_actor
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- rivalry_result
+ftr_councillor_event.0010 = {
+	type = character_event
+	title = ftr_councillor_event.0010.t
+	desc = ftr_councillor_event.0010.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0010.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_rivalry_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_rivalry_result_content_tt
+				progress_towards_rival_effect = {
+					REASON = ftr_rival_envoy_visit
+					CHARACTER = scope:recipient
+					OPINION = 40
+				}
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- extra_money_result
+ftr_councillor_event.0011 = {
+	type = character_event
+	title = ftr_councillor_event.0011.t
+	desc = ftr_councillor_event.0011.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:actor
+	}
+
+	immediate = {}
+
+	option = { # Send to liege
+		name = ftr_councillor_event.0011.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_extra_money_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_extra_money_result_content_tt
+				add_gold = 150
+			}
+			add_opinion = {
+				modifier = grateful_opinion
+				opinion = 30
+				target = scope:secondary_actor
+			}
+		}
+	}
+
+	option = { # Keep it in my pocket
+		name = ftr_councillor_event.0011.b
+		scope:secondary_actor = {
+			add_gold = 150
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- trade_succ_result
+ftr_councillor_event.0012 = {
+	type = character_event
+	title = ftr_councillor_event.0012.t
+	desc = ftr_councillor_event.0012.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {
+		scope:secondary_actor = {
+			save_scope_as = envoy
+		}
+	}
+
+	option = { # Send to liege
+		name = ftr_councillor_event.0012.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_trade_succ_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_trade_succ_result_content_tt
+				add_gold = {
+					value = ftr_trade_income_value
+					multiply = ftr_trade_income_liege_share
+				}
+			}
+			add_opinion = {
+				modifier = grateful_opinion
+				opinion = 30
+				target = scope:secondary_actor
+			}
+		}
+		scope:recipient = {
+			add_gold = {
+				value = ftr_trade_income_value
+				multiply = ftr_trade_income_envoy_share
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- suspect_spy_result
+ftr_councillor_event.0013 = {
+	type = character_event
+	title = ftr_councillor_event.0013.t
+	desc = ftr_councillor_event.0013.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # Arrest
+		name = ftr_councillor_event.0013.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_suspect_spy_result_1_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_suspect_spy_result_1_content_tt
+				scope:secondary_actor = {
+					current_travel_plan ?= {
+						if = {
+							limit = { can_cancel = yes }
+							cancel_travel_plan = yes
+						}
+					}
+				}
+				scope:recipient = {
+					imprison = {
+						target = scope:secondary_actor
+						type = house_arrest
+					}
+				}
+			}
+		}
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_suspect_spy_result_1_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_suspect_spy_result_1_content_tt
+			}
+		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = -50
+				scope:recipient = { is_vassal_of = scope:actor }
+			}
+			opinion_modifier = {
+				who = scope:recipient
+				opinion_target = scope:actor
+				multiplier = -0.25
+			}
+			modifier = {
+				add = 50
+				scope:recipient = {
+					OR = {
+						has_trait = callous
+						has_trait = paranoid
+						has_trait = impatient
+						has_trait = arbitrary
+						has_trait = wrathful
+						has_trait = vengeful
+					}
+				}
+			}
+			modifier = {
+				add = -30
+				scope:recipient = {
+					OR = {
+						has_trait = forgiving
+						has_trait = compassionate
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Warn
+		name = ftr_councillor_event.0013.b
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_suspect_spy_result_2_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_suspect_spy_result_2_content_tt
+			}
+		}
+		ai_chance = 20
+	}
+
+	after = {}
+}
+
+# Envoy result -- intel_get_result
+ftr_councillor_event.0015 = {
+	type = character_event
+	title = ftr_councillor_event.0015.t
+	desc = ftr_councillor_event.0015.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # Good
+		name = ftr_councillor_event.0015.a
+		add_character_modifier = {
+			modifier = ftr_insider_information_modifier
+			years = 5
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- intel_lost_result
+ftr_councillor_event.0016 = {
+	type = character_event
+	title = ftr_councillor_event.0016.t
+	desc = ftr_councillor_event.0016.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0016.a
+	}
+
+	after = {}
+}
+
+# Envoy result -- convinced_result
+ftr_councillor_event.0017 = {
+	type = character_event
+	title = ftr_councillor_event.0017.t
+	desc = ftr_councillor_event.0017.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	trigger = {
+		NOT = { scope:actor.faith = scope:recipient.faith }
+	}
+
+	immediate = {}
+
+	option = { # Convert
+		name = ftr_councillor_event.0017.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_convinced_result_1_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_convinced_result_1_content_tt
+				scope:recipient = {
+					set_character_faith = scope:actor.faith
+				}
+				
+			}
+		}
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_convinced_result_1_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_convinced_result_1_content_tt
+				show_as_tooltip = {
+					scope:recipient = {
+						set_character_faith = scope:actor.faith
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 20
+				scope:recipient = { is_vassal_of = scope:actor }
+			}
+			opinion_modifier = {
+				trigger = {
+					scope:recipient = { is_vassal_of = scope:actor }
+				}
+				who = scope:recipient
+				opinion_target = scope:actor
+				multiplier = 0.25
+			}
+			modifier = {
+				add = -50
+				scope:recipient = {
+					has_trait = zealous
+				}
+			}
+		}
+	}
+
+	option = { # Never!
+		name = ftr_councillor_event.0017.b
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_convinced_result_2_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_convinced_result_2_content_tt
+			}
+		}
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_convinced_result_2_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_convinced_result_2_content_tt
+			}
+		}
+		ai_chance = 20
+	}
+
+	after = {}
+}
+
+# Envoy result -- not_convinced_result
+ftr_councillor_event.0018 = {
+	type = character_event
+	title = ftr_councillor_event.0018.t
+	desc = ftr_councillor_event.0018.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	trigger = {
+		NOT = { scope:actor.faith = scope:recipient.faith }
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0018.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_not_convinced_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_not_convinced_result_content_tt
+				
+			}
+		}
+		scope:secondary_actor = {
+			send_interface_toast = {
+				title = ftr_envoy_not_convinced_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_not_convinced_result_content_tt
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- truce_result
+ftr_councillor_event.0019 = {
+	type = character_event
+	title = ftr_councillor_event.0019.t
+	desc = ftr_councillor_event.0019.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0019.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_truce_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_truce_result_content_tt
+				add_truce_both_ways = {
+					character = scope:recipient
+					years = 10
+					name = TRUCE_PURCHASED
+				}
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- ally_result
+ftr_councillor_event.0020 = {
+	type = character_event
+	title = ftr_councillor_event.0020.t
+	desc = ftr_councillor_event.0020.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:secondary_actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # OK
+		name = ftr_councillor_event.0020.a
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_envoy_ally_result_tt
+				left_icon = scope:secondary_actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_envoy_ally_result_content_tt
+				create_alliance = {
+					target = scope:recipient
+					allied_through_owner = scope:actor
+					allied_through_target = scope:recipient
+				}
+			}
+		}
+	}
+
+	after = {}
+}

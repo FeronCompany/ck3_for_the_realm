@@ -18,7 +18,7 @@
 	base_secrecy = 15
 	
 	allow = {
-		age >= 14
+		age >= 16
 		is_imprisoned = no
 	}
 	
@@ -39,6 +39,7 @@
 
 	valid_agent = {
 		age >= 14
+		is_imprisoned = no
 	}
 	
 	agent_join_chance = {
@@ -83,7 +84,7 @@
 	}
 	
 	base_success_chance = {
-		base = -20
+		base = 0
 		
 		coup_base_chance_modifier = yes
 

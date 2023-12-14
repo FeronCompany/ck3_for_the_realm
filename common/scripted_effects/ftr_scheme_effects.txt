@@ -47,13 +47,30 @@ ftr_coup_success_effect = {
 		}
 		every_held_title = {
 			limit = {
-				tier >= tier_county
+				OR = {
+					tier >= tier_kingdom
+					tier = primary_title.tier
+					AND = {
+						tier = tier_county
+						this = scope:target.capital_county
+					}
+				}
 			}
 			change_title_holder_include_vassals = {
 				holder = scope:owner
 				change = scope:change
 				government_base = scope:target
 			}
+		}
+		every_vassal = {
+			change_liege = {
+				liege = scope:owner
+				change = scope:change
+			}
+		}
+		change_liege = {
+			liege = scope:owner
+			change = scope:change
 		}
 	}
 	if = {

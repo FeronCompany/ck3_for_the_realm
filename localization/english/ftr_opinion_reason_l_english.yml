@@ -13,3 +13,9 @@
 
  rival_during_tournament:0 "[TARGET_CHARACTER.GetShortUIName|U] quarrel with [CHARACTER.GetShortUIName] during tournament."
  rival_during_tournament_corresponding:0 "[CHARACTER.GetShortUIName|U] quarrel with [TARGET_CHARACTER.GetShortUIName] during tournament."
+
+ rival_from_stance:0 "The political stance of [TARGET_CHARACTER.GetShortUIName|U] and [CHARACTER.GetShortUIName] conflicts"
+ rival_from_stance_corresponding:0 "The political stance of [CHARACTER.GetShortUIName|U] and [TARGET_CHARACTER.GetShortUIName] conflicts"
+
+ ftr_rival_envoy_visit:0 "[TARGET_CHARACTER.GetShortUIName|U] and [CHARACTER.GetShortUIName] part ways on diplomatic occasions"
+ ftr_rival_envoy_visit_corresponding:0 "[CHARACTER.GetShortUIName|U] and [TARGET_CHARACTER.GetShortUIName] part ways on diplomatic occasions"

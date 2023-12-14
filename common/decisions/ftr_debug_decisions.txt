@@ -29,7 +29,7 @@ ftr_add_political_influence_decision = { # Debug decision
 ftr_change_government_to_feudal_decision = { # Debug decision
 	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
 	desc = ftr_change_government_to_feudal_decision_desc
-	selection_tooltip = ftr_change_government_to_feudal_tooltip
+	selection_tooltip = ftr_change_government_to_feudal_decision_tooltip
 	is_shown = {
 		debug_only = yes
 		is_ai = no
@@ -39,6 +39,32 @@ ftr_change_government_to_feudal_decision = { # Debug decision
 	}
 	effect = {
 		change_government = feudal_government
+	}
+	ai_potential = {
+		always = no
+	}
+}
+
+ftr_strengthen_diarch_power_decision = { # Debug decision
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = ftr_strengthen_diarch_power_decision_desc
+	selection_tooltip = ftr_strengthen_diarch_power_decision_tooltip
+	is_shown = {
+		debug_only = yes
+		is_ai = no
+		is_independent_ruler = no
+		is_diarch_of_target = liege
+	}
+	cost = {
+		#prestige = { value = 100 }
+	}
+	effect = {
+		liege = {
+			update_diarchy_swing_with_perspective_effect = {
+				SWING = 10
+				LIEGE = liege
+			}
+		}
 	}
 	ai_potential = {
 		always = no

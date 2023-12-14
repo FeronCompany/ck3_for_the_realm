@@ -194,3 +194,25 @@ ftr_forty_percent_of_current_military_strength = {
 		multiply = 0.4
 	}
 }
+
+ftr_get_diarchy_swing = {
+	value = diarchy_swing
+}
+
+ftr_send_envoy_cost = {
+	value = 25
+	add = {
+		value = 100
+		multiply = activity_cost_scale_by_era
+	}
+}
+
+ftr_trade_income_liege_share = 0.7
+ftr_trade_income_envoy_share = 0.3
+ftr_trade_income_value = {
+	value = 10
+	add = {
+		value = 25
+		multiply = scope:envoy.stewardship
+	}
+}

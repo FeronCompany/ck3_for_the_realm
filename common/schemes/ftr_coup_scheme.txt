@@ -84,7 +84,7 @@
 	}
 	
 	base_success_chance = {
-		base = -20
+		base = 0
 		
 		coup_base_chance_modifier = yes
 

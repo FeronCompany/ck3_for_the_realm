@@ -33,3 +33,5 @@
  actor_secondary_ftr_diarch_replace_council_position_interaction:0 "内阁候选人"
  ftr_diarchy_swing_greater_than_50:0 "摄政摆动值需大于50"
  ftr_new_councillor_added_tt:0 "[secondary_actor.GetShortUIName]将成为[liege.GetShortUIName]的新任内阁成员"
+ ftr_diarch_manipulate_council_tt:0 "摄政操纵内阁"
+ ftr_diarch_manipulate_council_content:0 "[actor.GetShortUIName]利用在[liege.GetShortUIName]领地内的摄政身份罢免了[recipient.GetShortUIName]的内阁职位，任命[secondary_actor.GetShortUIName]取而代之。"

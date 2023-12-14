@@ -33,3 +33,5 @@
  actor_secondary_ftr_diarch_replace_council_position_interaction:0 "Councillor Candidate"
  ftr_diarchy_swing_greater_than_50:0 "Diarchy swing must be greater than 50"
  ftr_new_councillor_added_tt:0 "[secondary_actor.GetShortUIName] will be the new councillor of [liege.GetShortUIName]"
+ ftr_diarch_manipulate_council_tt:0 "Diarch Manipulate Council"
+ ftr_diarch_manipulate_council_content:0 "[actor.GetShortUIName] used regency in [liege.GetShortUIName]'s realm to remove [recipient.GetShortUIName] from council position and appoint [secondary_actor.GetShortUIName] instead."

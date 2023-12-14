@@ -758,8 +758,6 @@ ftr_coup_interaction = {
 			}
 			OR = {
 				is_child_of = scope:recipient
-				is_grandchild_of = scope:recipient
-				is_great_grandchild_of = scope:recipient
 				is_sibling_of = scope:recipient
 				scope:recipient.primary_title = {
 					scope:actor = {
@@ -830,18 +828,14 @@ ftr_coup_interaction = {
 	on_decline = {}
 	auto_accept = yes
 	ai_will_do = {
-		base = -30
-		modifier = {
-			add = 20
-			scope:actor = {
-				opinion = {
-					target = scope:recipient
-					value <= 50
-				}
-			}
+		base = -20
+		opinion_modifier = {
+			opinion_target = scope:recipient
+			who = scope:actor
+			multiplier = -0.5
 		}
 		modifier = {
-			add = 20
+			add = 30
 			scope:actor = {
 				OR = {
 					has_trait = ambitious
@@ -856,12 +850,12 @@ ftr_coup_interaction = {
 			add = -10
 			scope:actor = {
 				OR = {
-					has_trait = content
-					has_trait = honest
 					has_trait = patient
-					has_trait = trusting
-					has_trait = compassionate
 					has_trait = craven
+					has_trait = content
+					has_trait = lazy
+					has_trait = humble
+					has_trait = just
 				}
 			}
 		}
@@ -878,6 +872,27 @@ ftr_coup_interaction = {
 			add = 20
 			scope:recipient = {
 				has_imprisonment_reason = scope:actor
+			}
+		}
+		modifier = {
+			add = {
+				value = scope:actor.age
+				subtract = 30
+				multiply = 2
+			}
+			scope:actor = {
+				is_heir_of = scope:recipient
+				age >= 30
+				NOT = {
+					OR = {
+						has_trait = patient
+						has_trait = craven
+						has_trait = content
+						has_trait = lazy
+						has_trait = humble
+						has_trait = just
+					}
+				}
 			}
 		}
 	}

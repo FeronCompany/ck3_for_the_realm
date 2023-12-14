@@ -555,22 +555,14 @@ coup_base_chance_modifier = {
 
 	first_valid = { # Essentially the Base
 		modifier = {
-			add = 50
-			scope:owner = {
-				exists = scope:target.cp:councillor_spymaster
-				scope:target.cp:councillor_spymaster = this
-			}
-			desc = "SCHEME_I_AM_SPYMASTER"
-		}
-		modifier = {
-			add = 50
+			add = 25
 			scope:owner = {
 				has_relation_guardian = scope:target
 			}
 			desc = "SCHEME_I_AM_GUARDIAN"
 		}
 		modifier = {
-			add = 10
+			add = 20
 			scope:owner = {
 				is_councillor_of = scope:target
 			}
@@ -589,13 +581,6 @@ coup_base_chance_modifier = {
 				is_spouse_of = scope:target
 			}
 			desc = "SCHEME_TARGET_IS_SPOUSE"
-		}
-		modifier = {
-			add = 5
-			scope:owner = {
-				is_close_family_of = scope:target
-			}
-			desc = "SCHEME_TARGET_IS_CLOSE_FAMILY"
 		}
 	}
 
@@ -653,43 +638,14 @@ coup_base_chance_modifier = {
 coup_agent_success_chance_modifier = {
 	first_valid = {
 		modifier = {
-			add = 25
-			scope:target = {
-				is_ruler = yes
-			}
-			has_council_position = councillor_spymaster
-			scope:target.cp:councillor_spymaster = this
-			desc = "SCHEME_AGENT_IS_SPYMASTER_IN_MY_COURT"
-		}
-		modifier = {
-			add = 25
-			scope:target = {
-				is_ruler = no
-			}
-			has_council_position = councillor_spymaster
-			exists = scope:target.liege.cp:councillor_spymaster
-			scope:target.liege.cp:councillor_spymaster = this
-			desc = "SCHEME_AGENT_IS_SPYMASTER"
-		}
-		modifier = {
 			add = 10
 			is_spouse_of = scope:target
 			desc = "SCHEME_AGENT_IS_SPOUSE"
 		}
 		modifier = {
-			add = 10
-			has_relation_best_friend = scope:target
-			desc = "SCHEME_AGENT_IS_BEST_FRIEND"
-		}
-		modifier = {
 			add = 25
 			has_relation_ward = scope:target
 			desc = "SCHEME_AGENT_IS_GUARDIAN"
-		}
-		modifier = {
-			add = 5
-			has_relation_friend = scope:target
-			desc = "SCHEME_AGENT_IS_FRIEND"
 		}
 		modifier = {
 			add = 5
@@ -706,7 +662,7 @@ coup_agent_success_chance_modifier = {
 			desc = "SCHEME_AGENT_IS_CHIEF_EUNUCH"
 		}
 		modifier = {
-			add = 25
+			add = 15
 			has_court_position = bodyguard_court_position
 			is_court_position_employer = {
 		        court_position = bodyguard_court_position
@@ -715,9 +671,8 @@ coup_agent_success_chance_modifier = {
 			desc = "SCHEME_AGENT_IS_BODYGUARD"
 		}
 		modifier = {
-			add = 10
+			add = 20
 			is_councillor_of = scope:target
-			NOT = { has_council_position = councillor_spymaster }
 			desc = "SCHEME_AGENT_IS_COUNCILLOR"
 		}
 		modifier = {
@@ -725,21 +680,11 @@ coup_agent_success_chance_modifier = {
 			is_close_family_of = scope:target
 			desc = "SCHEME_AGENT_IS_CLOSE_KIN"
 		}
-		modifier = {
-			add = 10
-			is_powerful_vassal_of = scope:target
-			desc = "SCHEME_AGENT_IS_POWERFUL_VASSAL"
-		}
-		modifier = {
-			add = 5
-			is_courtier_of = scope:target
-			desc = "SCHEME_AGENT_IS_COURTIER"
-		}
 	}
 	modifier = {
 		add = {
 			value = intrigue
-			multiply = 0.5
+			multiply = 0.25
 		}
 		desc =  "SCHEME_AGENT_INTRIGUE"
 	}

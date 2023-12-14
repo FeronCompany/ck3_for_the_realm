@@ -92,6 +92,9 @@ ftr_diarch_replace_council_position_interaction = {
 					diarchy_swing >= 50
 				}
 			}
+			liege = {
+				NOT = { has_realm_law = ftr_council_power_2 }
+			}
 		}
 		scope:recipient = {
 			NOT = {
@@ -250,6 +253,20 @@ ftr_diarch_replace_council_position_interaction = {
 				target = scope:actor
 				modifier = annoyed_opinion
 				opinion = -20
+			}
+		}
+		hidden_effect = {
+			scope:liege = {
+				ftr_update_pg_member_list_effect = yes
+				every_in_list = {
+					list = pg_member_list
+					send_interface_message = {
+						title = "ftr_diarch_manipulate_council_tt"
+						left_icon = scope:actor
+						right_icon = scope:secondary_actor
+						custom_tooltip = ftr_diarch_manipulate_council_content
+					}
+				}
 			}
 		}
 	}

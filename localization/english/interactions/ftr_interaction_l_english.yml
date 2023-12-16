@@ -20,7 +20,9 @@
 
  ftr_send_envoy_interaction:0 "<FTR> Send Envoy"
  ftr_send_envoy_interaction_desc:0 "Send an envoy to the capital of [recipient.GetShortUIName]'s realm"
+ ftr_send_envoy_interaction_text:0 "I intend to send [secondary_actor.GetShortUIName] as my special envoy on a friendly visit to your territory in the near future, and if you are also interested, my envoy will soon depart for your capital."
  actor_secondary_ftr_send_envoy_interaction:0 "Envoy"
+ ftr_envoy_will_start_journey_tt:0 "[secondary_actor.GetShortUIName] will visit capital of [recipient.GetShortUIName] as an envoy of [actor.GetShortUIName]"
  FTR_YOU_ARE_THE_LIEGE:0 "You are the liege:$VALUE|=+0$"
  ftr_envoy_types_tt:0 "Envoy Tasks"
  ftr_envoy_improve_relation_tt:0 "Improve Relation"

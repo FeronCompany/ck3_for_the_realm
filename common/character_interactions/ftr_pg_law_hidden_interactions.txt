@@ -564,6 +564,7 @@ ftr_change_law_council_power_0_interaction = {
 			add = 50
 			scope:recipient = {
 				domain_limit_available >= 1
+				vassal_limit_available >= 11
 			}
 			desc = FTR_DOMAIN_LIMIT_REASON
 		}
@@ -571,7 +572,10 @@ ftr_change_law_council_power_0_interaction = {
 		modifier = {
 			add = -50
 			scope:recipient = {
-				domain_limit_available < 0
+				OR = {
+					domain_limit_available < 0
+					vassal_limit_available < 0
+				}
 			}
 			desc = FTR_DOMAIN_LIMIT_REASON
 		}
@@ -604,6 +608,8 @@ ftr_change_law_council_power_0_interaction = {
 			scope:actor = scope:recipient
 			scope:recipient = {
 				domain_limit_available >= 1
+				vassal_limit_available >= 11
+				has_realm_law = ftr_council_power_1
 			}
 		}
 	}
@@ -728,6 +734,7 @@ ftr_change_law_council_power_1_interaction = {
 			add = -50
 			scope:recipient = {
 				domain_limit_available >= 1
+				vassal_limit_available >= 11
 				has_realm_law = ftr_council_power_0
 			}
 			desc = FTR_DOMAIN_LIMIT_REASON
@@ -736,7 +743,10 @@ ftr_change_law_council_power_1_interaction = {
 		modifier = {
 			add = 50
 			scope:recipient = {
-				domain_limit_available < 0
+				OR = {
+					domain_limit_available < 0
+					vassal_limit_available < 0
+				}
 				has_realm_law = ftr_council_power_0
 			}
 			desc = FTR_DOMAIN_LIMIT_REASON
@@ -746,6 +756,7 @@ ftr_change_law_council_power_1_interaction = {
 			add = 50
 			scope:recipient = {
 				domain_limit_available >= 1
+				vassal_limit_available >= 11
 				has_realm_law = ftr_council_power_2
 			}
 			desc = FTR_DOMAIN_LIMIT_REASON
@@ -754,7 +765,10 @@ ftr_change_law_council_power_1_interaction = {
 		modifier = {
 			add = -50
 			scope:recipient = {
-				domain_limit_available < 0
+				OR = {
+					domain_limit_available < 0
+					vassal_limit_available < 0
+				}
 				has_realm_law = ftr_council_power_2
 			}
 			desc = FTR_DOMAIN_LIMIT_REASON
@@ -769,12 +783,16 @@ ftr_change_law_council_power_1_interaction = {
 				scope:recipient = {
 					AND = {
 						domain_limit_available >= 1
+						vassal_limit_available >= 11
 						has_realm_law = ftr_council_power_2
 					}
 				}
 				scope:recipient = {
 					AND = {
-						domain_limit_available < 0
+						OR = {
+							vassal_limit_available < 0
+							domain_limit_available < 0
+						}
 						has_realm_law = ftr_council_power_0
 					}
 				}
@@ -909,6 +927,7 @@ ftr_change_law_council_power_2_interaction = {
 			add = -50
 			scope:recipient = {
 				domain_limit_available >= 1
+				vassal_limit_available >= 11
 			}
 			desc = FTR_DOMAIN_LIMIT_REASON
 		}
@@ -916,7 +935,10 @@ ftr_change_law_council_power_2_interaction = {
 		modifier = {
 			add = 50
 			scope:recipient = {
-				domain_limit_available < 0
+				OR = {
+					domain_limit_available < 0
+					vassal_limit_available < 0
+				}
 			}
 			desc = FTR_DOMAIN_LIMIT_REASON
 		}
@@ -948,7 +970,10 @@ ftr_change_law_council_power_2_interaction = {
 			add = 50
 			scope:actor = scope:recipient
 			scope:recipient = {
-				domain_limit_available < 0
+				OR = {
+					domain_limit_available < 0
+					vassal_limit_available < 0
+				}
 				has_realm_law = ftr_council_power_1
 			}
 		}

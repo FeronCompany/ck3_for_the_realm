@@ -560,8 +560,9 @@ ftr_send_envoy_interaction = {
 	category = interaction_category_diplomacy
 	common_interaction = yes
 	greeting = positive
-	#notification_text = ftr_send_envoy_interaction_text
+	notification_text = ftr_send_envoy_interaction_text
 	desc = ftr_send_envoy_interaction_desc
+	#ai_maybe = yes
 	ai_frequency = 48
 	ai_targets = {
 		ai_recipients = liege
@@ -669,6 +670,9 @@ ftr_send_envoy_interaction = {
 	send_options_exclusive = yes
 	
 	on_accept = {
+		scope:secondary_actor = {
+			custom_tooltip = ftr_envoy_will_start_journey_tt
+		}
 		scope:actor = {
 			pay_short_term_gold = {
 				target = scope:secondary_actor

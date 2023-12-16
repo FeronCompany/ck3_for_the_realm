@@ -16,7 +16,7 @@
  request_combat_guidance_interaction:0 "<FTR> Combat guidance"
  request_combat_guidance_interaction_desc:0 "Request combat guidance in exchange of money"
  request_combat_guidance_interaction_notification:0 "Combat Guidance"
- GUIDE_ME_ON_PROWESS:0 "[actor.GetName|U] is requesting combat guidance from you."
+ GUIDE_ME_ON_PROWESS:0 "Your combat skills are so outstanding that they are admirable. Everyone who has witnessed your heroic figure in battle cannot help but give sincere praise. Now, please allow me to become your apprentice and learn the true meaning of combat from you."
  ftr_guidance_accepted_notify_tt:0 "[recipient.GetShortUIName|U] agree to give you combat guidance"
 
  religious_debate_interaction:0 "<FTR> Religious Debate"

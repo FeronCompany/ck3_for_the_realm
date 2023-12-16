@@ -20,7 +20,9 @@
 
  ftr_send_envoy_interaction:0 "<FTR>派遣特使"
  ftr_send_envoy_interaction_desc:0 "派遣一名得力的特使前往[recipient.GetShortUIName]领地的首府"
+ ftr_send_envoy_interaction_text:0 "我近期打算派遣[secondary_actor.GetShortUIName]作为我的特使前往你的领地进行一场友好访问，如果你也有意向，我的特使将很快启程前往你的首府。"
  actor_secondary_ftr_send_envoy_interaction:0 "特使"
+ ftr_envoy_will_start_journey_tt:0 "[secondary_actor.GetShortUIName]将作为[actor.GetShortUIName]的特使前往[recipient.GetShortUIName]的领地首府进行访问"
  FTR_YOU_ARE_THE_LIEGE:0 "你是领主：$VALUE|=+0$"
  ftr_envoy_types_tt:0 "特使任务"
  ftr_envoy_improve_relation_tt:0 "改善关系"

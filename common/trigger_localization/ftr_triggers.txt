@@ -168,3 +168,8 @@ ftr_show_stance_in_regency_tt = {
 	global = ftr_show_stance_in_regency_tt
 	global_not = not_ftr_show_stance_in_regency_tt
 }
+
+ftr_orgnized_trade_recently_tt = {
+	global = ftr_orgnized_trade_recently_tt
+	global_not = not_ftr_orgnized_trade_recently_tt
+}

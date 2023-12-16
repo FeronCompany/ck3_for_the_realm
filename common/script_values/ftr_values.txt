@@ -207,12 +207,69 @@ ftr_send_envoy_cost = {
 	}
 }
 
-ftr_trade_income_liege_share = 0.7
-ftr_trade_income_envoy_share = 0.3
+ftr_get_luck_point = {
+	if = {
+		limit = { exists = var:ftr_luck_point }
+		value = var:ftr_luck_point
+	}
+	else = {
+		value = 0
+	}
+}
+
+ftr_trade_income_liege_share = 0.8
+ftr_trade_income_envoy_share = 0.2
 ftr_trade_income_value = {
 	value = 10
 	add = {
-		value = 25
-		multiply = scope:envoy.stewardship
+		value = 2.5
+		multiply = {
+			value = scope:secondary_actor.stewardship
+			multiply = 0.9
+			add = 2
+		}
+		multiply = {
+			value = scope:recipient.capital_county.development_level
+			multiply = 0.85
+			add = 15
+		}
+		multiply = {
+			value = "scope:recipient.capital_province.squared_distance(scope:actor.capital_province)"
+			divide = squared_distance_large
+			multiply = 0.6
+			add = 0.4
+		}
 	}
+	multiply = scope:secondary_actor.ftr_get_luck_point
+}
+ftr_trade_income_expected_value = {
+	value = 10
+	add = {
+		value = 2.5
+		multiply = {
+			value = scope:secondary_actor.stewardship
+			multiply = 0.9
+			add = 2
+		}
+		multiply = {
+			value = scope:recipient.capital_county.development_level
+			multiply = 0.85
+			add = 15
+		}
+		multiply = {
+			value = "scope:recipient.capital_province.squared_distance(scope:actor.capital_province)"
+			divide = squared_distance_large
+			multiply = 0.6
+			add = 0.4
+		}
+	}
+	multiply = 0.6
+}
+ftr_trade_income_expected_liege_share_value = {
+	value = ftr_trade_income_expected_value
+	multiply = ftr_trade_income_liege_share
+}
+ftr_trade_income_expected_envoy_share_value = {
+	value = ftr_trade_income_expected_value
+	multiply = ftr_trade_income_envoy_share
 }

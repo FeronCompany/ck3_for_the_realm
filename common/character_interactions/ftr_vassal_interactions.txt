@@ -905,7 +905,7 @@ ftr_fine_interaction = {
 	greeting = positive
 	notification_text = ftr_fine_interaction_text
 	desc = ftr_fine_interaction_desc
-	ai_frequency = 12
+	#ai_frequency = 12
 
 	is_shown = {
 		scope:recipient = {

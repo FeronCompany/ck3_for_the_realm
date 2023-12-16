@@ -131,3 +131,68 @@ found_new_dynasty_effect = {
 		}
 	}
 }
+
+ftr_update_luck_modifier_effect = {
+	random_list = {
+		1 = {
+			set_variable = {
+				name = ftr_luck_point
+				value = 0.1
+			}
+		}
+		1 = {
+			set_variable = {
+				name = ftr_luck_point
+				value = 0.2
+			}
+		}
+		1 = {
+			set_variable = {
+				name = ftr_luck_point
+				value = 0.3
+			}
+		}
+		1 = {
+			set_variable = {
+				name = ftr_luck_point
+				value = 0.4
+			}
+		}
+		1 = {
+			set_variable = {
+				name = ftr_luck_point
+				value = 0.5
+			}
+		}
+		1 = {
+			set_variable = {
+				name = ftr_luck_point
+				value = 0.6
+			}
+		}
+		1 = {
+			set_variable = {
+				name = ftr_luck_point
+				value = 0.7
+			}
+		}
+		1 = {
+			set_variable = {
+				name = ftr_luck_point
+				value = 0.8
+			}
+		}
+		1 = {
+			set_variable = {
+				name = ftr_luck_point
+				value = 0.9
+			}
+		}
+		1 = {
+			set_variable = {
+				name = ftr_luck_point
+				value = 1
+			}
+		}
+	}
+}

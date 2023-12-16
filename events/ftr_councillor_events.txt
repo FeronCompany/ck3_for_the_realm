@@ -845,6 +845,11 @@ ftr_councillor_event.0007 = {
 				}
 			}
 		}
+		scope:secondary_actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = 20
+			}
+		}
 	}
 
 	after = {}
@@ -881,6 +886,11 @@ ftr_councillor_event.0008 = {
 					limit = { has_relation_nemesis = scope:recipient }
 					remove_relation_nemesis = scope:recipient
 				}
+			}
+		}
+		scope:secondary_actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = 50
 			}
 		}
 	}
@@ -949,7 +959,7 @@ ftr_councillor_event.0010 = {
 				progress_towards_rival_effect = {
 					REASON = ftr_rival_envoy_visit
 					CHARACTER = scope:recipient
-					OPINION = 40
+					OPINION = -40
 				}
 			}
 		}
@@ -987,6 +997,11 @@ ftr_councillor_event.0011 = {
 				modifier = grateful_opinion
 				opinion = 30
 				target = scope:secondary_actor
+			}
+		}
+		scope:secondary_actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = 20
 			}
 		}
 	}
@@ -1029,8 +1044,10 @@ ftr_councillor_event.0012 = {
 				right_icon = scope:recipient
 				custom_tooltip = ftr_envoy_trade_succ_result_content_tt
 				add_gold = {
-					value = ftr_trade_income_value
-					multiply = ftr_trade_income_liege_share
+					value = {
+						value = ftr_trade_income_value
+						multiply = ftr_trade_income_liege_share
+					}
 				}
 			}
 			add_opinion = {
@@ -1041,8 +1058,15 @@ ftr_councillor_event.0012 = {
 		}
 		scope:recipient = {
 			add_gold = {
-				value = ftr_trade_income_value
-				multiply = ftr_trade_income_envoy_share
+				value = {
+					value = ftr_trade_income_value
+					multiply = ftr_trade_income_envoy_share
+				}
+			}
+		}
+		scope:secondary_actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = 30
 			}
 		}
 	}
@@ -1241,6 +1265,9 @@ ftr_councillor_event.0017 = {
 						set_character_faith = scope:actor.faith
 					}
 				}
+				ftr_add_political_influence_effect = {
+					VALUE = 40
+				}
 			}
 		}
 		ai_chance = {
@@ -1363,6 +1390,11 @@ ftr_councillor_event.0019 = {
 				}
 			}
 		}
+		scope:secondary_actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = 40
+			}
+		}
 	}
 
 	after = {}
@@ -1396,6 +1428,11 @@ ftr_councillor_event.0020 = {
 					allied_through_owner = scope:actor
 					allied_through_target = scope:recipient
 				}
+			}
+		}
+		scope:secondary_actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = 50
 			}
 		}
 	}

@@ -84,8 +84,7 @@ ftr_diarch_replace_council_position_interaction = {
 				is_at_war_with = scope:recipient
 			}
 			is_imprisoned = no
-			is_adult = yes
-			is_capable = yes
+			is_capable_adult = yes
 			custom_tooltip = {
 				text = ftr_diarchy_swing_greater_than_50
 				liege = {

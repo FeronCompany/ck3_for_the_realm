@@ -597,6 +597,7 @@ ftr_send_envoy_interaction = {
 		}
 		scope:recipient = {
 			primary_title.tier >= tier_county
+			is_landed = yes
 			NOT = { this = scope:actor }
 		}
 	}
@@ -653,6 +654,14 @@ ftr_send_envoy_interaction = {
 		starts_enabled = { always = yes	}
 	}
 	send_option = { # 促进贸易
+		is_valid = {
+			custom_description = {
+				text = ftr_orgnized_trade_recently_tt
+				scope:actor = {
+					NOT = { has_character_flag = ftr_orgnized_trade_recently }
+				}
+			}
+		}
 		flag = ftr_envoy_trade
 		localization = ftr_envoy_trade_tt
 	}
@@ -672,12 +681,12 @@ ftr_send_envoy_interaction = {
 	on_accept = {
 		scope:secondary_actor = {
 			custom_tooltip = ftr_envoy_will_start_journey_tt
+			hidden_effect = {
+				ftr_update_luck_modifier_effect = yes
+			}
 		}
 		scope:actor = {
-			pay_short_term_gold = {
-				target = scope:secondary_actor
-				gold = ftr_send_envoy_cost
-			}
+			remove_short_term_gold = ftr_send_envoy_cost
 		}
 		if = {
 			limit = { scope:ftr_envoy_improve_relation = yes }
@@ -691,6 +700,28 @@ ftr_send_envoy_interaction = {
 			save_scope_value_as = {
 				name = ftr_envoy_task_scope
 				value = 2
+			}
+			custom_description = {
+				text = ftr_trade_task_total_expected_income_tt
+				value = ftr_trade_income_expected_value
+			}
+			custom_description = {
+				text = ftr_trade_task_liege_expected_income_tt
+				value = ftr_trade_income_expected_liege_share_value
+				subject = scope:actor
+			}
+			custom_description = {
+				text = ftr_trade_task_envoy_expected_income_tt
+				value = ftr_trade_income_expected_envoy_share_value
+				subject = scope:secondary_actor
+			}
+			hidden_effect = {
+				scope:actor = {
+					add_character_flag = {
+						flag = ftr_orgnized_trade_recently
+						months = 12
+					}
+				}
 			}
 		}
 		else_if = {
@@ -781,6 +812,18 @@ ftr_send_envoy_interaction = {
 			}
 			scope:ftr_envoy_improve_relation = yes
 		}
+		modifier = { # 盟友数量
+			add = {
+				value = 3
+				scope:actor = {
+					every_ally = {
+						add = -1
+					}
+				}
+				multiply = 10
+			}
+			scope:ftr_envoy_improve_relation = yes
+		}
 		modifier = { # 讨好强邻
 			add = 30
 			scope:recipient = {
@@ -837,12 +880,13 @@ ftr_send_envoy_interaction = {
 			add = 30
 			scope:actor = {
 				OR = {
-					gold < 200
+					gold < 500
 					has_trait = greedy
 					has_trait = diligent
 					has_trait = ambitious
 					has_trait = avaricious
 				}
+				ftr_trade_income_expected_liege_share_value > ftr_send_envoy_cost
 			}
 			scope:ftr_envoy_trade = yes
 		}

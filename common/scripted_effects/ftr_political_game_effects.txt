@@ -30,59 +30,21 @@ ftr_update_powerful_subjects_list_effect = {
 }
 
 ftr_update_pg_member_list_effect = {
-	root = {
-		add_to_list = pg_member_list
-	}
+	add_to_list = pg_member_list
 	every_vassal = {
 		limit = {
 			is_capable_adult = yes
-		}
-		if = {
-			limit = {
-				NOT = { exists = var:ftr_liege_proposal_attitude }
-			}
-			set_variable = {
-				name = ftr_liege_proposal_attitude
-				value = 3 # 弃权
-			}
-		}
-		if = {
-			limit = {
-				NOT = { exists = var:ftr_my_proposal_attitude }
-			}
-			set_variable = {
-				name = ftr_my_proposal_attitude
-				value = 3 # 弃权
-			}
 		}
 		add_to_list = pg_member_list
 	}
 	every_courtier = {
 		limit = {
-			is_landed = no
 			is_capable_adult = yes
 			OR = {
-				is_councillor_of = root
-				house = root.house
+				is_councillor_of = prev
+				is_spouse_of = prev
 				is_diarch = yes
-			}
-		}
-		if = {
-			limit = {
-				NOT = { exists = var:ftr_liege_proposal_attitude }
-			}
-			set_variable = {
-				name = ftr_liege_proposal_attitude
-				value = 3 # 弃权
-			}
-		}
-		if = {
-			limit = {
-				NOT = { exists = var:ftr_my_proposal_attitude }
-			}
-			set_variable = {
-				name = ftr_my_proposal_attitude
-				value = 3 # 弃权
+				is_heir_of = prev
 			}
 		}
 		add_to_list = pg_member_list

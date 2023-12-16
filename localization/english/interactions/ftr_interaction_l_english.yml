@@ -29,6 +29,11 @@
  ftr_envoy_trade_tt:0 "Improve Trade"
  ftr_envoy_threat_tt:0 "Extortion"
  ftr_envoy_religious_tt:0 "Spread True Faith"
+ ftr_orgnized_trade_recently_tt:0 "Not organized trade recently"
+ not_ftr_orgnized_trade_recently_tt:0 "Organized trade recently"
+ ftr_trade_task_total_expected_income_tt:0 "The expected total revenue from this trade action is approximately $VALUE|1g$(the amount of revenue depends on the development of the destination, the management ability of the envoy, and the distance between the destination and the territorial capital)."
+ ftr_trade_task_liege_expected_income_tt:0 "[CHARACTER.GetShortUIName] expected to get 80% of the expected trade income:$VALUE|1g$"
+ ftr_trade_task_envoy_expected_income_tt:0 "[CHARACTER.GetShortUIName] expected to get 20% of the expected trade income:$VALUE|1g$"
 
  ftr_diarch_replace_council_position_interaction:0 "<FTR> Manipulate Council Position"
  ftr_diarch_replace_council_position_interaction_desc:0 "Regent manipulate council position"

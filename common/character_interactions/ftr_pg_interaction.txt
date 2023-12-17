@@ -14,6 +14,7 @@ ftr_bribe_interaction = {
 		max = 3
 	}
 	ai_frequency = 24
+	#ai_maybe = yes
 	is_shown = {
 		NOT = { scope:actor = scope:recipient }
 		scope:actor = {

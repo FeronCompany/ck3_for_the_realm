@@ -5,6 +5,7 @@
 
  ftr_bribe_interaction:0 "<FTR> Bribe"
  ftr_bribe_interaction_desc:0 "Bribe and gain target's trust with gold."
+ ftr_bribe_interaction_notification:0 "I have heard of your name for a long time, but unfortunately I haven't had time to meet you before. Recently, it's a holiday and I am interested in meeting you to discuss cooperation matters in detail. I wonder if you would like to have a word with me?"
  ftr_enough_gold_text:0 "You have more than $VALUE|0$ gold"
  ftr_not_enough_gold_text:0 "You don't have more than $VALUE|0$ gold"
 

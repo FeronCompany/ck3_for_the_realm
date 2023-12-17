@@ -25,9 +25,9 @@
  FTR_START_RELIOUS_DEBATE_EFFECT:0 "You will start a religious debate with [CHARACTER.GetShortUIName]"
  FOR_THE_FAITH:0 "Religious Fanaticism"
  NOT_CARE_ABOUT_RELIGION:0 "Not care about religion."
- SOMEONE_START_RELIGIOUS_DEBATE:0 "[actor.GetShortUIName|U] wants to start a religious debate with you."
+ SOMEONE_START_RELIGIOUS_DEBATE:0 "Recently, I heard that you have been walking in the mist of old lies, like a lost lamb unable to find your future direction. Converting to the wrong faith is certainly a misfortune, but if I stand idly by, it will be even greater misfortune. As a generous believer, I can't wait to discuss religious issues with you. Don't close your eyes and listen, I promise you will be convinced of the greatness and wisdom of correct faith after listening to my words!"
  RECENT_RELIGIOUS_DEBATE:0 "Recent religious debate"
- FTR_LEARNING_GOOD:0 "Good At Learning"
+ FTR_LEARNING_GOOD:0 "Good At Learning:$VALUE|=+0$"
 
  ftr_convert_bureacrat_to_feudal_interaction:0 "<FTR> Grant Hereditary Privilege"
  ftr_convert_bureacrat_to_feudal_interaction_desc:0 "Grant hereditary privilege to your vassal."

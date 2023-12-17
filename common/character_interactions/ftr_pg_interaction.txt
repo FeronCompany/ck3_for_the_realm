@@ -5,12 +5,16 @@ ftr_bribe_interaction = {
 	common_interaction = yes
 	cooldown_against_recipient = { years = 5 }
 	desc = ftr_bribe_interaction_desc
+	greeting = positive
+	notification_text = ftr_bribe_interaction_notification
 	ai_targets = {
 		ai_recipients = liege
 		ai_recipients = peer_vassals
+		ai_recipients = vassals
 		max = 3
 	}
-	ai_frequency = 12
+	ai_frequency = 24
+	#ai_maybe = yes
 	is_shown = {
 		NOT = { scope:actor = scope:recipient }
 		scope:actor = {

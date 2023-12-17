@@ -333,6 +333,7 @@ religious_debate_interaction = {
 		max = 5
 	}
 	ai_frequency = 36
+	#ai_maybe = yes
 	cooldown = { years = 2 }
 
 	is_shown = {
@@ -371,7 +372,10 @@ religious_debate_interaction = {
 			text = ftr_start_religious_debate_text
 			subject = scope:recipient
 			scope:actor = {
-				trigger_event = ftr_interaction_event.0001
+				trigger_event = {
+					id = ftr_interaction_event.0001
+					days = { 3 5 }
+				}
 			}
 		}
 	}

@@ -5,6 +5,7 @@
 
  ftr_bribe_interaction:0 "<FTR>贿赂"
  ftr_bribe_interaction_desc:0 "花一笔小钱贿赂对方，获取对方的信任。"
+ ftr_bribe_interaction_notification:0 "本人久仰大名，然而之前一直忙于政务，未能与您相见。最近恰逢假日，鄙人有意向与阁下相见详谈合作事宜，不知可否赏脸一叙？"
  ftr_enough_gold_text:0 "你的金币不少于$VALUE|0$"
  ftr_not_enough_gold_text:0 "你的金币不足$VALUE|0$"
 

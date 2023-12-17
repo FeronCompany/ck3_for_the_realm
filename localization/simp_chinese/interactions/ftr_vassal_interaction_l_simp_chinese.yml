@@ -25,7 +25,7 @@
  FTR_START_RELIOUS_DEBATE_EFFECT:0 "你将与[CHARACTER.GetShortUIName]开启一场宗教辩论"
  FOR_THE_FAITH:0 "宗教狂热"
  NOT_CARE_ABOUT_RELIGION:0 "不在乎宗教事务"
- SOMEONE_START_RELIGIOUS_DEBATE:0 "[actor.GetShortUIName|U] 想与你进行一场宗教辩论."
+ SOMEONE_START_RELIGIOUS_DEBATE:0 "最近我听闻你一直在如迷雾般的旧日谎言中彳亍，像迷途羔羊一般找不到未来的方向。皈依错误的信仰固然是一种不幸，而若是我袖手旁观，那便是更大的不幸。作为一名慷慨的信徒，我已经迫不及待和你探讨宗教问题了。不要闭目塞听了，我保证你听完我的话就会折服于正确信仰伟大与明智！"
  RECENT_RELIGIOUS_DEBATE:0 "近期的宗教辩论"
  FTR_LEARNING_GOOD:0 "学识充足"
 

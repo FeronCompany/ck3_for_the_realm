@@ -32,14 +32,10 @@ ftr_update_powerful_subjects_list_effect = {
 ftr_update_pg_member_list_effect = {
 	add_to_list = pg_member_list
 	every_vassal = {
-		limit = {
-			is_capable_adult = yes
-		}
 		add_to_list = pg_member_list
 	}
 	every_courtier = {
 		limit = {
-			is_capable_adult = yes
 			OR = {
 				is_councillor_of = prev
 				is_spouse_of = prev

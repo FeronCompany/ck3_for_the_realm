@@ -44,3 +44,5 @@
  ftr_vassal_support_regent_against_liege_content:0 "[CHARACTER.GetShortUIName] publicly declared its support for [TARGET_CHARACTER.GetShortUIName], which gave [TARGET_CHARACTER.GetShortUIName] a stronger position in the fight against the liege."
  ftr_show_stance_in_regency_tt:0 "Recently expressed position on the regency"
  not_ftr_show_stance_in_regency_tt:0 "Has not recently stated its position on the regent"
+ ftr_not_sent_law_change_proposal_tt:0 "[CHARACTER.GetShortUIName] hasn't made proposal of law change"
+ ftr_sent_law_change_proposal_tt:0 "[CHARACTER.GetShortUIName] has made proposal of law change"

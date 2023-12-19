@@ -42,6 +42,16 @@ ftr_change_law_army_type_0_interaction = {
 		}
 		ftr_can_accept_proposal_trigger = yes
 	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
+	}
 
 	on_accept = {
 		scope:actor = {
@@ -192,6 +202,16 @@ ftr_change_law_army_type_1_interaction = {
 		}
 		ftr_can_accept_proposal_trigger = yes
 	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
+	}
 
 	on_accept = {
 		scope:actor = {
@@ -340,6 +360,16 @@ ftr_change_law_army_type_2_interaction = {
 		}
 		ftr_can_accept_proposal_trigger = yes
 	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
+	}
 
 	on_accept = {
 		scope:actor = {
@@ -486,6 +516,16 @@ ftr_change_law_council_power_0_interaction = {
 			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -656,6 +696,16 @@ ftr_change_law_council_power_1_interaction = {
 			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -850,6 +900,16 @@ ftr_change_law_council_power_2_interaction = {
 		}
 		ftr_can_accept_proposal_trigger = yes
 	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
+	}
 
 	on_accept = {
 		scope:actor = {
@@ -1029,6 +1089,16 @@ ftr_change_law_proposal_right_0_interaction = {
 		}
 		ftr_can_accept_proposal_trigger = yes
 	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
+	}
 
 	on_accept = {
 		scope:actor = {
@@ -1152,6 +1222,16 @@ ftr_change_law_proposal_right_1_interaction = {
 			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -1287,6 +1367,16 @@ ftr_change_law_proposal_right_2_interaction = {
 		}
 		ftr_can_accept_proposal_trigger = yes
 	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
+	}
 
 	on_accept = {
 		scope:actor = {
@@ -1421,6 +1511,16 @@ ftr_change_law_proposal_right_3_interaction = {
 		}
 		ftr_can_accept_proposal_trigger = yes
 	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
+	}
 
 	on_accept = {
 		scope:actor = {
@@ -1547,6 +1647,16 @@ ftr_change_law_economic_policy_0_interaction = {
 			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -1687,6 +1797,16 @@ ftr_change_law_economic_policy_1_interaction = {
 			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -1846,6 +1966,16 @@ ftr_change_law_economic_policy_2_interaction = {
 			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {

@@ -222,6 +222,11 @@ ftr_can_make_proposal_trigger = {
 			scope:recipient = scope:actor
 		}
 	}
+	custom_description = {
+		text = "ftr_not_sent_law_change_proposal_tt"
+		subject = scope:actor
+		NOT = { has_character_flag = ftr_send_law_change_proposal }
+	}
 }
 
 ftr_can_accept_proposal_trigger = {

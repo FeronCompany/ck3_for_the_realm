@@ -203,6 +203,12 @@ ftr_send_envoy_cost = {
 	value = 25
 	add = {
 		value = 100
+		multiply = {
+			value = "scope:recipient.capital_province.squared_distance(scope:actor.capital_province)"
+			divide = squared_distance_large
+			multiply = 0.8
+			add = 0.2
+		}
 		multiply = activity_cost_scale_by_era
 	}
 }

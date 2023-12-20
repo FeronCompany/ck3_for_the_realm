@@ -1,0 +1,14 @@
+﻿
+
+ftr_law_change_decline_effect = {
+	hidden_effect = {
+		scope:actor = {
+			send_interface_toast = {
+				title = "ftr_law_change_decline_tt"
+				left_icon = scope:actor
+				right_icon = scope:recipient
+				custom_tooltip = ftr_law_change_decline_text
+			}
+		}
+	}
+}

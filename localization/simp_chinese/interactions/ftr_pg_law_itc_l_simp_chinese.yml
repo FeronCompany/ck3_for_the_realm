@@ -46,3 +46,5 @@
  not_ftr_show_stance_in_regency_tt:0 "近期未表明对摄政的立场"
  ftr_not_sent_law_change_proposal_tt:0 "[CHARACTER.GetShortUIName]近期未提议变法"
  ftr_sent_law_change_proposal_tt:0 "[CHARACTER.GetShortUIName]近期曾提议变法"
+ ftr_law_change_decline_tt:0 "变法提议遭到拒绝"
+ ftr_law_change_decline_text:0 "[actor.GetShortUIName]提出的变法提议遭到[recipient.GetShortUIName]拒绝"

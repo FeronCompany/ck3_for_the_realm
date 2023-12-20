@@ -46,3 +46,5 @@
  not_ftr_show_stance_in_regency_tt:0 "Has not recently stated its position on the regent"
  ftr_not_sent_law_change_proposal_tt:0 "[CHARACTER.GetShortUIName] hasn't made proposal of law change"
  ftr_sent_law_change_proposal_tt:0 "[CHARACTER.GetShortUIName] has made proposal of law change"
+ ftr_law_change_decline_tt:0 "Law Change Proposal Declined"
+ ftr_law_change_decline_text:0 "The law-change proposal of [actor.GetShortUIName] was declined by [recipient.GetShortUIName]"

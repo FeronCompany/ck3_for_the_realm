@@ -312,12 +312,12 @@ ftr_depose_bureacrat_interaction = {
 		}
 	}
 	ai_accept = {
-		base = 0
+		base = 20
 
 		opinion_modifier = { # Opinion Factor
 			who = scope:recipient
 			opinion_target = scope:actor
-			multiplier = 0.5
+			multiplier = 0.25
 			desc = AI_OPINION_REASON
 		}
 
@@ -330,7 +330,7 @@ ftr_depose_bureacrat_interaction = {
 		}
 
 		modifier = {
-			add = 10
+			add = 20
 			scope:actor = {
 				has_realm_law_flag = vassal_refusal_is_treason
 			}
@@ -354,7 +354,7 @@ ftr_depose_bureacrat_interaction = {
 		}
 		
 		modifier = {
-			add = 20
+			add = 30
 			scope:actor.current_military_strength > scope:recipient.current_military_strength
 			scope:recipient = {
 				has_trait = craven
@@ -369,7 +369,7 @@ ftr_depose_bureacrat_interaction = {
 					limit = {
 						scope:recipient = { NOT = { ai_greed = 0 } }
 					}
-					value = -0.8
+					value = -0.75
 				}
 			}
 			ai_honor  = {
@@ -382,7 +382,7 @@ ftr_depose_bureacrat_interaction = {
 							has_realm_law_flag = vassal_refusal_is_treason
 						}
 					}
-					value = 0.4
+					value = 0.5
 				}
 			}
 		}
@@ -422,7 +422,7 @@ ftr_depose_bureacrat_interaction = {
 					divide = { value = scope:actor.current_military_strength min = 1 }
 				}
 				multiply = 50
-				max = 20
+				max = 50
 	  		}
 		}
 		modifier = { # Legalistic tradition

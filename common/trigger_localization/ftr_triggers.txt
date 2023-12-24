@@ -173,3 +173,8 @@ ftr_orgnized_trade_recently_tt = {
 	global = ftr_orgnized_trade_recently_tt
 	global_not = not_ftr_orgnized_trade_recently_tt
 }
+
+ftr_not_sent_law_change_proposal_tt = {
+	global = ftr_not_sent_law_change_proposal_tt
+	global_not = ftr_sent_law_change_proposal_tt
+}

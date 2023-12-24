@@ -981,7 +981,7 @@ ftr_councillor_event.0011 = {
 				custom_tooltip = ftr_envoy_extra_money_result_content_tt
 				add_gold = {
 					value = 150
-					multiply = scope:recipient.ftr_get_luck_point
+					multiply = scope:secondary_actor.ftr_get_luck_point
 				}
 			}
 			add_opinion = {
@@ -1002,7 +1002,7 @@ ftr_councillor_event.0011 = {
 		scope:secondary_actor = {
 			add_gold = {
 				value = 150
-				multiply = scope:recipient.ftr_get_luck_point
+				multiply = scope:secondary_actor.ftr_get_luck_point
 			}
 		}
 	}

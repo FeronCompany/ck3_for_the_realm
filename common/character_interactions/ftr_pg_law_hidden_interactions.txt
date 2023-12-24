@@ -12,7 +12,7 @@ ftr_change_law_army_type_0_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -39,8 +39,23 @@ ftr_change_law_army_type_0_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -90,6 +105,7 @@ ftr_change_law_army_type_0_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -138,7 +154,7 @@ ftr_change_law_army_type_0_interaction = {
 	ai_will_do = {
 		base = -10
 		modifier = {
-			add = 100
+			add = 40
 			scope:recipient = {
 				OR = {
 					max_military_strength < 8000
@@ -161,7 +177,7 @@ ftr_change_law_army_type_1_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -189,8 +205,23 @@ ftr_change_law_army_type_1_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -240,6 +271,7 @@ ftr_change_law_army_type_1_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -288,7 +320,7 @@ ftr_change_law_army_type_1_interaction = {
 	ai_will_do = {
 		base = -10
 		modifier = {
-			add = 50
+			add = 40
 			scope:recipient = {
 				max_military_strength >= 15000
 				gold >= 300
@@ -309,7 +341,7 @@ ftr_change_law_army_type_2_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -337,8 +369,23 @@ ftr_change_law_army_type_2_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -388,6 +435,7 @@ ftr_change_law_army_type_2_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -436,7 +484,7 @@ ftr_change_law_army_type_2_interaction = {
 	ai_will_do = {
 		base = -10
 		modifier = {
-			add = 50
+			add = 40
 			scope:recipient = {
 				max_military_strength >= 15000
 				gold >= 300
@@ -457,7 +505,7 @@ ftr_change_law_council_power_0_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -484,8 +532,23 @@ ftr_change_law_council_power_0_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -535,6 +598,7 @@ ftr_change_law_council_power_0_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -604,7 +668,7 @@ ftr_change_law_council_power_0_interaction = {
 	ai_will_do = {
 		base = 0
 		modifier = {
-			add = 50
+			add = 40
 			scope:actor = scope:recipient
 			scope:recipient = {
 				domain_limit_available >= 1
@@ -627,7 +691,7 @@ ftr_change_law_council_power_1_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -654,8 +718,23 @@ ftr_change_law_council_power_1_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -705,6 +784,7 @@ ftr_change_law_council_power_1_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -777,7 +857,7 @@ ftr_change_law_council_power_1_interaction = {
 	ai_will_do = {
 		base = 0
 		modifier = {
-			add = 50
+			add = 40
 			scope:actor = scope:recipient
 			OR = {
 				scope:recipient = {
@@ -799,7 +879,7 @@ ftr_change_law_council_power_1_interaction = {
 			}
 		}
 		modifier = {
-			add = 50
+			add = 30
 			NOT = { scope:actor = scope:recipient }
 			scope:recipient = {
 				has_realm_law = ftr_council_power_0
@@ -820,7 +900,7 @@ ftr_change_law_council_power_2_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -847,8 +927,23 @@ ftr_change_law_council_power_2_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -898,6 +993,7 @@ ftr_change_law_council_power_2_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -967,7 +1063,7 @@ ftr_change_law_council_power_2_interaction = {
 	ai_will_do = {
 		base = 0
 		modifier = {
-			add = 50
+			add = 30
 			scope:actor = scope:recipient
 			scope:recipient = {
 				OR = {
@@ -978,7 +1074,7 @@ ftr_change_law_council_power_2_interaction = {
 			}
 		}
 		modifier = {
-			add = 50
+			add = 20
 			NOT = { scope:actor = scope:recipient }
 			scope:recipient = {
 				has_realm_law = ftr_council_power_1
@@ -999,7 +1095,7 @@ ftr_change_law_proposal_right_0_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -1026,8 +1122,23 @@ ftr_change_law_proposal_right_0_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -1077,6 +1188,7 @@ ftr_change_law_proposal_right_0_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -1123,7 +1235,7 @@ ftr_change_law_proposal_right_1_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -1150,8 +1262,23 @@ ftr_change_law_proposal_right_1_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -1201,6 +1328,7 @@ ftr_change_law_proposal_right_1_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -1257,7 +1385,7 @@ ftr_change_law_proposal_right_2_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -1284,8 +1412,23 @@ ftr_change_law_proposal_right_2_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -1335,6 +1478,7 @@ ftr_change_law_proposal_right_2_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -1391,7 +1535,7 @@ ftr_change_law_proposal_right_3_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -1418,8 +1562,23 @@ ftr_change_law_proposal_right_3_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -1469,6 +1628,7 @@ ftr_change_law_proposal_right_3_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -1518,7 +1678,7 @@ ftr_change_law_economic_policy_0_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -1545,8 +1705,23 @@ ftr_change_law_economic_policy_0_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -1596,6 +1771,7 @@ ftr_change_law_economic_policy_0_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -1651,7 +1827,7 @@ ftr_change_law_economic_policy_1_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -1678,6 +1854,11 @@ ftr_change_law_economic_policy_1_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		scope:recipient = {
 			custom_description = {
@@ -1687,6 +1868,16 @@ ftr_change_law_economic_policy_1_interaction = {
 			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -1736,6 +1927,7 @@ ftr_change_law_economic_policy_1_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {
@@ -1810,7 +2002,7 @@ ftr_change_law_economic_policy_2_interaction = {
 		ai_recipients = self
 		ai_recipients = liege
 	}
-	ai_frequency = 24
+	ai_frequency = 36
 	is_shown = {
 		OR = {
 			scope:actor = scope:recipient
@@ -1837,6 +2029,11 @@ ftr_change_law_economic_policy_2_interaction = {
 				value = ftr_make_pg_proposal_cost_value
 				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
 			}
+			custom_description = {
+				text = "ftr_not_sent_law_change_proposal_tt"
+				subject = scope:actor
+				NOT = { has_character_flag = ftr_send_law_change_proposal }
+			}
 		}
 		scope:recipient = {
 			custom_description = {
@@ -1846,6 +2043,16 @@ ftr_change_law_economic_policy_2_interaction = {
 			}
 		}
 		ftr_can_accept_proposal_trigger = yes
+	}
+	on_send = {
+		hidden_effect = {
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_send_law_change_proposal
+					years = 2
+				}
+			}
+		}
 	}
 
 	on_accept = {
@@ -1895,6 +2102,7 @@ ftr_change_law_economic_policy_2_interaction = {
 				VALUE = ftr_make_pg_proposal_modify_value
 			}
 		}
+		ftr_law_change_decline_effect = yes
 	}
 	auto_accept = {
 		OR = {

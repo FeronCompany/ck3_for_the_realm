@@ -41,6 +41,7 @@ combat_guide_ongoing.1000 = {
 				send_interface_toast = {
 					title = combat_guide_ongoing.1000.a.good
 					add_prowess_skill = 1
+					blademaster_lifestyle_rank_up_effect = yes
 				}
 			}
 			25 = {
@@ -82,6 +83,7 @@ combat_guide_ongoing.1000 = {
 			send_interface_toast = {
 				title = combat_guide_ongoing.1000.b.good
 				add_prowess_skill = 2
+				blademaster_lifestyle_rank_up_effect = yes
 			}
 		}
 		ai_chance = {
@@ -182,6 +184,7 @@ combat_guide_ongoing.1002 = {
 			}
 		}
 		add_prowess_skill = 1
+		blademaster_lifestyle_rank_up_effect = yes
 		add_opinion = {
 			modifier = grateful_opinion
 			target = scope:target
@@ -237,12 +240,14 @@ combat_guide_ongoing.1003 = {
 				send_interface_toast = {
 					title = combat_guide_ongoing.1003.a.normal
 					add_prowess_skill = 1
+					blademaster_lifestyle_rank_up_effect = yes
 				}
 			}
 			10 = {
 				send_interface_toast = {
 					title = combat_guide_ongoing.1003.a.good
 					add_trait = strong
+					blademaster_lifestyle_rank_up_effect = yes
 				}
 			}
 			25 = {
@@ -484,6 +489,7 @@ combat_guide_ongoing.1006 = {
 				send_interface_toast = {
 					title = combat_guide_ongoing.1006.a.good
 					add_prowess_skill = 1
+					blademaster_lifestyle_rank_up_effect = yes
 				}
 				hidden_effect = {
 					scope:scheme = {
@@ -727,6 +733,7 @@ combat_guide_ongoing.1009 = {
 				send_interface_toast = {
 					title = combat_guide_ongoing.1009.a.win_master
 					add_prowess_skill = 3
+					blademaster_lifestyle_rank_up_effect = yes
 					scope:target = {
 						add_prowess_skill = 1
 					}
@@ -897,7 +904,8 @@ combat_guide_ongoing.1011 = {
 			40 = {
 				send_interface_toast = {
 					title = combat_guide_ongoing.1011.b.win
-					add_prowess_skill = 4
+					add_prowess_skill = 3
+					blademaster_lifestyle_rank_up_effect = yes
 					add_piety = 100
 				}
 			}

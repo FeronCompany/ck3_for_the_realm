@@ -160,7 +160,13 @@ ftr_renounce_dynasty_decision = {
 				has_council_position = councillor_court_chaplain
 			}
 		}
-		has_trait = ambitious
+		OR = {
+			has_trait = ambitious
+			has_trait = disinherited
+			has_trait = disputed_heritage
+			has_trait = wild_oat
+			has_trait = denounced
+		}
 		NOT = {
 			has_character_flag = flag_ftr_create_new_dynasty
 		}
@@ -230,39 +236,34 @@ ftr_renounce_dynasty_decision = {
 		}
 		modifier = {
 			factor = 0
-			any_player = {
-				OR = {
-					any_child = {
-						OR = {
-							is_child_of = root
-							is_grandchild_of = root
-							is_great_grandchild_of = root
-						}
-					}
-					any_child = {
-						even_if_dead = yes
-						any_child = {
-							OR = {
-								is_child_of = root
-								is_grandchild_of = root
-								is_great_grandchild_of = root
-							}
-						}
-					}
-					any_child = {
-						even_if_dead = yes
-						any_child = {
-							even_if_dead = yes
-							any_child = {
-								OR = {
-									is_child_of = root
-									is_grandchild_of = root
-									is_great_grandchild_of = root
-								}
-							}
-						}
-					}
-				}
+			opinion = {
+				target = root
+				value >= -20
+			}
+		}
+		modifier = {
+			add = 20
+			OR = {
+				has_trait = disinherited
+				has_trait = disputed_heritage
+				has_trait = wild_oat
+				has_trait = denounced
+			}
+		}
+		modifier = {
+			add = -20
+			OR = {
+				has_trait = humble
+				has_trait = content
+				has_trait = loyal
+				has_trait = lazy
+			}
+		}
+		modifier = {
+			add = {
+				value = prestige_level
+				subtract = 2
+				multiply = 5
 			}
 		}
 	}

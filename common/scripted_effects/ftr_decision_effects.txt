@@ -60,6 +60,9 @@ restore_byzantium_empire_scripted_effect = {
 # Found New Dynasty
 found_new_dynasty_effect = {
 	hidden_effect = {
+		dynasty.dynast = {
+			save_scope_as = old_dynast
+		}
 		save_scope_as = new_head
 		create_character = {
 			gender = male
@@ -99,6 +102,14 @@ found_new_dynasty_effect = {
 					}
 				}
 				add_to_list = family_to_change_house
+			}
+		}
+		scope:old_dynast = {
+			send_interface_message = {
+				text = "ftr_house_head_denounce_tt"
+				left_icon = scope:new_head
+				right_icon = scope:old_dynast
+				custom_tooltip = ftr_house_head_denounce_text
 			}
 		}
 	}

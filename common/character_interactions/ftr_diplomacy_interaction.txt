@@ -17,7 +17,7 @@ ftr_buy_land_interaction = {
 		ai_recipients = peer_vassals
 		max = 5
 	}
-	icon = revoke_title
+	icon = icon_gold
 	ai_frequency = 48
 	cooldown_against_recipient = { years = 10 }
 

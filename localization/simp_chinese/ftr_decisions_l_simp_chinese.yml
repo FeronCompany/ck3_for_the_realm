@@ -36,6 +36,8 @@
  ftr_renounce_dynasty_decision_confirm:0 "我的新时代"
  created_new_dynasty_desc:0 "建立新宗族"
  created_new_dynasty_text:0 "您创建了新的宗族[ROOT.Char.GetDynasty.GetBaseName]。"
+ ftr_house_head_denounce_tt:0 "宗族分裂"
+ ftr_house_head_denounce_text:0 "[new_head.GetShortUIName]决意与我们的宗族决裂，创立自己的新宗族。如此背叛行径真是不可理喻，更是不可饶恕。"
 
  ftr_call_traverser_decision:0 "<FTR>召集穿越者部将"
  ftr_call_traverser_decision_tooltip:0 "召集穿越者部将"

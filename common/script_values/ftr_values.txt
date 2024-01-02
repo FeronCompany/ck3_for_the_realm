@@ -73,10 +73,10 @@ ftr_buy_favor_cost_value = {
 }
 
 ftr_land_price_value = {
-	value = 0
+	value = 100
 	add = {
 		value = scope:target.development_level
-		multiply = 50
+		multiply = 30
 	}
 }
 

@@ -828,7 +828,7 @@ ftr_coup_interaction = {
 	on_decline = {}
 	auto_accept = yes
 	ai_will_do = {
-		base = -20
+		base = 10
 		opinion_modifier = {
 			opinion_target = scope:recipient
 			who = scope:actor
@@ -847,7 +847,7 @@ ftr_coup_interaction = {
 			}
 		}
 		modifier = {
-			add = -10
+			add = -20
 			scope:actor = {
 				OR = {
 					has_trait = patient
@@ -860,7 +860,7 @@ ftr_coup_interaction = {
 			}
 		}
 		modifier = {
-			add = 10
+			add = 20
 			scope:recipient = {
 				opinion = {
 					target = scope:actor
@@ -877,12 +877,11 @@ ftr_coup_interaction = {
 		modifier = {
 			add = {
 				value = scope:actor.age
-				subtract = 30
-				multiply = 2
+				subtract = 20
+				multiply = 3
 			}
 			scope:actor = {
 				is_heir_of = scope:recipient
-				age >= 30
 				NOT = {
 					OR = {
 						has_trait = patient

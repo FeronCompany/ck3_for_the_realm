@@ -2254,7 +2254,7 @@ ftr_diarch_support_liege_interaction = {
 		opinion_modifier = {
 			opinion_target = scope:recipient.diarch
 			who = scope:actor
-			multiplier = -0.5
+			multiplier = -1
 		}
 		modifier = {
 			add = 50
@@ -2370,7 +2370,7 @@ ftr_diarch_support_diarch_interaction = {
 		opinion_modifier = {
 			opinion_target = scope:recipient
 			who = scope:actor
-			multiplier = -0.5
+			multiplier = -0.75
 		}
 		opinion_modifier = {
 			opinion_target = scope:recipient.diarch

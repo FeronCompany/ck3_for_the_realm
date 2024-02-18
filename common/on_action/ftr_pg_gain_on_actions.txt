@@ -1,0 +1,27 @@
+﻿
+quarterly_playable_pulse = {
+	on_actions = {
+		ftr_landed_gain_pg_power_effects
+	}
+}
+
+ftr_landed_gain_pg_power_effects = {
+	effect = {
+		ftr_add_political_influence_effect = {
+			VALUE = ftr_landed_yearly_pg_gain_value
+		}
+		every_courtier = {
+			limit = {
+				OR = {
+					is_councillor_of = root
+					is_heir_of = root
+					is_spouse_of = root
+					is_close_family_of = root
+				}
+			}
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_heir_yearly_pg_gain_value
+			}
+		}
+	}
+}

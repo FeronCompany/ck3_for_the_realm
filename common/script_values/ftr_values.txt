@@ -26,6 +26,7 @@ ftr_pardon_cost_value = 20
 ftr_reject_proposal_modify_value = -50
 ftr_landed_yearly_pg_gain_value = 4
 ftr_heir_yearly_pg_gain_value = 2
+ftr_offer_military_assitance_to_liege_pg_gain_value = 40
 
 ftr_payment_cost_level_value = {
 	value = 0

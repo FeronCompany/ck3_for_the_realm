@@ -1304,7 +1304,217 @@ ftr_transform_warlord_interaction = {
 				}
 				multiply = 50
 				max = 20
-	  		}
+			}
+		}
+	}
+}
+
+######### Military Assistance to Liege ##########
+ftr_offer_military_assistance_to_liege_interaction = {
+	category = interaction_category_vassal
+	greeting = positive
+	notification_text = ftr_offer_military_assistance_to_liege_interaction_text
+	desc = ftr_offer_military_assistance_to_liege_interaction_desc
+	interface = interfere_in_war
+	special_interaction = interfere_in_war_interaction
+	ai_accept_negotiation = yes
+	popup_on_receive = yes
+	pause_on_receive = yes
+	#ai_frequency = 12
+
+	is_shown = {
+		scope:actor = {
+			is_vassal_of = scope:recipient
+		}
+		scope:recipient = {
+			is_at_war = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			NOT = {
+				is_at_war_with = scope:actor
+			}
+		}
+		scope:actor = {
+			is_imprisoned = no
+		}
+	}
+	can_be_picked = {
+		scope:target = {
+			primary_defender = scope:recipient
+			custom_tooltip = {
+				text = ftr_current_war_desc_tt
+				OR = {
+					is_religious_war = yes
+					primary_attacker.liege = scope:recipient
+					casus_belli = {
+						any_target_title = {
+							exists = holder
+							holder = {
+								OR = {
+									this = scope:actor
+									is_vassal_or_below_of = scope:actor
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	on_accept = {
+		scope:target = {
+			hidden_effect = {
+				set_called_to = scope:actor
+			}
+			if = {
+				limit = { is_attacker = scope:recipient }
+				add_attacker = scope:actor
+				if = {
+					limit = {
+						OR = {
+							scope:actor = {
+								any_home_court_hostage = {
+									warden ?= { is_defender_in_war = scope:target }
+								}
+							}
+							scope:target = {
+								any_war_defender = {
+									any_warden_hostage = { home_court ?= scope:actor }
+								}
+							}
+						}
+					}
+					custom_tooltip = hostage_execution_warning_tt
+				}
+			}
+			else = {
+				add_defender = scope:actor
+				if = {
+					limit = {
+						OR = {
+							scope:actor = {
+								any_home_court_hostage = {
+									warden ?= { is_attacker_in_war = scope:target }
+								}
+							}
+							scope:target = {
+								any_war_attacker = {
+									any_warden_hostage = { home_court ?= scope:actor }
+								}
+							}
+						}
+					}
+					custom_tooltip = hostage_execution_warning_tt
+				}
+			}
+			if = {
+				limit = {
+					is_religious_war = yes
+					scope:actor = {
+						any_active_accolade = {
+							has_accolade_parameter = acclaimed_knight_piety_from_battle
+						}
+					}
+				}
+				scope:actor = {
+					add_piety = medium_piety_gain
+				}
+			}
+			if = {
+				limit = {
+					is_religious_war = yes
+					scope:actor = {
+						any_active_accolade = {
+							has_accolade_parameter = acclaimed_knight_piety_from_battle_high
+						}
+					}
+				}
+				scope:actor = {
+					add_piety = major_piety_gain
+				}
+			}
+		}
+		scope:actor = {
+			stress_impact = {
+				craven = medium_stress_impact_gain
+				shy = minor_stress_impact_gain
+				lazy = minor_stress_impact_gain
+			}
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_offer_military_assitance_to_liege_pg_gain_value
+			}
+		}
+		scope:recipient = {
+			if = {
+				limit = {
+					is_ai = yes
+				}
+				progress_towards_friend_effect = {
+					CHARACTER = scope:actor
+					OPINION = 20
+					REASON = friend_alliance
+				}
+			}
+			else = {
+				hidden_effect = { #To nudge friendship
+					if = {
+						limit = {
+							NOR = {
+								has_relation_friend = scope:actor
+								has_relation_potential_friend = scope:actor
+							}
+						}
+						set_relation_potential_friend = scope:actor
+					}
+				}
+			}
+		}
+	}
+	#ai_accept = {}
+	on_auto_accept = {}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = -30
+		opinion_modifier = {
+			who = scope:actor
+			opinion_target = scope:recipient
+			multiplier = 0.5
+		}
+		modifier = {
+			add = 20
+			scope:recipient = {
+				is_allied_to = scope:actor
+			}
+		}
+		modifier = {
+			add = -20
+			scope:actor = {
+				OR = {
+					has_trait = craven
+					has_trait = lazy
+					has_trait = shy
+				}
+			}
+		}
+		modifier = {
+			add = 50
+			scope:target = {
+				casus_belli = {
+					any_target_title = {
+						exists = holder
+						holder = {
+							OR = {
+								this = scope:actor
+								is_vassal_or_below_of = scope:actor
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

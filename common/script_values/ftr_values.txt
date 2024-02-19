@@ -6,14 +6,15 @@ ftr_expand_influence_piety_cost_value = 150
 ftr_expand_influence_piety_modify_value = -150
 ftr_expand_influence_gold_cost_value = 250
 ftr_expand_influence_value = 20
+ftr_expand_influence_threshold_value = 100
 ftr_shift_focus_cost_value = 40
 ftr_shift_focus_modify_value = -40
 ftr_vote_focus_cost_value = 10
 ftr_vote_focus_modify_value = -10
 ftr_vote_proposal_cost_value = 20
 ftr_vote_proposal_modify_value = -20
-ftr_make_pg_proposal_cost_value = 75
-ftr_make_pg_proposal_modify_value = -75
+ftr_make_pg_proposal_cost_value = 100
+ftr_make_pg_proposal_modify_value = -100
 ftr_bribe_influence_gain_value = 10
 ftr_charge_modify_value = -20
 ftr_charge_cost_value = 20
@@ -23,8 +24,8 @@ ftr_slander_damage_value = -50
 ftr_pardon_modify_value = -20
 ftr_pardon_cost_value = 20
 ftr_reject_proposal_modify_value = -50
-ftr_landed_yearly_pg_gain_value = 5
-ftr_heir_yearly_pg_gain_value = 4
+ftr_landed_yearly_pg_gain_value = 4
+ftr_heir_yearly_pg_gain_value = 2
 
 ftr_payment_cost_level_value = {
 	value = 0
@@ -162,6 +163,37 @@ ftr_political_influence_value = {
 	}
 }
 
+ftr_era_gold_cost_multiplier_value = {
+	value = 1
+	if = {
+		limit = {
+			current_date <= 1000.1.1
+		}
+		add = 0
+	}
+	else_if = {
+		limit = {
+			current_date <= 1100.1.1
+		}
+		add = 0.5
+	}
+	else_if = {
+		limit = {
+			current_date <= 1200.1.1
+		}
+		add = 1
+	}
+	else_if = {
+		limit = {
+			current_date <= 1300.1.1
+		}
+		add = 2
+	}
+	else = {
+		add = 3
+	}
+}
+
 ftr_fine_gold_value = {
 	value = 50
 	if = {
@@ -188,6 +220,7 @@ ftr_fine_gold_value = {
 		}
 		add = 200
 	}
+	multiply = ftr_era_gold_cost_multiplier_value
 }
 
 ftr_forty_percent_of_current_military_strength = {

@@ -996,7 +996,7 @@ ftr_fine_interaction = {
 		}
 		modifier = { # I need money
 			add = 20
-			scope:recipient = {
+			scope:actor = {
 				gold <= 200
 			}
 		}

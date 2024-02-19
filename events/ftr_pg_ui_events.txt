@@ -24,7 +24,7 @@ ftr_pg_ui_event.0001 = {
 			text = "ftr_flag_expanded_influence_recently_tt"
 			add_character_flag = {
 				flag = ftr_expand_influence_flag
-				days = 730
+				years = 3
 			}
 		}
 		ai_chance = {
@@ -48,7 +48,7 @@ ftr_pg_ui_event.0001 = {
 			text = "ftr_flag_expanded_influence_recently_tt"
 			add_character_flag = {
 				flag = ftr_expand_influence_flag
-				days = 730
+				years = 3
 			}
 		}
 		ai_chance = {
@@ -68,7 +68,7 @@ ftr_pg_ui_event.0001 = {
 			text = "ftr_flag_expanded_influence_recently_tt"
 			add_character_flag = {
 				flag = ftr_expand_influence_flag
-				days = 730
+				years = 3
 			}
 		}
 		ai_chance = {

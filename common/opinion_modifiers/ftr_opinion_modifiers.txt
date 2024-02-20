@@ -144,3 +144,8 @@ ftr_political_alliance_opinion = {
 	decaying = yes
 	stacking = yes
 }
+
+ftr_suspicion_opinion = {
+	years = 10
+	stacking = yes
+}

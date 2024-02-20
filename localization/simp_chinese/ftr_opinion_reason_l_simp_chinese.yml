@@ -19,3 +19,9 @@
 
  ftr_rival_envoy_visit:0 "[TARGET_CHARACTER.GetShortUIName|U]与[CHARACTER.GetShortUIName]在外交场合不欢而散"
  ftr_rival_envoy_visit_corresponding:0 "[CHARACTER.GetShortUIName|U]与[TARGET_CHARACTER.GetShortUIName]在外交场合不欢而散"
+
+ ftr_suspicion_rival:0 "[TARGET_CHARACTER.GetShortUIName|U]与[CHARACTER.GetShortUIName]因相互猜忌而走向陌路"
+ ftr_suspicion_rival_corresponding:0 "[CHARACTER.GetShortUIName|U]与[TARGET_CHARACTER.GetShortUIName]因相互猜忌而走向陌路"
+
+ ftr_sow_discord_rival:0 "[TARGET_CHARACTER.GetShortUIName|U]试图破坏[CHARACTER.GetShortUIName]与其他人的关系被发觉"
+ ftr_sow_discord_rival_corresponding:0 "[CHARACTER.GetShortUIName|U]试图破坏[TARGET_CHARACTER.GetShortUIName]与其他人的关系被发觉"

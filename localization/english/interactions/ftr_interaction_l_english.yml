@@ -43,3 +43,11 @@
  ftr_new_councillor_added_tt:0 "[secondary_actor.GetShortUIName] will be the new councillor of [liege.GetShortUIName]"
  ftr_diarch_manipulate_council_tt:0 "Diarch Manipulate Council"
  ftr_diarch_manipulate_council_content:0 "[actor.GetShortUIName] used regency in [liege.GetShortUIName]'s realm to remove [recipient.GetShortUIName] from council position and appoint [secondary_actor.GetShortUIName] instead."
+
+ ftr_sow_discord_interaction:0 "<FTR> Sow Discord"
+ ftr_sow_discord_interaction_desc:0 "Sabotage relationship between [recipient.GetShortUIName] and others"
+ actor_secondary_ftr_sow_discord_interaction:0 "Sow Discord Target"
+ ftr_sow_discord_desc_text:0 "You will try to sow discord between [recipient.GetShortUIName] and [secondary_actor.GetShortUIName]. The success of provocation depends on your strategic comparison with [recipient.GetShortUIName]. Failure will destroy your relationship with [recipient.GetShortUIName]."
+ ftr_sow_discord.success:0 "You success to sow discord."
+ ftr_sow_discord.failed:0 "You failed to sow discord but not be discovered."
+ ftr_sow_discord.discovered:0 "You failed to sow discord and be discovered."

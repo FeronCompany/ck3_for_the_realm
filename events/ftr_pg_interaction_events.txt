@@ -646,3 +646,149 @@ ftr_pg_interaction_event.0101 = {
 		ftr_slander_effect = yes
 	}
 }
+
+# ftr_sow_discord.success
+ftr_pg_interaction_event.0200 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0200.t
+	desc = ftr_pg_interaction_event.0200.desc
+	theme = realm
+	left_portrait = {
+		character = scope:recipient
+		animation = anger
+	}
+	right_portrait = {
+		character = scope:secondary_actor
+		animation = scheme
+	}
+
+	immediate = {
+		scope:secondary_actor = {
+			progress_towards_rival_effect = {
+				REASON = ftr_suspicion_rival
+				CHARACTER = scope:recipient
+				OPINION = -20
+			}
+		}
+	}
+
+	option = { # I hate this guy
+		name = ftr_pg_interaction_event.0200.a
+		hidden_effect = {
+			scope:actor = {
+				send_interface_toast = {
+					title = ftr_sow_discord.success.t
+					left_icon = scope:recipient
+					right_icon = scope:secondary_actor
+					custom_tooltip = ftr_sow_discord.success.desc
+				}
+			}
+		}
+	}
+}
+
+# ftr_sow_discord.failed
+ftr_pg_interaction_event.0201 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0201.t
+	desc = ftr_pg_interaction_event.0201.desc
+	theme = realm
+	left_portrait = {
+		character = scope:recipient
+		animation = anger
+	}
+	right_portrait = {
+		character = scope:secondary_actor
+		animation = scheme
+	}
+
+	option = { # My friend is always my friend
+		name = ftr_pg_interaction_event.0201.a
+		hidden_effect = {
+			scope:actor = {
+				send_interface_toast = {
+					title = ftr_sow_discord.failed.t
+					left_icon = scope:recipient
+					right_icon = scope:secondary_actor
+					custom_tooltip = ftr_sow_discord.failed.desc
+				}
+			}
+		}
+	}
+
+	option = { # Maybe it's real
+		name = ftr_pg_interaction_event.0201.b
+		trigger = {
+			has_trait = paranoid
+		}
+		add_opinion = {
+			target = scope:secondary_actor
+			modifier = ftr_suspicion_opinion
+			opinion = -20
+		}
+		hidden_effect = {
+			scope:actor = {
+				send_interface_toast = {
+					title = ftr_sow_discord.success.t
+					left_icon = scope:recipient
+					right_icon = scope:secondary_actor
+					custom_tooltip = ftr_sow_discord.success.desc
+				}
+			}
+		}
+	}
+}
+
+# ftr_sow_discord.discovered
+ftr_pg_interaction_event.0203 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0203.t
+	desc = ftr_pg_interaction_event.0203.desc
+	theme = realm
+	left_portrait = {
+		character = scope:recipient
+		animation = anger
+	}
+	right_portrait = {
+		character = scope:actor
+		animation = scheme
+	}
+
+	option = { # I forget this time
+		name = ftr_pg_interaction_event.0203.a
+		hidden_effect = {
+			scope:actor = {
+				send_interface_toast = {
+					title = ftr_sow_discord.failed.t
+					left_icon = scope:recipient
+					right_icon = scope:secondary_actor
+					custom_tooltip = ftr_sow_discord.failed.desc
+				}
+			}
+		}
+	}
+
+	option = { # You will pay for it !
+		name = ftr_pg_interaction_event.0203.b
+		scope:recipient = {
+			progress_towards_rival_effect = {
+				REASON = ftr_sow_discord_rival
+				CHARACTER = scope:actor
+				OPINION = -20
+			}
+		}
+		hidden_effect = {
+			scope:actor = {
+				send_interface_toast = {
+					title = ftr_sow_discord.discovered.t
+					left_icon = scope:recipient
+					right_icon = scope:secondary_actor
+					custom_tooltip = ftr_sow_discord.discovered.desc
+					ftr_add_political_influence_effect = {
+						VALUE = ftr_sow_discord_failed_damage_value
+					}
+				}
+			}
+		}
+	}
+}

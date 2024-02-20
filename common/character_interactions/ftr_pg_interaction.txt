@@ -251,3 +251,174 @@ ftr_slander_interaction = {
 		}
 	}
 }
+
+######### Sow Discord ##########
+ftr_sow_discord_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	cooldown = { years = 2 }
+	cooldown_against_recipient = { years = 5 }
+	desc = ftr_sow_discord_interaction_desc
+	ai_targets = {
+		ai_recipients = peer_vassals
+		ai_recipients = neighboring_rulers
+		max = 3
+	}
+	ai_frequency = 64
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		scope:actor = {
+			intrigue >= decent_skill_rating
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_imprisoned = no
+			is_capable_adult = yes
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_sow_discord_cost_value
+				ftr_political_influence_value >= ftr_sow_discord_cost_value
+			}
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			is_capable_adult = yes
+		}
+	}
+	populate_actor_list = {
+		scope:recipient = {
+			every_vassal = {
+				limit = {
+					is_capable_adult = yes
+					NOT = { scope:actor = this }
+				}
+				add_to_list = characters
+			}
+			every_courtier = {
+				limit = {
+					is_capable_adult = yes
+					NOT = { scope:actor = this }
+				}
+				add_to_list = characters
+			}
+			if = {
+				limit = { is_independent_ruler = no }
+				liege = {
+					if = {
+						limit = { NOT = { scope:actor = this } }
+						add_to_list = characters
+					}
+					every_vassal = {
+						limit = {
+							is_capable_adult = yes
+							NOT = { scope:actor = this }
+						}
+						add_to_list = characters
+					}
+				}
+			}
+		}
+	}
+	can_be_picked = {
+		
+		NOT = { this = scope:recipient }
+		NOT = { has_relation_rival = scope:recipient }
+		NOT = { has_relation_nemesis = scope:recipient }
+	}
+
+	on_accept = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_sow_discord_modify_value
+			}
+			stress_impact = {
+				just = minor_stress_impact_gain
+				honest = minor_stress_impact_gain
+				deceitful = minor_stress_impact_loss
+			}
+		}
+		custom_tooltip = {
+			text = ftr_sow_discord_desc_text
+		}
+		random_list = {
+			10 = { # Sow discord success
+				modifier = {
+					add = scope:actor.intrigue
+				}
+				scope:recipient = {
+					trigger_event = {
+						id = ftr_pg_interaction_event.0200
+						days = { 15 30 }
+					}
+				}
+				desc = ftr_sow_discord.success
+			}
+			10 = { # Failed but not discovered
+				modifier = {
+					add = scope:recipient.intrigue
+					scope:recipient.intrigue < high_skill_rating
+				}
+				scope:recipient = {
+					trigger_event = {
+						id = ftr_pg_interaction_event.0201
+						days = { 15 30 }
+					}
+				}
+				desc = ftr_sow_discord.failed
+			}
+			0 = { # Failed and discovered
+				modifier = {
+					add = scope:recipient.intrigue
+					scope:recipient.intrigue >= high_skill_rating
+				}
+				scope:recipient = {
+					trigger_event = {
+						id = ftr_pg_interaction_event.0202
+						days = { 15 30 }
+					}
+				}
+				desc = ftr_sow_discord.discovered
+			}
+		}
+	}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = 0
+		opinion_modifier = {
+			opinion_target = scope:recipient
+			who = scope:actor
+			multiplier = -1.5
+		}
+		opinion_modifier = {
+			opinion_target = scope:secondary_actor
+			who = scope:actor
+			multiplier = -0.5
+		}
+		modifier = {
+			add = -50
+			OR = {
+				has_trait = just
+				has_trait = honest
+			}
+		}
+		modifier = {
+			add = 20
+			has_trait = deceitful
+		}
+		modifier = {
+			add = 20
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value < 30
+				}
+				is_vassal_of = scope:secondary_actor
+			}
+			scope:recipient = {
+				is_vassal_of = scope:secondary_actor
+			}
+		}
+	}
+}

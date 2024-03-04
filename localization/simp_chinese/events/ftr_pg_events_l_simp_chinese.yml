@@ -295,7 +295,7 @@
  ftr_sow_discord.success.desc:0 "你成功破坏了[recipient.GetShortUIName]与[secondary_actor.GetShortUIName]之间的关系。"
 
  ftr_pg_interaction_event.0201.t:0 "流言四起"
- ftr_pg_interaction_event.0201.desc:0 "外界有传言[secondary_actor.GetShortUIName]正在背后议论我的得失，不过结果我的仔细查证，此事子虚乌有。虽然事情告一段落，但是此事留下的疤痕却没有完全消散。"
+ ftr_pg_interaction_event.0201.desc:0 "外界有传言[secondary_actor.GetShortUIName]正在背后议论我的得失，不过经过我的仔细查证，此事子虚乌有。虽然事情告一段落，但是此事留下的疤痕却没有完全消散。"
  ftr_pg_interaction_event.0201.a:0 "我相信[secondary_actor.GetShortUIName]"
  ftr_pg_interaction_event.0201.b:0 "也许传言也并非完全不可信"
  ftr_sow_discord.failed.t:0 "挑拨失败"

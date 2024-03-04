@@ -266,9 +266,30 @@ ftr_sow_discord_interaction = {
 	}
 	ai_frequency = 64
 	is_shown = {
-		NOT = { scope:actor = scope:recipient }
 		scope:actor = {
-			intrigue >= decent_skill_rating
+			OR = {
+				intrigue >= decent_skill_rating
+				has_trait = deceitful
+			}
+		}
+		OR = {
+			scope:actor = { is_vassal_of = scope:recipient }
+			scope:recipient = { is_vassal_of = scope:actor }
+			scope:actor = {
+				is_landed = yes
+				is_independent_ruler = yes
+				character_is_realm_neighbor = scope:recipient
+			}
+			scope:actor = {
+				liege = scope:recipient.liege
+				NOT = { this = scope:recipient.liege }
+				is_landed = yes
+			}
+		}
+		scope:recipient = {
+			primary_title.tier >= tier_county
+			is_landed = yes
+			NOT = { this = scope:actor }
 		}
 	}
 	is_valid_showing_failures_only = {
@@ -321,7 +342,6 @@ ftr_sow_discord_interaction = {
 		}
 	}
 	can_be_picked = {
-		
 		NOT = { this = scope:recipient }
 		NOT = { has_relation_rival = scope:recipient }
 		NOT = { has_relation_nemesis = scope:recipient }
@@ -401,6 +421,7 @@ ftr_sow_discord_interaction = {
 			OR = {
 				has_trait = just
 				has_trait = honest
+				has_trait = content
 			}
 		}
 		modifier = {

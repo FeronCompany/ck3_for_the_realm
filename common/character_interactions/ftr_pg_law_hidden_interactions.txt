@@ -2159,7 +2159,10 @@ ftr_diarch_support_liege_interaction = {
 	cooldown_against_recipient = { years = 2 }
 	is_shown = {
 		scope:actor = {
-			is_vassal_of = scope:recipient
+			OR = {
+				is_powerful_vassal_of = scope:recipient
+				is_councillor_of = scope:recipient
+			}
 		}
 	}
 	is_valid_showing_failures_only = {
@@ -2279,7 +2282,10 @@ ftr_diarch_support_diarch_interaction = {
 	cooldown_against_recipient = { years = 2 }
 	is_shown = {
 		scope:actor = {
-			is_vassal_of = scope:recipient
+			OR = {
+				is_powerful_vassal_of = scope:recipient
+				is_councillor_of = scope:recipient
+			}
 		}
 	}
 	is_valid_showing_failures_only = {

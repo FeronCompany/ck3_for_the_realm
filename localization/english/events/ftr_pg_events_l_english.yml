@@ -288,6 +288,26 @@
  ftr_slander_failed_notify_tt:0 "Slander Failed"
  ftr_slander_exposed_notify_tt:0 "Slander Exposed"
 
+ ftr_pg_interaction_event.0200.t:0 "Suspicion Between Friends"
+ ftr_pg_interaction_event.0200.desc:0 "I never expected that I have no grudges with [secondary_actor.GetShortUIName], but recently there have been rumors that [secondary_actor.GetSheHe] is spreading rumors and slandering my reputation. Anyway, this conflict has been settled."
+ ftr_pg_interaction_event.0200.a:0 "It's unreasonable"
+ ftr_sow_discord.success.t:0 "Sow Discord Success"
+ ftr_sow_discord.success.desc:0 "You managed to sabotage relation between [recipient.GetShortUIName] and [secondary_actor.GetShortUIName]."
+
+ ftr_pg_interaction_event.0201.t:0 "Rumor Spread"
+ ftr_pg_interaction_event.0201.desc:0 "There were rumors that [secondary_actor.GetShortUIName] was talking about my bad behind me, but my careful investigation revealed that it was not true. Although the matter has come to an end, the scars left by it have not completely dissipated."
+ ftr_pg_interaction_event.0201.a:0 "I trust [secondary_actor.GetShortUIName]"
+ ftr_pg_interaction_event.0201.b:0 "Perhaps the rumors are not entirely unbelievable"
+ ftr_sow_discord.failed.t:0 "Sow Discord Failed"
+ ftr_sow_discord.failed.desc:0 "You failed to sabotage relation between [recipient.GetShortUIName] and [secondary_actor.GetShortUIName]."
+
+ ftr_pg_interaction_event.0202.t:0 "Despicable Person"
+ ftr_pg_interaction_event.0202.desc:0 "It is appalling and shameful that [actor.GetShortUIName] is spreading rumors and trying to destroy my relationship with [secondary_actor.GetShortUIName]."
+ ftr_pg_interaction_event.0202.a:0 "I will forget this time."
+ ftr_pg_interaction_event.0202.b:0 "It's unforgivable!"
+ ftr_sow_discord.discoverd.t:0 "Sow Discord Discovered"
+ ftr_sow_discord.discoverd.desc:0 "Your attempt to sabotage relationship between [recipient.GetShortUIName] and [secondary_actor.GetShortUIName] was discovered."
+
  ftr_pg_law_event.0001.t:0 "Vote for Realm Policy"
  ftr_pg_law_event.0001.desc:0 "During the discussion at the court meeting, [actor.GetShortUIName] proposed that a system of $ftr_army_type_0$ should be implemented within the territory. Over-reliance on mercenaries who take money to do things cannot protect our realm, [actor.GetShortUIName] emphasized."
  ftr_pg_law_event.0001.a:0 "Agree"

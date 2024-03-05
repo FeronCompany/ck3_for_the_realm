@@ -43,3 +43,11 @@
  ftr_new_councillor_added_tt:0 "[secondary_actor.GetShortUIName]将成为[liege.GetShortUIName]的新任内阁成员"
  ftr_diarch_manipulate_council_tt:0 "摄政操纵内阁"
  ftr_diarch_manipulate_council_content:0 "[actor.GetShortUIName]利用在[liege.GetShortUIName]领地内的摄政身份罢免了[recipient.GetShortUIName]的内阁职位，任命[secondary_actor.GetShortUIName]取而代之。"
+
+ ftr_sow_discord_interaction:0 "<FTR>挑拨离间"
+ ftr_sow_discord_interaction_desc:0 "破坏[recipient.GetShortUIName]与其他人的关系"
+ actor_secondary_ftr_sow_discord_interaction:0 "挑拨目标"
+ ftr_sow_discord_desc_text:0 "你将尝试挑拨[recipient.GetShortUIName]与[secondary_actor.GetShortUIName]之间的关系，挑拨成功与否取决于你与[recipient.GetShortUIName]的谋略对比，如果失败将破坏你与[recipient.GetShortUIName]的关系。"
+ ftr_sow_discord.success:0 "你的挑拨离间成功了"
+ ftr_sow_discord.failed:0 "你的挑拨离间失败了，但没有被发现"
+ ftr_sow_discord.discovered:0 "你的挑拨离间失败并被发现了"

@@ -333,6 +333,14 @@ types Lists
 			tooltip = "[Character.GetPlayerInteractionTooltip('ftr_slander_interaction')]"
 			size = { 50 50 }
 		}
+		button_icon = {
+			name = "ftr_pg_sow_discord_button"
+			texture = "gfx/interface/icons/character_interactions/unity_harmonious.dds"
+			onclick = "[Character.OpenPlayerInteraction('ftr_sow_discord_interaction')]"
+			enabled = "[Character.IsPlayerInteractionValid('ftr_sow_discord_interaction')]"
+			tooltip = "[Character.GetPlayerInteractionTooltip('ftr_sow_discord_interaction')]"
+			size = { 50 50 }
+		}
 		expand = {}
 	}
 

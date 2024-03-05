@@ -19,3 +19,9 @@
 
  ftr_rival_envoy_visit:0 "[TARGET_CHARACTER.GetShortUIName|U] and [CHARACTER.GetShortUIName] part ways on diplomatic occasions"
  ftr_rival_envoy_visit_corresponding:0 "[CHARACTER.GetShortUIName|U] and [TARGET_CHARACTER.GetShortUIName] part ways on diplomatic occasions"
+
+ ftr_suspicion_rival:0 "[TARGET_CHARACTER.GetShortUIName|U] and [CHARACTER.GetShortUIName] part ways because of suspicion"
+ ftr_suspicion_rival_corresponding:0 "[CHARACTER.GetShortUIName|U] and [TARGET_CHARACTER.GetShortUIName] part ways because of suspicion"
+
+ ftr_sow_discord_rival:0 "[TARGET_CHARACTER.GetShortUIName|U] was discovered to sabotage relationship between [CHARACTER.GetShortUIName] and others."
+ ftr_sow_discord_rival_corresponding:0 "[CHARACTER.GetShortUIName|U] was discovered to sabotage relationship between [TARGET_CHARACTER.GetShortUIName] and others."

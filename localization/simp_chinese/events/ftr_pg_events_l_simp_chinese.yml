@@ -288,6 +288,26 @@
  ftr_slander_failed_notify_tt:0 "谣言无人听信"
  ftr_slander_exposed_notify_tt:0 "谣言被看穿"
 
+ ftr_pg_interaction_event.0200.t:0 "渐生嫌隙"
+ ftr_pg_interaction_event.0200.desc:0 "万万没有想到，我与[secondary_actor.GetShortUIName]无冤无仇，可最近却传言[secondary_actor.GetSheHe]正在四处造谣诋毁我的名声。不论如何，这个梁子算是结下了。"
+ ftr_pg_interaction_event.0200.a:0 "真是不可理喻"
+ ftr_sow_discord.success.t:0 "挑拨成功"
+ ftr_sow_discord.success.desc:0 "你成功破坏了[recipient.GetShortUIName]与[secondary_actor.GetShortUIName]之间的关系。"
+
+ ftr_pg_interaction_event.0201.t:0 "流言四起"
+ ftr_pg_interaction_event.0201.desc:0 "外界有传言[secondary_actor.GetShortUIName]正在背后议论我的得失，不过经过我的仔细查证，此事子虚乌有。虽然事情告一段落，但是此事留下的疤痕却没有完全消散。"
+ ftr_pg_interaction_event.0201.a:0 "我相信[secondary_actor.GetShortUIName]"
+ ftr_pg_interaction_event.0201.b:0 "也许传言也并非完全不可信"
+ ftr_sow_discord.failed.t:0 "挑拨失败"
+ ftr_sow_discord.failed.desc:0 "你没能破坏[recipient.GetShortUIName]与[secondary_actor.GetShortUIName]之间的关系。"
+
+ ftr_pg_interaction_event.0202.t:0 "阴险小人"
+ ftr_pg_interaction_event.0202.desc:0 "令人震惊，阴险狡诈的[actor.GetShortUIName]竟然在四处散播谣言，试图破坏我和[secondary_actor.GetShortUIName]之间的关系，真是可耻至极。"
+ ftr_pg_interaction_event.0202.a:0 "退一步海阔天空"
+ ftr_pg_interaction_event.0202.b:0 "退一步越想越气"
+ ftr_sow_discord.discoverd.t:0 "阴谋败露"
+ ftr_sow_discord.discoverd.desc:0 "你破坏[recipient.GetShortUIName]与[secondary_actor.GetShortUIName]之间关系的图谋被发现了。"
+
  ftr_pg_law_event.0001.t:0 "变法投票"
  ftr_pg_law_event.0001.desc:0 "在朝会讨论中，[actor.GetShortUIName]提出应当在领地内实施$ftr_army_type_0$制度。过度依赖那些拿钱办事的佣兵是无法保卫我们的领地的，[actor.GetShortUIName]强调道。"
  ftr_pg_law_event.0001.a:0 "我支持"

@@ -12,6 +12,7 @@
 		######### OVERRIDE ##########
 		tradition_ftr_meritocracy
 		######### OVERRIDE ##########
+		tradition_ce1_ritual_washing
 	}
 	
 	name_list = name_list_han

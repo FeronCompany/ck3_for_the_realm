@@ -122,6 +122,9 @@
  ftr_political_alliance_opinion:0 "<FTR>政治同盟"
  ftr_political_alliance_opinion_desc:0 "双方在政治立场上同进同退"
 
+ ftr_suspicion_opinion:0 "<FTR>猜忌"
+ ftr_suspicion_opinion_desc:0 "猜忌"
+
  ftr_indulge_criminal_modifier:0 "<FTR>姑息罪犯"
  ftr_indulge_criminal_modifier_desc:0 "姑息罪犯"
 

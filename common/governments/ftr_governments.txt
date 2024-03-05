@@ -3,6 +3,7 @@
 	rulers_should_have_dynasty = yes
 	dynasty_named_realms = yes
 	royal_court = yes
+	legitimacy = yes
 
 	fallback = 2
 	primary_holding = castle_holding
@@ -17,6 +18,10 @@
 		coinage_rights
 		council_rights
 		men_of_arms_ban
+	}
+
+	ai = {
+		use_legends = yes
 	}
 
 	flag = government_is_centralism
@@ -40,6 +45,11 @@ ftr_warlord_government = {
 		army_maintenance_mult = -0.25
 		ai_war_chance = 0.25
 	}
+
+	ai = {
+		use_legends = yes
+	}
+
 	flag = government_is_warlord
 	color = hsv{ 0.20 0.45 0.50 }
 }

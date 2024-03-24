@@ -394,7 +394,7 @@ ftr_sow_discord_interaction = {
 				}
 				scope:recipient = {
 					trigger_event = {
-						id = ftr_pg_interaction_event.0202
+						id = ftr_pg_interaction_event.0203
 						days = { 15 30 }
 					}
 				}

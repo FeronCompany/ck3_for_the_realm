@@ -618,6 +618,8 @@ ftr_request_depose_interaction = {
 				multiply = scope:secondary_recipient.num_sinful_traits
 			}
 			scope:secondary_recipient.num_sinful_traits > 0
+			scope:recipient.num_sinful_traits = 0
+			scope:recipient.num_virtuous_traits > 0
 			desc = DEPOSE_TARGET_SIN
 		}
 		modifier = {
@@ -632,39 +634,29 @@ ftr_request_depose_interaction = {
 	ai_will_do = {
 		base = -20
 		modifier = {
-			add = 10
+			add = -50
 			scope:actor = {
 				opinion = {
-					target = scope:secondary_recipient
-					value <= 0
-				}
-			}
-		}
-		modifier = {
-			add = -100
-			OR = {
-				scope:actor = {
-					opinion = {
-						target = scope:secondary_recipient
-						value > 10
-					}
-				}
-				scope:secondary_recipient = {
-					opinion = {
-						target = scope:actor
-						value >= 30
-					}
+					target = scope:recipient
+					value >= 40
 				}
 			}
 		}
 		modifier = {
 			add = 10
-			scope:secondary_recipient = {
-				opinion = {
-					target = scope:actor
-					value <= 20
-				}
-			}
+			NOT = { scope:actor.culture = scope:secondary_recipient.culture }
+		}
+		modifier = {
+			add = 20
+			NOT = { scope:actor.faith = scope:secondary_recipient.faith }
+		}
+		modifier = {
+			add = -10
+			NOT = { scope:actor.culture = scope:secondary_actor.culture }
+		}
+		modifier = {
+			add = -20
+			NOT = { scope:actor.faith = scope:secondary_actor.faith }
 		}
 		modifier = {
 			add = 50
@@ -681,6 +673,34 @@ ftr_request_depose_interaction = {
 			opinion_target = scope:secondary_actor
 			who = scope:actor
 			multiplier = 0.1
+		}
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:secondary_recipient
+			multiplier = -0.2
+		}
+		opinion_modifier = {
+			opinion_target = scope:secondary_recipient
+			who = scope:actor
+			multiplier = -0.1
+		}
+		modifier = {
+			add = {
+				value = 10
+				multiply = scope:secondary_recipient.num_sinful_traits
+			}
+			scope:secondary_recipient.num_sinful_traits > 0
+			scope:actor.num_sinful_traits = 0
+			scope:actor.num_virtuous_traits > 0
+		}
+		modifier = {
+			add = {
+				value = 10
+				multiply = scope:secondary_recipient.num_virtuous_traits
+			}
+			scope:secondary_recipient.num_virtuous_traits > 0
+			scope:actor.num_virtuous_traits = 0
+			scope:actor.num_sinful_traits > 0
 		}
 	}
 }
@@ -1320,7 +1340,10 @@ ftr_offer_military_assistance_to_liege_interaction = {
 	ai_accept_negotiation = yes
 	popup_on_receive = yes
 	pause_on_receive = yes
-	#ai_frequency = 12
+	ai_frequency = 1
+	ai_targets = {
+		ai_recipients = liege
+	}
 
 	is_shown = {
 		scope:actor = {
@@ -1341,6 +1364,7 @@ ftr_offer_military_assistance_to_liege_interaction = {
 		}
 	}
 	can_be_picked = {
+		exists = scope:target
 		scope:target = {
 			primary_defender = scope:recipient
 			custom_tooltip = {
@@ -1501,7 +1525,8 @@ ftr_offer_military_assistance_to_liege_interaction = {
 			}
 		}
 		modifier = {
-			add = 50
+			add = 100
+			exists = scope:target
 			scope:target = {
 				casus_belli = {
 					any_target_title = {
@@ -1514,6 +1539,51 @@ ftr_offer_military_assistance_to_liege_interaction = {
 						}
 					}
 				}
+			}
+		}
+	}
+	ai_potential = {
+		is_imprisoned = no
+		is_at_war = no
+		ai_boldness >= -25
+	}
+
+	ai_set_target = {
+		scope:recipient = {
+			ordered_character_war = { #We offer our services for the war where the character is losing the most
+				limit = {
+					primary_defender = scope:recipient
+					OR = {
+						is_religious_war = yes
+						primary_attacker.liege = scope:recipient
+						casus_belli = {
+							any_target_title = {
+								exists = holder
+								holder = {
+									OR = {
+										this = scope:actor
+										is_vassal_or_below_of = scope:actor
+									}
+								}
+							}
+						}
+					}
+					save_temporary_scope_as = target
+					can_join_war_liege_vassal_check_trigger = { WARRIOR = scope:recipient JOINER = scope:actor }
+				}
+				order_by = {
+					value = 0
+					add = {
+						if = {
+							limit = { any_war_attacker = { this = scope:recipient } }
+							subtract = attacker_war_score
+						}
+						else = {
+							subtract = defender_war_score
+						}
+					}
+				}
+				save_scope_as = target
 			}
 		}
 	}

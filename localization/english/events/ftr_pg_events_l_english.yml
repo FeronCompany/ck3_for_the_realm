@@ -305,8 +305,8 @@
  ftr_pg_interaction_event.0202.desc:0 "It is appalling and shameful that [actor.GetShortUIName] is spreading rumors and trying to destroy my relationship with [secondary_actor.GetShortUIName]."
  ftr_pg_interaction_event.0202.a:0 "I will forget this time."
  ftr_pg_interaction_event.0202.b:0 "It's unforgivable!"
- ftr_sow_discord.discoverd.t:0 "Sow Discord Discovered"
- ftr_sow_discord.discoverd.desc:0 "Your attempt to sabotage relationship between [recipient.GetShortUIName] and [secondary_actor.GetShortUIName] was discovered."
+ ftr_sow_discord.discovered.t:0 "Sow Discord Discovered"
+ ftr_sow_discord.discovered.desc:0 "Your attempt to sabotage relationship between [recipient.GetShortUIName] and [secondary_actor.GetShortUIName] was discovered."
 
  ftr_pg_law_event.0001.t:0 "Vote for Realm Policy"
  ftr_pg_law_event.0001.desc:0 "During the discussion at the court meeting, [actor.GetShortUIName] proposed that a system of $ftr_army_type_0$ should be implemented within the territory. Over-reliance on mercenaries who take money to do things cannot protect our realm, [actor.GetShortUIName] emphasized."

@@ -1339,8 +1339,8 @@ ftr_offer_military_assistance_to_liege_interaction = {
 	special_interaction = interfere_in_war_interaction
 	ai_accept_negotiation = yes
 	popup_on_receive = yes
-	pause_on_receive = yes
-	ai_frequency = 1
+	#pause_on_receive = yes
+	ai_frequency = 3
 	ai_targets = {
 		ai_recipients = liege
 	}
@@ -1389,75 +1389,78 @@ ftr_offer_military_assistance_to_liege_interaction = {
 	}
 	
 	on_accept = {
-		scope:target = {
-			hidden_effect = {
-				set_called_to = scope:actor
-			}
-			if = {
-				limit = { is_attacker = scope:recipient }
-				add_attacker = scope:actor
+		if = {
+			limit = { exists = scope:target }
+			scope:target = {
+				hidden_effect = {
+					set_called_to = scope:actor
+				}
+				if = {
+					limit = { is_attacker = scope:recipient }
+					add_attacker = scope:actor
+					if = {
+						limit = {
+							OR = {
+								scope:actor = {
+									any_home_court_hostage = {
+										warden ?= { is_defender_in_war = scope:target }
+									}
+								}
+								scope:target = {
+									any_war_defender = {
+										any_warden_hostage = { home_court ?= scope:actor }
+									}
+								}
+							}
+						}
+						custom_tooltip = hostage_execution_warning_tt
+					}
+				}
+				else = {
+					add_defender = scope:actor
+					if = {
+						limit = {
+							OR = {
+								scope:actor = {
+									any_home_court_hostage = {
+										warden ?= { is_attacker_in_war = scope:target }
+									}
+								}
+								scope:target = {
+									any_war_attacker = {
+										any_warden_hostage = { home_court ?= scope:actor }
+									}
+								}
+							}
+						}
+						custom_tooltip = hostage_execution_warning_tt
+					}
+				}
 				if = {
 					limit = {
-						OR = {
-							scope:actor = {
-								any_home_court_hostage = {
-									warden ?= { is_defender_in_war = scope:target }
-								}
-							}
-							scope:target = {
-								any_war_defender = {
-									any_warden_hostage = { home_court ?= scope:actor }
-								}
+						is_religious_war = yes
+						scope:actor = {
+							any_active_accolade = {
+								has_accolade_parameter = acclaimed_knight_piety_from_battle
 							}
 						}
 					}
-					custom_tooltip = hostage_execution_warning_tt
+					scope:actor = {
+						add_piety = medium_piety_gain
+					}
 				}
-			}
-			else = {
-				add_defender = scope:actor
 				if = {
 					limit = {
-						OR = {
-							scope:actor = {
-								any_home_court_hostage = {
-									warden ?= { is_attacker_in_war = scope:target }
-								}
-							}
-							scope:target = {
-								any_war_attacker = {
-									any_warden_hostage = { home_court ?= scope:actor }
-								}
+						is_religious_war = yes
+						scope:actor = {
+							any_active_accolade = {
+								has_accolade_parameter = acclaimed_knight_piety_from_battle_high
 							}
 						}
 					}
-					custom_tooltip = hostage_execution_warning_tt
-				}
-			}
-			if = {
-				limit = {
-					is_religious_war = yes
 					scope:actor = {
-						any_active_accolade = {
-							has_accolade_parameter = acclaimed_knight_piety_from_battle
-						}
+						add_piety = major_piety_gain
 					}
-				}
-				scope:actor = {
-					add_piety = medium_piety_gain
-				}
-			}
-			if = {
-				limit = {
-					is_religious_war = yes
-					scope:actor = {
-						any_active_accolade = {
-							has_accolade_parameter = acclaimed_knight_piety_from_battle_high
-						}
-					}
-				}
-				scope:actor = {
-					add_piety = major_piety_gain
 				}
 			}
 		}

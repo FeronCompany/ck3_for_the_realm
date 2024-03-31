@@ -110,7 +110,7 @@
 								min = 0
 								max = 150
 								value = "[GetPlayer.MakeScope.ScriptValue( 'ftr_bureaucracy_value' )]"
-								tooltip_enabled = "[ValueBreakdown.HasTooltip]"
+								#tooltip_enabled = "[ValueBreakdown.HasTooltip]"
 								tooltipwidget = {
 									widget_value_breakdown_tooltip = {
 										datacontext = "[GuiScope.SetRoot( GetPlayer.MakeScope ).GetScriptValueBreakdown( 'ftr_bureaucracy_value' )]"
@@ -223,7 +223,7 @@
 								min = 0
 								max = 150
 								value = "[GetPlayer.GetLiege.MakeScope.ScriptValue( 'ftr_bureaucracy_value' )]"
-								tooltip_enabled = "[ValueBreakdown.HasTooltip]"
+								#tooltip_enabled = "[ValueBreakdown.HasTooltip]"
 								tooltipwidget = {
 									widget_value_breakdown_tooltip = {
 										datacontext = "[GuiScope.SetRoot( GetPlayer.GetLiege.MakeScope ).GetScriptValueBreakdown( 'ftr_bureaucracy_value' )]"
@@ -301,7 +301,7 @@ types Lists
 		layoutpolicy_horizontal = expanding
 		spacing = 20
 		portrait_head_small = {
-			tooltip_enabled = "[Character.IsValid]"
+			#tooltip_enabled = "[Character.IsValid]"
 		}
 		text_label_center = {
 			text = "FTR_SHOW_CHARACTER_PG_POWER_TEXT"
@@ -494,7 +494,7 @@ types Lists
 				name = "player_head_portrait"
 				visible = "[Character.IsValid]"
 				datacontext = "[Character]"
-				tooltip_enabled = "[Character.IsValid]"
+				#tooltip_enabled = "[Character.IsValid]"
 			}
 			text_label_center = {
 				text = "FTR_PG_LIEGE_TEXT"

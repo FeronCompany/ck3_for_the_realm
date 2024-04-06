@@ -13,6 +13,10 @@
  ftr_disaster_notification.fire:0 "[unlucky_county.GetName]发生大火"
  ftr_disaster_notification.drought:0 "[unlucky_county.GetName]发生干旱"
  ftr_disaster_notification.flood:0 "[unlucky_county.GetName]发生洪水"
+ ftr_disaster_desc.earthquake:0 "一场突如其来的地震袭击了[unlucky_county.GetName]，当地军民设施被大量损毁，人民死伤惨重，叫苦不迭。"
+ ftr_disaster_desc.fire:0 "一场突如其来的火灾烧毁了[unlucky_county.GetName]大半的建筑物，人员死伤惨重，叫苦不迭。"
+ ftr_disaster_desc.drought:0 "干旱降临了[unlucky_county.GetName]，当地的农田颗粒无收，百姓的粮仓已经见底，如不赶紧采取措施，恐怕会演变为饥荒。"
+ ftr_disaster_desc.flood:0 "一场突如其来的洪水席卷了[unlucky_county.GetName]，当地军民设施被大量损毁，人民死伤惨重，叫苦不迭。"
 
  ftr_disaster_event.0002.t:0 "<FTR>封臣的赈灾请求"
  ftr_disaster_event.0002.desc:0 "你的封臣[county_owner.GetName]急匆匆地赶来汇报情况。一场意外的灾难降临到了[unlucky_county.GetName]，当地的百姓叫苦不迭，急需我们伸出援手。"

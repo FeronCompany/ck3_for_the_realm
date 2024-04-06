@@ -51,3 +51,13 @@
  ftr_sow_discord.success:0 "你的挑拨离间成功了"
  ftr_sow_discord.failed:0 "你的挑拨离间失败了，但没有被发现"
  ftr_sow_discord.discovered:0 "你的挑拨离间失败并被发现了"
+
+ ftr_diarch_request_support_interaction:0 "<FTR>寻求支持"
+ ftr_diarch_request_support_interaction_desc:0 "在摄政的问题上向[recipient.GetShortUIName]寻求支持"
+ ftr_diarch_request_support_interaction_text:0 "阁下德才兼备，乃国家柱石，如今领主暂时不能亲理朝政，各方面事务还望阁下给予支持。"
+ ftr_drs_exchange_types_tt:0 "政治交易"
+ ftr_drs_buy_support_tt:0 "金钱攻势"
+ ftr_drs_use_hook_tt:0 "给予承诺"
+ ftr_drs_offer_influence_tt:0 "提供政治资源"
+ FTR_DRS_USE_HOOK:0 "人情往来：$VALUE|=+0$"
+ FTR_DRS_OFFER_INFLUENCE:0 "政治资源：$VALUE|=+0$"

@@ -31,6 +31,10 @@ ftr_landed_yearly_pg_gain_value = 2
 ftr_heir_yearly_pg_gain_value = 2
 ftr_offer_military_assitance_to_liege_pg_gain_value = 40
 ftr_request_disaster_aid_liege_add_value = 45
+ftr_regent_replace_councillor_cost_value = 50
+ftr_regent_replace_councillor_modify_value = -50
+ftr_regent_request_support_cost_value = 35
+ftr_regent_request_support_modify_value = -35
 
 ftr_payment_cost_level_value = {
 	value = 0

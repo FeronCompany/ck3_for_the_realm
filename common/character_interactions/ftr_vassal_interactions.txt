@@ -712,7 +712,7 @@ ftr_vassal_mediation_interaction = {
 	special_interaction = interfere_in_war_interaction
 	ai_accept_negotiation = yes
 	popup_on_receive = yes
-	pause_on_receive = yes
+	#pause_on_receive = yes
 	desc = ftr_vassal_mediation_interaction_desc
 
 	is_shown = {

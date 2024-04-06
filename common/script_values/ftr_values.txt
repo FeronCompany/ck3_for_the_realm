@@ -35,6 +35,8 @@ ftr_regent_replace_councillor_cost_value = 50
 ftr_regent_replace_councillor_modify_value = -50
 ftr_regent_request_support_cost_value = 35
 ftr_regent_request_support_modify_value = -35
+ftr_support_heir_cost_value = 75
+ftr_support_heir_modify_value = -75
 
 ftr_payment_cost_level_value = {
 	value = 0

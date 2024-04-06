@@ -61,3 +61,9 @@
  ftr_drs_offer_influence_tt:0 "提供政治资源"
  FTR_DRS_USE_HOOK:0 "人情往来：$VALUE|=+0$"
  FTR_DRS_OFFER_INFLUENCE:0 "政治资源：$VALUE|=+0$"
+
+ ftr_support_heir_interaction:0 "<FTR>拥护继承人"
+ ftr_support_heir_interaction_desc:0 "拥护[recipient.GetShortUIName]为领主的合法继承人"
+ ftr_support_heir_options_tt:0 "支持策略"
+ ftr_support_in_secret_tt:0 "秘密支持"
+ ftr_support_in_public_tt:0 "公开支持"

@@ -308,6 +308,20 @@
  ftr_sow_discord.discovered.t:0 "Sow Discord Discovered"
  ftr_sow_discord.discovered.desc:0 "Your attempt to sabotage relationship between [recipient.GetShortUIName] and [secondary_actor.GetShortUIName] was discovered."
 
+ ftr_pg_interaction_event.0300.t:0 "Support In Public"
+ ftr_pg_interaction_event.0300.desc:0 "[actor.GetShortUIName] has expressed his high appreciation for my character and talent in public, and as the legitimate heir of [liege_c.GetShortUIName], I will win the final succession battle with an indisputable advantage."
+ ftr_pg_interaction_event.0300.a:0 "Clever"
+
+ ftr_pg_interaction_event.0301.t:0 "Support In Secret"
+ ftr_pg_interaction_event.0301.desc:0 "[actor.GetShortUIName] has expressed his high appreciation for my character and talent in secret, and as the legitimate heir of [liege_c.GetShortUIName], I will win the final succession battle with an indisputable advantage."
+ ftr_pg_interaction_event.0301.a:0 "Clever"
+
+ ftr_pg_interaction_event.0303.t:0 "Conspiracy Group"
+ ftr_pg_interaction_event.0303.desc:0 "[actor.GetShortUIName] publicly expressed support for my successor [recipient.GetShortUIName]. As a lord, this statement is unpleasant, but it does not seem to require special treatment."
+ ftr_pg_interaction_event.0303.a:0 "Warn them to be constrained."
+ ftr_pg_interaction_event.0303.b:0 "There is a conspiracy!"
+ ftr_pg_interaction_event.0303.c:0 "Nothing serious."
+
  ftr_pg_law_event.0001.t:0 "Vote for Realm Policy"
  ftr_pg_law_event.0001.desc:0 "During the discussion at the court meeting, [actor.GetShortUIName] proposed that a system of $ftr_army_type_0$ should be implemented within the territory. Over-reliance on mercenaries who take money to do things cannot protect our realm, [actor.GetShortUIName] emphasized."
  ftr_pg_law_event.0001.a:0 "Agree"

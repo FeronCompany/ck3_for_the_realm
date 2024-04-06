@@ -61,3 +61,9 @@
  ftr_drs_offer_influence_tt:0 "Offer Political Influence"
  FTR_DRS_USE_HOOK:0 "Use Favor:$VALUE|=+0$"
  FTR_DRS_OFFER_INFLUENCE:0 "Political Influence:$VALUE|=+0$"
+
+ ftr_support_heir_interaction:0 "<FTR> Support Heir"
+ ftr_support_heir_interaction_desc:0 "Support [recipient.GetShortUIName] as rightful heir of liege."
+ ftr_support_heir_options_tt:0 "Strategy of Support"
+ ftr_support_in_secret_tt:0 "Support In Secret"
+ ftr_support_in_public_tt:0 "Support In Public"

@@ -792,3 +792,182 @@ ftr_pg_interaction_event.0203 = {
 		}
 	}
 }
+
+# Support in public
+ftr_pg_interaction_event.0300 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0300.t
+	desc = ftr_pg_interaction_event.0300.desc
+	theme = realm
+	left_portrait = {
+		character = scope:recipient
+	}
+	right_portrait = {
+		character = scope:actor
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			scope:recipient = {
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_political_alliance_opinion
+				}
+			}
+		}
+	}
+
+	option = { # Good
+		name = ftr_pg_interaction_event.0300.a
+	}
+}
+
+# Support in secret
+ftr_pg_interaction_event.0301 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0301.t
+	desc = ftr_pg_interaction_event.0301.desc
+	theme = realm
+	left_portrait = {
+		character = scope:recipient
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:actor
+		animation = scheme
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			scope:recipient = {
+				add_opinion = {
+					target = scope:actor
+					modifier = ftr_political_alliance_opinion
+				}
+			}
+		}
+	}
+
+	option = { # Good
+		name = ftr_pg_interaction_event.0301.a
+	}
+}
+
+# Support in public - liege notified
+ftr_pg_interaction_event.0303 = {
+	type = character_event
+	title = ftr_pg_interaction_event.0303.t
+	desc = ftr_pg_interaction_event.0303.desc
+	theme = realm
+	left_portrait = {
+		character = scope:recipient
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:actor
+		animation = scheme
+	}
+
+	immediate = {}
+
+	option = { # Warn them to be restrained
+		name = ftr_pg_interaction_event.0303.a
+		add_prestige = -150
+		scope:actor = {
+			add_character_flag = {
+				flag = ftr_liege_warn_not_support_heir
+				years = 15
+			}
+			send_interface_toast = {
+				title = ftr_pg_interaction_event.0303.liege_warn.tt
+				left_icon = root
+				right_icon = scope:actor
+				custom_tooltip = ftr_pg_interaction_event.0303.liege_warn.desc
+			}
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+	option = { # This conspiracy
+		name = ftr_pg_interaction_event.0303.b
+		add_opinion = {
+			target = scope:actor
+			modifier = ftr_political_opponent_opinion
+		}
+		add_opinion = {
+			target = scope:recipient
+			modifier = ftr_political_opponent_opinion
+		}
+		if = {
+			limit = {
+				scope:actor = {
+					NOT = { has_character_flag = ftr_liege_warn_not_support_heir }
+				}
+			}
+			add_tyranny = major_tyranny_value
+		}
+		imprison = {
+			target = scope:actor
+			type = house_arrest
+		}
+		imprison = {
+			target = scope:recipient
+			type = house_arrest
+		}
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_pg_interaction_event.0303.liege_arrest.tt
+				left_icon = root
+				right_icon = scope:actor
+				custom_tooltip = ftr_pg_interaction_event.0303.liege_arrest.desc
+			}
+		}
+		scope:recipient = {
+			add_trait = disinherited
+			send_interface_toast = {
+				title = ftr_pg_interaction_event.0303.liege_arrest.tt
+				left_icon = root
+				right_icon = scope:actor
+				custom_tooltip = ftr_pg_interaction_event.0303.liege_arrest.desc
+			}
+		}
+		stress_impact = {
+			just = medium_stress_impact_gain
+			compassionate = medium_stress_impact_gain
+			forgiving = medium_stress_impact_gain
+			arbitrary = medium_stress_impact_loss
+			paranoid = medium_stress_impact_loss
+			callous = medium_stress_impact_loss
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = paranoid
+					has_trait = arbitrary
+				}
+			}
+		}
+	}
+	option = { # This is not a problem
+		name = ftr_pg_interaction_event.0303.c
+		add_dread = minor_dread_loss
+		stress_impact = {
+			paranoid = medium_stress_impact_gain
+			compassionate = medium_stress_impact_loss
+			forgiving = medium_stress_impact_loss
+		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = forgiving
+					has_trait = compassionate
+				}
+			}
+		}
+	}
+}

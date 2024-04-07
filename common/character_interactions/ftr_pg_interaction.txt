@@ -394,7 +394,7 @@ ftr_sow_discord_interaction = {
 				}
 				scope:recipient = {
 					trigger_event = {
-						id = ftr_pg_interaction_event.0202
+						id = ftr_pg_interaction_event.0203
 						days = { 15 30 }
 					}
 				}
@@ -439,6 +439,156 @@ ftr_sow_discord_interaction = {
 			}
 			scope:recipient = {
 				is_vassal_of = scope:secondary_actor
+			}
+		}
+	}
+}
+
+######### Support Heir ##########
+ftr_support_heir_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	cooldown = { years = 2 }
+	cooldown_against_recipient = { years = 10 }
+	desc = ftr_support_heir_interaction_desc
+	is_shown = {
+		scope:actor = {
+			is_independent_ruler = no
+			liege = scope:recipient.liege
+		}
+		scope:recipient = {
+			is_independent_ruler = no
+			OR = {
+				is_heir_of = liege
+				is_child_of = liege
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_imprisoned = no
+			is_capable_adult = yes
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_support_heir_cost_value
+				ftr_political_influence_value >= ftr_support_heir_cost_value
+			}
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			NOT = { has_trait = disinherited }
+			NOT = { has_trait = disputed_heritage }
+			NOT = { has_trait = denounced }
+		}
+	}
+
+	options_heading = ftr_support_heir_options_tt
+	send_option = { # Support in secret
+		flag = ftr_support_in_secret
+		localization = ftr_support_in_secret_tt
+		starts_enabled = { always = yes	}
+	}
+	send_option = { # Support in public
+		flag = ftr_support_in_public
+		localization = ftr_support_in_public_tt
+	}
+	send_options_exclusive = yes
+
+	on_accept = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_support_heir_modify_value
+			}
+			liege = {
+				save_scope_as = liege_c
+				every_heir = {
+					limit = { NOT = { this = scope:recipient } }
+					scope:actor = {
+						add_opinion = {
+							target = prev
+							modifier = ftr_political_opponent_opinion
+						}
+					}
+				}
+			}
+		}
+		scope:recipient = {
+			add_prestige = 200
+			add_opinion = {
+				target = scope:actor
+				modifier = ftr_political_alliance_opinion
+			}
+		}
+		if = {
+			limit = { scope:ftr_support_in_public = yes }
+			scope:actor.liege = {
+				every_heir = {
+					limit = { NOT = { this = scope:recipient } }
+					add_opinion = {
+						target = scope:actor
+						modifier = ftr_political_opponent_opinion
+					}
+				}
+				trigger_event = {
+					id = ftr_pg_interaction_event.0303
+					days = 5
+				}
+			}
+			scope:recipient = {
+				ftr_add_political_influence_effect = {
+					VALUE = ftr_support_heir_cost_value
+				}
+				trigger_event = ftr_pg_interaction_event.0300
+			}
+		}
+		else = {
+			scope:recipient = {
+				trigger_event = ftr_pg_interaction_event.0301
+			}
+		}
+	}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = -30
+		opinion_modifier = {
+			opinion_target = scope:recipient
+			who = scope:actor
+			multiplier = 0.5
+		}
+		modifier = {
+			add = -50
+			scope:actor = { is_heir_of = liege }
+		}
+		modifier = {
+			add = 20
+			scope:actor = {
+				is_allied_to = scope:recipient
+			}
+		}
+		modifier = {
+			add = 20
+			scope:actor = {
+				has_trait = ambitious
+			}
+		}
+		modifier = {
+			add = -30
+			scope:actor = {
+				has_trait = content
+				has_trait = humble
+			}
+		}
+		modifier = {
+			add = 20
+			scope:actor.liege = {
+				has_active_diarchy = yes
+			}
+		}
+		modifier = {
+			add = -30
+			scope:actor = {
+				has_character_flag = ftr_liege_warn_not_support_heir
 			}
 		}
 	}

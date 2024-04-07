@@ -1378,7 +1378,7 @@ ftr_councillor_event.0019 = {
 				add_truce_both_ways = {
 					character = scope:recipient
 					years = 10
-					name = TRUCE_PURCHASED
+					name = TRUCE_TRADE_DEAL
 				}
 			}
 		}

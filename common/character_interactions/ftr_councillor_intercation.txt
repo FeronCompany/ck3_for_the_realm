@@ -1,63 +1,4 @@
 ﻿
-######### Challenge Council Position ##########
-#ftr_challenge_council_position_interaction = {
-#	category = interaction_category_vassal
-#	common_interaction = yes
-#	desc = ftr_challenge_council_position_interaction_desc
-#	is_shown = {
-#		NOT = { scope:actor = scope:recipient }
-#		scope:actor = {
-#			OR = {
-#				is_vassal_of = scope:recipient
-#				is_courtier_of = scope:recipient
-#			}
-#			NOT = { is_councillor_of = scope:recipient }
-#			culture = {
-#				OR = {
-#					has_cultural_tradition = tradition_ftr_meritocracy
-#					has_cultural_tradition = tradition_only_the_strong
-#					has_cultural_tradition = tradition_warriors_by_merit
-#					has_cultural_tradition = tradition_talent_acquisition
-#				}
-#			}
-#			NOT = {
-#				OR = {
-#					has_usable_hook = scope:recipient
-#					vassal_contract_has_flag = can_demand_council_seat
-#				}
-#			}
-#		}
-#	}
-#	is_valid_showing_failures_only = {
-#		scope:actor = {
-#			NOT =  {
-#				is_at_war_with = scope:recipient
-#			}
-#			is_imprisoned = no
-#		}
-#		is_adult = yes
-#		is_capable = yes
-#	}
-#	on_accept = {
-#		#
-#	}
-#	ai_accept = {
-#		base = 0
-#	}
-#	on_decline = {}
-#	auto_accept = {
-#		scope:recipient = {
-#			custom_description = {
-#				text = "prisoner_revocation"
-#				is_imprisoned_by = scope:actor
-#			}
-#		}
-#	}
-#	ai_will_do = {
-#		base = 0
-#	}
-#}
-
 ######### Diarch Replace Council Position ##########
 ftr_diarch_replace_council_position_interaction = {
 	category = interaction_category_diarch
@@ -135,8 +76,14 @@ ftr_diarch_replace_council_position_interaction = {
 			}
 		}
 	}
-	cost = {
-		prestige = 250
+	can_send = {
+		scope:actor = {
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_regent_replace_councillor_cost_value
+				ftr_political_influence_value >= ftr_regent_replace_councillor_cost_value
+			}
+		}
 	}
 
 	on_accept = {
@@ -226,6 +173,9 @@ ftr_diarch_replace_council_position_interaction = {
 			}
 		}
 		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_regent_replace_councillor_modify_value
+			}
 			if = {
 				limit = {
 					can_add_hook = {
@@ -350,3 +300,185 @@ ftr_diarch_replace_council_position_interaction = {
 		}
 	}
 }
+
+ftr_diarch_request_support_interaction = {
+	category = interaction_category_diarch
+	common_interaction = yes
+	greeting = positive
+	notification_text = ftr_diarch_request_support_interaction_text
+	cooldown = { years = 1 }
+	cooldown_against_recipient = { years = 5 }
+	desc = ftr_diarch_request_support_interaction_desc
+	is_shown = {
+		scope:actor = {
+			is_independent_ruler = no
+			is_diarch_of_target = liege
+			NOT = { this = scope:recipient }
+		}
+		scope:recipient = {
+			is_independent_ruler = no
+			OR = {
+				is_councillor_of = scope:actor.liege
+				is_powerful_vassal_of = scope:actor.liege
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			NOT =  {
+				is_at_war_with = scope:recipient
+			}
+			is_imprisoned = no
+			is_capable_adult = yes
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			is_capable_adult = yes
+		}
+	}
+	can_send = {
+		scope:actor = {
+			custom_description = {
+				text = "ftr_have_enough_pi_tt"
+				value = ftr_regent_request_support_cost_value
+				ftr_political_influence_value >= ftr_regent_request_support_cost_value
+			}
+		}
+	}
+
+	options_heading = ftr_drs_exchange_types_tt
+	send_option = { # Money buy everything
+		flag = ftr_drs_buy_support
+		localization = ftr_drs_buy_support_tt
+	}
+	send_option = { # Use hook
+		is_valid = {
+			NOT = {
+				scope:recipient = {
+					has_hook = scope:actor
+				}
+			}
+		}
+		flag = ftr_drs_use_hook
+		localization = ftr_drs_use_hook_tt
+	}
+	send_option = { # Offer influence
+		flag = ftr_drs_offer_influence
+		localization = ftr_drs_offer_influence_tt
+	}
+	send_options_exclusive = no
+
+	on_accept = {
+		scope:actor = {
+			ftr_add_political_influence_effect = {
+				VALUE = ftr_regent_request_support_modify_value
+			}
+			change_strife_opinion = medium_strife_loss
+			liege = {
+				update_diarchy_swing_with_perspective_effect = {
+					SWING = minor_sop_swing_diarch_gain
+					LIEGE = liege
+				}
+			}
+		}
+		scope:recipient = {
+			if = {
+				limit = { scope:ftr_drs_buy_support = yes }
+				scope:actor = {
+					pay_short_term_gold = {
+						target = scope:recipient
+						gold = gift_value
+					}
+				}
+			}
+			if = {
+				limit = { scope:ftr_drs_use_hook = yes }
+				if = {
+					limit = {
+						NOT = {
+							scope:actor = {
+								has_hook = scope:recipient
+							}
+						}
+					}
+					add_hook = {
+						target = scope:actor
+						type = favor_hook
+					}
+				}
+				else = {
+					scope:actor = {
+						remove_hook = { target = scope:recipient }
+					}
+				}
+			}
+			if = {
+				limit = { scope:ftr_drs_offer_influence = yes }
+				ftr_add_political_influence_effect = {
+					VALUE = ftr_regent_request_support_cost_value
+				}
+			}
+		}
+	}
+
+	ai_accept = {
+		base = 0
+		opinion_modifier = {
+			opinion_target = scope:recipient.liege
+			who = scope:recipient
+			multiplier = -0.5
+		}
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 0.5
+		}
+		modifier = {
+			add = 20
+			scope:ftr_drs_buy_support = yes
+			desc = GOLD_REASON
+		}
+		modifier = {
+			add = 10
+			scope:ftr_drs_use_hook = yes
+			desc = FTR_DRS_USE_HOOK
+		}
+		modifier = {
+			add = 20
+			scope:ftr_drs_offer_influence = yes
+			desc = FTR_DRS_OFFER_INFLUENCE
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 20
+			scope:actor.liege = {
+				diarchy_swing < 90
+			}
+		}
+		modifier = {
+			add = 20
+			scope:actor = {
+				strife_opinion >= 20
+			}
+		}
+		modifier = {
+			add = -30
+			scope:ftr_drs_buy_support = yes
+			scope:actor = {
+				gold < gift_value
+			}
+		}
+		modifier = {
+			add = -10
+			scope:ftr_drs_use_hook = yes
+		}
+		modifier = {
+			add = -10
+			scope:ftr_drs_offer_influence = yes
+		}
+	}
+}
+

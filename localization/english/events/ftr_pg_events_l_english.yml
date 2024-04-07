@@ -301,10 +301,10 @@
  ftr_sow_discord.failed.t:0 "Sow Discord Failed"
  ftr_sow_discord.failed.desc:0 "You failed to sabotage relation between [recipient.GetShortUIName] and [secondary_actor.GetShortUIName]."
 
- ftr_pg_interaction_event.0202.t:0 "Despicable Person"
- ftr_pg_interaction_event.0202.desc:0 "It is appalling and shameful that [actor.GetShortUIName] is spreading rumors and trying to destroy my relationship with [secondary_actor.GetShortUIName]."
- ftr_pg_interaction_event.0202.a:0 "I will forget this time."
- ftr_pg_interaction_event.0202.b:0 "It's unforgivable!"
+ ftr_pg_interaction_event.0203.t:0 "Despicable Person"
+ ftr_pg_interaction_event.0203.desc:0 "It is appalling and shameful that [actor.GetShortUIName] is spreading rumors and trying to destroy my relationship with [secondary_actor.GetShortUIName]."
+ ftr_pg_interaction_event.0203.a:0 "I will forget this time."
+ ftr_pg_interaction_event.0203.b:0 "It's unforgivable!"
  ftr_sow_discord.discovered.t:0 "Sow Discord Discovered"
  ftr_sow_discord.discovered.desc:0 "Your attempt to sabotage relationship between [recipient.GetShortUIName] and [secondary_actor.GetShortUIName] was discovered."
 
@@ -321,6 +321,10 @@
  ftr_pg_interaction_event.0303.a:0 "Warn them to be constrained."
  ftr_pg_interaction_event.0303.b:0 "There is a conspiracy!"
  ftr_pg_interaction_event.0303.c:0 "Nothing serious."
+ ftr_pg_interaction_event.0303.liege_warn.tt:0 "A Little Warning"
+ ftr_pg_interaction_event.0303.liege_warn.desc:0 "[liege_c.GetShortUIName] is very dissatisfied with the interaction between [actor.GetShortUIName] and [recipient.GetShortUIName], and his words reveal a sense of warning."
+ ftr_pg_interaction_event.0303.liege_arrest.tt:0 "Harsh Treatment"
+ ftr_pg_interaction_event.0303.liege_arrest.desc:0 "[liege_c.GetShortUIName] was so unhappy with the interaction between [actor.GetShortUIName] and [recipient.GetShortUIName] that he ordered their arrest."
 
  ftr_pg_law_event.0001.t:0 "Vote for Realm Policy"
  ftr_pg_law_event.0001.desc:0 "During the discussion at the court meeting, [actor.GetShortUIName] proposed that a system of $ftr_army_type_0$ should be implemented within the territory. Over-reliance on mercenaries who take money to do things cannot protect our realm, [actor.GetShortUIName] emphasized."

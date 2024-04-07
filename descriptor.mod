@@ -1,4 +1,4 @@
-version="A.I.1"
+version="A.I.2"
 tags={
 	"Character Interactions"
 	"Decisions"

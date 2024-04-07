@@ -878,6 +878,12 @@ ftr_pg_interaction_event.0303 = {
 				flag = ftr_liege_warn_not_support_heir
 				years = 15
 			}
+			send_interface_toast = {
+				title = ftr_pg_interaction_event.0303.liege_warn.tt
+				left_icon = root
+				right_icon = scope:actor
+				custom_tooltip = ftr_pg_interaction_event.0303.liege_warn.desc
+			}
 		}
 		ai_chance = {
 			base = 50
@@ -909,8 +915,22 @@ ftr_pg_interaction_event.0303 = {
 			target = scope:recipient
 			type = house_arrest
 		}
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_pg_interaction_event.0303.liege_arrest.tt
+				left_icon = root
+				right_icon = scope:actor
+				custom_tooltip = ftr_pg_interaction_event.0303.liege_arrest.desc
+			}
+		}
 		scope:recipient = {
 			add_trait = disinherited
+			send_interface_toast = {
+				title = ftr_pg_interaction_event.0303.liege_arrest.tt
+				left_icon = root
+				right_icon = scope:actor
+				custom_tooltip = ftr_pg_interaction_event.0303.liege_arrest.desc
+			}
 		}
 		stress_impact = {
 			just = medium_stress_impact_gain

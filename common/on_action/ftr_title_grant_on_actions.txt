@@ -1,9 +1,9 @@
 ﻿
 on_title_gain = {
 	on_actions = {
-		ftr_title_gain_effects
-		ftr_title_gain_warlord_effects
-		ftr_title_conquerd_effects
+		#ftr_title_gain_effects
+		#ftr_title_gain_warlord_effects
+		#ftr_title_conquerd_effects
 		ftr_add_political_influence_effects
 	}
 }

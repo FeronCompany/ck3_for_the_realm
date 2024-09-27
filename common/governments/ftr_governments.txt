@@ -4,6 +4,13 @@
 		rulers_should_have_dynasty = yes
 		dynasty_named_realms = yes
 		royal_court = yes
+		legitimacy = yes
+		#administrative = yes
+		#landless_playable = yes
+		state_faith = yes
+		use_as_base_on_landed = yes
+		use_as_base_on_rank_up = yes
+		inherit_from_dynastic_government = no
 	}
 
 	fallback = 2
@@ -13,12 +20,6 @@
 
 	vassal_contract = {
 		bureaucratic_tax_collector_obligations
-		centralism_special_contract
-		religious_rights
-		fortification_rights
-		coinage_rights
-		council_rights
-		men_of_arms_ban
 	}
 
 	ai = {

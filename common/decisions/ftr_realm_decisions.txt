@@ -75,31 +75,32 @@ feudal_convert_to_centralism_decision = {
 	}
 	is_valid = {
 		is_independent_ruler = yes
-		OR = {
-			has_realm_law = crown_authority_1
-			has_realm_law = crown_authority_2
-			has_realm_law = crown_authority_3
-		}
-		custom_description = {
-			text = "ftr_have_enough_pi_tt"
-			value = ftr_reform_to_centralism_influence_cost_value
-			ftr_political_influence_value >= ftr_reform_to_centralism_influence_cost_value
-		}
-		custom_description = {
-			text = "ftr_have_enough_bureaucracy_value_tt"
-			value = ftr_reform_to_centralism_bureaucracy_gap_value
-			ftr_bureaucracy_value >= ftr_reform_to_centralism_bureaucracy_gap_value
-		}
-		culture = {
-			OR = {
-				has_cultural_tradition = tradition_byzantine_succession
-				has_cultural_tradition = tradition_ftr_meritocracy
-				AND = {
-					has_innovation = innovation_primogeniture
-					has_innovation = innovation_court_officials
-				}
-			}
-		}
+		is_ai = no
+		#OR = {
+		#	has_realm_law = crown_authority_1
+		#	has_realm_law = crown_authority_2
+		#	has_realm_law = crown_authority_3
+		#}
+		#custom_description = {
+		#	text = "ftr_have_enough_pi_tt"
+		#	value = ftr_reform_to_centralism_influence_cost_value
+		#	ftr_political_influence_value >= ftr_reform_to_centralism_influence_cost_value
+		#}
+		#custom_description = {
+		#	text = "ftr_have_enough_bureaucracy_value_tt"
+		#	value = ftr_reform_to_centralism_bureaucracy_gap_value
+		#	ftr_bureaucracy_value >= ftr_reform_to_centralism_bureaucracy_gap_value
+		#}
+		#culture = {
+		#	OR = {
+		#		has_cultural_tradition = tradition_byzantine_succession
+		#		has_cultural_tradition = tradition_ftr_meritocracy
+		#		AND = {
+		#			has_innovation = innovation_primogeniture
+		#			has_innovation = innovation_court_officials
+		#		}
+		#	}
+		#}
 	}
 
 	cost = {

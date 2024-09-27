@@ -1,6 +1,9 @@
 ﻿
 ftr_pg_ai_expande_influence_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
+	decision_group_type = courtier
 	desc = ftr_pg_ai_expande_influence_decision_desc
 	selection_tooltip = ftr_pg_ai_expande_influence_decision_tooltip
 	ai_check_interval = 24

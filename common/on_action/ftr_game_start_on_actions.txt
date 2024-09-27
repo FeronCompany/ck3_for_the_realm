@@ -2,7 +2,7 @@
 
 on_game_start = {
 	on_actions = {
-		ftr_change_government_on_start_effect
+		#ftr_change_government_on_start_effect
 	}
 }
 

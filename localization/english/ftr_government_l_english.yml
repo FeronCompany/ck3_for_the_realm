@@ -3,6 +3,8 @@
  centralism_government_adjective: "Centralism"
  centralism_government_with_icon: "@government_type_centralism!$centralism_government$"
  centralism_government_realm: "Centralism state"
+ centralism_icon_concept: "[centralism_i|E]"
+ game_concept_centralism_i: "@government_type_centralism!"
  centralism_government_vassals_label:1 "Centralism policy"
  centralism_government_desc:1 "In the later period of the feudal system, kings and emperors gradually recovered the power that had been given to the localities in the past, and appointed floating officials to manage local affairs to consolidate the royal power and provide sufficient military and financial resources for expansion."
  centralism_government_obligations:0 "[GetGovernment( 'centralism_government' ).GetName][obligations|E]"

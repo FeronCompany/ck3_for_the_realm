@@ -598,7 +598,6 @@ ftr_realm_event.1009 = {
 				OR = {
 					is_independent_ruler = yes
 					AND = {
-						NOT = { government_has_flag = government_is_warlord }
 						NOT = { government_has_flag = government_is_centralism }
 					}
 				}

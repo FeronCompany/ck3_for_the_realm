@@ -54,7 +54,6 @@
 
 			############### OVERRIDE ##############
 			NOT = { government_has_flag = government_is_centralism }
-			NOT = { government_has_flag = government_is_warlord }
 		}
 	}
 
@@ -113,7 +112,6 @@
 
 			############### OVERRIDE ##############
 			NOT = { government_has_flag = government_is_centralism }
-			NOT = { government_has_flag = government_is_warlord }
 		}
 	}
 
@@ -176,7 +174,6 @@
 
 			############### OVERRIDE ##############
 			NOT = { government_has_flag = government_is_centralism }
-			NOT = { government_has_flag = government_is_warlord }
 		}
 	}
 
@@ -249,7 +246,6 @@
 
 			############### OVERRIDE ##############
 			NOT = { government_has_flag = government_is_centralism }
-			NOT = { government_has_flag = government_is_warlord }
 		}
 	}
 
@@ -315,7 +311,6 @@
 
 			############### OVERRIDE ##############
 			NOT = { government_has_flag = government_is_centralism }
-			NOT = { government_has_flag = government_is_warlord }
 		}
 	}
 
@@ -397,7 +392,6 @@
 
 			############### OVERRIDE ##############
 			NOT = { government_has_flag = government_is_centralism }
-			NOT = { government_has_flag = government_is_warlord }
 		}
 	}
 
@@ -539,30 +533,22 @@
 		can_keep = {
 			OR = {
 				government_has_flag = government_is_centralism
-				government_has_flag = government_is_warlord
 			}
-			is_independent_ruler = yes
 		}
 		can_have = {
 			OR = {
 				government_has_flag = government_is_centralism
-				government_has_flag = government_is_warlord
 			}
-			is_independent_ruler = yes
 		}
 		can_pass = {
 			OR = {
 				government_has_flag = government_is_centralism
-				government_has_flag = government_is_warlord
 			}
-			is_independent_ruler = yes
 		}
 		should_start_with = {
 			OR = {
 				government_has_flag = government_is_centralism
-				government_has_flag = government_is_warlord
 			}
-			is_independent_ruler = yes
 		}
 		succession = {
 			order_of_succession = inheritance
@@ -579,70 +565,6 @@
 			government_has_flag = government_is_centralism
 		}
 		flag = can_designate_heirs
-	}
-
-	ftr_appointment_succession_law = {
-		can_keep = {			
-			government_has_flag = government_is_centralism
-			is_independent_ruler = no
-
-			# Vassal Contract allows it
-			custom_description = {
-				text = succession_laws_must_not_be_forced_partition
-				NAND = {
-					is_independent_ruler = no
-					vassal_contract_has_flag = locked_to_partition
-				}
-			}
-		}
-		can_have = {
-			#can_have_single_heir_succession_law_trigger = yes
-			government_has_flag = government_is_centralism
-			is_independent_ruler = no
-		}
-		can_pass = {
-			can_change_succession_law_trigger = yes
-			government_has_flag = government_is_centralism
-			is_independent_ruler = no
-		}
-		should_start_with = {
-			government_has_flag = government_is_centralism
-			is_independent_ruler = no
-		}
-		succession = {
-			order_of_succession = appointment
-			appointment_type = admin_governor
-		}
-		flag = advanced_succession_law
-		modifier = {
-			glory_hound_opinion = -10
-			parochial_opinion = -5
-			player_heir_opinion = 20
-			eligible_child_except_player_heir_opinion = -5
-		}
-		pass_cost = {
-			prestige = change_succession_law_prestige_cost
-		}
-		revoke_cost = {
-			prestige = change_succession_law_prestige_cost
-		}
-
-		ai_will_do = {
-			if = {
-				limit = {
-					OR = {
-						has_realm_law = confederate_partition_succession_law
-						has_realm_law = partition_succession_law
-						has_realm_law = high_partition_succession_law
-					}
-				}
-				value = 3
-			}
-		}
-
-		potential = {
-			government_has_flag = government_is_centralism
-		}
 	}
 	################ OVERRIDE ##################
 

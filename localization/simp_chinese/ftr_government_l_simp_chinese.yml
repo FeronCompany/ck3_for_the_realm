@@ -3,6 +3,8 @@
  centralism_government_adjective: "集权制"
  centralism_government_with_icon: "@government_type_centralism!$centralism_government$"
  centralism_government_realm: "朝廷属地"
+ centralism_icon_concept: "[centralism_i|E]"
+ game_concept_centralism_i: "@government_type_centralism!"
  centralism_government_vassals_label:1 "集权制央地政策"
  centralism_government_desc:1 "封建制后期，国王和皇帝们逐渐将过往下方给地方的权力收回，任命流动的官吏管理地方事务，用以巩固王权，为扩张提供充足的兵力和财源。"
  centralism_government_obligations:0 "[GetGovernment( 'centralism_government' ).GetName][obligations|E]"

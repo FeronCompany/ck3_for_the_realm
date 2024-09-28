@@ -1,0 +1,58 @@
+
+ftr_debug_change_government_interaction = {
+	category = interaction_debug_main
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	icon = debug_good
+
+	is_shown = {
+		debug_only = yes
+		NOT = { scope:recipient = scope:actor }
+	}
+
+	send_option = {
+		flag = to_feudal
+		localization = ftr_debug_to_feudal_loc
+	}
+	send_option = {
+		flag = to_admin
+		localization = ftr_debug_to_admin_loc
+	}
+	send_option = {
+		flag = to_tribal
+		localization = ftr_debug_to_tribal_loc
+	}
+	send_option = {
+		flag = to_clan
+		localization = ftr_debug_to_clan_loc
+	}
+	send_option = {
+		flag = to_burea
+		localization = ftr_debug_to_burea_loc
+	}
+	on_accept = {
+		scope:recipient = {
+			switch = {
+				trigger = yes
+				scope:to_feudal = {
+					change_government = feudal_government
+				}
+				scope:to_admin = {
+					change_government = administrative_government
+				}
+				scope:to_tribal = {
+					change_government = tribal_government
+				}
+				scope:to_clan = {
+					change_government = clan_government
+				}
+				scope:to_burea = {
+					change_government = centralism_government
+				}
+			}
+		}
+	}
+	auto_accept = yes
+}
+
+

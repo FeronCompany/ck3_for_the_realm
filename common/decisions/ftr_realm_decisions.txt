@@ -69,38 +69,32 @@ feudal_convert_to_centralism_decision = {
 		is_landed = yes
 		OR = {
 			government_has_flag = government_is_feudal
-			government_has_flag = government_is_warlord
+			government_has_flag = government_is_clan
 		}
 		primary_title.tier >= tier_kingdom
 	}
 	is_valid = {
 		is_independent_ruler = yes
-		is_ai = no
-		#OR = {
-		#	has_realm_law = crown_authority_1
-		#	has_realm_law = crown_authority_2
-		#	has_realm_law = crown_authority_3
-		#}
-		#custom_description = {
-		#	text = "ftr_have_enough_pi_tt"
-		#	value = ftr_reform_to_centralism_influence_cost_value
-		#	ftr_political_influence_value >= ftr_reform_to_centralism_influence_cost_value
-		#}
-		#custom_description = {
-		#	text = "ftr_have_enough_bureaucracy_value_tt"
-		#	value = ftr_reform_to_centralism_bureaucracy_gap_value
-		#	ftr_bureaucracy_value >= ftr_reform_to_centralism_bureaucracy_gap_value
-		#}
-		#culture = {
-		#	OR = {
-		#		has_cultural_tradition = tradition_byzantine_succession
-		#		has_cultural_tradition = tradition_ftr_meritocracy
-		#		AND = {
-		#			has_innovation = innovation_primogeniture
-		#			has_innovation = innovation_court_officials
-		#		}
-		#	}
-		#}
+		#is_ai = no
+		OR = {
+			has_realm_law = crown_authority_2
+			has_realm_law = crown_authority_3
+		}
+		custom_description = {
+			text = "ftr_have_enough_bureaucracy_value_tt"
+			value = ftr_reform_to_centralism_bureaucracy_gap_value
+			ftr_bureaucracy_value >= ftr_reform_to_centralism_bureaucracy_gap_value
+		}
+		custom_tooltip = {
+			text = all_powerful_vassals_required_tt
+			any_powerful_vassal = {
+				count = all
+				opinion = {
+					target = root
+					value >= 50
+				}
+			}
+		}
 	}
 
 	cost = {
@@ -131,9 +125,6 @@ feudal_convert_to_centralism_decision = {
 		stress_impact = {
 			content = medium_stress_impact_gain
 		}
-		ftr_add_political_influence_effect = {
-			VALUE = ftr_reform_to_centralism_influence_change_value
-		}
 	}
 	
 	ai_check_interval = 3
@@ -142,228 +133,5 @@ feudal_convert_to_centralism_decision = {
 	}
 	ai_will_do = {
 		base = 20
-	}
-}
-
-ftr_clear_bureaucrat_title_law_decision = {
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	}
-	decision_group_type = major
-	desc = ftr_clear_bureaucrat_title_law_decision_desc
-	selection_tooltip = ftr_clear_bureaucrat_title_law_decision_tooltip
-	is_shown = {
-		is_independent_ruler = yes
-		any_held_title = {
-			has_title_law = bureacratic_succession_law
-		}
-	}
-	is_valid = {
-		is_independent_ruler = yes
-		primary_title.tier >= tier_duchy
-	}
-
-	cost = {
-		prestige = { value = 50 }
-	}
-
-	effect = {
-		every_held_title = {
-			limit = {
-				OR = {
-					has_title_law = bureacratic_succession_law
-					has_title_law = warlord_succession_law
-				}
-			}
-			clear_title_laws = yes
-		}
-	}
-	
-	ai_check_interval = 35
-	ai_potential = {
-		always = yes
-	}
-	ai_will_do = {
-		base = 20
-	}
-}
-
-ftr_end_tyrant_succession_decision = {
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	}
-	decision_group_type = major
-	desc = ftr_end_tyrant_succession_decision_desc
-	selection_tooltip = ftr_end_tyrant_succession_decision_tooltip
-	is_shown = {
-		is_independent_ruler = yes
-		any_held_title = {
-			OR = {
-				has_title_law = warlord_succession_law
-				has_title_law = tyrant_succession_law
-			}
-		}
-	}
-	is_valid = {
-		is_independent_ruler = yes
-		OR = {
-			highest_held_title_tier = tier_duchy
-			highest_held_title_tier = tier_kingdom
-			highest_held_title_tier = tier_empire
-		}
-		prestige_level >= 4
-		culture = {
-			has_innovation = innovation_primogeniture
-			has_innovation = innovation_rightful_ownership
-		}
-	}
-
-	cost = {
-		prestige = { value = 2000 }
-	}
-
-	effect = {
-		every_held_title = {
-			limit = {
-				OR = {
-					has_title_law = tyrant_succession_law
-					has_title_law = warlord_succession_law
-				}
-			}
-			clear_title_laws = yes
-		}
-	}
-	
-	ai_check_interval = 35
-	ai_potential = {
-		always = yes
-	}
-	ai_will_do = {
-		base = 20
-	}
-}
-
-ftr_warlord_gain_power_decision = {
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	}
-	decision_group_type = major
-	desc = ftr_warlord_gain_power_decision_desc
-	selection_tooltip = ftr_warlord_gain_power_decision_tooltip
-	is_shown = {
-		is_independent_ruler = no
-		government_has_flag = government_is_centralism
-		primary_title.tier >= tier_duchy
-	}
-	is_valid = {
-		OR = {
-			custom_description = {
-				text = "ftr_liege_is_not_centralism_tt"
-				NOT = { 
-					liege = { government_has_flag = government_is_centralism }
-				}
-			}
-			AND = {
-				liege = {
-					is_independent_ruler = yes
-				}
-				is_at_war_with = liege
-			}
-			AND = {
-				liege = {
-					is_independent_ruler = yes
-					custom_description = {
-						text = "ftr_liege_war_against_vassals_tt"
-						is_at_war = yes
-						any_character_war = { # In civil war
-							OR = {
-								AND = {
-									primary_defender = prev
-									primary_attacker.liege = prev
-								}
-								AND = {
-									primary_attacker = prev
-									primary_defender.liege = prev
-								}
-							}
-						}
-					}
-				}
-				is_at_war = no
-				prestige_level >= 3
-				is_powerful_vassal = yes
-				NOT = { is_councillor_of = liege }
-				custom_description = {
-					text = "ftr_has_40_percent_of_lieges_army_tt"
-					current_military_strength > liege.ftr_forty_percent_of_current_military_strength
-				}
-				opinion = {
-					target = liege
-					value < 50
-				}
-			}
-		}
-	}
-
-	cost = {
-		prestige = 500
-		gold = 250
-	}
-
-	effect = {
-		send_interface_toast = {
-			title = "ftr_change_to_warlord_tt"
-			left_icon = root
-			change_government = ftr_warlord_government
-		}
-		every_held_title = {
-			limit = {
-				tier >= tier_duchy
-			}
-			clear_title_laws = yes
-			add_title_law = warlord_succession_law
-		}
-		save_scope_as = warlord_vassal
-		liege = {
-			trigger_event = {
-				id = ftr_realm_event.1008
-				days = 5
-			}
-		}
-	}
-	
-	ai_check_interval = 24
-	ai_potential = {
-		always = yes
-	}
-	ai_will_do = {
-		base = -20
-		modifier = {
-			add = 15
-			OR = {
-				has_trait = ambitious
-				has_trait = arrogant
-				has_trait = disloyal
-				has_trait = greedy
-				has_trait = arbitrary
-			}
-		}
-		modifier = {
-			add = 15
-			opinion = {
-				target = liege
-				value < 30
-			}
-		}
-		modifier = {
-			add = -20
-			OR = {
-				has_trait = humble
-				has_trait = content
-				has_trait = loyal
-				has_trait = lazy
-				has_trait = craven
-			}
-		}
 	}
 }

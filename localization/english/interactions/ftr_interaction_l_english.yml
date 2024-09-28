@@ -67,3 +67,11 @@
  ftr_support_heir_options_tt:0 "Strategy of Support"
  ftr_support_in_secret_tt:0 "Support In Secret"
  ftr_support_in_public_tt:0 "Support In Public"
+
+ ftr_debug_change_government_interaction:0 "<FTR> Change Government"
+ ftr_debug_change_government_interaction_desc:0 "Change government"
+ ftr_debug_to_feudal_loc:0 "Feudal"
+ ftr_debug_to_admin_loc:0 "Administrative"
+ ftr_debug_to_tribal_loc:0 "Tribal"
+ ftr_debug_to_clan_loc:0 "Clan"
+ ftr_debug_to_burea_loc:0 "Centralism"

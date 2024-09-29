@@ -6,7 +6,10 @@ count_bureaucrat_male_common = {
 	tier = county
 	priority = 100
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 count_bureaucrat_female_common = {
@@ -16,7 +19,10 @@ count_bureaucrat_female_common = {
 	tier = county
 	priority = 100
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 count_bureaucrat_title_common = {
@@ -24,7 +30,10 @@ count_bureaucrat_title_common = {
 	tier = county
 	priority = 100
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 duchy_bureaucrat_male_common = {
@@ -34,7 +43,10 @@ duchy_bureaucrat_male_common = {
 	tier = duchy
 	priority = 100
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 duchy_bureaucrat_female_common = {
@@ -44,7 +56,10 @@ duchy_bureaucrat_female_common = {
 	tier = duchy
 	priority = 100
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 duchy_bureaucrat_title_common = {
@@ -52,7 +67,10 @@ duchy_bureaucrat_title_common = {
 	tier = duchy
 	priority = 100
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 kingdom_bureaucrat_male_common = {
@@ -62,7 +80,10 @@ kingdom_bureaucrat_male_common = {
 	tier = kingdom
 	priority = 100
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 kingdom_bureaucrat_female_common = {
@@ -72,7 +93,10 @@ kingdom_bureaucrat_female_common = {
 	tier = kingdom
 	priority = 100
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 kingdom_bureaucrat_title_common = {
@@ -80,7 +104,10 @@ kingdom_bureaucrat_title_common = {
 	tier = kingdom
 	priority = 100
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 count_bureaucrat_male_china = {
@@ -91,7 +118,10 @@ count_bureaucrat_male_china = {
 	priority = 120
 	heritages = { heritage_chinese }
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 count_bureaucrat_female_china = {
@@ -102,7 +132,10 @@ count_bureaucrat_female_china = {
 	priority = 120
 	heritages = { heritage_chinese }
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 count_bureaucrat_title_china = {
@@ -111,7 +144,10 @@ count_bureaucrat_title_china = {
 	priority = 120
 	heritages = { heritage_chinese }
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 duchy_bureaucrat_male_china = {
@@ -122,7 +158,10 @@ duchy_bureaucrat_male_china = {
 	priority = 120
 	heritages = { heritage_chinese }
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 duchy_bureaucrat_female_china = {
@@ -133,7 +172,10 @@ duchy_bureaucrat_female_china = {
 	priority = 120
 	heritages = { heritage_chinese }
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 duchy_bureaucrat_title_china = {
@@ -142,7 +184,10 @@ duchy_bureaucrat_title_china = {
 	priority = 120
 	heritages = { heritage_chinese }
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 kingdom_bureaucrat_male_china = {
@@ -153,7 +198,10 @@ kingdom_bureaucrat_male_china = {
 	priority = 120
 	heritages = { heritage_chinese }
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 kingdom_bureaucrat_female_china = {
@@ -164,7 +212,10 @@ kingdom_bureaucrat_female_china = {
 	priority = 120
 	heritages = { heritage_chinese }
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }
 
 kingdom_bureaucrat_title_china = {
@@ -173,5 +224,8 @@ kingdom_bureaucrat_title_china = {
 	priority = 120
 	heritages = { heritage_chinese }
 	governments = { centralism_government }
-	top_liege = no
+	flavourization_rules = { 
+		only_holder = yes
+		only_independent = no
+	}
 }

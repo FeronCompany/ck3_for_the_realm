@@ -1,4 +1,4 @@
-centralism = {
+﻿centralism = {
 	texture = "gfx/interface/icons/government_types/centralism_government.dds"
 	parent = government
 	alias = { centralism_government centralism_governments centralism_i }

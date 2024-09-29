@@ -801,6 +801,12 @@ ftr_coup_interaction = {
 		scope:actor = {
 			is_imprisoned = no
 		}
+		scope:actor = {
+			can_start_scheme = {
+				type = coup
+				target_character = scope:recipient
+			}
+		}
 	}
 	on_accept = {
 		scope:actor = {
@@ -808,9 +814,18 @@ ftr_coup_interaction = {
 				title = ftr_coup_interaction_notification
 				left_icon = scope:actor					
 				right_icon = scope:recipient
-				start_scheme = {
-					type = coup
-					target = scope:recipient
+				begin_scheme_with_agents_effect = {
+					SCHEME_TYPE = coup
+					TARGET_TYPE = target_character
+					TARGET_SCOPE = scope:recipient
+					# Success.
+					AGENT_1 = agent_thug
+					AGENT_2 = agent_ambusher
+					AGENT_3 = agent_muscle
+					# Speed.
+					AGENT_4 = agent_footpad
+					# Secrecy.
+					AGENT_5 = agent_lookout
 				}
 				stress_impact = {
 					compassionate = medium_stress_impact_gain

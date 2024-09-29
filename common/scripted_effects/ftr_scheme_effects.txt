@@ -8,11 +8,11 @@ ftr_coup_success_effect = {
 		scheme_owner = {
 			save_scope_as = owner
 		}
-		scheme_target = {
+		scheme_target_character = {
 			save_scope_as = target
 		}
 		hidden_effect = {
-			every_scheme_agent = {
+			every_scheme_agent_character = {
 				add_opinion = {
 					modifier = claimant_faction_member_opinion
 					target = scope:owner
@@ -112,9 +112,12 @@ ftr_coup_failure_effect = {
 		save_scope_as = coup_scheme
 	}
 	scope:coup_scheme = {
-		every_scheme_agent = {
+		scheme_target_character = {
+			save_scope_as = target
+		}
+		every_scheme_agent_character = {
 			limit = { NOT = { this = scope:coup_scheme.scheme_owner } }
-			scope:coup_scheme.scheme_target = {
+			scope:target = {
 				imprison = {
 					target = prev
 					type = dungeon
@@ -125,7 +128,7 @@ ftr_coup_failure_effect = {
 				}
 			}
 		}
-		scheme_target = {
+		scope:target = {
 			imprison = {
 				target = scope:coup_scheme.scheme_owner
 				type = dungeon

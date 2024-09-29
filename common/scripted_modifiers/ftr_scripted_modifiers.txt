@@ -357,6 +357,13 @@ hostile_coup_agent_base_join_chance_modifier = {
 		desc = SCHEME_AGAINST_SPOUSE_POSITIVE
 	}
 
+	# Regent Never support such rebellion
+	modifier = {
+		add = -100
+		is_diarch_of_target = scope:target
+		desc = FTR_SCHEME_AGAINST_REGENT_NEGATIVE
+	}
+
 	#Characters whose Faith has 'Sacred Lies' are inherently predisposed to joining schemes
 	modifier = {
 		add = 20

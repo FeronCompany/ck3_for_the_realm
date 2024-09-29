@@ -32,9 +32,6 @@ ftr_diarch_replace_council_position_interaction = {
 					diarchy_swing >= 50
 				}
 			}
-			liege = {
-				NOT = { has_realm_law = ftr_council_power_2 }
-			}
 		}
 		scope:recipient = {
 			NOT = {

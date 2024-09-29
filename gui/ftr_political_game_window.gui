@@ -16,7 +16,7 @@
 			size = { 100% 100% }
 			vbox = {
 				using = Window_Margins
-				header_with_picture = {
+				widget_header_with_picture = {
 					layoutpolicy_horizontal = expanding
 					minimumsize = { 0 120 }
 					blockoverride "header_text" {

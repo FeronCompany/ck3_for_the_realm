@@ -5,15 +5,6 @@
 	}
 }
 
-quarterly_playable_pulse = {
-	events = {
-		ftr_realm_event.1005 # Top liege send bureaucrat to manage your land
-		ftr_realm_event.1006 # Add title law to bureaucrat titles
-		ftr_realm_event.1007 # Change government for ruler who has bureacrat titles
-		ftr_realm_event.1010 # Autoremove bureacratic_succession_law for independent_ruler
-	}
-}
-
 five_year_playable_pulse = {
 	on_actions = {
 		ftr_random_earthquake_effects

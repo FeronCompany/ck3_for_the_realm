@@ -23,7 +23,7 @@ ftr_coup_ongoing.1000 = {
 	trigger = {
 		NOT = { has_variable = has_ftr_coup_ongoing_1000 }
 		scope:scheme = {
-			any_scheme_agent = {
+			any_scheme_agent_character = {
 				intrigue > 10
 				NOT = { root = this }
 			}
@@ -32,7 +32,7 @@ ftr_coup_ongoing.1000 = {
 
 	immediate = {
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					intrigue > 10
 					NOT = { root = this }
@@ -99,7 +99,7 @@ ftr_coup_ongoing.1001 = {
 	
 	trigger = {
 		scope:scheme = {
-			any_scheme_agent = {
+			any_scheme_agent_character = {
 				OR = {
 					has_trait = lustful
 					has_trait = gluttonous
@@ -117,7 +117,7 @@ ftr_coup_ongoing.1001 = {
 			days = 365
 		}
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					OR = {
 						has_trait = lustful
@@ -129,7 +129,7 @@ ftr_coup_ongoing.1001 = {
 			}
 			expose_scheme = yes
 			expose_scheme_agent = scope:agent
-			scheme_target = {
+			scheme_target_character = {
 				trigger_event = ftr_coup_ongoing.2001
 			}
 		}
@@ -175,7 +175,7 @@ ftr_coup_ongoing.1002 = {
 	trigger = {
 		NOT = { has_variable = has_ftr_coup_ongoing_1002 }
 		scope:scheme = {
-			any_scheme_agent = {
+			any_scheme_agent_character = {
 				intrigue > 10
 				NOT = { root = this }
 			}
@@ -184,7 +184,7 @@ ftr_coup_ongoing.1002 = {
 
 	immediate = {
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					intrigue > 10
 					NOT = { root = this }
@@ -275,7 +275,7 @@ ftr_coup_ongoing.1003 = {
 			is_courtier_of = scope:target
 		}
 		scope:scheme = {
-			any_scheme_agent = {
+			any_scheme_agent_character = {
 				is_courtier_of = scope:target
 				NOT = { root = this }
 			}
@@ -284,7 +284,7 @@ ftr_coup_ongoing.1003 = {
 
 	immediate = {
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					is_courtier_of = scope:target
 					NOT = { root = this }
@@ -372,7 +372,7 @@ ftr_coup_ongoing.1004 = {
 	trigger = {
 		NOT = { has_variable = has_ftr_coup_ongoing_1004 }
 		scope:scheme = {
-			any_scheme_agent = {
+			any_scheme_agent_character = {
 				NOT = { root = this }
 				is_landed = no
 				opinion = {
@@ -385,7 +385,7 @@ ftr_coup_ongoing.1004 = {
 
 	immediate = {
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					NOT = { root = this }
 					is_landed = no
@@ -453,7 +453,7 @@ ftr_coup_ongoing.1005 = {
 	trigger = {
 		NOT = { has_variable = has_ftr_coup_ongoing_1005 }
 		scope:scheme = {
-			any_scheme_agent = {
+			any_scheme_agent_character = {
 				intrigue > 10
 				NOT = { root = this }
 			}
@@ -462,7 +462,7 @@ ftr_coup_ongoing.1005 = {
 
 	immediate = {
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					intrigue > 10
 					NOT = { root = this }
@@ -552,7 +552,7 @@ ftr_coup_ongoing.1006 = {
 	trigger = {
 		NOT = { has_variable = has_ftr_coup_ongoing_1006 }
 		scope:scheme = {
-			any_scheme_agent = {
+			any_scheme_agent_character = {
 				intrigue > 10
 				NOT = { root = this }
 			}
@@ -561,7 +561,7 @@ ftr_coup_ongoing.1006 = {
 
 	immediate = {
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					intrigue > 10
 					NOT = { root = this }
@@ -649,7 +649,7 @@ ftr_coup_ongoing.1007 = {
 	trigger = {
 		NOT = { has_variable = has_ftr_coup_ongoing_1007 }
 		scope:scheme = {
-			any_scheme_agent = {
+			any_scheme_agent_character = {
 				intrigue > 10
 				NOT = { root = this }
 			}
@@ -658,7 +658,7 @@ ftr_coup_ongoing.1007 = {
 
 	immediate = {
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					intrigue > 10
 					NOT = { root = this }
@@ -741,7 +741,7 @@ ftr_coup_ongoing.1008 = {
 	trigger = {
 		NOT = { has_variable = has_ftr_coup_ongoing_1008 }
 		scope:scheme = {
-			any_scheme_agent = {
+			any_scheme_agent_character = {
 				intrigue > 10
 				NOT = { root = this }
 			}
@@ -750,7 +750,7 @@ ftr_coup_ongoing.1008 = {
 
 	immediate = {
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					intrigue > 10
 					NOT = { root = this }
@@ -840,7 +840,7 @@ ftr_coup_ongoing.1009 = {
 	trigger = {
 		NOT = { has_variable = has_ftr_coup_ongoing_1009 }
 		scope:scheme = {
-			any_scheme_agent = {
+			any_scheme_agent_character = {
 				OR = {
 					has_trait = craven
 					has_trait = impatient
@@ -856,7 +856,7 @@ ftr_coup_ongoing.1009 = {
 
 	immediate = {
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					OR = {
 						has_trait = craven
@@ -1010,7 +1010,7 @@ ftr_coup_ongoing.2002 = {
 			scheme_owner = {
 				save_scope_as = owner
 			}
-			every_scheme_agent = {
+			every_scheme_agent_character = {
 				limit = {
 					NOT = { scope:owner = this }
 				}

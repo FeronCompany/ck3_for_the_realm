@@ -1,4 +1,4 @@
-
+﻿
 ftr_debug_change_government_interaction = {
 	category = interaction_debug_main
 	use_diplomatic_range = no

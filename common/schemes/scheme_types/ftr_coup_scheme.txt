@@ -5,7 +5,7 @@
 	icon = icon_scheme_hostile
 	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
 	success_chance_growth_per_skill_point = t3_scgpsp_value
-	base_progress_goal = t3_base_phase_length_value
+	base_progress_goal = 60
 	minimum_success = 0
 	maximum_secrecy = 95
 	base_maximum_success = 95
@@ -13,7 +13,6 @@
 	discovery_desc = "COUP_DISCOVERY_DESC"		
 	cooldown = { years = 5 }
 	is_secret = yes
-	base_secrecy = 15
 	maximum_breaches = 5
 	phases_per_agent_charge = 1
 	speed_per_skill_point = t3_spsp_owner_value
@@ -92,6 +91,11 @@
 		base = 10
 		
 		coup_base_chance_modifier = yes
+
+		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
+		hostile_scheme_base_chance_modifier = yes
+		# Countermeasures.
+		apply_calculated_scheme_success_chance_adjustments_modifier = yes
 
 		modifier = {
 			add = 10
@@ -210,6 +214,11 @@
 		}
 	}
 
+	base_secrecy = {
+		add = secrecy_base_value
+		add = countermeasure_apply_secrecy_maluses_value
+	}
+
 	agent_leave_threshold = -25
 
 	on_start = {
@@ -234,35 +243,13 @@
 	}
 
 	on_phase_completed = {
-		random = {
-			chance = scope:scheme.scheme_success_chance
-			save_scope_value_as = {
-				name = scheme_successful
-				value = yes
-			}
-		}
-		scheme_target_character = {
-			save_scope_as = target
-		}
-		scheme_owner = {
-			save_scope_as = owner
-			if = {
-				limit = {
-					exists = scope:scheme_successful
-					scope:target = {
-						NOT = { exists = var:ftr_coup_sensed }
-					}
-				}
-				trigger_event = {
-					on_action = ftr_coup_success
-				}
-			}
-			else = {
-				trigger_event = {
-					on_action = ftr_coup_failure
-				}	
-			}
-		}
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		ftr_coup_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+
+	on_hud_click  = { 
+		ftr_coup_scheme_prep_effect = yes
 	}
 
 	on_monthly = {

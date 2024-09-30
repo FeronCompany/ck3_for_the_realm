@@ -5,6 +5,7 @@ namespace = ftr_coup_outcoming
 # 1000-1999 Successful outcomes
 # 2000-2999 Failed outcomes
 # 3000-3999 Coup Target notification
+# 4000-4999 New API Events
 
 # Break into palace succeeded
 ftr_coup_outcoming.1000 = {
@@ -477,6 +478,39 @@ ftr_coup_outcoming.3005 = {
 		name = ftr_coup_outcoming.3005.a
 		ai_chance = {
 			base = 10
+		}
+	}
+}
+
+#	Setup our rolls.
+ftr_coup_outcoming.4000 = {
+	hidden = yes
+
+	immediate = {
+		random = {
+			chance = scope:scheme.scheme_success_chance
+			save_scope_value_as = {
+				name = scheme_successful
+				value = yes
+			}
+		}
+		scope:owner = {
+			if = {
+				limit = {
+					exists = scope:scheme_successful
+					scope:target = {
+						NOT = { exists = var:ftr_coup_sensed }
+					}
+				}
+				trigger_event = {
+					on_action = ftr_coup_success
+				}
+			}
+			else = {
+				trigger_event = {
+					on_action = ftr_coup_failure
+				}	
+			}
 		}
 	}
 }

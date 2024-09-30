@@ -226,9 +226,9 @@ ftr_coup_ongoing.1002 = {
 						value = yes
 						days = 365
 					}
-					scope:scheme = {
-						add_scheme_progress = 2
-					}
+				}
+				scope:scheme = {
+					change_opportunities = 2
 				}
 			}
 			10 = {
@@ -321,14 +321,14 @@ ftr_coup_ongoing.1003 = {
 						left_icon = root
 						right_icon = scope:agent
 					}
-					scope:scheme = {
-						add_scheme_progress = 2
-					}
 					set_variable = {
 						name = ftr_coup_steal_map_succ
 						value = yes
 						days = 365
 					}
+				}
+				scope:scheme = {
+					change_opportunities = 2
 				}
 			}
 			10 = {
@@ -500,7 +500,6 @@ ftr_coup_ongoing.1005 = {
 						right_icon = scope:agent
 					}
 					scope:scheme = {
-						add_scheme_progress = 2
 						scheme_owner = {
 							set_variable = {
 								name = ftr_coup_method
@@ -514,6 +513,9 @@ ftr_coup_ongoing.1005 = {
 						value = yes
 						days = 365
 					}
+				}
+				scope:scheme = {
+					change_opportunities = 2
 				}
 			}
 			10 = {
@@ -603,9 +605,9 @@ ftr_coup_ongoing.1006 = {
 						value = yes
 						days = 365
 					}
-					scope:scheme = {
-						add_scheme_progress = 2
-					}
+				}
+				scope:scheme = {
+					change_opportunities = 2
 				}
 			}
 			10 = {
@@ -700,9 +702,9 @@ ftr_coup_ongoing.1007 = {
 						value = yes
 						days = 365
 					}
-					scope:scheme = {
-						add_scheme_progress = 2
-					}
+				}
+				scope:scheme = {
+					change_opportunities = 2
 				}
 			}
 			10 = {
@@ -793,7 +795,6 @@ ftr_coup_ongoing.1008 = {
 						days = 365
 					}
 					scope:scheme = {
-						add_scheme_progress = 2
 						scheme_owner = {
 							set_variable = {
 								name = ftr_coup_method
@@ -802,6 +803,9 @@ ftr_coup_ongoing.1008 = {
 							}
 						}
 					}
+				}
+				scope:scheme = {
+					change_opportunities = 2
 				}
 			}
 			10 = {
@@ -942,7 +946,7 @@ ftr_coup_ongoing.2000 = {
 			days = 365
 		}
 		scope:scheme = {
-			add_scheme_progress = 2
+			change_opportunities = 2
 		}
 	}
 }

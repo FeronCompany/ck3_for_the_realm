@@ -427,168 +427,6 @@ ftr_realm_event.1004 = {
 	after = {}
 }
 
-# Top liege designated bureaucrat to take your over-size land
-ftr_realm_event.1005 = {
-	type = character_event
-	title = ftr_realm_event.1005.t
-	desc = ftr_realm_event.1005.desc
-	theme = realm
-	left_portrait = {
-		character = root
-		animation = sadness
-	}
-	lower_right_portrait = {
-		character = scope:successor
-		animation = happiness
-	}
-	right_portrait = {
-		character = scope:top_liege
-		animation = personality_honorable
-	}
-
-	cooldown = { days = 10 }
-	trigger = {
-		is_independent_ruler = no
-		government_has_flag = government_is_centralism
-		domain_size >= domain_limit
-		any_sub_realm_county = {
-			holder = root
-			NOT = { this = root.capital_county }
-		}
-	}
-	weight_multiplier = {
-		base = 1
-	}
-
-	immediate = {
-		root.top_liege = {
-			save_scope_as = top_liege
-		}
-		root.liege = {
-			save_scope_as = liege
-		}
-		create_character = {
-			gender = male
-			location = scope:top_liege.location
-			culture = scope:top_liege.culture
-			faith = scope:top_liege.faith
-			save_scope_as = successor
-		}
-		random_sub_realm_county = {
-			limit = {
-				holder = root
-				NOT = { this = root.capital_county }
-			}
-			save_scope_as = deliver_county
-		}
-	}
-
-	option = {
-		name = ftr_realm_event.1005.a
-		create_title_and_vassal_change = {
-			type = granted
-			save_scope_as = change
-			add_claim_on_loss = no
-		}
-		scope:deliver_county = {
-			change_title_holder = {
-				holder = scope:successor
-				change = scope:change
-			}
-		}
-		resolve_title_and_vassal_change = scope:change
-		scope:successor = {
-			change_government = centralism_government
-			add_realm_law = autocracy_succession_law
-		}
-	}
-
-	after = {}
-}
-
-# Add title law to bureaucrat titles
-ftr_realm_event.1006 = {
-	hidden = yes
-	trigger = {
-		is_landed = yes
-		is_independent_ruler = no
-		government_has_flag = government_is_centralism
-		any_held_title = {
-			tier >= tier_duchy
-			NOT = {
-				has_title_law = bureacratic_succession_law
-			}
-		}
-	}
-	immediate = {
-		every_held_title = {
-			limit = {
-				tier >= tier_duchy
-				NOT = {
-					has_title_law = bureacratic_succession_law
-				}
-			}
-			add_title_law = bureacratic_succession_law
-		}
-	}
-}
-
-# Change government for ruler who has bureacrat titles
-ftr_realm_event.1007 = {
-	hidden = yes
-	trigger = {
-		is_landed = yes
-		is_independent_ruler = no
-		NOT = { government_has_flag = government_is_centralism }
-		any_held_title = {
-			tier >= tier_duchy
-			has_title_law = bureacratic_succession_law
-		}
-	}
-	immediate = {
-		change_government = centralism_government
-	}
-}
-
-# centralism_government vassal become warlord
-ftr_realm_event.1008 = {
-	type = character_event
-	title = ftr_realm_event.1008.t
-	desc = ftr_realm_event.1008.desc
-	theme = realm
-	left_portrait = {
-		character = root
-		animation = anger
-	}
-	right_portrait = {
-		character = scope:warlord_vassal
-		animation = marshal
-	}
-
-	immediate = {
-		hidden_effect = {
-			every_vassal = {
-				send_interface_message = {
-					title = ftr_vassal_transform_to_warlord_tt
-					left_icon = root
-					right_icon = scope:warlord_vassal
-					custom_description = {
-						text = ftr_vassal_transform_to_warlord_content_tt
-						subject = scope:warlord_vassal
-						object = root
-					}
-				}
-			}
-		}
-	}
-
-	option = {
-		name = ftr_realm_event.1008.a
-	}
-
-	after = {}
-}
-
 # Clear title law for other government types
 ftr_realm_event.1009 = {
 	hidden = yes
@@ -598,7 +436,6 @@ ftr_realm_event.1009 = {
 				OR = {
 					is_independent_ruler = yes
 					AND = {
-						NOT = { government_has_flag = government_is_warlord }
 						NOT = { government_has_flag = government_is_centralism }
 					}
 				}
@@ -606,27 +443,6 @@ ftr_realm_event.1009 = {
 			scope:title = {
 				clear_title_laws = yes
 			}
-		}
-	}
-}
-
-# Autoremove bureacratic_succession_law for independent_ruler
-ftr_realm_event.1010 = {
-	hidden = yes
-	trigger = {
-		is_independent_ruler = yes
-		any_held_title = {
-			tier >= tier_duchy
-			has_title_law = bureacratic_succession_law
-		}
-	}
-	immediate = {
-		every_held_title = {
-			limit = {
-				tier >= tier_duchy
-				has_title_law = bureacratic_succession_law
-			}
-			clear_title_laws = yes
 		}
 	}
 }

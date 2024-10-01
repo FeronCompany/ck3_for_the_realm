@@ -33,19 +33,19 @@ ftr_coup_ongoing = {
 		is_physically_able = yes
 	}
 	random_events = {
-		50 = 0
-		5 = ftr_coup_ongoing.1000 # Bribe servant
+		80 = 0
+		15 = ftr_coup_ongoing.1000 # Bribe servant
 		5 = ftr_coup_ongoing.1001 # Agent exposed
-		5 = ftr_coup_ongoing.1002 # Undercover infiltrated into the Guard
+		15 = ftr_coup_ongoing.1002 # Undercover infiltrated into the Guard
 		5 = ftr_coup_ongoing.1003 # Steal castle map
 		5 = ftr_coup_ongoing.1004 # Agent hesitated
 		5 = ftr_coup_ongoing.1005 # Send thief to infiltrate the castle
-		5 = ftr_coup_ongoing.1006 # Counterfeit a pass
-		5 = ftr_coup_ongoing.1007 # Create chaos in the surrounding area
-		5 = ftr_coup_ongoing.1008 # Make a trap
-		5 = ftr_coup_ongoing.1009 # Action early because of misunderstanding
+		10 = ftr_coup_ongoing.1006 # Counterfeit a pass
+		15 = ftr_coup_ongoing.1007 # Create chaos in the surrounding area
+		15 = ftr_coup_ongoing.1008 # Make a trap
+		10 = ftr_coup_ongoing.1009 # Action early because of misunderstanding
 	}
 	events = {
-		ftr_coup_ongoing.2004 # Auto progress
+		#ftr_coup_ongoing.2004 # Auto progress
 	}
 }

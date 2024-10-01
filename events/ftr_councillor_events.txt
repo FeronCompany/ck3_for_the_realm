@@ -1420,6 +1420,12 @@ ftr_councillor_event.0020 = {
 					allied_through_owner = scope:actor
 					allied_through_target = scope:recipient
 				}
+				scope:recipient = {
+					add_opinion = {
+						modifier = perk_negotiated_alliance_opinion
+						target = scope:actor
+					}
+				}
 			}
 		}
 		scope:secondary_actor = {

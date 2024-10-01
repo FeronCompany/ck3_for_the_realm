@@ -8,11 +8,11 @@ ftr_coup_success_effect = {
 		scheme_owner = {
 			save_scope_as = owner
 		}
-		scheme_target = {
+		scheme_target_character = {
 			save_scope_as = target
 		}
 		hidden_effect = {
-			every_scheme_agent = {
+			every_scheme_agent_character = {
 				add_opinion = {
 					modifier = claimant_faction_member_opinion
 					target = scope:owner
@@ -29,10 +29,7 @@ ftr_coup_success_effect = {
 			target = scope:target
 			type = dungeon
 		}
-		add_character_modifier = {
-			modifier = ftr_usurper_modifier
-			years = 10
-		}
+		add_legitimacy = massive_legitimacy_loss
 		add_dread = 50
 	}
 	create_title_and_vassal_change = {
@@ -112,9 +109,12 @@ ftr_coup_failure_effect = {
 		save_scope_as = coup_scheme
 	}
 	scope:coup_scheme = {
-		every_scheme_agent = {
+		scheme_target_character = {
+			save_scope_as = target
+		}
+		every_scheme_agent_character = {
 			limit = { NOT = { this = scope:coup_scheme.scheme_owner } }
-			scope:coup_scheme.scheme_target = {
+			scope:target = {
 				imprison = {
 					target = prev
 					type = dungeon
@@ -125,7 +125,7 @@ ftr_coup_failure_effect = {
 				}
 			}
 		}
-		scheme_target = {
+		scope:target = {
 			imprison = {
 				target = scope:coup_scheme.scheme_owner
 				type = dungeon
@@ -136,5 +136,25 @@ ftr_coup_failure_effect = {
 			}
 		}
 		end_scheme = yes
+	}
+}
+
+ftr_coup_scheme_prep_effect = {
+	save_scope_as = scheme
+	scheme_owner = {
+		save_scope_as = owner
+	}
+	scheme_target_character = {
+		save_scope_as = target
+	}
+	save_scope_value_as = {
+		name = follow_up_event
+		value = event_id:ftr_coup_outcoming.4000
+	}
+	if = {
+		limit = {
+			NOT = { exists = scope:suppress_next_event }
+		}
+		scheme_owner = { trigger_event = scheme_critical_moments.0002 }
 	}
 }

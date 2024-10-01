@@ -67,3 +67,11 @@
  ftr_support_heir_options_tt:0 "支持策略"
  ftr_support_in_secret_tt:0 "秘密支持"
  ftr_support_in_public_tt:0 "公开支持"
+
+ ftr_debug_change_government_interaction:0 "<FTR>修改政体"
+ ftr_debug_change_government_interaction_desc:0 "修改政体。"
+ ftr_debug_to_feudal_loc:0 "封建制"
+ ftr_debug_to_admin_loc:0 "行政制"
+ ftr_debug_to_tribal_loc:0 "部落制"
+ ftr_debug_to_clan_loc:0 "氏族制"
+ ftr_debug_to_burea_loc:0 "集权制"

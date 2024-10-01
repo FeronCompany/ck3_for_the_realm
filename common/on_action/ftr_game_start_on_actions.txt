@@ -2,42 +2,6 @@
 
 on_game_start = {
 	on_actions = {
-		ftr_change_government_on_start_effect
-	}
-}
-
-ftr_change_government_on_start_effect = {
-	effect = {
-		every_ruler = {
-			if = {
-				limit = {
-					has_title = title:e_byzantium
-				}
-				save_temporary_scope_as = emperor
-			}
-		}
-		scope:emperor = {
-			change_government = centralism_government
-			add_realm_law = autocracy_succession_law
-			primary_title = {
-				add_title_law = tyrant_succession_law
-			}
-			every_vassal = {
-				limit = {
-					primary_title.tier >= tier_county
-					government_has_flag = government_is_feudal
-				}
-				change_government = centralism_government
-				every_held_title = {
-					limit = {
-						tier >= tier_duchy
-						NOT = {
-							has_title_law = bureacratic_succession_law
-						}
-					}
-					add_title_law = bureacratic_succession_law
-				}
-			}
-		}
+		#ftr_change_government_on_start_effect
 	}
 }

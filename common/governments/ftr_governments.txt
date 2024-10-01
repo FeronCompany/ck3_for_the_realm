@@ -1,9 +1,17 @@
 ﻿centralism_government = {
-	create_cadet_branches = yes
-	rulers_should_have_dynasty = yes
-	dynasty_named_realms = yes
-	royal_court = yes
-	legitimacy = yes
+	government_rules = {
+		create_cadet_branches = yes
+		rulers_should_have_dynasty = yes
+		dynasty_named_realms = yes
+		royal_court = yes
+		legitimacy = yes
+		#administrative = yes
+		#landless_playable = yes
+		state_faith = yes
+		use_as_base_on_landed = yes
+		use_as_base_on_rank_up = yes
+		inherit_from_dynastic_government = no
+	}
 
 	fallback = 2
 	primary_holding = castle_holding
@@ -12,12 +20,6 @@
 
 	vassal_contract = {
 		bureaucratic_tax_collector_obligations
-		centralism_special_contract
-		religious_rights
-		fortification_rights
-		coinage_rights
-		council_rights
-		men_of_arms_ban
 	}
 
 	ai = {
@@ -26,30 +28,4 @@
 
 	flag = government_is_centralism
 	color = hsv{ 0.75 0.80 0.85 }
-}
-
-ftr_warlord_government = {
-	create_cadet_branches = yes
-	rulers_should_have_dynasty = yes
-	dynasty_named_realms = yes
-	royal_court = yes
-	fallback = 3
-	primary_holding = castle_holding
-	valid_holdings = { city_holding }
-	required_county_holdings = { castle_holding city_holding }
-
-	vassal_contract = { warlord_government_obligations }
-
-	character_modifier = {
-		short_reign_duration_mult = 0.5
-		army_maintenance_mult = -0.25
-		ai_war_chance = 0.25
-	}
-
-	ai = {
-		use_legends = yes
-	}
-
-	flag = government_is_warlord
-	color = hsv{ 0.20 0.45 0.50 }
 }

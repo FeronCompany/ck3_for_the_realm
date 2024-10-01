@@ -1,5 +1,8 @@
 ﻿solitude_time_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
+	decision_group_type = courtier
 	desc = solitude_time_decision_desc
 	selection_tooltip = solitude_time_decision_tooltip
 	cooldown = { days = 1825 }
@@ -40,7 +43,10 @@
 }
 
 ftr_call_traverser_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
+	decision_group_type = courtier
 	desc = ftr_call_traverser_decision_desc
 	selection_tooltip = ftr_call_traverser_decision_tooltip
 	#cooldown = { days = 1825 }

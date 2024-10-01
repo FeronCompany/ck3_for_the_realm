@@ -1,4 +1,4 @@
-version="A.I.2"
+version="A.J.0"
 tags={
 	"Character Interactions"
 	"Decisions"
@@ -7,5 +7,5 @@ tags={
 }
 name="For The Realm"
 picture="thumbnail.png"
-supported_version="1.12.*"
+supported_version="1.13.*"
 remote_file_id="2891075410"

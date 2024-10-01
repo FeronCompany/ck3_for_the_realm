@@ -1,2 +1,2 @@
-﻿gui/ftr_hud_political_game.gui = ftr_hud_political_game
-gui/ftr_political_game_window.gui = ftr_political_game_window
+﻿#gui/ftr_hud_political_game.gui = ftr_hud_political_game
+#gui/ftr_political_game_window.gui = ftr_political_game_window

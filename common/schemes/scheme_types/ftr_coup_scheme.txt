@@ -1,21 +1,23 @@
 ﻿coup = {
 	skill = intrigue
 	desc = coup_desc_general
-	hostile = yes
+	category = hostile
 	icon = icon_scheme_hostile
-	power_per_skill_point = 3.0
-	resistance_per_skill_point = 3.0
-	power_per_agent_skill_point = 0.5
-	minimum_progress_chance = 10
-	maximum_progress_chance = 90
+	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
+	success_chance_growth_per_skill_point = t3_scgpsp_value
+	base_progress_goal = 60
 	minimum_success = 0
 	maximum_secrecy = 95
-	maximum_success = 95
+	base_maximum_success = 95
 	success_desc = "COUP_SUCCESS_DESC"
 	discovery_desc = "COUP_DISCOVERY_DESC"		
-	cooldown = { years = 10 }
+	cooldown = { years = 5 }
 	is_secret = yes
-	base_secrecy = 15
+	maximum_breaches = 5
+	phases_per_agent_charge = 1
+	speed_per_skill_point = t3_spsp_owner_value
+	speed_per_target_skill_point = t3_spsp_target_value
+	target_type = character
 	
 	allow = {
 		age >= 16
@@ -37,10 +39,9 @@
 		}
 	}
 
-	valid_agent = {
-		age >= 14
-		is_imprisoned = no
-	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers guests scripted_relations }
+	agent_groups_target_character_perspective = { courtiers vassals }
 	
 	agent_join_chance = {
 		base = 0
@@ -83,10 +84,18 @@
 		house_feud_hostile_scheme_agent_modifier = yes
 	}
 	
+	odds_prediction = {
+		min = 20
+	}
 	base_success_chance = {
-		base = 0
+		base = 10
 		
 		coup_base_chance_modifier = yes
+
+		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
+		hostile_scheme_base_chance_modifier = yes
+		# Countermeasures.
+		apply_calculated_scheme_success_chance_adjustments_modifier = yes
 
 		modifier = {
 			add = 10
@@ -204,50 +213,54 @@
 			}
 		}
 	}
-	
-	agent_success_chance = {
-		base = 0
-		coup_agent_success_chance_modifier = yes #Adds a value depending on their "closeness" to target
+
+	base_secrecy = {
+		add = secrecy_base_value
+		add = countermeasure_apply_secrecy_maluses_value
 	}
+
 	agent_leave_threshold = -25
 
-	on_ready = {
-		random = {
-			chance = scope:scheme.scheme_success_chance
-			save_scope_value_as = {
-				name = scheme_successful
-				value = yes
-			}
+	on_start = {
+		set_variable = {
+			name = apply_countermeasures
+			value = flag:calculating
 		}
-		scope:owner = {
-			if = {
-				limit = {
-					exists = scope:scheme_successful
-					scope:target = {
-						NOT = { exists = var:ftr_coup_sensed }
-					}
-				}
-				trigger_event = {
-					on_action = ftr_coup_success
+		add_scheme_starting_opportunities_intrigue_effect = yes
+		# Fallback agents — a balanced config if you start the scheme from script.
+		if = {
+			limit = {
+				scheme_owner = {
+					NOT = { has_variable = agents_added }
 				}
 			}
-			else = {
-				trigger_event = {
-					on_action = ftr_coup_failure
-				}	
-			}
+			add_agent_slot = agent_thug
+			add_agent_slot = agent_ambusher
+			add_agent_slot = agent_muscle
+			add_agent_slot = agent_footpad
+			add_agent_slot = agent_lookout
 		}
+	}
+
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		ftr_coup_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+
+	on_hud_click  = { 
+		ftr_coup_scheme_prep_effect = yes
 	}
 
 	on_monthly = {
 		save_scope_as = scheme
-		scheme_target = {
+		scheme_target_character = {
 			save_scope_as = target
 		}
 		scheme_owner = {
 			save_scope_as = owner
 		}
-		hostile_scheme_discovery_chance_effect = yes
+		hostile_scheme_monthly_discovery_chance_effect = yes
 		if = {
 			limit = {
 				NOT = { exists = scope:discovery_event_happening }
@@ -262,7 +275,7 @@
 
 	
 	on_invalidated = {
-		scheme_target = {
+		scheme_target_character = {
 			save_scope_as = target
 		}
 		scheme_owner = {

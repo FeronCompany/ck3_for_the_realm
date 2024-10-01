@@ -2,17 +2,14 @@
 	skill = learning
 	desc = combat_guide_desc_general
 	cooldown = { months = 12 }
-	uses_agents = no
-	power_per_skill_point = 4
-	spymaster_power_per_skill_point = 0	
-	resistance_per_skill_point = 0
-	spymaster_resistance_per_skill_point = 0
 	uses_resistance = no
-	minimum_progress_chance = 5
-	maximum_progress_chance = 95
+	
 	minimum_success = 5
-	maximum_success = 95
+	base_maximum_success = 95
+	base_progress_goal = 365
 	icon = icon_scheme_personal
+	is_basic = yes
+	target_type = character
 	
 	allow = {
 		age >= 16
@@ -29,6 +26,10 @@
 				in_diplomatic_range = scope:owner
 			}
 		}
+	}
+
+	odds_prediction = {
+		min = 20
 	}
 
 	base_success_chance = {
@@ -97,7 +98,7 @@
 		}
 	}
 
-	on_ready = {
+	on_phase_completed = {
 		random = {
 			chance = scope:scheme.scheme_success_chance
 
@@ -124,7 +125,7 @@
 	}
 
 	on_invalidated = {
-		scheme_target = {
+		scheme_target_character = {
 			save_scope_as = target
 		}
 		scheme_owner = {
@@ -183,7 +184,7 @@
 
 	on_monthly = {
 		save_scope_as = scheme
-		scheme_target = { save_scope_as = target }
+		scheme_target_character = { save_scope_as = target }
 		scheme_owner = {
 			save_scope_as = owner
 			trigger_event = { on_action = combat_guide_ongoing }

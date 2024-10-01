@@ -10,7 +10,6 @@
 		state_faith = yes
 		use_as_base_on_landed = yes
 		use_as_base_on_rank_up = yes
-		inherit_from_dynastic_government = no
 	}
 
 	fallback = 2
@@ -28,4 +27,58 @@
 
 	flag = government_is_centralism
 	color = hsv{ 0.75 0.80 0.85 }
+}
+
+################### OVERRIDE ###########################################################
+administrative_government = {
+	government_rules = {
+		create_cadet_branches = yes
+		rulers_should_have_dynasty = yes
+		dynasty_named_realms = no
+		royal_court = yes
+		administrative = yes
+		landless_playable = yes
+		legitimacy = yes
+		state_faith = yes
+		use_as_base_on_landed = yes
+		use_as_base_on_rank_up = yes
+		inherit_from_dynastic_government = no
+	}
+
+	domicile_type = estate
+
+	fallback = 3
+
+	primary_holding = castle_holding
+	valid_holdings = { city_holding }
+	required_county_holdings = { castle_holding city_holding church_holding }
+
+	vassal_contract = {
+		administrative_obligations
+		administrative_themes
+	}
+
+	character_modifier = {
+		levy_size = -0.33
+		feudal_government_tax_contribution_mult = -0.5
+		feudal_government_levy_contribution_mult = -0.5
+		clan_government_tax_contribution_mult = -0.5
+		clan_government_levy_contribution_mult = -0.5
+		
+		############################ OVERRIDE ############################################
+		# men_at_arms_cap = -2
+		# men_at_arms_limit = -2
+		# knight_limit = -5
+		# vassal_limit = 100
+		############################ OVERRIDE ############################################
+	}
+
+	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
+	flag = government_is_administrative
+
+	# These flags only exist for loc and in-game descriptions
+	flag = government_has_influence
+	flag = government_has_title_men_at_arms
+	flag = government_has_powerful_families
+	color = { 72 6 92 }
 }

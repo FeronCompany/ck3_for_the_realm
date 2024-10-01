@@ -9,6 +9,7 @@ count_bureaucrat_male_common = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -22,6 +23,7 @@ count_bureaucrat_female_common = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -33,6 +35,7 @@ count_bureaucrat_title_common = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -46,6 +49,7 @@ duchy_bureaucrat_male_common = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -59,6 +63,7 @@ duchy_bureaucrat_female_common = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -70,6 +75,7 @@ duchy_bureaucrat_title_common = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -83,6 +89,7 @@ kingdom_bureaucrat_male_common = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -96,6 +103,7 @@ kingdom_bureaucrat_female_common = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -107,6 +115,7 @@ kingdom_bureaucrat_title_common = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -121,6 +130,7 @@ count_bureaucrat_male_china = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -135,6 +145,7 @@ count_bureaucrat_female_china = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -147,6 +158,7 @@ count_bureaucrat_title_china = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -161,6 +173,7 @@ duchy_bureaucrat_male_china = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -175,6 +188,7 @@ duchy_bureaucrat_female_china = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -187,6 +201,7 @@ duchy_bureaucrat_title_china = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -201,6 +216,7 @@ kingdom_bureaucrat_male_china = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -215,6 +231,7 @@ kingdom_bureaucrat_female_china = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }
 
@@ -227,5 +244,6 @@ kingdom_bureaucrat_title_china = {
 	flavourization_rules = { 
 		only_holder = yes
 		only_independent = no
+		top_liege = no
 	}
 }

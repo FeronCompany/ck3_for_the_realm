@@ -29,10 +29,7 @@ ftr_coup_success_effect = {
 			target = scope:target
 			type = dungeon
 		}
-		add_character_modifier = {
-			modifier = ftr_usurper_modifier
-			years = 10
-		}
+		add_legitimacy = massive_legitimacy_loss
 		add_dread = 50
 	}
 	create_title_and_vassal_change = {

@@ -427,45 +427,6 @@ ftr_realm_event.1004 = {
 	after = {}
 }
 
-# centralism_government vassal become warlord
-ftr_realm_event.1008 = {
-	type = character_event
-	title = ftr_realm_event.1008.t
-	desc = ftr_realm_event.1008.desc
-	theme = realm
-	left_portrait = {
-		character = root
-		animation = anger
-	}
-	right_portrait = {
-		character = scope:warlord_vassal
-		animation = marshal
-	}
-
-	immediate = {
-		hidden_effect = {
-			every_vassal = {
-				send_interface_message = {
-					title = ftr_vassal_transform_to_warlord_tt
-					left_icon = root
-					right_icon = scope:warlord_vassal
-					custom_description = {
-						text = ftr_vassal_transform_to_warlord_content_tt
-						subject = scope:warlord_vassal
-						object = root
-					}
-				}
-			}
-		}
-	}
-
-	option = {
-		name = ftr_realm_event.1008.a
-	}
-
-	after = {}
-}
-
 # Clear title law for other government types
 ftr_realm_event.1009 = {
 	hidden = yes

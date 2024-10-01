@@ -590,10 +590,6 @@ ftr_send_envoy_interaction = {
 		}
 		scope:actor = {
 			primary_title.tier >= tier_county
-			OR = {
-				has_realm_law = ftr_council_power_1
-				has_realm_law = ftr_council_power_2
-			}
 		}
 		scope:recipient = {
 			primary_title.tier >= tier_county

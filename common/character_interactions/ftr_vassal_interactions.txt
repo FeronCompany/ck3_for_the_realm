@@ -77,6 +77,13 @@ ftr_depose_bureacrat_interaction = {
 	on_decline_summary = general_rebellion_decline_summary
 	populate_actor_list = {
 		scope:actor = {
+			if = {
+				limit = {
+					is_adult = yes
+					is_physically_able = yes
+				}
+				add_to_list = characters
+			}
 			every_courtier = {
 				limit = {
 					is_adult = yes
@@ -186,16 +193,6 @@ ftr_depose_bureacrat_interaction = {
 			}
 		}
 		resolve_title_and_vassal_change = scope:change
-		scope:secondary_actor = {
-			change_government = centralism_government
-			add_realm_law = autocracy_succession_law
-			every_held_title = {
-				limit = {
-					tier > tier_county
-				}
-				add_title_law = bureacratic_succession_law
-			}
-		}
 	}
 	on_auto_accept = {}
 	on_decline = {
@@ -450,6 +447,13 @@ ftr_request_depose_interaction = {
 	notification_text = ftr_request_depose_interaction_text
 	populate_actor_list = {
 		scope:actor = {
+			if = {
+				limit = {
+					is_adult = yes
+					is_physically_able = yes
+				}
+				add_to_list = characters
+			}
 			every_courtier = {
 				limit = {
 					is_adult = yes
@@ -575,16 +579,6 @@ ftr_request_depose_interaction = {
 			}
 		}
 		resolve_title_and_vassal_change = scope:change
-		scope:secondary_actor = {
-			change_government = centralism_government
-			add_realm_law = autocracy_succession_law
-			every_held_title = {
-				limit = {
-					tier > tier_county
-				}
-				add_title_law = bureacratic_succession_law
-			}
-		}
 	}
 	on_auto_accept = {}
 	on_decline = {

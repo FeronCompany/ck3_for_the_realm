@@ -51,9 +51,6 @@
 		potential = {
 			NOT = { government_has_flag = government_is_clan }
 			NOT = { government_has_flag = government_is_administrative }
-
-			############### OVERRIDE ##############
-			NOT = { government_has_flag = government_is_centralism }
 		}
 	}
 
@@ -109,9 +106,6 @@
 		potential = {
 			NOT = { government_has_flag = government_is_clan }
 			NOT = { government_has_flag = government_is_administrative }
-
-			############### OVERRIDE ##############
-			NOT = { government_has_flag = government_is_centralism }
 		}
 	}
 
@@ -171,9 +165,6 @@
 		potential = {
 			NOT = { government_has_flag = government_is_clan }
 			NOT = { government_has_flag = government_is_administrative }
-
-			############### OVERRIDE ##############
-			NOT = { government_has_flag = government_is_centralism }
 		}
 	}
 
@@ -243,9 +234,6 @@
 
 		potential = {
 			NOT = { government_has_flag = government_is_administrative }
-
-			############### OVERRIDE ##############
-			NOT = { government_has_flag = government_is_centralism }
 		}
 	}
 
@@ -308,9 +296,6 @@
 
 		potential = {
 			NOT = { government_has_flag = government_is_administrative }
-
-			############### OVERRIDE ##############
-			NOT = { government_has_flag = government_is_centralism }
 		}
 	}
 
@@ -389,9 +374,6 @@
 
 		potential = {
 			NOT = { government_has_flag = government_is_administrative }
-
-			############### OVERRIDE ##############
-			NOT = { government_has_flag = government_is_centralism }
 		}
 	}
 
@@ -529,26 +511,63 @@
 	}
 
 	################ OVERRIDE #########################################################################
+	#autocracy_succession_law = {
+	#	can_keep = {
+	#		OR = {
+	#			government_has_flag = government_is_centralism
+	#		}
+	#	}
+	#	can_have = {
+	#		OR = {
+	#			government_has_flag = government_is_centralism
+	#		}
+	#	}
+	#	can_pass = {
+	#		OR = {
+	#			government_has_flag = government_is_centralism
+	#		}
+	#	}
+	#	should_start_with = {
+	#		OR = {
+	#			government_has_flag = government_is_centralism
+	#		}
+	#	}
+	#	succession = {
+	#		order_of_succession = inheritance
+	#		traversal_order = children
+	#		rank = oldest
+	#		title_division = single_heir
+	#	}
+	#	modifier = {
+	#		glory_hound_opinion = -10
+	#		parochial_opinion = -5
+	#		player_heir_opinion = 20
+	#		eligible_child_except_player_heir_opinion = -5
+	#	}
+	#	pass_cost = {
+	#		prestige = change_succession_law_prestige_cost
+	#	}
+	#	potential = {
+	#		government_has_flag = government_is_centralism
+	#	}
+	#	flag = can_designate_heirs
+	#}
+
 	autocracy_succession_law = {
 		can_keep = {
-			OR = {
-				government_has_flag = government_is_centralism
-			}
+			can_have_acclamation_succession_law_trigger = yes
 		}
 		can_have = {
-			OR = {
-				government_has_flag = government_is_centralism
-			}
+			can_have_acclamation_succession_law_trigger = yes
 		}
 		can_pass = {
-			OR = {
-				government_has_flag = government_is_centralism
-			}
+			can_have_acclamation_succession_law_trigger = yes
+			NOT = { has_realm_law = acclamation_succession_law }
 		}
 		should_start_with = {
-			OR = {
-				government_has_flag = government_is_centralism
-			}
+			has_ep3_dlc_trigger = yes
+			NOT = { has_title = title:e_byzantium }
+			government_allows = administrative
 		}
 		succession = {
 			order_of_succession = inheritance
@@ -557,12 +576,16 @@
 			title_division = single_heir
 		}
 		modifier = {
+			glory_hound_opinion = -10
+			parochial_opinion = -5
+			player_heir_opinion = 10
+			eligible_child_except_player_heir_opinion = -20
 		}
 		pass_cost = {
 			prestige = change_succession_law_prestige_cost
 		}
 		potential = {
-			government_has_flag = government_is_centralism
+			government_allows = administrative
 		}
 		flag = can_designate_heirs
 	}

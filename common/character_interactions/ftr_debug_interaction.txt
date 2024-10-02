@@ -7,7 +7,7 @@ ftr_debug_change_government_interaction = {
 
 	is_shown = {
 		debug_only = yes
-		NOT = { scope:recipient = scope:actor }
+		#NOT = { scope:recipient = scope:actor }
 	}
 
 	send_option = {

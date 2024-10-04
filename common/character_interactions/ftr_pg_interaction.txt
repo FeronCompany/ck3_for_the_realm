@@ -1,117 +1,4 @@
 ﻿
-######### Bribe ##########
-ftr_bribe_interaction = {
-	category = interaction_category_diplomacy
-	common_interaction = yes
-	cooldown_against_recipient = { years = 5 }
-	desc = ftr_bribe_interaction_desc
-	greeting = positive
-	notification_text = ftr_bribe_interaction_notification
-	ai_targets = {
-		ai_recipients = liege
-		ai_recipients = peer_vassals
-		ai_recipients = vassals
-		max = 3
-	}
-	ai_frequency = 24
-	#ai_maybe = yes
-	is_shown = {
-		NOT = { scope:actor = scope:recipient }
-		scope:actor = {
-			is_landed = yes
-		}
-		OR = {
-			scope:actor.liege = scope:recipient
-			scope:recipient = {
-				liege = scope:actor
-				is_landed = yes
-			}
-			AND = {
-				scope:actor = {
-					is_independent_ruler = no
-				}
-				scope:actor.liege = scope:recipient.liege
-				scope:recipient = {
-					OR = {
-						is_landed = yes
-						is_councillor = yes
-					}
-				}
-			}
-		}
-	}
-	is_valid_showing_failures_only = {
-		scope:actor = {
-			NOT =  { is_at_war_with = scope:recipient }
-			is_imprisoned = no
-			is_capable_adult = yes
-			custom_description = {
-				text = ftr_enough_gold_tt
-				value = gift_value
-				gold >= gift_value
-			}
-		}
-		scope:recipient = {
-			is_imprisoned = no
-			is_capable_adult = yes
-		}
-	}
-	on_accept = {
-		scope:actor = {
-			pay_short_term_gold = {
-				gold = gift_value
-				target = scope:recipient
-			}
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_bribe_influence_gain_value
-			}
-			trigger_event = ftr_pg_interaction_event.0001
-		}
-	}
-	on_decline = {}
-	#auto_accept = yes
-	ai_accept = {
-		base = -40
-		opinion_modifier = {
-			opinion_target = scope:actor
-			who = scope:recipient
-			multiplier = 1
-			desc = AI_OPINION_REASON
-		}
-	}
-	ai_will_do = {
-		base = -40
-		opinion_modifier = {
-			opinion_target = scope:actor
-			who = scope:recipient
-			multiplier = 0.25
-			desc = AI_OPINION_REASON
-		}
-		modifier = {
-			add = -20
-			scope:actor = {
-				has_trait = greedy
-			}
-		}
-		modifier = {
-			add = 40
-			scope:actor = {
-				gold >= gift_value
-				ftr_political_influence_value < 40
-			}
-		}
-		modifier = {
-			add = 10
-			scope:actor.liege = scope:recipient
-		}
-		modifier = {
-			add = 10
-			scope:actor.liege = scope:recipient.liege
-			scope:recipient = { is_councillor = yes }
-		}
-	}
-}
-
 ######### Charge ##########
 ftr_charge_interaction = {
 	category = interaction_category_diplomacy
@@ -140,11 +27,6 @@ ftr_charge_interaction = {
 		scope:actor = {
 			is_imprisoned = no
 			is_capable_adult = yes
-			custom_description = {
-				text = "ftr_have_enough_pi_tt"
-				value = ftr_charge_cost_value
-				ftr_political_influence_value >= ftr_charge_cost_value
-			}
 		}
 		scope:recipient = {
 			is_imprisoned = no
@@ -153,11 +35,6 @@ ftr_charge_interaction = {
 		}
 	}
 	on_accept = {
-		scope:actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_charge_modify_value
-			}
-		}
 		scope:recipient = {
 			add_opinion = {
 				modifier = angry_opinion
@@ -178,76 +55,6 @@ ftr_charge_interaction = {
 			who = scope:recipient
 			multiplier = -2
 			desc = AI_OPINION_REASON
-		}
-	}
-}
-
-######### Slander ##########
-ftr_slander_interaction = {
-	category = interaction_category_diplomacy
-	common_interaction = yes
-	cooldown_against_recipient = { years = 5 }
-	desc = ftr_slander_interaction_desc
-	ai_targets = {
-		ai_recipients = peer_vassals
-		max = 2
-	}
-	ai_frequency = 36
-	is_shown = {
-		NOT = { scope:actor = scope:recipient }
-		scope:actor.top_liege = scope:recipient.top_liege
-	}
-	is_valid_showing_failures_only = {
-		scope:actor = {
-			is_imprisoned = no
-			is_capable_adult = yes
-			custom_description = {
-				text = "ftr_have_enough_pi_tt"
-				value = ftr_slander_cost_value
-				ftr_political_influence_value >= ftr_slander_cost_value
-			}
-		}
-		scope:recipient = {
-			is_imprisoned = no
-			is_capable_adult = yes
-		}
-	}
-	on_accept = {
-		scope:actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_slander_modify_value
-			}
-		}
-		scope:actor = {
-			trigger_event = {
-				id = ftr_pg_interaction_event.0101
-				days = { 30 90 }
-			}
-		}
-		show_as_tooltip = {
-			ftr_slander_effect = yes
-		}
-	}
-	on_decline = {}
-	auto_accept = yes
-	ai_will_do = {
-		base = -20
-		opinion_modifier = {
-			opinion_target = scope:actor
-			who = scope:recipient
-			multiplier = -2
-			desc = AI_OPINION_REASON
-		}
-		modifier = {
-			add = -50
-			OR = {
-				has_trait = just
-				has_trait = honest
-			}
-		}
-		modifier = {
-			add = 20
-			has_trait = deceitful
 		}
 	}
 }
@@ -296,11 +103,6 @@ ftr_sow_discord_interaction = {
 		scope:actor = {
 			is_imprisoned = no
 			is_capable_adult = yes
-			custom_description = {
-				text = "ftr_have_enough_pi_tt"
-				value = ftr_sow_discord_cost_value
-				ftr_political_influence_value >= ftr_sow_discord_cost_value
-			}
 		}
 		scope:recipient = {
 			is_imprisoned = no
@@ -349,9 +151,6 @@ ftr_sow_discord_interaction = {
 
 	on_accept = {
 		scope:actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_sow_discord_modify_value
-			}
 			stress_impact = {
 				just = minor_stress_impact_gain
 				honest = minor_stress_impact_gain
@@ -468,11 +267,6 @@ ftr_support_heir_interaction = {
 		scope:actor = {
 			is_imprisoned = no
 			is_capable_adult = yes
-			custom_description = {
-				text = "ftr_have_enough_pi_tt"
-				value = ftr_support_heir_cost_value
-				ftr_political_influence_value >= ftr_support_heir_cost_value
-			}
 		}
 		scope:recipient = {
 			is_imprisoned = no
@@ -496,9 +290,6 @@ ftr_support_heir_interaction = {
 
 	on_accept = {
 		scope:actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_support_heir_modify_value
-			}
 			liege = {
 				save_scope_as = liege_c
 				every_heir = {

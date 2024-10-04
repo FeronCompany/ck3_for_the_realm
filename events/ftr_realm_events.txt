@@ -386,14 +386,14 @@ ftr_realm_event.1003 = {
 		animation = admiration
 	}
 
-	immediate = {}
+	immediate = {
+		show_as_tooltip = {
+			change_government = feudal_government
+		}
+	}
 
 	option = {
 		name = ftr_realm_event.1003.a
-		change_government = feudal_government
-		every_held_title = {
-			clear_title_laws = yes
-		}
 	}
 
 	after = {}

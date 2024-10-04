@@ -24,10 +24,11 @@ ftr_pg_ai_expande_influence_decision = {
 		always = yes
 	}
 	ai_will_do = {
-		base = 10
-		modifier = {
-			add = -10
-			ftr_political_influence_value >= ftr_expand_influence_threshold_value
-		}
+		base = 0
+		#base = 10
+		#modifier = {
+		#	add = -10
+		#	ftr_political_influence_value >= ftr_expand_influence_threshold_value
+		#}
 	}
 }

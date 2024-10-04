@@ -32,6 +32,7 @@
  ftr_convert_bureacrat_to_feudal_interaction:0 "<FTR>赐予世袭罔替"
  ftr_convert_bureacrat_to_feudal_interaction_desc:0 "赐予该臣子世袭罔替之特权"
  ftr_convert_bureacrat_to_feudal_interaction_notification:0 "君主赐予世袭罔替"
+ ftr_cannot_convert_noble_family_owner_to_feudal_tt:0 "不能对世族家主赐予世袭罔替"
 
  ftr_depose_bureacrat_interaction:0 "<FTR>罢免官职"
  ftr_depose_bureacrat_interaction_desc:0 "罢免官职"

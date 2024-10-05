@@ -5,8 +5,10 @@ on_title_gain = {
 		#ftr_title_gain_warlord_effects
 		#ftr_title_conquerd_effects
 		ftr_add_political_influence_effects
+		ftr_ursurp_discontent_effects
 	}
 }
+
 ftr_title_gain_effects = {
 	trigger = {
 		OR = {
@@ -114,6 +116,48 @@ ftr_add_political_influence_effects = {
 		}
 		ftr_add_political_influence_effect = {
 			VALUE = scope:pi_gain
+		}
+	}
+}
+
+ftr_ursurp_discontent_effects = {
+	trigger = {
+		is_independent_ruler = yes
+		scope:title = {
+			tier >= tier_kingdom
+			tier = prev.primary_title.tier
+		}
+		OR = {
+			scope:transfer_type = flag:conquest_claim
+			scope:transfer_type = flag:usurped
+			scope:transfer_type = flag:faction_demand
+		}
+	}
+	effect = {
+		save_scope_as = usurper_liege
+		every_vassal = {
+			limit = {
+				primary_title.tier >= tier_duchy
+				opinion = {
+					value < 0
+					target = scope:usurper_liege
+				}
+				NOT = {
+					is_allied_to = scope:usurper_liege
+				}
+				NOT = {
+					has_character_flag = ftr_block_usurper_notify
+				}
+				is_at_war = no
+			}
+			add_character_flag = {
+				flag = ftr_block_usurper_notify
+				days = 30
+			}
+			trigger_event = {
+				id = ftr_realm_event.1010
+				days = 5
+			}
 		}
 	}
 }

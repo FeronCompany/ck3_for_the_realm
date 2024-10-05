@@ -199,6 +199,13 @@
  ftr_vassal_transform_to_warlord_tt:0 "拥兵自重"
  ftr_vassal_transform_to_warlord_content_text:0 "[CHARACTER.GetShortUIName]近期趁着[TARGET_CHARACTER.GetShortUIName]国内空虚，拥兵自重成为军阀。"
 
+ ftr_realm_event.1010.t:0 "<FTR>粉墨登场"
+ ftr_realm_event.1010.desc:0 "国内最近发生了一系列的重大变故，我的新领主[usurper_liege.GetShortUIName]通过非法手段攫取了权力。如今一道艰难的选择题放到了我的面前，究竟是承认[usurper_liege.GetHerHis]合法性并表明忠心呢，还是拒绝承认[usurper_liege.GetHerHis]合法性。"
+ ftr_realm_event.1010.a:0 "识时务者为俊杰"
+ ftr_realm_event.1010.b:0 "绝不屈膝！"
+ ftr_realm_event.1010.b.title:0 "封臣独立"
+ ftr_realm_event.1010.b.desc:0 "[usurper_liege.GetShortUIName]的统治没有得到[independent_vassal.GetShortUIName]的认可，现在[independent_vassal.GetShortUIName]已经公开宣布独立。"
+
  ftr_war_tax.0001.t:0 "<FTR>战争税"
  ftr_war_tax.0001.desc:0 "战争税的问题已经摆上了桌面，大臣们对于具体的实施方案莫衷一是。所以采用哪种征税形式比较好呢？"
  ftr_war_tax.0001.a:0 "战争可能会持续一段时间"

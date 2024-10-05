@@ -1,4 +1,5 @@
 ﻿
+################ OVERRIDE #############################################################
 murderer = {
 	category = fame
 	ruler_designer_cost = -10
@@ -17,6 +18,7 @@ murderer = {
 		}
 	}
 }
+################ OVERRIDE #############################################################
 
 ftr_traverser = {
 	category = fame
@@ -33,6 +35,137 @@ ftr_traverser = {
 				desc = trait_ftr_traverser_desc
 			}
 			desc = trait_ftr_traverser_character_desc
+		}
+	}
+}
+
+ftr_battle_commander = {
+	category = lifestyle
+	icon = ftr_battle_commander.dds
+
+	martial = 1
+	track = {
+		10 = {
+			martial = 1
+		}
+		20 = {
+			martial = 2
+			enemy_hard_casualty_modifier = 0.1
+		}
+		40 = {
+			martial = 3
+			enemy_hard_casualty_modifier = 0.1
+			retreat_losses = -0.1
+			hard_casualty_modifier = -0.1
+			dread_baseline_add = 10
+		}
+		80 = {
+			martial = 3
+			enemy_hard_casualty_modifier = 0.1
+			retreat_losses = -0.1
+			hard_casualty_modifier = -0.1
+			dread_baseline_add = 10
+		}
+	}
+	ruler_designer_cost = 20
+	name = {
+		first_valid = {
+			#Awe the world
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = {
+						trait = ftr_battle_commander
+						value >= 80
+					}
+				}
+				desc = trait_ftr_commander_5
+			}
+			#Distinguished service
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = {
+						trait = ftr_battle_commander
+						value >= 40
+					}
+				}
+				desc = trait_ftr_commander_4
+			}
+			#Battle-scarred
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = {
+						trait = ftr_battle_commander
+						value >= 20
+					}
+				}
+				desc = trait_ftr_commander_3
+			}
+			#Well-known of War
+			triggered_desc = {
+				trigger = { 
+					exists = this
+					has_trait_xp = {
+						trait = ftr_battle_commander
+						value >= 10
+					}
+				}
+				desc = trait_ftr_commander_2
+			}
+			#Novice Commander
+			desc = trait_ftr_commander_1
+		}
+	}
+
+	# Loc
+	desc = {
+		first_valid = {
+			#The trait can never go higher than the first level if it's not assigned to a character
+			triggered_desc = {
+				trigger = { 
+					NOT = { exists = this } 
+				}
+				desc = trait_ftr_commander_1_desc
+			}
+			triggered_desc = {
+				trigger = { 
+					has_trait_xp = {
+						trait = ftr_battle_commander
+						value >= 80
+					}
+				}
+				desc = trait_ftr_commander_5_character_desc
+			}
+			triggered_desc = {
+				trigger = { 
+					has_trait_xp = {
+						trait = ftr_battle_commander
+						value >= 40
+					}
+				}
+				desc = trait_ftr_commander_4_character_desc
+			}
+			triggered_desc = {
+				trigger = { 
+					has_trait_xp = {
+						trait = ftr_battle_commander
+						value >= 20
+					}
+				}
+				desc = trait_ftr_commander_3_character_desc
+			}
+			triggered_desc = {
+				trigger = { 
+					has_trait_xp = {
+						trait = ftr_battle_commander
+						value >= 10
+					}
+				}
+				desc = trait_ftr_commander_2_character_desc
+			}
+			desc = trait_ftr_commander_1_character_desc
 		}
 	}
 }

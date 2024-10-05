@@ -73,15 +73,7 @@ ftr_diarch_replace_council_position_interaction = {
 			}
 		}
 	}
-	can_send = {
-		scope:actor = {
-			custom_description = {
-				text = "ftr_have_enough_pi_tt"
-				value = ftr_regent_replace_councillor_cost_value
-				ftr_political_influence_value >= ftr_regent_replace_councillor_cost_value
-			}
-		}
-	}
+	can_send = {}
 
 	on_accept = {
 		scope:actor.liege = {
@@ -170,9 +162,6 @@ ftr_diarch_replace_council_position_interaction = {
 			}
 		}
 		scope:actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_regent_replace_councillor_modify_value
-			}
 			if = {
 				limit = {
 					can_add_hook = {
@@ -362,13 +351,23 @@ ftr_diarch_request_support_interaction = {
 	send_option = { # Offer influence
 		flag = ftr_drs_offer_influence
 		localization = ftr_drs_offer_influence_tt
+		is_valid = {
+			scope:actor = {
+				government_has_flag = government_is_administrative
+				influence >= massive_influence_value
+			}
+			scope:recipient = {
+				government_has_flag = government_is_administrative
+			}
+		}
 	}
 	send_options_exclusive = no
 
 	on_accept = {
 		scope:actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_regent_request_support_modify_value
+			if = {
+				limit = { scope:ftr_drs_offer_influence = yes }
+				change_influence = massive_influence_loss
 			}
 			change_strife_opinion = medium_strife_loss
 			liege = {
@@ -411,9 +410,7 @@ ftr_diarch_request_support_interaction = {
 			}
 			if = {
 				limit = { scope:ftr_drs_offer_influence = yes }
-				ftr_add_political_influence_effect = {
-					VALUE = ftr_regent_request_support_cost_value
-				}
+				change_influence = massive_influence_gain
 			}
 		}
 	}

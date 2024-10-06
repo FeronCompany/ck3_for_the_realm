@@ -1,0 +1,21 @@
+﻿
+ftr_battle_commander_rank_up_effect = {
+	if = {
+		limit = {
+			NOT = { has_trait = ftr_battle_commander }
+		}
+		add_trait = ftr_battle_commander
+	}
+	else_if = {
+		limit = {
+			has_trait_xp = {
+				trait = ftr_battle_commander
+				value < 80
+			}
+		}
+		add_trait_xp = {
+			trait = ftr_battle_commander
+			value = 8
+		}
+	}
+}

@@ -8,10 +8,13 @@ ftr_convert_bureacrat_to_feudal_interaction = {
 		NOT = { scope:actor = scope:recipient }
 		scope:recipient = {
 			is_vassal_of = scope:actor
-			government_has_flag = government_is_centralism
+			is_landed = yes
+			OR = {
+				government_has_flag = government_is_centralism
+				government_has_flag = government_is_administrative
+			}
 		}
 		scope:actor = {
-			government_has_flag = government_is_centralism
 			is_independent_ruler = yes
 		}
 	}
@@ -21,6 +24,16 @@ ftr_convert_bureacrat_to_feudal_interaction = {
 				is_at_war_with = scope:recipient
 			}
 		}
+		custom_tooltip = {
+			text = ftr_cannot_convert_noble_family_owner_to_feudal_tt
+			scope:recipient = {
+				NOT = {
+					any_held_title = {
+						is_noble_family_title = yes
+					}
+				}
+			}
+		}
 	}
 	on_accept = {
 		scope:actor = {
@@ -28,6 +41,7 @@ ftr_convert_bureacrat_to_feudal_interaction = {
 			save_scope_as = liege
 		}
 		scope:recipient = {
+			change_government = feudal_government
 			add_opinion = {
 				target = scope:actor
 				modifier = ftr_grant_here_privilage_opinion
@@ -789,6 +803,7 @@ ftr_coup_interaction = {
 				AND = {
 					is_independent_ruler = no
 					NOT = { government_has_flag = government_is_centralism }
+					NOT = { government_has_flag = government_is_administrative }
 				}
 			}
 		}
@@ -1244,7 +1259,7 @@ ftr_offer_military_assistance_to_liege_interaction = {
 		opinion_modifier = {
 			who = scope:actor
 			opinion_target = scope:recipient
-			multiplier = 0.5
+			multiplier = 0.25
 		}
 		modifier = {
 			add = 20

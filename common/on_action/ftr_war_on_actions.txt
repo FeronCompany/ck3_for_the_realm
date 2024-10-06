@@ -1,0 +1,9 @@
+﻿
+
+on_combat_end_winner = {
+	effect = {
+		side_commander = {
+			ftr_battle_commander_rank_up_effect = yes
+		}
+	}
+}

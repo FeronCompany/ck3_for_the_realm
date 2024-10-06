@@ -195,6 +195,13 @@
  ftr_vassal_transform_to_warlord_tt:0 "Vassal Transformed to Warlord"
  ftr_vassal_transform_to_warlord_content_text:0 "[CHARACTER.GetShortUIName] recently taking advantage of the domestic emptiness of [TARGET_CHARACTER.GetShortUIName] and transformed into a warlord."
 
+ ftr_realm_event.1010.t:0 "<FTR> Usurper Seized Power"
+ ftr_realm_event.1010.desc:0 "There have been a series of major changes in the country recently, and my new liege [usurper_liege.GetShortUIName] has seized power through illegal means. Now a difficult choice is placed before me, whether to recognize [usurper_liege.GetHerHis] legitimacy to show loyalty, or refuse to recognize [usurper_liege.GetHerHis] legitimacy."
+ ftr_realm_event.1010.a:0 "Recognize the reality"
+ ftr_realm_event.1010.b:0 "Never kneel!"
+ ftr_realm_event.1010.b.title:0 "Vassal Independent"
+ ftr_realm_event.1010.b.desc:0 "The reign of [usurper_liege.GetShortUIName] was not recognized by [independent_vassal.GetShortUIName], and now [independent_vassal.GetShortUIName] has publicly declared independence."
+
  ftr_war_tax.0001.t:0 "<FTR>War Tax"
  ftr_war_tax.0001.desc:0 "The issue of the war tax is on the table, and ministers are divided on the specific implementation plan. So which form of taxation is better?"
  ftr_war_tax.0001.a:0 "The war may last for a while..."

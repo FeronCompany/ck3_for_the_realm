@@ -36,20 +36,9 @@ ftr_diarch_support_liege_interaction = {
 			has_diarchy_active_parameter = diarchy_is_regency
 		}
 	}
-	can_send = {
-		scope:actor = {
-			custom_description = {
-				text = "ftr_have_enough_pi_tt"
-				value = ftr_make_pg_proposal_cost_value
-				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
-			}
-		}
-	}
+	can_send = {}
 	on_accept = {
 		scope:actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_make_pg_proposal_modify_value
-			}
 			add_opinion = {
 				target = scope:recipient.diarch
 				modifier = ftr_political_opponent_opinion
@@ -119,6 +108,12 @@ ftr_diarch_support_liege_interaction = {
 				NOT = { is_allied_to = scope:recipient.diarch }
 			}
 		}
+		modifier = {
+			add = -30
+			scope:actor.liege = {
+				diarchy_swing < 50
+			}
+		}
 	}
 }
 
@@ -159,20 +154,9 @@ ftr_diarch_support_diarch_interaction = {
 			has_diarchy_active_parameter = diarchy_is_regency
 		}
 	}
-	can_send = {
-		scope:actor = {
-			custom_description = {
-				text = "ftr_have_enough_pi_tt"
-				value = ftr_make_pg_proposal_cost_value
-				ftr_political_influence_value >= ftr_make_pg_proposal_cost_value
-			}
-		}
-	}
+	can_send = {}
 	on_accept = {
 		scope:actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_make_pg_proposal_modify_value
-			}
 			add_opinion = {
 				target = scope:recipient
 				modifier = ftr_political_opponent_opinion
@@ -241,6 +225,12 @@ ftr_diarch_support_diarch_interaction = {
 			scope:actor = {
 				is_allied_to = scope:recipient.diarch
 				NOT = { is_allied_to = scope:recipient }
+			}
+		}
+		modifier = {
+			add = -30
+			scope:actor.liege = {
+				diarchy_swing >= 90
 			}
 		}
 	}

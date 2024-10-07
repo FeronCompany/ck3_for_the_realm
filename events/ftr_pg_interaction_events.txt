@@ -596,11 +596,7 @@ ftr_pg_interaction_event.0100 = {
 		name = ftr_pg_interaction_event.0100.c
 		trigger = {
 			diplomacy >= 12
-			custom_description = {
-				text = "ftr_have_enough_pi_tt"
-				value = ftr_pardon_cost_value
-				ftr_political_influence_value >= ftr_pardon_cost_value
-			}
+			prestige >= 250
 		}
 		consume_all_criminal_reasons_effect = {
 			LIEGE = root
@@ -613,9 +609,7 @@ ftr_pg_interaction_event.0100 = {
 				opinion = 30
 			}
 		}
-		ftr_add_political_influence_effect = {
-			VALUE = ftr_pardon_modify_value
-		}
+		add_prestige = -250
 		hidden_effect = {
 			ftr_update_pg_member_list_effect = yes
 			every_in_list = {
@@ -635,15 +629,6 @@ ftr_pg_interaction_event.0100 = {
 		ai_chance = {
 			base = 5
 		}
-	}
-}
-
-# Slander Result
-ftr_pg_interaction_event.0101 = {
-	hidden = yes
-
-	immediate = {
-		ftr_slander_effect = yes
 	}
 }
 
@@ -784,9 +769,6 @@ ftr_pg_interaction_event.0203 = {
 					left_icon = scope:recipient
 					right_icon = scope:secondary_actor
 					custom_tooltip = ftr_sow_discord.discovered.desc
-					ftr_add_political_influence_effect = {
-						VALUE = ftr_sow_discord_failed_damage_value
-					}
 				}
 			}
 		}

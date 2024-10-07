@@ -833,11 +833,6 @@ ftr_councillor_event.0007 = {
 				}
 			}
 		}
-		scope:secondary_actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = 20
-			}
-		}
 	}
 
 	after = {}
@@ -874,11 +869,6 @@ ftr_councillor_event.0008 = {
 					limit = { has_relation_nemesis = scope:recipient }
 					remove_relation_nemesis = scope:recipient
 				}
-			}
-		}
-		scope:secondary_actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = 50
 			}
 		}
 	}
@@ -990,11 +980,6 @@ ftr_councillor_event.0011 = {
 				target = scope:secondary_actor
 			}
 		}
-		scope:secondary_actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = 20
-			}
-		}
 	}
 
 	option = { # Keep it in my pocket
@@ -1051,9 +1036,6 @@ ftr_councillor_event.0012 = {
 			}
 		}
 		scope:secondary_actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = 30
-			}
 			add_gold = {
 				value = {
 					value = ftr_trade_income_value
@@ -1257,9 +1239,6 @@ ftr_councillor_event.0017 = {
 						set_character_faith = scope:actor.faith
 					}
 				}
-				ftr_add_political_influence_effect = {
-					VALUE = 40
-				}
 			}
 		}
 		ai_chance = {
@@ -1382,11 +1361,6 @@ ftr_councillor_event.0019 = {
 				}
 			}
 		}
-		scope:secondary_actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = 40
-			}
-		}
 	}
 
 	after = {}
@@ -1426,11 +1400,6 @@ ftr_councillor_event.0020 = {
 						target = scope:actor
 					}
 				}
-			}
-		}
-		scope:secondary_actor = {
-			ftr_add_political_influence_effect = {
-				VALUE = 50
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-version="A.J.1"
+version="A.J.2"
 tags={
 	"Character Interactions"
 	"Decisions"

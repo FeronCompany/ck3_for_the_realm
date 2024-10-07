@@ -12,7 +12,7 @@ ftr_expand_influence = {
 		}
 	}
 	effect = {
-		trigger_event = ftr_pg_ui_event.0001
+		#trigger_event = ftr_pg_ui_event.0001
 	}
 }
 

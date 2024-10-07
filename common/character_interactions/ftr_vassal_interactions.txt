@@ -1220,9 +1220,6 @@ ftr_offer_military_assistance_to_liege_interaction = {
 				shy = minor_stress_impact_gain
 				lazy = minor_stress_impact_gain
 			}
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_offer_military_assitance_to_liege_pg_gain_value
-			}
 		}
 		scope:recipient = {
 			if = {

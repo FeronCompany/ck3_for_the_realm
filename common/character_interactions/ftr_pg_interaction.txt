@@ -326,9 +326,6 @@ ftr_support_heir_interaction = {
 				}
 			}
 			scope:recipient = {
-				ftr_add_political_influence_effect = {
-					VALUE = ftr_support_heir_cost_value
-				}
 				trigger_event = ftr_pg_interaction_event.0300
 			}
 		}

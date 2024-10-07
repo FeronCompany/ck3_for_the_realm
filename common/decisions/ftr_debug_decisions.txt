@@ -1,34 +1,4 @@
 ﻿
-ftr_add_political_influence_decision = { # Debug decision
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
-	}
-	decision_group_type = debug
-	desc = ftr_add_political_influence_decision_desc
-	selection_tooltip = ftr_add_political_influence_decision_tooltip
-	is_shown = {
-		debug_only = yes
-		is_ai = no
-	}
-	cost = {
-		#prestige = { value = 100 }
-	}
-	effect = {
-		ftr_add_political_influence_effect = {
-			VALUE = 100
-		}
-		#save_scope_as = me
-		#ftr_change_realm_political_focus_effect = {
-		#	LIEGE = scope:me
-		#	STARTER = scope:me
-		#	VALUE = 3
-		#}
-	}
-	ai_potential = {
-		always = no
-	}
-}
-
 ftr_change_government_to_feudal_decision = { # Debug decision
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"

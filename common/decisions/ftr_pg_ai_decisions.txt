@@ -18,7 +18,7 @@ ftr_pg_ai_expande_influence_decision = {
 		}
 	}
 	effect = {
-		trigger_event = ftr_pg_ui_event.0001
+		#trigger_event = ftr_pg_ui_event.0001
 	}
 	ai_potential = {
 		always = yes

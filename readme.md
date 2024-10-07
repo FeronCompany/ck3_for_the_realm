@@ -1,5 +1,5 @@
 Mod name: For The Realm  
-Mod version A.J.2  
+Mod version A.J.3  
 A mod focus on realm management and personal activities.
 + Mechanic：
   + Admin government optimization
@@ -31,7 +31,7 @@ Counties in different terrains will encounter different natural disasters, such 
   + Add Commander trait, after every victory battle, commanders will gain experience of this trait, which lead to very high buff.
 
 Mod名 朝野纷争  
-Mod版本 A.J.2  
+Mod版本 A.J.3  
 本mod专注于领地管理与个人生活。
 + 机制改动：
   + 调整行政制政体

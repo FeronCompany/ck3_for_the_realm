@@ -480,7 +480,7 @@ ftr_realm_event.1010 = {
 			opinion_modifier = {
 				opinion_target = scope:usurper_liege
 				who = root
-				multiplier = 1
+				multiplier = 0.5
 			}
 		}
 	}
@@ -523,8 +523,9 @@ ftr_realm_event.1010 = {
 		every_held_title = {
 			limit = {
 				tier >= tier_county
+				is_head_of_faith = no
 				is_noble_family_title = no
-				de_jure_liege = scope:usurper_liege.primary_title
+				#de_jure_liege = scope:usurper_liege.primary_title
 			}
 			scope:usurper_liege = {
 				add_unpressed_claim = prev
@@ -564,11 +565,11 @@ ftr_realm_event.1010 = {
 			}
 			modifier = {
 	  		  	add = {
-					value = root.max_military_strength
-					divide = { value = scope:usurper_liege.current_military_strength min = 1 }
-					subtract = 0.2
+					value = root.current_military_strength
+					divide = { value = scope:usurper_liege.max_military_strength min = 1 }
+					subtract = 0.3
 					multiply = 100
-					min = -20
+					min = -30
 					max = 100
 	  			}
 			}

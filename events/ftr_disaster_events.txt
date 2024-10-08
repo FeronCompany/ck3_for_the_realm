@@ -152,9 +152,6 @@ ftr_disaster_event.0001 = {
 		}
 		add_prestige = -100
 		liege = {
-			ftr_add_political_influence_effect = {
-				VALUE = ftr_request_disaster_aid_liege_add_value
-			}
 			trigger_event = {
 				id = ftr_disaster_event.0002
 				days = { 10 15 }

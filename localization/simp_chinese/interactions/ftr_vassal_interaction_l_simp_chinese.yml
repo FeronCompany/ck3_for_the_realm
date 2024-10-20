@@ -55,6 +55,7 @@
  ftr_buy_land_interaction:0 "<FTR>购买土地"
  ftr_buy_land_interaction_desc:0 "向其他领主购买土地"
  ftr_buy_land_interaction_text:0 "[actor.GetName|U]希望花些钱从您这里购买一块土地。"
+ ftr_buy_county_notify_title:0 "交易领地"
  FTR_BUY_LAND_DOMAIN_SIZE_FEW:0 "爱惜土地： $VALUE|=+0$"
  FTR_BUY_LAND_DOMAIN_SIZE_OVER:0 "直辖超限： $VALUE|=+0$"
  FTR_BUY_LAND_IN_DEBT:0 "债台高筑： $VALUE|=+0$"

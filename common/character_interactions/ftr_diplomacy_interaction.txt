@@ -9,12 +9,10 @@ ftr_buy_land_interaction = {
 	greeting = positive
 	notification_text = ftr_buy_land_interaction_text
 	target_type = title
-	target_filter = recipient_domain_titles
+	target_filter = recipient_realm_titles
 	ai_targets = {
-		ai_recipients = liege
 		ai_recipients = vassals
 		ai_recipients = neighboring_rulers
-		ai_recipients = peer_vassals
 		max = 5
 	}
 	icon = icon_gold
@@ -33,10 +31,6 @@ ftr_buy_land_interaction = {
 				scope:recipient = {
 					is_independent_ruler = yes
 				}
-			}
-			scope:actor.liege = scope:recipient.liege
-			scope:actor = {
-				is_vassal_of = scope:recipient
 			}
 			scope:recipient = {
 				is_vassal_of = scope:actor
@@ -108,27 +102,29 @@ ftr_buy_land_interaction = {
 	send_options_exclusive = yes
 
 	on_accept = {
-		scope:actor = {
-			if = {
-				limit = { scope:target = { tier = tier_county } }
-				pay_long_term_gold = {
-					gold = ftr_buy_land_cost_value
-					target = scope:recipient
+		hidden_effect = {
+			scope:actor = {
+				send_interface_message = {
+					type = event_title_good
+					title = ftr_buy_county_notify_title
+					right_icon = scope:recipient
+					show_as_tooltip = {
+						ftr_buy_land_effect = yes
+					}
+				}
+			}
+			scope:recipient = {
+				send_interface_message = {
+					type = event_title_good
+					title = ftr_buy_county_notify_title
+					right_icon = scope:actor
+					show_as_tooltip = {
+						ftr_buy_land_effect = yes
+					}
 				}
 			}
 		}
-		create_title_and_vassal_change = {
-			type = granted
-			save_scope_as = change
-			add_claim_on_loss = no
-		}
-		scope:target = {
-			change_title_holder_include_vassals = {
-				holder = scope:actor
-				change = scope:change
-			}
-		}
-		resolve_title_and_vassal_change = scope:change
+		ftr_buy_land_effect = yes
 	}
 
 	ai_accept = {
@@ -246,224 +242,6 @@ ftr_buy_land_interaction = {
 			scope:recipient = {
 				is_vassal_of = scope:actor
 			}
-		}
-	}
-}
-
-##### BUY VASSAL #####
-ftr_buy_vassal_interaction = {
-	category = interaction_category_diplomacy
-	common_interaction = yes
-	ignores_pending_interaction_block = no
-	desc = ftr_buy_vassal_interaction_desc
-	greeting = positive
-	notification_text = ftr_buy_vassal_interaction_text
-	ai_targets = {
-		ai_recipients = liege
-		ai_recipients = vassals
-		ai_recipients = neighboring_rulers
-		ai_recipients = peer_vassals
-		max = 5
-	}
-	icon = icon_liege
-	ai_frequency = 48
-	cooldown_against_recipient = { years = 5 }
-
-	populate_recipient_list = {
-		scope:recipient = {
-			every_vassal = {
-				limit = {
-					primary_title.tier >= tier_county
-					primary_title.tier < tier_kingdom
-				}
-				add_to_list = characters
-			}
-		}
-	}
-	can_be_picked = {
-		is_at_war = no
-		primary_title.tier < scope:actor.primary_title.tier
-	}
-
-	is_shown = {
-		NOT = { scope:actor = scope:recipient}
-		scope:actor.primary_title.tier >= tier_duchy
-		scope:recipient.primary_title.tier >= tier_duchy
-		OR = {
-			AND = {
-				scope:actor = {
-					is_independent_ruler = yes
-				}
-				scope:recipient = {
-					is_independent_ruler = yes
-				}
-			}
-			scope:actor.liege = scope:recipient.liege
-			scope:actor = {
-				is_vassal_of = scope:recipient
-			}
-			scope:recipient = {
-				is_vassal_of = scope:actor
-			}
-		}
-	}
-	is_valid_showing_failures_only = {
-		scope:actor = {
-			is_at_war = no
-		}
-		scope:recipient = {
-			is_at_war = no
-		}
-	}
-
-	send_option = {
-		flag = half_price
-		localization = "FTR_NEGO_HALF_PRICE"
-	}
-	send_option = {
-		flag = normal_price
-		localization = "FTR_NEGO_NORMAL_PRICE"
-		starts_enabled = { always = yes	}
-	}
-	send_option = {
-		flag = double_price
-		localization = "FTR_NEGO_DOUBLE_PRICE"
-	}
-	send_option = {
-		flag = three_times_price
-		localization = "FTR_NEGO_THREE_TIMES_PRICE"
-	}
-	send_option = {
-		flag = four_times_price
-		localization = "FTR_NEGO_FOUR_TIMES_PRICE"
-	}
-	send_option = {
-		flag = five_times_price
-		localization = "FTR_NEGO_FIVE_TIMES_PRICE"
-	}
-	send_options_exclusive = yes
-
-	on_accept = {
-		scope:actor = {
-			if = {
-				pay_long_term_gold = {
-					gold = ftr_buy_vassal_cost_value
-					target = scope:recipient
-				}
-			}
-		}
-		create_title_and_vassal_change = {
-			type = granted
-			save_scope_as = change
-			add_claim_on_loss = no
-		}
-		scope:secondary_recipient = {
-			change_liege = {
-				liege = scope:actor
-				change = scope:change
-			}
-		}
-		resolve_title_and_vassal_change = scope:change
-	}
-
-	ai_accept = {
-		base = -40
-		opinion_modifier = {
-			opinion_target = scope:actor
-			who = scope:recipient
-			multiplier = 0.2
-		}
-		modifier = {
-			add = -50
-			scope:recipient = {
-				any_held_title = {
-					tier >= tier_duchy
-					is_de_jure_liege_or_above_target = scope:secondary_recipient.primary_title
-				}
-			}
-			desc = "FTR_BUY_VASSAL_DEJURE"
-		}
-		modifier = {
-			add = 40
-			scope:actor = {
-				any_held_title = {
-					tier >= tier_duchy
-					is_de_jure_liege_or_above_target = scope:secondary_recipient.primary_title
-					NOT = {
-						is_de_jure_liege_or_above_target = scope:recipient.primary_title
-					}
-				}
-			}
-			scope:recipient = {
-				NOT = {
-					is_vassal_of = scope:actor
-				}
-			}
-			desc = "FTR_BUY_VASSAL_DEJURE"
-		}
-		modifier = {
-			add = {
-				value = 20
-				multiply = ftr_payment_cost_level_value
-			}
-			desc = "FTR_BUY_VASSAL_MONEY_REASON"
-		}
-		modifier = {
-			add = {
-				value = scope:recipient.debt_level
-				multiply = 20
-			}
-			scope:recipient.debt_level >= 1
-			desc = "FTR_BUY_VASSAL_IN_DEBT"
-		}
-		modifier = {
-			add = {
-				value = gold
-				multiply = -0.1
-				min = -100
-			}
-			scope:recipient = {
-				gold > 200
-			}
-			desc = "FTR_BUY_VASSAL_RICH_ENOUGH"
-		}
-		modifier = {
-			add = -20
-			NOT = { scope:actor.faith = scope:recipient.faith }
-			desc = "FTR_BUY_VASSAL_RELIGION_DIFFERENCE"
-		}
-	}
-
-	ai_will_do = {
-		base = -40
-		modifier = {
-			add = 30
-			scope:actor = {
-				any_held_title = {
-					tier >= tier_duchy
-					scope:secondary_recipient.primary_title = {
-						de_jure_liege = PREV
-					}
-				}
-			}
-			OR = {
-				# target is liege or peer vassal
-				scope:actor = {
-					OR = {
-						is_vassal_of = scope:recipient
-						liege = scope:recipient.liege
-					}
-				}
-				# both you and target are independent ruler
-				AND = {
-					scope:actor = { is_independent_ruler = yes }
-					scope:recipient = { is_independent_ruler = yes }
-				}
-			}
-		}
-		modifier = {
-			add = 20
-			scope:actor.gold > ftr_buy_vassal_cost_value
 		}
 	}
 }

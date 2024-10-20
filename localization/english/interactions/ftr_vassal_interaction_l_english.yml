@@ -55,6 +55,7 @@
  ftr_buy_land_interaction:0 "<FTR> Buy Land"
  ftr_buy_land_interaction_desc:0 "Buy land from other lord."
  ftr_buy_land_interaction_text:0 "[actor.GetName|U] hopes to buy a county in exchange of money."
+ ftr_buy_county_notify_title:0 "Land Purchase"
  FTR_BUY_LAND_DOMAIN_SIZE_FEW:0 "I need land: $VALUE|=+0$"
  FTR_BUY_LAND_DOMAIN_SIZE_OVER:0 "Over domain limit: $VALUE|=+0$"
  FTR_BUY_LAND_IN_DEBT:0 "In debt: $VALUE|=+0$"

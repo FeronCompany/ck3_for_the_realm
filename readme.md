@@ -1,5 +1,5 @@
 Mod name: For The Realm  
-Mod version A.J.3  
+Mod version A.J.4  
 A mod focus on realm management and personal activities.
 + Mechanic：
   + Admin government optimization
@@ -13,7 +13,6 @@ Counties in different terrains will encounter different natural disasters, such 
     + Loyal vassals may join defensive war target to liege
 + Interactions:
   + Add Buy land interaction
-  + Add Buy vassal interaction
   + Add Buy favor interaction
   + You can debate with people from other religion
   + Add Break alliance interaction
@@ -31,7 +30,7 @@ Counties in different terrains will encounter different natural disasters, such 
   + Add Commander trait, after every victory battle, commanders will gain experience of this trait, which lead to very high buff.
 
 Mod名 朝野纷争  
-Mod版本 A.J.3  
+Mod版本 A.J.4  
 本mod专注于领地管理与个人生活。
 + 机制改动：
   + 调整行政制政体
@@ -45,7 +44,6 @@ Mod版本 A.J.3
     + 忠诚的封臣有概率会在君主处于防御战（包括内战）时选择出兵勤王
 + 交互改动:
   + 新增购买土地交互
-  + 新增购买封臣交互
   + 新增购买人情交互
   + 新增宗教辩论交互
   + 新增结束同盟交互

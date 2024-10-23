@@ -5,7 +5,7 @@
 	icon = icon_scheme_hostile
 	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
 	success_chance_growth_per_skill_point = t3_scgpsp_value
-	base_progress_goal = 60
+	base_progress_goal = 30
 	minimum_success = 0
 	maximum_secrecy = 95
 	base_maximum_success = 95

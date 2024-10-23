@@ -74,6 +74,7 @@ administrative_government = {
 		# vassal_limit = 100
 		# active_accolades = -1
 		############################ OVERRIDE ############################################
+		title_creation_cost_mult = -0.5
 	}
 
 	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).

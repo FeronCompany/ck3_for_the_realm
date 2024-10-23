@@ -322,15 +322,7 @@ ftr_diarch_request_support_interaction = {
 			is_capable_adult = yes
 		}
 	}
-	can_send = {
-		scope:actor = {
-			custom_description = {
-				text = "ftr_have_enough_pi_tt"
-				value = ftr_regent_request_support_cost_value
-				ftr_political_influence_value >= ftr_regent_request_support_cost_value
-			}
-		}
-	}
+	can_send = {}
 
 	options_heading = ftr_drs_exchange_types_tt
 	send_option = { # Money buy everything

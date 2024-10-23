@@ -161,6 +161,18 @@ ftr_renounce_dynasty_decision = {
 				flag = flag_ftr_create_new_dynasty
 			}
 		}
+		if = {
+			limit = { has_trait = disinherited }
+			remove_trait = disinherited
+		}
+		if = {
+			limit = { has_trait = disputed_heritage }
+			remove_trait = disputed_heritage
+		}
+		if = {
+			limit = { has_trait = denounced }
+			remove_trait = denounced
+		}
 	}
 
 	ai_check_interval = 120
@@ -191,8 +203,8 @@ ftr_renounce_dynasty_decision = {
 		modifier = {
 			factor = 0
 			opinion = {
-				target = root
-				value >= -20
+				target = dynasty.dynast
+				value >= 20
 			}
 		}
 		modifier = {

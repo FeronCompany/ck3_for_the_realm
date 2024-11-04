@@ -72,8 +72,8 @@ administrative_government = {
 		# men_at_arms_limit = -2
 		# knight_limit = -5
 		# vassal_limit = 100
-		# active_accolades = -1
 		############################ OVERRIDE ############################################
+		active_accolades = -1
 		title_creation_cost_mult = -0.5
 	}
 

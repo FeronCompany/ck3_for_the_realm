@@ -24,16 +24,16 @@ ftr_convert_bureacrat_to_feudal_interaction = {
 				is_at_war_with = scope:recipient
 			}
 		}
-		custom_tooltip = {
-			text = ftr_cannot_convert_noble_family_owner_to_feudal_tt
-			scope:recipient = {
-				NOT = {
-					any_held_title = {
-						is_noble_family_title = yes
-					}
-				}
-			}
-		}
+		#custom_tooltip = {
+		#	text = ftr_cannot_convert_noble_family_owner_to_feudal_tt
+		#	scope:recipient = {
+		#		NOT = {
+		#			any_held_title = {
+		#				is_noble_family_title = yes
+		#			}
+		#		}
+		#	}
+		#}
 	}
 	on_accept = {
 		scope:actor = {
@@ -922,7 +922,7 @@ ftr_coup_interaction = {
 			add = {
 				value = scope:actor.age
 				subtract = 20
-				multiply = 3
+				multiply = 4
 			}
 			scope:actor = {
 				is_heir_of = scope:recipient
@@ -1088,7 +1088,7 @@ ftr_offer_military_assistance_to_liege_interaction = {
 	interface = interfere_in_war
 	special_interaction = interfere_in_war_interaction
 	ai_accept_negotiation = yes
-	popup_on_receive = yes
+	#popup_on_receive = yes
 	#pause_on_receive = yes
 	ai_frequency = 3
 	ai_targets = {

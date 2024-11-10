@@ -5,6 +5,7 @@ on_title_gain = {
 		#ftr_title_gain_warlord_effects
 		#ftr_title_conquerd_effects
 		ftr_ursurp_discontent_effects
+		ftr_ursurp_tyrant_succession_effects
 	}
 }
 
@@ -112,6 +113,28 @@ ftr_ursurp_discontent_effects = {
 			trigger_event = {
 				id = ftr_realm_event.1010
 				days = 5
+			}
+		}
+	}
+}
+
+ftr_ursurp_tyrant_succession_effects = {
+	trigger = {
+		is_independent_ruler = yes
+		has_realm_law = autocracy_succession_law
+		scope:transfer_type = flag:faction_demand
+	}
+	effect = {
+		save_scope_as = usurper_liege
+		remove_realm_law = autocracy_succession_law
+		add_realm_law = acclamation_succession_law
+		every_vassal = {
+			limit = { is_ai = no }
+			send_interface_message = {
+				type = event_generic_neutral
+				title = liege_adapt_acclamation_succession_law_title
+				desc = liege_adapt_acclamation_succession_law_desc
+				right_icon = scope:usurper_liege
 			}
 		}
 	}

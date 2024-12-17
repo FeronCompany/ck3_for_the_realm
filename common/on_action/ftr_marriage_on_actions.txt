@@ -1,0 +1,12 @@
+﻿on_marriage = { # remove trait child_of_concubine
+	effect = {
+		every_child = {
+			limit = {
+				is_child_of = scope:spouse
+				has_trait = child_of_concubine
+			}
+			remove_trait = child_of_concubine_male
+			remove_trait = child_of_concubine_female
+		}
+	}
+}

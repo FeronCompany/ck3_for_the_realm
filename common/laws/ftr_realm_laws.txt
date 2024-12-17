@@ -1,4 +1,7 @@
 ﻿
+@imperial_bureaucracy_cooldown_years_1 = 10
+@imperial_bureaucracy_cooldown_years_2 = 20
+@imperial_bureaucracy_cooldown_years_3 = 30
 
 ######################### OVERRIDE ########################################################################
 imperial_bureaucracy = {

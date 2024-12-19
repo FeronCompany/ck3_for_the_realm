@@ -94,3 +94,6 @@
  ftr_offer_military_assistance_to_liege_interaction_desc:0 "Offer [recipient.GetName|U] military assistance in war"
  ftr_offer_military_assistance_to_liege_interaction_notification:0 "As a loyal subject, [actor.GetName|U] decided to offer military assistance in your war."
  ftr_current_war_desc_tt:0 "Current war must be civil war, religious war or war about your own title"
+
+ ftr_merge_jurisdiction_interaction:0 "<FTR> Merge Administration Jurisdiction"
+ ftr_merge_jurisdiction_interaction_desc:0 "Merge two administration jurisdiction."

@@ -55,26 +55,3 @@ ftr_debug_change_government_interaction = {
 	auto_accept = yes
 }
 
-ftr_debug_remove_child_of_concubine_interaction = {
-	category = interaction_debug_main
-	use_diplomatic_range = no
-	ignores_pending_interaction_block = yes
-	icon = debug_good
-
-	is_shown = {
-		debug_only = yes
-		scope:recipient = {
-			is_child_of = scope:actor
-			has_trait = child_of_concubine
-		}
-	}
-
-	auto_accept = yes
-	on_accept = {
-		scope:recipient = {
-			remove_trait = child_of_concubine_male
-			remove_trait = child_of_concubine_female
-		}
-	}
-}
-

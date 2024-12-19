@@ -94,3 +94,6 @@
  ftr_offer_military_assistance_to_liege_interaction_desc:0 "在[recipient.GetName|U]的战争中贡献自己的私兵"
  ftr_offer_military_assistance_to_liege_interaction_notification:0 "[actor.GetName|U]作为一名忠心的臣子，决定在战争中为您提供军事援助。"
  ftr_current_war_desc_tt:0 "当前战争必须是内战、宗教战争或者关系自己领地的战争"
+
+ ftr_merge_jurisdiction_interaction:0 "<FTR>合并辖区"
+ ftr_merge_jurisdiction_interaction_desc:0 "将两个行政辖区合并"

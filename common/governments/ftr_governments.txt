@@ -66,11 +66,11 @@ administrative_government = {
 		feudal_government_levy_contribution_mult = -0.5
 		clan_government_tax_contribution_mult = -0.5
 		clan_government_levy_contribution_mult = -0.5
-		
+
+		men_at_arms_cap = -2
+		men_at_arms_limit = -2
+		knight_limit = -5
 		############################ OVERRIDE ############################################
-		# men_at_arms_cap = -2
-		# men_at_arms_limit = -2
-		# knight_limit = -5
 		# vassal_limit = 100
 		############################ OVERRIDE ############################################
 		active_accolades = -1

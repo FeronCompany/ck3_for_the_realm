@@ -1,0 +1,5 @@
+﻿on_marriage = { # remove trait child_of_concubine
+	events = {
+		ftr_interaction_event.1004
+	}
+}

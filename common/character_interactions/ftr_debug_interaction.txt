@@ -55,4 +55,3 @@ ftr_debug_change_government_interaction = {
 	auto_accept = yes
 }
 
-

@@ -824,3 +824,19 @@ ftr_interaction_event.1003 = {
 		}
 	}
 }
+
+# Child lost child_of_concubine trait after marriage
+ftr_interaction_event.1004 = {
+	hidden = yes
+
+	immediate = {
+		every_child = {
+			limit = {
+				is_child_of = scope:spouse
+				has_trait = child_of_concubine
+			}
+			remove_trait = child_of_concubine_male
+			remove_trait = child_of_concubine_female
+		}
+	}
+}

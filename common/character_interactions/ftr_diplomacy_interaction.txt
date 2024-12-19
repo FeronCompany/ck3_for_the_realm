@@ -353,7 +353,6 @@ ftr_send_envoy_interaction = {
 
 	is_shown = {
 		OR = {
-			scope:actor = { is_vassal_of = scope:recipient }
 			scope:recipient = { is_vassal_of = scope:actor }
 			scope:actor = {
 				is_landed = yes
@@ -363,6 +362,7 @@ ftr_send_envoy_interaction = {
 			scope:actor = {
 				liege = scope:recipient.liege
 				NOT = { this = scope:recipient.liege }
+				NOT = { liege = scope:recipient }
 				is_landed = yes
 			}
 		}

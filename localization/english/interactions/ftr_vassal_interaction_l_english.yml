@@ -43,6 +43,9 @@
  ftr_vassal_mediation_interaction:0 "<FTR> Vassal War Intervention"
  ftr_vassal_mediation_interaction_desc:0 "Vassals should not have private fights other than foreign wars."
  ftr_vassal_mediation_interaction_notification:0 "Your liege [actor.GetName] give order to stop your war."
+ ftr_only_civil_war_can_be_picked_tt:0 "Only civil war can be picked"
+ ftr_attacker_receive_letter_tt:0 "Attacker will receive ceasefire order as the dominant side"
+ ftr_defender_receive_letter_tt:0 "Defender will receive ceasefire order as the dominant side"
 
  ftr_request_depose_interaction:0 "<FTR> Impeach Official"
  ftr_request_depose_interaction_desc:0 "Impeach Official"

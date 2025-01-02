@@ -840,3 +840,307 @@ ftr_interaction_event.1004 = {
 		}
 	}
 }
+
+# Demand stopping war
+ftr_interaction_event.1005 = {
+	type = letter_event
+	opening = {
+		desc = ftr_interaction_event.1005.opening
+	}
+	desc = ftr_interaction_event.1005.desc
+	sender = scope:actor
+
+	option = { # Accept
+		name = ftr_interaction_event.1005.a
+		scope:target = {
+			end_war = white_peace
+		}
+		add_opinion = {
+			modifier = attempt_to_force_end_war_opinion
+			target = scope:actor
+		}
+		add_truce_both_ways = {
+			character = scope:losing_side
+			years = 10
+			war = scope:target
+			result = white_peace
+		}
+		hidden_effect = {
+			scope:losing_side = {
+				send_interface_message = {
+					title = ftr_accept_liege_mediation.t
+					custom_tooltip = ftr_accept_liege_mediation.desc
+					left_icon = scope:actor
+					right_icon = scope:winning_side
+				}
+			}
+			scope:actor = {
+				every_vassal = {
+					limit = { NOT = { this = scope:losing_side } }
+					send_interface_message = {
+						title = ftr_accept_liege_mediation.t
+						custom_tooltip = ftr_accept_liege_mediation.desc
+						left_icon = scope:actor
+						right_icon = scope:winning_side
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 100
+				OR = {
+					has_trait = craven
+					has_trait = just
+					has_trait = loyal
+				}
+			}
+			opinion_modifier = {
+				who = scope:winning_side
+				opinion_target = scope:actor
+				multiplier = 0.5
+			}
+		}
+	}
+
+	option = { # Decline
+		name = ftr_interaction_event.1005.b
+		custom_tooltip = {
+			text = ftr_interaction_event.1005.b.desc
+			scope:actor = {
+				trigger_event = {
+					id = ftr_interaction_event.1006
+					days = { 3 5 }
+				}
+			}
+		}
+		hidden_effect = {
+			scope:losing_side = {
+				send_interface_message = {
+					title = ftr_refuse_liege_mediation.t
+					custom_tooltip = ftr_refuse_liege_mediation.desc
+					left_icon = scope:actor
+					right_icon = scope:winning_side
+				}
+			}
+			scope:actor = {
+				every_vassal = {
+					limit = { NOT = { this = scope:losing_side } }
+					send_interface_message = {
+						title = ftr_refuse_liege_mediation.t
+						custom_tooltip = ftr_refuse_liege_mediation.desc
+						left_icon = scope:actor
+						right_icon = scope:winning_side
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 30
+				scope:winning_side = {
+					is_powerful_vassal_of = scope:actor
+				}
+			}
+			modifier = {
+				add = 20
+				scope:winning_side = {
+					is_allied_to = scope:actor
+				}
+			}
+		}
+	}
+
+	option = { # Ask for compensation
+		name = ftr_interaction_event.1005.c
+		trigger = {
+			scope:target = {
+				trigger_if = {
+					limit = { primary_attacker = root }
+					attacker_war_score >= 50
+				}
+				trigger_if = {
+					limit = { primary_defender = root }
+					defender_war_score >= 50
+				}
+			}
+		}
+		custom_tooltip = {
+			text = ftr_interaction_event.1005.c.desc
+			scope:actor = {
+				trigger_event = {
+					id = ftr_interaction_event.1007
+					days = { 3 5 }
+				}
+			}
+		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = greedy
+					has_trait = ambitious
+				}
+			}
+		}
+	}
+}
+
+# Decline stop war
+ftr_interaction_event.1006 = {
+	type = letter_event
+	opening = {
+		desc = ftr_interaction_event.1006.opening
+	}
+	desc = ftr_interaction_event.1006.desc
+	sender = scope:winning_side
+
+	immediate = {
+		add_opinion = {
+			target = scope:winning_side
+			modifier = treachery_opinion
+		}
+	}
+
+	option = { # Ignore
+		name = ftr_interaction_event.1006.a
+		add_prestige = -300
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 50
+				is_at_war = yes
+			}
+			modifier = {
+				add = 20
+				gold < 0
+			}
+		}
+	}
+
+	option = { # War!
+		name = ftr_interaction_event.1006.b
+		if = {
+			limit = { exists = scope:target }
+			scope:target = {
+				if = {
+					limit = { primary_attacker = scope:winning_side }
+					add_defender = scope:actor
+				}
+				else = {
+					add_attacker = scope:actor
+				}
+			}
+		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = -100
+				is_allied_to = scope:winning_side
+			}
+		}
+	}
+}
+
+# Ask for compensation
+ftr_interaction_event.1007 = {
+	type = letter_event
+	opening = {
+		desc = ftr_interaction_event.1007.opening
+	}
+	desc = ftr_interaction_event.1007.desc
+	sender = scope:winning_side
+
+	option = { # I pay
+		name = ftr_interaction_event.1007.a
+		pay_short_term_gold = {
+			target = scope:winning_side
+			gold = scope:winning_side.major_gold_value
+		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 30
+				gold > scope:winning_side.major_gold_value
+				has_trait = generous
+			}
+		}
+	}
+
+	option = { # losing side pay
+		name = ftr_interaction_event.1007.b
+		scope:losing_side = {
+			pay_short_term_gold = {
+				target = scope:winning_side
+				gold = scope:winning_side.major_gold_value
+			}
+			add_opinion = {
+				modifier = annoyed_opinion
+				opinion = -20
+				target = scope:actor
+			}
+		}
+		ai_chance = {
+			base = 20
+		}
+	}
+
+	option = { # no compensation
+		name = ftr_interaction_event.1007.c
+		add_tyranny = medium_tyranny_value
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 50
+				gold < 0
+				scope:losing_side.gold < 0
+			}
+			modifier = {
+				add = 20
+				has_trait = arbitrary
+			}
+		}
+	}
+
+	after = {
+		scope:target = {
+			end_war = white_peace
+		}
+		scope:winning_side = {
+			add_opinion = {
+				modifier = attempt_to_force_end_war_opinion
+				target = scope:actor
+			}
+			add_truce_both_ways = {
+				character = scope:losing_side
+				years = 10
+				war = scope:target
+				result = white_peace
+			}
+		}
+		hidden_effect = {
+			scope:losing_side = {
+				send_interface_message = {
+					title = ftr_accept_liege_mediation.t
+					custom_tooltip = ftr_accept_liege_mediation.desc
+					left_icon = scope:actor
+					right_icon = scope:winning_side
+				}
+			}
+			scope:actor = {
+				every_vassal = {
+					limit = { NOT = { this = scope:losing_side } }
+					send_interface_message = {
+						title = ftr_accept_liege_mediation.t
+						custom_tooltip = ftr_accept_liege_mediation.desc
+						left_icon = scope:actor
+						right_icon = scope:winning_side
+					}
+				}
+			}
+		}
+	}
+}

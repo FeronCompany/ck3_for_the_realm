@@ -719,9 +719,9 @@ ftr_vassal_mediation_interaction = {
 	interface = interfere_in_war
 	special_interaction = interfere_in_war_interaction
 	ai_accept_negotiation = yes
-	popup_on_receive = yes
-	#pause_on_receive = yes
+	cooldown_against_recipient = { years = 5 }
 	desc = ftr_vassal_mediation_interaction_desc
+	icon = icon_retreat
 
 	is_shown = {
 		scope:recipient = {
@@ -736,7 +736,7 @@ ftr_vassal_mediation_interaction = {
 			}
 		}
 		scope:actor = {
-			government_has_flag = government_is_centralism
+			#government_has_flag = government_is_centralism
 			NOT = { is_participant_in_war = scope:target_war }
 		}
 	}
@@ -748,26 +748,195 @@ ftr_vassal_mediation_interaction = {
 				}
 			}
 		}
+		NOT = {
+			scope:recipient = {
+				has_strong_hook = scope:actor
+			}
+		}
 	}
 	can_be_picked = {
-		OR = {
-			scope:target.primary_attacker = scope:recipient
-			scope:target.primary_defender = scope:recipient
+		exists = scope:target
+		custom_tooltip = {
+			text = ftr_only_civil_war_can_be_picked_tt
+			OR = {
+				AND = {
+					scope:target.primary_attacker = scope:recipient
+					scope:actor = {
+						is_liege_or_above_of = scope:target.primary_defender
+					}
+				}
+				AND = {
+					scope:target.primary_defender = scope:recipient
+					scope:actor = {
+						is_liege_or_above_of = scope:target.primary_attacker
+					}
+				}
+			}
 		}
 	}
+	cost = {
+		prestige = 250
+	}
 	on_accept = {
-		scope:actor = {
-			add_prestige = -150
-		}
-		scope:recipient = {
-			trigger_event = ftr_interaction_event.1001
+		if = {
+			limit = { exists = scope:target }
+			scope:target = {
+				if = {
+					limit = { attacker_war_score > 0 }
+					primary_attacker = {
+						save_scope_as = winning_side
+					}
+					primary_defender = {
+						save_scope_as = losing_side
+					}
+					custom_tooltip = {
+						text = ftr_attacker_receive_letter_tt
+						primary_attacker = {
+							trigger_event = {
+								id = ftr_interaction_event.1005
+								days = { 10 15 }
+							}
+						}
+					}
+				}
+				else = {
+					primary_defender = {
+						save_scope_as = winning_side
+					}
+					primary_attacker = {
+						save_scope_as = losing_side
+					}
+					custom_tooltip = {
+						text = ftr_defender_receive_letter_tt
+						primary_defender = {
+							trigger_event = {
+								id = ftr_interaction_event.1005
+								days = { 10 15 }
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	on_auto_accept = {}
 	on_decline = {}
 	auto_accept = yes
 	ai_will_do = {
-		base = 100
+		base = -20
+		modifier = {
+			add = -20
+			scope:actor = {
+				is_at_war = yes
+			}
+		}
+		modifier = {
+			add = 30
+			exists = scope:target
+			scope:target.primary_defender = scope:winning_side
+			scope:target.primary_attacker = {
+				is_allied_to = scope:actor
+			}
+		}
+		modifier = {
+			add = 30
+			exists = scope:target
+			scope:target.primary_attacker = scope:winning_side
+			scope:target.primary_defender = {
+				is_allied_to = scope:actor
+			}
+		}
+		opinion_modifier = {
+			trigger = {
+				exists = scope:target
+				scope:target.primary_defender = scope:winning_side
+			}
+			opinion_target = scope:target.primary_attacker
+			who = scope:actor
+			multiplier = 0.1
+		}
+		opinion_modifier = {
+			trigger = {
+				exists = scope:target
+				scope:target.primary_defender = scope:winning_side
+			}
+			opinion_target = scope:actor
+			who = scope:target.primary_defender
+			multiplier = -0.5
+		}
+		opinion_modifier = {
+			trigger = {
+				exists = scope:target
+				scope:target.primary_attacker = scope:winning_side
+			}
+			opinion_target = scope:target.primary_defender
+			who = scope:actor
+			multiplier = 0.1
+		}
+		opinion_modifier = {
+			trigger = {
+				exists = scope:target
+				scope:target.primary_attacker = scope:winning_side
+			}
+			opinion_target = scope:actor
+			who = scope:target.primary_attacker
+			multiplier = -0.5
+		}
+	}
+	ai_set_target = {
+		scope:recipient = {
+			ordered_character_war = {
+				limit = {
+					OR = {
+						AND = {
+							primary_attacker = scope:recipient
+							scope:actor = {
+								is_liege_or_above_of = prev.primary_defender
+							}
+						}
+						AND = {
+							primary_defender = scope:recipient
+							scope:actor = {
+								is_liege_or_above_of = prev.primary_attacker
+							}
+						}
+					}
+				}
+				order_by = {
+					value = 0
+					add = {
+						if = {
+							limit = {
+								attacker_war_score > 0
+								scope:actor = {
+									opinion = {
+										target = primary_attacker
+										value < 0
+									}
+								}
+							}
+							add = attacker_war_score
+						}
+						else_if = {
+							limit = {
+								defender_war_score > 0
+								scope:actor = {
+									opinion = {
+										target = primary_defender
+										value < 0
+									}
+								}
+							}
+							add = defender_war_score
+						}
+						else = {
+							#
+						}
+					}
+				}
+				save_scope_as = target
+			}
+		}
 	}
 }
 

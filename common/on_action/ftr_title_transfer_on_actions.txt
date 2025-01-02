@@ -93,7 +93,15 @@ ftr_ursurp_discontent_effects = {
 		save_scope_as = usurper_liege
 		every_vassal = {
 			limit = {
-				primary_title.tier >= tier_duchy
+				primary_title = {
+					tier >= tier_duchy
+					trigger_if = {
+						limit = {
+							NOT = { scope:title = scope:usurper_liege.primary_title }
+						}
+						de_jure_liege = scope:title
+					}
+				}
 				opinion = {
 					value < 0
 					target = scope:usurper_liege

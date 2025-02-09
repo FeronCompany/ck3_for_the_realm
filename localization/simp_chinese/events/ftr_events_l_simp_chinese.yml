@@ -262,6 +262,20 @@
  ftr_decision_events.0002.desc:0 "远方传来惊人的消息，在[emperor.GetName]的带领下，东罗马的遗民重建了东罗马帝国。这个焕发新生的古老帝国未来表现如何，我们拭目以待。"
  ftr_decision_events.0002.a:0 "震惊"
 
+ ftr_decision_events.0012.t:0 "选妃时刻"
+ ftr_decision_events.0012.desc:0 "我的手下十分卖力地为我在民间搜罗美女，现在已经有一批候选人来到院子里。我整理好衣服，压抑着内心的狂喜，故作淡定地走到她们面前。"
+ ftr_decision_events.0012.a:0 "让[potential_concubine_a.GetShortUIName]到我的卧室来"
+ ftr_decision_events.0012.b:0 "我想[potential_concubine_b.GetShortUIName]要更胜一筹"
+ ftr_decision_events.0012.c:0 "[potential_concubine_c.GetShortUIName]真是令人无法拒绝"
+ ftr_decision_events.0012.d:0 "她们我都不喜欢"
+
+ ftr_decision_events.0013.t:0 "选妃时刻"
+ ftr_decision_events.0013.desc:0 "我的手下十分卖力地为我在民间搜罗美男，现在已经有一批候选人来到院子里。我整理好衣服，压抑着内心的狂喜，故作淡定地走到她们面前。"
+ ftr_decision_events.0013.a:0 "让[potential_concubine_a.GetShortUIName]到我的卧室来"
+ ftr_decision_events.0013.b:0 "我想[potential_concubine_b.GetShortUIName]要更胜一筹"
+ ftr_decision_events.0013.c:0 "[potential_concubine_c.GetShortUIName]真是令人无法拒绝"
+ ftr_decision_events.0013.d:0 "他们我都不喜欢"
+
  ftr_interaction_event.1001.t:0 "<FTR>禁绝私斗"
  ftr_interaction_event.1001.desc:0 "您的君主[actor.GetName]听闻您私自参与非法的战争，现要求您立即结束战争返回属地。"
  ftr_interaction_event.1001.a:0 "遵旨"

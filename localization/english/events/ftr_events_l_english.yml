@@ -235,6 +235,20 @@
  ftr_decision_events.0002.desc:0 "Amazing news came from afar that under [emperor.GetName]'s leadership, the remnants of Eastern Rome rebuilt the Eastern Roman Empire. We will wait and see how this rejuvenated ancient empire will perform in the future."
  ftr_decision_events.0002.a:0 "Shock news"
 
+ ftr_decision_events.0012.t:0 "Concubine Time"
+ ftr_decision_events.0012.desc:0 "My subordinates worked very hard to search for beautiful women among the people for me. Now a group of candidates have come to the yard. I tidied up my clothes, suppressed my inner joy, and pretended to be calm as I walked up to them."
+ ftr_decision_events.0012.a:0 "Get [potential_concubine_a.GetShortUIName] in my chamber"
+ ftr_decision_events.0012.b:0 "I think [potential_concubine_b.GetShortUIName] is better"
+ ftr_decision_events.0012.c:0 "[potential_concubine_c.GetShortUIName] is an irresistible person"
+ ftr_decision_events.0012.d:0 "None of them"
+
+ ftr_decision_events.0013.t:0 "Concubine Time"
+ ftr_decision_events.0013.desc:0 "My subordinates worked very hard to search for beautiful men among the people for me. Now a group of candidates have come to the yard. I tidied up my clothes, suppressed my inner joy, and pretended to be calm as I walked up to them."
+ ftr_decision_events.0013.a:0 "Get [potential_concubine_a.GetShortUIName] in my chamber"
+ ftr_decision_events.0013.b:0 "I think [potential_concubine_b.GetShortUIName] is better"
+ ftr_decision_events.0013.c:0 "[potential_concubine_c.GetShortUIName] is an irresistible person"
+ ftr_decision_events.0013.d:0 "None of them"
+
  ftr_interaction_event.1001.t:0 "<FTR> Abolish Personal Fight"
  ftr_interaction_event.1001.desc:0 "Your liege [actor.GetName] heard that you are in an illegal law. Now [actor.GetHeShe] request you to stop the war and return to your estate."
  ftr_interaction_event.1001.a:0 "Yes, my liege."

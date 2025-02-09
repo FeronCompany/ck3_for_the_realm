@@ -158,3 +158,8 @@
  ftr_liege_war_against_vassals_text:0 "Liege is at war with vassals."
  ftr_has_40_percent_of_lieges_army_text:0 "Has more than 40% of liege's army strength."
  ftr_change_to_warlord_tt:0 "Warlord Rise Up"
+
+ ftr_recruit_concubine_decision:0 "<FTR> Introduce Concubine"
+ ftr_recruit_concubine_decision_tooltip:0 "Collect beautiful subjects from society and let them enrich the harem"
+ ftr_recruit_concubine_decision_desc:0 "My harem is not prosperous enough, it is necessary to gather some concubines to enrich it."
+ ftr_recruit_concubine_decision_confirm:0 "Let's begin"

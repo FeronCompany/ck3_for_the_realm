@@ -742,3 +742,331 @@ ftr_decision_events.0011 = {
 		add_courtier = scope:constantine
 	}
 }
+
+# Introduce concubine
+ftr_decision_events.0012 = {
+	type = character_event
+	title = ftr_decision_events.0012.t
+	desc = ftr_decision_events.0012.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	lower_left_portrait =  scope:potential_concubine_a
+	lower_center_portrait =  scope:potential_concubine_b
+	lower_right_portrait =  scope:potential_concubine_c
+
+	immediate = {
+		hidden_effect = {
+			create_character = {
+				location = root.location
+				random_culture = {
+					root.culture = {
+						trigger = { always = yes }
+					}
+					root.location.culture = {
+						trigger = { exists = root.location.culture }
+					}
+				}
+				faith = root.faith
+				dynasty = generate
+				gender = female
+				age = { 16 20 }
+				random_traits = yes
+				random_traits_list = {
+					beauty_good_1 = { weight = { base = 60 } }
+					beauty_good_2 = { weight = { base = 30 } }
+					beauty_good_3 = { weight = { base = 10 } }
+				}
+				after_creation = {
+					save_scope_as = potential_concubine_a
+				}
+			}
+			create_character = {
+				location = root.location
+				random_culture = {
+					root.culture = {
+						trigger = { always = yes }
+					}
+					root.location.culture = {
+						trigger = { exists = root.location.culture }
+					}
+				}
+				faith = root.faith
+				dynasty = generate
+				gender = female
+				age = { 16 20 }
+				random_traits = yes
+				random_traits_list = {
+					beauty_good_1 = { weight = { base = 60 } }
+					beauty_good_2 = { weight = { base = 30 } }
+					beauty_good_3 = { weight = { base = 10 } }
+				}
+				after_creation = {
+					save_scope_as = potential_concubine_b
+				}
+			}
+			create_character = {
+				location = root.location
+				random_culture = {
+					root.culture = {
+						trigger = { always = yes }
+					}
+					root.location.culture = {
+						trigger = { exists = root.location.culture }
+					}
+				}
+				faith = root.faith
+				dynasty = generate
+				gender = female
+				age = { 16 20 }
+				random_traits = yes
+				random_traits_list = {
+					beauty_good_1 = { weight = { base = 60 } }
+					beauty_good_2 = { weight = { base = 30 } }
+					beauty_good_3 = { weight = { base = 10 } }
+				}
+				after_creation = {
+					save_scope_as = potential_concubine_c
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0012.a
+		make_concubine = scope:potential_concubine_a
+		hidden_effect = {
+			scope:potential_concubine_b = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+			scope:potential_concubine_c = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0012.b
+		make_concubine = scope:potential_concubine_b
+		hidden_effect = {
+			scope:potential_concubine_a = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+			scope:potential_concubine_c = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0012.c
+		make_concubine = scope:potential_concubine_c
+		hidden_effect = {
+			scope:potential_concubine_a = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+			scope:potential_concubine_b = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0012.d
+		hidden_effect = {
+			scope:potential_concubine_a = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+			scope:potential_concubine_b = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+			scope:potential_concubine_c = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+}
+
+# Introduce concubine
+ftr_decision_events.0013 = {
+	type = character_event
+	title = ftr_decision_events.0013.t
+	desc = ftr_decision_events.0013.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	lower_left_portrait =  scope:potential_concubine_a
+	lower_center_portrait =  scope:potential_concubine_b
+	lower_right_portrait =  scope:potential_concubine_c
+
+	immediate = {
+		hidden_effect = {
+			create_character = {
+				location = root.location
+				random_culture = {
+					root.culture = {
+						trigger = { always = yes }
+					}
+					root.location.culture = {
+						trigger = { exists = root.location.culture }
+					}
+				}
+				faith = root.faith
+				dynasty = generate
+				gender = male
+				age = { 16 20 }
+				random_traits = yes
+				random_traits_list = {
+					beauty_good_1 = { weight = { base = 60 } }
+					beauty_good_2 = { weight = { base = 30 } }
+					beauty_good_3 = { weight = { base = 10 } }
+				}
+				after_creation = {
+					save_scope_as = potential_concubine_a
+				}
+			}
+			create_character = {
+				location = root.location
+				random_culture = {
+					root.culture = {
+						trigger = { always = yes }
+					}
+					root.location.culture = {
+						trigger = { exists = root.location.culture }
+					}
+				}
+				faith = root.faith
+				dynasty = generate
+				gender = male
+				age = { 16 20 }
+				random_traits = yes
+				random_traits_list = {
+					beauty_good_1 = { weight = { base = 60 } }
+					beauty_good_2 = { weight = { base = 30 } }
+					beauty_good_3 = { weight = { base = 10 } }
+				}
+				after_creation = {
+					save_scope_as = potential_concubine_b
+				}
+			}
+			create_character = {
+				location = root.location
+				random_culture = {
+					root.culture = {
+						trigger = { always = yes }
+					}
+					root.location.culture = {
+						trigger = { exists = root.location.culture }
+					}
+				}
+				faith = root.faith
+				dynasty = generate
+				gender = male
+				age = { 16 20 }
+				random_traits = yes
+				random_traits_list = {
+					beauty_good_1 = { weight = { base = 60 } }
+					beauty_good_2 = { weight = { base = 30 } }
+					beauty_good_3 = { weight = { base = 10 } }
+				}
+				after_creation = {
+					save_scope_as = potential_concubine_c
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0013.a
+		make_concubine = scope:potential_concubine_a
+		hidden_effect = {
+			scope:potential_concubine_b = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+			scope:potential_concubine_c = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0013.b
+		make_concubine = scope:potential_concubine_b
+		hidden_effect = {
+			scope:potential_concubine_a = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+			scope:potential_concubine_c = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0013.c
+		make_concubine = scope:potential_concubine_c
+		hidden_effect = {
+			scope:potential_concubine_a = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+			scope:potential_concubine_b = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0013.d
+		hidden_effect = {
+			scope:potential_concubine_a = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+			scope:potential_concubine_b = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+			scope:potential_concubine_c = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+}

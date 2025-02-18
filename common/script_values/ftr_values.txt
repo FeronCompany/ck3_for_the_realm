@@ -282,12 +282,12 @@ ftr_trade_income_value = {
 		value = 2.5
 		multiply = {
 			value = scope:secondary_actor.stewardship
-			multiply = 0.9
+			multiply = 0.8
 			add = 2
 		}
 		multiply = {
 			value = scope:recipient.capital_county.development_level
-			multiply = 0.85
+			multiply = 0.80
 			add = 15
 		}
 		multiply = {
@@ -305,12 +305,12 @@ ftr_trade_income_expected_value = {
 		value = 2.5
 		multiply = {
 			value = scope:secondary_actor.stewardship
-			multiply = 0.9
+			multiply = 0.8
 			add = 2
 		}
 		multiply = {
 			value = scope:recipient.capital_county.development_level
-			multiply = 0.85
+			multiply = 0.80
 			add = 15
 		}
 		multiply = {
@@ -329,4 +329,35 @@ ftr_trade_income_expected_liege_share_value = {
 ftr_trade_income_expected_envoy_share_value = {
 	value = ftr_trade_income_expected_value
 	multiply = ftr_trade_income_envoy_share
+}
+
+get_initial_debate_strength = {
+	value = learning
+	add = 5
+	multiply = 3
+}
+get_debate_diplomacy_damage = {
+	value = diplomacy
+	add = 1
+	multiply = -1
+}
+get_debate_steward_damage = {
+	value = stewardship
+	add = 1
+	multiply = -1
+}
+get_debate_martial_damage = {
+	value = martial
+	add = 1
+	multiply = -1
+}
+get_debate_intrigue_damage = {
+	value = intrigue
+	add = 1
+	multiply = -1
+}
+get_debate_learning_damage = {
+	value = learning
+	add = 1
+	multiply = -1
 }

@@ -64,6 +64,40 @@
  ftr_interaction_event.0013.desc:0 "我们两人谁也说服不了谁，只能站在客厅两端干瞪眼，一旁的客人都议论纷纷，分析着谁说的更有道理。我累了，辩论是时候结束了。"
  ftr_interaction_event.0013.a:0 "你给我等着!"
 
+ ftr_interaction_event.0014.t:0 "辩论策略"
+ ftr_interaction_event.0014.desc:0 "[recipient.GetShortUIName|U] 来到你的客厅，迫不及待的取出经书，并毫无顾忌地朗读起经文，试图在气势上压倒你。你则不慌不忙地放下公文，缓步走到[recipient.GetHerHim]面前，思考接下来的对策。\n---[actor.GetShortUIName|U]的辩论气势：[actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]的辩论气势：[recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.desc_a:0 "[current_target.GetShortUIName|U]在辩论中对我的信仰大放厥词，并坚称自己的信仰才是真正代表了正义。如此自大又荒谬地言论真不知从何而来！\n---[actor.GetShortUIName|U]的辩论气势：[actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]的辩论气势：[recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.desc_b:0 "[current_target.GetShortUIName|U]降低了自己的声量，故作亲昵地跟我聊起了时局，试图让我相信皈依他的宗教才是利益所在。\n---[actor.GetShortUIName|U]的辩论气势：[actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]的辩论气势：[recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.desc_c:0 "[current_target.GetShortUIName|U]手舞足蹈地聊起了自己宗教信徒们过去的赫赫武功，那些勇士们的传说，殉道者们的牺牲，[current_target.GetShortUIName|U]如数家珍。\n---[actor.GetShortUIName|U]的辩论气势：[actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]的辩论气势：[recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.desc_d:0 "在激烈地辩论中，[current_target.GetShortUIName|U]完全没有一个贵族应有的美德，反而是不断使用一些滑坡谬论来佐证自己的观点，真是无耻之尤。\n---[actor.GetShortUIName|U]的辩论气势：[actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]的辩论气势：[recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.desc_e:0 "[current_target.GetShortUIName|U]摇头晃脑，历史典故、名人名言源源不断地从[current_target.GetHerHis|U]口中冒出来，努力地证明自己读过不少书。\n---[actor.GetShortUIName|U]的辩论气势：[actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]的辩论气势：[recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.a:0 "阐述你关于正义与邪恶的观点"
+ ftr_interaction_event.0014.b:0 "分析皈依正信地利益所在"
+ ftr_interaction_event.0014.c:0 "夸耀信众们曾经的赫赫武功"
+ ftr_interaction_event.0014.d:0 "巧舌如簧地驳倒[current_target.GetShortUIName|U]"
+ ftr_interaction_event.0014.e:0 "引经据典地佐证观点"
+ ftr_interaction_event.0014.a.damage_desc:0 "使用外交能力，辩论气势打击：[SCOPE.ScriptValue('get_debate_diplomacy_damage')|0]"
+ ftr_interaction_event.0014.b.damage_desc:0 "使用管理能力，辩论气势打击：[SCOPE.ScriptValue('get_debate_steward_damage')|0]"
+ ftr_interaction_event.0014.c.damage_desc:0 "使用军事能力，辩论气势打击：[SCOPE.ScriptValue('get_debate_martial_damage')|0]"
+ ftr_interaction_event.0014.d.damage_desc:0 "使用谋略能力，辩论气势打击：[SCOPE.ScriptValue('get_debate_intrigue_damage')|0]"
+ ftr_interaction_event.0014.e.damage_desc:0 "使用学识能力，辩论气势打击：[SCOPE.ScriptValue('get_debate_learning_damage')|0]"
+
+
+ ftr_interaction_event.0015.t:0 "略处下风"
+ ftr_interaction_event.0015.desc:0 "在 [debate_winner.GetShortUIName|U] 结束了自己的慷慨陈词后，我语塞了。[debate_winner.GetSheHe|U]的逻辑、[debate_winner.GetSheHe]的表达都让我无法辩驳，我对信仰的忠贞受到了动摇……"
+ ftr_interaction_event.0015.a:0 "我的信仰啊……"
+ ftr_interaction_event.0015.b:0 "或许 [debate_winner.GetShortUIName|U] 说的没错……"
+
+ ftr_interaction_event.0016.t:0 "真理获胜"
+ ftr_interaction_event.0016.desc:0 "在我渊博学识的衬托下，[debate_loser.GetShortUIName|U] 那些微不足道的小聪明显得如此可笑。[debate_loser.GetSheHe]哭丧着脸恳求我不要再继续了，并承认自己输掉了这场辩论。"
+ ftr_interaction_event.0016.a:0 "举手之劳"
+
+ ftr_interaction_event.0017.t:0 "不分胜负"
+ ftr_interaction_event.0017.desc:0 "我们两人谁也说服不了谁，只能站在客厅两端干瞪眼，一旁的客人都议论纷纷，分析着谁说的更有道理。我累了，辩论是时候结束了。"
+ ftr_interaction_event.0017.a:0 "你给我等着!"
+
+
+
  ftr_interaction_event.1003.t:0 "结束同盟"
  ftr_interaction_event.1003.desc:0 "[actor.GetShortUIName|U]悍然背弃了与我们的盟约，此等行为不仅短视，而且傲慢。假以时日，我们必须要还以颜色。"
  ftr_interaction_event.1003.a:0 "叛徒！"

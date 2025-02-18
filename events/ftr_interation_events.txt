@@ -14,8 +14,31 @@ ftr_interaction_event.0001 = {
 	option = {
 		name = ftr_interaction_event.0001.a
 		hidden_effect = {
+			scope:actor = {
+				set_variable = {
+					name = debate_strength
+					value = get_initial_debate_strength
+					months = 1
+				}
+				set_variable = {
+					name = debate_count
+					value = 0
+					months = 1
+				}
+			}
+			scope:recipient = {
+				set_variable = {
+					name = debate_strength
+					value = get_initial_debate_strength
+					months = 1
+				}
+			}
+			
+			scope:recipient = {
+				save_scope_as = current_target
+			}
 			trigger_event = {
-				id = ftr_interaction_event.0002
+				id = ftr_interaction_event.0014
 				days = { 3 5 }
 			}
 		}
@@ -753,6 +776,447 @@ ftr_interaction_event.0013 = {
 
 	option = { #ok
 		name = ftr_interaction_event.0013.a
+	}
+}
+
+# Religious Debate: Choose stratagy Version2
+ftr_interaction_event.0014 = {
+	type = character_event
+	title = ftr_interaction_event.0014.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:actor.var:current_topic
+					scope:actor.var:current_topic = 1 # Righteousness
+				}
+				desc = ftr_interaction_event.0014.desc_a
+			}
+			triggered_desc = {
+				trigger = {
+					exists = scope:actor.var:current_topic
+					scope:actor.var:current_topic = 2 # benefit and harm
+				}
+				desc = ftr_interaction_event.0014.desc_b
+			}
+			triggered_desc = {
+				trigger = {
+					exists = scope:actor.var:current_topic
+					scope:actor.var:current_topic = 3 # Threat
+				}
+				desc = ftr_interaction_event.0014.desc_c
+			}
+			triggered_desc = {
+				trigger = {
+					exists = scope:actor.var:current_topic
+					scope:actor.var:current_topic = 4 # Sophistry
+				}
+				desc = ftr_interaction_event.0014.desc_d
+			}
+			triggered_desc = {
+				trigger = {
+					exists = scope:actor.var:current_topic
+					scope:actor.var:current_topic = 5 # Quoting articles
+				}
+				desc = ftr_interaction_event.0014.desc_e
+			}
+			# fallback description
+			desc = ftr_interaction_event.0014.desc
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = scope:actor
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:recipient
+		animation = personality_zealous
+	}
+
+	option = { # Talk with righteousness
+		name = ftr_interaction_event.0014.a
+		trigger = {
+			NOT = { exists = scope:used_diplomacy }
+		}
+		save_scope_value_as = {
+			name = used_diplomacy
+			value = yes
+		}
+		scope:actor = {
+			set_variable = {
+				name = current_topic
+				value = 1
+				months = 1
+			}
+		}
+		custom_tooltip = ftr_interaction_event.0014.a.damage_desc
+		if = {
+			limit = { scope:actor = root }
+			scope:recipient = {
+				change_variable = {
+					name = debate_strength
+					add = scope:actor.get_debate_diplomacy_damage
+				}
+			}
+		}
+		else = {
+			scope:actor = {
+				change_variable = {
+					name = debate_strength
+					add = scope:recipient.get_debate_diplomacy_damage
+				}
+			}
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				add = {
+					value = diplomacy
+					multiply = diplomacy
+				}
+			}
+		}
+	}
+	option = { # Talk about benefit and harm
+		name = ftr_interaction_event.0014.b
+		trigger = {
+			NOT = { exists = scope:used_stewardship }
+		}
+		save_scope_value_as = {
+			name = used_stewardship
+			value = yes
+		}
+		custom_tooltip = ftr_interaction_event.0014.b.damage_desc
+		scope:actor = {
+			set_variable = {
+				name = current_topic
+				value = 2
+				months = 1
+			}
+		}
+		if = {
+			limit = { scope:actor = root }
+			scope:recipient = {
+				change_variable = {
+					name = debate_strength
+					add = scope:actor.get_debate_steward_damage
+				}
+			}
+		}
+		else = {
+			scope:actor = {
+				change_variable = {
+					name = debate_strength
+					add = scope:recipient.get_debate_steward_damage
+				}
+			}
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				add = {
+					value = stewardship
+					multiply = stewardship
+				}
+			}
+		}
+	}
+	option = { # Threat
+		name = ftr_interaction_event.0014.c
+		trigger = {
+			NOT = { exists = scope:used_martial }
+		}
+		save_scope_value_as = {
+			name = used_martial
+			value = yes
+		}
+		scope:actor = {
+			set_variable = {
+				name = current_topic
+				value = 3
+				months = 1
+			}
+		}
+		custom_tooltip = ftr_interaction_event.0014.c.damage_desc
+		if = {
+			limit = { scope:actor = root }
+			scope:recipient = {
+				change_variable = {
+					name = debate_strength
+					add = scope:actor.get_debate_martial_damage
+				}
+			}
+		}
+		else = {
+			scope:actor = {
+				change_variable = {
+					name = debate_strength
+					add = scope:recipient.get_debate_martial_damage
+				}
+			}
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				add = {
+					value = martial
+					multiply = martial
+				}
+			}
+		}
+	}
+	option = { # Sophistry
+		name = ftr_interaction_event.0014.d
+		trigger = {
+			NOT = { exists = scope:used_intrigue }
+		}
+		save_scope_value_as = {
+			name = used_intrigue
+			value = yes
+		}
+		scope:actor = {
+			set_variable = {
+				name = current_topic
+				value = 4
+				months = 1
+			}
+		}
+		custom_tooltip = ftr_interaction_event.0014.d.damage_desc
+		if = {
+			limit = { scope:actor = root }
+			scope:recipient = {
+				change_variable = {
+					name = debate_strength
+					add = scope:actor.get_debate_intrigue_damage
+				}
+			}
+		}
+		else = {
+			scope:actor = {
+				change_variable = {
+					name = debate_strength
+					add = scope:recipient.get_debate_intrigue_damage
+				}
+			}
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				add = {
+					value = intrigue
+					multiply = intrigue
+				}
+			}
+		}
+	}
+	option = { # Quoting articles
+		name = ftr_interaction_event.0014.e
+		trigger = {
+			NOT = { exists = scope:used_learning }
+		}
+		save_scope_value_as = {
+			name = used_learning
+			value = yes
+		}
+		scope:actor = {
+			set_variable = {
+				name = current_topic
+				value = 5
+				months = 1
+			}
+		}
+		custom_tooltip = ftr_interaction_event.0014.e.damage_desc
+		if = {
+			limit = { scope:actor = root }
+			scope:recipient = {
+				change_variable = {
+					name = debate_strength
+					add = scope:actor.get_debate_learning_damage
+				}
+			}
+		}
+		else = {
+			scope:actor = {
+				change_variable = {
+					name = debate_strength
+					add = scope:recipient.get_debate_learning_damage
+				}
+			}
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				add = {
+					value = learning
+					multiply = learning
+				}
+			}
+		}
+	}
+
+	after = {
+		scope:actor = {
+			change_variable = {
+				name = debate_count
+				add = 1
+			}
+		}
+		if = {
+			limit = { scope:actor.var:debate_strength <= 0 }
+			scope:recipient = {
+				save_scope_as = debate_winner
+			}
+			scope:actor = {
+				save_scope_as = debate_loser
+				trigger_event = ftr_interaction_event.0015
+			}
+		}
+		else_if = {
+			limit = { scope:recipient.var:debate_strength <= 0 }
+			scope:actor = {
+				save_scope_as = debate_winner
+			}
+			scope:recipient = {
+				save_scope_as = debate_loser
+				trigger_event = ftr_interaction_event.0015
+			}
+		}
+		else_if = {
+			limit = { scope:actor.var:debate_count = 4 }
+			scope:actor = {
+				trigger_event = ftr_interaction_event.0017 # Draw
+			}
+			scope:recipient = {
+				trigger_event = ftr_interaction_event.0017
+			}
+		}
+		else = { # Not finished yet, let's go for the next round
+			if = {
+				limit = { scope:actor = root }
+				scope:actor = {
+					save_scope_as = current_target
+				}
+				scope:recipient = {
+					trigger_event = ftr_interaction_event.0014
+				}
+			}
+			else = {
+				scope:recipient = {
+					save_scope_as = current_target
+				}
+				scope:actor = {
+					trigger_event = ftr_interaction_event.0014
+				}
+			}
+		}
+	}
+}
+
+# Religious Debate: Lose
+ftr_interaction_event.0015 = {
+	type = character_event
+	title = ftr_interaction_event.0015.t
+	desc = ftr_interaction_event.0015.desc
+	theme = faith
+	left_portrait = {
+		character = scope:debate_winner
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:debate_loser
+		animation = grief
+	}
+	immediate = {
+		scope:actor = {
+			remove_variable = debate_count
+			remove_variable = current_topic
+		}
+		scope:debate_winner = {
+			remove_variable = debate_strength
+			trigger_event = ftr_interaction_event.0016
+		}
+		root = {
+			remove_variable = debate_strength
+		}
+	}
+
+	option = { #Admit failure
+		name = ftr_interaction_event.0015.a
+		scope:debate_loser = {
+			add_piety = -200
+			add_prestige = -150
+			add_character_modifier = {
+				modifier = lose_religious_debate_modifier
+				days = 730
+			}
+		}
+		ai_chance = {
+			base = 80
+		}
+	}
+	option = { #Convert
+		name = ftr_interaction_event.0015.b
+		trigger = {
+			NOT = { root = faith.religious_head }
+		}
+		scope:debate_loser = {
+			set_character_faith_with_conversion = scope:debate_winner.faith
+		}
+		ai_chance = {
+			base = 20
+		}
+	}
+}
+
+# Religious Debate: Win
+ftr_interaction_event.0016 = {
+	type = character_event
+	title = ftr_interaction_event.0016.t
+	desc = ftr_interaction_event.0016.desc
+	theme = faith
+	left_portrait = {
+		character = scope:debate_winner
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:debate_loser
+		animation = grief
+	}
+
+	option = { #Admit failure
+		name = ftr_interaction_event.0016.a
+		scope:debate_winner = {
+			add_piety = 200
+			add_prestige = 150
+			add_character_modifier = {
+				modifier = win_religious_debate_modifier
+				days = 730
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Religious Debate: Draw
+ftr_interaction_event.0017 = {
+	type = character_event
+	title = ftr_interaction_event.0017.t
+	desc = ftr_interaction_event.0017.desc
+	theme = faith
+	left_portrait = {
+		character = scope:actor
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:recipient
+		animation = personality_zealous
+	}
+
+	option = { # OK
+		name = ftr_interaction_event.0017.a
 	}
 }
 

@@ -549,6 +549,7 @@
  ftr_councillor_event.0004.a:0 "Welcome to business"
  ftr_councillor_event.0004.b:0 "Can you reveal some information?"
  ftr_councillor_event.0004.c:0 "We don't trade"
+ ftr_councillor_event.0004.d:0 "Fake a robber accident"
 
  ftr_councillor_event.0005.t:0 "Military Deterrence"
  ftr_councillor_event.0005.desc:0 "The messenger [secondary_actor.GetShortUIName] sent by [actor.GetShortUIName] has arrived at the palace gate, asking us to hand over the tribute with a fierce momentum, and his words reveal disdain for our strength."
@@ -644,4 +645,9 @@
  ftr_councillor_event.0020.a:0 "Nice"
  ftr_envoy_ally_result_tt:0 "Forge Alliances"
  ftr_envoy_ally_result_content_tt:0 "The friendly visit of the Envoy [secondary_actor.GetShortUIName] in the capital of [recipient.GetShortUIName] was fruitful, and finally [actor.GetShortUIName] and [recipient.GetShortUIName] concluded a covenant."
+
+ ftr_councillor_event.0021.t:0 "Caravan Robbed"
+ ftr_councillor_event.0021.desc:0 "[secondary_actor.GetShortUIName]'s business activities in the capital of [recipient.GetShortUIName] were progressing smoothly, but an accident occurred midway. The caravan was slaughtered by robbers, and [secondary_actor.GetShortUIName] was unfortunately killed. There is evidence that [recipient.GetShortUIName] was also involved, with the aim of robbing the caravan's assets."
+ ftr_councillor_event.0021.a:0 "Maybe it was just an accident"
+ ftr_councillor_event.0021.b:0 "I don't believe the claims of [recipient.GetShortUIName]!"
 

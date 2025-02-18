@@ -553,6 +553,7 @@
  ftr_councillor_event.0004.a:0 "欢迎往来客商"
  ftr_councillor_event.0004.b:0 "能不能透露点消息"
  ftr_councillor_event.0004.c:0 "我们不交易"
+ ftr_councillor_event.0004.d:0 "伪造一场劫匪事故"
 
  ftr_councillor_event.0005.t:0 "军事威胁"
  ftr_councillor_event.0005.desc:0 "[actor.GetShortUIName]派遣的使者[secondary_actor.GetShortUIName]已经抵达宫门，要求我们上缴贡品，对方气势汹汹，言语中透露着对我们力量的不屑。"
@@ -648,4 +649,9 @@
  ftr_councillor_event.0020.a:0 "好"
  ftr_envoy_ally_result_tt:0 "缔结同盟"
  ftr_envoy_ally_result_content_tt:0 "[secondary_actor.GetShortUIName]在[recipient.GetShortUIName]首都的友好访问收获颇丰，最终[actor.GetShortUIName]和[recipient.GetShortUIName]缔结盟约。"
+
+ ftr_councillor_event.0021.t:0 "商队被劫"
+ ftr_councillor_event.0021.desc:0 "[secondary_actor.GetShortUIName]在[recipient.GetShortUIName]首都的商业活动原本进展顺利，但是中途却遭遇意外，商队被劫匪屠戮，[secondary_actor.GetShortUIName]也不幸遇害。有证据表明[recipient.GetShortUIName]也参与其中，目的是劫夺商队的资产。"
+ ftr_councillor_event.0021.a:0 "也许真的只是意外"
+ ftr_councillor_event.0021.b:0 "我不相信[recipient.GetShortUIName]的说辞！"
 

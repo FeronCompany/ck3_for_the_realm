@@ -461,6 +461,10 @@ ftr_send_envoy_interaction = {
 		}
 		scope:actor = {
 			remove_short_term_gold = ftr_send_envoy_cost
+			save_scope_value_as = {
+				name = ftr_envoy_cost_scope_value
+				value = ftr_send_envoy_cost
+			}
 		}
 		if = {
 			limit = { scope:ftr_envoy_improve_relation = yes }

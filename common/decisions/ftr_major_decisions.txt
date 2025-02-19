@@ -89,11 +89,10 @@ ftr_renounce_dynasty_decision = {
 		always = yes
 	}
 	ai_will_do = {
-		base = 0
+		base = -20
 		modifier = {
-			add = 10
-			exists = primary_title
-			primary_title.tier > tier_county
+			add = 30
+			is_independent_ruler = yes
 		}
 		modifier = {
 			add = -50
@@ -107,13 +106,6 @@ ftr_renounce_dynasty_decision = {
 			any_child = {
 				is_alive = yes
 				count < 3
-			}
-		}
-		modifier = {
-			factor = 0
-			opinion = {
-				target = dynasty.dynast
-				value >= 20
 			}
 		}
 		modifier = {
@@ -137,7 +129,7 @@ ftr_renounce_dynasty_decision = {
 		modifier = {
 			add = {
 				value = prestige_level
-				subtract = 2
+				subtract = 3
 				multiply = 5
 			}
 		}

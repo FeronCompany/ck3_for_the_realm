@@ -64,6 +64,39 @@
  ftr_interaction_event.0013.desc:0 "Neither of us could persuade anyone. We could only stand at both ends of the living room and stare blankly. The guests on the side were all talking about it, analyzing who said it was more reasonable. I was tired, and the debate was over."
  ftr_interaction_event.0013.a:0 "Next time, I will defeat you!"
 
+ ftr_interaction_event.0014.t:0 "Debate Tactics"
+ ftr_interaction_event.0014.desc:0 "[recipient.GetShortUIName|U]  comes to your living room, eagerly takes out the scripture, and reads it aloud without any hesitation, trying to overwhelm you with momentum. You calmly put down the official document, walk slowly to [recipient.GetHerHim], and think about the next strategy.\n---[actor.GetShortUIName|U]'s debate strength: [actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]'s debate strength: [recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.desc_a:0 "[current_target.GetShortUIName|U] spoke out about my faith in the debate and insisted that his faith truly represents justice. I don't know where such arrogant and absurd remarks come from!\n---[actor.GetShortUIName|U]'s debate strength: [actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]'s debate strength: [recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.desc_b:0 "[current_target.GetShortUIName|U] lowered his voice and affectionately talked to me about the situation, trying to convince me that converting to his religion was in the interest.\n---[actor.GetShortUIName|U]'s debate strength: [actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]'s debate strength: [recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.desc_c:0 "[current_target.GetShortUIName|U] danced and talked about the glorious martial arts of his religious followers in the past, the legends of those warriors, and the sacrifices of martyrs, [current_target.GetShortUIName|U] recounting them all.\n---[actor.GetShortUIName|U]'s debate strength: [actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]'s debate strength: [recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.desc_d:0 "In the heated debate, [current_target.GetShortUIName|U] completely lacks the virtues that a nobleman should have, but instead constantly uses some slippery slope fallacies to support [current_target.GetHerHis] own views, which is really shameless.\n---[actor.GetShortUIName|U]'s debate strength: [actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]'s debate strength: [recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.desc_e:0 "[current_target.GetShortUIName|U] shakes [current_target.GetHerHis] head, historical allusions and famous quotes constantly emerge from [current_target.GetHerHis] mouth, trying to prove that he has read a lot of books.\n---[actor.GetShortUIName|U]'s debate strength: [actor.MakeScope.Var('debate_strength').GetValue|0]\n---[recipient.GetShortUIName|U]'s debate strength: [recipient.MakeScope.Var('debate_strength').GetValue|0]"
+ ftr_interaction_event.0014.a:0 "Explain your views on justice and evil"
+ ftr_interaction_event.0014.b:0 "Analyze the benefits of converting to the true faith"
+ ftr_interaction_event.0014.c:0 "Boasting about the glorious martial arts of the believers"
+ ftr_interaction_event.0014.d:0 "Skillfully refute [current_target.GetShortUIName|U]"
+ ftr_interaction_event.0014.e:0 "Cite classics to support the point of view"
+ ftr_interaction_event.0014.a.damage_desc:0 "Use diplomacy. Debate strength damage:[SCOPE.ScriptValue('get_debate_diplomacy_damage')|0]"
+ ftr_interaction_event.0014.b.damage_desc:0 "Use stewardship. Debate strength damage:[SCOPE.ScriptValue('get_debate_steward_damage')|0]"
+ ftr_interaction_event.0014.c.damage_desc:0 "Use martial. Debate strength damage:[SCOPE.ScriptValue('get_debate_martial_damage')|0]"
+ ftr_interaction_event.0014.d.damage_desc:0 "Use intrigue. Debate strength damage:[SCOPE.ScriptValue('get_debate_intrigue_damage')|0]"
+ ftr_interaction_event.0014.e.damage_desc:0 "Use learning. Debate strength damage:[SCOPE.ScriptValue('get_debate_learning_damage')|0]"
+
+ ftr_interaction_event.0015.t:0 "Slightly Downwind"
+ ftr_interaction_event.0015.desc:0 "After [debate_winner.GetShortUIName|U] finished [recipient.GetHerHis] eloquence, I was speechless. [debate_winner.GetSheHe|U] logic and [debate_winner.GetSheHe] expression made me unable to refute, and my loyalty to my faith was shaken..."
+ ftr_interaction_event.0015.a:0 "I failed you, my faith."
+ ftr_interaction_event.0015.b:0 "Maybe [debate_winner.GetShortUIName|U] is right..."
+
+ ftr_interaction_event.0016.t:0 "Victory of Truth"
+ ftr_interaction_event.0016.desc:0 "[debate_loser.GetShortUIName|U]'s petty cleverness seemed so laughable against the backdrop of my profound knowledge. [debate_loser.GetSheHe] begged me with a sad face not to continue, and admitted that [actor.GetSheHe] had lost the debate."
+ ftr_interaction_event.0016.a:0 "Everything is as I expected."
+
+ ftr_interaction_event.0017.t:0 "End with a Draw"
+ ftr_interaction_event.0017.desc:0 "Neither of us could persuade anyone. We could only stand at both ends of the living room and stare blankly. The guests on the side were all talking about it, analyzing who said it was more reasonable. I was tired, and the debate was over."
+ ftr_interaction_event.0017.a:0 "Next time, I will defeat you!"
+
+
+
  solitude_time.0001.t:0 "Solitude time"
  solitude_time.0001.desc:0 "It's leasure time now, what to do then?"
  solitude_time.0001.a:0 "Read a book"
@@ -234,6 +267,20 @@
  ftr_decision_events.0002.t:0 "<FTR> Restore Byzantium Empire"
  ftr_decision_events.0002.desc:0 "Amazing news came from afar that under [emperor.GetName]'s leadership, the remnants of Eastern Rome rebuilt the Eastern Roman Empire. We will wait and see how this rejuvenated ancient empire will perform in the future."
  ftr_decision_events.0002.a:0 "Shock news"
+
+ ftr_decision_events.0012.t:0 "Concubine Time"
+ ftr_decision_events.0012.desc:0 "My subordinates worked very hard to search for beautiful women among the people for me. Now a group of candidates have come to the yard. I tidied up my clothes, suppressed my inner joy, and pretended to be calm as I walked up to them."
+ ftr_decision_events.0012.a:0 "Get [potential_concubine_a.GetShortUIName] in my chamber"
+ ftr_decision_events.0012.b:0 "I think [potential_concubine_b.GetShortUIName] is better"
+ ftr_decision_events.0012.c:0 "[potential_concubine_c.GetShortUIName] is an irresistible person"
+ ftr_decision_events.0012.d:0 "None of them"
+
+ ftr_decision_events.0013.t:0 "Concubine Time"
+ ftr_decision_events.0013.desc:0 "My subordinates worked very hard to search for beautiful men among the people for me. Now a group of candidates have come to the yard. I tidied up my clothes, suppressed my inner joy, and pretended to be calm as I walked up to them."
+ ftr_decision_events.0013.a:0 "Get [potential_concubine_a.GetShortUIName] in my chamber"
+ ftr_decision_events.0013.b:0 "I think [potential_concubine_b.GetShortUIName] is better"
+ ftr_decision_events.0013.c:0 "[potential_concubine_c.GetShortUIName] is an irresistible person"
+ ftr_decision_events.0013.d:0 "None of them"
 
  ftr_interaction_event.1001.t:0 "<FTR> Abolish Personal Fight"
  ftr_interaction_event.1001.desc:0 "Your liege [actor.GetName] heard that you are in an illegal law. Now [actor.GetHeShe] request you to stop the war and return to your estate."
@@ -502,6 +549,7 @@
  ftr_councillor_event.0004.a:0 "Welcome to business"
  ftr_councillor_event.0004.b:0 "Can you reveal some information?"
  ftr_councillor_event.0004.c:0 "We don't trade"
+ ftr_councillor_event.0004.d:0 "Fake a robber accident"
 
  ftr_councillor_event.0005.t:0 "Military Deterrence"
  ftr_councillor_event.0005.desc:0 "The messenger [secondary_actor.GetShortUIName] sent by [actor.GetShortUIName] has arrived at the palace gate, asking us to hand over the tribute with a fierce momentum, and his words reveal disdain for our strength."
@@ -597,4 +645,9 @@
  ftr_councillor_event.0020.a:0 "Nice"
  ftr_envoy_ally_result_tt:0 "Forge Alliances"
  ftr_envoy_ally_result_content_tt:0 "The friendly visit of the Envoy [secondary_actor.GetShortUIName] in the capital of [recipient.GetShortUIName] was fruitful, and finally [actor.GetShortUIName] and [recipient.GetShortUIName] concluded a covenant."
+
+ ftr_councillor_event.0021.t:0 "Caravan Robbed"
+ ftr_councillor_event.0021.desc:0 "[secondary_actor.GetShortUIName]'s business activities in the capital of [recipient.GetShortUIName] were progressing smoothly, but an accident occurred midway. The caravan was slaughtered by robbers, and [secondary_actor.GetShortUIName] was unfortunately killed. There is evidence that [recipient.GetShortUIName] was also involved, with the aim of robbing the caravan's assets."
+ ftr_councillor_event.0021.a:0 "Maybe it was just an accident"
+ ftr_councillor_event.0021.b:0 "I don't believe the claims of [recipient.GetShortUIName]!"
 

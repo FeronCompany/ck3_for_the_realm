@@ -570,6 +570,45 @@ ftr_councillor_event.0004 = {
 		ai_chance = 10
 	}
 
+	option = { # Rob them
+		name = ftr_councillor_event.0004.d
+		scope:secondary_actor = {
+			death = {
+				death_reason = death_mysterious
+				killer = scop:recipient
+			}
+		}
+		scope:recipient = {
+			add_secret = {
+				type = secret_murder
+				target = scope:secondary_actor
+			}
+			add_gold = scope:ftr_envoy_cost_scope_value
+		}
+		scope:actor = {
+			trigger_event = {
+				id = ftr_councillor_event.0021
+				days = { 3 5 }
+			}
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 5
+				scope:recipient = {
+					OR = {
+						has_trait = callous
+						has_trait = greedy
+					}
+				}
+			}
+			modifier = {
+				add = 5
+				scope:recipient.gold < 0
+			}
+		}
+	}
+
 	after = {}
 }
 
@@ -1400,6 +1439,44 @@ ftr_councillor_event.0020 = {
 						target = scope:actor
 					}
 				}
+			}
+		}
+	}
+
+	after = {}
+}
+
+# Envoy result -- Envoy robbed
+ftr_councillor_event.0021 = {
+	type = character_event
+	title = ftr_councillor_event.0021.t
+	desc = ftr_councillor_event.0021.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:actor
+	}
+	right_portrait = {
+		character = scope:recipient
+	}
+
+	immediate = {}
+
+	option = { # Maybe it's truly an accident
+		name = ftr_councillor_event.0021.a
+	}
+
+	option = { # Charge them
+		name = ftr_councillor_event.0021.b
+		scope:actor = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = hate_opinion
+				opinion = -50
+			}
+			progress_towards_rival_effect = {
+				REASON = rival_raided_me
+				CHARACTER = scope:recipient
+				OPINION = default_rival_opinion
 			}
 		}
 	}

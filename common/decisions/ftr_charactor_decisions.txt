@@ -95,3 +95,61 @@ ftr_call_traverser_decision = {
 		base = 0
 	}
 }
+
+ftr_recruit_concubine_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
+	decision_group_type = courtier
+	desc = ftr_recruit_concubine_decision_desc
+	selection_tooltip = ftr_recruit_concubine_decision_tooltip
+	cooldown = { years = 2 }
+	ai_check_interval = 60
+	is_shown = {
+		is_landed = yes
+		primary_title.tier >= tier_county
+		is_playable_character = yes
+		allowed_more_concubines = yes
+	}
+
+	is_valid = {
+		is_adult = yes
+		fertility > 0
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		prestige = { value = medium_prestige_value }
+		gold = { value = minor_gold_value }
+	}
+
+	effect = {
+		hidden_effect = {
+			if = {
+				limit = { is_male = yes }
+				trigger_event = ftr_decision_events.0012
+			}
+			else = {
+				trigger_event = ftr_decision_events.0013
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+		modifier = { # Basic Filtering
+			add = 20
+			number_of_concubines < number_of_desired_concubines
+		}
+		modifier = { # Basic Filtering
+			add = -20
+			OR = {
+				has_trait = temperate
+				has_trait = chaste
+			}
+		}
+	}
+}

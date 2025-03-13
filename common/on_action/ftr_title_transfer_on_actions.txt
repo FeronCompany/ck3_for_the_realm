@@ -129,12 +129,16 @@ ftr_ursurp_discontent_effects = {
 ftr_ursurp_tyrant_succession_effects = {
 	trigger = {
 		is_independent_ruler = yes
-		has_realm_law = autocracy_succession_law
+		government_has_flag = government_is_centralism
+		OR = {
+			has_realm_law = single_heir_succession_law
+			has_realm_law = single_heir_succession_law_youngest
+		}
 		scope:transfer_type = flag:faction_demand
 	}
 	effect = {
 		save_scope_as = usurper_liege
-		remove_realm_law = autocracy_succession_law
+		#remove_realm_law = autocracy_succession_law
 		add_realm_law = acclamation_succession_law
 		every_vassal = {
 			limit = { is_ai = no }

@@ -1510,7 +1510,7 @@ ftr_offer_military_assistance_to_liege_interaction = {
 
 ######### Merge Jurisdiction ##########
 ftr_merge_jurisdiction_interaction = {
-	category = interaction_category_admin
+	category = interaction_category_vassal
 	common_interaction = yes
 	desc = ftr_merge_jurisdiction_interaction_desc
 

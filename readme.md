@@ -1,10 +1,9 @@
 Mod name: For The Realm  
-Mod version A.J.9  
+Mod version A.K.0  
 A mod focus on realm management and personal activities.
 + Mechanic：
   + Admin government optimization
     + Reduce some negative buffs of admin government, and it no longer have such huge vassal limit.
-    + Realms out of Byzantine Empire now can use autocracy succession law to appoint your successor.
     + Admin vassals can be converted to feudal.
   + Add random disaster events
 Counties in different terrains will encounter different natural disasters, such as floods, fires, earthquakes, and droughts. As a lord, you must show enough responsibility to win the respect of your subjects.
@@ -30,12 +29,11 @@ Counties in different terrains will encounter different natural disasters, such 
   + Add Commander trait, after every victory battle, commanders will gain experience of this trait, which lead to very high buff.
 
 Mod名 朝野纷争  
-Mod版本 A.J.9  
+Mod版本 A.K.0  
 本mod专注于领地管理与个人生活。
 + 机制改动：
   + 调整行政制政体
     + 减少了行政制的部分减成，并取消了行政制的巨量封臣上限加成。
-    + 非拜占庭帝国的行政制政权可以采用指定继承人的继承法。
     + 行政制封臣可以被转化为封建制封臣。
   + 新增随机天灾事件
 不同地形下的伯爵领会遭遇不同的自然灾害，洪水、火灾、地震还有干旱，作为领主，你必须表现出足够的责任心来赢得领地臣民的尊重。

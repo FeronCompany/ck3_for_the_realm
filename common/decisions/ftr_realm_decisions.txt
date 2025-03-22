@@ -130,66 +130,76 @@
 #	}
 #}
 
-#ftr_end_tyrant_succession_decision = {
-#	picture = {
-#		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
-#	}
-#	decision_group_type = major
-#	desc = ftr_end_tyrant_succession_decision_desc
-#	selection_tooltip = ftr_end_tyrant_succession_decision_tooltip
-#	is_shown = {
-#		is_independent_ruler = yes
-#		has_realm_law = acclamation_succession_law
-#	}
-#	is_valid = {
-#		prestige_level >= 4
-#		dynasty.dynasty_prestige_level >= 6
-#		custom_tooltip = {
-#			text = all_powerful_vassals_required_tt
-#			any_powerful_vassal = {
-#				count = all
-#				opinion = {
-#					target = root
-#					value >= 50
-#				}
-#			}
-#		}
-#		is_at_war = no
-#	}
-#
-#	cost = {
-#		prestige = { value = 2500 }
-#		gold = { value = 1000 }
-#	}
-#
-#	effect = {
-#		save_scope_as = liege_c
-#		remove_realm_law = acclamation_succession_law
-#		add_realm_law = autocracy_succession_law
-#		hidden_effect = {
-#			send_interface_toast = {
-#				type = event_generic_neutral
-#				title = liege_adapt_autocracy_succession_law_title
-#				desc = liege_adapt_autocracy_succession_law_desc
-#				right_icon = root
-#			}
-#			every_vassal = {
-#				limit = { is_ai = no }
-#				send_interface_message = {
-#					type = event_generic_neutral
-#					title = liege_adapt_autocracy_succession_law_title
-#					desc = liege_adapt_autocracy_succession_law_desc
-#					right_icon = root
-#				}
-#			}
-#		}
-#	}
-#	
-#	ai_check_interval = 35
-#	ai_potential = {
-#		always = yes
-#	}
-#	ai_will_do = {
-#		base = 20
-#	}
-#}
+ftr_end_tyrant_succession_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = major
+	desc = ftr_end_tyrant_succession_decision_desc
+	selection_tooltip = ftr_end_tyrant_succession_decision_tooltip
+	is_shown = {
+		is_independent_ruler = yes
+		has_realm_law = acclamation_succession_law
+		NOT = {
+			culture = {
+				has_innovation = innovation_primogeniture
+			}
+		}
+	}
+	is_valid = {
+		OR = {
+			prestige_level >= 4
+			AND = {
+				prestige_level >= 2
+				dynasty.dynasty_prestige_level >= 5
+			}
+		}
+		custom_tooltip = {
+			text = all_powerful_vassals_required_tt
+			any_powerful_vassal = {
+				count = all
+				opinion = {
+					target = root
+					value >= 50
+				}
+			}
+		}
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = { value = 2500 }
+		gold = { value = 1000 }
+	}
+
+	effect = {
+		save_scope_as = liege_c
+		remove_realm_law = acclamation_succession_law
+		add_realm_law = single_heir_succession_law
+		hidden_effect = {
+			send_interface_toast = {
+				type = event_generic_neutral
+				title = liege_adapt_autocracy_succession_law_title
+				desc = liege_adapt_autocracy_succession_law_desc
+				right_icon = root
+			}
+			every_vassal = {
+				limit = { is_ai = no }
+				send_interface_message = {
+					type = event_generic_neutral
+					title = liege_adapt_autocracy_succession_law_title
+					desc = liege_adapt_autocracy_succession_law_desc
+					right_icon = root
+				}
+			}
+		}
+	}
+	
+	ai_check_interval = 35
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 20
+	}
+}

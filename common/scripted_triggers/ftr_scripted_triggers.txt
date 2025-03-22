@@ -1,1 +1,19 @@
 ﻿
+################ OVERRIDE ########################
+can_keep_single_heir_succession_law_trigger = {
+	# The 'can_keep' triggers are dependent on actually having the law. If they aren't, the trigger breakdown for the player breaks and shows incomplete information.
+	trigger_if = {
+		limit = {
+			has_realm_law = single_heir_succession_law
+		}
+		OR = {
+			can_have_single_heir_succession_law_trigger = yes
+			historical_succession_access_single_heir_succession_law_trigger = yes
+			government_allows = administrative ### ADDed
+		}
+	}
+}
+################ OVERRIDE ########################
+
+
+

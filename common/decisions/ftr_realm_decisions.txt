@@ -168,8 +168,8 @@ ftr_end_tyrant_succession_decision = {
 	}
 
 	cost = {
-		prestige = { value = 2500 }
-		gold = { value = 1000 }
+		prestige = { value = 2000 }
+		gold = { value = 750 }
 	}
 
 	effect = {

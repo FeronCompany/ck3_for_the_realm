@@ -15,7 +15,7 @@ ftr_battle_commander_rank_up_effect = {
 		}
 		add_trait_xp = {
 			trait = ftr_battle_commander
-			value = 8
+			value = 5
 		}
 	}
 }

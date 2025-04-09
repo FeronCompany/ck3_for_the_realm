@@ -1,0 +1,5 @@
+﻿
+################ OVERRIDE ####################
+NCharacter = {
+	MONTHLY_INFLUENCE_GAIN_BEING_GOVERNOR = 0.2
+}

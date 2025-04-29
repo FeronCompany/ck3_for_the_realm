@@ -11,6 +11,7 @@ imperial_bureaucracy = {
 	
 	imperial_bureaucracy_0 = {
 		modifier = {
+			belligerent_opinion = -10
 			barons_and_minor_landholders_opinion = 20
 			glory_hound_opinion = 10
 			parochial_opinion = 10
@@ -50,6 +51,7 @@ imperial_bureaucracy = {
 	
 	imperial_bureaucracy_1 = {
 		modifier = {
+			belligerent_opinion = 5
 			barons_and_minor_landholders_opinion = -30
 			glory_hound_opinion = -15
 			parochial_opinion = -15
@@ -60,7 +62,7 @@ imperial_bureaucracy = {
 			# vassal_limit = 100
 			######################### OVERRIDE ########################################################################
 		}
-		flag = uses_imperial_bureaucracy
+		flag = can_have_tributaries
 		flag = title_revocation_allowed
 		flag = vassal_retraction_allowed
 		flag = can_change_partition_succession_laws
@@ -143,6 +145,7 @@ imperial_bureaucracy = {
 	
 	imperial_bureaucracy_2 = {
 		modifier = {
+			belligerent_opinion = 10
 			barons_and_minor_landholders_opinion = -10
 			glory_hound_opinion = -10
 			parochial_opinion = -10
@@ -154,7 +157,6 @@ imperial_bureaucracy = {
 			# vassal_limit = 100
 			######################### OVERRIDE ########################################################################
 		}
-		flag = uses_imperial_bureaucracy
 		flag = vassal_refusal_is_treason
 		flag = can_change_succession_laws
 		flag = vassal_all_wars_banned
@@ -235,6 +237,7 @@ imperial_bureaucracy = {
 	
 	imperial_bureaucracy_3 = {
 		modifier = {
+			belligerent_opinion = 15
 			barons_and_minor_landholders_opinion = -20
 			glory_hound_opinion = -25
 			parochial_opinion = -25
@@ -246,7 +249,6 @@ imperial_bureaucracy = {
 			# vassal_limit = 200
 			######################### OVERRIDE ########################################################################
 		}
-		flag = uses_imperial_bureaucracy
 		flag = vassal_all_wars_banned_permanent
 		flag = max_authority_level
 		flag = admin_title_troop_cost_reduction_high

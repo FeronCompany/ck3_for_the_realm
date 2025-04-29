@@ -1625,8 +1625,8 @@ ftr_merge_jurisdiction_interaction = {
 	ai_will_do = {
 		base = -40
 		modifier = {
-			add = 200
-			scope:actor.vassal_limit_available < 0
+			add = 100
+			scope:actor.vassal_limit_available < 5
 		}
 		modifier = {
 			add = -20

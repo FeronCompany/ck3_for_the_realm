@@ -43,6 +43,7 @@ administrative_government = {
 		use_as_base_on_landed = yes
 		use_as_base_on_rank_up = yes
 		inherit_from_dynastic_government = no
+		sticky_government = yes
 	}
 
 	domicile_type = estate
@@ -53,10 +54,7 @@ administrative_government = {
 	valid_holdings = { city_holding }
 	required_county_holdings = { castle_holding city_holding church_holding }
 
-	vassal_contract = {
-		administrative_obligations
-		administrative_themes
-	}
+	vassal_contract_group = admin_vassal
 
 	character_modifier = {
 		############################ OVERRIDE ############################################

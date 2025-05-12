@@ -163,3 +163,8 @@
  ftr_recruit_concubine_decision_tooltip:0 "Collect beautiful subjects from society and let them enrich the harem"
  ftr_recruit_concubine_decision_desc:0 "My harem is not prosperous enough, it is necessary to gather some concubines to enrich it."
  ftr_recruit_concubine_decision_confirm:0 "Let's begin"
+
+ ftr_settle_the_steppe_decision:0 "Settle the Steppe After Liege"
+ ftr_settle_the_steppe_decision_confirm:0 "A new era calls upon us."
+ become_admin_decision: "Become Administrative"
+ become_admin_decision_tooltip: "Become [GetGovernment('administrative_government').GetNameWithIcon]"

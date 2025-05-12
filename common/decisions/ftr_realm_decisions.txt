@@ -211,7 +211,7 @@ ftr_settle_the_steppe_decision = { # for unindependent Nomad
 	} 
 	decision_group_type = nomad_major
 
-	ai_check_interval = 360
+	ai_check_interval = 36
 
 	desc = settle_the_steppe_decision_desc
 	selection_tooltip = settle_the_steppe_decision_tooltip
@@ -751,31 +751,24 @@ ftr_settle_the_steppe_decision = { # for unindependent Nomad
 	}
 
 	ai_potential = {
-		NOR = {
-			has_trait = greatest_of_khans
-			has_trait = conqueror
-		}
-		OR = {
-			AND = {
-				OR = {
-					has_realm_law = nomadic_authority_4
-					has_realm_law = nomadic_authority_5
-				}
-				culture = {
-					has_cultural_tradition = tradition_ruling_caste
-				}
-			}
-			is_independent_ruler = no
-		}
-		NOT = {
-			any_vassal_or_below = {
-				is_ai = no
-			}
-		}
+		always = yes
 	}
 
 	ai_will_do = {
 		base = 10
+		modifier = {
+			add = -30
+			OR = {
+				has_trait = greatest_of_khans
+				has_trait = conqueror
+			}
+		}
+		modifier = {
+			add = -30
+			any_vassal_or_below = {
+				is_ai = no
+			}
+		}
 	}
 }
 #################### OVERRIDE ###########################

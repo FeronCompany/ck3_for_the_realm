@@ -203,3 +203,573 @@ ftr_end_tyrant_succession_decision = {
 		base = 20
 	}
 }
+
+#################### OVERRIDE ###########################
+ftr_settle_the_steppe_decision = { # for unindependent Nomad
+	picture = {
+		reference = "gfx/interface/illustrations/event_story/mpo_steppe_region.dds"
+	} 
+	decision_group_type = nomad_major
+
+	ai_check_interval = 36
+
+	desc = settle_the_steppe_decision_desc
+	selection_tooltip = settle_the_steppe_decision_tooltip
+
+	is_shown = {
+		has_mpo_dlc_trigger = yes
+		government_has_flag = government_is_nomadic
+		is_playable_character = yes
+	}
+
+	is_valid = {
+		AND = {
+			is_independent_ruler = no
+			liege = {
+				NOT = { government_has_flag = government_is_nomadic }
+			}
+		}
+		capital_county = {
+			title_province = {
+				OR = { 
+					has_holding_type = nomad_holding 
+					has_holding_type = herder_holding 
+				}
+			}
+		}
+		custom_tooltip = {
+			text = step_away_from_the_steppe_decision_holding_tt
+			any_sub_realm_county = {
+				title_province = {
+					OR = { 
+						has_holding_type = nomad_holding 
+						has_holding_type = herder_holding 
+					}
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		is_available = yes
+	}
+
+	widget = {
+		gui = "decision_view_widget_option_list_generic"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "CHOOSE_GOVERNMENT_NEXT_STEP_BUTTON"
+		show_from_start = yes
+
+		item = {
+			value = become_tribal_decision
+			current_description = become_tribal_decision
+			localization = become_tribal_decision
+			icon = "gfx/interface/icons/government_types/tribal_government.dds"
+			ai_chance = {
+				value = 0
+			}
+		}
+
+		item = {
+			value = become_feudal_decision
+			current_description = become_feudal_decision
+			localization = become_feudal_decision
+			icon = "gfx/interface/icons/government_types/feudal_government.dds"
+			is_valid = {
+				is_independent_ruler = no
+				liege = {
+					government_has_flag = government_is_feudal
+				}
+			}
+			ai_chance = {
+				value = 100
+			}
+		}
+
+		item = {
+			value = become_clan_decision
+			current_description = become_clan_decision
+			localization = become_clan_decision
+			icon = "gfx/interface/icons/government_types/clan_government.dds"
+			is_valid = {
+				is_independent_ruler = no
+				liege = {
+					government_has_flag = government_is_clan
+				}
+			}
+			ai_chance = {
+				value = 100
+			}
+		}
+
+		item = {
+			value = become_admin_decision
+			current_description = become_admin_decision
+			localization = become_admin_decision
+			icon = "gfx/interface/icons/government_types/administrative_government.dds"
+			is_valid = {
+				is_independent_ruler = no
+				liege = {
+					government_has_flag = government_is_administrative
+				}
+			}
+			ai_chance = {
+				value = 100
+			}
+		}
+
+	}
+
+	cost = {
+		gold = {
+			value = {
+				if = {
+					limit = {
+						scope:become_tribal_decision = yes
+					}
+					every_sub_realm_county = {
+						limit = {
+							title_province = {
+								OR = { 
+									has_holding_type = nomad_holding 
+									has_holding_type = herder_holding 
+								}
+							}
+						}
+						add = 5
+					}
+				}
+				else_if = {
+					limit = {
+						OR = {
+							scope:become_feudal_decision = yes
+							scope:become_clan_decision = yes
+							scope:become_admin_decision = yes
+						}
+					}
+					every_sub_realm_county = {
+						limit = {
+							title_province = {
+								OR = { 
+									has_holding_type = nomad_holding 
+									has_holding_type = herder_holding 
+								}
+							}
+						}
+						add = 25
+					}
+				}
+			}
+		}
+		prestige = {
+			value = major_prestige_value
+		}
+	}
+
+	effect = {
+		# MPO ACHIEVEMENT Settling In
+		if = {
+			limit = { is_ai = no }
+			add_achievement_global_variable_effect = {
+				VARIABLE = mpo_settling_in_achievement_unlocked
+				VALUE = yes
+			}
+		}
+		save_scope_as = nomad_settling_down
+		domicile.domicile_culture = { save_scope_as = invading_culture }
+		domicile.domicile_faith = { save_scope_as = invading_faith }
+		save_scope_value_as = {
+			name = invading_herd_value
+			value = domicile.herd
+		}
+		save_scope_value_as = {
+			name = development_herd_value
+			value = domicile.herd
+		}
+		nomad_domicile_refund_effect = yes
+		nomad_convert_herds_to_gold_special_troops_effect = yes
+		
+		show_as_tooltip = {
+			if = {
+				limit= {
+					scope:become_tribal_decision = yes
+				}
+				change_government = tribal_government
+			}
+			else_if = {
+				limit= {
+					scope:become_feudal_decision = yes
+				}
+				change_government = feudal_government
+			}
+			else_if = {
+				limit= {
+					scope:become_clan_decision = yes
+				}
+				change_government = clan_government
+			}
+			else_if = {
+				limit= {
+					scope:become_admin_decision = yes
+				}
+				change_government = administrative_government
+			}
+		}
+		
+		custom_tooltip = nomad_holdings_convert_tt
+		custom_tooltip = nomad_vassals_convert_tt
+		custom_tooltip = buildings_based_on_herd_tt
+		custom_tooltip = development_based_on_herd_tt
+		
+		hidden_effect = {
+			#Nuke tribal authorities.
+			if = {
+				limit = { has_realm_law = nomadic_authority_1 }
+				remove_realm_law = nomadic_authority_1
+			}
+			if = {
+				limit = { has_realm_law = nomadic_authority_2 }
+				remove_realm_law = nomadic_authority_2
+			}
+			if = {
+				limit = { has_realm_law = nomadic_authority_3 }
+				remove_realm_law = nomadic_authority_3
+			}
+			if = {
+				limit = { has_realm_law = nomadic_authority_4 }
+				remove_realm_law = nomadic_authority_4
+			}
+			if = {
+				limit = { has_realm_law = nomadic_authority_5 }
+				remove_realm_law = nomadic_authority_5
+			}
+			if = {
+				limit = {
+					scope:become_tribal_decision = yes
+				}
+				every_sub_realm_county = {
+					limit = {
+						title_province = {
+							OR = { 
+								has_holding_type = nomad_holding 
+								has_holding_type = herder_holding 
+							}
+						}
+					}
+					title_province = {
+						set_holding_type = tribal_holding
+					}
+					add_to_list = holding_conversion
+				}
+				change_government = tribal_government
+				every_vassal_or_below = {
+					limit = {
+						has_government = nomad_government
+					}
+					#Nuke tribal authorities.
+					if = {
+						limit = { has_realm_law = nomadic_authority_1 }
+						remove_realm_law = nomadic_authority_1
+					}
+					if = {
+						limit = { has_realm_law = nomadic_authority_2 }
+						remove_realm_law = nomadic_authority_2
+					}
+					if = {
+						limit = { has_realm_law = nomadic_authority_3 }
+						remove_realm_law = nomadic_authority_3
+					}
+					if = {
+						limit = { has_realm_law = nomadic_authority_4 }
+						remove_realm_law = nomadic_authority_4
+					}
+					if = {
+						limit = { has_realm_law = nomadic_authority_5 }
+						remove_realm_law = nomadic_authority_5
+					}
+					change_government = tribal_government
+					if = {
+						limit = {
+							NOT = { has_realm_law = tribal_authority_1 }
+						}
+						add_realm_law_skip_effects = tribal_authority_1
+					}
+				}
+				#Start off tribal authorities.
+				if = {
+					limit = {
+						NOT = { has_realm_law = tribal_authority_2 }
+					}
+					add_realm_law_skip_effects = tribal_authority_2
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						scope:become_feudal_decision = yes
+						scope:become_clan_decision = yes
+						scope:become_admin_decision = yes
+					}
+				}
+				every_sub_realm_county = {
+					limit = {
+						title_province = {
+							OR = { 
+								has_holding_type = nomad_holding 
+								has_holding_type = herder_holding 
+							}
+						}
+					}
+					title_province = {
+						set_holding_type = castle_holding
+					}
+					add_to_list = holding_conversion
+					random_county_province = {
+						limit = {
+							has_holding = no
+							barony_cannot_construct_holding = no
+						}
+						random = {
+							chance = 50
+							modifier = {
+								add = 50
+								this.county = root.capital_county
+							}
+							modifier = {
+								add = 25
+								scope:become_feudal_decision = yes
+							}
+							modifier = {
+								add = {
+									value = scope:invading_herd_value
+									divide = 1000
+								}
+							}
+							set_holding_type = city_holding
+						}
+					}
+					random_county_province = {
+						limit = {
+							has_holding = no
+							barony_cannot_construct_holding = no
+						}
+						random = {
+							chance = 50
+							modifier = {
+								add = 50
+								this.county = root.capital_county
+							}
+							modifier = {
+								add = 50
+								barony = {
+									is_holy_site_of = root.faith
+								}
+							}
+							modifier = {
+								add = 25
+								scope:become_clan_decision = yes
+							}
+							modifier = {
+								add = {
+									value = scope:invading_herd_value
+									divide = 1000
+								}
+							}
+							set_holding_type = church_holding
+						}
+					}
+				}
+				if = {
+					limit = {
+						scope:become_feudal_decision = yes
+					}
+					change_government = feudal_government
+				}
+				else_if = {
+					limit = {
+						scope:become_clan_decision = yes
+					}
+					change_government = clan_government
+				}
+				else_if = {
+					limit = {
+						scope:become_admin_decision = yes
+					}
+					change_government = administrative_government
+				}
+				every_vassal_or_below = {
+					limit = {
+						has_government = nomad_government
+					}
+					#Nuke tribal authorities.
+					if = {
+						limit = { has_realm_law = nomadic_authority_1 }
+						remove_realm_law = nomadic_authority_1
+					}
+					if = {
+						limit = { has_realm_law = nomadic_authority_2 }
+						remove_realm_law = nomadic_authority_2
+					}
+					if = {
+						limit = { has_realm_law = nomadic_authority_3 }
+						remove_realm_law = nomadic_authority_3
+					}
+					if = {
+						limit = { has_realm_law = nomadic_authority_4 }
+						remove_realm_law = nomadic_authority_4
+					}
+					if = {
+						limit = { has_realm_law = nomadic_authority_5 }
+						remove_realm_law = nomadic_authority_5
+					}
+					if = {
+						limit = {
+							scope:become_feudal_decision = yes
+						}
+						change_government = feudal_government
+					}
+					else_if = {
+						limit = {
+							scope:become_clan_decision = yes
+						}
+						change_government = clan_government
+					}
+					else_if = {
+						limit = {
+							scope:become_admin_decision = yes
+						}
+						change_government = administrative_government
+					}
+					#Start off crown authorities.
+					if = {
+						limit = {
+							NOT = { has_realm_law = crown_authority_1 }
+						}
+						add_realm_law_skip_effects = crown_authority_1
+					}
+				}
+				#Start off crown authorities.
+				if = {
+					limit = {
+						NOT = { has_realm_law = crown_authority_2 }
+					}
+					add_realm_law_skip_effects = crown_authority_2
+				}
+			}
+			while = {
+				limit = {
+					scope:invading_herd_value >= 2000
+				}
+				every_in_list = {
+					list = holding_conversion
+					every_county_province = {
+						generate_building = yes
+					}
+				}
+				save_scope_value_as = {
+					name = invading_herd_value
+					value = {
+						add = scope:invading_herd_value
+						subtract = 2000
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:become_tribal_decision = yes
+				}
+				while = {
+					limit = {
+						scope:development_herd_value >= 2000
+					}
+					random_sub_realm_county = {
+						weight = {
+							base = 1
+							modifier = {
+								add = 9
+								this = root.capital_county
+							}
+							modifier = {
+								add = 6
+								any_neighboring_county = {
+									this = root.capital_county
+								}
+							}
+							modifier = {
+								factor = 1
+								is_coastal_county = yes
+							}
+						}
+						change_development_level = 1
+					}
+					save_scope_value_as = {
+						name = development_herd_value
+						value = {
+							add = scope:development_herd_value
+							subtract = 2000
+						}
+					}
+				}
+			}
+			else = {
+				while = {
+					limit = {
+						scope:development_herd_value >= 1000
+					}
+					random_sub_realm_county = {
+						weight = {
+							base = 1
+							modifier = {
+								add = 9
+								this = root.capital_county
+							}
+							modifier = {
+								add = 6
+								any_neighboring_county = {
+									this = root.capital_county
+								}
+							}
+							modifier = {
+								factor = 1
+								is_coastal_county = yes
+							}
+						}
+						change_development_level = 1
+					}
+					save_scope_value_as = {
+						name = development_herd_value
+						value = {
+							add = scope:development_herd_value
+							subtract = 1000
+						}
+					}
+				}
+			}
+		}
+		
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = -30
+			OR = {
+				has_trait = greatest_of_khans
+				has_trait = conqueror
+			}
+		}
+		modifier = {
+			add = -30
+			any_vassal_or_below = {
+				is_ai = no
+			}
+		}
+	}
+}
+#################### OVERRIDE ###########################
+

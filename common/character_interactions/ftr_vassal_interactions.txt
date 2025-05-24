@@ -1045,7 +1045,7 @@ ftr_coup_interaction = {
 		opinion_modifier = {
 			opinion_target = scope:recipient
 			who = scope:actor
-			multiplier = -0.5
+			multiplier = -0.25
 		}
 		modifier = {
 			add = 30
@@ -1431,6 +1431,12 @@ ftr_offer_military_assistance_to_liege_interaction = {
 			add = 20
 			scope:recipient = {
 				is_allied_to = scope:actor
+			}
+		}
+		modifier = {
+			add = 40
+			scope:actor = {
+				is_diarch_of_target = scope:recipient
 			}
 		}
 		modifier = {

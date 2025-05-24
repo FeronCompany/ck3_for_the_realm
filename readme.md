@@ -1,10 +1,10 @@
 Mod name: For The Realm  
-Mod version A.K.2  
+Mod version A.K.3  
 A mod focus on realm management and personal activities.
 + Mechanic：
   + Admin government optimization
-    + Reduce some negative buffs of admin government, and it no longer have such huge vassal limit.
     + Admin vassals can be converted to feudal.
+    + Reduce influence gain from every governor of the same house, from 1 to 0.2
   + Add random disaster events
 Counties in different terrains will encounter different natural disasters, such as floods, fires, earthquakes, and droughts. As a lord, you must show enough responsibility to win the respect of your subjects.
   + Factions and Civil War
@@ -29,12 +29,12 @@ Counties in different terrains will encounter different natural disasters, such 
   + Add Commander trait, after every victory battle, commanders will gain experience of this trait, which lead to very high buff.
 
 Mod名 朝野纷争  
-Mod版本 A.K.2  
+Mod版本 A.K.3  
 本mod专注于领地管理与个人生活。
 + 机制改动：
   + 调整行政制政体
-    + 减少了行政制的部分减成，并取消了行政制的巨量封臣上限加成。
     + 行政制封臣可以被转化为封建制封臣。
+    + 降低了家族中每个总督为家族成员带来的影响力增益 1 -> 0.2
   + 新增随机天灾事件
 不同地形下的伯爵领会遭遇不同的自然灾害，洪水、火灾、地震还有干旱，作为领主，你必须表现出足够的责任心来赢得领地臣民的尊重。
   + 派系与内战
@@ -58,6 +58,7 @@ Mod版本 A.K.2
   + 谋杀现在是重罪
   + 新增战场指挥官特质，每打赢一战就可以提升经验，百战名将将有巨大加成
 
-因为种种原因，不方便直接在steam回复，有问题可以在github的issue中提出，或者直接发送邮件到465273334@qq.com 谢谢大家的支持 Thank you!  
+因为种种原因，不方便直接在steam回复，有问题可以在github的issue中提出，谢谢大家的支持 Thank you!  
+本Mod直接订阅即可使用  
 源码贴在下方，欢迎到github探讨 Source code：  
 https://github.com/FeronCompany/ck3_for_the_realm

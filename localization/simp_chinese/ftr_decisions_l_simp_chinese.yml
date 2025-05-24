@@ -163,3 +163,8 @@
  ftr_recruit_concubine_decision_tooltip:0 "从社会上搜罗美丽的臣民，让他们充实后宫"
  ftr_recruit_concubine_decision_desc:0 "我的后宫人丁还不够兴旺，有必要搜罗一些侍妾来充实一下。"
  ftr_recruit_concubine_decision_confirm:0 "开始搜索"
+
+ ftr_settle_the_steppe_decision:0 "跟随领主定居草原"
+ ftr_settle_the_steppe_decision_confirm:0 "新时代在呼唤"
+ become_admin_decision: "成为行政制"
+ become_admin_decision_tooltip: "成为[GetGovernment('administrative_government').GetNameWithIcon]"

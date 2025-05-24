@@ -35,6 +35,7 @@ found_new_dynasty_effect = {
 		}
 		add_to_list = family_to_change_house
 		house = {
+			save_scope_as = old_house
 			every_house_member = {
 				limit = {
 					OR = {
@@ -44,14 +45,6 @@ found_new_dynasty_effect = {
 					}
 				}
 				add_to_list = family_to_change_house
-			}
-		}
-		scope:old_dynast = {
-			send_interface_message = {
-				text = "ftr_house_head_denounce_tt"
-				left_icon = scope:new_head
-				right_icon = scope:old_dynast
-				custom_tooltip = ftr_house_head_denounce_text
 			}
 		}
 	}
@@ -81,6 +74,14 @@ found_new_dynasty_effect = {
 			title = created_new_dynasty_desc
 			left_icon = scope:new_head
 			desc = created_new_dynasty_text
+		}
+		scope:old_dynast = {
+			send_interface_message = {
+				text = "ftr_house_head_denounce_tt"
+				left_icon = scope:new_head
+				right_icon = scope:old_dynast
+				custom_tooltip = ftr_house_head_denounce_text
+			}
 		}
 	}
 }

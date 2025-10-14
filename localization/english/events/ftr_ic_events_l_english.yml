@@ -1,0 +1,6 @@
+﻿l_english:
+ ftr_ic_event.0002.t:0 "Struggle of Crown Prince"
+ ftr_ic_event.0002.desc:0 "For a long time, my child [first_suc.GetShortUIName|U] has been groomed as my successor. However, as [second_suc.GetShortUIName|U] has gradually grown up, [second_suc.GetHerHis] popularity has gradually caught up with [first_suc.GetShortUIName|U]. Perhaps I shouldn't have shown my hesitation openly or secretly, but now the competition between these two children has become an open secret. The subjects' discussions about the successor have made me irritated and uneasy, and I can't help but worry about my authority and the stability of the kingdom. Should I make a decision early, or give them a chance to compete?"
+ ftr_ic_event.0002.a:0 "How the throne is to be inherited should follow the existing laws"
+ ftr_ic_event.0002.b:0 "I believe [second_suc.GetShortUIName|U] will be a better liege"
+ ftr_ic_event.0002.c:0 "Maintain status quo and give [second_suc.GetShortUIName|U] some positive implications"

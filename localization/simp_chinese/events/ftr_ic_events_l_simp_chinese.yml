@@ -1,0 +1,6 @@
+﻿l_simp_chinese:
+ ftr_ic_event.0002.t:0 "太子之争"
+ ftr_ic_event.0002.desc:0 "长期以来，我的孩子[first_suc.GetShortUIName|U]都被作为我的继任者来培养。但随着[second_suc.GetShortUIName|U]逐渐成长起来，其人望逐渐赶上了[first_suc.GetShortUIName|U]。或许我不该明里暗里表现出自己的犹豫，但现在这两个孩子的竞争已经是公开的秘密。臣民们对于继任者的讨论令我烦躁和不安，我不由得担忧起自己的权威与王国的稳定。我究竟应当早做决断，还是给他们一个竞争的机会呢？"
+ ftr_ic_event.0002.a:0 "君位如何继承应当遵循既有的法律"
+ ftr_ic_event.0002.b:0 "我相信[second_suc.GetShortUIName|U]将会是更贤能的领袖"
+ ftr_ic_event.0002.c:0 "维持现状但给予[second_suc.GetShortUIName|U]一些鼓励性的暗示"

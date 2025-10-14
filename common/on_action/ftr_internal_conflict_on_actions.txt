@@ -1,0 +1,35 @@
+﻿
+
+quarterly_playable_pulse = {
+	trigger = {
+		primary_title.tier >= tier_kingdom
+		is_independent_ruler = yes
+		is_landed = yes
+	}
+	random_events = {
+		chance_to_happen = 100
+		# Young ruler face ambitious regent
+		# 10 = ftr_ic_event.0001
+
+		# Use single-heir succession but have two good heirs
+		10 = ftr_ic_event.0002
+
+		# Young ruler's heir is an ambitious sibling
+		# 10 = ftr_ic_event.0003
+
+		# Old but healthy, heir is old too
+		# 10 = ftr_ic_event.0004
+
+		# Paranoid ruler and his powerful vassal
+		# 10 = ftr_ic_event.0005
+
+		# Death of ruler's friend lead to a great purge
+		# 10 = ftr_ic_event.0006
+
+		# Ruler is old but heir is young
+		# 10 = ftr_ic_event.0007
+
+		# Old & lunatic & obsessed & retard liege require regent
+		# 10 = ftr_ic_event.0008
+	}
+}

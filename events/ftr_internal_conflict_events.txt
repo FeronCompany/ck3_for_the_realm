@@ -1,0 +1,164 @@
+﻿
+
+namespace = ftr_ic_event
+
+# Use single-heir succession but have two good heirs
+ftr_ic_event.0002 = {
+	type = character_event
+	title = ftr_ic_event.0002.t
+	desc = ftr_ic_event.0002.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:first_suc
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:second_suc
+		animation = scheme
+	}
+
+	trigger = {
+		OR = {
+			has_realm_law = single_heir_succession_law
+			has_realm_law = single_heir_succession_law_youngest
+		}
+		any_child = {
+			count >= 2
+			is_adult = yes
+			NOT = {
+				has_trait = disinherited
+			}
+		}
+		NOT = { has_character_flag = ftr_heir_struggle_event }
+	}
+
+	immediate = {
+		save_scope_as = liege_c
+		random_child = {
+			limit = {
+				scope:liege_c.primary_title = {
+					place_in_line_of_succession = {
+						target = prev
+						value = 1
+					}
+				}
+			}
+			save_scope_as = first_suc
+		}
+		random_child = {
+			limit = {
+				scope:liege_c.primary_title = {
+					place_in_line_of_succession = {
+						target = prev
+						value = 2
+					}
+				}
+			}
+			save_scope_as = second_suc
+		}
+		add_character_flag = {
+			flag = ftr_heir_struggle_event
+			years = 10
+		}
+	}
+
+	option = { # Strengthen succession right of my primary successor
+		name = ftr_ic_event.0002.a
+		scope:first_suc = {
+			add_opinion = {
+				modifier = grateful_opinion
+				target = scope:liege_c
+				opinion = 20
+			}
+			add_prestige = 200
+		}
+		scope:second_suc = {
+			add_opinion = {
+				modifier = disappointed_opinion
+				target = scope:liege_c
+				opinion = -30
+			}
+			add_prestige = -120
+			progress_towards_rival_effect = {
+				REASON = rival_from_stance
+				CHARACTER = scope:first_suc
+				OPINION = -40
+			}
+		}
+	}
+
+	option = { # Strengthen succession right of my secondary successor
+		name = ftr_ic_event.0002.b
+		send_interface_toast = {
+			type = event_toast_effect_neutral
+			title = designate_heir_interaction_notification
+			left_icon = root
+			right_icon = scope:second_suc
+			set_designated_heir = scope:second_suc
+		}
+		scope:second_suc = {
+			add_opinion = {
+				modifier = grateful_opinion
+				target = scope:liege_c
+				opinion = 40
+			}
+			add_prestige = 200
+			hidden_effect = {
+				send_interface_toast = {
+					type = event_toast_effect_neutral
+					title = designate_heir_interaction_notification
+					left_icon = root
+					right_icon = scope:second_suc
+					show_as_tooltip = {
+						set_designated_heir = scope:second_suc
+					}
+				}
+			}
+		}
+		scope:first_suc = {
+			add_opinion = {
+				modifier = disappointed_opinion
+				target = scope:liege_c
+				opinion = -60
+			}
+			add_prestige = -120
+			progress_towards_rival_effect = {
+				REASON = rival_from_stance
+				CHARACTER = scope:liege_c
+				OPINION = -40
+			}
+			hidden_effect = {
+				send_interface_toast = {
+					type = event_toast_effect_neutral
+					title = designate_heir_interaction_notification
+					left_icon = root
+					right_icon = scope:second_suc
+					show_as_tooltip = {
+						set_designated_heir = scope:second_suc
+					}
+				}
+			}
+			# TODO...
+			# Try to overthrown liege
+		}
+	}
+
+	option = { # Maintain status quo but encourage my secondary successor
+		name = ftr_ic_event.0002.c
+		scope:first_suc = {
+			stress_impact = { base = medium_stress_impact_gain }
+		}
+		scope:second_suc = {
+			add_opinion = {
+				modifier = grateful_opinion
+				target = scope:liege_c
+				opinion = 20
+			}
+			add_prestige = 120
+		}
+		# TODO...
+		# Start storyline of succession struggle
+	}
+
+	after = {}
+}

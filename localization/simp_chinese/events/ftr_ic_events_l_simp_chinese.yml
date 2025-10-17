@@ -4,3 +4,8 @@
  ftr_ic_event.0002.a:0 "君位如何继承应当遵循既有的法律"
  ftr_ic_event.0002.b:0 "我相信[second_suc.GetShortUIName|U]将会是更贤能的领袖"
  ftr_ic_event.0002.c:0 "维持现状但给予[second_suc.GetShortUIName|U]一些鼓励性的暗示"
+
+ ftr_ic_event.0201.t:0 "无情的偏爱"
+ ftr_ic_event.0201.desc:0 "在过去的日子里，我一直认为自己是[liege_c.GetShortUIName|U]最偏爱的继承人，可是无情的现实击碎了我的妄想。[liege_c.GetShortUIName|U]向众人明确表示我已经不再受到偏爱，从此与王座无缘。如今我羽翼渐丰，完全可以最后做殊死一搏。我不禁开始思考究竟要不要采取措施挽回败局。"
+ ftr_ic_event.0201.a:0 "或许接受现实更好呢？"
+ ftr_ic_event.0201.b:0 "我才是无可争议的继承人！"

@@ -1,0 +1,79 @@
+﻿ftr_story_cycle_succession_struggle = {
+	on_setup = {
+		story_owner = {
+			add_character_flag = ftr_had_ss_story
+		}
+		set_variable = {
+			name = first_heir
+			value = story_owner.var:first_heir
+		}
+		set_variable = {
+			name = second_heir
+			value = story_owner.var:second_heir
+		}
+	}
+
+	on_end = {
+		story_owner = {
+			remove_character_flag = ftr_had_ss_story
+		}
+	}
+
+	on_owner_death = {
+		scope:story = { end_story = yes }
+	}
+
+	# Check validation of power struggle participants
+	effect_group = {
+		days = 90
+
+		trigger = {
+			ftr_is_succession_struggle_story_valid_trigger = no
+		}
+
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				# TODO...
+				scope:story = { end_story = yes }
+			}
+		}
+	}
+
+	# Something happens - random events
+	effect_group = {
+		days = { 120 365 }
+		chance = 30
+
+		trigger = {
+			ftr_is_succession_struggle_story_valid_trigger = yes
+		}
+
+		random_valid = {
+			triggered_effect = { # Event for liege
+				trigger = { 
+					always = yes
+				}
+				effect = {
+					# TODO...
+				}
+			}
+			triggered_effect = { # Event for first heir
+				trigger = { 
+					always = yes
+				}
+				effect = {
+					# TODO...
+				}
+			}
+			triggered_effect = { # Event for second heir
+				trigger = { 
+					always = yes
+				}
+				effect = {
+					# TODO...
+				}
+			}
+		}
+	}
+}

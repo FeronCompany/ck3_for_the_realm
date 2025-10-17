@@ -1,0 +1,30 @@
+﻿
+
+ftr_is_succession_struggle_story_valid_trigger = {
+	scope:story = {
+		story_owner = {
+			is_liege_or_above_of = var:first_heir
+			is_liege_or_above_of = var:second_heir
+		}
+		var:first_heir = {
+			is_alive = yes
+			is_imprisoned = no
+			scope:story.story_owner.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value <= 3
+				}
+			}
+		}
+		var:second_heir = {
+			is_alive = yes
+			is_imprisoned = no
+			scope:story.story_owner.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value <= 3
+				}
+			}
+		}
+	}
+}

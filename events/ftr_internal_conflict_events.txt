@@ -25,11 +25,14 @@ ftr_ic_event.0002 = {
 		any_child = {
 			count >= 2
 			is_adult = yes
-			NOT = {
-				has_trait = disinherited
+			root.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value <= 3
+				}
 			}
 		}
-		NOT = { has_character_flag = ftr_heir_struggle_event }
+		NOT = { has_character_flag = ftr_had_ss_story }
 	}
 
 	immediate = {
@@ -56,10 +59,6 @@ ftr_ic_event.0002 = {
 			}
 			save_scope_as = second_suc
 		}
-		add_character_flag = {
-			flag = ftr_heir_struggle_event
-			years = 10
-		}
 	}
 
 	option = { # Strengthen succession right of my primary successor
@@ -84,11 +83,27 @@ ftr_ic_event.0002 = {
 				CHARACTER = scope:first_suc
 				OPINION = -40
 			}
+			trigger_event = ftr_ic_event.0201
+		}
+		ai_chance = {
+			base = 50
+			modifier = {
+				add = 20
+				has_trait = just
+			}
+			opinion_modifier = {
+				opinion_target = scope:first_suc
+				multiplier = 0.5
+			}
 		}
 	}
 
 	option = { # Strengthen succession right of my secondary successor
 		name = ftr_ic_event.0002.b
+		trigger = {
+			prestige >= 1000
+		}
+		add_prestige = -1000
 		send_interface_toast = {
 			type = event_toast_effect_neutral
 			title = designate_heir_interaction_notification
@@ -138,8 +153,14 @@ ftr_ic_event.0002 = {
 					}
 				}
 			}
-			# TODO...
-			# Try to overthrown liege
+			trigger_event = ftr_ic_event.0201
+		}
+		ai_chance = {
+			base = 20
+			opinion_modifier = {
+				opinion_target = scope:second_suc
+				multiplier = 0.5
+			}
 		}
 	}
 
@@ -156,9 +177,78 @@ ftr_ic_event.0002 = {
 			}
 			add_prestige = 120
 		}
-		# TODO...
-		# Start storyline of succession struggle
+		hidden_effect = {
+			set_variable = {
+				name = first_heir
+				value = scope:first_suc
+				days = 3
+			}
+			set_variable = {
+				name = second_heir
+				value = scope:second_suc
+				days = 3
+			}
+			create_story = ftr_story_cycle_succession_struggle
+		}
+		ai_chance = {
+			base = 50
+		}
 	}
 
 	after = {}
+}
+
+# Liege change heir notify
+ftr_ic_event.0201 = {
+	type = character_event
+	title = ftr_ic_event.0201.t
+	desc = ftr_ic_event.0201.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:first_suc
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:second_suc
+		animation = scheme
+	}
+
+	option = { # Accept
+		name = ftr_ic_event.0201.a
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 20
+				has_trait = just
+			}
+		}
+	}
+
+	option = { # Coup
+		name = ftr_ic_event.0201.b
+		begin_scheme_with_agents_effect = {
+			SCHEME_TYPE = coup
+			TARGET_TYPE = target_character
+			TARGET_SCOPE = scope:liege_c
+			# Success.
+			AGENT_1 = agent_thug
+			AGENT_2 = agent_ambusher
+			AGENT_3 = agent_muscle
+			# Speed.
+			AGENT_4 = agent_footpad
+			# Secrecy.
+			AGENT_5 = agent_lookout
+		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 20
+				age >= 30
+			}
+			modifier = {
+				add = 100
+				has_trait = ambitious
+			}
+		}
+	}
 }

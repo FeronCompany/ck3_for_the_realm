@@ -252,3 +252,28 @@ ftr_ic_event.0201 = {
 		}
 	}
 }
+
+# Liege receive end story notify
+ftr_ic_event.0202 = {
+	type = character_event
+	title = ftr_ic_event.0202.t
+	desc = ftr_ic_event.0202.desc
+	theme = diplomacy
+	left_portrait = {
+		character = scope:first_suc
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:second_suc
+		animation = scheme
+	}
+
+	option = { # Accept
+		name = ftr_ic_event.0202.a
+		show_as_tooltip = {
+			scope:story = {
+				end_story = yes
+			}
+		}
+	}
+}

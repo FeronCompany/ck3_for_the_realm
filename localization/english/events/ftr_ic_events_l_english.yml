@@ -9,3 +9,7 @@
  ftr_ic_event.0201.desc:0 "In the past, I always thought I was the most favored heir of [liege_c.GetShortUIName|U], but the cruel reality shattered my delusion. [liege_c.GetShortUIName|U] clearly stated to everyone that I was no longer in favor and would never be on the throne. Now that I am growing stronger, I am fully capable of making a final desperate attempt. I can't help but wonder whether I should take measures to reverse the situation. "
  ftr_ic_event.0201.a:0 "Maybe it's better to accept reality"
  ftr_ic_event.0201.b:0 "I am the undisputed heir!"
+ 
+ ftr_ic_event.0202.t:0 "The Past Like the Wind"
+ ftr_ic_event.0202.desc:0 "As the domestic situation changes, the disagreements between [first_suc.GetShortUIName|U] and [second_suc.GetShortUIName|U] have become insignificant. It's time for us to turn our attention elsewhere."
+ ftr_ic_event.0202.a:0 "Finally, I can worry less"

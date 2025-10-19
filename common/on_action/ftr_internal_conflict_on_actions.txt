@@ -33,3 +33,31 @@ quarterly_playable_pulse = {
 		# 10 = ftr_ic_event.0008
 	}
 }
+
+ftr_succession_struggle_liege_on_action = {
+	random_events = {
+		chance_to_happen = 100
+		#20 = ftr_ic_event.0203 # Vassals pick side - ftr_ic_event.0204
+		#20 = ftr_ic_event.0205 # First_suc's luxury
+		#20 = ftr_ic_event.0206 # Second_suc's diligent
+		#20 = ftr_ic_event.0207 # First_suc intervine in politics
+		#20 = ftr_ic_event.0208 # vassal flatter first_suc
+		#20 = ftr_ic_event.0209 # vassal flatter second_suc
+		#20 = ftr_ic_event.0210 # first_suc's beautiful wife - ftr_ic_event.0212
+		#20 = ftr_ic_event.0211 # Subject's advise on succession
+	}
+}
+
+ftr_succession_struggle_heir_on_action = {
+	random_events = {
+		chance_to_happen = 100
+		#20 = ftr_ic_event.0230 # Give second_suc a lesson
+		#20 = ftr_ic_event.0231 # Frame second_suc of rebel
+		#20 = ftr_ic_event.0232 # Call help from liege's spouse
+		#20 = ftr_ic_event.0233 # Call help from spymaster - ftr_ic_event.0238
+		#20 = ftr_ic_event.0234 # Call help from marshal - ftr_ic_event.0239
+		#20 = ftr_ic_event.0235 # Bribe second_suc's follower vassal - ftr_ic_event.0240
+		#20 = ftr_ic_event.0236 # Attack second_suc's follower vassal - ftr_ic_event.0241
+		#20 = ftr_ic_event.0237 # Support from other siblings
+	}
+}

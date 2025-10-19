@@ -9,3 +9,7 @@
  ftr_ic_event.0201.desc:0 "在过去的日子里，我一直认为自己是[liege_c.GetShortUIName|U]最偏爱的继承人，可是无情的现实击碎了我的妄想。[liege_c.GetShortUIName|U]向众人明确表示我已经不再受到偏爱，从此与王座无缘。如今我羽翼渐丰，完全可以最后做殊死一搏。我不禁开始思考究竟要不要采取措施挽回败局。"
  ftr_ic_event.0201.a:0 "或许接受现实更好呢？"
  ftr_ic_event.0201.b:0 "我才是无可争议的继承人！"
+
+ ftr_ic_event.0202.t:0 "往事如风"
+ ftr_ic_event.0202.desc:0 "随着国内局势的变化，[first_suc.GetShortUIName|U]与[second_suc.GetShortUIName|U]之间的龃龉已经无足轻重，我们是时候将目光投向别处了。"
+ ftr_ic_event.0202.a:0 "终于可以省心些了"

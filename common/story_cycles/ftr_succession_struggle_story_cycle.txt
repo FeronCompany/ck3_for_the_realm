@@ -34,7 +34,9 @@
 		triggered_effect = {
 			trigger = { always = yes }
 			effect = {
-				# TODO...
+				story_owner = {
+					trigger_event = ftr_ic_event.0202
+				}
 				scope:story = { end_story = yes }
 			}
 		}
@@ -55,7 +57,20 @@
 					always = yes
 				}
 				effect = {
-					# TODO...
+					story_owner = {
+						save_scope_as = liege_c
+					}
+					scope:story.var:first_heir = {
+						save_scope_as = first_suc
+					}
+					scope:story.var:second_heir = {
+						save_scope_as = second_suc
+					}
+					scope:liege_c = {
+						trigger_event = {
+							on_action = ftr_succession_struggle_liege_on_action
+						}
+					}
 				}
 			}
 			triggered_effect = { # Event for first heir
@@ -63,7 +78,20 @@
 					always = yes
 				}
 				effect = {
-					# TODO...
+					story_owner = {
+						save_scope_as = liege_c
+					}
+					scope:story.var:first_heir = {
+						save_scope_as = first_suc
+					}
+					scope:story.var:second_heir = {
+						save_scope_as = second_suc
+					}
+					scope:first_suc = {
+						trigger_event = {
+							on_action = ftr_succession_struggle_heir_on_action
+						}
+					}
 				}
 			}
 			triggered_effect = { # Event for second heir
@@ -71,7 +99,20 @@
 					always = yes
 				}
 				effect = {
-					# TODO...
+					story_owner = {
+						save_scope_as = liege_c
+					}
+					scope:story.var:first_heir = {
+						save_scope_as = first_suc
+					}
+					scope:story.var:second_heir = {
+						save_scope_as = second_suc
+					}
+					scope:second_suc = {
+						trigger_event = {
+							on_action = ftr_succession_struggle_heir_on_action
+						}
+					}
 				}
 			}
 		}

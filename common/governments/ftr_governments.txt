@@ -3,7 +3,6 @@
 		create_cadet_branches = yes
 		rulers_should_have_dynasty = yes
 		dynasty_named_realms = yes
-		royal_court = yes
 		legitimacy = yes
 		#administrative = yes
 		#landless_playable = yes
@@ -11,6 +10,7 @@
 		use_as_base_on_landed = yes
 		use_as_base_on_rank_up = yes
 	}
+	royal_court = any
 
 	fallback = 2
 	primary_holding = castle_holding
@@ -25,7 +25,9 @@
 		use_legends = yes
 	}
 
-	flag = government_is_centralism
+	flags = {
+		government_is_centralism
+	}
 	color = hsv{ 0.75 0.80 0.85 }
 }
 
@@ -36,10 +38,10 @@
 #
 nomad_government = {
 	government_rules = {
+		obedience = yes
 		create_cadet_branches = yes
 		rulers_should_have_dynasty = yes
 		dynasty_named_realms = no
-		royal_court = yes
 		landless_playable = yes
 		legitimacy = yes
 		use_as_base_on_rank_up = yes
@@ -48,20 +50,22 @@ nomad_government = {
 		uses_county_fertility = yes
 		uses_culture_and_house_head_named_realms = yes
 		sticky_government = yes
-		obedience = yes
 		subject_men_at_arms = yes
 		no_capital_movement_cooldown = yes
+		affected_by_development = no
+		buildings = no
 	}
+
+	royal_court = any
 
 	domicile_type = yurt
 
 	primary_holding = nomad_holding
-	valid_holdings = { nomad_holding }
+	valid_holdings = {}
 	required_county_holdings = { nomad_holding }
 
 	generated_character_template = nomadic_chieftain_character
 	
-	affected_by_development = no
 	max_dread = 150
 
 	vassal_contract_group = nomad_vassal
@@ -92,18 +96,27 @@ nomad_government = {
 	}
 
 	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
-	flag = government_is_nomadic
-	flag = government_can_raid_rule
-	flag = government_can_use_tributary_men_at_arms
-	flag = can_start_war_with_raised_troops
-	flag = ignores_faith_marriage_penalties
-	flag = no_hostile_attrition_in_steppe # Done in code, here for loc
-	flag = movement_speed_from_government
-	flag = land_raiding_movement_speed_from_government
-	flag = can_raze_holdings
+	flags = {
+		government_is_nomadic
+		government_has_herd
+		government_can_raid_rule
+		government_can_use_tributary_men_at_arms
+		can_start_war_with_raised_troops
+		ignores_faith_marriage_penalties
+		no_hostile_attrition_in_steppe # Done in code, here for loc
+		movement_speed_from_government
+		land_raiding_movement_speed_from_government
+		can_raze_holdings
+		government_uses_domicile_but_not_adventurer
+	}
+
+	mechanic_type = nomad
+	is_mechanic_type_default = yes
 
 	# These flags only exist for loc and in-game descriptions
 	color = { 255 127 80 }
+	realm_mask_offset = { 0.0 0.12 }
+	realm_mask_scale = { 0.8 0.8 }
 }
 
 ### Brief: herder_government
@@ -112,10 +125,6 @@ nomad_government = {
 # This is referenced in code
 #
 herder_government = {
-	primary_holding = herder_holding
-	valid_holdings = { herder_holding }
-	required_county_holdings = { herder_holding }
-
 	generated_character_template = herder_character
 
 	government_rules = {
@@ -127,6 +136,7 @@ herder_government = {
 		replenishes_county_fertility = yes
 		deny_powerful_vassal = yes
 		redirects_wars_to_overlord = yes
+		buildings = no
 	}
 	
 	character_modifier = {
@@ -135,6 +145,10 @@ herder_government = {
 		county_opinion_add = 100
 		monthly_income_mult = -10
 	}
+
+	primary_holding = herder_holding
+	valid_holdings = {}
+	required_county_holdings = { herder_holding }
 
 	ai = {
 		use_lifestyle = no
@@ -149,7 +163,16 @@ herder_government = {
 	vassal_contract_group = herder_vassal
 
 	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
-	flag = government_is_herder
-	flag = ignores_faith_marriage_penalties
+	flags = {
+		government_is_herder
+		government_has_herd
+		ignores_faith_marriage_penalties
+	}
+
+	mechanic_type = herder
+	is_mechanic_type_default = yes
+
 	color = { 235 213 52 }
+	realm_mask_offset = { 0.0 0.12 }
+	realm_mask_scale = { 0.8 0.8 }
 }

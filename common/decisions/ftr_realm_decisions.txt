@@ -204,7 +204,6 @@ ftr_end_tyrant_succession_decision = {
 	}
 }
 
-#################### OVERRIDE ###########################
 ftr_settle_the_steppe_decision = { # for unindependent Nomad
 	picture = {
 		reference = "gfx/interface/illustrations/event_story/mpo_steppe_region.dds"
@@ -771,5 +770,4 @@ ftr_settle_the_steppe_decision = { # for unindependent Nomad
 		}
 	}
 }
-#################### OVERRIDE ###########################
 

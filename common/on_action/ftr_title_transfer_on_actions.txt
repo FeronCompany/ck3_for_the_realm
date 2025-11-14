@@ -130,6 +130,7 @@ ftr_ursurp_tyrant_succession_effects = {
 	trigger = {
 		is_independent_ruler = yes
 		government_allows = administrative
+		can_have_acclamation_succession_law_trigger = yes
 		OR = {
 			has_realm_law = single_heir_succession_law
 			has_realm_law = single_heir_succession_law_youngest

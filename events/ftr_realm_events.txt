@@ -326,51 +326,6 @@ ftr_realm_event.0006 = {
 	after = {}
 }
 
-
-# Liege convert to centralism_government
-ftr_realm_event.1001 = {
-	type = character_event
-	title = ftr_realm_event.1001.t
-	desc = ftr_realm_event.1001.desc
-	theme = realm
-	left_portrait = {
-		character = scope:liege
-		animation = personality_honorable
-	}
-	right_portrait = {
-		character = root
-		animation = admiration
-	}
-
-	immediate = {}
-
-	option = {
-		name = ftr_realm_event.1001.a
-	}
-
-	after = {}
-}
-
-# Convert to centralism_government notification to yourself
-ftr_realm_event.1002 = {
-	type = character_event
-	title = ftr_realm_event.1002.t
-	desc = ftr_realm_event.1002.desc
-	theme = realm
-	left_portrait = {
-		character = root
-		animation = personality_honorable
-	}
-
-	immediate = {}
-
-	option = {
-		name = ftr_realm_event.1002.a
-	}
-
-	after = {}
-}
-
 # Liege grant hereditary privilage
 ftr_realm_event.1003 = {
 	type = character_event

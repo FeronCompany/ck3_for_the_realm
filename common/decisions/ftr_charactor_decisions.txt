@@ -153,3 +153,69 @@ ftr_recruit_concubine_decision = {
 		}
 	}
 }
+
+ftr_declear_bankrupt_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	desc = ftr_declear_bankrupt_decision_desc
+	selection_tooltip = ftr_declear_bankrupt_decision_tooltip
+	decision_group_type = major
+	cooldown = { years = 20 }
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 24
+		kingdom = 24
+		empire = 12
+		hegemony = 12
+	}
+	is_shown = {
+		OR = {
+			debt_level >= 2
+			treasury_debt_level >= 2
+		}
+		is_independent_ruler = yes
+		is_landed = yes
+	}
+	is_valid = {
+		OR = {
+			debt_level >= 2
+			treasury_debt_level >= 2
+		}
+		is_at_war = no
+	}
+
+	effect = {
+		if = {
+			limit = { debt_level > 0 }
+			add_gold = {
+				value = gold
+				multiply = -1.001
+			}
+		}
+		if = {
+			limit = { treasury_debt_level > 0 }
+			add_treasury = {
+				value = treasury
+				multiply = -1.001
+			}
+		}
+		add_character_modifier = {
+			modifier = ftr_bankrupt_modifier
+			years = 20
+		}
+		add_prestige_level = -2
+		add_piety_level = -2
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = -50
+			OR = {
+				has_trait = just
+			}
+		}
+	}
+}

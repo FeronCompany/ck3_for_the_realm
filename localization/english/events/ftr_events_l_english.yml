@@ -95,6 +95,11 @@
  ftr_interaction_event.0017.desc:0 "Neither of us could persuade anyone. We could only stand at both ends of the living room and stare blankly. The guests on the side were all talking about it, analyzing who said it was more reasonable. I was tired, and the debate was over."
  ftr_interaction_event.0017.a:0 "Next time, I will defeat you!"
 
+ ftr_interaction_event.1008.opening:0 "[recipient.Custom2('AppropriateGreeting', actor)]"
+ ftr_interaction_event.1008.desc:0 "Our country is remote and barren, and it is only through Your Majesty's grace that we have been able to enjoy peace and stability to this day. After receiving the imperial edict, we are filled with trepidation. However, the people of our country have long been accustomed to the customs of the border regions. Although we admire the grandeur of the great nation, we beg Your Majesty's pardon for our difficulty in assimilating. We hope that Your Majesty will show mercy and graciously allow our country to continue paying tribute."
+ ftr_interaction_event.1008.a:0 "OK"
+ ftr_interaction_event.1008.b:0 "From now on, you don't need to pay tribute anymore!"
+
 
 
  solitude_time.0001.t:0 "Solitude time"

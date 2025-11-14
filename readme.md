@@ -1,10 +1,12 @@
 Mod name: For The Realm  
-Mod version A.K.5  
+Mod version A.K.9  
 A mod focus on realm management and personal activities.
 + Mechanic：
   + Admin government optimization
     + Admin vassals can be converted to feudal.
     + Reduce influence gain from every governor of the same house, from 1 to 0.2
+    + Dejure war of celestial empire will not affected by situation
+    + Independent admi ruler have a decision to declear bankrupt
   + Add random disaster events
 Counties in different terrains will encounter different natural disasters, such as floods, fires, earthquakes, and droughts. As a lord, you must show enough responsibility to win the respect of your subjects.
   + Factions and Civil War
@@ -29,12 +31,14 @@ Counties in different terrains will encounter different natural disasters, such 
   + Add Commander trait, after every victory battle, commanders will gain experience of this trait, which lead to very high buff.
 
 Mod名 朝野纷争  
-Mod版本 A.K.5  
+Mod版本 A.K.9  
 本mod专注于领地管理与个人生活。
 + 机制改动：
   + 调整行政制政体
     + 行政制封臣可以被转化为封建制封臣。
     + 降低了家族中每个总督为家族成员带来的影响力增益 1 -> 0.2
+    + 天朝制下法理战争不受局势影响
+    + 行政制独立统治者可以使用破产决议进行赖账
   + 新增随机天灾事件
 不同地形下的伯爵领会遭遇不同的自然灾害，洪水、火灾、地震还有干旱，作为领主，你必须表现出足够的责任心来赢得领地臣民的尊重。
   + 派系与内战

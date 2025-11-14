@@ -41,7 +41,13 @@ ftr_convert_bureacrat_to_feudal_interaction = {
 			save_scope_as = liege
 		}
 		scope:recipient = {
-			change_government = feudal_government
+			if = {
+				limit = { religion = religion:islam_religion }
+				change_government = clan_government
+			}
+			else = {
+				change_government = feudal_government
+			}
 			add_opinion = {
 				target = scope:actor
 				modifier = ftr_grant_here_privilage_opinion

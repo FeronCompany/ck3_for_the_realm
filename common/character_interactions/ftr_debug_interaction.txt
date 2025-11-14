@@ -46,9 +46,6 @@ ftr_debug_change_government_interaction = {
 				scope:to_clan = {
 					change_government = clan_government
 				}
-				scope:to_burea = {
-					change_government = centralism_government
-				}
 			}
 		}
 	}

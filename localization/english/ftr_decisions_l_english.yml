@@ -168,3 +168,8 @@
  ftr_settle_the_steppe_decision_confirm:0 "A new era calls upon us."
  become_admin_decision: "Become Administrative"
  become_admin_decision_tooltip: "Become [GetGovernment('administrative_government').GetNameWithIcon]"
+
+ ftr_declear_bankrupt_decision:0 "<FTR> Declear Bankrupt"
+ ftr_declear_bankrupt_decision_tooltip:0 "Declare bankruptcy to address the imminent financial issues"
+ ftr_declear_bankrupt_decision_desc:0 "My treasury has been in debt for many years, and the huge debt has been weighing heavily on everyone. For the sake of the future, we have no choice but to make the creditors suffer a bit first, and I will bear the blame."
+ ftr_declear_bankrupt_decision_confirm:0 "Good bye, my debt."

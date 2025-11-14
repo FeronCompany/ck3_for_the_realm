@@ -341,7 +341,7 @@ ftr_send_envoy_interaction = {
 	notification_text = ftr_send_envoy_interaction_text
 	desc = ftr_send_envoy_interaction_desc
 	#ai_maybe = yes
-	ai_frequency = 48
+	ai_frequency = 60
 	ai_targets = {
 		ai_recipients = liege
 		ai_recipients = vassals
@@ -680,3 +680,181 @@ ftr_send_envoy_interaction = {
 		}
 	}
 }
+
+ftr_huangdi_ask_for_vassalation_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	greeting = positive
+	can_send_despite_rejection = yes
+	notification_text = ftr_huangdi_ask_for_vassalation_interaction_text
+	desc = ftr_huangdi_ask_for_vassalation_interaction_desc
+	ai_maybe = yes
+	ai_frequency = 24
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		max = 5
+	}
+	cooldown_against_recipient = { years = 30 }
+
+	is_shown = {
+		scope:actor = {
+			has_title = title:h_china
+		}
+		scope:recipient = {
+			is_tributary_of = scope:actor
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			is_at_war = no
+		}
+		scope:recipient = {
+			any_held_title = {
+				is_neighbor_to_realm = scope:actor
+			}
+		}
+		scope:actor = {
+			is_at_war = no
+		}
+	}
+
+	cost = {
+		prestige = major_prestige_value
+	}
+
+	options_heading = ftr_vassalation_cost_tt
+	send_option = { # 花钱赎买
+		flag = ftr_vassalation_offer_gold
+		localization = ftr_vassalation_offer_gold_tt
+	}
+	send_option = { # 使用牵制
+		is_valid = {
+			scope:actor = {
+				has_usable_hook = scope:recipient
+			}
+		}
+		flag = ftr_vassalation_use_hook
+		localization = ftr_vassalation_use_hook_tt
+	}
+	send_options_exclusive = no
+	on_accept = {
+		offer_vassalization_interaction_effect = yes
+		if = {
+			limit = { scope:ftr_vassalation_offer_gold = yes }
+			scope:actor = {
+				pay_short_term_gold = {
+					target = scope:recipient
+					gold = medium_gold_value
+				}
+			}
+		}
+		if = {
+			limit = { scope:ftr_vassalation_use_hook = yes }
+			scope:actor = {
+				use_hook = scope:recipient
+			}
+		}
+		scope:actor = {
+			send_interface_message = {
+				type = event_title_good
+				title = ftr_huangdi_ask_for_vassalation_interaction.accept.tt
+				left_icon = scope:recipient
+			}
+		}
+	}
+	on_decline = {
+		custom_tooltip = ftr_vassalation_declined_tt
+		scope:actor = {
+			trigger_event = ftr_interaction_event.1008
+		}
+	}
+
+	ai_potential = {
+		is_adult = yes
+		has_title = title:h_china
+		vassal_limit_available > 5
+	}
+
+	ai_accept = {
+		base = -30
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.4
+		}
+		modifier = {
+			add = 30
+			scope:recipient = {
+				any_held_title = {
+					tier = scope:recipient.primary_title.tier
+					target_is_de_jure_liege_or_above = title:h_china
+				}
+			}
+			desc = FTR_VASSALATION_DEJURE_LIEGE
+		}
+		modifier = {
+			add = -30
+			scope:recipient.primary_title.tier >= tier_kingdom
+			desc = FTR_VASSALATION_TIER
+		}
+
+		modifier = {
+			add = 20
+			scope:ftr_vassalation_offer_gold = yes
+			desc = FTR_VASSALATION_OFFER_GOLD
+		}
+
+		modifier = {
+			add = 100
+			scope:ftr_vassalation_use_hook = yes
+			desc = FTR_VASSALATION_USE_HOOK
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+
+		# AI prefers to receive higher obligations from their vassals when possible.
+		modifier = {
+			add = -20
+			scope:ftr_vassalation_offer_gold = yes
+		}
+
+		# 获取法理领土
+		modifier = {
+			add = 50
+			scope:recipient = {
+				any_held_title = {
+					target_is_de_jure_liege_or_above = title:h_china
+				}
+			}
+		}
+
+		opinion_modifier = {
+			who = scope:actor
+			opinion_target = scope:recipient
+			multiplier = -0.25
+		}
+
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = -0.25
+		}
+
+		modifier = {
+			add = -30
+			scope:recipient = {
+				is_allied_to = scope:actor
+			}
+		}
+
+		modifier = { # If the recipient is a player, do not bother sending
+			factor = 0
+			scope:recipient = {
+				is_ai = no
+			}
+		}
+	}
+}
+

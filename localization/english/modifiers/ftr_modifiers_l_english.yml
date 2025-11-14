@@ -151,3 +151,6 @@
 
  ftr_promote_culture_superiority_modifier:0 "<FTR> Promote Culture Superiority"
  ftr_promote_culture_superiority_modifier_desc:0 "Promote culture superiority"
+
+ ftr_bankrupt_modifier:0 "<FTR> Decleared Bankrupt"
+ ftr_bankrupt_modifier_desc:0 "Decleared Bankrupt"

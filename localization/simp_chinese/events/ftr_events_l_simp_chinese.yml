@@ -1,5 +1,5 @@
 ﻿l_simp_chinese:
- ftr_interaction_event.0001.opening:0 "尊敬的[actor.GetTitledFirstName|U]"
+ ftr_interaction_event.0001.opening:0 "[recipient.Custom2('AppropriateGreeting', actor)]"
  ftr_interaction_event.0001.desc:0 "虽然你对我的信仰的态度颇为傲慢，对真知的理解也稍显浅薄，但作为一位有责任心的信徒，我认为我有必要将你的思想拉回正轨。"
  ftr_interaction_event.0001.a:0 "哟呵"
 
@@ -124,6 +124,11 @@
  ftr_interaction_event.1007.a:0 "我来替[losing_side.GetShortUIName|U]垫付"
  ftr_interaction_event.1007.b:0 "[losing_side.GetShortUIName|U]自己来付钱"
  ftr_interaction_event.1007.c:0 "无条件和平"
+
+ ftr_interaction_event.1008.opening:0 "[recipient.Custom2('AppropriateGreeting', actor)]"
+ ftr_interaction_event.1008.desc:0 "敝国偏僻贫瘠，得陛下恩宠，方能安泰至今。得诏之后，诚惶诚恐。然敝国之民久习边俗，虽仰慕大国之风，然恕难归化。望陛下垂怜，恩准我国继续朝贡。"
+ ftr_interaction_event.1008.a:0 "行吧"
+ ftr_interaction_event.1008.b:0 "以后你们都不用来朝贡了！"
 
  solitude_time.0001.t:0 "自娱自乐"
  solitude_time.0001.desc:0 "娱乐时间到，到底做点什么好呢？"

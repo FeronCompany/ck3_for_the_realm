@@ -76,7 +76,13 @@ ftr_disaster_event.0001 = {
 
 	option = { # Allocate funds to help local people
 		name = ftr_disaster_event.0001.a
-		remove_short_term_gold = ftr_province_fund_value
+		if = {
+			limit = { government_allows = administrative }
+			remove_treasury = ftr_province_fund_value
+		}
+		else = {
+			remove_short_term_gold = ftr_province_fund_value
+		}
 		scope:unlucky_county = {
 			add_county_modifier = {
 				modifier = ftr_disaster_fund_modifier
@@ -307,7 +313,13 @@ ftr_disaster_event.0002 = {
 
 	option = { # Help of course
 		name = ftr_disaster_event.0002.a
-		remove_short_term_gold = ftr_province_fund_value
+		if = {
+			limit = { government_allows = administrative }
+			remove_treasury = ftr_province_fund_value
+		}
+		else = {
+			remove_short_term_gold = ftr_province_fund_value
+		}
 		add_legitimacy = medium_legitimacy_gain
 		scope:unlucky_county = {
 			add_county_modifier = {

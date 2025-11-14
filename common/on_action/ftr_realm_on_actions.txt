@@ -212,3 +212,25 @@ ftr_random_flood_effects = {
 		}
 	}
 }
+
+random_yearly_playable_pulse = {
+	on_actions = {
+		ftr_auto_remove_title_law_for_administrative_effect
+	}
+}
+
+ftr_auto_remove_title_law_for_administrative_effect = {
+	trigger = {
+		government_allows = administrative
+	}
+	effect = {
+		every_held_title = {
+			limit = {
+				tier >= tier_county
+				is_noble_family_title = no
+			}
+			clear_title_laws = yes
+		}
+	}
+}
+

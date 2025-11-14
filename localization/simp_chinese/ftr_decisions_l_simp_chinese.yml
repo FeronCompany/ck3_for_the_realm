@@ -168,3 +168,8 @@
  ftr_settle_the_steppe_decision_confirm:0 "新时代在呼唤"
  become_admin_decision: "成为行政制"
  become_admin_decision_tooltip: "成为[GetGovernment('administrative_government').GetNameWithIcon]"
+
+ ftr_declear_bankrupt_decision:0 "<FTR>宣布破产"
+ ftr_declear_bankrupt_decision_tooltip:0 "宣布破产，解决迫在眉睫的财政问题"
+ ftr_declear_bankrupt_decision_desc:0 "我的府库已经负债多年，巨额的债务压得大家喘不过气来。为了将来打算，我们不得不先苦一苦债主，骂名由我来担。"
+ ftr_declear_bankrupt_decision_confirm:0 "再见吧债务"

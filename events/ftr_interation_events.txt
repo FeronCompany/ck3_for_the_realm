@@ -1608,3 +1608,32 @@ ftr_interaction_event.1007 = {
 		}
 	}
 }
+
+# Ask for compensation
+ftr_interaction_event.1008 = {
+	type = letter_event
+	opening = {
+		desc = ftr_interaction_event.1008.opening
+	}
+	desc = ftr_interaction_event.1008.desc
+	sender = scope:recipient
+
+	option = { # OK
+		name = ftr_interaction_event.1008.a
+		ai_chance = {
+			base = 20
+		}
+	}
+
+	option = { # End tributary
+		name = ftr_interaction_event.1008.b
+		scope:recipient = {
+			end_tributary = yes
+		}
+		ai_chance = {
+			base = 20
+		}
+	}
+
+	after = {}
+}

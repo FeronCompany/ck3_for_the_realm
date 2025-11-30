@@ -1,5 +1,4 @@
 ﻿
-################ OVERRIDE ########################
 can_keep_single_heir_succession_law_trigger = {
 	# The 'can_keep' triggers are dependent on actually having the law. If they aren't, the trigger breakdown for the player breaks and shows incomplete information.
 	trigger_if = {
@@ -11,11 +10,15 @@ can_keep_single_heir_succession_law_trigger = {
 			# Byzantine Empire / Ceremonial Liege
 			historical_succession_access_single_heir_succession_law_trigger = yes
 			has_variable = purge_oath_previous_law # ACH Purge Pretenders Oath
-			government_allows = administrative ### OVERRIDE
+			###### OVERRIDE ######
+			AND = {
+				is_independent_ruler = yes
+				government_allows = administrative ### OVERRIDE
+			}
+			###### OVERRIDE ######
 		}
 	}
 }
-################ OVERRIDE ########################
 
 
 

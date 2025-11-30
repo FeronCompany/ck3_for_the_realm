@@ -1,10 +1,11 @@
 Mod name: For The Realm  
-Mod version A.K.9  
+Mod version A.K.11  
 A mod focus on realm management and personal activities.
 + Mechanic：
   + Admin government optimization
     + Admin vassals can be converted to feudal.
     + Reduce influence gain from every governor of the same house, from 1 to 0.2
+    + Removed the vassal limit bonus of the administrative government. Administrative lords will voluntarily grant kingdom-level titles when the vassal limit is insufficient.
     + Dejure war of celestial empire will not affected by situation
     + Independent admi ruler have a decision to declear bankrupt
   + Add random disaster events
@@ -29,14 +30,16 @@ Counties in different terrains will encounter different natural disasters, such 
 + Traits
   + Murder now is crime
   + Add Commander trait, after every victory battle, commanders will gain experience of this trait, which lead to very high buff.
+  + Some health trait has been nerfed
 
 Mod名 朝野纷争  
-Mod版本 A.K.9  
+Mod版本 A.K.11  
 本mod专注于领地管理与个人生活。
 + 机制改动：
   + 调整行政制政体
     + 行政制封臣可以被转化为封建制封臣。
     + 降低了家族中每个总督为家族成员带来的影响力增益 1 -> 0.2
+    + 移除了行政制的封臣上限加成，行政制领主会在封臣上限不够时主动放出王国级头衔
     + 天朝制下法理战争不受局势影响
     + 行政制独立统治者可以使用破产决议进行赖账
   + 新增随机天灾事件
@@ -61,6 +64,7 @@ Mod版本 A.K.9
 + 特质
   + 谋杀现在是重罪
   + 新增战场指挥官特质，每打赢一战就可以提升经验，百战名将将有巨大加成
+  + 部分健康特质的健康加成被削弱
 
 因为种种原因，不方便直接在steam回复，有问题可以在github的issue中提出，谢谢大家的支持 Thank you!  
 本Mod直接订阅即可使用  

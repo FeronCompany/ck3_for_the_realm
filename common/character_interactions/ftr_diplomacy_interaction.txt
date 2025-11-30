@@ -27,9 +27,11 @@ ftr_buy_land_interaction = {
 			AND = {
 				scope:actor = {
 					is_independent_ruler = yes
+					is_landed = yes
 				}
 				scope:recipient = {
 					is_independent_ruler = yes
+					is_landed = yes
 				}
 			}
 			scope:recipient = {

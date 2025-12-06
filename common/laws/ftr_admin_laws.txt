@@ -1,0 +1,188 @@
+﻿
+@admin_army_law_cooldown_value = 5
+
+# ADMINISTRATIVE ARMY LAW
+admin_army_law = {
+	default = admin_army_law_0
+	cumulative = no
+	flag = admin_law
+
+	admin_army_law_0 = {
+		modifier = {
+			levy_size = 0.25
+		}
+
+		can_keep = {
+			government_allows = administrative
+			trigger_if = {
+				limit = {
+					top_liege != this
+				}
+				liege = { has_realm_law = admin_army_law_0 }
+			}
+		}
+
+		can_pass = {
+			trigger_if = {
+				limit = {
+					top_liege = this
+				}
+				custom_tooltip = {
+					text = admin_law_cooldown_desc
+					NOT = { has_variable = admin_law_cooldown }
+				}
+			}
+			trigger_if = {
+				limit = {
+					top_liege != this
+					liege = { has_realm_law = admin_army_law_0 }
+				}
+				custom_tooltip = {
+					text = imperial_bureaucracy_pending_law_change
+					always = no
+				}
+			}
+		}
+
+		on_pass = {
+			## Set cooldown
+			set_variable = {
+				name = admin_law_cooldown
+				years = @admin_army_law_cooldown_value
+			}
+		}
+
+		ai_will_do = {
+			value = 1
+		}
+	}
+
+	admin_army_law_1 = {
+		modifier = {
+			men_at_arms_title_limit = 5
+			tax_mult = 0.15
+		}
+
+		can_keep = {
+			government_allows = administrative
+			trigger_if = {
+				limit = {
+					top_liege != this
+				}
+				liege = { has_realm_law = admin_army_law_1 }
+			}
+		}
+
+		can_pass = {
+			trigger_if = {
+				limit = {
+					top_liege = this
+				}
+				custom_tooltip = {
+					text = admin_law_cooldown_desc
+					NOT = { has_variable = admin_law_cooldown }
+				}
+			}
+			trigger_if = {
+				limit = {
+					top_liege != this
+					liege = { has_realm_law = admin_army_law_1 }
+				}
+				custom_tooltip = {
+					text = imperial_bureaucracy_pending_law_change
+					always = no
+				}
+			}
+		}
+
+		pass_cost = {
+			prestige = {
+				add = admin_law_prestige_cost
+			}
+		}
+
+		on_pass = {
+			## Set cooldown
+			set_variable = {
+				name = admin_law_cooldown
+				years = @admin_army_law_cooldown_value
+			}
+		}
+
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = {
+					has_realm_law = admin_army_law_0
+					army_size >= 20000
+				}
+				add = 2
+			}
+		}
+	}
+
+	admin_army_law_2 = {
+		modifier = {
+			levy_size = -0.25
+			men_at_arms_title_limit = 10
+			tax_mult = 0.3
+		}
+
+		can_keep = {
+			government_allows = administrative
+			trigger_if = {
+				limit = {
+					top_liege != this
+				}
+				liege = { has_realm_law = admin_army_law_2 }
+			}
+		}
+
+		can_pass = {
+			trigger_if = {
+				limit = {
+					top_liege = this
+				}
+				custom_tooltip = {
+					text = admin_law_cooldown_desc
+					NOT = { has_variable = admin_law_cooldown }
+				}
+			}
+			trigger_if = {
+				limit = {
+					top_liege != this
+					liege = { has_realm_law = admin_army_law_2 }
+				}
+				custom_tooltip = {
+					text = imperial_bureaucracy_pending_law_change
+					always = no
+				}
+			}
+		}
+
+		pass_cost = {
+			prestige = {
+				add = admin_law_prestige_cost
+			}
+		}
+
+		on_pass = {
+			## Set cooldown
+			set_variable = {
+				name = admin_law_cooldown
+				years = @admin_army_law_cooldown_value
+			}
+		}
+
+		ai_will_do = {
+			value = 0
+			if = {
+				limit = {
+					has_realm_law = admin_army_law_0
+					army_size >= 30000
+				}
+				add = 3
+			}
+		}
+	}
+}

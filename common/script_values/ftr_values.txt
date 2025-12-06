@@ -236,6 +236,12 @@ ftr_fine_gold_value = {
 		}
 		add = 200
 	}
+	else_if = {
+		limit = {
+			scope:recipient.primary_title.tier = tier_empire
+		}
+		add = 500
+	}
 	multiply = ftr_era_gold_cost_multiplier_value
 }
 

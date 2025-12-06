@@ -1,13 +1,14 @@
 Mod name: For The Realm  
-Mod version A.K.12  
+Mod version A.K.13  
 A mod focus on realm management and personal activities.
 + Mechanic：
   + Admin government optimization
     + Admin vassals can be converted to feudal.
     + Reduce influence gain from every governor of the same house, from 1 to 0.2
-    + Removed the vassal limit bonus of the administrative government. Administrative lords will voluntarily grant kingdom-level titles when the vassal limit is insufficient.
     + Dejure war of celestial empire will not affected by situation
+    + Removed the vassal limit bonus of the administrative government. Administrative lords will voluntarily grant kingdom-level titles when the vassal limit is insufficient.
     + Independent admi ruler have a decision to declear bankrupt
+    + Add Army Law for all administrative govs
   + Add random disaster events
 Counties in different terrains will encounter different natural disasters, such as floods, fires, earthquakes, and droughts. As a lord, you must show enough responsibility to win the respect of your subjects.
   + Factions and Civil War
@@ -33,15 +34,16 @@ Counties in different terrains will encounter different natural disasters, such 
   + Some health trait has been nerfed
 
 Mod名 朝野纷争  
-Mod版本 A.K.12  
+Mod版本 A.K.13  
 本mod专注于领地管理与个人生活。
 + 机制改动：
   + 调整行政制政体
     + 行政制封臣可以被转化为封建制封臣。
     + 降低了家族中每个总督为家族成员带来的影响力增益 1 -> 0.2
-    + 移除了行政制的封臣上限加成，行政制领主会在封臣上限不够时主动放出王国级头衔
     + 天朝制下法理战争不受局势影响
+    + 移除了行政制的封臣上限加成，行政制领主会在封臣上限不够时主动放出王国级头衔
     + 行政制独立统治者可以使用破产决议进行赖账
+    + 为所有行政制整体新增了兵制法律，行政制国家可以通过削减征召兵来扩大头衔兵士规模
   + 新增随机天灾事件
 不同地形下的伯爵领会遭遇不同的自然灾害，洪水、火灾、地震还有干旱，作为领主，你必须表现出足够的责任心来赢得领地臣民的尊重。
   + 派系与内战

@@ -1,0 +1,7 @@
+﻿l_english:
+ repel_barbarians_duchy_conquest_cb: "Repel Barbarians Duchy Conquest"
+ repel_barbarians_kingdom_conquest_cb: "Repel Barbarians Kingdom Conquest"
+ REPEL_BARBARIAN_DUCHY_CB_NAME: "Repel Barbarians Duchy Conquest"
+ REPEL_BARBARIAN_DUCHY_CB_SPECIFIC_NAME: "Repel Barbarians-[TITLE.GetBaseName]"
+ REPEL_BARBARIAN_KINGDOM_CB_NAME: "Repel Barbarians Kingdom Conquest"
+ REPEL_BARBARIAN_KINGDOM_CB_SPECIFIC_NAME: "Repel Barbarians-[TITLE.GetBaseName]"

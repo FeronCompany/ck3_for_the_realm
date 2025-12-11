@@ -9,7 +9,7 @@ admin_army_law = {
 
 	admin_army_law_0 = {
 		modifier = {
-			levy_size = 0.25
+			levy_size = 0.1
 		}
 
 		can_keep = {
@@ -31,6 +31,7 @@ admin_army_law = {
 					text = admin_law_cooldown_desc
 					NOT = { has_variable = admin_law_cooldown }
 				}
+				is_at_war = no
 			}
 			trigger_if = {
 				limit = {
@@ -53,14 +54,15 @@ admin_army_law = {
 		}
 
 		ai_will_do = {
-			value = 1
+			value = 0
 		}
 	}
 
 	admin_army_law_1 = {
 		modifier = {
+			levy_size = -0.1
 			men_at_arms_title_limit = 5
-			tax_mult = 0.15
+			tax_mult = 0.1
 		}
 
 		can_keep = {
@@ -82,6 +84,7 @@ admin_army_law = {
 					text = admin_law_cooldown_desc
 					NOT = { has_variable = admin_law_cooldown }
 				}
+				is_at_war = no
 			}
 			trigger_if = {
 				limit = {
@@ -114,7 +117,7 @@ admin_army_law = {
 			if = {
 				limit = {
 					has_realm_law = admin_army_law_0
-					army_size >= 20000
+					max_military_strength >= 20000
 				}
 				add = 2
 			}
@@ -123,9 +126,9 @@ admin_army_law = {
 
 	admin_army_law_2 = {
 		modifier = {
-			levy_size = -0.25
+			levy_size = -0.3
 			men_at_arms_title_limit = 10
-			tax_mult = 0.3
+			tax_mult = 0.2
 		}
 
 		can_keep = {
@@ -147,6 +150,7 @@ admin_army_law = {
 					text = admin_law_cooldown_desc
 					NOT = { has_variable = admin_law_cooldown }
 				}
+				is_at_war = no
 			}
 			trigger_if = {
 				limit = {
@@ -178,8 +182,8 @@ admin_army_law = {
 			value = 0
 			if = {
 				limit = {
-					has_realm_law = admin_army_law_0
-					army_size >= 30000
+					has_realm_law = admin_army_law_1
+					max_military_strength >= 30000
 				}
 				add = 3
 			}

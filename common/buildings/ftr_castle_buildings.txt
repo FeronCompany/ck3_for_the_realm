@@ -426,7 +426,7 @@ castle_01 = {
 	province_terrain_modifier = {
 		parameter = castle_holding_fort_level_in_jungle_bonus
 		terrain = jungle
-		additional_fort_level = castle_holding_fort_level_in_jungle_bonus_value
+		additional_fort_level = 1
 	}
 
 	province_terrain_modifier = {
@@ -487,6 +487,7 @@ castle_01 = {
 						has_character_modifier = oath_of_buildings
 					}
 				}
+				county.holder = { save_scope_as = holder }
 				add_random_economic_building_effect = yes
 				add_random_military_building_effect = yes
 				add_random_fortification_building_effect = yes
@@ -915,7 +916,7 @@ castle_02 = {
 	province_terrain_modifier = {
 		parameter = castle_holding_fort_level_in_jungle_bonus
 		terrain = jungle
-		additional_fort_level = castle_holding_fort_level_in_jungle_bonus_value
+		additional_fort_level = 2
 	}
 
 	province_terrain_modifier = {
@@ -1318,7 +1319,7 @@ castle_03 = {
 			illustration = @holding_illustration_china
 			soundeffect = { soundeffect = "event:/SFX/Ambience/3DMapEmitters/Holdings/Castle/chinese_castle" soundparameter = { "Tier" = 2 } }
 			graphical_cultures = { chinese_building_gfx }
-			graphical_regions = { graphical_east_asia }
+			graphical_regions = { graphical_east_asia graphical_india }
 		}
 		# TGP Japan
 		asset = {
@@ -1384,7 +1385,7 @@ castle_03 = {
 	province_terrain_modifier = {
 		parameter = castle_holding_fort_level_in_jungle_bonus
 		terrain = jungle
-		additional_fort_level = castle_holding_fort_level_in_jungle_bonus_value
+		additional_fort_level = 3
 	}
 
 	province_terrain_modifier = {
@@ -1741,7 +1742,7 @@ castle_04 = {
 			illustration = @holding_illustration_china
 			soundeffect = { soundeffect = "event:/SFX/Ambience/3DMapEmitters/Holdings/Castle/chinese_castle" soundparameter = { "Tier" = 3 } }
 			graphical_cultures = { steppe_building_gfx }
-			graphical_regions = { graphical_east_asia }
+			graphical_regions = { graphical_east_asia graphical_india }
 		}
 		asset = {
 			type = pdxmesh
@@ -1834,7 +1835,7 @@ castle_04 = {
 	province_terrain_modifier = {
 		parameter = castle_holding_fort_level_in_jungle_bonus
 		terrain = jungle
-		additional_fort_level = castle_holding_fort_level_in_jungle_bonus_value
+		additional_fort_level = 4
 	}
 
 	province_terrain_modifier = {

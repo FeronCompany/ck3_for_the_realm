@@ -173,3 +173,9 @@
  ftr_declear_bankrupt_decision_tooltip:0 "宣布破产，解决迫在眉睫的财政问题"
  ftr_declear_bankrupt_decision_desc:0 "我的府库已经负债多年，巨额的债务压得大家喘不过气来。为了将来打算，我们不得不先苦一苦债主，骂名由我来担。"
  ftr_declear_bankrupt_decision_confirm:0 "再见吧债务"
+
+ ftr_reward_contribution_decision:0 "<FTR>考课优异"
+ ftr_reward_contribution_decision_tooltip:0 "为政绩优异但没有对应功名的臣子赐予功名"
+ ftr_reward_contribution_decision_desc:0 "许多兢兢业业为帝国奋斗多年的官员没有与自己功劳对应的功名，如今我们将赐予他们回报。"
+ ftr_reward_contribution_decision_confirm:0 "论功行赏"
+ ftr_reward_contribution_reward_tt: "为政绩优异但没有对应功名的臣子赐予功名"

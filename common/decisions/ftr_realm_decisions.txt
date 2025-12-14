@@ -2,7 +2,7 @@
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
 	}
-	decision_group_type = major
+	decision_group_type = realm
 	desc = war_tax_decision_desc
 	selection_tooltip = war_tax_decision_tooltip
 	cooldown = { days = 3650 }
@@ -698,3 +698,64 @@ ftr_settle_the_steppe_decision = { # for unindependent Nomad
 	}
 }
 
+ftr_reward_contribution_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/tgp_career.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_reward_contribution_decision_desc
+	selection_tooltip = ftr_reward_contribution_decision_tooltip
+	cooldown = { years = 5 }
+	is_shown = {
+		is_landed = yes
+		is_independent_ruler = yes
+		government_has_flag = government_is_celestial
+		primary_title.tier >= tier_empire
+	}
+	is_valid = {}
+
+	cost = {
+		prestige = { value = 250 }
+		gold = { value = 120 }
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = ftr_reward_contribution_reward_tt
+			every_vassal_or_below = {
+				limit = {
+					is_landed = yes
+					government_has_flag = government_is_celestial
+				}
+				if = {
+					limit = {
+						merit > 2000
+						NOT = { has_character_modifier = tgp_passed_provincial_exam_modifier }
+						NOT = { has_character_modifier = tgp_bypassed_provincial_exam_modifier }
+					}
+					add_character_modifier = tgp_bypassed_provincial_exam_modifier
+				}
+				if = {
+					limit = {
+						merit > 5500
+						NOT = { has_character_modifier = tgp_passed_metropolitan_exam_modifier }
+						NOT = { has_character_modifier = tgp_nepotism_bypass_exams_modifier }
+					}
+					add_character_modifier = tgp_nepotism_bypass_exams_modifier
+				}
+			}
+		}
+	}
+	
+	ai_check_interval = 36
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = -30
+			gold < 500
+		}
+	}
+}

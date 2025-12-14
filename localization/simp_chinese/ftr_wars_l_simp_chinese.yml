@@ -1,0 +1,7 @@
+﻿l_simp_chinese:
+ repel_barbarians_duchy_conquest_cb: "公国攘夷"
+ repel_barbarians_kingdom_conquest_cb: "王国攘夷"
+ REPEL_BARBARIAN_DUCHY_CB_NAME: "拓土攘夷-公国"
+ REPEL_BARBARIAN_DUCHY_CB_SPECIFIC_NAME: "拓土攘夷-[TITLE.GetBaseName]"
+ REPEL_BARBARIAN_KINGDOM_CB_NAME: "拓土攘夷-王国"
+ REPEL_BARBARIAN_KINGDOM_CB_SPECIFIC_NAME: "拓土攘夷-[TITLE.GetBaseName]"

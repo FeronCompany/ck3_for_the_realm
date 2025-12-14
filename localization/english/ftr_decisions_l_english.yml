@@ -173,3 +173,9 @@
  ftr_declear_bankrupt_decision_tooltip:0 "Declare bankruptcy to address the imminent financial issues"
  ftr_declear_bankrupt_decision_desc:0 "My treasury has been in debt for many years, and the huge debt has been weighing heavily on everyone. For the sake of the future, we have no choice but to make the creditors suffer a bit first, and I will bear the blame."
  ftr_declear_bankrupt_decision_confirm:0 "Good bye, my debt."
+
+ ftr_reward_contribution_decision:0 "<FTR> Reward Contribution"
+ ftr_reward_contribution_decision_tooltip:0 "Confer merit level on subjects with outstanding achievements but without corresponding merit level"
+ ftr_reward_contribution_decision_desc:0 "Many officials who have worked diligently for the empire for many years have not received honors commensurate with their merits, and now we will bestow rewards upon them. "
+ ftr_reward_contribution_decision_confirm:0 "Reward according to merit"
+ ftr_reward_contribution_reward_tt: "Confer merit level on subjects with outstanding achievements but without corresponding merit level"

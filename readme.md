@@ -1,5 +1,5 @@
 # Mod name: For The Realm  
-Mod version A.K.15  
+Mod version A.K.16  
 A mod focus on realm management and personal activities.
 # Mechanic：
   + Admin government optimization
@@ -34,7 +34,7 @@ A mod focus on realm management and personal activities.
   + Some health trait has been nerfed
 
 # Mod名 朝野纷争  
-Mod版本 A.K.15  
+Mod版本 A.K.16  
 本mod专注于领地管理与个人生活。
 ## 机制改动：
   + 调整行政制政体

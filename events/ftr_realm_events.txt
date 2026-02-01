@@ -23,6 +23,7 @@ ftr_realm_event.0001 = {
 			NOT = { has_county_modifier = cultural_diversity_county_modifier }
 			NOT = { has_county_modifier = push_culture_failed_modifier }
 		}
+		culture = top_liege.culture
 	}
 	weight_multiplier = {
 		base = 1

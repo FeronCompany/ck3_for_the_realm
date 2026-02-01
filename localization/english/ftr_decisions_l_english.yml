@@ -179,3 +179,4 @@
  ftr_reward_contribution_decision_desc:0 "Many officials who have worked diligently for the empire for many years have not received honors commensurate with their merits, and now we will bestow rewards upon them. "
  ftr_reward_contribution_decision_confirm:0 "Reward according to merit"
  ftr_reward_contribution_reward_tt: "Confer merit level on subjects with outstanding achievements but without corresponding merit level"
+ ftr_reward_contribution_min_count_tt: "At least 3 officials can be granted merit level"

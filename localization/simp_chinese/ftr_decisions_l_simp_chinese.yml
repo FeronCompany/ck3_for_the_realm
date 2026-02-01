@@ -179,3 +179,4 @@
  ftr_reward_contribution_decision_desc:0 "许多兢兢业业为帝国奋斗多年的官员没有与自己功劳对应的功名，如今我们将赐予他们回报。"
  ftr_reward_contribution_decision_confirm:0 "论功行赏"
  ftr_reward_contribution_reward_tt: "为政绩优异但没有对应功名的臣子赐予功名"
+ ftr_reward_contribution_min_count_tt: "至少有3名符合赐予功名条件的官员"

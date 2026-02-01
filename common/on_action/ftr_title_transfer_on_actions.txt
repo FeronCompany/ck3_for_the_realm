@@ -6,6 +6,7 @@ on_title_gain = {
 		#ftr_title_conquerd_effects
 		ftr_ursurp_discontent_effects
 		ftr_ursurp_tyrant_succession_effects
+		ftr_remove_empire_for_hegemony_effects
 	}
 }
 
@@ -149,6 +150,22 @@ ftr_ursurp_tyrant_succession_effects = {
 				desc = liege_adapt_acclamation_succession_law_desc
 				right_icon = scope:usurper_liege
 			}
+		}
+	}
+}
+
+ftr_remove_empire_for_hegemony_effects = {
+	trigger = {
+		scope:transfer_type = flag:created
+		scope:title.tier = tier_hegemony
+		is_ai = yes
+	}
+	effect = {
+		every_held_title = {
+			limit = {
+				tier = tier_empire
+			}
+			holder = { destroy_title = prev }
 		}
 	}
 }

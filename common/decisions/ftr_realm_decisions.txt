@@ -712,11 +712,32 @@ ftr_reward_contribution_decision = {
 		government_has_flag = government_is_celestial
 		primary_title.tier >= tier_empire
 	}
-	is_valid = {}
+	is_valid = {
+		custom_tooltip = {
+			text = ftr_reward_contribution_min_count_tt
+			any_vassal_or_below = {
+				count >= 3
+				is_landed = yes
+				government_has_flag = government_is_celestial
+				OR = {
+					AND = {
+						merit > 2000
+						NOT = { has_character_modifier = tgp_passed_provincial_exam_modifier }
+						NOT = { has_character_modifier = tgp_bypassed_provincial_exam_modifier }
+					}
+					AND = {
+						merit > 5500
+						NOT = { has_character_modifier = tgp_passed_metropolitan_exam_modifier }
+						NOT = { has_character_modifier = tgp_nepotism_bypass_exams_modifier }
+					}
+				}
+			}
+		}
+	}
 
 	cost = {
 		prestige = { value = 250 }
-		gold = { value = 120 }
+		treasury = { value = 120 }
 	}
 
 	effect = {
@@ -755,7 +776,7 @@ ftr_reward_contribution_decision = {
 		base = 10
 		modifier = {
 			add = -30
-			gold < 500
+			treasury < 600
 		}
 	}
 }

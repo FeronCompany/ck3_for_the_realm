@@ -1,4 +1,4 @@
-version="A.K.16"
+version="A.K.17"
 tags={
 	"Character Interactions"
 	"Decisions"
@@ -7,5 +7,5 @@ tags={
 }
 name="For The Realm"
 picture="thumbnail.png"
-supported_version="1.18.*"
+supported_version="1.19.*"
 remote_file_id="2891075410"

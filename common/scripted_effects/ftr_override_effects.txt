@@ -57,6 +57,7 @@ de_jure_shifting_effect = {
 	# 					value = 1
 	# 				}
 	# 				max = 3
+	#               check_range_bounds = no
 	# 				list = de_jure_shifted_title
 	# 				show_as_tooltip = {
 	# 					set_de_jure_liege_title = root.primary_title 

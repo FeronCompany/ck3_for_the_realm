@@ -10,6 +10,7 @@ administrative_government = {
 		state_faith = yes
 		use_as_base_on_landed = yes
 		use_as_base_on_rank_up = yes
+		allow_as_base_for_baronies = no
 		inherit_from_dynastic_government = no
 		sticky_government = yes
 		house_aspirations = yes
@@ -17,6 +18,7 @@ administrative_government = {
 		admin_allows_holding_multiple_primary_tier_titles = yes
 		treasury = yes
 		replace_gold_cost_by_treasury = yes
+		allow_accolades = yes
 	}
 
 	royal_court = any
@@ -47,7 +49,7 @@ administrative_government = {
 		###### OVERRIDE ######
 		vassal_limit = 20
 		###### OVERRIDE ######
-		active_accolades = -1
+		accolades = -1
 		title_creation_cost_mult = -0.5
 		mercenary_hire_cost_mult = 2
 		###### OVERRIDE ######
@@ -136,6 +138,7 @@ nomad_government = {
 		no_capital_movement_cooldown = yes
 		affected_by_development = no
 		buildings = no
+		allow_accolades = yes
 	}
 
 	royal_court = any
@@ -244,11 +247,11 @@ herder_government = {
 		deny_powerful_vassal = yes
 		redirects_wars_to_overlord = yes
 		buildings = no
+		allow_accolades = no
 	}
 	
 	character_modifier = {
 		knight_limit = -100
-		active_accolades = -100
 		county_opinion_add = 100
 		monthly_income_mult = -10
 	}

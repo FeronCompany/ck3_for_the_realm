@@ -1,4 +1,4 @@
-version="A.K.17"
+version="A.K.18"
 tags={
 	"Character Interactions"
 	"Decisions"

@@ -180,3 +180,15 @@
  ftr_reward_contribution_decision_confirm:0 "Reward according to merit"
  ftr_reward_contribution_reward_tt: "Confer merit level on subjects with outstanding achievements but without corresponding merit level"
  ftr_reward_contribution_min_count_tt: "At least 3 officials can be granted merit level"
+
+ ftr_auto_assign_baronies_decision:0 "<FTR> Auto Assign Baronies"
+ ftr_auto_assign_baronies_decision_tooltip:0 "Auto Assign Baronies"
+ ftr_auto_assign_baronies_decision_desc:0 "The local officials come and go, it's too difficult to manage. Let the system do it."
+ ftr_auto_assign_baronies_decision_confirm:0 "Auto Assign Baronies"
+ ftr_auto_assign_baronies_effect_tt: "Auto Assign Baronies"
+
+ ftr_stop_auto_assign_baronies_decision:0 "<FTR> Stop Auto Assign Baronies"
+ ftr_stop_auto_assign_baronies_decision_tooltip:0 "Stop Auto Assign Baronies"
+ ftr_stop_auto_assign_baronies_decision_desc:0 "The officials in my realm are too lazy to do anything, so let me do it for them."
+ ftr_stop_auto_assign_baronies_decision_confirm:0 "Stop Auto Assign Baronies"
+ ftr_stop_auto_assign_baronies_effect_tt: "Stop Auto Assign Baronies"

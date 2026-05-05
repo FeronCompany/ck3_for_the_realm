@@ -860,3 +860,121 @@ ftr_huangdi_ask_for_vassalation_interaction = {
 	}
 }
 
+ftr_sue_for_peace_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	#interface = interfere_in_war
+	#special_interaction = interfere_in_war_interaction
+	greeting = positive
+	can_send_despite_rejection = no
+	notification_text = ftr_sue_for_peace_interaction_text
+	desc = ftr_sue_for_peace_interaction_desc
+	ai_maybe = yes
+	ai_frequency = 24
+	ai_targets = {
+		ai_recipients = primary_war_enemies
+		max = 5
+	}
+	cooldown_against_recipient = { years = 5 }
+
+	is_shown = {
+		scope:actor = {
+			is_at_war_with = scope:recipient
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			any_character_war = {
+				limit = {
+					scope:actor = {
+						is_participant_in_war = prev
+					}
+					OR = {
+						primary_attacker = scope:recipient
+						primary_defender = scope:recipient
+					}
+					NOR = {
+						primary_attacker = scope:actor
+						primary_defender = scope:actor
+					}
+				}
+			}
+		}
+	}
+
+	cost = {
+		prestige = major_prestige_value
+	}
+
+	on_accept = {
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_sue_for_peace_interaction.accept.tt
+				left_icon = scope:actor
+				right_icon = scope:recipient
+				scope:recipient = {
+					every_character_war = {
+						limit = {
+							scope:actor = {
+								is_participant_in_war = prev
+							}
+							OR = {
+								primary_attacker = scope:recipient
+								primary_defender = scope:recipient
+							}
+							NOR = {
+								primary_attacker = scope:actor
+								primary_defender = scope:actor
+							}
+						}
+						remove_participant = scope:actor
+					}
+				}
+			}
+		}
+	}
+	on_decline = {
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_sue_for_peace_interaction.decline.tt
+				left_icon = scope:actor
+				right_icon = scope:recipient
+			}
+		}
+	}
+
+	ai_potential = {
+	}
+
+	ai_accept = {
+		base = 30
+		modifier = {
+			add = {
+				add = scope:actor.current_military_strength
+				divide = scope:recipient.current_military_strength
+				multiply = 100
+				subtract = 60
+				max = 100
+				min = -100
+			}
+			desc = FTR_MILITARY_STRENGTH_COMPARISON
+		}
+		modifier = {
+			add = 30
+			scope:recipient = {
+				debt_level >= 1
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = -20
+		modifier = {
+			add = 30
+			scope:actor = {
+				debt_level >= 1
+			}
+		}
+	}
+}
+

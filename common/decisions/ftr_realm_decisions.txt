@@ -780,3 +780,79 @@ ftr_reward_contribution_decision = {
 		}
 	}
 }
+
+ftr_auto_assign_baronies_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/tgp_career.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_auto_assign_baronies_decision_desc
+	selection_tooltip = ftr_auto_assign_baronies_decision_tooltip
+	#cooldown = { years = 5 }
+	is_shown = {
+		is_landed = yes
+		is_independent_ruler = yes
+		government_allows = administrative
+		primary_title.tier >= tier_duchy
+		is_ai = no
+		NOT = { has_character_flag = ftr_auto_assign_baronies_flag }
+	}
+	is_valid = {
+		#
+	}
+
+	cost = {}
+
+	effect = {
+		custom_tooltip = {
+			text = ftr_auto_assign_baronies_effect_tt
+			add_character_flag = ftr_auto_assign_baronies_flag
+		}
+	}
+	
+	#ai_check_interval = 36
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
+ftr_stop_auto_assign_baronies_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/tgp_career.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_stop_auto_assign_baronies_decision_desc
+	selection_tooltip = ftr_stop_auto_assign_baronies_decision_tooltip
+	#cooldown = { years = 5 }
+	is_shown = {
+		is_landed = yes
+		is_independent_ruler = yes
+		government_allows = administrative
+		primary_title.tier >= tier_duchy
+		is_ai = no
+		has_character_flag = ftr_auto_assign_baronies_flag
+	}
+	is_valid = {
+		#
+	}
+
+	cost = {}
+
+	effect = {
+		custom_tooltip = {
+			text = ftr_stop_auto_assign_baronies_effect_tt
+			remove_character_flag = ftr_auto_assign_baronies_flag
+		}
+	}
+	
+	#ai_check_interval = 36
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}

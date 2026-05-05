@@ -88,3 +88,12 @@
  FTR_VASSALATION_TIER:0 "Rank difference is not big: $VALUE|=+0$"
  FTR_VASSALATION_OFFER_GOLD:0 "Get paid: $VALUE|=+0$"
  FTR_VASSALATION_USE_HOOK:0 "Use hook: $VALUE|=+0$"
+
+ ftr_sue_for_peace_interaction:0 "<FTR> Sue For Peace"
+ ftr_sue_for_peace_interaction_desc:0 "Request [recipient.GetShortUIName] for peace"
+ ftr_sue_for_peace_interaction_text:0 "This war has been going on for a long time, you have been our enemy for a long time, since we are not the primary participants of the war, we hope that you can make a sacrifice to make peace with us."
+ ftr_target_is_primary_war_participant_desc_tt:0 "Target is a primary war participant"
+ ftr_is_not_primary_war_participant_desc_tt:0 "You are not a primary war participant"
+ ftr_sue_for_peace_interaction.accept.tt:0 "[recipient.GetShortUIName] agrees to make peace with you"
+ ftr_sue_for_peace_interaction.decline.tt:0 "[recipient.GetShortUIName] declines to make peace with you"
+ FTR_MILITARY_STRENGTH_COMPARISON:0 "Military strength comparison: $VALUE|=+0$"

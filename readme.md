@@ -1,5 +1,5 @@
 # Mod name: For The Realm  
-Mod version A.K.17  
+Mod version A.K.18  
 A mod focus on realm management and personal activities.
 # Mechanic：
   + Admin government optimization
@@ -11,6 +11,7 @@ A mod focus on realm management and personal activities.
     + Removed the vassal limit bonus of the administrative government. Administrative lords will voluntarily grant kingdom-level titles when the vassal limit is insufficient.
     + Independent admi ruler have a decision to declear bankrupt
     + Add Army Law for all administrative govs
+    + Add a new decision for independent rulers, allow them to auto assign barony title
   + Factions and Civil War
     + After claimant war, vassals with low opinion or non de-jure vassals may declare independence.
     + Loyal vassals may join defensive war target to liege
@@ -34,7 +35,7 @@ A mod focus on realm management and personal activities.
   + Some health trait has been nerfed
 
 # Mod名 朝野纷争  
-Mod版本 A.K.17  
+Mod版本 A.K.18  
 本mod专注于领地管理与个人生活。
 ## 机制改动：
   + 调整行政制政体
@@ -46,6 +47,7 @@ Mod版本 A.K.17
     + 移除了行政制的封臣上限加成，行政制领主会在封臣上限不够时主动放出王国级头衔
     + 行政制独立统治者可以使用破产决议进行赖账
     + 为所有行政制整体新增了兵制法律，行政制国家可以通过削减征召兵来扩大头衔兵士规模
+    + 新增一个决议，允许行政制最高统治者自动分配男爵领
   + 派系与内战
     + 宣称者内战结束后，好感度较低或者非法理封臣有概率会直接宣布独立
     + 忠诚的封臣有概率会在君主处于防御战（包括内战）时选择出兵勤王

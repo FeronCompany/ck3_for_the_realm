@@ -180,3 +180,15 @@
  ftr_reward_contribution_decision_confirm:0 "论功行赏"
  ftr_reward_contribution_reward_tt: "为政绩优异但没有对应功名的臣子赐予功名"
  ftr_reward_contribution_min_count_tt: "至少有3名符合赐予功名条件的官员"
+
+ ftr_auto_assign_baronies_decision:0 "<FTR>自动分配男爵领"
+ ftr_auto_assign_baronies_decision_tooltip:0 "自动分配男爵领"
+ ftr_auto_assign_baronies_decision_desc:0 "地方官来来去去，分配的差事令人案牍劳形，现在开启自动分配男爵领，让官僚系统自己运转去吧！"
+ ftr_auto_assign_baronies_decision_confirm:0 "自动分配男爵领"
+ ftr_auto_assign_baronies_effect_tt: "开启自动分配男爵领模式"
+
+ ftr_stop_auto_assign_baronies_decision:0 "<FTR>停止自动分配男爵领"
+ ftr_stop_auto_assign_baronies_decision_tooltip:0 "停止自动分配男爵领"
+ ftr_stop_auto_assign_baronies_decision_desc:0 "官僚系统自动分配的地方官太不靠谱了，现在关闭自动分配男爵领，还是自己掌握人事任命吧。"
+ ftr_stop_auto_assign_baronies_decision_confirm:0 "停止自动分配男爵领"
+ ftr_stop_auto_assign_baronies_effect_tt: "停止自动分配男爵领模式"

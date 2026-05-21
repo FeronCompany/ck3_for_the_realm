@@ -287,6 +287,10 @@
  ftr_decision_events.0013.c:0 "[potential_concubine_c.GetShortUIName] is an irresistible person"
  ftr_decision_events.0013.d:0 "None of them"
 
+ ftr_decision_events.0014.t:0 "<FTR> Beautiful Bride"
+ ftr_decision_events.0014.desc:0 "A beautiful bride responded to your request. Now is back to estate."
+ ftr_decision_events.0014.a:0 "Good."
+
  ftr_interaction_event.1001.t:0 "<FTR> Abolish Personal Fight"
  ftr_interaction_event.1001.desc:0 "Your liege [actor.GetName] heard that you are in an illegal law. Now [actor.GetHeShe] request you to stop the war and return to your estate."
  ftr_interaction_event.1001.a:0 "Yes, my liege."

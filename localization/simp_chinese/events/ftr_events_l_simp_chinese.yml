@@ -315,6 +315,10 @@
  ftr_decision_events.0013.c:0 "[potential_concubine_c.GetShortUIName]真是令人无法拒绝"
  ftr_decision_events.0013.d:0 "他们我都不喜欢"
 
+ ftr_decision_events.0014.t:0 "<FTR>美人投奔"
+ ftr_decision_events.0014.desc:0 "一位绝世美人响应您的号召，来到了您的宫廷。现在她已决意成为您的妻子，请把握好时机。"
+ ftr_decision_events.0014.a:0 "笑纳了"
+
  ftr_interaction_event.1001.t:0 "<FTR>禁绝私斗"
  ftr_interaction_event.1001.desc:0 "您的君主[actor.GetName]听闻您私自参与非法的战争，现要求您立即结束战争返回属地。"
  ftr_interaction_event.1001.a:0 "遵旨"

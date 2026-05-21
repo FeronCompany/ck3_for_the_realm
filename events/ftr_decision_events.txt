@@ -112,8 +112,12 @@ ftr_decision_events.0003 = {
 		}
 	}
 
-	option = { # TODO...
+	option = { # Custome Guy
 		name = ftr_decision_events.0003.c
+		custom_tooltip = ftr_call_traverser_custom_tt
+		trigger_event = {
+			id = ftr_decision_events.0014 # Custom Guy on call
+		}
 	}
 
 	after = {
@@ -1068,5 +1072,52 @@ ftr_decision_events.0013 = {
 				}
 			}
 		}
+	}
+}
+
+# Random beauty on call
+ftr_decision_events.0014 = {
+	type = character_event
+	title = ftr_decision_events.0014.t
+	desc = ftr_decision_events.0014.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = scope:constantine
+		animation = personality_honorable
+	}
+
+	immediate = {
+		create_character = {
+			location = root.location
+			culture = root.culture
+			faith = root.faith
+			dynasty = generate
+			gender = female
+			age = 16
+			diplomacy = 10
+			martial = 12
+			intrigue = 12
+			stewardship = 16
+			learning = 10
+			prowess = 5
+			random_traits = no
+			trait = education_stewardship_3
+			trait = ftr_traverser
+			trait = calm
+			trait = patient
+			trait = diligent
+			trait = beauty_good_3
+			dna = ftr_beauty_dna_01
+			save_scope_as = wife
+		}
+	}
+
+	option = {
+		name = ftr_decision_events.0014.a
+		marry = scope:wife
 	}
 }

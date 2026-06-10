@@ -198,7 +198,7 @@
  ftr_found_hegemony_decision_desc:0 "Declare hegemony and become the dominant power in the region."
  ftr_found_hegemony_decision_confirm:0 "Declare Hegemony"
  ftr_create_new_hegemony: "Create New Hegemony Title"
- ftr_found_hegemony_decision_three_empires_held: "Hold 2 or more empires"
+ ftr_found_hegemony_decision_three_empires_held: "Hold 3 or more empires"
  ftr_create_title_every_held_empire: "Create Title for Every Held Empire"
  ftr_create_custom_hegemony_de_jure_changes: "All held empire titles or completely controlled empires will recognize the new hegemony as their de jure overlord"
  FTR_NEW_CREATED_TITLE_NAME: "Great [old_title.GetBaseNameNoTierNoTooltip]"

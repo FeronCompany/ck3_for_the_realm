@@ -755,6 +755,11 @@ ftr_reward_contribution_decision = {
 						NOT = { has_character_modifier = tgp_bypassed_provincial_exam_modifier }
 					}
 					add_character_modifier = tgp_bypassed_provincial_exam_modifier
+					add_opinion = {
+						target = root
+						modifier = grateful_opinion
+						opinion = 30
+					}
 				}
 				if = {
 					limit = {
@@ -763,6 +768,11 @@ ftr_reward_contribution_decision = {
 						NOT = { has_character_modifier = tgp_nepotism_bypass_exams_modifier }
 					}
 					add_character_modifier = tgp_nepotism_bypass_exams_modifier
+					add_opinion = {
+						target = root
+						modifier = grateful_opinion
+						opinion = 45
+					}
 				}
 			}
 		}

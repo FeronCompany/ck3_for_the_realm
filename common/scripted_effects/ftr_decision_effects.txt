@@ -242,61 +242,6 @@ ftr_create_custom_hegemony_effect = {
 		}
 		set_primary_title_to = scope:new_title
 
-		trigger_event = major_decisions.1103
-
-		every_player = {
-			if = {
-				limit = {
-					top_liege = scope:founder
-					this != root
-				}
-				trigger_event = major_decisions.1104
-			}
-			else_if = {
-				#Notify any players who lose de jure territory
-				limit = {
-					exists = scope:send_notifications
-					this != root
-					top_liege != scope:founder
-					any_held_title = {
-						any_in_de_jure_hierarchy = {
-							continue = {
-								tier > tier_empire
-							}
-							tier = tier_empire
-							is_in_list = empires_for_notification
-						}
-					}
-				}
-				every_held_title = {
-					every_in_de_jure_hierarchy = {
-						continue = {
-							tier > tier_empire
-						}
-						limit = {
-							tier = tier_empire
-							is_in_list = empires_for_notification
-						}
-						add_to_list = notification_titles
-					}
-				}
-				if = {
-					limit = {
-						any_in_list = {
-							list = notification_titles
-							count > 0
-						}
-					}
-					trigger_event = major_decisions.1105
-				}
-			}
-		}
-
-		every_held_title = {
-			limit = { tier = tier_empire }
-			scope:founder = {
-				destroy_title = prev
-			}
-		}
+		trigger_event = ftr_decision_events.0100
 	}
 }

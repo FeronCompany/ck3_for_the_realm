@@ -166,14 +166,14 @@ ftr_found_hegemony_decision = {
 			AND = {
 				realm_size >= 280
 				custom_description = {
-					text = ftr_found_hegemony_decision_two_empires_held
+					text = ftr_found_hegemony_decision_three_empires_held
 					any_held_title = {
-						count >= 2
+						count >= 3
 						title_tier = empire
 					}
 				}
 			}
-			realm_size >= 320
+			realm_size >= 220
 		}
 		prestige_level >= 4
 	}

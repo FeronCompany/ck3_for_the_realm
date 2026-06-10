@@ -1121,3 +1121,110 @@ ftr_decision_events.0014 = {
 		marry = scope:wife
 	}
 }
+
+# Create New Hegemony
+ftr_decision_events.0100 = {
+	type = character_event
+	title = major_decisions.1101.t
+	desc = {
+		triggered_desc = {
+			trigger = { exists = scope:three_empires }
+			desc = {
+				desc = ftr_decision_events.0100.opening_empires
+				desc = double_line_break
+			}
+		}
+		desc = major_decisions.1103.opening
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = faith.religious_head
+					faith.religious_head = root
+				}
+				desc = major_decisions.1103.i_am_religious_head
+			}
+			triggered_desc = {
+				trigger = {
+					exists = faith.religious_head
+				}
+				desc = major_decisions.1103.blessed_by_religious_head
+			}
+			desc = major_decisions.1103.i_am_religious_head
+		}
+	}
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		if = {
+			limit = {
+				any_held_title = {
+					title_tier = empire
+					count >= 3
+				}
+			}
+			scope:old_title = { # Carried over from the decision
+				save_scope_as = empire_1
+			}
+			random_held_title = {
+				title_tier = empire
+				limit = {
+					this != scope:empire_1
+				}
+				save_scope_as = empire_2
+			}
+			random_held_title = {
+				title_tier = empire
+				limit = {
+					NOR = {
+						this = scope:empire_1
+						this = scope:empire_2
+					}
+				}
+				save_scope_as = empire_3
+			}
+			if = { # Safeguarding against loc-breaking here
+				limit = {
+					exists = scope:empire_1
+					exists = scope:empire_2
+					exists = scope:empire_3
+				}
+				save_scope_value_as = {
+					name = three_empires
+					value = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = faith.religious_head
+			}
+			faith.religious_head = {
+				save_scope_as = religious_figure
+			}
+		}
+		show_as_tooltip = {
+			set_primary_title_to = scope:new_title
+		}
+	}
+
+	option = {
+		name = major_decisions.1103.a
+		custom_tooltip = major_decisions.1101.i_have_become_royal
+	}
+
+	after = {
+		hidden_effect = {
+			every_held_title = {
+				limit = { tier = tier_empire }
+				scope:founder = {
+					destroy_title = prev
+				}
+			}
+		}
+	}
+}

@@ -192,3 +192,13 @@
  ftr_stop_auto_assign_baronies_decision_desc:0 "官僚系统自动分配的地方官太不靠谱了，现在关闭自动分配男爵领，还是自己掌握人事任命吧。"
  ftr_stop_auto_assign_baronies_decision_confirm:0 "停止自动分配男爵领"
  ftr_stop_auto_assign_baronies_effect_tt: "停止自动分配男爵领模式"
+
+ ftr_found_hegemony_decision:0 "<FTR>宣告霸主地位"
+ ftr_found_hegemony_decision_tooltip:0 "宣告霸主地位"
+ ftr_found_hegemony_decision_desc:0 "天数有变，神器更易，而归有德之人。今天下大定，万众归服，四夷朝贺，当昭告天下，登基称帝，建立霸权。"
+ ftr_found_hegemony_decision_confirm:0 "宣称霸权"
+ ftr_create_new_hegemony: "创建新霸权头衔"
+ ftr_found_hegemony_decision_three_empires_held: "持有至少三个帝国头衔"
+ ftr_create_title_every_held_empire: "持有的每个帝国头衔"
+ ftr_create_custom_hegemony_de_jure_changes: "所有持有的帝国头衔或者完全控制的帝国都将视新霸权为法理领主"
+ FTR_NEW_CREATED_TITLE_NAME: "大[old_title.GetBaseNameNoTierNoTooltip]"

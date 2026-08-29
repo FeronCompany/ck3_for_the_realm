@@ -1,5 +1,5 @@
 # Mod name: For The Realm  
-Mod version A.K.18  
+Mod version A.L.0  
 A mod focus on realm management and personal activities.
 # Mechanic：
   + Admin government optimization
@@ -29,13 +29,14 @@ A mod focus on realm management and personal activities.
   + Auto convert province culture at high acceptance
   + Add war tax decision
   + You are now able to create a new dynasty
+  + Add create custom hegemony decisin
 ## Traits
   + Murder now is crime
   + Add Commander trait, after every victory battle, commanders will gain experience of this trait, which lead to very high buff.
   + Some health trait has been nerfed
 
 # Mod名 朝野纷争  
-Mod版本 A.K.18  
+Mod版本 A.L.0  
 本mod专注于领地管理与个人生活。
 ## 机制改动：
   + 调整行政制政体
@@ -65,6 +66,7 @@ Mod版本 A.K.18
   + 较高融合度的文化地块触发自动同化事件
   + 增加战争税决议
   + 允许创建新的宗族
+  + 允许创建新的霸权
 ## 特质
   + 谋杀现在是重罪
   + 新增战场指挥官特质，每打赢一战就可以提升经验，百战名将将有巨大加成

@@ -135,3 +135,96 @@ ftr_renounce_dynasty_decision = {
 		}
 	}
 }
+
+ftr_found_hegemony_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = major
+	desc = ftr_found_hegemony_decision_desc
+	selection_tooltip = ftr_found_hegemony_decision_tooltip
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 60
+		hegemony = 0
+	}
+
+	is_shown = {
+		is_landed = yes
+		highest_held_title_tier = tier_empire
+		OR = {
+			government_has_flag = government_is_feudal
+			government_has_flag = government_is_clan
+			government_allows = administrative
+		}
+	}
+	is_valid = {
+		OR = {
+			AND = {
+				realm_size >= 240
+				custom_description = {
+					text = ftr_found_hegemony_decision_three_empires_held
+					any_held_title = {
+						count >= 3
+						title_tier = empire
+					}
+				}
+			}
+			realm_size >= 320
+		}
+		prestige_level >= 4
+	}
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		gold = {
+			value = 1800
+			if = {
+				limit = {
+					OR = {
+						government_has_flag = government_is_nomadic
+						has_treasury = yes
+					}
+				}
+				multiply = 0
+			}
+		}
+		treasury = {
+			value = 1800
+			if = {
+				limit = {
+					has_treasury = no
+				}
+				multiply = 0
+			}
+		}
+		prestige = 2000
+		piety = {
+			value = 600
+			if = {
+				limit = {
+					government_has_flag = government_is_nomadic
+				}
+				multiply = 0
+			}
+		}
+	}
+	effect = {
+		ftr_create_custom_hegemony_effect = yes
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

@@ -319,6 +319,8 @@
  ftr_decision_events.0014.desc:0 "一位绝世美人响应您的号召，来到了您的宫廷。现在她已决意成为您的妻子，请把握好时机。"
  ftr_decision_events.0014.a:0 "笑纳了"
 
+ ftr_decision_events.0100.opening_empiress: "我做到了其他人做不到的事情。我统一了[empires_1.GetNameNoTierNoTooltip]，以及[empires_2.GetNameNoTierNoTooltip]和[empires_3.GetNameNoTierNoTooltip]的土地。"
+
  ftr_interaction_event.1001.t:0 "<FTR>禁绝私斗"
  ftr_interaction_event.1001.desc:0 "您的君主[actor.GetName]听闻您私自参与非法的战争，现要求您立即结束战争返回属地。"
  ftr_interaction_event.1001.a:0 "遵旨"

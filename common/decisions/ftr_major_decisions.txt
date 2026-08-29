@@ -164,7 +164,7 @@ ftr_found_hegemony_decision = {
 	is_valid = {
 		OR = {
 			AND = {
-				realm_size >= 280
+				realm_size >= 240
 				custom_description = {
 					text = ftr_found_hegemony_decision_three_empires_held
 					any_held_title = {
@@ -173,7 +173,7 @@ ftr_found_hegemony_decision = {
 					}
 				}
 			}
-			realm_size >= 220
+			realm_size >= 320
 		}
 		prestige_level >= 4
 	}

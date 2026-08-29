@@ -1,0 +1,247 @@
+﻿##############################################################
+### 朝堂权力角逐 COURT STRUGGLE — 条件层
+### 议题1 继任之争 / 议题2 共治夺权
+##############################################################
+
+########## 一、准入：独立政权 + 等级 >= 王国 + 存在继承顺位 ##########
+
+# 政权等级达标（王国 / 帝国 / 霸权）
+ftr_court_realm_tier_valid_trigger = {
+	highest_held_title_tier >= tier_kingdom
+}
+
+# 存在继承顺位：政权必须有继承人
+ftr_court_has_succession_order_trigger = {
+	any_heir = { always = yes }
+}
+
+# 准入总判定：在最高统治者身上求值
+ftr_court_struggle_valid_trigger = {
+	is_ruler = yes
+	is_independent_ruler = yes
+	ftr_court_realm_tier_valid_trigger = yes
+	ftr_court_has_succession_order_trigger = yes
+	NOT = { is_imprisoned = yes }
+}
+
+# 冷却期内不再激活（配合 add_character_flag 使用）
+ftr_court_in_cooldown_trigger = {
+	has_character_flag = ftr_court_cooldown
+}
+
+# 完整准入：满足基本条件 + 不在冷却 + 没有正在进行的战争（避免叠加）
+ftr_court_can_start_struggle_trigger = {
+	ftr_court_struggle_valid_trigger = yes
+	NOT = { ftr_court_in_cooldown_trigger = yes }
+	NOT = { is_at_war = yes }
+}
+
+########## 二、竞争者资格 ##########
+
+# 求值域：this = 候选人；依赖 scope:ftr_court_monarch
+ftr_court_claimant_valid_trigger = {
+	exists = scope:ftr_court_monarch
+	NOT = { this = scope:ftr_court_monarch }
+	is_alive = yes
+	is_adult = yes
+	NOT = { is_imprisoned = yes }
+	NOT = { has_trait = incapable }
+	# 必须同宗族，避免外戚/廷臣乱入
+	dynasty ?= {
+		this = scope:ftr_court_monarch.dynasty
+	}
+	# 已修道者不参与
+	NOT = { has_trait = monastic }
+}
+
+########## 三、君主状态 ##########
+
+# 君主因年老体衰或精神异常而不能正常履职
+ftr_court_monarch_infirm_trigger = {
+	OR = {
+		has_trait = incapable
+		has_trait = lunatic
+		has_trait = possessed
+		has_trait = melancholic
+		age >= ftr_court_monarch_elderly_age_value
+	}
+}
+
+# 君主权威衰弱（政变/内战的温床）
+ftr_court_monarch_weak_trigger = {
+	OR = {
+		prestige < ftr_court_monarch_weak_prestige_value
+		piety < ftr_court_monarch_weak_piety_value
+		ftr_court_monarch_infirm_trigger = yes
+	}
+}
+
+########## 四、阶段判定 ##########
+
+# 候选人数量达标（数量由 ftr_court_update_candidates_effect 写入变量）
+ftr_court_has_enough_candidates_trigger = {
+	has_variable = ftr_court_candidate_count
+	var:ftr_court_candidate_count >= ftr_court_min_candidates_value
+}
+
+# 竞争者众多（三人成势）
+ftr_court_has_many_candidates_trigger = {
+	has_variable = ftr_court_candidate_count
+	var:ftr_court_candidate_count >= 3
+}
+
+# 议题1 是否应当激活（在君主身上求值）
+ftr_court_should_activate_succession_trigger = {
+	ftr_court_struggle_valid_trigger = yes
+	NOT = { ftr_court_in_cooldown_trigger = yes }
+	ftr_court_has_enough_candidates_trigger = yes
+	OR = {
+		ftr_court_monarch_infirm_trigger = yes
+		ftr_court_monarch_weak_trigger = yes
+		# 竞争者众多且势均力敌也会自行酝酿
+		ftr_court_has_many_candidates_trigger = yes
+	}
+}
+
+# 前两名评分接近 -> contested
+ftr_court_is_contested_trigger = {
+	has_variable = ftr_court_top_gap
+	var:ftr_court_top_gap <= ftr_court_contested_gap_value
+}
+
+# 前两名评分极其接近 -> crisis（政变/内战窗口开启）
+# 求值域：story（root = 故事本体）
+ftr_court_is_crisis_trigger = {
+	ftr_court_is_contested_trigger = yes
+	var:ftr_court_top_gap <= ftr_court_crisis_gap_value
+	owner ?= {
+		ftr_court_monarch_weak_trigger = yes
+		NOT = { ftr_court_in_cooldown_trigger = yes }
+	}
+}
+
+########## 五、议题2：共治夺权 ##########
+
+# 议题2 是否应当激活：君主不能正常履职，或已处于摄政
+ftr_court_should_activate_regency_trigger = {
+	ftr_court_struggle_valid_trigger = yes
+	NOT = { ftr_court_in_cooldown_trigger = yes }
+	OR = {
+		ftr_court_monarch_infirm_trigger = yes
+		has_active_diarchy = yes
+	}
+}
+
+# 拉锯足以发起共治请愿
+ftr_court_can_petition_coregency_trigger = {
+	has_variable = ftr_court_regency_swing
+	var:ftr_court_regency_swing >= ftr_court_swing_regency_threshold_value
+}
+
+# 拉锯足以尝试夺位
+ftr_court_can_attempt_usurp_trigger = {
+	has_variable = ftr_court_regency_swing
+	var:ftr_court_regency_swing >= ftr_court_swing_usurp_threshold_value
+	ftr_court_monarch_infirm_trigger = yes
+}
+
+# 辅政成功、大权稳固
+ftr_court_loyalists_hold_trigger = {
+	has_variable = ftr_court_regency_swing
+	var:ftr_court_regency_swing <= ftr_court_swing_loyal_threshold_value
+}
+
+########## 六、行动资格 ##########
+
+# 竞争者能否发动政变（走 coup 计谋）
+# 求值域：候选人自身
+ftr_court_can_launch_coup_trigger = {
+	has_variable = ftr_court_backer_count
+	var:ftr_court_backer_count >= ftr_court_min_backers_value
+	ftr_court_own_struggle_in_crisis_trigger = yes
+}
+
+# 竞争者能否起兵内战
+# 求值域：候选人自身
+ftr_court_can_declare_succession_war_trigger = {
+	has_variable = ftr_court_backer_count
+	var:ftr_court_backer_count >= ftr_court_min_backers_value
+	ftr_court_own_struggle_in_crisis_trigger = yes
+	NOT = { is_at_war = yes }
+	# 无地者也能起兵：CB 会为其创建临时公国
+}
+
+# 从自身出发，找到所参与的朝堂争夺并判断其是否已进入危机
+# 求值域：任意朝堂成员
+ftr_court_own_struggle_in_crisis_trigger = {
+	top_liege ?= {
+		any_owned_story = {
+			type = ftr_court_struggle
+			ftr_court_is_crisis_trigger = yes
+		}
+	}
+}
+
+# 无地竞争者（廷臣皇子/王子），需要创建临时公国才能参战
+ftr_court_needs_temp_duchy_trigger = {
+	is_landed = no
+	NOT = { is_imprisoned = yes }
+}
+
+########## 七、身份判定（用于交互/决议的可见性） ##########
+
+# 玩家是当前朝堂的最高统治者
+ftr_court_is_struggle_monarch_trigger = {
+	is_ruler = yes
+	is_independent_ruler = yes
+	ftr_court_realm_tier_valid_trigger = yes
+}
+
+# 玩家是竞争者之一
+ftr_court_is_active_claimant_trigger = {
+	has_variable = ftr_claim_strength
+	NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+}
+
+# 玩家有站队对象（已卷入）
+ftr_court_has_backed_someone_trigger = {
+	has_variable = ftr_court_backer_of
+}
+
+# 已站队且支持对象仍在竞争（用于统计支持者数量时过滤失效站队）
+ftr_court_has_backing_trigger = {
+	has_variable = ftr_court_backer_of
+	var:ftr_court_backer_of ?= {
+		has_variable = ftr_claim_strength
+	}
+}
+
+########## 八、资源支付（双轨制） ##########
+
+# Mod 自带的 ftr_political_influence 已废弃。
+# 支付规则：双方均为行政制 -> 消耗官方影响力；任一方非行政制 -> 消耗威望。
+# 求值域：支付方。参数：OTHER = 对方角色；PRESTIGE / INFLUENCE = 正数成本常量。
+ftr_court_can_pay_cost_trigger = {
+	OR = {
+		AND = {
+			government_allows = administrative
+			$OTHER$ = { government_allows = administrative }
+			influence >= $INFLUENCE$
+		}
+		AND = {
+			OR = {
+				NOT = { government_allows = administrative }
+				$OTHER$ = { NOT = { government_allows = administrative } }
+			}
+			prestige >= $PRESTIGE$
+		}
+	}
+}
+
+# 朝堂成员：君主的封臣、廷臣或宗族成员
+ftr_court_is_court_member_trigger = {
+	OR = {
+		exists = liege
+		exists = employer
+	}
+}

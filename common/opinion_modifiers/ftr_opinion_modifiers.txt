@@ -149,3 +149,37 @@ ftr_suspicion_opinion = {
 	years = 10
 	stacking = yes
 }
+
+###### 朝堂权力角逐 COURT STRUGGLE ######
+
+# 站队支持某位竞争者后，双方互得好感
+ftr_court_backer_opinion = {
+	opinion = 15
+	years = 10
+	decaying = yes
+	stacking = yes
+}
+
+# 辅政有功，君主对功臣的感激
+ftr_court_loyalist_opinion = {
+	opinion = 25
+	years = 15
+	decaying = yes
+	stacking = yes
+}
+
+# 支持了别的竞争者，其余竞争者对此人的敌意
+ftr_court_rival_claimant_opinion = {
+	opinion = -30
+	years = 15
+	decaying = yes
+	stacking = yes
+}
+
+# 承诺（内阁席位/契约放宽）到期未兑现
+ftr_court_betrayed_opinion = {
+	opinion = -50
+	years = 15
+	decaying = yes
+	stacking = yes
+}

@@ -1,0 +1,688 @@
+﻿##############################################################
+### 朝堂权力角逐 COURT STRUGGLE — 效果层
+### 议题1 继任之争 / 议题2 共治夺权
+###
+### 作用域约定（重要）：
+###   本文件多数 effect 要求在【story 作用域】执行。
+###   内部统一使用 scope:ftr_court_story（故事）与 scope:ftr_court_monarch（君主），
+###   不依赖 root / prev，避免域链歧义。
+###   单人向的 effect（站队、承诺等）在角色自身域执行。
+##############################################################
+
+######################################################
+### 一、初始化
+######################################################
+
+# 在 story 域执行：建立初始状态
+ftr_court_setup_effect = {
+	save_scope_as = ftr_court_story
+	owner = { save_scope_as = ftr_court_monarch }
+
+	# 初始变量
+	set_variable = { name = ftr_court_candidate_count  value = 0 }
+	set_variable = { name = ftr_court_top_score  value = 0 }
+	set_variable = { name = ftr_court_second_score  value = 0 }
+	set_variable = { name = ftr_court_top_gap  value = 999 }
+	set_variable = { name = ftr_court_regency_swing  value = 0 }
+	set_variable = { name = ftr_court_phase  value = 0 }
+
+	# 建立候选池
+	ftr_court_update_candidates_effect = yes
+	# 刷新支持者计数
+	ftr_court_refresh_backer_count_effect = yes
+}
+
+# 在 story 域执行：结束后清理，移除一切残留
+ftr_court_cleanup_effect = {
+	save_scope_as = ftr_court_story
+
+	# 清理临时公国（兜底，防止异常路径泄漏）
+	every_in_list = {
+		list = ftr_court_claimant_list
+		ftr_court_destroy_temp_duchy_effect = yes
+	}
+
+	# 清理候选人个体变量
+	every_in_list = {
+		list = ftr_court_claimant_list
+		remove_variable = ftr_claim_strength
+		remove_variable = ftr_court_backer_count
+		remove_variable = ftr_court_backer_of
+		remove_character_flag = ftr_court_pooled
+	}
+
+	remove_variable = ftr_court_candidate_pool
+	remove_variable = ftr_court_claimant_list
+	remove_variable = ftr_court_candidate_count
+	remove_variable = ftr_court_top_score
+	remove_variable = ftr_court_second_score
+	remove_variable = ftr_court_top_gap
+	remove_variable = ftr_court_regency_swing
+	remove_variable = ftr_court_phase
+	remove_variable = ftr_court_promised_to
+}
+
+######################################################
+### 二、候选池与竞争力排名
+######################################################
+
+# 在 story 域执行：重建候选池、重算评分、选出前 N 名
+ftr_court_update_candidates_effect = {
+	save_scope_as = ftr_court_story
+	owner = { save_scope_as = ftr_court_monarch }
+
+	# 清空旧池（先清标记，避免 flag 残留）
+	every_in_list = {
+		list = ftr_court_candidate_pool
+		remove_character_flag = ftr_court_pooled
+	}
+	remove_variable = ftr_court_candidate_pool
+	remove_variable = ftr_court_claimant_list
+
+	# ---- 1. 收集候选人：继承人 + 成年子女 + 成年手足 ----
+	scope:ftr_court_monarch = {
+		every_heir = {
+			limit = { ftr_court_claimant_valid_trigger = yes }
+			ftr_court_try_pool_candidate_effect = yes
+		}
+		every_child = {
+			limit = { ftr_court_claimant_valid_trigger = yes }
+			ftr_court_try_pool_candidate_effect = yes
+		}
+		every_sibling = {
+			limit = { ftr_court_claimant_valid_trigger = yes }
+			ftr_court_try_pool_candidate_effect = yes
+		}
+	}
+
+	# ---- 2. 计算竞争力评分 ----
+	every_in_list = {
+		list = ftr_court_candidate_pool
+		set_variable = {
+			name = ftr_claim_strength
+			value = ftr_court_claim_strength_value
+		}
+	}
+
+	# ---- 3. 统计支持者 ----
+	ftr_court_refresh_backer_count_effect = yes
+
+	# ---- 4. 按评分降序取前 N 名 ----
+	scope:ftr_court_story = {
+		set_variable = { name = ftr_court_rank_counter  value = 0 }
+		set_variable = { name = ftr_court_top_score  value = 0 }
+		set_variable = { name = ftr_court_second_score  value = 0 }
+	}
+
+	ordered_in_list = {
+		list = ftr_court_candidate_pool
+		order_by = var:ftr_claim_strength
+		save_scope_as = ftr_court_candidate
+		scope:ftr_court_story = {
+			# 记录第一名分数
+			if = {
+				limit = { var:ftr_court_rank_counter = 0 }
+				set_variable = {
+					name = ftr_court_top_score
+					value = scope:ftr_court_candidate.var:ftr_claim_strength
+				}
+			}
+			# 记录第二名分数
+			else_if = {
+				limit = { var:ftr_court_rank_counter = 1 }
+				set_variable = {
+					name = ftr_court_second_score
+					value = scope:ftr_court_candidate.var:ftr_claim_strength
+				}
+			}
+			# 前 N 名进入朝堂展示名单
+			if = {
+				limit = { var:ftr_court_rank_counter < ftr_court_max_candidates_value }
+				add_to_variable_list = {
+					name = ftr_court_claimant_list
+					target = scope:ftr_court_candidate
+				}
+			}
+			change_variable = { name = ftr_court_rank_counter  add = 1 }
+		}
+	}
+
+	# ---- 5. 写入数量与前两名差距 ----
+	scope:ftr_court_story = {
+		set_variable = {
+			name = ftr_court_candidate_count
+			value = list_size:ftr_court_claimant_list
+		}
+		set_variable = { name = ftr_court_top_gap  value = var:ftr_court_top_score }
+		change_variable = { name = ftr_court_top_gap  subtract = var:ftr_court_second_score }
+		remove_variable = ftr_court_rank_counter
+		ftr_court_update_phase_effect = yes
+	}
+}
+
+# 在 story 域执行：依据竞争者人数与前两名差距，更新阶段号
+ftr_court_update_phase_effect = {
+	save_scope_as = ftr_court_story
+	set_variable = { name = ftr_court_phase  value = 0 }
+
+	if = {
+		limit = { var:ftr_court_candidate_count >= ftr_court_min_candidates_value }
+		set_variable = { name = ftr_court_phase  value = 1 }
+		if = {
+			limit = { var:ftr_court_top_gap <= ftr_court_contested_gap_value }
+			set_variable = { name = ftr_court_phase  value = 2 }
+			if = {
+				limit = {
+					var:ftr_court_top_gap <= ftr_court_crisis_gap_value
+					owner ?= { ftr_court_monarch_weak_trigger = yes }
+				}
+				set_variable = { name = ftr_court_phase  value = 3 }
+			}
+		}
+	}
+}
+
+# 在候选人域执行：去重后加入候选池
+ftr_court_try_pool_candidate_effect = {
+	if = {
+		limit = {
+			NOT = { has_character_flag = ftr_court_pooled }
+		}
+		add_character_flag = ftr_court_pooled
+		save_scope_as = ftr_court_candidate
+		scope:ftr_court_story = {
+			add_to_variable_list = {
+				name = ftr_court_candidate_pool
+				target = scope:ftr_court_candidate
+			}
+		}
+	}
+}
+
+# 在任意角色域执行：刷新其自身、或其宗主所拥有的朝堂角逐
+ftr_court_refresh_local_effect = {
+	any_owned_story = {
+		type = ftr_court_struggle
+		ftr_court_update_candidates_effect = yes
+	}
+	top_liege ?= {
+		any_owned_story = {
+			type = ftr_court_struggle
+			ftr_court_update_candidates_effect = yes
+		}
+	}
+}
+
+######################################################
+### 三、支持者记账
+######################################################
+
+# 在 story 域执行：重新统计每位候选人的支持者数量
+ftr_court_refresh_backer_count_effect = {
+	save_scope_as = ftr_court_story
+	owner = { save_scope_as = ftr_court_monarch }
+
+	# 清零
+	every_in_list = {
+		list = ftr_court_claimant_list
+		remove_variable = ftr_court_backer_count
+	}
+
+	# 统计：直接封臣 + 廷臣
+	scope:ftr_court_monarch = {
+		every_vassal = {
+			limit = { ftr_court_has_backing_trigger = yes }
+			ftr_court_count_one_backer_effect = yes
+		}
+		every_courtier = {
+			limit = { ftr_court_has_backing_trigger = yes }
+			ftr_court_count_one_backer_effect = yes
+		}
+	}
+}
+
+# 在潜在支持者域执行：其人头计入所支持的对象
+ftr_court_count_one_backer_effect = {
+	save_scope_as = ftr_court_backer
+	var:ftr_court_backer_of ?= {
+		save_scope_as = ftr_court_backed_target
+		scope:ftr_court_story = {
+			every_in_list = {
+				list = ftr_court_claimant_list
+				limit = { this = scope:ftr_court_backed_target }
+				change_variable = { name = ftr_court_backer_count  add = 1 }
+			}
+		}
+	}
+}
+
+######################################################
+### 四、共治拉锯（议题2）
+######################################################
+
+# 在 story 域执行：移动拉锯值。
+# 参数通过变量 ftr_court_swing_amount 传入（正=倒向共治者，负=忠于君主），
+# 调用方需先在本作用域设置该变量，调用结束后由调用方自行清理。
+ftr_court_shift_swing_effect = {
+	save_scope_as = ftr_court_story
+	if = {
+		limit = { has_variable = ftr_court_swing_amount }
+		change_variable = {
+			name = ftr_court_regency_swing
+			add = var:ftr_court_swing_amount
+		}
+		# 夹紧到区间，避免无限累积
+		if = {
+			limit = { var:ftr_court_regency_swing > ftr_court_swing_max_value }
+			set_variable = { name = ftr_court_regency_swing  value = ftr_court_swing_max_value }
+		}
+		else_if = {
+			limit = { var:ftr_court_regency_swing < ftr_court_swing_min_value }
+			set_variable = { name = ftr_court_regency_swing  value = ftr_court_swing_min_value }
+		}
+	}
+}
+
+# 在 story 域执行：年度自然回落 + 君主状态偏置
+ftr_court_swing_yearly_effect = {
+	save_scope_as = ftr_court_story
+	owner = { save_scope_as = ftr_court_monarch }
+
+	# 向 0 回落
+	if = {
+		limit = { var:ftr_court_regency_swing > 0 }
+		change_variable = {
+			name = ftr_court_regency_swing
+			subtract = ftr_court_swing_yearly_decay_value
+		}
+	}
+	else_if = {
+		limit = { var:ftr_court_regency_swing < 0 }
+		change_variable = {
+			name = ftr_court_regency_swing
+			add = ftr_court_swing_yearly_decay_value
+		}
+	}
+
+	# 君主失能 -> 逐年向共治者倾斜
+	if = {
+		limit = { scope:ftr_court_monarch = { ftr_court_monarch_infirm_trigger = yes } }
+		change_variable = {
+			name = ftr_court_regency_swing
+			add = ftr_court_swing_infirm_bias_value
+		}
+	}
+	else_if = {
+		limit = { scope:ftr_court_monarch = { prestige >= ftr_court_monarch_weak_prestige_value } }
+		change_variable = {
+			name = ftr_court_regency_swing
+			add = ftr_court_swing_strong_bias_value
+		}
+	}
+}
+
+######################################################
+### 五、临时公国（无地竞争者起兵用）
+######################################################
+
+# 在无地竞争者域执行：创建纯虚拟的临时公国。
+# 依赖：scope:ftr_court_monarch（在位君主）。
+# 该头衔在战争结束时必定销毁，不论胜负。
+ftr_court_create_temp_duchy_effect = {
+	save_scope_as = ftr_court_claimant
+
+	# 在王国境内挑一个伯爵领作为临时公国首都
+	scope:ftr_court_monarch = {
+		random_sub_realm_county = {
+			save_scope_as = ftr_court_temp_capital
+		}
+	}
+
+	if = {
+		limit = { exists = scope:ftr_court_temp_capital }
+
+		create_dynamic_title = {
+			tier = duchy
+			name = FTR_COURT_TEMP_DUCHY_NAME
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = ftr_court_title_change
+			add_claim_on_loss = no
+		}
+		scope:new_title = {
+			set_capital_county = scope:ftr_court_temp_capital
+			# 纯虚拟头衔：不产生宣称、不传承、销毁即彻底删除
+			set_landless_title = yes
+			set_destroy_on_succession = yes
+			set_delete_on_destroy = yes
+			set_no_automatic_claims = yes
+			set_definitive_form = yes
+			set_can_be_named_after_dynasty = no
+			change_title_holder = {
+				holder = scope:ftr_court_claimant
+				change = scope:ftr_court_title_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:ftr_court_title_change
+
+		# 记录以便战后回收
+		set_variable = {
+			name = ftr_court_temp_duchy
+			value = scope:new_title
+		}
+	}
+}
+
+# 在角色域执行：销毁临时公国（纯虚拟头衔，战后一律移除）
+ftr_court_destroy_temp_duchy_effect = {
+	if = {
+		limit = { has_variable = ftr_court_temp_duchy }
+		var:ftr_court_temp_duchy ?= {
+			destroy_title = this
+		}
+		add_gold = ftr_court_temp_duchy_compensation_value
+		remove_variable = ftr_court_temp_duchy
+	}
+}
+
+# 在角色域执行：不论胜负，无条件回收临时公国（用于战争结算）
+ftr_court_revoke_temp_duchy_effect = {
+	if = {
+		limit = { has_variable = ftr_court_temp_duchy }
+		var:ftr_court_temp_duchy ?= {
+			destroy_title = this
+		}
+		remove_variable = ftr_court_temp_duchy
+	}
+}
+
+######################################################
+### 六、内战：召集支持者
+######################################################
+
+# 在起兵者域执行：把所有已站队支持自己的封臣拉入战争。
+# 依赖：scope:ftr_court_war（战争）、scope:ftr_court_monarch（君主）、scope:ftr_court_story（故事）
+ftr_court_call_backers_to_war_effect = {
+	save_scope_as = ftr_court_warleader
+
+	scope:ftr_court_monarch = {
+		every_vassal = {
+			limit = {
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { this = scope:ftr_court_warleader }
+				is_landed = yes
+				NOT = { is_participant_in_war = scope:ftr_court_war }
+			}
+			save_scope_as = ftr_court_backer
+			scope:ftr_court_war = {
+				add_attacker = scope:ftr_court_backer
+			}
+		}
+	}
+}
+
+# 在君主域执行：把保皇派拉入防御方
+ftr_court_call_loyalists_to_war_effect = {
+	save_scope_as = ftr_court_monarch
+
+	every_vassal = {
+		limit = {
+			NOT = { is_participant_in_war = scope:ftr_court_war }
+			OR = {
+				NOT = { has_variable = ftr_court_backer_of }
+				# 站队对象不是起兵者
+				NOT = { var:ftr_court_backer_of ?= { this = scope:ftr_court_warleader } }
+			}
+			# 与君主关系良好者才会勤王
+			opinion = { target = scope:ftr_court_monarch  value >= 0 }
+		}
+		save_scope_as = ftr_court_loyalist
+		scope:ftr_court_war = {
+			add_defender = scope:ftr_court_loyalist
+		}
+	}
+}
+
+######################################################
+### 七、夺位与清算
+######################################################
+
+# 在新君域执行：取代君主并将其囚禁，随后跳清算事件。
+# 依赖：scope:ftr_court_old_monarch（被推翻的君主）
+ftr_court_usurp_throne_effect = {
+	save_scope_as = ftr_court_new_monarch
+
+	# 夺取主头衔
+	scope:ftr_court_old_monarch = {
+		save_scope_as = ftr_court_deposed
+	}
+	scope:ftr_court_deposed.primary_title ?= {
+		save_scope_as = ftr_court_seized_title
+	}
+
+	if = {
+		limit = { exists = scope:ftr_court_seized_title }
+		create_title_and_vassal_change = {
+			type = all
+			save_scope_as = ftr_court_usurp_change
+		}
+		scope:ftr_court_seized_title = {
+			change_title_holder = {
+				holder = scope:ftr_court_new_monarch
+				change = scope:ftr_court_usurp_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:ftr_court_usurp_change
+	}
+
+	# 囚禁老君主
+	scope:ftr_court_new_monarch = {
+		imprison = {
+			target = scope:ftr_court_deposed
+			type = house_arrest
+		}
+		# 清算事件：决定老君王与其它竞争者的命运
+		trigger_event = {
+			id = ftr_court_struggle.0010
+			days = 3
+		}
+	}
+}
+
+# 在君主域执行：立储。抬高被立者的竞争力，其余竞争者同生怨望。
+# 参数：NOMINEE
+ftr_court_nominate_effect = {
+	save_scope_as = ftr_court_monarch
+
+	$NOMINEE$ ?= {
+		save_scope_as = ftr_court_nominee
+		add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_alliance_opinion }
+		if = {
+			limit = { has_variable = ftr_claim_strength }
+			change_variable = { name = ftr_claim_strength  add = ftr_court_nominate_gain_value }
+		}
+	}
+
+	any_owned_story = {
+		type = ftr_court_struggle
+		save_scope_as = ftr_court_story
+	}
+	scope:ftr_court_story ?= {
+		every_in_list = {
+			list = ftr_court_claimant_list
+			limit = { NOT = { this = scope:ftr_court_nominee } }
+			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
+			if = {
+				limit = { has_variable = ftr_claim_strength }
+				change_variable = { name = ftr_claim_strength  add = ftr_court_nominate_penalty_value }
+			}
+		}
+		ftr_court_update_phase_effect = yes
+	}
+}
+
+# 在君主域执行：压制某位竞争者，削其声势与人望。
+# 参数：TARGET
+ftr_court_suppress_effect = {
+	save_scope_as = ftr_court_monarch
+
+	$TARGET$ ?= {
+		add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_rival_claimant_opinion }
+		if = {
+			limit = { has_variable = ftr_claim_strength }
+			change_variable = { name = ftr_claim_strength  add = ftr_court_suppress_penalty_value }
+		}
+		if = {
+			limit = { has_variable = ftr_court_backer_count }
+			change_variable = { name = ftr_court_backer_count  add = ftr_court_suppress_backer_loss_value }
+		}
+	}
+	add_dread = ftr_court_dread_minor_value
+}
+
+# 在角色域执行：清理其竞争状态（退出朝堂角逐）
+ftr_court_clear_claimant_status_effect = {
+	remove_variable = ftr_claim_strength
+	remove_variable = ftr_court_backer_count
+	remove_variable = ftr_court_backer_of
+	remove_character_flag = ftr_court_pooled
+	ftr_court_revoke_temp_duchy_effect = yes
+}
+
+######################################################
+### 七之二、名次保存与承诺兑现
+######################################################
+
+# 在 story 域执行：把前五名竞争者按名次存为 scope:ftr_court_claimant_1 ~ 5，
+# 供事件以固定选项呈现（CK3 无法动态生成事件选项）。
+ftr_court_save_ranked_claimants_effect = {
+	save_scope_as = ftr_court_story
+	set_variable = { name = ftr_court_rank_counter  value = 0 }
+
+	ordered_in_list = {
+		list = ftr_court_claimant_list
+		order_by = var:ftr_claim_strength
+		save_scope_as = ftr_court_pick
+		scope:ftr_court_story = {
+			if = {
+				limit = { var:ftr_court_rank_counter = 0 }
+				scope:ftr_court_pick = { save_scope_as = ftr_court_claimant_1 }
+			}
+			else_if = {
+				limit = { var:ftr_court_rank_counter = 1 }
+				scope:ftr_court_pick = { save_scope_as = ftr_court_claimant_2 }
+			}
+			else_if = {
+				limit = { var:ftr_court_rank_counter = 2 }
+				scope:ftr_court_pick = { save_scope_as = ftr_court_claimant_3 }
+			}
+			else_if = {
+				limit = { var:ftr_court_rank_counter = 3 }
+				scope:ftr_court_pick = { save_scope_as = ftr_court_claimant_4 }
+			}
+			else_if = {
+				limit = { var:ftr_court_rank_counter = 4 }
+				scope:ftr_court_pick = { save_scope_as = ftr_court_claimant_5 }
+			}
+			change_variable = { name = ftr_court_rank_counter  add = 1 }
+		}
+	}
+
+	remove_variable = ftr_court_rank_counter
+}
+
+# 在新君域执行：兑现夺位前许下的承诺，并清除记账
+ftr_court_fulfill_promises_effect = {
+	save_scope_as = ftr_court_new_monarch
+
+	every_vassal = {
+		limit = {
+			has_variable = ftr_court_promised_by
+			var:ftr_court_promised_by ?= { this = scope:ftr_court_new_monarch }
+		}
+		save_scope_as = ftr_court_promised_vassal
+
+		if = {
+			limit = { has_variable = ftr_court_promise_council }
+			# TODO: 接入 appoint_councillor / give_council_position 接口后改为实授官职，
+			#       目前先以功臣好感与影响力兑现。
+			add_opinion = { target = scope:ftr_court_new_monarch  modifier = ftr_court_loyalist_opinion }
+			remove_variable = ftr_court_promise_council
+		}
+		if = {
+			limit = { has_variable = ftr_court_promise_contract }
+			add_character_modifier = {
+				modifier = ftr_court_promised_contract_modifier
+				years = 10
+			}
+			remove_variable = ftr_court_promise_contract
+		}
+		add_character_modifier = {
+			modifier = ftr_court_promised_wage_modifier
+			years = 10
+		}
+		add_opinion = { target = scope:ftr_court_new_monarch  modifier = ftr_political_alliance_opinion }
+		remove_variable = ftr_court_promised_by
+	}
+}
+
+######################################################
+### 七之三、资源支付（双轨制）
+######################################################
+
+# Mod 自带的 ftr_political_influence 已废弃。
+# 支付规则：双方均为行政制 -> 消耗官方影响力；任一方非行政制 -> 消耗威望。
+# 求值域：支付方。参数：OTHER = 对方角色；PRESTIGE / INFLUENCE = 正数成本常量。
+ftr_court_pay_cost_effect = {
+	if = {
+		limit = {
+			government_allows = administrative
+			$OTHER$ = { government_allows = administrative }
+		}
+		change_influence = {
+			value = 0
+			subtract = $INFLUENCE$
+		}
+	}
+	else = {
+		add_prestige = {
+			value = 0
+			subtract = $PRESTIGE$
+		}
+	}
+}
+
+# 恩宠：施予方赠予受益者资源（事件 0001.c 君主示好）。
+# 求值域：施予方。参数：TARGET = 受益者。
+ftr_court_grant_favor_effect = {
+	if = {
+		limit = {
+			government_allows = administrative
+			$TARGET$ = { government_allows = administrative }
+		}
+		$TARGET$ = {
+			change_influence = minor_influence_gain
+		}
+	}
+	else = {
+		$TARGET$ = {
+			add_prestige = ftr_court_favor_prestige_value
+		}
+	}
+}
+
+######################################################
+### 八、通报
+######################################################
+
+# 在 story 域执行：构建朝堂通报名单。
+# 注意：send_interface_message 的 title 必须是本地化键字面量，无法动态传入，
+# 因此这里只负责建名单，实际发送由各事件自行完成。
+ftr_court_build_notify_list_effect = {
+	save_scope_as = ftr_court_story
+	owner = {
+		save_scope_as = ftr_court_monarch
+		ftr_get_fg_notify_list_effect = yes
+	}
+}

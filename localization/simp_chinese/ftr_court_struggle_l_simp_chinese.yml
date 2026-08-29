@@ -1,0 +1,68 @@
+﻿l_simp_chinese:
+
+ ###### 故事循环 ######
+ ftr_court_struggle:0 "<FTR>继位之争"
+ FTR_COURT_STRINGS:0 "权贵们围绕大位的归属彼此试探、结党倾轧。"
+ FTR_COURT_CLAIMANTS:0 "继任竞争者"
+ FTR_COURT_CANDIDATE_COUNT:0 "竞争者人数"
+ FTR_COURT_SWING:0 "权力天平"
+ FTR_COURT_SWING_LOYAL:0 "君权稳固"
+ FTR_COURT_SWING_DIARCH:0 "共治得势"
+ FTR_COURT_TEMP_DUCHY_NAME:0 "勤王之师"
+
+ ###### 战争理由 ######
+ ftr_civil_war:0 "<FTR>继位之争"
+ ftr_succession_war:0 "<FTR>继位之战"
+ ftr_succession_war_desc:0 "[ROOT.GetFullName]以武力主张大位。"
+ ftr_court_succession_war_victory_desc:0 "[scope:attacker.GetFullName]夺取大位，将[scope:defender.GetFullName]囚于囹圄。"
+ ftr_court_succession_war_defeat_desc:0 "[scope:attacker.GetFullName]夺位之举土崩瓦解。"
+ ftr_court_succession_war_white_peace_desc:0 "双方都未能压服对方，继位之事仍悬而未决。"
+
+ ###### 角色交互 ######
+ ftr_court_back_claimant_interaction:0 "<FTR>公开表态支持"
+ ftr_court_back_claimant_interaction_desc:0 "公开为这位竞争者背书，其余竞争者不会善罢甘休。"
+ ftr_court_withdraw_backing_interaction:0 "<FTR>撤回支持"
+ ftr_court_withdraw_backing_interaction_desc:0 "重归中立。抽身之人，鲜有被轻易原谅的。"
+ ftr_court_defect_interaction:0 "<FTR>倒戈改投"
+ ftr_court_defect_interaction_desc:0 "背弃旧主，宣誓效忠另一位竞争者。"
+ ftr_court_assist_monarch_interaction:0 "<FTR>尽心辅政"
+ ftr_court_assist_monarch_interaction_desc:0 "勉力维持朝政，不使大权旁落。"
+ ftr_court_petition_coregency_interaction:0 "<FTR>奏请共治"
+ ftr_court_petition_coregency_interaction_desc:0 "奏请与君主共担国事——至少眼下如此。"
+ ftr_court_promise_council_seat_interaction:0 "<FTR>许以内阁席位"
+ ftr_court_promise_council_seat_interaction_desc:0 "立誓：一旦大位在握，必令此人位列内阁。"
+ ftr_court_promise_contract_relief_interaction:0 "<FTR>许以宽免义务"
+ ftr_court_promise_contract_relief_interaction_desc:0 "立誓：一旦大位在握，必减轻此人的臣属义务。"
+
+ ###### 决议 ######
+ ftr_court_nominate_heir_decision:0 "<FTR>册立储君"
+ ftr_court_nominate_heir_decision_desc:0 "公开确立继承人。此举可安朝局，却也会令所有落选者怀恨在心。"
+ ftr_court_nominate_heir_decision_tooltip:0 "抬高一位竞争者的声势，同时压低其余人"
+ ftr_court_nominate_heir_decision_confirm:0 "就这么办"
+
+ ftr_court_consolidate_authority_decision:0 "<FTR>整肃朝纲"
+ ftr_court_consolidate_authority_decision_desc:0 "提醒满朝文武权柄究竟在谁手中，使臣下重归忠诚。"
+ ftr_court_consolidate_authority_decision_tooltip:0 "使权力天平重新倒向君权一侧"
+ ftr_court_consolidate_authority_decision_confirm:0 "昭告天下"
+
+ ftr_court_suppress_claimant_decision:0 "<FTR>压制竞争者"
+ ftr_court_suppress_claimant_decision_desc:0 "削夺某位继任者的声望，并驱散其党羽。"
+ ftr_court_suppress_claimant_decision_tooltip:0 "降低一位竞争者的声势并削减其支持者"
+ ftr_court_suppress_claimant_decision_confirm:0 "照此办理"
+
+ ###### 好感修正 ######
+ ftr_court_backer_opinion:0 "曾拥戴我继位"
+ ftr_court_loyalist_opinion:0 "辅政有功"
+ ftr_court_rival_claimant_opinion:0 "曾拥戴我的对手"
+ ftr_court_betrayed_opinion:0 "背弃了我"
+
+ ###### 角色修正 ######
+ ftr_court_struggle_ongoing:0 "继位之争"
+ ftr_court_struggle_ongoing_desc:0 "竞争者环伺大位，朝政因此而废弛。"
+ ftr_court_promised_wage_modifier:0 "许诺的俸禄"
+ ftr_court_promised_wage_modifier_desc:0 "大位既定之后，兑现了当初许下的加俸之诺。"
+ ftr_court_promised_contract_modifier:0 "许诺的宽免"
+ ftr_court_promised_contract_modifier_desc:0 "大位既定之后，兑现了当初许下的减负之诺。"
+
+ ###### 杂项 ######
+ ftr_show_stance_in_court_tt:0 "今年已表明过立场"

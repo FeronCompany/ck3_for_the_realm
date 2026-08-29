@@ -1,0 +1,158 @@
+﻿##############################################################
+### 朝堂权力角逐 COURT STRUGGLE
+### 挂在独立王国/帝国/霸权的最高统治者（story owner）身上
+###
+### 议题1 继任之争：竞争者以「竞争力评分」排名，取前五名进入朝堂名单
+### 议题2 共治夺权：以 ftr_court_regency_swing 为拉锯轴
+###
+### 阶段（var:ftr_court_phase）：
+###   0 dormant   —— 竞争者不足，静默
+###   1 simmering —— 暗中角力
+###   2 contested —— 势均力敌，公开对立
+###   3 crisis    —— 政变/内战窗口开启
+###
+### 作用域约定：root / scope:story = 故事本体；owner = 在位君主
+##############################################################
+
+ftr_court_struggle = {
+	visible = yes
+
+	################## 生命周期 ##################
+
+	on_setup = {
+		ftr_court_setup_effect = yes
+	}
+
+	on_owner_death = {
+		# 君主驾崩：本轮角逐落幕。
+		# 清理统一交给 on_end 处理，此处只结束故事，避免清理两遍。
+		# 新君是否重启角逐交由下一年的年度检查判定——刻意避开继承结算的时序风险。
+		end_story = yes
+	}
+
+	on_end = {
+		ftr_court_cleanup_effect = yes
+	}
+
+	################## 外观 ##################
+
+	# 危机阶段改用剑图标，其余沿用宫廷政治图标
+	icon = {
+		trigger = { var:ftr_court_phase >= 3 }
+		reference = "gfx/interface/icons/story_cycles/story_icon_conqueror.dds"
+	}
+	icon = {
+		reference = "gfx/interface/icons/story_cycles/story_icon_palace_politics.dds"
+	}
+
+	background = {
+		reference = "gfx/interface/illustrations/event_scenes/corridor_day.dds"
+	}
+
+	################## 面板可视化 ##################
+
+	visualization = {
+		# 继任竞争者名单（按竞争力降序，最多五人）
+		character_list = {
+			variable_name = "ftr_court_claimant_list"
+			label = "FTR_COURT_CLAIMANTS"
+		}
+
+		# 共治拉锯：负 = 忠于君主，正 = 倒向共治者
+		tug_of_war_counter = {
+			variable_name = "ftr_court_regency_swing"
+			min = -100
+			max = 100
+			label = "FTR_COURT_SWING"
+			min_label = "FTR_COURT_SWING_LOYAL"
+			max_label = "FTR_COURT_SWING_DIARCH"
+		}
+
+		# 竞争者人数
+		basic_counter = {
+			variable_name = "ftr_court_candidate_count"
+			min = 0
+			max = 5
+			label = "FTR_COURT_CANDIDATE_COUNT"
+		}
+
+		custom_string_key = "FTR_COURT_STRINGS"
+
+		decisions = {
+			ftr_court_nominate_heir_decision
+			ftr_court_consolidate_authority_decision
+		}
+	}
+
+	################## 年度维护：刷新候选池、拉锯与阶段 ##################
+
+	effect_group = {
+		years = 1
+		triggered_effect = {
+			trigger = {
+				owner ?= { ftr_court_struggle_valid_trigger = yes }
+			}
+			effect = {
+				ftr_court_update_candidates_effect = yes
+				ftr_court_swing_yearly_effect = yes
+			}
+		}
+		# 政权不再符合条件（被征服、降级、绝嗣）时收场
+		fallback = {
+			end_story = yes
+		}
+	}
+
+	################## 危机阶段脉冲 ##################
+
+	# 注意：trigger_event 的 root 取当前作用域，而事件是 character_event，
+	# 因此必须包在 owner 中执行，否则 root 会变成故事本体。
+	effect_group = {
+		years = 1
+		chance = ftr_court_pulse_chance_crisis_value
+		random_valid = {
+			triggered_effect = {
+				trigger = { ftr_court_is_crisis_trigger = yes }
+				effect = {
+					owner = { trigger_event = { id = ftr_court_struggle.0005 } }
+				}
+			}
+		}
+	}
+
+	################## 对立阶段脉冲 ##################
+
+	effect_group = {
+		years = 1
+		chance = ftr_court_pulse_chance_contested_value
+		random_valid = {
+			triggered_effect = {
+				trigger = {
+					NOT = { ftr_court_is_crisis_trigger = yes }
+					ftr_court_is_contested_trigger = yes
+				}
+				effect = {
+					owner = { trigger_event = { id = ftr_court_struggle.0003 } }
+				}
+			}
+		}
+	}
+
+	################## 潜伏阶段脉冲（两年一次，最稀疏） ##################
+
+	effect_group = {
+		years = 2
+		chance = ftr_court_pulse_chance_simmering_value
+		random_valid = {
+			triggered_effect = {
+				trigger = {
+					NOT = { ftr_court_is_contested_trigger = yes }
+					owner ?= { ftr_court_has_succession_order_trigger = yes }
+				}
+				effect = {
+					owner = { trigger_event = { id = ftr_court_struggle.0001 } }
+				}
+			}
+		}
+	}
+}

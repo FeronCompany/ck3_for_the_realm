@@ -1,0 +1,68 @@
+﻿l_english:
+
+ ###### Story Cycle ######
+ ftr_court_struggle:0 "<FTR>Succession Struggle"
+ FTR_COURT_STRINGS:0 "The great and the powerful circle one another over the question of who shall inherit the realm."
+ FTR_COURT_CLAIMANTS:0 "Claimants"
+ FTR_COURT_CANDIDATE_COUNT:0 "Claimants"
+ FTR_COURT_SWING:0 "Balance of Power"
+ FTR_COURT_SWING_LOYAL:0 "The Crown Holds"
+ FTR_COURT_SWING_DIARCH:0 "The Co-Ruler Rises"
+ FTR_COURT_TEMP_DUCHY_NAME:0 "Pretender's Host"
+
+ ###### Casus Belli ######
+ ftr_civil_war:0 "<FTR>Succession Struggle"
+ ftr_succession_war:0 "<FTR>War of Succession"
+ ftr_succession_war_desc:0 "[ROOT.GetFullName] presses a claim to the throne by force of arms."
+ ftr_court_succession_war_victory_desc:0 "[scope:attacker.GetFullName] seizes the throne and casts [scope:defender.GetFullName] into captivity."
+ ftr_court_succession_war_defeat_desc:0 "[scope:attacker.GetFullName]'s bid for the throne lies in ruins."
+ ftr_court_succession_war_white_peace_desc:0 "Neither side could press its claim, and the succession remains unsettled."
+
+ ###### Interactions ######
+ ftr_court_back_claimant_interaction:0 "<FTR>Declare Support"
+ ftr_court_back_claimant_interaction_desc:0 "Publicly throw your weight behind this claimant. Other contenders will not forget it."
+ ftr_court_withdraw_backing_interaction:0 "<FTR>Withdraw Support"
+ ftr_court_withdraw_backing_interaction_desc:0 "Step back into neutrality. Few forgive a withdrawn hand."
+ ftr_court_defect_interaction:0 "<FTR>Change Sides"
+ ftr_court_defect_interaction_desc:0 "Abandon your former favourite and swear yourself to another claimant."
+ ftr_court_assist_monarch_interaction:0 "<FTR>Steadfast Service"
+ ftr_court_assist_monarch_interaction_desc:0 "Tend to the affairs of state so that power does not slip from the Crown's grasp."
+ ftr_court_petition_coregency_interaction:0 "<FTR>Petition for Co-Rule"
+ ftr_court_petition_coregency_interaction_desc:0 "Ask that the burdens of the Crown be shared — for now."
+ ftr_court_promise_council_seat_interaction:0 "<FTR>Promise a Council Seat"
+ ftr_court_promise_council_seat_interaction_desc:0 "Swear that this ally shall sit among your councillors once you hold the reins."
+ ftr_court_promise_contract_relief_interaction:0 "<FTR>Promise Lighter Obligations"
+ ftr_court_promise_contract_relief_interaction_desc:0 "Swear to loosen this vassal's obligations once the throne is yours."
+
+ ###### Decisions ######
+ ftr_court_nominate_heir_decision:0 "<FTR>Nominate an Heir"
+ ftr_court_nominate_heir_decision_desc:0 "Name your chosen successor openly. It will steady the realm — and embitter every rival."
+ ftr_court_nominate_heir_decision_tooltip:0 "Raises one claimant's standing and lowers the rest"
+ ftr_court_nominate_heir_decision_confirm:0 "So be it"
+
+ ftr_court_consolidate_authority_decision:0 "<FTR>Rally the Court"
+ ftr_court_consolidate_authority_decision_desc:0 "Remind the court where power truly lies, and draw the courtiers back to their loyalty."
+ ftr_court_consolidate_authority_decision_tooltip:0 "Shifts the balance of power back toward the Crown"
+ ftr_court_consolidate_authority_decision_confirm:0 "Let it be known"
+
+ ftr_court_suppress_claimant_decision:0 "<FTR>Suppress a Claimant"
+ ftr_court_suppress_claimant_decision_desc:0 "Strip a contender of standing and scatter their following."
+ ftr_court_suppress_claimant_decision_tooltip:0 "Lowers one claimant's standing and reduces their backers"
+ ftr_court_suppress_claimant_decision_confirm:0 "Do it"
+
+ ###### Opinion Modifiers ######
+ ftr_court_backer_opinion:0 "Backed my claim"
+ ftr_court_loyalist_opinion:0 "Steadfast in my service"
+ ftr_court_rival_claimant_opinion:0 "Backed my rival"
+ ftr_court_betrayed_opinion:0 "Abandoned me"
+
+ ###### Character Modifiers ######
+ ftr_court_struggle_ongoing:0 "Succession Struggle"
+ ftr_court_struggle_ongoing_desc:0 "Contenders circle the throne, and the business of government suffers for it."
+ ftr_court_promised_wage_modifier:0 "Promised Wages"
+ ftr_court_promised_wage_modifier_desc:0 "A pledged increase in stipend, honoured after the throne was won."
+ ftr_court_promised_contract_modifier:0 "Promised Relief"
+ ftr_court_promised_contract_modifier_desc:0 "A pledged lightening of obligations, honoured after the throne was won."
+
+ ###### Misc ######
+ ftr_show_stance_in_court_tt:0 "Already declared a stance this year"

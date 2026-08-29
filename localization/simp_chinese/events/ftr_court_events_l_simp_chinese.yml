@@ -1,0 +1,74 @@
+﻿l_simp_chinese:
+
+ ###### 0001 潜伏 ######
+ ftr_court_struggle.0001.t:0 "殿中低语"
+ ftr_court_struggle.0001.desc:0 "下人们私下议论，[scope:ftr_court_candidate.GetFullName]昼夜不停地会见访客——来的都是些有头有脸、腰缠万贯的人物。抓不到把柄。至少眼下还抓不到。"
+ ftr_court_struggle.0001.a:0 "这等小事，不值得我过问。"
+ ftr_court_struggle.0001.b:0 "传他来见，让他知道我的不满。"
+ ftr_court_struggle.0001.c:0 "由他去经营自己的小朝廷，我且看着。"
+
+ ###### 0003 对立 ######
+ ftr_court_struggle.0003.t:0 "天无二日"
+ ftr_court_struggle.0003.desc:0 "朝堂已经分裂。如今每一次任命都被人解读为风向，每一次冷落都被视作宣战。竞争者互相盯着——也在盯着我。"
+ ftr_court_struggle.0003.a:0 "让他们互相消耗去吧。"
+ ftr_court_struggle.0003.b:0 "我将扶持声势最盛的那个。"
+ ftr_court_struggle.0003.c:0 "够了。我禁止这等内斗。"
+
+ ###### 0005 危机 ######
+ ftr_court_struggle.0005.t:0 "刀锋之上"
+ ftr_court_struggle.0005.desc:0 "事情已经不止于窃窃私语。望族之间信使往来不绝，其中不止一人所持的印信并非出自我的授意。我若不动手，自有人会动手。"
+ ftr_court_struggle.0005.a:0 "继位之事自会有个了断。"
+ ftr_court_struggle.0005.b:0 "我必须现在就立储。"
+ ftr_court_struggle.0005.c:0 "揪出为首之人，予以痛击。"
+
+ ###### 0010 老君王的命运 ######
+ ftr_court_struggle.0010.t:0 "废黜之君"
+ ftr_court_struggle.0010.desc:0 "[scope:ftr_court_old_monarch.GetFullName]如今坐在我曾经下跪的位置上。举国屏息，看我将如何处置这顶坠落的后冠。"
+ ftr_court_struggle.0010.a:0 "软禁即可，留他性命。"
+ ftr_court_struggle.0010.b:0 "投入地牢，让他好生体会其中分量。"
+ ftr_court_struggle.0010.c:0 "坠落的后冠，留着颈上人头何用。"
+
+ ###### 0011 其余竞争者 ######
+ ftr_court_struggle.0011.t:0 "其余皇子"
+ ftr_court_struggle.0011.desc:0 "还有其他人，流着同样的血，怀着同样的指望。有的很快跪了，有的却始终不肯低头。"
+ ftr_court_struggle.0011.a:0 "赦免他们，并兑现我的许诺。"
+ ftr_court_struggle.0011.b:0 "让他们永远闭嘴——一个不留。"
+ ftr_court_struggle.0011.c:0 "让他们保留封地，我会盯着他们。"
+
+ ###### 0012 竞争者的抉择 ######
+ ftr_court_struggle.0012.t:0 "屈膝，还是起兵"
+ ftr_court_struggle.0012.desc:0 "[scope:ftr_court_new_monarch.GetFullName]头戴的那顶冠冕，论理本该是我的。我麾下的兵马仍听我号令。问题只在于，我敢不敢。"
+ ftr_court_struggle.0012.a:0 "决不。我要以武力主张我的权利。"
+ ftr_court_struggle.0012.b:0 "忍辱负重，屈膝称臣。"
+
+ ###### 0013 处置叛乱者 ######
+ ftr_court_struggle.0013.t:0 "阶下之囚"
+ ftr_court_struggle.0013.desc:0 "[scope:ftr_court_warleader.GetFullName]押上一切来赌我的王冠，结果输了个精光。继承之名已从名册上抹去，叛旗已被践碎，叛乱者如今跪在我的地牢里。剩下的，是决定这份「忠心」究竟值多少。"
+ ftr_court_struggle.0013.a:0 "让他在地牢里了此残生。"
+ ftr_court_struggle.0013.b:0 "将他们逐出国境。"
+ ftr_court_struggle.0013.c:0 "杀一儆百。"
+ ftr_court_struggle.0013.d:0 "他已经失去得够多了。"
+
+ ###### 0020 共治请愿 ######
+ ftr_court_struggle.0020.t:0 "请分国事之忧"
+ ftr_court_struggle.0020.desc:0 "[scope:actor.GetFullName]恭恭敬敬地跪下，以最谦卑的措辞奏请——将治国之重担分而担之。措辞无懈可击。正因如此，才最危险。"
+ ftr_court_struggle.0020.a:0 "好吧。分忧就分忧。"
+ ftr_court_struggle.0020.b:0 "君权不可与人分。驳回。"
+
+ ###### 0030 立储 ######
+ ftr_court_struggle.0030.t:0 "册立储君"
+ ftr_court_struggle.0030.desc:0 "国本所在，不可不明。我当着满朝文武，立谁为储？"
+ ftr_court_struggle.0030.a:0 "立[scope:ftr_court_claimant_1.GetFullName]"
+ ftr_court_struggle.0030.b:0 "立[scope:ftr_court_claimant_2.GetFullName]"
+ ftr_court_struggle.0030.c:0 "立[scope:ftr_court_claimant_3.GetFullName]"
+ ftr_court_struggle.0030.d:0 "立[scope:ftr_court_claimant_4.GetFullName]"
+ ftr_court_struggle.0030.e:0 "立[scope:ftr_court_claimant_5.GetFullName]"
+
+ ###### 0031 压制竞争者 ######
+ ftr_court_struggle.0031.t:0 "杀一儆百"
+ ftr_court_struggle.0031.desc:0 "其中一人过于放肆了。削去他的羽翼，其余人自会记住自己的本分。"
+ ftr_court_struggle.0031.a:0 "对[scope:ftr_court_claimant_1.GetFullName]下手"
+ ftr_court_struggle.0031.b:0 "对[scope:ftr_court_claimant_2.GetFullName]下手"
+ ftr_court_struggle.0031.c:0 "对[scope:ftr_court_claimant_3.GetFullName]下手"
+ ftr_court_struggle.0031.d:0 "对[scope:ftr_court_claimant_4.GetFullName]下手"
+ ftr_court_struggle.0031.e:0 "对[scope:ftr_court_claimant_5.GetFullName]下手"

@@ -1,0 +1,74 @@
+﻿##############################################################
+### 朝堂权力角逐 COURT STRUGGLE — 调度层
+###
+### 设计原则：
+###   1) 故事一旦建立，其年度维护完全交给 story 的 effect_group，
+###      不在 on_action 里重复做，避免双重开销。
+###   2) on_action 只负责三件事：准入创建、候选池增量刷新、收场。
+###   3) 君主驾崩后新君是否重启角逐，交由下一年的年度检查处理——
+###      刻意避开继承结算的时序风险。
+##############################################################
+
+########## 一、准入：为符合条件的新君建立朝堂角逐 ##########
+
+ftr_court_try_start_on_action = {
+	trigger = {
+		# 廉价前置过滤，绝大多数角色在第一层即退出
+		is_independent_ruler = yes
+		highest_held_title_tier >= tier_kingdom
+		ftr_court_can_start_struggle_trigger = yes
+		ftr_court_should_activate_succession_trigger = yes
+		# 已有在进行的角逐则跳过
+		NOT = {
+			any_owned_story = { type = ftr_court_struggle }
+		}
+	}
+	effect = {
+		create_story = ftr_court_struggle
+	}
+}
+
+########## 二、候选池增量刷新 ##########
+
+# 新子女出生意味着新的潜在竞争者出现
+ftr_court_on_child_born_on_action = {
+	effect = {
+		ftr_court_refresh_local_effect = yes
+	}
+}
+
+########## 三、收场 ##########
+
+# 政权不再符合条件时（被征服、降级、绝嗣）由 story 的 fallback 自行 end_story，
+# 此处仅作兜底，清理无人认领的残留故事。
+ftr_court_validate_on_action = {
+	trigger = {
+		is_independent_ruler = yes
+		NOT = { ftr_court_struggle_valid_trigger = yes }
+	}
+	effect = {
+		any_owned_story = {
+			type = ftr_court_struggle
+			end_story = yes
+		}
+	}
+}
+
+######################################################
+### 挂载到原版 on_action
+######################################################
+
+# 每年一次的全局脉冲：负责准入创建与失效收场
+random_yearly_everyone_pulse = {
+	on_actions = {
+		ftr_court_try_start_on_action
+		ftr_court_validate_on_action
+	}
+}
+
+# 子女出生时刷新父母所在朝堂的候选池
+on_birth_child = {
+	on_actions = {
+		ftr_court_on_child_born_on_action
+	}
+}

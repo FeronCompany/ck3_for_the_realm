@@ -1,0 +1,74 @@
+﻿l_english:
+
+ ###### 0001 潜伏 ######
+ ftr_court_struggle.0001.t:0 "Murmurs in the Hall"
+ ftr_court_struggle.0001.desc:0 "Servants whisper that [scope:ftr_court_candidate.GetFullName] has been receiving visitors at all hours — men of consequence, men with purses. Nothing that can be proven. Nothing yet."
+ ftr_court_struggle.0001.a:0 "It is beneath my notice."
+ ftr_court_struggle.0001.b:0 "Summon them, and make my displeasure plain."
+ ftr_court_struggle.0001.c:0 "Let them have their little court. I shall watch."
+
+ ###### 0003 对立 ######
+ ftr_court_struggle.0003.t:0 "Two Suns in One Sky"
+ ftr_court_struggle.0003.desc:0 "The court has begun to divide. Every appointment is now read as a signal, every slight as a declaration. The contenders watch each other — and watch me."
+ ftr_court_struggle.0003.a:0 "Let them wear themselves out."
+ ftr_court_struggle.0003.b:0 "I will favour the strongest."
+ ftr_court_struggle.0003.c:0 "Enough. I forbid this infighting."
+
+ ###### 0005 危机 ######
+ ftr_court_struggle.0005.t:0 "The Edge of the Knife"
+ ftr_court_struggle.0005.desc:0 "It has gone beyond whispers. Messengers move between the great houses, and more than one of them carries a seal that is not mine. If I do not act, someone else will."
+ ftr_court_struggle.0005.a:0 "The succession will resolve itself."
+ ftr_court_struggle.0005.b:0 "I must name my successor — now."
+ ftr_court_struggle.0005.c:0 "Find the ringleader and break them."
+
+ ###### 0010 老君王的命运 ######
+ ftr_court_struggle.0010.t:0 "The Deposed"
+ ftr_court_struggle.0010.desc:0 "[scope:ftr_court_old_monarch.GetFullName] sits where I once knelt. The realm holds its breath to see what I shall do with a fallen crown."
+ ftr_court_struggle.0010.a:0 "House arrest. They live."
+ ftr_court_struggle.0010.b:0 "The dungeon. Let them feel the weight of it."
+ ftr_court_struggle.0010.c:0 "A fallen crown has no use for a head."
+
+ ###### 0011 其余竞争者 ######
+ ftr_court_struggle.0011.t:0 "The Other Heirs"
+ ftr_court_struggle.0011.desc:0 "There are others who bore the same blood and the same hope. Some bent the knee quickly. Some did not bend at all."
+ ftr_court_struggle.0011.a:0 "Pardon them, and honour what I promised."
+ ftr_court_struggle.0011.b:0 "Silence them — every last one."
+ ftr_court_struggle.0011.c:0 "Let them keep their lands. I will watch them."
+
+ ###### 0012 竞争者的抉择 ######
+ ftr_court_struggle.0012.t:0 "Bend, or Break"
+ ftr_court_struggle.0012.desc:0 "[scope:ftr_court_new_monarch.GetFullName] wears a crown that by rights could have been mine. My levies are still mine to call. The question is whether I dare."
+ ftr_court_struggle.0012.a:0 "Never. I press my claim by force."
+ ftr_court_struggle.0012.b:0 "I swallow my pride and bend the knee."
+
+ ###### 0013 处置叛乱者 ######
+ ftr_court_struggle.0013.t:0 "The Rebel in Chains"
+ ftr_court_struggle.0013.desc:0 "[scope:ftr_court_warleader.GetFullName] gambled for my crown and lost. The claim is struck from the succession, the banners are broken, and the rebel now kneels in my dungeon. What remains is to decide what their loyalty was worth."
+ ftr_court_struggle.0013.a:0 "Let them rot in the dungeon."
+ ftr_court_struggle.0013.b:0 "Cast them out of the realm."
+ ftr_court_struggle.0013.c:0 "An example must be made."
+ ftr_court_struggle.0013.d:0 "They have lost enough already."
+
+ ###### 0020 共治请愿 ######
+ ftr_court_struggle.0020.t:0 "A Request to Share the Burden"
+ ftr_court_struggle.0020.desc:0 "[scope:actor.GetFullName] kneels with all due humility, and asks — in the most courteous of terms — that the burdens of rule be shared. The phrasing is flawless. That is what makes it dangerous."
+ ftr_court_struggle.0020.a:0 "Very well. Share the burden."
+ ftr_court_struggle.0020.b:0 "The Crown does not share. Refused."
+
+ ###### 0030 立储 ######
+ ftr_court_struggle.0030.t:0 "Naming a Successor"
+ ftr_court_struggle.0030.desc:0 "The realm must know where it stands. Whom shall I name before the court?"
+ ftr_court_struggle.0030.a:0 "Name [scope:ftr_court_claimant_1.GetFullName]"
+ ftr_court_struggle.0030.b:0 "Name [scope:ftr_court_claimant_2.GetFullName]"
+ ftr_court_struggle.0030.c:0 "Name [scope:ftr_court_claimant_3.GetFullName]"
+ ftr_court_struggle.0030.d:0 "Name [scope:ftr_court_claimant_4.GetFullName]"
+ ftr_court_struggle.0030.e:0 "Name [scope:ftr_court_claimant_5.GetFullName]"
+
+ ###### 0031 压制竞争者 ######
+ ftr_court_struggle.0031.t:0 "An Example Must Be Made"
+ ftr_court_struggle.0031.desc:0 "One of them has grown too bold. Strip away the following, and the rest will remember their place."
+ ftr_court_struggle.0031.a:0 "Move against [scope:ftr_court_claimant_1.GetFullName]"
+ ftr_court_struggle.0031.b:0 "Move against [scope:ftr_court_claimant_2.GetFullName]"
+ ftr_court_struggle.0031.c:0 "Move against [scope:ftr_court_claimant_3.GetFullName]"
+ ftr_court_struggle.0031.d:0 "Move against [scope:ftr_court_claimant_4.GetFullName]"
+ ftr_court_struggle.0031.e:0 "Move against [scope:ftr_court_claimant_5.GetFullName]"

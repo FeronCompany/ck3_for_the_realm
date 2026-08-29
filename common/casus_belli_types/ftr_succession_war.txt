@@ -1,0 +1,210 @@
+﻿##############################################################
+### 继位内战 SUCCESSION WAR
+###
+### 继任竞争者以武力争夺大位。
+### 与派系内战的区别：
+###   1) 由朝堂角逐（ftr_court_struggle）驱动，可脱离派系单独发动
+###   2) 无地的廷臣皇子/王子也会起兵——CB 会为其创建【纯虚拟临时公国】，
+###      战争结束时无条件销毁，不论胜负
+###   3) 支持者会依此前的站队自动参战，避免孤军奋战
+###   4) 造反不能白和平：white_peace_possible = no，叛乱只有胜、败、失效三种结局
+###
+### 夺位成功后：取代君主并将其囚禁，随后跳清算事件决定老君王与其它竞争者的命运。
+### 叛乱失败后：剥夺继承权、声名扫地，并由事件 0013 决定其下场。
+##############################################################
+
+ftr_succession_war = {
+	group = ftr_civil_war
+	icon = claim_war
+
+	# 针对整个政权而非某个头衔
+	target_titles = none
+
+	# 无地皇子起兵时，不因"无地无兵"直接判负
+	landless_attacker_needs_armies = no
+	# 仅用于封臣对宗主
+	ai_only_against_liege = yes
+	### 造反不能白和平 ###
+	# 叛乱只有三种结局：胜、败、失效。不存在「打完握手言和」。
+	# 允许白和平会让「看形势不妙就收兵」成为无风险策略，继位之争将退化为例行公事。
+	# 已知副作用：内战会打到一方彻底崩溃为止，可能使国家长期虚弱——这是叛乱应有的代价。
+	white_peace_possible = no
+	# 主攻方死亡后阵营由同党继承，内战不会瞬间崩盘
+	on_primary_attacker_death = inherit_faction
+	allow_hostages = no
+
+	########## 谁可以发动 ##########
+	allowed_for_character = {
+		scope:attacker = {
+			ftr_court_can_declare_succession_war_trigger = yes
+		}
+	}
+
+	########## 对谁发动 ##########
+	allowed_against_character = {
+		scope:attacker = {
+			top_liege = scope:defender
+		}
+		scope:defender = {
+			ftr_court_realm_tier_valid_trigger = yes
+			is_independent_ruler = yes
+		}
+	}
+
+	valid_to_start = {
+		always = yes
+	}
+
+	cost = {
+		prestige = {
+			value = ftr_court_succession_war_prestige_cost_value
+		}
+	}
+
+	########## 宣战 ##########
+	on_declaration = {
+		scope:war = { save_scope_as = ftr_court_war }
+		scope:attacker = { save_scope_as = ftr_court_warleader }
+		scope:defender = { save_scope_as = ftr_court_monarch }
+
+		# 定位故事本体，供后续效果使用
+		scope:defender = {
+			any_owned_story = {
+				type = ftr_court_struggle
+				save_scope_as = ftr_court_story
+			}
+		}
+
+		# 1) 无地竞争者 -> 创建纯虚拟临时公国，使其具备宣战与作战资格
+		scope:attacker = {
+			if = {
+				limit = { ftr_court_needs_temp_duchy_trigger = yes }
+				ftr_court_create_temp_duchy_effect = yes
+			}
+		}
+
+		# 2) 支持者响应：双方各自拉人，避免孤军奋战
+		scope:attacker = { ftr_court_call_backers_to_war_effect = yes }
+		scope:defender = { ftr_court_call_loyalists_to_war_effect = yes }
+	}
+
+	########## 胜利：夺位 ##########
+	on_victory = {
+		scope:war = { save_scope_as = ftr_court_war }
+		scope:attacker = { save_scope_as = ftr_court_warleader }
+		scope:defender = { save_scope_as = ftr_court_old_monarch }
+
+		# 取代君主并囚禁之，随后由事件决定其命运
+		scope:attacker = {
+			ftr_court_usurp_throne_effect = yes
+		}
+
+		# 临时公国是纯虚拟头衔，不论胜负一律销毁
+		scope:attacker ?= { ftr_court_revoke_temp_duchy_effect = yes }
+		scope:defender ?= { ftr_court_revoke_temp_duchy_effect = yes }
+
+		# 新君进入冷却期，避免刚上位就被连锁推翻
+		scope:attacker ?= {
+			add_character_flag = {
+				flag = ftr_court_cooldown
+				years = ftr_court_cooldown_years_value
+			}
+		}
+	}
+
+	########## 失败：叛乱者付出代价 ##########
+	# 造反不是儿戏。失败者被剥夺继承权、声名扫地，并被押上君主的审判台。
+	on_defeat = {
+		scope:war = { save_scope_as = ftr_court_war }
+		scope:attacker = { save_scope_as = ftr_court_warleader }
+		scope:defender = { save_scope_as = ftr_court_old_monarch }
+
+		scope:attacker ?= {
+			# 临时公国是纯虚拟头衔，不论胜负一律销毁
+			ftr_court_revoke_temp_duchy_effect = yes
+
+			# 剥夺继承权：造过反的人不配再排队
+			if = {
+				limit = { NOT = { has_character_flag = ftr_court_disinherited } }
+				disinherit_effect = { DISINHERITOR = scope:defender }
+				add_character_flag = ftr_court_disinherited
+			}
+
+			# 声名扫地
+			add_prestige = ftr_court_rebellion_prestige_loss_value
+			add_piety = ftr_court_rebellion_piety_loss_value
+			add_dread = ftr_court_dread_minor_value
+
+			ftr_court_clear_claimant_status_effect = yes
+		}
+
+		scope:defender ?= {
+			ftr_court_revoke_temp_duchy_effect = yes
+			add_character_flag = {
+				flag = ftr_court_cooldown
+				years = ftr_court_cooldown_years_value
+			}
+		}
+
+		# 胜负已分，立下停战协定，防止转头再来一次
+		scope:attacker ?= {
+			add_truce_both_ways = {
+				character = scope:defender
+				days = ftr_court_rebellion_truce_days_value
+				war = scope:ftr_court_war
+				result = defeat
+			}
+		}
+
+		# 如何处置被俘的叛乱者，交由君主在事件中定夺
+		scope:defender ?= {
+			trigger_event = {
+				id = ftr_court_struggle.0013
+				days = 3
+			}
+		}
+	}
+
+	########## 妥协停战（兜底） ##########
+	# white_peace_possible = no，正常流程不会走到这里。
+	# 保留此分支纯属防御：万一引擎因异常路径触发，
+	# 也绝不让造反者全身而退——按与失败同等的代价处理。
+	on_white_peace = {
+		scope:attacker ?= {
+			ftr_court_revoke_temp_duchy_effect = yes
+			if = {
+				limit = { NOT = { has_character_flag = ftr_court_disinherited } }
+				disinherit_effect = { DISINHERITOR = scope:defender }
+				add_character_flag = ftr_court_disinherited
+			}
+			add_prestige = ftr_court_rebellion_prestige_loss_value
+			ftr_court_clear_claimant_status_effect = yes
+		}
+		scope:defender ?= {
+			ftr_court_revoke_temp_duchy_effect = yes
+			add_character_flag = {
+				flag = ftr_court_cooldown
+				years = ftr_court_cooldown_years_value
+			}
+		}
+	}
+
+	########## 战争失效（目标死亡、头衔消失等） ##########
+	# 失效多为意外情况，不追究叛乱者责任，但必须回收临时公国，
+	# 否则会留下永远无法处理的虚拟头衔。
+	on_invalidated = {
+		scope:attacker ?= { ftr_court_revoke_temp_duchy_effect = yes }
+		scope:defender ?= { ftr_court_revoke_temp_duchy_effect = yes }
+	}
+
+	########## 描述 ##########
+	on_victory_desc = {
+		desc = ftr_court_succession_war_victory_desc
+	}
+	on_defeat_desc = {
+		desc = ftr_court_succession_war_defeat_desc
+	}
+	on_white_peace_desc = {
+		desc = ftr_court_succession_war_white_peace_desc
+	}
+}

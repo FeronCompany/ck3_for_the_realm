@@ -1064,7 +1064,51 @@ ftr_court_sync_courtiers_effect = {
 		}
 	}
 
-	# ---- 6. 追随者：朝堂封臣中已站队支持某位继任竞争者者 ----
+	# ---- 6. 每个继任者各自的追随者（存继任者身上的 ftr_court_heir_backers 列表） ----
+	# 供 GUI 继任者条目内嵌显示（hbox { 继任者头像 + 该继任者的追随者 + 空白 }）。
+	# 追随者 = 朝堂封臣/廷臣中已站队（ftr_court_backer_of）支持某位竞争者者。
+	# 仅在有朝堂 story（存在站队）时填充；无 story 则列表为空，GUI 端也以 ftr_court_ui_active 隐藏。
+	# 先清空所有相关继任者的追随者列表，再统一填充。
+	root = {
+		every_in_list = {
+			list = ftr_court_ui_heirs
+			clear_variable_list = ftr_court_heir_backers
+		}
+	}
+	every_vassal = {
+		limit = { has_variable = ftr_court_backer_of }
+		var:ftr_court_backer_of ?= {
+			clear_variable_list = ftr_court_heir_backers
+		}
+	}
+	every_courtier = {
+		limit = { has_variable = ftr_court_backer_of }
+		var:ftr_court_backer_of ?= {
+			clear_variable_list = ftr_court_heir_backers
+		}
+	}
+	every_vassal = {
+		limit = { ftr_court_has_backing_trigger = yes }
+		save_scope_as = ftr_court_backer_scope
+		var:ftr_court_backer_of ?= {
+			add_to_variable_list = {
+				name = ftr_court_heir_backers
+				target = scope:ftr_court_backer_scope
+			}
+		}
+	}
+	every_courtier = {
+		limit = { ftr_court_has_backing_trigger = yes }
+		save_scope_as = ftr_court_backer_scope
+		var:ftr_court_backer_of ?= {
+			add_to_variable_list = {
+				name = ftr_court_heir_backers
+				target = scope:ftr_court_backer_scope
+			}
+		}
+	}
+
+	# ---- 7. 追随者：朝堂封臣中已站队支持某位继任竞争者者（全局列表，供旧版展示） ----
 	every_vassal = {
 		limit = { ftr_court_has_backing_trigger = yes }
 		ftr_court_add_ui_member_effect = { LIST = ftr_court_ui_backers }

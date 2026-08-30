@@ -186,8 +186,8 @@ button_tab = {
 | `tooltip` | 悬停提示文本/表达式 | `tooltip = "ftr_court_ui_title"` |
 | `tooltip_enabled` | 是否启用提示 | `tooltip_enabled = "[Character.IsValid]"` |
 | `enabled` | 是否可交互 | `enabled = "[CharacterInteractionConfirmationWindow.CanSend]"` |
-| `margin = { l t r b }` | 外边距 | `margin = { 10 26 }` |
-| `margin_left` / `margin_top` / `margin_right` / `margin_bottom` | 单边距 | `margin_top = 30` |
+| `margin = { l t }` | 外边距（**仅 2 值**：水平 l、垂直 t，左右/上下对称；**不支持 4 值** `{ l t r b }`，4 值会报 `Cannot read this many items into array: margin`） | `margin = { 10 26 }` |
+| `margin_left` / `margin_top` / `margin_right` / `margin_bottom` | 单边距（需要不对称边距时用） | `margin_top = 30` |
 | `using = 模板` | 复用模板 | `using = Animation_ShowHide_Quick` |
 | `block = "名" {}` | 定义可被覆盖的命名块 | `block "title_visible" { visible = no }` |
 | `state = {}` | 子控件状态机 | `state = { name = _show }` |

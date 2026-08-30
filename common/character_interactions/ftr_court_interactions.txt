@@ -34,6 +34,8 @@ ftr_court_back_claimant_interaction = {
 		NOT = { scope:actor = scope:recipient }
 		scope:recipient = { ftr_court_is_active_claimant_trigger = yes }
 		scope:actor = {
+			# 无地廷臣无法主动发起交互，参与一律走事件（ftr_court_struggle.0014）
+			is_landed = yes
 			NOT = { ftr_court_is_struggle_monarch_trigger = yes }
 			# 一人不事二主
 			NOT = { ftr_court_has_backed_someone_trigger = yes }
@@ -85,6 +87,14 @@ ftr_court_back_claimant_interaction = {
 					add_opinion = { target = scope:actor  modifier = ftr_court_rival_claimant_opinion }
 				}
 				ftr_court_refresh_backer_count_effect = yes
+				# 朝堂通报：公开表态
+				owner = {
+					save_scope_as = ftr_court_monarch
+					ftr_court_send_court_toast_effect = {
+						TITLE = ftr_court_notice_backing
+						ICON = scope:actor
+					}
+				}
 			}
 		}
 	}
@@ -119,6 +129,8 @@ ftr_court_withdraw_backing_interaction = {
 	ai_frequency = 96
 	is_shown = {
 		scope:actor = {
+			# 无地廷臣无法主动发起交互（站队走事件 0014，撤回暂无事件路径）
+			is_landed = yes
 			has_variable = ftr_court_backer_of
 			var:ftr_court_backer_of ?= { this = scope:recipient }
 		}
@@ -166,6 +178,8 @@ ftr_court_defect_interaction = {
 		scope:recipient = { ftr_court_is_active_claimant_trigger = yes }
 		# 此前支持的是别人
 		scope:actor = {
+			# 无地廷臣无法主动发起交互
+			is_landed = yes
 			ftr_court_has_backed_someone_trigger = yes
 			NOT = { var:ftr_court_backer_of ?= { this = scope:recipient } }
 		}
@@ -358,6 +372,11 @@ ftr_court_petition_coregency_interaction = {
 		# 请愿结果交由事件裁决，君主可允可拒
 		scope:recipient = {
 			save_scope_as = ftr_court_monarch
+			# 朝堂通报：共治请愿已呈递
+			ftr_court_send_court_toast_effect = {
+				TITLE = ftr_court_notice_petition
+				ICON = scope:actor
+			}
 			trigger_event = {
 				id = ftr_court_struggle.0020
 				days = 1
@@ -393,6 +412,8 @@ ftr_court_promise_council_seat_interaction = {
 		NOT = { scope:actor = scope:recipient }
 		# 只有竞争者或共治者才许得出官位
 		scope:actor = {
+			# 无地竞争者无法主动发起交互（拉拢走事件）
+			is_landed = yes
 			OR = {
 				ftr_court_is_active_claimant_trigger = yes
 				has_active_diarchy = yes
@@ -419,6 +440,12 @@ ftr_court_promise_council_seat_interaction = {
 				PRESTIGE = ftr_court_promise_council_prestige_cost_value
 				INFLUENCE = ftr_court_promise_council_influence_cost_value
 			}
+			# 欠账计数：继承后依此触发提醒事件
+			if = {
+				limit = { NOT = { has_variable = ftr_court_owes_council } }
+				set_variable = { name = ftr_court_owes_council  value = 0 }
+			}
+			change_variable = { name = ftr_court_owes_council  add = 1 }
 		}
 		# 记在被承诺者身上，便于日后集中兑现
 		scope:recipient = {
@@ -455,6 +482,8 @@ ftr_court_promise_contract_relief_interaction = {
 	is_shown = {
 		NOT = { scope:actor = scope:recipient }
 		scope:actor = {
+			# 无地竞争者无法主动发起交互（拉拢走事件）
+			is_landed = yes
 			OR = {
 				ftr_court_is_active_claimant_trigger = yes
 				has_active_diarchy = yes
@@ -498,6 +527,151 @@ ftr_court_promise_contract_relief_interaction = {
 		modifier = {
 			add = 30
 			scope:recipient = { has_trait = greedy }
+		}
+	}
+}
+
+######### 游说：拉拢同僚推动权力天平（议题 2 的主动博弈） #########
+# 权臣阵营借此推高天平，保皇阵营借此巩固人心。
+# 被游说者可以是封臣或无地廷臣——廷臣由此获得被动参与路径。
+ftr_court_lobby_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	desc = ftr_court_lobby_interaction_desc
+	cooldown_against_recipient = { years = 1 }
+
+	send_option = {
+		flag = lobby_diarch
+		localization = ftr_court_lobby_diarch
+		starts_enabled = yes
+	}
+	send_option = {
+		flag = lobby_monarch
+		localization = ftr_court_lobby_monarch
+	}
+	send_options_exclusive = yes
+
+	ai_targets = {
+		ai_recipients = peer_vassals
+		ai_recipients = courtiers
+		max = 2
+	}
+	ai_frequency = 48
+
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		scope:actor = {
+			# 无地廷臣不能主动发起交互
+			is_landed = yes
+			NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+			# 双方处于同一朝堂（故事挂在君主身上）
+			OR = {
+				top_liege ?= { any_owned_story = { type = ftr_court_struggle } }
+				AND = {
+					exists = employer
+					employer ?= { any_owned_story = { type = ftr_court_struggle } }
+				}
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+			ftr_court_can_pay_cost_trigger = {
+				OTHER = scope:recipient
+				PRESTIGE = ftr_court_lobby_prestige_cost_value
+				INFLUENCE = ftr_court_lobby_influence_cost_value
+			}
+		}
+		scope:recipient = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+		}
+	}
+	can_send = {}
+	on_accept = {
+		scope:actor = {
+			ftr_court_pay_cost_effect = {
+				OTHER = scope:recipient
+				PRESTIGE = ftr_court_lobby_prestige_cost_value
+				INFLUENCE = ftr_court_lobby_influence_cost_value
+			}
+		}
+
+		# 定位所属朝堂
+		scope:actor.top_liege ?= {
+			any_owned_story = {
+				type = ftr_court_struggle
+				save_scope_as = ftr_court_story
+			}
+		}
+		if = {
+			limit = {
+				NOT = { exists = scope:ftr_court_story }
+				exists = scope:actor.employer
+			}
+			scope:actor.employer = {
+				any_owned_story = {
+					type = ftr_court_struggle
+					save_scope_as = ftr_court_story
+				}
+			}
+		}
+
+		if = {
+			limit = { exists = scope:ftr_court_story }
+			scope:ftr_court_story = {
+				if = {
+					limit = { scope:actor = { has_character_flag = lobby_diarch } }
+					# 劝进：游说对象被拉向共治阵营
+					set_variable = {
+						name = ftr_court_swing_amount
+						value = ftr_court_swing_support_diarch_value
+					}
+				}
+				else = {
+					# 劝忠：游说对象被拉回君主阵营
+					set_variable = {
+						name = ftr_court_swing_amount
+						value = ftr_court_swing_support_monarch_value
+					}
+				}
+				ftr_court_shift_swing_effect = yes
+				remove_variable = ftr_court_swing_amount
+			}
+		}
+
+		# 人情记账
+		if = {
+			limit = { scope:actor = { has_character_flag = lobby_diarch } }
+			scope:recipient = {
+				add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
+			}
+		}
+		else = {
+			scope:actor.top_liege ?= {
+				save_scope_as = ftr_court_monarch
+			}
+			scope:recipient = {
+				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_loyalist_opinion }
+			}
+		}
+	}
+	on_decline = {}
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 25
+			scope:actor = { has_trait = ambitious }
+		}
+		modifier = {
+			add = 25
+			scope:actor = { has_trait = gregarious }
+		}
+		modifier = {
+			add = -30
+			scope:actor = { has_trait = shy }
 		}
 	}
 }

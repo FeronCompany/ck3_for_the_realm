@@ -49,6 +49,41 @@
  ftr_court_struggle.0013.c:0 "杀一儆百。"
  ftr_court_struggle.0013.d:0 "他已经失去得够多了。"
 
+ ###### 0016 内阁承诺首次提醒 ######
+ ftr_court_struggle.0016.t:0 "欠下的席位"
+ ftr_court_struggle.0016.desc:0 "王冠已落到[ROOT.GetTitledFirstNamePossessive]头上，随之一同而来的，还有通往大位路上一笔笔许下的承诺。[scope:ftr_court_promised_vassal.GetFullName]当年出力扶持，换的是一个内阁席位。满朝文武都在看着，这些话究竟算不算数。"
+ ftr_court_struggle.0016.a:0 "一诺千金，授职。"
+ ftr_court_struggle.0016.b:0 "时机未到，容后再议。"
+
+ ###### 0017 内阁承诺终裁 ######
+ ftr_court_struggle.0017.t:0 "耐心耗尽"
+ ftr_court_struggle.0017.desc:0 "[scope:ftr_court_promised_vassal.GetFullName]已经等得够久了。自那日许下内阁席位，数月过去，职位却始终没有着落。今日，他们要一个明确的答复——满朝文武，同样在看。"
+ ftr_court_struggle.0017.a:0 "罢了，授职。"
+ ftr_court_struggle.0017.b:0 "王冠不欠任何人。驳回。"
+
+ ###### 0018 废黜昏君 ######
+ ftr_court_struggle.0018.t:0 "提线在手"
+ ftr_court_struggle.0018.desc:0 "[scope:ftr_court_monarch.GetTitledFirstName]在别人递来的任何文书上盖印，近来每一道诏令都带着我的指纹。满朝向我鞠躬，只是名义上跪在他们面前。一切只差一步——而且不会有人哀悼。"
+ ftr_court_struggle.0018.a:0 "提线在手，何不连龙椅一起拿过来？"
+ ftr_court_struggle.0018.b:0 "提线已经够了——暂时。"
+
+ ###### 0014 朝堂站队 ######
+ ftr_court_struggle.0014.t:0 "择主而事"
+ ftr_court_struggle.0014.desc:0 "朝堂正在悄然分化，中立正成为最危险的立场。是时候决定该追随哪颗星了。"
+ ftr_court_struggle.0014.a:0 "拥立[scope:ftr_court_claimant_1.GetFullName]"
+ ftr_court_struggle.0014.b:0 "拥立[scope:ftr_court_claimant_2.GetFullName]"
+ ftr_court_struggle.0014.c:0 "拥立[scope:ftr_court_claimant_3.GetFullName]"
+ ftr_court_struggle.0014.d:0 "拥立[scope:ftr_court_claimant_4.GetFullName]"
+ ftr_court_struggle.0014.e:0 "拥立[scope:ftr_court_claimant_5.GetFullName]"
+ ftr_court_struggle.0014.f:0 "静观其变。"
+
+ ###### 0015 竞争者抉择 ######
+ ftr_court_struggle.0015.t:0 "良机已至"
+ ftr_court_struggle.0015.desc:0 "支持者已经聚拢，积怨早已摆上台面，年迈的[scope:ftr_court_monarch.GetTitledFirstName]一天弱过一天。众人都在等一个信号。此刻若再迟疑，他们便会转头去寻别人。"
+ ftr_court_struggle.0015.a:0 "举旗起兵。"
+ ftr_court_struggle.0015.b:0 "暗影中动手。"
+ ftr_court_struggle.0015.c:0 "再等等，从长计议。"
+
  ###### 0020 共治请愿 ######
  ftr_court_struggle.0020.t:0 "请分国事之忧"
  ftr_court_struggle.0020.desc:0 "[scope:actor.GetFullName]恭恭敬敬地跪下，以最谦卑的措辞奏请——将治国之重担分而担之。措辞无懈可击。正因如此，才最危险。"

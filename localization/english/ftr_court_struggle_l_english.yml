@@ -64,5 +64,28 @@
  ftr_court_promised_contract_modifier:0 "Promised Relief"
  ftr_court_promised_contract_modifier_desc:0 "A pledged lightening of obligations, honoured after the throne was won."
 
+ ###### Court Toast Notices ######
+ ftr_court_notice_backing:0 "A Declaration of Allegiance"
+ ftr_court_notice_petition:0 "A Petition for Co-Rule"
+ ftr_court_notice_war:0 "The War of Succession Has Begun"
+ ftr_court_notice_usurp:0 "The Throne Has Changed Hands"
+ ftr_court_notice_purge:0 "The Purge of the Court"
+
+ ###### Lobby Interaction ######
+ ftr_court_lobby_interaction_desc:0 "Work upon a fellow courtier to pull them toward one camp or the other. Words are cheap; conviction is not."
+ ftr_court_lobby_diarch:0 "Urge them to back the co-ruler"
+ ftr_court_lobby_monarch:0 "Urge them to stand by the Crown"
+
+ ###### Court Situation UI ######
+ ftr_court_ui_title:0 "<FTR>Court Situation"
+ ftr_court_ui_empty:0 "No power struggle is stirring in this court."
+ ftr_court_ui_phase_desc:0 "The state of the realm"
+
+ ###### Phase Descriptions ######
+ ftr_court_ui_phase_0:0 "The matter is settled — the succession has not yet begun to stir."
+ ftr_court_ui_phase_1:0 "Murmurs: the claimants have begun to gather factions."
+ ftr_court_ui_phase_2:0 "Deadlock: the court has split into two camps."
+ ftr_court_ui_phase_3:0 "On a knife's edge: coup and civil war are imminent!"
+
  ###### Misc ######
  ftr_show_stance_in_court_tt:0 "Already declared a stance this year"

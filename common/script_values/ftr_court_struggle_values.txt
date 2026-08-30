@@ -180,6 +180,9 @@ ftr_court_promise_contract_prestige_cost_value = 150
 ftr_court_promise_contract_influence_cost_value = 50
 ftr_court_request_coregency_prestige_cost_value = 240
 ftr_court_request_coregency_influence_cost_value = 80
+# 游说（推拉权力天平）
+ftr_court_lobby_prestige_cost_value = 90
+ftr_court_lobby_influence_cost_value = 30
 
 # 恩宠（事件 0001.c 君主示好）：双轨受益量
 ftr_court_favor_prestige_value = 100
@@ -206,6 +209,19 @@ ftr_court_prestige_minor_value = 100
 ftr_court_dread_minor_value = 10
 ftr_court_dread_medium_value = 25
 ftr_court_dread_major_value = 50
+
+########## 六之四、内阁席位承诺兑现 ##########
+# 继承后首次提醒的延迟（日），随机区间错开多个承诺，避免同日密集弹窗
+ftr_court_council_remind_delay_min_value = 3
+ftr_court_council_remind_delay_max_value = 7
+# 推迟后的终裁延迟（日）：180-360 天，届时不可再推迟
+ftr_court_council_final_delay_min_value = 180
+ftr_court_council_final_delay_max_value = 360
+# 同一继承中多个被承诺者的串行间隔（日）
+ftr_court_council_queue_delay_min_value = 5
+ftr_court_council_queue_delay_max_value = 15
+# 终裁拒绝承诺的声望惩罚
+ftr_court_betray_prestige_loss_value = -150
 
 ########## 六之三、叛乱代价 ##########
 # 造反不能白和平：叛乱失败必须付出实质代价

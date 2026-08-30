@@ -1,0 +1,50 @@
+﻿widget = {
+	name = "ftr_hud_court_struggle"
+	size = { 50 50 }
+	allow_outside = yes
+	parentanchor = vcenter|right
+	# 贴住右缘、避开原版"统治者目标"按钮（原版在 right|top 附近）
+	position = { 6 80 }
+	layer = hud_layer
+	alwaystransparent = yes
+	visible = "[And(Not(IsObserver),IsDefaultGUIMode)]"
+	using = Animation_ShowHide_Quick
+	widget = {
+		visible = "[Not(IsRightWindowOpen)]"
+		size = { 100% 100% }
+		state = {
+			name = _show
+			alpha = 1
+			duration = 0.1
+			using = Animation_Curve_Default
+		}
+		state = {
+			name = _hide
+			duration = 0.6
+			alpha = 0
+			using = Animation_Curve_Default
+		}
+		widget_hud_main_tab = {
+			name = "ftr_court_struggle_hud_btn"
+			tooltip = "ftr_court_ui_title"
+			# 常显：点击后窗口内由 ftr_court_ui_active 决定显示"角逐详情"或"暂无角逐"
+			blockoverride "maintab_button"
+			{
+				texture = "gfx/interface/icons/icon_ftr_court_struggle.dds"
+				# 每次点击都先同步数据，再切换窗口开/关
+				onclick = "[GetScriptedGui('ftr_court_sync_ui_data').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				onclick = "[GetVariableSystem.Toggle( 'ftr_court_struggle_window_open' )]"
+				onclick = "[GetVariableSystem.Clear('ftr_show_my_realm_tab_toggle')]"
+				onclick = "[GetVariableSystem.Clear('ftr_show_liege_realm_tab_toggle')]"
+			}
+			state = {
+				name = _mouse_hierarchy_enter
+				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('hud_tab_glow_institutions_leave','hud_tab_glow_institutions_enter')]"
+			}
+			state = {
+				name = _mouse_hierarchy_leave
+				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('hud_tab_glow_institutions_enter','hud_tab_glow_institutions_leave')]"
+			}
+		}
+	}
+}

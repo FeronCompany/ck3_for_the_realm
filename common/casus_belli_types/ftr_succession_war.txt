@@ -42,8 +42,17 @@ ftr_succession_war = {
 
 	########## 对谁发动 ##########
 	allowed_against_character = {
-		scope:attacker = {
-			top_liege = scope:defender
+		OR = {
+			# 常规路径：封臣对宗主
+			scope:attacker = {
+				top_liege = scope:defender
+			}
+			# 无地皇子/王子：凭预先创建的临时公国对君主开战（非封臣关系）
+			scope:attacker = {
+				is_landed = no
+				has_variable = ftr_court_temp_duchy
+				dynasty = scope:defender.dynasty
+			}
 		}
 		scope:defender = {
 			ftr_court_realm_tier_valid_trigger = yes
@@ -75,10 +84,14 @@ ftr_succession_war = {
 			}
 		}
 
-		# 1) 无地竞争者 -> 创建纯虚拟临时公国，使其具备宣战与作战资格
+		# 1) 临时公国应在宣战前由事件路径预建（无地者无法直接宣战）。
+		#    此处仅为兜底：万一有路径漏建，在此补建，保证战争数据完整。
 		scope:attacker = {
 			if = {
-				limit = { ftr_court_needs_temp_duchy_trigger = yes }
+				limit = {
+					is_landed = no
+					NOT = { has_variable = ftr_court_temp_duchy }
+				}
 				ftr_court_create_temp_duchy_effect = yes
 			}
 		}
@@ -86,6 +99,15 @@ ftr_succession_war = {
 		# 2) 支持者响应：双方各自拉人，避免孤军奋战
 		scope:attacker = { ftr_court_call_backers_to_war_effect = yes }
 		scope:defender = { ftr_court_call_loyalists_to_war_effect = yes }
+
+		# 3) 朝堂通报：继位之战爆发
+		scope:defender = {
+			save_scope_as = ftr_court_monarch
+			ftr_court_send_court_toast_effect = {
+				TITLE = ftr_court_notice_war
+				ICON = scope:attacker
+			}
+		}
 	}
 
 	########## 胜利：夺位 ##########
@@ -103,13 +125,7 @@ ftr_succession_war = {
 		scope:attacker ?= { ftr_court_revoke_temp_duchy_effect = yes }
 		scope:defender ?= { ftr_court_revoke_temp_duchy_effect = yes }
 
-		# 新君进入冷却期，避免刚上位就被连锁推翻
-		scope:attacker ?= {
-			add_character_flag = {
-				flag = ftr_court_cooldown
-				years = ftr_court_cooldown_years_value
-			}
-		}
+		# 新君冷却与朝堂收场统一由 ftr_court_usurp_throne_effect 处理
 	}
 
 	########## 失败：叛乱者付出代价 ##########

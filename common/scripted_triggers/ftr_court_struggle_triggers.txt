@@ -172,14 +172,30 @@ ftr_court_can_declare_succession_war_trigger = {
 }
 
 # 从自身出发，找到所参与的朝堂争夺并判断其是否已进入危机
-# 求值域：任意朝堂成员
+# 求值域：任意朝堂成员（封臣走 top_liege；无地廷臣走 employer）
 ftr_court_own_struggle_in_crisis_trigger = {
-	top_liege ?= {
-		any_owned_story = {
-			type = ftr_court_struggle
-			ftr_court_is_crisis_trigger = yes
+	OR = {
+		top_liege ?= {
+			any_owned_story = {
+				type = ftr_court_struggle
+				ftr_court_is_crisis_trigger = yes
+			}
+		}
+		employer ?= {
+			any_owned_story = {
+				type = ftr_court_struggle
+				ftr_court_is_crisis_trigger = yes
+			}
 		}
 	}
+}
+
+# 无地竞争者的起兵资格（用于事件路径，不要求宣战 UI 可达）
+ftr_court_landless_rebel_valid_trigger = {
+	is_landed = no
+	NOT = { is_imprisoned = yes }
+	NOT = { is_at_war = yes }
+	ftr_court_can_declare_succession_war_trigger = yes
 }
 
 # 无地竞争者（廷臣皇子/王子），需要创建临时公国才能参战

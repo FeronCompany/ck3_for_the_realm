@@ -64,5 +64,28 @@
  ftr_court_promised_contract_modifier:0 "许诺的宽免"
  ftr_court_promised_contract_modifier_desc:0 "大位既定之后，兑现了当初许下的减负之诺。"
 
+ ###### 朝堂通报 ######
+ ftr_court_notice_backing:0 "有人公开宣誓效忠"
+ ftr_court_notice_petition:0 "共治请愿已呈递御前"
+ ftr_court_notice_war:0 "继位之战爆发"
+ ftr_court_notice_usurp:0 "大位易主"
+ ftr_court_notice_purge:0 "朝堂清算开始"
+
+ ###### 游说交互 ######
+ ftr_court_lobby_interaction_desc:0 "对同僚进行游说，将其拉向其中一方阵营。话语不值钱，人心才值钱。"
+ ftr_court_lobby_diarch:0 "劝其支持共治者"
+ ftr_court_lobby_monarch:0 "劝其效忠君主"
+
+ ###### 朝堂局势 UI ######
+ ftr_court_ui_title:0 "<FTR>朝堂局势"
+ ftr_court_ui_empty:0 "此宫廷暂无权力角逐。"
+ ftr_court_ui_phase_desc:0 "本朝局势"
+
+ ###### 阶段描述 ######
+ ftr_court_ui_phase_0:0 "大局已定，继位之争尚未成形。"
+ ftr_court_ui_phase_1:0 "暗流涌动：继任者们开始结党。"
+ ftr_court_ui_phase_2:0 "势均力敌：朝堂分裂为两派。"
+ ftr_court_ui_phase_3:0 "一触即发：政变与内战一触即发！"
+
  ###### 杂项 ######
  ftr_show_stance_in_court_tt:0 "今年已表明过立场"

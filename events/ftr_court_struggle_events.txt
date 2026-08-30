@@ -235,7 +235,7 @@ ftr_court_struggle.0011 = {
 				limit = {
 					NOT = { this = scope:ftr_court_new_monarch }
 					is_landed = yes
-					has_army = yes
+					max_military_strength > 0
 					NOT = { is_imprisoned = yes }
 				}
 				save_scope_as = ftr_court_dissenter
@@ -264,12 +264,42 @@ ftr_court_struggle.0011 = {
 				has_trait = callous
 			}
 		}
+		# 标记被清算者
 		scope:ftr_court_story ?= {
 			every_in_list = {
 				list = ftr_court_claimant_list
 				limit = { NOT = { this = scope:ftr_court_new_monarch } }
+				add_character_flag = ftr_court_purged
 				ftr_court_clear_claimant_status_effect = yes
 				add_opinion = { target = scope:ftr_court_new_monarch  modifier = ftr_court_rival_claimant_opinion }
+			}
+		}
+		# 清算即免债：被清算者生前许下的承诺一并作废，新君只继承存活者的承诺
+		scope:ftr_court_new_monarch = {
+			every_vassal = {
+				limit = {
+					var:ftr_court_promised_by ?= { has_character_flag = ftr_court_purged }
+				}
+				remove_variable = ftr_court_promise_council
+				remove_variable = ftr_court_promise_contract
+				remove_variable = ftr_court_promised_by
+			}
+			every_courtier = {
+				limit = {
+					var:ftr_court_promised_by ?= { has_character_flag = ftr_court_purged }
+				}
+				remove_variable = ftr_court_promise_council
+				remove_variable = ftr_court_promise_contract
+				remove_variable = ftr_court_promised_by
+			}
+		}
+		# 清除被清算者的欠账计数与临时标记
+		scope:ftr_court_story ?= {
+			every_in_list = {
+				list = ftr_court_claimant_list
+				limit = { has_character_flag = ftr_court_purged }
+				remove_variable = ftr_court_owes_council
+				remove_character_flag = ftr_court_purged
 			}
 		}
 		add_dread = ftr_court_dread_medium_value
@@ -320,11 +350,9 @@ ftr_court_struggle.0012 = {
 				has_trait = content
 			}
 		}
-		# 以同样的理由（继位之争）起兵讨伐新君
-		start_war = {
-			casus_belli = ftr_succession_war
-			target = scope:ftr_court_new_monarch
-		}
+		# 以同样的理由（继位之争）起兵讨伐新君。
+		# 备战效果内部处理：无地者先建临时公国再宣战（无地者无法直接宣战）。
+		ftr_court_prepare_rebellion_effect = { TARGET = scope:ftr_court_new_monarch }
 	}
 	option = { # I swallow my pride and bend the knee
 		name = ftr_court_struggle.0012.b
@@ -341,6 +369,406 @@ ftr_court_struggle.0012 = {
 		}
 		ftr_court_clear_claimant_status_effect = yes
 		add_opinion = { target = scope:ftr_court_new_monarch  modifier = ftr_political_alliance_opinion }
+	}
+}
+
+##############################################################
+### 内阁席位承诺：兑现链（0016 -> 0017）
+###
+### 记账：竞争者（新君）ftr_court_owes_council 计数；
+###       被承诺者 ftr_court_promise_council + ftr_court_promised_by。
+### 触发：夺位路径由 ftr_court_usurp_throne_effect 安排；
+###       自然继承路径由 on_death 的 primary_heir 检查安排。
+##############################################################
+
+######### 0016 首次提醒（root = 新君） #########
+# 可立刻任命（按才干分派官方五席），也可推迟一次（180-360 天后终裁）。
+ftr_court_struggle.0016 = {
+	type = character_event
+	title = ftr_court_struggle.0016.t
+	desc = ftr_court_struggle.0016.desc
+	theme = stewardship
+
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:ftr_court_promised_vassal
+	}
+
+	# 无欠账则事件静默取消
+	trigger = {
+		has_variable = ftr_court_owes_council
+		var:ftr_court_owes_council > 0
+		OR = {
+			any_vassal = {
+				has_variable = ftr_court_promise_council
+				var:ftr_court_promised_by ?= { this = prev }
+			}
+			any_courtier = {
+				has_variable = ftr_court_promise_council
+				var:ftr_court_promised_by ?= { this = prev }
+			}
+		}
+	}
+
+	immediate = {
+		# 取一名被承诺者（先封臣后廷臣）
+		random_vassal = {
+			limit = {
+				has_variable = ftr_court_promise_council
+				var:ftr_court_promised_by ?= { this = prev }
+			}
+			save_scope_as = ftr_court_promised_vassal
+		}
+		if = {
+			limit = { NOT = { exists = scope:ftr_court_promised_vassal } }
+			random_courtier = {
+				limit = {
+					has_variable = ftr_court_promise_council
+					var:ftr_court_promised_by ?= { this = prev }
+				}
+				save_scope_as = ftr_court_promised_vassal
+			}
+		}
+	}
+
+	option = { # Grant them the promised seat
+		name = ftr_court_struggle.0016.a
+		ai_chance = {
+			base = 60
+			modifier = { add = 30  has_trait = just }
+			modifier = { add = -40  has_trait = deceitful }
+		}
+		trigger = { exists = scope:ftr_court_promised_vassal }
+		ftr_court_appoint_promised_councillor_effect = { TARGET = scope:ftr_court_promised_vassal }
+		# 还有别的欠账则串行下一个提醒
+		ftr_court_queue_next_council_reminder_effect = yes
+	}
+	option = { # Postpone it — they will not wait forever
+		name = ftr_court_struggle.0016.b
+		ai_chance = {
+			base = 40
+			modifier = { add = 40  has_trait = deceitful }
+			modifier = { add = 20  has_trait = impatient }
+			modifier = { add = -30  has_trait = just }
+		}
+		trigger = { exists = scope:ftr_court_promised_vassal }
+		# 唯一一次推迟：终裁事件只给任命或拒绝
+		trigger_event = {
+			id = ftr_court_struggle.0017
+			days = { ftr_court_council_final_delay_min_value  ftr_court_council_final_delay_max_value }
+		}
+	}
+}
+
+######### 0017 终裁（root = 新君） #########
+# 推迟后的最后通牒：要么给职位，要么完全拒绝。没有第三次机会。
+ftr_court_struggle.0017 = {
+	type = character_event
+	title = ftr_court_struggle.0017.t
+	desc = ftr_court_struggle.0017.desc
+	theme = stewardship
+
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:ftr_court_promised_vassal
+	}
+
+	# 无欠账则事件静默取消（如承诺已被其它途径兑现）
+	trigger = {
+		OR = {
+			any_vassal = {
+				has_variable = ftr_court_promise_council
+				var:ftr_court_promised_by ?= { this = prev }
+			}
+			any_courtier = {
+				has_variable = ftr_court_promise_council
+				var:ftr_court_promised_by ?= { this = prev }
+			}
+		}
+	}
+
+	immediate = {
+		random_vassal = {
+			limit = {
+				has_variable = ftr_court_promise_council
+				var:ftr_court_promised_by ?= { this = prev }
+			}
+			save_scope_as = ftr_court_promised_vassal
+		}
+		if = {
+			limit = { NOT = { exists = scope:ftr_court_promised_vassal } }
+			random_courtier = {
+				limit = {
+					has_variable = ftr_court_promise_council
+					var:ftr_court_promised_by ?= { this = prev }
+				}
+				save_scope_as = ftr_court_promised_vassal
+			}
+		}
+	}
+
+	option = { # A promise is a promise
+		name = ftr_court_struggle.0017.a
+		ai_chance = {
+			base = 55
+			modifier = { add = 30  has_trait = just }
+			modifier = { add = -40  has_trait = deceitful }
+		}
+		trigger = { exists = scope:ftr_court_promised_vassal }
+		ftr_court_appoint_promised_councillor_effect = { TARGET = scope:ftr_court_promised_vassal }
+		ftr_court_queue_next_council_reminder_effect = yes
+	}
+	option = { # The throne owes nothing
+		name = ftr_court_struggle.0017.b
+		ai_chance = {
+			base = 45
+			modifier = { add = 40  has_trait = deceitful }
+			modifier = { add = 30  has_trait = callous }
+			modifier = { add = -50  has_trait = just }
+			modifier = { add = -30  has_trait = forgiving }
+		}
+		trigger = { exists = scope:ftr_court_promised_vassal }
+		# 完全拒绝：背信弃义，人心尽失
+		scope:ftr_court_promised_vassal = {
+			add_opinion = { target = root  modifier = ftr_court_betrayed_opinion }
+		}
+		add_prestige = ftr_court_betray_prestige_loss_value
+		ftr_court_clear_council_promise_effect = { TARGET = scope:ftr_court_promised_vassal }
+		ftr_court_queue_next_council_reminder_effect = yes
+	}
+}
+
+######### 0018 废黜昏君（root = 朝堂最强势力） #########
+# 由 story 的危机脉冲推送：拉锯达到夺位阈值且君主失能时，
+# 权力的真正主人会考虑换一个提线木偶——或者自己坐上去。
+ftr_court_struggle.0018 = {
+	type = character_event
+	title = ftr_court_struggle.0018.t
+	desc = ftr_court_struggle.0018.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_usurper
+		# 定位君主（封臣走 top_liege，廷臣走 employer）
+		if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+	}
+
+	option = { # The puppet strings are mine — why not the throne?
+		name = ftr_court_struggle.0018.a
+		ai_chance = {
+			base = 25
+			modifier = { add = 50  has_trait = ambitious }
+			modifier = { add = 30  has_trait = callous }
+			modifier = { add = 20  is_powerful_vassal = yes }
+			modifier = { add = -60  has_trait = content }
+			modifier = { add = -40  has_trait = loyal }
+		}
+		# 宫廷政变：无需战争，直接夺位并囚禁昏君
+		scope:ftr_court_monarch ?= {
+			save_scope_as = ftr_court_old_monarch
+		}
+		ftr_court_usurp_throne_effect = yes
+	}
+
+	option = { # The strings are enough — for now
+		name = ftr_court_struggle.0018.b
+		ai_chance = {
+			base = 75
+			modifier = { add = 40  has_trait = content }
+			modifier = { add = 30  has_trait = patient }
+			modifier = { add = -30  has_trait = ambitious }
+		}
+		# 继续垂帘，另待时机
+		add_character_flag = { flag = ftr_court_asked_usurp  years = 3 }
+		add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
+	}
+}
+
+######### 0014 朝堂站队（root = 被询问的朝堂成员，可为无地廷臣） #########
+# 由 story 的对立/危机脉冲推送。
+# 存在意义：无地廷臣不能主动发起角色交互，其参与一律依赖事件触发。
+ftr_court_struggle.0014 = {
+	type = character_event
+	title = ftr_court_struggle.0014.t
+	desc = ftr_court_struggle.0014.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_asked
+		# 定位君主（封臣走 top_liege，廷臣走 employer）与其名下的角逐
+		if = {
+			limit = { exists = top_liege }
+			top_liege = {
+				save_scope_as = ftr_court_monarch
+				any_owned_story = {
+					type = ftr_court_struggle
+					save_scope_as = ftr_court_story
+				}
+			}
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = {
+				save_scope_as = ftr_court_monarch
+				any_owned_story = {
+					type = ftr_court_struggle
+					save_scope_as = ftr_court_story
+				}
+			}
+		}
+		scope:ftr_court_story ?= {
+			ftr_court_save_ranked_claimants_effect = yes
+		}
+	}
+
+	option = { # Back the strongest
+		name = ftr_court_struggle.0014.a
+		trigger = { exists = scope:ftr_court_claimant_1 }
+		ai_chance = {
+			base = 40
+			modifier = { add = 30  has_trait = ambitious }
+		}
+		set_variable = { name = ftr_court_backer_of  value = scope:ftr_court_claimant_1 }
+		scope:ftr_court_claimant_1 = {
+			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
+		}
+	}
+	option = { # Back the second
+		name = ftr_court_struggle.0014.b
+		trigger = { exists = scope:ftr_court_claimant_2 }
+		ai_chance = { base = 20 }
+		set_variable = { name = ftr_court_backer_of  value = scope:ftr_court_claimant_2 }
+		scope:ftr_court_claimant_2 = {
+			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
+		}
+	}
+	option = { # Back a dark horse
+		name = ftr_court_struggle.0014.c
+		trigger = { exists = scope:ftr_court_claimant_3 }
+		ai_chance = { base = 10 }
+		set_variable = { name = ftr_court_backer_of  value = scope:ftr_court_claimant_3 }
+		scope:ftr_court_claimant_3 = {
+			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
+		}
+	}
+	option = { # Back the fourth
+		name = ftr_court_struggle.0014.d
+		trigger = { exists = scope:ftr_court_claimant_4 }
+		ai_chance = { base = 5 }
+		set_variable = { name = ftr_court_backer_of  value = scope:ftr_court_claimant_4 }
+		scope:ftr_court_claimant_4 = {
+			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
+		}
+	}
+	option = { # Back the fifth
+		name = ftr_court_struggle.0014.e
+		trigger = { exists = scope:ftr_court_claimant_5 }
+		ai_chance = { base = 5 }
+		set_variable = { name = ftr_court_backer_of  value = scope:ftr_court_claimant_5 }
+		scope:ftr_court_claimant_5 = {
+			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
+		}
+	}
+	option = { # Watch and wait
+		name = ftr_court_struggle.0014.f
+		ai_chance = {
+			base = 30
+			modifier = { add = 40  has_trait = content }
+			modifier = { add = 30  has_trait = craven }
+		}
+	}
+}
+
+######### 0015 危机：竞争者抉择（root = 竞争者，可为无地皇子） #########
+# 由 story 的危机脉冲推送，推给竞争力最高且近期未被询问过的竞争者。
+# 起兵选项走 ftr_court_prepare_rebellion_effect：无地者先建临时公国再宣战。
+ftr_court_struggle.0015 = {
+	type = character_event
+	title = ftr_court_struggle.0015.t
+	desc = ftr_court_struggle.0015.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_claimant
+		# 定位君主（封臣走 top_liege，廷臣走 employer）
+		if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+	}
+
+	option = { # Raise the banners
+		name = ftr_court_struggle.0015.a
+		trigger = { ftr_court_landless_rebel_valid_trigger = yes }
+		ai_chance = {
+			base = 20
+			modifier = { add = 45  has_trait = ambitious }
+			modifier = { add = 30  has_trait = brave }
+			modifier = { add = -60  has_trait = content }
+			modifier = { add = -40  has_trait = craven }
+		}
+		add_character_flag = { flag = ftr_court_asked_to_rebel  years = 3 }
+		ftr_court_prepare_rebellion_effect = { TARGET = scope:ftr_court_monarch }
+	}
+	option = { # Strike from the shadows
+		name = ftr_court_struggle.0015.b
+		trigger = { government_allows = administrative }
+		ai_chance = {
+			base = 25
+			modifier = { add = 30  has_trait = ambitious }
+			modifier = { add = 20  intrigue >= 15 }
+			modifier = { add = -40  has_trait = just }
+		}
+		# 行政制竞争者以政变（coup 计谋）夺位，无需领地
+		start_scheme = {
+			type = coup
+			target = scope:ftr_court_monarch
+		}
+		add_character_flag = { flag = ftr_court_asked_to_rebel  years = 3 }
+	}
+	option = { # Bide my time
+		name = ftr_court_struggle.0015.c
+		ai_chance = {
+			base = 55
+			modifier = { add = 40  has_trait = content }
+			modifier = { add = 30  has_trait = craven }
+			modifier = { add = -30  has_trait = impatient }
+		}
+		add_character_flag = { flag = ftr_court_asked_to_rebel  years = 3 }
+		add_stress = medium_stress_gain
 	}
 }
 

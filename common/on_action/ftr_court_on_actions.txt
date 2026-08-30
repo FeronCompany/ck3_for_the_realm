@@ -72,3 +72,27 @@ on_birth_child = {
 		ftr_court_on_child_born_on_action
 	}
 }
+
+# 继承路径上的内阁席位承诺提醒。
+# root = 死者，scope:primary_heir = 法定继承人（官方 death.txt 同作用域用法）。
+# 覆盖自然继承；夺位路径由 ftr_court_usurp_throne_effect 自行安排。
+ftr_court_on_council_promise_check_on_action = {
+	trigger = {
+		exists = scope:primary_heir
+		scope:primary_heir = {
+			has_variable = ftr_court_owes_council
+			var:ftr_court_owes_council > 0
+		}
+	}
+	effect = {
+		scope:primary_heir = {
+			ftr_court_schedule_council_reminder_effect = yes
+		}
+	}
+}
+
+on_death = {
+	on_actions = {
+		ftr_court_on_council_promise_check_on_action
+	}
+}

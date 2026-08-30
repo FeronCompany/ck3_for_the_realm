@@ -910,6 +910,8 @@ ftr_court_sync_courtiers_effect = {
 	root = {
 		# 复位标记与列表
 		set_variable = { name = ftr_court_ui_has_diarch  value = 0 }
+		# 清空共治者角色变量：无共治者时 GUI 常驻空位需读到无效角色，避免残留上一次的旧值
+		clear_variable = ftr_court_ui_diarch_char
 		clear_variable_list = ftr_court_ui_spouses
 		clear_variable_list = ftr_court_ui_ministers
 		clear_variable_list = ftr_court_ui_heirs
@@ -939,6 +941,12 @@ ftr_court_sync_courtiers_effect = {
 				value = scope:ftr_court_ui_diarch_char_scope
 			}
 			set_variable = { name = ftr_court_ui_has_diarch  value = 1 }
+		}
+	}
+	else = {
+		# 无摄政/共治者：平衡条归零（显示在中点 = 无偏移）
+		root = {
+			set_variable = { name = ftr_court_ui_swing  value = 0 }
 		}
 	}
 
@@ -980,7 +988,7 @@ ftr_court_sync_courtiers_effect = {
 			every_child = {
 				limit = {
 					is_alive = yes
-					is_child_of = root
+					is_child_of = scope:ftr_court_court_monarch
 					is_male = yes
 				}
 				ftr_court_add_heir_effect = yes
@@ -994,7 +1002,7 @@ ftr_court_sync_courtiers_effect = {
 			every_child = {
 				limit = {
 					is_alive = yes
-					is_child_of = root
+					is_child_of = scope:ftr_court_court_monarch
 					is_female = yes
 				}
 				ftr_court_add_heir_effect = yes
@@ -1005,7 +1013,7 @@ ftr_court_sync_courtiers_effect = {
 			every_child = {
 				limit = {
 					is_alive = yes
-					is_child_of = root
+					is_child_of = scope:ftr_court_court_monarch
 					is_male = yes
 				}
 				ftr_court_add_heir_effect = yes
@@ -1013,7 +1021,7 @@ ftr_court_sync_courtiers_effect = {
 			every_child = {
 				limit = {
 					is_alive = yes
-					is_child_of = root
+					is_child_of = scope:ftr_court_court_monarch
 					is_female = yes
 				}
 				ftr_court_add_heir_effect = yes
@@ -1034,9 +1042,9 @@ ftr_court_sync_courtiers_effect = {
 				limit = {
 					is_alive = yes
 					is_adult = yes
-					is_sibling_of = root
+					is_sibling_of = scope:ftr_court_court_monarch
 					dynasty ?= {
-						this = root.dynasty
+						this = scope:ftr_court_court_monarch.dynasty
 					}
 				}
 				ftr_court_add_heir_effect = yes

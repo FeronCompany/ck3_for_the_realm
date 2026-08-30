@@ -4,7 +4,7 @@
 	allow_outside = yes
 	parentanchor = vcenter|right
 	# 贴住右缘、避开原版"统治者目标"按钮（原版在 right|top 附近）
-	position = { -36 80 }
+	position = { -36 40 }
 	layer = hud_layer
 	alwaystransparent = yes
 	visible = "[And(Not(IsObserver),IsDefaultGUIMode)]"

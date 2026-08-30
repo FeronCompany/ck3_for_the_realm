@@ -83,6 +83,11 @@
  ftr_court_ui_phase_desc:0 "本朝局势"
  ftr_court_ui_courtiers_label:0 "朝廷核心"
  ftr_court_ui_claimants_label:0 "继任竞争者（评分）"
+ ftr_court_ui_spouses_label:0 "配偶与姬妾"
+ ftr_court_ui_ministers_label:0 "权臣与内阁"
+ ftr_court_ui_heirs_label:0 "继任者"
+ ftr_court_ui_backers_label:0 "支持者"
+ ftr_court_ui_diarch_tag:0 "摄政"
 
  ###### 阶段描述 ######
  ftr_court_ui_phase_0:0 "大局已定，继位之争尚未成形。"

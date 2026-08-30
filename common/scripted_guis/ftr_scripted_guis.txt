@@ -69,14 +69,18 @@ ftr_court_sync_ui_data = {
 		set_variable = { name = ftr_court_ui_count  value = 0 }
 		set_variable = { name = ftr_court_ui_gap  value = 999 }
 		clear_variable_list = ftr_court_ui_claimants
-		clear_variable_list = ftr_court_ui_courtiers
+		clear_variable_list = ftr_court_ui_spouses
+		clear_variable_list = ftr_court_ui_ministers
+		clear_variable_list = ftr_court_ui_heirs
+		clear_variable_list = ftr_court_ui_backers
 
-		# 1) 自己的朝堂
+		# 1) 自己的朝堂：先镜像 story（竞争者/追随者数据），再收集朝廷成员
 		if = {
 			limit = {
 				any_owned_story = { type = ftr_court_struggle }
 			}
 			ftr_court_sync_ui_from_story_effect = yes
+			ftr_court_sync_courtiers_effect = yes
 		}
 		# 2) 宗主的朝堂
 		else_if = {
@@ -87,6 +91,7 @@ ftr_court_sync_ui_data = {
 				}
 			}
 			top_liege = { ftr_court_sync_ui_from_story_effect = yes }
+			top_liege = { ftr_court_sync_courtiers_effect = yes }
 		}
 		# 3) 雇主的朝堂（无地廷臣）
 		else_if = {
@@ -97,8 +102,9 @@ ftr_court_sync_ui_data = {
 				}
 			}
 			employer = { ftr_court_sync_ui_from_story_effect = yes }
+			employer = { ftr_court_sync_courtiers_effect = yes }
 		}
-		# 4) 无朝堂角逐：仍收集朝廷核心成员供展示（君主/继承人/配偶/妾/权臣/内阁/摄政）
+		# 4) 无朝堂角逐：仍收集朝廷核心成员供展示
 		else_if = {
 			limit = {
 				ftr_court_is_struggle_monarch_trigger = yes

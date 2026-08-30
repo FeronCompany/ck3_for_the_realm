@@ -97,7 +97,7 @@ ftr_court_claim_strength_value = {
 	### 特质
 	if = { limit = { has_trait = ambitious }		add = ftr_court_claim_ambitious_value }
 	if = { limit = { has_trait = brave }			add = ftr_court_claim_brave_value }
-	if = { limit = { has_trait = genius }			add = ftr_court_claim_genius_value }
+	if = { limit = { has_trait = intellect_good_3 }	add = ftr_court_claim_genius_value }
 	if = { limit = { has_trait = content }			add = ftr_court_claim_content_value }
 	if = { limit = { has_trait = craven }			add = ftr_court_claim_craven_value }
 	if = { limit = { has_trait = humble }			add = ftr_court_claim_humble_value }
@@ -235,3 +235,5 @@ ftr_court_rebellion_truce_days_value = 1825
 ftr_court_temp_duchy_count_value = 1
 # 临时公国被销毁时的补偿金币
 ftr_court_temp_duchy_compensation_value = 150
+
+

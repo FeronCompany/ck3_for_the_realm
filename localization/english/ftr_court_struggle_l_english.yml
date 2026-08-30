@@ -83,6 +83,11 @@
  ftr_court_ui_phase_desc:0 "The state of the realm"
  ftr_court_ui_courtiers_label:0 "The Court"
  ftr_court_ui_claimants_label:0 "Claimants (Standing)"
+ ftr_court_ui_spouses_label:0 "Spouses and Consorts"
+ ftr_court_ui_ministers_label:0 "Powerful Vassals and Council"
+ ftr_court_ui_heirs_label:0 "Heirs"
+ ftr_court_ui_backers_label:0 "Supporters"
+ ftr_court_ui_diarch_tag:0 "Regent"
 
  ###### Phase Descriptions ######
  ftr_court_ui_phase_0:0 "The matter is settled — the succession has not yet begun to stir."

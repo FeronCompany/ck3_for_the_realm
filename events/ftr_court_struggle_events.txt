@@ -755,7 +755,7 @@ ftr_court_struggle.0015 = {
 		# 行政制竞争者以政变（coup 计谋）夺位，无需领地
 		start_scheme = {
 			type = coup
-			target = scope:ftr_court_monarch
+			target_character = scope:ftr_court_monarch
 		}
 		add_character_flag = { flag = ftr_court_asked_to_rebel  years = 3 }
 	}

@@ -834,94 +834,240 @@ ftr_court_send_court_toast_effect = {
 ### 十、UI 数据同步
 ######################################################
 
-# 在君主域执行：无朝堂角逐时，收集朝廷核心成员名单供 GUI 展示。
-# 核心成员：君主本人、顺位继承人、配偶、妾、权臣、内阁、摄政/共治者。
-# 写入 root（玩家）域的 ftr_court_ui_courtiers 列表。
-ftr_court_sync_courtiers_effect = {
-	save_scope_as = ftr_court_court_monarch
-	root = {
-		clear_variable_list = ftr_court_ui_courtiers
-	}
-
-	# 君主本人
+# 在成员角色域执行：把自身加入 root（玩家）域的指定列表。
+# 参数：LIST = 列表名
+ftr_court_add_ui_member_effect = {
 	save_scope_as = ftr_court_ui_member
 	root = {
 		add_to_variable_list = {
-			name = ftr_court_ui_courtiers
+			name = $LIST$
 			target = scope:ftr_court_ui_member
 		}
 	}
+}
 
-	# 顺位继承人（每位）
-	every_heir = {
+# 在候选人域执行：把候选人加入玩家域继任者列表，最多保留 5 位。
+# 核心政治逻辑：最高统治者的子女优先参与继位角逐（不分继承顺位高低），
+# 孙辈顺位虽靠前但非角逐主角——本效果只由 every_child / every_sibling 调用，
+# 天然只收集直系血亲，用 root 域计数器截断到最多 5 位。
+# 依赖：root = 玩家。
+ftr_court_add_heir_effect = {
+	save_scope_as = ftr_court_heir_candidate
+	root = {
+		if = {
+			limit = { NOT = { has_variable = ftr_court_heir_count } }
+			set_variable = { name = ftr_court_heir_count  value = 0 }
+		}
+		if = {
+			limit = { var:ftr_court_heir_count < 5 }
+			scope:ftr_court_heir_candidate ?= {
+				ftr_court_add_ui_member_effect = { LIST = ftr_court_ui_heirs }
+			}
+			change_variable = { name = ftr_court_heir_count  add = 1 }
+		}
+	}
+}
+
+# 在君主域执行：收集权臣 + 内阁成员（排除配偶，避免与后宫格重复），
+# 参考 ftr_my_powerful_subject_list 的两段式：add_to_list 集中收集 → every_in_list 转存到 root（玩家）域。
+# 用 is_councillor_of = prev 识别内阁，覆盖「身为封臣的内阁」与「身为廷臣的内阁」。
+ftr_court_collect_ministers_effect = {
+	every_vassal = {
+		limit = {
+			OR = {
+				is_powerful_vassal = yes
+				is_councillor_of = prev
+			}
+			NOT = { has_character_flag = ftr_court_in_spouses }
+		}
+		add_to_list = ftr_court_ministers_list
+	}
+	every_courtier = {
+		limit = {
+			is_councillor_of = prev
+			NOT = { has_character_flag = ftr_court_in_spouses }
+		}
+		add_to_list = ftr_court_ministers_list
+	}
+	every_in_list = {
+		list = ftr_court_ministers_list
+		limit = { is_alive = yes }
 		save_scope_as = ftr_court_ui_member
 		root = {
 			add_to_variable_list = {
-				name = ftr_court_ui_courtiers
+				name = ftr_court_ui_ministers
 				target = scope:ftr_court_ui_member
 			}
 		}
 	}
+}
 
-	# 配偶
-	if = {
-		limit = { exists = spouse }
-		spouse = {
-			save_scope_as = ftr_court_ui_member
-			root = {
-				add_to_variable_list = {
-					name = ftr_court_ui_courtiers
-					target = scope:ftr_court_ui_member
-				}
-			}
+# 在君主域执行：收集朝廷核心成员，按类别写入玩家域的独立列表。
+# 布局（自上而下）：君主[+摄政] → 配偶/姬妾 → 权臣/内阁 → 继任者 → 追随者。
+ftr_court_sync_courtiers_effect = {
+	save_scope_as = ftr_court_court_monarch
+
+	root = {
+		# 复位标记与列表
+		set_variable = { name = ftr_court_ui_has_diarch  value = 0 }
+		clear_variable_list = ftr_court_ui_spouses
+		clear_variable_list = ftr_court_ui_ministers
+		clear_variable_list = ftr_court_ui_heirs
+		clear_variable_list = ftr_court_ui_backers
+		# 继任者计数器复位（ftr_court_add_heir_effect 用它截断到 5）
+		set_variable = { name = ftr_court_heir_count  value = 0 }
+	}
+
+	# ---- 1. 君主（靠上居中，存单角色变量） ----
+	save_scope_as = ftr_court_ui_rule
+	root = {
+		set_variable = {
+			name = ftr_court_ui_monarch_char
+			value = scope:ftr_court_ui_rule
 		}
 	}
 
-	# 妾室（每位）
-	every_concubine = {
-		save_scope_as = ftr_court_ui_member
-		root = {
-			add_to_variable_list = {
-				name = ftr_court_ui_courtiers
-				target = scope:ftr_court_ui_member
-			}
-		}
-	}
-
-	# 权臣
-	every_powerful_vassal = {
-		save_scope_as = ftr_court_ui_member
-		root = {
-			add_to_variable_list = {
-				name = ftr_court_ui_courtiers
-				target = scope:ftr_court_ui_member
-			}
-		}
-	}
-
-	# 内阁成员
-	every_councillor = {
-		save_scope_as = ftr_court_ui_member
-		root = {
-			add_to_variable_list = {
-				name = ftr_court_ui_courtiers
-				target = scope:ftr_court_ui_member
-			}
-		}
-	}
-
-	# 摄政/共治者
+	# ---- 2. 摄政/共治者（与君主并排居中；无则不显示，存单角色变量） ----
 	if = {
 		limit = { exists = diarch }
-		diarch = {
-			save_scope_as = ftr_court_ui_member
-			root = {
-				add_to_variable_list = {
-					name = ftr_court_ui_courtiers
-					target = scope:ftr_court_ui_member
+		diarch ?= {
+			save_scope_as = ftr_court_ui_diarch_char_scope
+		}
+		root = {
+			set_variable = {
+				name = ftr_court_ui_diarch_char
+				value = scope:ftr_court_ui_diarch_char_scope
+			}
+			set_variable = { name = ftr_court_ui_has_diarch  value = 1 }
+		}
+	}
+
+	# ---- 3. 配偶 + 姬妾（打标记供权臣/内阁排除） ----
+	every_spouse = {
+		add_character_flag = ftr_court_in_spouses
+		ftr_court_add_ui_member_effect = { LIST = ftr_court_ui_spouses }
+	}
+	every_concubine = {
+		add_character_flag = ftr_court_in_spouses
+		ftr_court_add_ui_member_effect = { LIST = ftr_court_ui_spouses }
+	}
+
+	# ---- 4. 权臣 + 内阁成员（排除已列入后宫者，避免重复） ----
+	# 收集逻辑集中在 ftr_court_collect_ministers_effect（参考 ftr_my_powerful_subject_list 模式）。
+	ftr_court_collect_ministers_effect = yes
+
+	# ---- 5. 继任者：按政体/继承法区分获取逻辑 ----
+	# 血缘继承（分割/长子幼子）：优先血亲——有继承权的子女 + 同宗族亲兄弟姐妹。
+	#            性别优先级：男性优先时，有 >=1 男性继承人则不添加女性；女性优先颠倒。
+	#            有 >=1 成年子女时，不添加兄弟姐妹。
+	# 选举/不稳定（选侯/部分头衔选举/欢呼）：直接按头衔继承顺位。
+	if = {
+		limit = { ftr_court_hereditary_succession_trigger = yes }
+
+		# --- 有继承权的子女，按性别法优先级过滤 ---
+		# CK3 性别法：male_only_law / female_only_law 是 title law（has_title_law 判断，
+		# 见原版 00_auto_character_triggers.txt:7,13）。male_preference/female_preference/equal
+		# 是继承法 gender_law 字段，无独立 realm law 可查。因此：
+		#   - male_only_law  → 仅男性
+		#   - female_only_law → 仅女性
+		#   - 其余（默认 male_preference / equal）→ 先男后女（男性优先，避免女儿挤掉儿子）
+		# 计数器控制：优先性别占满 5 位则另一性别不进入。
+		if = {
+			# 仅男性继承
+			limit = {
+				primary_title ?= { has_title_law = male_only_law }
+			}
+			every_child = {
+				limit = {
+					is_alive = yes
+					is_child_of = root
+					is_male = yes
 				}
+				ftr_court_add_heir_effect = yes
 			}
 		}
+		else_if = {
+			# 仅女性继承
+			limit = {
+				primary_title ?= { has_title_law = female_only_law }
+			}
+			every_child = {
+				limit = {
+					is_alive = yes
+					is_child_of = root
+					is_female = yes
+				}
+				ftr_court_add_heir_effect = yes
+			}
+		}
+		else = {
+			# 默认男性优先（male_preference / equal）：先男后女
+			every_child = {
+				limit = {
+					is_alive = yes
+					is_child_of = root
+					is_male = yes
+				}
+				ftr_court_add_heir_effect = yes
+			}
+			every_child = {
+				limit = {
+					is_alive = yes
+					is_child_of = root
+					is_female = yes
+				}
+				ftr_court_add_heir_effect = yes
+			}
+		}
+
+		# --- 同宗族亲兄弟姐妹：仅当无任何成年子女时参与 ---
+		if = {
+			limit = {
+				NOT = {
+					OR = {
+						ftr_court_has_male_heir_trigger = yes
+						ftr_court_has_female_heir_trigger = yes
+					}
+				}
+			}
+			every_sibling = {
+				limit = {
+					is_alive = yes
+					is_adult = yes
+					is_sibling_of = root
+					dynasty ?= {
+						this = root.dynasty
+					}
+				}
+				ftr_court_add_heir_effect = yes
+			}
+		}
+	}
+	else = {
+		# 选举/不稳定继承：按头衔继承顺位收集 title heir，计数器截断到 5
+		primary_title = {
+			save_scope_as = ftr_court_heir_title_scope
+			every_title_heir = {
+				limit = {
+					is_alive = yes
+				}
+				ftr_court_add_heir_effect = yes
+			}
+		}
+	}
+
+	# ---- 6. 追随者：朝堂封臣中已站队支持某位继任竞争者者 ----
+	every_vassal = {
+		limit = { ftr_court_has_backing_trigger = yes }
+		ftr_court_add_ui_member_effect = { LIST = ftr_court_ui_backers }
+	}
+
+	# ---- 清理配偶标记 ----
+	every_spouse = {
+		remove_character_flag = ftr_court_in_spouses
+	}
+	every_concubine = {
+		remove_character_flag = ftr_court_in_spouses
 	}
 }
 

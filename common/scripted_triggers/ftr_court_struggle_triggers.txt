@@ -50,8 +50,6 @@ ftr_court_claimant_valid_trigger = {
 	dynasty ?= {
 		this = scope:ftr_court_monarch.dynasty
 	}
-	# 已修道者不参与
-	NOT = { has_trait = monastic }
 }
 
 ########## 三、君主状态 ##########
@@ -62,7 +60,7 @@ ftr_court_monarch_infirm_trigger = {
 		has_trait = incapable
 		has_trait = lunatic
 		has_trait = possessed
-		has_trait = melancholic
+		has_trait = depressed
 		age >= ftr_court_monarch_elderly_age_value
 	}
 }
@@ -261,3 +259,58 @@ ftr_court_is_court_member_trigger = {
 		exists = employer
 	}
 }
+
+########## 九、继承类型判定（按政体/继承法区分继任竞争者获取方式） ##########
+
+# 血缘继承（分割继承 / 长子幼子单继承人）：
+# 竞争者优先为血亲——有继承权的子女 + 同宗族亲兄弟姐妹。
+# 求值域：君主。
+ftr_court_hereditary_succession_trigger = {
+	OR = {
+		# 分割继承（封臣分割 / 氏族系列）
+		has_partition_succession_realm_law_trigger = yes
+		# 单继承人（长子/幼子等，按习俗）
+		has_realm_law = single_heir_succession_law
+	}
+}
+
+# 选举 / 继承不稳定（选侯、部分头衔选举、欢呼继承）：
+# 直接按头衔继承顺位（every_heir）获取。
+# 求值域：君主。
+ftr_court_elective_succession_trigger = {
+	OR = {
+		# 任一最高头衔采用选举继承法
+		any_title = {
+			OR = {
+				has_title_law = feudal_elective_succession_law
+				has_title_law = princely_elective_succession_law
+				has_title_law = saxon_elective_succession_law
+				has_title_law = scandinavian_elective_succession_law
+				has_title_law = gaelic_elective_succession_law
+				has_title_law = tribal_elective_succession_law
+				has_title_law = confederation_elective_succession_law
+			}
+		}
+		# 拜占庭欢呼继承
+		has_realm_law = acclamation_succession_law
+	}
+}
+
+# 是否已有至少一名男性继承人（成年子女），用于男性优先时的女性排除。
+# 求值域：君主。
+ftr_court_has_male_heir_trigger = {
+	any_child = {
+		is_male = yes
+		is_adult = yes
+	}
+}
+
+# 是否已有至少一名女性继承人（成年子女），用于女性优先时的男性排除。
+# 求值域：君主。
+ftr_court_has_female_heir_trigger = {
+	any_child = {
+		is_female = yes
+		is_adult = yes
+	}
+}
+

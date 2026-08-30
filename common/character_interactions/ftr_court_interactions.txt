@@ -123,6 +123,7 @@ ftr_court_withdraw_backing_interaction = {
 	desc = ftr_court_withdraw_backing_interaction_desc
 	cooldown_against_recipient = { years = 2 }
 	ai_targets = {
+		ai_recipients = courtiers
 		ai_recipients = close_family
 		max = 1
 	}
@@ -169,6 +170,7 @@ ftr_court_defect_interaction = {
 	desc = ftr_court_defect_interaction_desc
 	cooldown_against_recipient = { years = 5 }
 	ai_targets = {
+		ai_recipients = courtiers
 		ai_recipients = close_family
 		max = 1
 	}

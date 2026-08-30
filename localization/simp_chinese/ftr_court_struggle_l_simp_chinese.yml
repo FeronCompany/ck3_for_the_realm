@@ -17,6 +17,7 @@
  ftr_court_succession_war_victory_desc:0 "[scope:attacker.GetFullName]夺取大位，将[scope:defender.GetFullName]囚于囹圄。"
  ftr_court_succession_war_defeat_desc:0 "[scope:attacker.GetFullName]夺位之举土崩瓦解。"
  ftr_court_succession_war_white_peace_desc:0 "双方都未能压服对方，继位之事仍悬而未决。"
+ ftr_court_succession_war_invalidated_desc:0 "这场继位之战因故无果而终。"
 
  ###### 角色交互 ######
  ftr_court_back_claimant_interaction:0 "<FTR>公开表态支持"
@@ -80,6 +81,8 @@
  ftr_court_ui_title:0 "<FTR>朝堂局势"
  ftr_court_ui_empty:0 "此宫廷暂无权力角逐。"
  ftr_court_ui_phase_desc:0 "本朝局势"
+ ftr_court_ui_courtiers_label:0 "朝廷核心"
+ ftr_court_ui_claimants_label:0 "继任竞争者（评分）"
 
  ###### 阶段描述 ######
  ftr_court_ui_phase_0:0 "大局已定，继位之争尚未成形。"

@@ -53,7 +53,7 @@ ftr_court_nominate_heir_decision = {
 		}
 		modifier = {
 			add = -40
-			has_trait = indecisive
+			has_trait = patient
 		}
 	}
 }

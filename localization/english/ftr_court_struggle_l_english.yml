@@ -17,6 +17,7 @@
  ftr_court_succession_war_victory_desc:0 "[scope:attacker.GetFullName] seizes the throne and casts [scope:defender.GetFullName] into captivity."
  ftr_court_succession_war_defeat_desc:0 "[scope:attacker.GetFullName]'s bid for the throne lies in ruins."
  ftr_court_succession_war_white_peace_desc:0 "Neither side could press its claim, and the succession remains unsettled."
+ ftr_court_succession_war_invalidated_desc:0 "The war of succession has come to an inconclusive end."
 
  ###### Interactions ######
  ftr_court_back_claimant_interaction:0 "<FTR>Declare Support"
@@ -80,6 +81,8 @@
  ftr_court_ui_title:0 "<FTR>Court Situation"
  ftr_court_ui_empty:0 "No power struggle is stirring in this court."
  ftr_court_ui_phase_desc:0 "The state of the realm"
+ ftr_court_ui_courtiers_label:0 "The Court"
+ ftr_court_ui_claimants_label:0 "Claimants (Standing)"
 
  ###### Phase Descriptions ######
  ftr_court_ui_phase_0:0 "The matter is settled — the succession has not yet begun to stir."

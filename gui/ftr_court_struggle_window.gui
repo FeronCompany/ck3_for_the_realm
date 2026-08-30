@@ -1,107 +1,187 @@
-﻿# 朝堂局势窗口 —— 反映各方势力的实力、站队与天平。
-# 数据源：玩家域变量（由 ftr_court_sync_ui_data 镜像，见 scripted_guis 与 effects）。
-# 注意：标准文本块类型是 text_single（text 是属性名，不是类型）。
-widget = {
+﻿# 朝堂局势窗口 —— 反映各方势力与朝堂成员。
+# 数据源：玩家域变量（由 ftr_court_sync_ui_data 镜像）。
+# 无朝堂角逐（active=0）：显示朝廷核心成员（君主/继承人/配偶/妾/权臣/内阁/摄政）。
+# 有朝堂角逐（active=1）：显示前五名继任竞争者及其评分。
+# 完全采用项目 pg 窗口已验证的 window + Window_Background 结构。
+window = {
 	name = "ftr_court_struggle_window"
-	size = { 500 600 }
-	parentanchor = right|vcenter
-	position = { -20 0 }
-	layer = hud_layer
-	# 开关由 HUD 按钮 Toggle / 关闭按钮 Clear 控制（与 pg 窗口同款）
+	parentanchor = center
+	size = { 760 820 }
+	position = { 0 0 }
+	layer = windows_layer
+	# 开关由 HUD 按钮 Toggle / 关闭按钮 Clear 控制
 	visible = "[GetVariableSystem.Exists( 'ftr_court_struggle_window_open' )]"
+	using = Window_Background
+	using = Window_Decoration
 
-	background = {
-		using = Background_Frame
-		size = { 500 600 }
-	}
+	margin_widget = {
+		size = { 100% 100% }
+		margin = { 10 26 }
+		margin_right = 13
+		widget = {
+			size = { 100% 100% }
+			vbox = {
+				using = Window_Margins
 
-	# 标题
-	text_single = {
-		text = "ftr_court_ui_title"
-		fontsize = 24
-		parentanchor = top|hcenter
-		position = { 0 16 }
-	}
+				widget_header_with_picture = {
+					layoutpolicy_horizontal = expanding
+					minimumsize = { 0 120 }
+					blockoverride "header_text" {
+						text = "ftr_court_ui_title"
+					}
+					blockoverride "size" {
+						size = { 100% 120 }
+					}
+					blockoverride "button_close"
+					{
+						onclick = "[GetVariableSystem.Clear('ftr_court_struggle_window_open')]"
+					}
+				}
 
-	# 无角逐占位（active = 0 时显示）
-	text_single = {
-		name = "ftr_court_empty_hint"
-		text = "ftr_court_ui_empty"
-		fontsize = 16
-		parentanchor = vcenter|hcenter
-		position = { 0 30 }
-		visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
-	}
+				# ===== 无朝堂角逐：朝廷核心成员 =====
+				text_label = {
+					margin = { 10 8 }
+					autoresize = yes
+					text = "ftr_court_ui_courtiers_label"
+					visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
+				}
+				text_single = {
+					name = "ftr_court_member_0"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_courtiers').GetValue|0.GetName]"
+					visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
+				}
+				text_single = {
+					name = "ftr_court_member_1"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_courtiers').GetValue|1.GetName]"
+					visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
+				}
+				text_single = {
+					name = "ftr_court_member_2"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_courtiers').GetValue|2.GetName]"
+					visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
+				}
+				text_single = {
+					name = "ftr_court_member_3"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_courtiers').GetValue|3.GetName]"
+					visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
+				}
+				text_single = {
+					name = "ftr_court_member_4"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_courtiers').GetValue|4.GetName]"
+					visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
+				}
+				text_single = {
+					name = "ftr_court_member_5"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_courtiers').GetValue|5.GetName]"
+					visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
+				}
+				text_single = {
+					name = "ftr_court_member_6"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_courtiers').GetValue|6.GetName]"
+					visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
+				}
+				text_single = {
+					name = "ftr_court_member_7"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_courtiers').GetValue|7.GetName]"
+					visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
+				}
+				text_single = {
+					name = "ftr_court_member_8"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_courtiers').GetValue|8.GetName]"
+					visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
+				}
+				text_single = {
+					name = "ftr_court_member_9"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_courtiers').GetValue|9.GetName]"
+					visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
+				}
 
-	# 阶段行
-	text_single = {
-		name = "ftr_court_phase_text"
-		text = "[GetPlayer.MakeScope.CustomDescription('FTR_Court_Phase')]"
-		fontsize = 14
-		position = { 20 56 }
-		visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
-	}
+				# ===== 有朝堂角逐：竞争者 =====
+				text_label = {
+					margin = { 10 8 }
+					autoresize = yes
+					text = "ftr_court_ui_claimants_label"
+					visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
+				}
+				text_single = {
+					name = "ftr_court_claimant_0"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|0.GetName]   [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|0.MakeScope.ScriptValue('ftr_claim_strength')]"
+					visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
+				}
+				text_single = {
+					name = "ftr_court_claimant_1"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|1.GetName]   [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|1.MakeScope.ScriptValue('ftr_claim_strength')]"
+					visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
+				}
+				text_single = {
+					name = "ftr_court_claimant_2"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|2.GetName]   [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|2.MakeScope.ScriptValue('ftr_claim_strength')]"
+					visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
+				}
+				text_single = {
+					name = "ftr_court_claimant_3"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|3.GetName]   [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|3.MakeScope.ScriptValue('ftr_claim_strength')]"
+					visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
+				}
+				text_single = {
+					name = "ftr_court_claimant_4"
+					margin = { 16 4 }
+					text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|4.GetName]   [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|4.MakeScope.ScriptValue('ftr_claim_strength')]"
+					visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
+				}
 
-	# 竞争者名单（每行：名号 + 评分）
-	overlap = {
-		name = "ftr_court_claimant_rows"
-		size = { 460 330 }
-		position = { 20 120 }
-		visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
+				# ===== 阶段 =====
+				# 阶段文字用 script value 判断逐行显隐（GUI 无法直接 CustomDescription）
+				text_single = {
+					margin = { 10 12 }
+					text = "ftr_court_ui_phase_0"
+					visible = "[And( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ), EqualTo_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_phase' ), '(CFixedPoint)0' ) )]"
+				}
+				text_single = {
+					margin = { 10 12 }
+					text = "ftr_court_ui_phase_1"
+					visible = "[And( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ), EqualTo_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_phase' ), '(CFixedPoint)1' ) )]"
+				}
+				text_single = {
+					margin = { 10 12 }
+					text = "ftr_court_ui_phase_2"
+					visible = "[And( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ), EqualTo_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_phase' ), '(CFixedPoint)2' ) )]"
+				}
+				text_single = {
+					margin = { 10 12 }
+					text = "ftr_court_ui_phase_3"
+					visible = "[And( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ), EqualTo_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_phase' ), '(CFixedPoint)3' ) )]"
+				}
 
-		text_single = {
-			text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|0.GetName]    [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|0.MakeScope.Var('ftr_claim_strength').GetValue|0]"
-			fontsize = 15
-			position = { 0 0 }
+				# ===== 权力天平 =====
+				progressbar = {
+					margin = { 10 6 }
+					size = { 600 16 }
+					visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
+					value = "[GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_swing' )]"
+				}
+				hbox = {
+					margin = { 10 2 }
+					layoutpolicy_horizontal = expanding
+					text_single = { text = "ftr_court_swing_loyal" }
+					box = { size = { 100% 0 } }
+					text_single = { text = "ftr_court_swing_diarch" }
+				}
+			}
 		}
-		text_single = {
-			text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|1.GetName]    [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|1.MakeScope.Var('ftr_claim_strength').GetValue|0]"
-			fontsize = 15
-			position = { 0 40 }
-		}
-		text_single = {
-			text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|2.GetName]    [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|2.MakeScope.Var('ftr_claim_strength').GetValue|0]"
-			fontsize = 15
-			position = { 0 80 }
-		}
-		text_single = {
-			text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|3.GetName]    [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|3.MakeScope.Var('ftr_claim_strength').GetValue|0]"
-			fontsize = 15
-			position = { 0 120 }
-		}
-		text_single = {
-			text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|4.GetName]    [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|4.MakeScope.Var('ftr_claim_strength').GetValue|0]"
-			fontsize = 15
-			position = { 0 160 }
-		}
-	}
-
-	# 权力天平：进度条 + 两端标签 + 数值
-	progressbar = {
-		name = "ftr_court_swing_bar"
-		size = { 440 12 }
-		position = { 30 480 }
-		visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
-		value = "[GetPlayer.MakeScope.Custom('ftr_court_ui_swing')]"
-	}
-
-	text_single = {
-		text = "ftr_court_swing_loyal"
-		fontsize = 13
-		position = { 30 500 }
-	}
-	text_single = {
-		text = "ftr_court_swing_diarch"
-		fontsize = 13
-		position = { 400 500 }
-	}
-
-	# 关闭按钮
-	button = {
-		name = "ftr_court_close_btn"
-		size = { 24 24 }
-		position = { 470 12 }
-		quadtexture = "gfx/interface/icons/close_button.dds"
-		onclick = "[GetVariableSystem.Clear('ftr_court_struggle_window_open')]"
 	}
 }

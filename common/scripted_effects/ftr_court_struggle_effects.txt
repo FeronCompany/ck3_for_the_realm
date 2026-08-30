@@ -59,7 +59,6 @@ ftr_court_cleanup_effect = {
 	remove_variable = ftr_court_top_gap
 	remove_variable = ftr_court_regency_swing
 	remove_variable = ftr_court_phase
-	remove_variable = ftr_court_promised_to
 }
 
 ######################################################
@@ -222,10 +221,10 @@ ftr_court_refresh_backer_count_effect = {
 	save_scope_as = ftr_court_story
 	story_owner = { save_scope_as = ftr_court_monarch }
 
-	# 清零
+	# 清零（必须显式 set，避免 change_variable 对不存在变量报错）
 	every_in_list = {
 		list = ftr_court_claimant_list
-		remove_variable = ftr_court_backer_count
+		set_variable = { name = ftr_court_backer_count  value = 0 }
 	}
 
 	# 统计：直接封臣 + 廷臣
@@ -834,6 +833,97 @@ ftr_court_send_court_toast_effect = {
 ######################################################
 ### 十、UI 数据同步
 ######################################################
+
+# 在君主域执行：无朝堂角逐时，收集朝廷核心成员名单供 GUI 展示。
+# 核心成员：君主本人、顺位继承人、配偶、妾、权臣、内阁、摄政/共治者。
+# 写入 root（玩家）域的 ftr_court_ui_courtiers 列表。
+ftr_court_sync_courtiers_effect = {
+	save_scope_as = ftr_court_court_monarch
+	root = {
+		clear_variable_list = ftr_court_ui_courtiers
+	}
+
+	# 君主本人
+	save_scope_as = ftr_court_ui_member
+	root = {
+		add_to_variable_list = {
+			name = ftr_court_ui_courtiers
+			target = scope:ftr_court_ui_member
+		}
+	}
+
+	# 顺位继承人（每位）
+	every_heir = {
+		save_scope_as = ftr_court_ui_member
+		root = {
+			add_to_variable_list = {
+				name = ftr_court_ui_courtiers
+				target = scope:ftr_court_ui_member
+			}
+		}
+	}
+
+	# 配偶
+	if = {
+		limit = { exists = spouse }
+		spouse = {
+			save_scope_as = ftr_court_ui_member
+			root = {
+				add_to_variable_list = {
+					name = ftr_court_ui_courtiers
+					target = scope:ftr_court_ui_member
+				}
+			}
+		}
+	}
+
+	# 妾室（每位）
+	every_concubine = {
+		save_scope_as = ftr_court_ui_member
+		root = {
+			add_to_variable_list = {
+				name = ftr_court_ui_courtiers
+				target = scope:ftr_court_ui_member
+			}
+		}
+	}
+
+	# 权臣
+	every_powerful_vassal = {
+		save_scope_as = ftr_court_ui_member
+		root = {
+			add_to_variable_list = {
+				name = ftr_court_ui_courtiers
+				target = scope:ftr_court_ui_member
+			}
+		}
+	}
+
+	# 内阁成员
+	every_councillor = {
+		save_scope_as = ftr_court_ui_member
+		root = {
+			add_to_variable_list = {
+				name = ftr_court_ui_courtiers
+				target = scope:ftr_court_ui_member
+			}
+		}
+	}
+
+	# 摄政/共治者
+	if = {
+		limit = { exists = diarch }
+		diarch = {
+			save_scope_as = ftr_court_ui_member
+			root = {
+				add_to_variable_list = {
+					name = ftr_court_ui_courtiers
+					target = scope:ftr_court_ui_member
+				}
+			}
+		}
+	}
+}
 
 # 在持有朝堂 story 的角色域执行：把 story 变量镜像到 root（玩家）域。
 # 由 scripted_gui ftr_court_sync_ui_data 在三段数据源判定后调用。

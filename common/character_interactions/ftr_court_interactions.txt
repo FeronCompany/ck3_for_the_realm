@@ -543,7 +543,6 @@ ftr_court_lobby_interaction = {
 	send_option = {
 		flag = lobby_diarch
 		localization = ftr_court_lobby_diarch
-		starts_enabled = yes
 	}
 	send_option = {
 		flag = lobby_monarch

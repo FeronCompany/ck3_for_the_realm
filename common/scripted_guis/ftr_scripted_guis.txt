@@ -62,13 +62,14 @@ ftr_court_sync_ui_data = {
 		always = yes
 	}
 	effect = {
-		# 先复位，无朝堂时窗口显示"暂无角逐"
+		# 先复位
 		set_variable = { name = ftr_court_ui_active  value = 0 }
 		set_variable = { name = ftr_court_ui_swing  value = 0 }
 		set_variable = { name = ftr_court_ui_phase  value = 0 }
 		set_variable = { name = ftr_court_ui_count  value = 0 }
 		set_variable = { name = ftr_court_ui_gap  value = 999 }
 		clear_variable_list = ftr_court_ui_claimants
+		clear_variable_list = ftr_court_ui_courtiers
 
 		# 1) 自己的朝堂
 		if = {
@@ -96,6 +97,21 @@ ftr_court_sync_ui_data = {
 				}
 			}
 			employer = { ftr_court_sync_ui_from_story_effect = yes }
+		}
+		# 4) 无朝堂角逐：仍收集朝廷核心成员供展示（君主/继承人/配偶/妾/权臣/内阁/摄政）
+		else_if = {
+			limit = {
+				ftr_court_is_struggle_monarch_trigger = yes
+			}
+			ftr_court_sync_courtiers_effect = yes
+		}
+		else_if = {
+			limit = { exists = top_liege }
+			top_liege = { ftr_court_sync_courtiers_effect = yes }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { ftr_court_sync_courtiers_effect = yes }
 		}
 	}
 }

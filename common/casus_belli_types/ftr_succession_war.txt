@@ -223,4 +223,7 @@ ftr_succession_war = {
 	on_white_peace_desc = {
 		desc = ftr_court_succession_war_white_peace_desc
 	}
+	on_invalidated_desc = {
+		desc = ftr_court_succession_war_invalidated_desc
+	}
 }

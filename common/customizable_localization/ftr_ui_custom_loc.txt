@@ -218,40 +218,4 @@ FTR_Bribe_Goal = {
 	}
 }
 
-FTR_Court_Phase = {
-	type = character
 
-	text = {
-		trigger = {
-			has_variable = ftr_court_ui_phase
-			var:ftr_court_ui_phase <= 0
-		}
-		localization_key = ftr_court_ui_phase_0
-	}
-	text = {
-		trigger = {
-			has_variable = ftr_court_ui_phase
-			var:ftr_court_ui_phase = 1
-		}
-		localization_key = ftr_court_ui_phase_1
-	}
-	text = {
-		trigger = {
-			has_variable = ftr_court_ui_phase
-			var:ftr_court_ui_phase = 2
-		}
-		localization_key = ftr_court_ui_phase_2
-	}
-	text = {
-		trigger = {
-			has_variable = ftr_court_ui_phase
-			var:ftr_court_ui_phase >= 3
-		}
-		localization_key = ftr_court_ui_phase_3
-	}
-
-	text = {
-		localization_key = ftr_court_ui_phase_0
-		fallback = yes
-	}
-}

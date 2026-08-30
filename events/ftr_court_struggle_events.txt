@@ -17,8 +17,8 @@ ftr_court_struggle.0001 = {
 
 	immediate = {
 		save_scope_as = ftr_court_monarch
-		any_owned_story = {
-			type = ftr_court_struggle
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
 			save_scope_as = ftr_court_story
 		}
 		scope:ftr_court_story ?= {
@@ -64,8 +64,8 @@ ftr_court_struggle.0003 = {
 
 	immediate = {
 		save_scope_as = ftr_court_monarch
-		any_owned_story = {
-			type = ftr_court_struggle
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
 			save_scope_as = ftr_court_story
 		}
 		scope:ftr_court_story ?= {
@@ -113,8 +113,8 @@ ftr_court_struggle.0005 = {
 
 	immediate = {
 		save_scope_as = ftr_court_monarch
-		any_owned_story = {
-			type = ftr_court_struggle
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
 			save_scope_as = ftr_court_story
 		}
 		scope:ftr_court_story ?= {
@@ -224,8 +224,8 @@ ftr_court_struggle.0011 = {
 
 	immediate = {
 		save_scope_as = ftr_court_new_monarch
-		any_owned_story = {
-			type = ftr_court_struggle
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
 			save_scope_as = ftr_court_story
 		}
 		# 找出仍有实力反抗的竞争者（有地且有兵），供后续起兵事件使用
@@ -622,8 +622,8 @@ ftr_court_struggle.0014 = {
 			limit = { exists = top_liege }
 			top_liege = {
 				save_scope_as = ftr_court_monarch
-				any_owned_story = {
-					type = ftr_court_struggle
+				every_owned_story = {
+					limit = { story_type = ftr_court_struggle }
 					save_scope_as = ftr_court_story
 				}
 			}
@@ -632,8 +632,8 @@ ftr_court_struggle.0014 = {
 			limit = { exists = employer }
 			employer = {
 				save_scope_as = ftr_court_monarch
-				any_owned_story = {
-					type = ftr_court_struggle
+				every_owned_story = {
+					limit = { story_type = ftr_court_struggle }
 					save_scope_as = ftr_court_story
 				}
 			}
@@ -876,8 +876,8 @@ ftr_court_struggle.0020 = {
 			}
 		}
 		save_scope_as = ftr_court_monarch
-		any_owned_story = {
-			type = ftr_court_struggle
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
 			save_scope_as = ftr_court_story
 		}
 		scope:ftr_court_story ?= {
@@ -924,8 +924,8 @@ ftr_court_struggle.0030 = {
 
 	immediate = {
 		save_scope_as = ftr_court_monarch
-		any_owned_story = {
-			type = ftr_court_struggle
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
 			save_scope_as = ftr_court_story
 		}
 		scope:ftr_court_story ?= {
@@ -978,8 +978,8 @@ ftr_court_struggle.0031 = {
 
 	immediate = {
 		save_scope_as = ftr_court_monarch
-		any_owned_story = {
-			type = ftr_court_struggle
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
 			save_scope_as = ftr_court_story
 		}
 		scope:ftr_court_story ?= {

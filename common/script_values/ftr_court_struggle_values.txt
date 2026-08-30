@@ -112,7 +112,7 @@ ftr_court_claim_strength_value = {
 	if = { limit = { is_landed = yes }									add = ftr_court_claim_landed_value }
 	if = { limit = { is_councillor_of = scope:ftr_court_monarch }		add = ftr_court_claim_councillor_value }
 	if = { limit = { is_diarch_of_target = scope:ftr_court_monarch }	add = ftr_court_claim_diarch_value }
-	if = { limit = { this = scope:ftr_court_monarch.spouse }			add = ftr_court_claim_spouse_value }
+	if = { limit = { is_spouse_of = scope:ftr_court_monarch }			add = ftr_court_claim_spouse_value }
 	if = { limit = { is_heir_of = scope:ftr_court_monarch }				add = ftr_court_claim_primary_heir_value }
 
 	### 人望：君主好感（分段判定，避免在数值上下文直接引用 opinion）

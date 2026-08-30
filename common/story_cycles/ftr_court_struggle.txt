@@ -90,7 +90,7 @@ ftr_court_struggle = {
 		years = 1
 		triggered_effect = {
 			trigger = {
-				owner ?= { ftr_court_struggle_valid_trigger = yes }
+				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
 			}
 			effect = {
 				ftr_court_update_candidates_effect = yes
@@ -109,14 +109,14 @@ ftr_court_struggle = {
 	# 因此必须包在 owner 中执行，否则 root 会变成故事本体。
 	effect_group = {
 		years = 1
-		chance = ftr_court_pulse_chance_crisis_value
+		chance = 20
 		random_valid = {
 			triggered_effect = {
 				trigger = { ftr_court_is_crisis_trigger = yes }
 				effect = {
-					owner = { trigger_event = { id = ftr_court_struggle.0005 } }
+					story_owner = { trigger_event = { id = ftr_court_struggle.0005 } }
 					# 询问一名未站队的封臣（事件 0014 同时覆盖无地廷臣）
-					owner = {
+					story_owner = {
 						random_vassal = {
 							limit = {
 								is_capable_adult = yes
@@ -152,7 +152,7 @@ ftr_court_struggle = {
 					# 向朝堂中最强势力推送夺位抉择（事件 0018）
 					if = {
 						limit = { ftr_court_can_attempt_usurp_trigger = yes }
-						owner = {
+						story_owner = {
 							every_vassal = {
 								limit = {
 									is_capable_adult = yes
@@ -195,7 +195,7 @@ ftr_court_struggle = {
 
 	effect_group = {
 		years = 1
-		chance = ftr_court_pulse_chance_contested_value
+		chance = 14
 		random_valid = {
 			triggered_effect = {
 				trigger = {
@@ -203,9 +203,9 @@ ftr_court_struggle = {
 					ftr_court_is_contested_trigger = yes
 				}
 				effect = {
-					owner = { trigger_event = { id = ftr_court_struggle.0003 } }
+					story_owner = { trigger_event = { id = ftr_court_struggle.0003 } }
 					# 询问一名未站队的封臣或廷臣（0014，无地廷臣由此参与）
-					owner = {
+					story_owner = {
 						random_vassal = {
 							limit = {
 								is_capable_adult = yes
@@ -234,15 +234,15 @@ ftr_court_struggle = {
 
 	effect_group = {
 		years = 2
-		chance = ftr_court_pulse_chance_simmering_value
+		chance = 8
 		random_valid = {
 			triggered_effect = {
 				trigger = {
 					NOT = { ftr_court_is_contested_trigger = yes }
-					owner ?= { ftr_court_has_succession_order_trigger = yes }
+					story_owner ?= { ftr_court_has_succession_order_trigger = yes }
 				}
 				effect = {
-					owner = { trigger_event = { id = ftr_court_struggle.0001 } }
+					story_owner = { trigger_event = { id = ftr_court_struggle.0001 } }
 				}
 			}
 		}

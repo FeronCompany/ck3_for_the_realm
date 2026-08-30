@@ -114,7 +114,7 @@ ftr_court_is_contested_trigger = {
 ftr_court_is_crisis_trigger = {
 	ftr_court_is_contested_trigger = yes
 	var:ftr_court_top_gap <= ftr_court_crisis_gap_value
-	owner ?= {
+	story_owner ?= {
 		ftr_court_monarch_weak_trigger = yes
 		NOT = { ftr_court_in_cooldown_trigger = yes }
 	}

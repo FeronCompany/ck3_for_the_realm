@@ -47,8 +47,8 @@ ftr_court_validate_on_action = {
 		NOT = { ftr_court_struggle_valid_trigger = yes }
 	}
 	effect = {
-		any_owned_story = {
-			type = ftr_court_struggle
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
 			end_story = yes
 		}
 	}

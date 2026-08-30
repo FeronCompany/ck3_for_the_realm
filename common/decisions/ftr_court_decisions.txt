@@ -81,8 +81,8 @@ ftr_court_consolidate_authority_decision = {
 
 	effect = {
 		save_scope_as = ftr_court_monarch
-		any_owned_story = {
-			type = ftr_court_struggle
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
 			save_scope_as = ftr_court_story
 		}
 		if = {

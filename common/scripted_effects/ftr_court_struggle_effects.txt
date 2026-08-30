@@ -16,7 +16,7 @@
 # 在 story 域执行：建立初始状态
 ftr_court_setup_effect = {
 	save_scope_as = ftr_court_story
-	owner = { save_scope_as = ftr_court_monarch }
+	story_owner = { save_scope_as = ftr_court_monarch }
 
 	# 初始变量
 	set_variable = { name = ftr_court_candidate_count  value = 0 }
@@ -69,7 +69,7 @@ ftr_court_cleanup_effect = {
 # 在 story 域执行：重建候选池、重算评分、选出前 N 名
 ftr_court_update_candidates_effect = {
 	save_scope_as = ftr_court_story
-	owner = { save_scope_as = ftr_court_monarch }
+	story_owner = { save_scope_as = ftr_court_monarch }
 
 	# 清空旧池（先清标记，避免 flag 残留）
 	every_in_list = {
@@ -174,7 +174,7 @@ ftr_court_update_phase_effect = {
 			if = {
 				limit = {
 					var:ftr_court_top_gap <= ftr_court_crisis_gap_value
-					owner ?= { ftr_court_monarch_weak_trigger = yes }
+					story_owner ?= { ftr_court_monarch_weak_trigger = yes }
 				}
 				set_variable = { name = ftr_court_phase  value = 3 }
 			}
@@ -201,13 +201,13 @@ ftr_court_try_pool_candidate_effect = {
 
 # 在任意角色域执行：刷新其自身、或其宗主所拥有的朝堂角逐
 ftr_court_refresh_local_effect = {
-	any_owned_story = {
-		type = ftr_court_struggle
+	every_owned_story = {
+		limit = { story_type = ftr_court_struggle }
 		ftr_court_update_candidates_effect = yes
 	}
 	top_liege ?= {
-		any_owned_story = {
-			type = ftr_court_struggle
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
 			ftr_court_update_candidates_effect = yes
 		}
 	}
@@ -220,7 +220,7 @@ ftr_court_refresh_local_effect = {
 # 在 story 域执行：重新统计每位候选人的支持者数量
 ftr_court_refresh_backer_count_effect = {
 	save_scope_as = ftr_court_story
-	owner = { save_scope_as = ftr_court_monarch }
+	story_owner = { save_scope_as = ftr_court_monarch }
 
 	# 清零
 	every_in_list = {
@@ -286,7 +286,7 @@ ftr_court_shift_swing_effect = {
 # 在 story 域执行：年度自然回落 + 君主状态偏置
 ftr_court_swing_yearly_effect = {
 	save_scope_as = ftr_court_story
-	owner = { save_scope_as = ftr_court_monarch }
+	story_owner = { save_scope_as = ftr_court_monarch }
 
 	# 向 0 回落
 	if = {
@@ -532,8 +532,8 @@ ftr_court_usurp_throne_effect = {
 
 	# 旧君被废后其名下的朝堂角逐收场（旧君尚存但已失位，story 的 owner 不会自行转移）
 	scope:ftr_court_old_monarch = {
-		any_owned_story = {
-			type = ftr_court_struggle
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
 			end_story = yes
 		}
 	}
@@ -567,8 +567,8 @@ ftr_court_nominate_effect = {
 		}
 	}
 
-	any_owned_story = {
-		type = ftr_court_struggle
+	every_owned_story = {
+		limit = { story_type = ftr_court_struggle }
 		save_scope_as = ftr_court_story
 	}
 	scope:ftr_court_story ?= {
@@ -824,7 +824,7 @@ ftr_court_send_court_toast_effect = {
 	every_in_list = {
 		list = ftr_notify_list
 		send_interface_message = {
-			type = msg_generic
+			type = event_generic_good
 			title = $TITLE$
 			left_icon = $ICON$
 		}
@@ -838,8 +838,8 @@ ftr_court_send_court_toast_effect = {
 # 在持有朝堂 story 的角色域执行：把 story 变量镜像到 root（玩家）域。
 # 由 scripted_gui ftr_court_sync_ui_data 在三段数据源判定后调用。
 ftr_court_sync_ui_from_story_effect = {
-	any_owned_story = {
-		type = ftr_court_struggle
+	every_owned_story = {
+		limit = { story_type = ftr_court_struggle }
 		root = {
 			set_variable = { name = ftr_court_ui_active  value = 1 }
 			set_variable = { name = ftr_court_ui_swing  value = prev.var:ftr_court_regency_swing }

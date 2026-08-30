@@ -73,6 +73,7 @@ for_the_realm/
 │
 ├── gfx/interface/icons/        # 图标（.dds）
 ├── gui/                        # 界面（.gui + scripted_widgets/）
+├── tools/                      # 开发工具（validate_scripts.py 语法校验，见 §5.5）
 │
 └── document/                   # **P 语言知识库（17 篇，约 14000 行）**
 ```
@@ -399,6 +400,7 @@ ftr_my_trait = {
 4. 写脚本（Tab 缩进、ftr_ 前缀、OVERRIDE 标记）
 5. 写双语本地化（键名完全一致、新增内容加 <FTR>）
 6. 确认文件带 BOM
+7. 运行校验脚本（见 §5.5）确认无 Error
 ```
 
 ### 5.3 改动后（人工确认）
@@ -425,6 +427,39 @@ ftr_my_trait = {
 - [ ] 动态描述第一条是 `NOT = { exists = this }`
 - [ ] 改动了功能 → `readme.md` 双语同步
 - [ ] 没有提交 `.bak`、空文件、调试残留
+
+### 5.5 语法校验脚本（每次改动后必跑）
+
+`tools/validate_scripts.py` 是本 Mod 的 P 语言语法快速校验器，**每次改脚本/本地化后必须运行**，确保 `error.log` 干净。
+
+```bash
+# 校验整个 mod（常用）
+python tools/validate_scripts.py
+
+# 只校验某个目录/文件（改动局部时更快）
+python tools/validate_scripts.py common/decisions
+python tools/validate_scripts.py events/ftr_court_struggle_events.txt
+
+# 自动为缺失 BOM 的文件补上 BOM
+python tools/validate_scripts.py --fix-bom
+```
+
+**校验项**（1-4 为硬性 Error，5-8 为 Warning）：
+
+| # | 校验项 | 级别 |
+|---|---|---|
+| 1 | `.txt`/`.yml` 必须为 **UTF-8 with BOM**（缺 BOM 中文乱码、本地化不加载） | Error |
+| 2 | 花括号 `{}` 配对（跳过字符串与注释内的括号） | Error |
+| 3 | `.yml` 语言头（`l_english:`/`l_simp_chinese:`）+ 键值 `key:0 "text"` 格式 | Error |
+| 4 | 事件文件须声明 `namespace` | Error |
+| 5 | 决议须写 `ai_check_interval` 或 `ai_goal`（二选一） | Warning |
+| 6 | 缩进规范：common 用 Tab、localization 用空格 | Warning |
+| 7 | 新增顶层对象须带 `ftr_` 前缀（覆盖原版需 `###### OVERRIDE ######`） | Warning |
+| 8 | 双语本地化键名一致性（english 与 simp_chinese 成对） | Warning |
+
+**退出码**：`0` = 全通过；`1` = 有 Error（**必须修复**，会引发加载失败）；`2` = 仅有 Warning（规范提示，建议处理）。
+
+> 该脚本是启发式检查，无法替代实际启动游戏看 `error.log`。遇到脚本未覆盖的语法问题仍以 [文档 01](document/01-词法、数据类型与值系统.md) 与游戏 `error.log` 为准。
 
 ---
 
@@ -488,6 +523,7 @@ ftr_my_trait = {
 | 游戏原版脚本 | `C:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\game` |
 | 游戏备份 | `D:\ck3_backup\game` |
 | 相关 Mod | `../remove-make-up` |
+| **报错日志** | `C:\Users\Administrator\Documents\Paradox Interactive\Crusader Kings III\logs\error.log` |
 
 以上路径已配置在 `for_the_realm.code-workspace`（多根工作区），**原版脚本可直接检索**，是写代码时最权威的参照。
 

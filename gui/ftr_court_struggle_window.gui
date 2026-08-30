@@ -1,45 +1,45 @@
 ﻿# 朝堂局势窗口 —— 反映各方势力的实力、站队与天平。
 # 数据源：玩家域变量（由 ftr_court_sync_ui_data 镜像，见 scripted_guis 与 effects）。
+# 注意：标准文本块类型是 text_single（text 是属性名，不是类型）。
 widget = {
 	name = "ftr_court_struggle_window"
 	size = { 500 600 }
 	parentanchor = right|vcenter
 	position = { -20 0 }
 	layer = hud_layer
-	visible = "[GetVariableSystem.GetVariableValue('ftr_court_struggle_window_open').IsSetTrue]"
+	# 开关由 HUD 按钮 Toggle / 关闭按钮 Clear 控制（与 pg 窗口同款）
+	visible = "[GetVariableSystem.Exists( 'ftr_court_struggle_window_open' )]"
 
 	background = {
-		quadtexture = "gfx/interface/skins/window.dds"
+		using = Background_Frame
 		size = { 500 600 }
-		layer = lower
 	}
 
 	# 标题
-	text = {
+	text_single = {
 		text = "ftr_court_ui_title"
-		# gui 无法取本地化键的字体，用默认
 		fontsize = 24
 		parentanchor = top|hcenter
 		position = { 0 16 }
 	}
 
 	# 无角逐占位（active = 0 时显示）
-	text = {
+	text_single = {
 		name = "ftr_court_empty_hint"
 		text = "ftr_court_ui_empty"
 		fontsize = 16
 		parentanchor = vcenter|hcenter
 		position = { 0 30 }
-		visible = "[Not( GetVariableSystem.GetVariableValue('ftr_court_ui_active').IsSetTrue )]"
+		visible = "[Not( NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) ) )]"
 	}
 
 	# 阶段行
-	text = {
+	text_single = {
 		name = "ftr_court_phase_text"
 		text = "[GetPlayer.MakeScope.CustomDescription('FTR_Court_Phase')]"
 		fontsize = 14
 		position = { 20 56 }
-		visible = "[GetVariableSystem.GetVariableValue('ftr_court_ui_active').IsSetTrue]"
+		visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
 	}
 
 	# 竞争者名单（每行：名号 + 评分）
@@ -47,30 +47,29 @@ widget = {
 		name = "ftr_court_claimant_rows"
 		size = { 460 330 }
 		position = { 20 120 }
-		visible = "[GetVariableSystem.GetVariableValue('ftr_court_ui_active').IsSetTrue]"
+		visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
 
-		text = {
-			# 行 1
+		text_single = {
 			text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|0.GetName]    [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|0.MakeScope.Var('ftr_claim_strength').GetValue|0]"
 			fontsize = 15
 			position = { 0 0 }
 		}
-		text = {
+		text_single = {
 			text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|1.GetName]    [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|1.MakeScope.Var('ftr_claim_strength').GetValue|0]"
 			fontsize = 15
 			position = { 0 40 }
 		}
-		text = {
+		text_single = {
 			text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|2.GetName]    [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|2.MakeScope.Var('ftr_claim_strength').GetValue|0]"
 			fontsize = 15
 			position = { 0 80 }
 		}
-		text = {
+		text_single = {
 			text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|3.GetName]    [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|3.MakeScope.Var('ftr_claim_strength').GetValue|0]"
 			fontsize = 15
 			position = { 0 120 }
 		}
-		text = {
+		text_single = {
 			text = "[GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|4.GetName]    [GetPlayer.MakeScope.Var('ftr_court_ui_claimants').GetValue|4.MakeScope.Var('ftr_claim_strength').GetValue|0]"
 			fontsize = 15
 			position = { 0 160 }
@@ -78,22 +77,20 @@ widget = {
 	}
 
 	# 权力天平：进度条 + 两端标签 + 数值
-	# 天平数值范围 -100 ~ +100，转为 0~1 的进度
 	progressbar = {
 		name = "ftr_court_swing_bar"
 		size = { 440 12 }
 		position = { 30 480 }
-		layer = 1
-		visible = "[GetVariableSystem.GetVariableValue('ftr_court_ui_active').IsSetTrue]"
+		visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.ScriptValue( 'ftr_court_ui_active' ) )]"
 		value = "[GetPlayer.MakeScope.Custom('ftr_court_ui_swing')]"
 	}
 
-	text = {
+	text_single = {
 		text = "ftr_court_swing_loyal"
 		fontsize = 13
 		position = { 30 500 }
 	}
-	text = {
+	text_single = {
 		text = "ftr_court_swing_diarch"
 		fontsize = 13
 		position = { 400 500 }

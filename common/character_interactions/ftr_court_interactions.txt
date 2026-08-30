@@ -73,8 +73,8 @@ ftr_court_back_claimant_interaction = {
 
 		# 站队公开，其余竞争者同生芥蒂
 		scope:actor.top_liege ?= {
-			any_owned_story = {
-				type = ftr_court_struggle
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
 				save_scope_as = ftr_court_story
 			}
 		}
@@ -282,8 +282,8 @@ ftr_court_assist_monarch_interaction = {
 		}
 		# 拉锯向君主一侧移动
 		scope:recipient = {
-			any_owned_story = {
-				type = ftr_court_struggle
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
 				save_scope_as = ftr_court_story
 			}
 			add_opinion = { target = scope:actor  modifier = ftr_court_loyalist_opinion }
@@ -601,8 +601,8 @@ ftr_court_lobby_interaction = {
 
 		# 定位所属朝堂
 		scope:actor.top_liege ?= {
-			any_owned_story = {
-				type = ftr_court_struggle
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
 				save_scope_as = ftr_court_story
 			}
 		}
@@ -612,8 +612,8 @@ ftr_court_lobby_interaction = {
 				exists = scope:actor.employer
 			}
 			scope:actor.employer = {
-				any_owned_story = {
-					type = ftr_court_struggle
+				every_owned_story = {
+					limit = { story_type = ftr_court_struggle }
 					save_scope_as = ftr_court_story
 				}
 			}

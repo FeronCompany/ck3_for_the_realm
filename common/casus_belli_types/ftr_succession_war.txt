@@ -78,8 +78,8 @@ ftr_succession_war = {
 
 		# 定位故事本体，供后续效果使用
 		scope:defender = {
-			any_owned_story = {
-				type = ftr_court_struggle
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
 				save_scope_as = ftr_court_story
 			}
 		}

@@ -83,9 +83,9 @@ window = {
 							layoutpolicy_horizontal = fixed
 							progressbar = {
 								size = { 300 14 }
-								# swing 取值范围为 -100（忠于君主）~ 100（倒向共治），
-								# 用 min/max 让 value 线性映射到条上：0 显示在中点（平衡）。
-								min = -100
+								# 共治者势力条：范围 0（完全忠于君主）~ 100（共治者完全掌控）。
+								# ftr_court_ui_swing 直接为 0~100（swing 核心范围已改）。
+								min = 0
 								max = 100
 								value = "[GetPlayer.MakeScope.Var('ftr_court_ui_swing').GetValue]"
 								# progresstexture（有进度）/ noprogresstexture（无进度）保证 value=0 时条仍可见

@@ -2,6 +2,7 @@
 
  ###### 故事循环 ######
  ftr_court_struggle:0 "<FTR>继位之争"
+ ftr_court_struggle_desc:0 "大位归属已成悬案。竞争者环伺王座，内阁各自选边，每一份忠诚或背叛都在悄悄改变君主与共治者之间的天平。"
  FTR_COURT_STRINGS:0 "权贵们围绕大位的归属彼此试探、结党倾轧。"
  FTR_COURT_CLAIMANTS:0 "继任竞争者"
  FTR_COURT_CANDIDATE_COUNT:0 "竞争者人数"
@@ -87,6 +88,7 @@
  ftr_court_ui_claimants_label:0 "继任竞争者（评分）"
  ftr_court_ui_spouses_label:0 "配偶与姬妾"
  ftr_court_ui_ministers_label:0 "权臣与内阁"
+ ftr_court_ui_count_label:0 "竞争者"
  ftr_court_ui_heirs_label:0 "继任者"
  ftr_court_ui_backers_label:0 "支持者"
  ftr_court_ui_diarch_tag:0 "摄政"

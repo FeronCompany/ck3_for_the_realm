@@ -67,6 +67,11 @@
  ftr_court_struggle.0018.a:0 "提线在手，何不连龙椅一起拿过来？"
  ftr_court_struggle.0018.b:0 "提线已经够了——暂时。"
 
+ ###### 0019 朝堂权力角逐开始 ######
+ ftr_court_struggle.0019.t:0 "继位之争，就此拉开帷幕"
+ ftr_court_struggle.0019.desc:0 "继承问题已经有了答案——不，不是答案，而是被重新抛向风口浪尖。在[ftr_court_monarch.GetTitledFirstName]周围，竞争者虎视眈眈，内阁成员各自选边。朝堂上的权力角逐已经开始，每一个有权势的人都必须决定自己的立场归于何处。"
+ ftr_court_struggle.0019.a:0 "我会密切关注这股权力潮汐。"
+
  ###### 0014 朝堂站队 ######
  ftr_court_struggle.0014.t:0 "择主而事"
  ftr_court_struggle.0014.desc:0 "朝堂正在悄然分化，中立正成为最危险的立场。是时候决定该追随哪颗星了。"

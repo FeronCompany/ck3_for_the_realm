@@ -13,15 +13,14 @@
 
 ftr_court_try_start_on_action = {
 	trigger = {
-		# 廉价前置过滤，绝大多数角色在第一层即退出
+		# 廉价前置过滤（AND 短路求值，绝大多数角色在此即退出，避免进入昂贵判定）
 		is_independent_ruler = yes
 		highest_held_title_tier >= tier_kingdom
+		# 已有角逐则跳过
+		NOT = { any_owned_story = { type = ftr_court_struggle } }
+		# 完整准入 + 议题1触发（内部已含 valid / 非冷却 / 非战争 / 候选数）
 		ftr_court_can_start_struggle_trigger = yes
 		ftr_court_should_activate_succession_trigger = yes
-		# 已有在进行的角逐则跳过
-		NOT = {
-			any_owned_story = { type = ftr_court_struggle }
-		}
 	}
 	effect = {
 		create_story = ftr_court_struggle
@@ -43,7 +42,9 @@ ftr_court_on_child_born_on_action = {
 # 此处仅作兜底，清理无人认领的残留故事。
 ftr_court_validate_on_action = {
 	trigger = {
+		# is_independent_ruler 为廉价前置（valid 内含，但先短路排除非独立角色，性能更优）
 		is_independent_ruler = yes
+		# 政权不再符合准入（被降级 / 无继承顺位 / 绝嗣 / 囚禁等）时收场
 		NOT = { ftr_court_struggle_valid_trigger = yes }
 	}
 	effect = {

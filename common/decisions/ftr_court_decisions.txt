@@ -72,7 +72,8 @@ ftr_court_consolidate_authority_decision = {
 		ftr_court_is_struggle_monarch_trigger = yes
 		any_owned_story = {
 			type = ftr_court_struggle
-			var:ftr_court_regency_swing > 0
+			# 共治者势力超过平衡中点（50）时才有必要巩固君权
+			var:ftr_court_regency_swing > ftr_court_swing_balance_value
 		}
 	}
 	is_valid = {

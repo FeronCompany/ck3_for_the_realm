@@ -1018,3 +1018,44 @@ ftr_court_struggle.0031 = {
 		ftr_court_suppress_effect = { TARGET = scope:ftr_court_claimant_5 }
 	}
 }
+
+######### 0019 朝堂权力角逐开始（root = 被通知者） #########
+# 由 story 的 on_setup 触发，通知最高统治者、内阁成员、强势臣属、未被剥夺继承权的继任者。
+# 作用域：root = 被通知者；immediate 定位君主存入 scope:ftr_court_monarch。
+ftr_court_struggle.0019 = {
+	type = character_event
+	title = ftr_court_struggle.0019.t
+	desc = ftr_court_struggle.0019.desc
+	theme = diplomacy
+
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+	}
+
+	immediate = {
+		# 定位君主：独立统治者即本人；否则走 top_liege / employer（封臣/廷臣）；
+		# 都找不到（无地继任者边界情况）时兜底用 root 自身，避免 scope 缺失。
+		if = {
+			limit = { is_independent_ruler = yes }
+			save_scope_as = ftr_court_monarch
+		}
+		else_if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+		else = {
+			save_scope_as = ftr_court_monarch
+		}
+	}
+
+	option = { # Take note of the struggle
+		name = ftr_court_struggle.0019.a
+	}
+}

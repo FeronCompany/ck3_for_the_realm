@@ -244,7 +244,7 @@ ftr_court_assist_monarch_interaction = {
 	common_interaction = yes
 	desc = ftr_court_assist_monarch_interaction_desc
 	notification_text = ftr_court_assist_monarch_interaction_notification
-	greeting = ftr_court_assist_monarch_interaction_greeting
+	greeting = positive
 	cooldown_against_recipient = { years = 2 }
 	ai_targets = {
 		ai_recipients = liege
@@ -295,6 +295,10 @@ ftr_court_assist_monarch_interaction = {
 				save_scope_as = ftr_court_story
 			}
 			add_opinion = { target = scope:actor  modifier = ftr_court_loyalist_opinion }
+			update_diarchy_swing_with_perspective_effect = {
+				SWING = minor_sop_swing_liege_gain
+				LIEGE = scope:recipient
+			}
 		}
 		if = {
 			limit = { exists = scope:ftr_court_story }

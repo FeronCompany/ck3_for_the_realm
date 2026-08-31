@@ -67,6 +67,11 @@
  ftr_court_struggle.0018.a:0 "Why should the strings not come with a throne?"
  ftr_court_struggle.0018.b:0 "The strings are enough — for now."
 
+ ###### 0019 朝堂权力角逐开始 ######
+ ftr_court_struggle.0019.t:0 "The Contest for the Throne Begins"
+ ftr_court_struggle.0019.desc:0 "The question of succession has been answered — no, not answered, but thrown open. Around [scope:ftr_court_monarch.GetTitledFirstName], claimants circle and councillors choose sides. The struggle for the Crown has begun, and every man and woman of power must now decide where their allegiance lies."
+ ftr_court_struggle.0019.a:0 "I will watch the tide of power closely."
+
  ###### 0014 朝堂站队 ######
  ftr_court_struggle.0014.t:0 "Choosing Sides"
  ftr_court_struggle.0014.desc:0 "The court is quietly splitting into camps, and neutrality is becoming the most dangerous position of all. It is time to decide whose star to follow."

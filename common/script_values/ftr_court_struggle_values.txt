@@ -142,24 +142,27 @@ ftr_court_claim_strength_value = {
 }
 
 ########## 五、共治拉锯 ##########
-# ftr_court_regency_swing：负值=忠于君主，正值=倒向共治者
-ftr_court_swing_min_value = -100
+# ftr_court_regency_swing 范围：0（完全忠于君主）~ 100（完全倒向共治者），50 = 平衡。
+# 无共治者时 = 0。支持君主向 0 移动，支持共治者向 100 移动。
+ftr_court_swing_min_value = 0
 ftr_court_swing_max_value = 100
-# 拉锯进入"共治请愿"的正向阈值
-ftr_court_swing_regency_threshold_value = 40
-# 拉锯进入"夺位"的正向阈值
-ftr_court_swing_usurp_threshold_value = 75
-# 拉锯进入"辅政稳固"的负向阈值
-ftr_court_swing_loyal_threshold_value = -40
+# 拉锯进入"共治请愿"的阈值（原 -100~100 的 40 映射为 50+40/2=70）
+ftr_court_swing_regency_threshold_value = 70
+# 拉锯进入"夺位"的阈值（原 75 映射为 50+75/2≈88）
+ftr_court_swing_usurp_threshold_value = 88
+# 拉锯进入"辅政稳固"的阈值（原 -40 映射为 50-40/2=30，即偏向君主不超过 30）
+ftr_court_swing_loyal_threshold_value = 30
+# 平衡中点（回落基准）
+ftr_court_swing_balance_value = 50
 
 # 单次站队对拉锯的影响
 ftr_court_swing_support_diarch_value = 8
 ftr_court_swing_support_monarch_value = -8
-# 每年向 0 自然回落，避免单向累积锁死
+# 每年向平衡中点（50）自然回落，避免单向累积锁死
 ftr_court_swing_yearly_decay_value = 5
-# 君主 incapable / 高龄时每年的正向偏置
+# 君主 incapable / 高龄时每年的正向偏置（向共治）
 ftr_court_swing_infirm_bias_value = 4
-# 君主强势（高声望/高虔诚）时每年的负向偏置
+# 君主强势（高声望/高虔诚）时每年的负向偏置（向君主）
 ftr_court_swing_strong_bias_value = -4
 
 ########## 六、资源消耗（双轨制） ##########

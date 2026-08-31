@@ -88,16 +88,122 @@ ftr_court_has_many_candidates_trigger = {
 	var:ftr_court_candidate_count >= 3
 }
 
+# 君主域实时判定：潜在继任竞争者是否充足。
+# 参考 UI 继任者收集逻辑（ftr_court_sync_courtiers_effect）——在君主域按血缘/选举分支
+# 实时收集，不依赖 story 域变量 ftr_court_candidate_count（修复 on_action 准入时 story
+# 尚未建立、读不到该变量导致准入恒失败的缺陷）。
+# 血缘继承：有继承权的子女（含未成年）或（无成年子女时）同宗族成年手足；
+# 选举继承：主头衔顺位继承者。
+# 注意：不用 $MIN$ 宏参数（嵌套 scripted_trigger 内宏参数会向上传播导致调用方被要求传参，
+#       引发崩溃）。故拆成 enough(>=2) 与 many(>=3) 两个独立 trigger。
+# 求值域：君主。
+
+# 候选至少 2 人（最低触发门槛）
+ftr_court_has_enough_claimants_trigger = {
+	OR = {
+		# 血缘继承
+		AND = {
+			ftr_court_hereditary_succession_trigger = yes
+			OR = {
+				any_child = {
+					limit = {
+						is_alive = yes
+						NOT = { is_imprisoned = yes }
+						NOT = { has_trait = incapable }
+					}
+					count >= 2
+				}
+				AND = {
+					# 无成年子女时，同宗族成年手足也算（参考 UI 血缘分支）
+					NOT = { any_child = { is_adult = yes } }
+					any_sibling = {
+						limit = {
+							is_alive = yes
+							is_adult = yes
+							NOT = { is_imprisoned = yes }
+							NOT = { has_trait = incapable }
+							dynasty ?= { this = root.dynasty }
+						}
+						count >= 2
+					}
+				}
+			}
+		}
+		# 选举继承：主头衔顺位继承者
+		AND = {
+			ftr_court_elective_succession_trigger = yes
+			primary_title = {
+				any_title_heir = {
+					limit = {
+						is_alive = yes
+						NOT = { is_imprisoned = yes }
+					}
+					count >= 2
+				}
+			}
+		}
+	}
+}
+
+# 候选至少 3 人（竞争者众多，自行酝酿）
+ftr_court_has_many_claimants_trigger = {
+	OR = {
+		# 血缘继承
+		AND = {
+			ftr_court_hereditary_succession_trigger = yes
+			OR = {
+				any_child = {
+					limit = {
+						is_alive = yes
+						NOT = { is_imprisoned = yes }
+						NOT = { has_trait = incapable }
+					}
+					count >= 3
+				}
+				AND = {
+					# 无成年子女时，同宗族成年手足也算（参考 UI 血缘分支）
+					NOT = { any_child = { is_adult = yes } }
+					any_sibling = {
+						limit = {
+							is_alive = yes
+							is_adult = yes
+							NOT = { is_imprisoned = yes }
+							NOT = { has_trait = incapable }
+							dynasty ?= { this = root.dynasty }
+						}
+						count >= 3
+					}
+				}
+			}
+		}
+		# 选举继承：主头衔顺位继承者
+		AND = {
+			ftr_court_elective_succession_trigger = yes
+			primary_title = {
+				any_title_heir = {
+					limit = {
+						is_alive = yes
+						NOT = { is_imprisoned = yes }
+					}
+					count >= 3
+				}
+			}
+		}
+	}
+}
+
 # 议题1 是否应当激活（在君主身上求值）
+# 候选数用君主域实时判定（ftr_court_has_enough/many_claimants_trigger，参考 UI 继任者收集逻辑），
+# 而非 story 域变量——on_action 准入时 story 尚未建立，读不到 ftr_court_candidate_count。
 ftr_court_should_activate_succession_trigger = {
 	ftr_court_struggle_valid_trigger = yes
 	NOT = { ftr_court_in_cooldown_trigger = yes }
-	ftr_court_has_enough_candidates_trigger = yes
+	ftr_court_has_enough_claimants_trigger = yes
 	OR = {
 		ftr_court_monarch_infirm_trigger = yes
 		ftr_court_monarch_weak_trigger = yes
-		# 竞争者众多且势均力敌也会自行酝酿
-		ftr_court_has_many_candidates_trigger = yes
+		# 竞争者众多（三人成势）也会自行酝酿
+		ftr_court_has_many_claimants_trigger = yes
 	}
 }
 

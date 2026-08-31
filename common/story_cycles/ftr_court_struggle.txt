@@ -21,6 +21,41 @@ ftr_court_struggle = {
 
 	on_setup = {
 		ftr_court_setup_effect = yes
+		# 朝堂权力角逐开始：通知最高统治者、内阁、强势臣属、未被剥夺继承权的继任者。
+		# 用 ftr_court_notified 标记去重（同一人可能同时是内阁/强势臣属/继任者）。
+		story_owner = {
+			add_character_flag = { flag = ftr_court_notified }
+			trigger_event = { id = ftr_court_struggle.0019 }
+		}
+		story_owner = {
+			every_councillor = {
+				limit = {
+					NOT = { this = root }
+					NOT = { has_character_flag = ftr_court_notified }
+				}
+				add_character_flag = { flag = ftr_court_notified }
+				trigger_event = { id = ftr_court_struggle.0019  days = 1 }
+			}
+		}
+		story_owner = {
+			every_powerful_vassal = {
+				limit = {
+					NOT = { this = root }
+					NOT = { has_character_flag = ftr_court_notified }
+				}
+				add_character_flag = { flag = ftr_court_notified }
+				trigger_event = { id = ftr_court_struggle.0019  days = 2 }
+			}
+		}
+		every_in_list = {
+			list = ftr_court_claimant_list
+			limit = {
+				NOT = { has_trait = disinherited }
+				NOT = { has_character_flag = ftr_court_notified }
+			}
+			add_character_flag = { flag = ftr_court_notified }
+			trigger_event = { id = ftr_court_struggle.0019  days = 3 }
+		}
 	}
 
 	on_owner_death = {
@@ -58,10 +93,10 @@ ftr_court_struggle = {
 			label = "FTR_COURT_CLAIMANTS"
 		}
 
-		# 共治拉锯：负 = 忠于君主，正 = 倒向共治者
+		# 共治拉锯：0 = 完全忠于君主，50 = 平衡，100 = 完全倒向共治者
 		tug_of_war_counter = {
 			variable_name = "ftr_court_regency_swing"
-			min = -100
+			min = 0
 			max = 100
 			label = "FTR_COURT_SWING"
 			min_label = "FTR_COURT_SWING_LOYAL"

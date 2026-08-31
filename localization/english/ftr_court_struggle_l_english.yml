@@ -2,6 +2,7 @@
 
  ###### Story Cycle ######
  ftr_court_struggle:0 "<FTR>Succession Struggle"
+ ftr_court_struggle_desc:0 "The question of the throne has been thrown open. Claimants circle the Crown, the council chooses sides, and the balance between the monarch and the co-ruler shifts with every act of loyalty or betrayal."
  FTR_COURT_STRINGS:0 "The great and the powerful circle one another over the question of who shall inherit the realm."
  FTR_COURT_CLAIMANTS:0 "Claimants"
  FTR_COURT_CANDIDATE_COUNT:0 "Claimants"
@@ -87,6 +88,7 @@
  ftr_court_ui_claimants_label:0 "Claimants (Standing)"
  ftr_court_ui_spouses_label:0 "Spouses and Consorts"
  ftr_court_ui_ministers_label:0 "Powerful Vassals and Council"
+ ftr_court_ui_count_label:0 "Claimants"
  ftr_court_ui_heirs_label:0 "Heirs"
  ftr_court_ui_backers_label:0 "Supporters"
  ftr_court_ui_diarch_tag:0 "Regent"

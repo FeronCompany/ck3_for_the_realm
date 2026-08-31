@@ -49,6 +49,13 @@ ftr_court_cleanup_effect = {
 		remove_variable = ftr_court_backer_count
 		remove_variable = ftr_court_backer_of
 		remove_character_flag = ftr_court_pooled
+		remove_character_flag = ftr_court_notified
+	}
+	# 清理君主与朝堂成员的开始通知标记
+	story_owner = {
+		remove_character_flag = ftr_court_notified
+		every_councillor = { remove_character_flag = ftr_court_notified }
+		every_powerful_vassal = { remove_character_flag = ftr_court_notified }
 	}
 
 	remove_variable = ftr_court_candidate_pool
@@ -282,41 +289,59 @@ ftr_court_shift_swing_effect = {
 	}
 }
 
-# 在 story 域执行：年度自然回落 + 君主状态偏置
+# 在 story 域执行：年度自然回落 + 君主状态偏置。
+# 仅当存在共治者（diarch）时才进行拉锯；无共治者时 swing 恒为 0（完全忠于君主）。
 ftr_court_swing_yearly_effect = {
 	save_scope_as = ftr_court_story
 	story_owner = { save_scope_as = ftr_court_monarch }
 
-	# 向 0 回落
 	if = {
-		limit = { var:ftr_court_regency_swing > 0 }
-		change_variable = {
-			name = ftr_court_regency_swing
-			subtract = ftr_court_swing_yearly_decay_value
+		limit = { scope:ftr_court_monarch = { exists = diarch } }
+		# 向平衡中点（50）回落：高于 50 减、低于 50 加，避免单向累积锁死
+		if = {
+			limit = { var:ftr_court_regency_swing > ftr_court_swing_balance_value }
+			change_variable = {
+				name = ftr_court_regency_swing
+				subtract = ftr_court_swing_yearly_decay_value
+			}
 		}
-	}
-	else_if = {
-		limit = { var:ftr_court_regency_swing < 0 }
-		change_variable = {
-			name = ftr_court_regency_swing
-			add = ftr_court_swing_yearly_decay_value
+		else_if = {
+			limit = { var:ftr_court_regency_swing < ftr_court_swing_balance_value }
+			change_variable = {
+				name = ftr_court_regency_swing
+				add = ftr_court_swing_yearly_decay_value
+			}
 		}
-	}
 
-	# 君主失能 -> 逐年向共治者倾斜
-	if = {
-		limit = { scope:ftr_court_monarch = { ftr_court_monarch_infirm_trigger = yes } }
-		change_variable = {
-			name = ftr_court_regency_swing
-			add = ftr_court_swing_infirm_bias_value
+		# 君主失能 -> 逐年向共治者倾斜
+		if = {
+			limit = { scope:ftr_court_monarch = { ftr_court_monarch_infirm_trigger = yes } }
+			change_variable = {
+				name = ftr_court_regency_swing
+				add = ftr_court_swing_infirm_bias_value
+			}
+		}
+		else_if = {
+			limit = { scope:ftr_court_monarch = { prestige >= ftr_court_monarch_weak_prestige_value } }
+			change_variable = {
+				name = ftr_court_regency_swing
+				add = ftr_court_swing_strong_bias_value
+			}
+		}
+
+		# 夹紧到 0-100 范围（避免支持君主后越界或支持共治后超出 100）
+		if = {
+			limit = { var:ftr_court_regency_swing > ftr_court_swing_max_value }
+			set_variable = { name = ftr_court_regency_swing  value = ftr_court_swing_max_value }
+		}
+		else_if = {
+			limit = { var:ftr_court_regency_swing < ftr_court_swing_min_value }
+			set_variable = { name = ftr_court_regency_swing  value = ftr_court_swing_min_value }
 		}
 	}
-	else_if = {
-		limit = { scope:ftr_court_monarch = { prestige >= ftr_court_monarch_weak_prestige_value } }
-		change_variable = {
-			name = ftr_court_regency_swing
-			add = ftr_court_swing_strong_bias_value
-		}
+	else = {
+		# 无共治者：无拉锯，恒为 0
+		set_variable = { name = ftr_court_regency_swing  value = 0 }
 	}
 }
 
@@ -911,7 +936,7 @@ ftr_court_sync_courtiers_effect = {
 		# 复位标记与列表
 		set_variable = { name = ftr_court_ui_has_diarch  value = 0 }
 		# 清空共治者角色变量：无共治者时 GUI 常驻空位需读到无效角色，避免残留上一次的旧值
-		clear_variable = ftr_court_ui_diarch_char
+		remove_variable = ftr_court_ui_diarch_char
 		clear_variable_list = ftr_court_ui_spouses
 		clear_variable_list = ftr_court_ui_ministers
 		clear_variable_list = ftr_court_ui_heirs
@@ -1130,6 +1155,7 @@ ftr_court_sync_ui_from_story_effect = {
 		limit = { story_type = ftr_court_struggle }
 		root = {
 			set_variable = { name = ftr_court_ui_active  value = 1 }
+			# 共治者势力条（0~100）：swing 已直接为 0~100（0=忠于君主，50=平衡，100=共治掌控），无需再映射。
 			set_variable = { name = ftr_court_ui_swing  value = prev.var:ftr_court_regency_swing }
 			set_variable = { name = ftr_court_ui_phase  value = prev.var:ftr_court_phase }
 			set_variable = { name = ftr_court_ui_count  value = prev.var:ftr_court_candidate_count }

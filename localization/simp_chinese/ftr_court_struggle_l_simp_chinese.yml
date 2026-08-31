@@ -28,6 +28,8 @@
  ftr_court_defect_interaction_desc:0 "背弃旧主，宣誓效忠另一位竞争者。"
  ftr_court_assist_monarch_interaction:0 "<FTR>尽心辅政"
  ftr_court_assist_monarch_interaction_desc:0 "勉力维持朝政，不使大权旁落。"
+ ftr_court_assist_monarch_interaction_notification:0 "[actor.GetFirstNameNoTooltip] 愿为陛下分忧，侍奉左右。"
+ ftr_court_assist_monarch_interaction_greeting:0 "臣愿尽绵薄之力，助陛下共治之劳。"
  ftr_court_petition_coregency_interaction:0 "<FTR>奏请共治"
  ftr_court_petition_coregency_interaction_desc:0 "奏请与君主共担国事——至少眼下如此。"
  ftr_court_promise_council_seat_interaction:0 "<FTR>许以内阁席位"

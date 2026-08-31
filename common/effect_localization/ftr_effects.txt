@@ -552,14 +552,6 @@ ftr_pg_law_event.0113.rejected.tt = {
 	global = ftr_pg_law_event.0113.rejected.tt
 }
 
-ftr_vassal_support_regent_against_liege_content = {
-	global = ftr_vassal_support_regent_against_liege_content
-}
-
-ftr_vassal_support_liege_against_regent_content = {
-	global = ftr_vassal_support_liege_against_regent_content
-}
-
 ftr_trade_task_total_expected_income_tt = {
 	global = ftr_trade_task_total_expected_income_tt
 }

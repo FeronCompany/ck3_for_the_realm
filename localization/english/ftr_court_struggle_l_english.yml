@@ -28,6 +28,8 @@
  ftr_court_defect_interaction_desc:0 "Abandon your former favourite and swear yourself to another claimant."
  ftr_court_assist_monarch_interaction:0 "<FTR>Steadfast Service"
  ftr_court_assist_monarch_interaction_desc:0 "Tend to the affairs of state so that power does not slip from the Crown's grasp."
+ ftr_court_assist_monarch_interaction_notification:0 "[actor.GetFirstNameNoTooltip] has offered to serve you in your regency."
+ ftr_court_assist_monarch_interaction_greeting:0 "I come to serve, my liege. Let me ease the burden of your co-rule."
  ftr_court_petition_coregency_interaction:0 "<FTR>Petition for Co-Rule"
  ftr_court_petition_coregency_interaction_desc:0 "Ask that the burdens of the Crown be shared — for now."
  ftr_court_promise_council_seat_interaction:0 "<FTR>Promise a Council Seat"

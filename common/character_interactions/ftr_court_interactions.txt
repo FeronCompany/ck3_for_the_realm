@@ -243,6 +243,8 @@ ftr_court_assist_monarch_interaction = {
 	category = interaction_category_vassal
 	common_interaction = yes
 	desc = ftr_court_assist_monarch_interaction_desc
+	notification_text = ftr_court_assist_monarch_interaction_notification
+	greeting = ftr_court_assist_monarch_interaction_greeting
 	cooldown_against_recipient = { years = 2 }
 	ai_targets = {
 		ai_recipients = liege
@@ -258,6 +260,10 @@ ftr_court_assist_monarch_interaction = {
 		scope:recipient = {
 			ftr_court_is_struggle_monarch_trigger = yes
 			ftr_court_monarch_infirm_trigger = yes
+			# 最高统治者必须存在共治者（辅政针对君主与共治者的权力拉锯）
+			has_active_diarchy = yes
+			# 发起者不能是共治者本人（共治者不向自己辅政）
+			NOT = { diarch = scope:actor }
 		}
 	}
 	is_valid_showing_failures_only = {
@@ -304,19 +310,31 @@ ftr_court_assist_monarch_interaction = {
 	}
 	on_decline = {}
 	ai_will_do = {
-		base = 20
+		base = 0
+		# 与最高统治者的关系（意见修正值）：君主越器重发起者，发起者越愿辅政
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 1.0
+			desc = AI_OPINION_REASON
+		}
+		# 与共治者的关系（意见修正值）：共治者越器重发起者，发起者越不愿辅政打压共治者
+		# 负权重稍大：并非每个臣子都愿冒风险做忠臣
+		opinion_modifier = {
+			who = scope:recipient.diarch
+			opinion_target = scope:actor
+			multiplier = -1.5
+			desc = AI_OPINION_REASON
+		}
+		# 有忠信特质：天性忠贞，愿辅佐君主
 		modifier = {
 			add = 40
-			scope:actor = { opinion = { target = scope:recipient  value >= 50 } }
+			scope:actor = { has_trait = loyal }
 		}
+		# 与共治者是仇敌：借辅政打压共治者
 		modifier = {
-			add = 25
-			scope:actor = { has_trait = content }
-			desc = AI_TRAIT_REASON
-		}
-		modifier = {
-			add = -50
-			scope:actor = { has_trait = ambitious }
+			add = 40
+			scope:actor = { has_relation_rival = scope:recipient.diarch }
 		}
 	}
 }

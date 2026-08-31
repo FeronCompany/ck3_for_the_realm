@@ -502,28 +502,8 @@ types Lists
 		}
 		vbox = {
 			margin = { 10 0 }
-			hbox = {
-				margin = { 0 5 }
-				button_standard = {
-					name = "ftr_pg_support_liege_button"
-					text = "FTR_PG_SUPPORT_LIEGE_BUTTON_TEXT"
-					onclick = "[Character.OpenPlayerInteraction('ftr_diarch_support_liege_interaction')]"
-					enabled = "[Character.IsPlayerInteractionValid('ftr_diarch_support_liege_interaction')]"
-					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_diarch_support_liege_interaction')]"
-					size = { 100 40 }
-				}
-				spacer = {
-					size = { 80 15 }
-				}
-				button_standard = {
-					name = "ftr_pg_support_diarch_button"
-					text = "FTR_PG_SUPPORT_DIARCH_BUTTON_TEXT"
-					onclick = "[Character.OpenPlayerInteraction('ftr_diarch_support_diarch_interaction')]"
-					enabled = "[Character.IsPlayerInteractionValid('ftr_diarch_support_diarch_interaction')]"
-					tooltip = "[Character.GetPlayerInteractionTooltip('ftr_diarch_support_diarch_interaction')]"
-					size = { 100 40 }
-				}
-			}
+			# 注：原「支持领主 / 支持摄政」两个按钮（ftr_diarch_support_liege/diarch_interaction）
+			# 已被新朝堂权力角逐系统的「辅政 / 请愿共治 / 游说」取代，旧交互已删除，此处不再渲染按钮。
 			progressbar_standard = {
 				name = "ftr_diarch_power_bar"
 				size = { 300 25 }

@@ -199,7 +199,6 @@ window = {
 										# 注：不在此做动态"有无追随者"判断——嵌套 datamodel 中的空判断不可靠
 										#     （IsDataModelEmpty / Scope.Var 在此上下文求值失败，error.log 有报错）。
 										hbox = {
-											visible = "[NotZero_CFixedPoint( GetPlayer.MakeScope.Var('ftr_court_ui_active').GetValue )]"
 											spacing = 6
 											# 固定"支持者"浅色标签
 											text_single = {
@@ -215,6 +214,7 @@ window = {
 													hbox = {
 														spacing = 6
 														datamodel = "[CharacterListItem.GetCharacter.MakeScope.GetList('ftr_court_heir_backers')]"
+														layoutpolicy_horizontal = expanding
 														item = {
 															ftr_court_small_icon = {
 																layoutpolicy_horizontal = fixed

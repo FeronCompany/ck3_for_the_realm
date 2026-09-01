@@ -95,24 +95,6 @@
  ftr_court_struggle.0020.a:0 "Very well. Share the burden."
  ftr_court_struggle.0020.b:0 "The Crown does not share. Refused."
 
- ###### 0030 立储 ######
- ftr_court_struggle.0030.t:0 "Naming a Successor"
- ftr_court_struggle.0030.desc:0 "The realm must know where it stands. Whom shall I name before the court?"
- ftr_court_struggle.0030.a:0 "Name [ftr_court_claimant_1.GetFullName]"
- ftr_court_struggle.0030.b:0 "Name [ftr_court_claimant_2.GetFullName]"
- ftr_court_struggle.0030.c:0 "Name [ftr_court_claimant_3.GetFullName]"
- ftr_court_struggle.0030.d:0 "Name [ftr_court_claimant_4.GetFullName]"
- ftr_court_struggle.0030.e:0 "Name [ftr_court_claimant_5.GetFullName]"
-
- ###### 0031 压制竞争者 ######
- ftr_court_struggle.0031.t:0 "An Example Must Be Made"
- ftr_court_struggle.0031.desc:0 "One of them has grown too bold. Strip away the following, and the rest will remember their place."
- ftr_court_struggle.0031.a:0 "Move against [ftr_court_claimant_1.GetFullName]"
- ftr_court_struggle.0031.b:0 "Move against [ftr_court_claimant_2.GetFullName]"
- ftr_court_struggle.0031.c:0 "Move against [ftr_court_claimant_3.GetFullName]"
- ftr_court_struggle.0031.d:0 "Move against [ftr_court_claimant_4.GetFullName]"
- ftr_court_struggle.0031.e:0 "Move against [ftr_court_claimant_5.GetFullName]"
-
  ###### 0040 是否参与继位角逐 ######
  ftr_court_struggle.0040.t:0 "To Enter the Contest"
  ftr_court_struggle.0040.desc:0 "[ftr_court_monarch.GetTitledFirstName] grows old, and the question of the throne has been thrown open. Should [ROOT.GetFullName] stake a claim and enter the contest, or stand aside and let others fight it out?"

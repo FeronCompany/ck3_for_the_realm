@@ -36,22 +36,6 @@
  ftr_court_promise_council_option:0 "Promise a Council Seat"
  ftr_court_promise_contract_option:0 "Promise Lighter Obligations"
 
- ###### Decisions ######
- ftr_court_nominate_heir_decision:0 "<FTR>Nominate an Heir"
- ftr_court_nominate_heir_decision_desc:0 "Name your chosen successor openly. It will steady the realm — and embitter every rival."
- ftr_court_nominate_heir_decision_tooltip:0 "Raises one claimant's standing and lowers the rest"
- ftr_court_nominate_heir_decision_confirm:0 "So be it"
-
- ftr_court_consolidate_authority_decision:0 "<FTR>Rally the Court"
- ftr_court_consolidate_authority_decision_desc:0 "Remind the court where power truly lies, and draw the courtiers back to their loyalty."
- ftr_court_consolidate_authority_decision_tooltip:0 "Shifts the balance of power back toward the Crown"
- ftr_court_consolidate_authority_decision_confirm:0 "Let it be known"
-
- ftr_court_suppress_claimant_decision:0 "<FTR>Suppress a Claimant"
- ftr_court_suppress_claimant_decision_desc:0 "Strip a contender of standing and scatter their following."
- ftr_court_suppress_claimant_decision_tooltip:0 "Lowers one claimant's standing and reduces their backers"
- ftr_court_suppress_claimant_decision_confirm:0 "Do it"
-
  ###### Opinion Modifiers ######
  ftr_court_backer_opinion:0 "Backed my claim"
  ftr_court_loyalist_opinion:0 "Steadfast in my service"

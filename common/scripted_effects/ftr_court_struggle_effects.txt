@@ -698,57 +698,6 @@ ftr_court_schedule_council_reminder_effect = {
 	}
 }
 
-# 在君主域执行：立储。抬高被立者的竞争力，其余竞争者同生怨望。
-# 参数：NOMINEE
-ftr_court_nominate_effect = {
-	save_scope_as = ftr_court_monarch
-
-	$NOMINEE$ ?= {
-		save_scope_as = ftr_court_nominee
-		add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_alliance_opinion }
-		if = {
-			limit = { has_variable = ftr_claim_strength }
-			change_variable = { name = ftr_claim_strength  add = ftr_court_nominate_gain_value }
-		}
-	}
-
-	every_owned_story = {
-		limit = { story_type = ftr_court_struggle }
-		save_scope_as = ftr_court_story
-	}
-	scope:ftr_court_story ?= {
-		every_in_list = {
-			list = ftr_court_participant_list
-			limit = { NOT = { this = scope:ftr_court_nominee } }
-			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
-			if = {
-				limit = { has_variable = ftr_claim_strength }
-				change_variable = { name = ftr_claim_strength  add = ftr_court_nominate_penalty_value }
-			}
-		}
-		ftr_court_update_phase_effect = yes
-	}
-}
-
-# 在君主域执行：压制某位竞争者，削其声势与人望。
-# 参数：TARGET
-ftr_court_suppress_effect = {
-	save_scope_as = ftr_court_monarch
-
-	$TARGET$ ?= {
-		add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_rival_claimant_opinion }
-		if = {
-			limit = { has_variable = ftr_claim_strength }
-			change_variable = { name = ftr_claim_strength  add = ftr_court_suppress_penalty_value }
-		}
-		if = {
-			limit = { has_variable = ftr_court_backer_count }
-			change_variable = { name = ftr_court_backer_count  add = ftr_court_suppress_backer_loss_value }
-		}
-	}
-	add_dread = ftr_court_dread_minor_value
-}
-
 # 在角色域执行：清理其竞争状态（退出朝堂角逐）
 ftr_court_clear_claimant_status_effect = {
 	remove_variable = ftr_claim_strength

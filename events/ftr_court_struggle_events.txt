@@ -17,8 +17,9 @@ ftr_court_struggle.0001 = {
 
 	immediate = {
 		save_scope_as = ftr_court_monarch
-		every_owned_story = {
-			limit = { story_type = ftr_court_struggle }
+		# 用原版 random_owned_story 模式定位当前君主的朝堂 story（对齐 debug_story_cycle_test_events）
+		random_owned_story = {
+			type = ftr_court_struggle
 			save_scope_as = ftr_court_story
 		}
 		scope:ftr_court_story ?= {
@@ -113,12 +114,9 @@ ftr_court_struggle.0005 = {
 
 	immediate = {
 		save_scope_as = ftr_court_monarch
-		every_owned_story = {
-			limit = { story_type = ftr_court_struggle }
+		random_owned_story = {
+			type = ftr_court_struggle
 			save_scope_as = ftr_court_story
-		}
-		scope:ftr_court_story ?= {
-			ftr_court_save_ranked_claimants_effect = yes
 		}
 	}
 
@@ -129,15 +127,34 @@ ftr_court_struggle.0005 = {
 	option = { # Act now, before it is too late
 		name = ftr_court_struggle.0005.b
 		ai_chance = { base = 30 }
-		scope:ftr_court_monarch = {
-			trigger_event = { id = ftr_court_struggle.0030  days = 1 }
+		# 立即压制参与角逐者，把权力天平拉回君权一侧
+		scope:ftr_court_story ?= {
+			every_in_list = {
+				list = ftr_court_participant_list
+				limit = { NOT = { this = scope:ftr_court_monarch } }
+				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
+			}
+			ftr_court_refresh_backer_count_effect = yes
 		}
 	}
 	option = { # Crack down on the ringleader
 		name = ftr_court_struggle.0005.c
 		ai_chance = { base = 25 }
-		scope:ftr_court_monarch = {
-			trigger_event = { id = ftr_court_struggle.0031  days = 1 }
+		# 直接压制参与角逐的头目，其余参与者心怀忌惮
+		scope:ftr_court_story ?= {
+			ordered_in_list = {
+				list = ftr_court_participant_list
+				order_by = var:ftr_claim_strength
+				save_scope_as = ftr_court_ringleader
+			}
+			scope:ftr_court_ringleader ?= {
+				if = {
+					limit = { has_variable = ftr_claim_strength }
+					change_variable = { name = ftr_claim_strength  add = ftr_court_crisis_repress_value }
+				}
+				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_rival_claimant_opinion }
+			}
+			ftr_court_refresh_backer_count_effect = yes
 		}
 	}
 }
@@ -907,118 +924,6 @@ ftr_court_struggle.0020 = {
 	}
 }
 
-##############################################################
-### 立储 / 压制：以固定选项呈现前五名竞争者
-##############################################################
-
-######### 0030 立储（root = 君主） #########
-ftr_court_struggle.0030 = {
-	type = character_event
-	title = ftr_court_struggle.0030.t
-	desc = ftr_court_struggle.0030.desc
-	theme = diplomacy
-
-	left_portrait = {
-		character = root
-	}
-
-	immediate = {
-		save_scope_as = ftr_court_monarch
-		every_owned_story = {
-			limit = { story_type = ftr_court_struggle }
-			save_scope_as = ftr_court_story
-		}
-		scope:ftr_court_story ?= {
-			ftr_court_save_ranked_claimants_effect = yes
-		}
-	}
-
-	option = {
-		name = ftr_court_struggle.0030.a
-		trigger = { exists = scope:ftr_court_claimant_1 }
-		ai_chance = { base = 60 }
-		ftr_court_nominate_effect = { NOMINEE = scope:ftr_court_claimant_1 }
-	}
-	option = {
-		name = ftr_court_struggle.0030.b
-		trigger = { exists = scope:ftr_court_claimant_2 }
-		ai_chance = { base = 25 }
-		ftr_court_nominate_effect = { NOMINEE = scope:ftr_court_claimant_2 }
-	}
-	option = {
-		name = ftr_court_struggle.0030.c
-		trigger = { exists = scope:ftr_court_claimant_3 }
-		ai_chance = { base = 15 }
-		ftr_court_nominate_effect = { NOMINEE = scope:ftr_court_claimant_3 }
-	}
-	option = {
-		name = ftr_court_struggle.0030.d
-		trigger = { exists = scope:ftr_court_claimant_4 }
-		ai_chance = { base = 10 }
-		ftr_court_nominate_effect = { NOMINEE = scope:ftr_court_claimant_4 }
-	}
-	option = {
-		name = ftr_court_struggle.0030.e
-		trigger = { exists = scope:ftr_court_claimant_5 }
-		ai_chance = { base = 5 }
-		ftr_court_nominate_effect = { NOMINEE = scope:ftr_court_claimant_5 }
-	}
-}
-
-######### 0031 压制竞争者（root = 君主） #########
-ftr_court_struggle.0031 = {
-	type = character_event
-	title = ftr_court_struggle.0031.t
-	desc = ftr_court_struggle.0031.desc
-	theme = intrigue
-
-	left_portrait = {
-		character = root
-	}
-
-	immediate = {
-		save_scope_as = ftr_court_monarch
-		every_owned_story = {
-			limit = { story_type = ftr_court_struggle }
-			save_scope_as = ftr_court_story
-		}
-		scope:ftr_court_story ?= {
-			ftr_court_save_ranked_claimants_effect = yes
-		}
-	}
-
-	option = {
-		name = ftr_court_struggle.0031.a
-		trigger = { exists = scope:ftr_court_claimant_1 }
-		ai_chance = { base = 50 }
-		ftr_court_suppress_effect = { TARGET = scope:ftr_court_claimant_1 }
-	}
-	option = {
-		name = ftr_court_struggle.0031.b
-		trigger = { exists = scope:ftr_court_claimant_2 }
-		ai_chance = { base = 30 }
-		ftr_court_suppress_effect = { TARGET = scope:ftr_court_claimant_2 }
-	}
-	option = {
-		name = ftr_court_struggle.0031.c
-		trigger = { exists = scope:ftr_court_claimant_3 }
-		ai_chance = { base = 10 }
-		ftr_court_suppress_effect = { TARGET = scope:ftr_court_claimant_3 }
-	}
-	option = {
-		name = ftr_court_struggle.0031.d
-		trigger = { exists = scope:ftr_court_claimant_4 }
-		ai_chance = { base = 5 }
-		ftr_court_suppress_effect = { TARGET = scope:ftr_court_claimant_4 }
-	}
-	option = {
-		name = ftr_court_struggle.0031.e
-		trigger = { exists = scope:ftr_court_claimant_5 }
-		ai_chance = { base = 5 }
-		ftr_court_suppress_effect = { TARGET = scope:ftr_court_claimant_5 }
-	}
-}
-
 ######### 0019 朝堂权力角逐开始（root = 被通知者） #########
 # 由 story 的 on_setup 触发，通知最高统治者、内阁成员、强势臣属、未被剥夺继承权的继任者。
 # 作用域：root = 被通知者；immediate 定位君主存入 scope:ftr_court_monarch。
@@ -1093,8 +998,8 @@ ftr_court_struggle.0040 = {
 				limit = { exists = top_liege }
 				top_liege = {
 					save_scope_as = ftr_court_monarch
-					every_owned_story = {
-						limit = { story_type = ftr_court_struggle }
+					random_owned_story = {
+						type = ftr_court_struggle
 						save_scope_as = ftr_court_story
 					}
 				}
@@ -1103,16 +1008,16 @@ ftr_court_struggle.0040 = {
 				limit = { exists = employer }
 				employer = {
 					save_scope_as = ftr_court_monarch
-					every_owned_story = {
-						limit = { story_type = ftr_court_struggle }
+					random_owned_story = {
+						type = ftr_court_struggle
 						save_scope_as = ftr_court_story
 					}
 				}
 			}
 			else = {
 				save_scope_as = ftr_court_monarch
-				every_owned_story = {
-					limit = { story_type = ftr_court_struggle }
+				random_owned_story = {
+					type = ftr_court_struggle
 					save_scope_as = ftr_court_story
 				}
 			}

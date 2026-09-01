@@ -36,22 +36,6 @@
  ftr_court_promise_council_option:0 "许以内阁席位"
  ftr_court_promise_contract_option:0 "许以宽免义务"
 
- ###### 决议 ######
- ftr_court_nominate_heir_decision:0 "<FTR>册立储君"
- ftr_court_nominate_heir_decision_desc:0 "公开确立继承人。此举可安朝局，却也会令所有落选者怀恨在心。"
- ftr_court_nominate_heir_decision_tooltip:0 "抬高一位竞争者的声势，同时压低其余人"
- ftr_court_nominate_heir_decision_confirm:0 "就这么办"
-
- ftr_court_consolidate_authority_decision:0 "<FTR>整肃朝纲"
- ftr_court_consolidate_authority_decision_desc:0 "提醒满朝文武权柄究竟在谁手中，使臣下重归忠诚。"
- ftr_court_consolidate_authority_decision_tooltip:0 "使权力天平重新倒向君权一侧"
- ftr_court_consolidate_authority_decision_confirm:0 "昭告天下"
-
- ftr_court_suppress_claimant_decision:0 "<FTR>压制竞争者"
- ftr_court_suppress_claimant_decision_desc:0 "削夺某位继任者的声望，并驱散其党羽。"
- ftr_court_suppress_claimant_decision_tooltip:0 "降低一位竞争者的声势并削减其支持者"
- ftr_court_suppress_claimant_decision_confirm:0 "照此办理"
-
  ###### 好感修正 ######
  ftr_court_backer_opinion:0 "曾拥戴我继位"
  ftr_court_loyalist_opinion:0 "辅政有功"

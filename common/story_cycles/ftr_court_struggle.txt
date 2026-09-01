@@ -74,11 +74,6 @@ ftr_court_struggle = {
 		}
 
 		custom_string_key = "FTR_COURT_STRINGS"
-
-		decisions = {
-			ftr_court_nominate_heir_decision
-			ftr_court_consolidate_authority_decision
-		}
 	}
 
 	################## 年度维护：刷新候选池、拉锯与阶段 ##################

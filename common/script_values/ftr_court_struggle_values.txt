@@ -194,22 +194,12 @@ ftr_court_lobby_influence_cost_value = 30
 ftr_court_favor_prestige_value = 100
 # 恩宠的影响力走官方 minor_influence_gain = 30，无需另设常量
 
-# 决议消耗
-ftr_court_nominate_heir_cost_value = 100
-ftr_court_suppress_claimant_cost_value = 120
-ftr_court_launch_coup_cost_value = 200
-ftr_court_nominate_heir_modify_value = -100
-ftr_court_suppress_claimant_modify_value = -120
 # 内战宣战的威望成本
 ftr_court_succession_war_prestige_cost_value = 350
 
 ########## 六之二、奖惩幅度 ##########
-# 立储：被立者涨分，其余人扣分
-ftr_court_nominate_gain_value = 30
-ftr_court_nominate_penalty_value = -15
-# 压制：被压制者扣分并流失支持者
-ftr_court_suppress_penalty_value = -40
-ftr_court_suppress_backer_loss_value = -2
+# 危机事件中压制参与角逐头目的扣分
+ftr_court_crisis_repress_value = -60
 # 威望与恐惧
 ftr_court_prestige_minor_value = 100
 ftr_court_dread_minor_value = 10

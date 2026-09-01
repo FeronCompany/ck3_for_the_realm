@@ -103,73 +103,6 @@ ftr_court_cleanup_effect = {
 ### 二、候选池与竞争力排名
 ######################################################
 
-# 在 story 域执行：定期从最高统治者的个人参与者列表 ftr_court_claimants 同步到
-# story 的 ftr_court_participant_list。
-# 新方案：参与者列表主存储放在最高统治者（story_owner）的个人变量列表上，
-# 此处定期（由 effect_group 调用）把最高统治者列表同步到 story，供 story 逻辑与可视化使用。
-# 同步时移除不再符合条件的参与者（失能 / 被剥夺继承权 / 被囚禁 / 死亡），并统计人数。
-ftr_court_update_candidates_effect = {
-	save_scope_as = ftr_court_story
-	story_owner = { save_scope_as = ftr_court_monarch }
-
-	# ---- 1. 清空 story 的参与者列表，从最高统治者个人列表重建 ----
-	clear_variable_list = ftr_court_participant_list
-	scope:ftr_court_monarch = {
-		# 若参与者不再符合资格，从最高统治者个人列表移除并清理其状态
-		every_in_list = {
-			list = ftr_court_claimants
-			limit = { NOT = { ftr_court_participant_remains_valid_trigger = yes } }
-			save_scope_as = ftr_court_removed_participant
-			remove_character_flag = ftr_court_participating
-			remove_variable = ftr_claim_strength
-			remove_variable = ftr_court_backer_of
-		}
-		# 重建最高统治者列表（移除失效者后重建）
-		clear_variable_list = ftr_court_claimants
-		every_in_list = {
-			list = ftr_court_participant_list
-			limit = {
-				is_alive = yes
-				has_character_flag = ftr_court_participating
-				ftr_court_participant_remains_valid_trigger = yes
-			}
-			save_scope_as = ftr_court_sync_participant
-			add_to_variable_list = {
-				name = ftr_court_claimants
-				target = scope:ftr_court_sync_participant
-			}
-		}
-	}
-
-	# ---- 2. 从最高统治者个人列表同步到 story 的 ftr_court_participant_list ----
-	scope:ftr_court_story = {
-		clear_variable_list = ftr_court_participant_list
-	}
-	scope:ftr_court_monarch = {
-		every_in_list = {
-			list = ftr_court_claimants
-			limit = { is_alive = yes }
-			save_scope_as = ftr_court_sync_participant
-			scope:ftr_court_story = {
-				add_to_variable_list = {
-					name = ftr_court_participant_list
-					target = scope:ftr_court_sync_participant
-				}
-			}
-		}
-	}
-
-	# ---- 3. 统计参与人数 ----
-	scope:ftr_court_story = {
-		set_variable = {
-			name = ftr_court_participant_count
-			value = list_size:ftr_court_participant_list
-		}
-		set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
-		ftr_court_update_phase_effect = yes
-	}
-}
-
 # 在参与角逐者域执行：加入最高统治者个人参与者列表 ftr_court_claimants（去重）。
 # 依赖 scope:ftr_court_monarch（最高统治者）。
 ftr_court_add_participant_effect = {
@@ -222,26 +155,23 @@ ftr_court_launch_participation_asks_effect = {
 	save_scope_as = ftr_court_story
 	story_owner = { save_scope_as = ftr_court_monarch }
 
-	# 参与者数取自最高统治者个人列表 ftr_court_claimants（新方案主存储），
-	# 并同步到 story 的 ftr_court_participant_list 与 ftr_court_participant_count。
+	# 参与者数取自最高统治者个人列表 ftr_court_claimants（新方案主存储）。
+	# 在最高统治者作用域求 list_size，写入 story 的 ftr_court_participant_count。
 	scope:ftr_court_monarch = {
-		every_in_list = {
-			list = ftr_court_claimants
-			limit = { is_alive = yes }
-			save_scope_as = ftr_court_sync_participant
-			scope:ftr_court_story = {
-				add_to_variable_list = {
-					name = ftr_court_participant_list
-					target = scope:ftr_court_sync_participant
-				}
-			}
+		set_variable = {
+			name = ftr_court_sync_count_tmp
+			value = list_size:ftr_court_claimants
 		}
 	}
 	scope:ftr_court_story = {
 		set_variable = {
 			name = ftr_court_participant_count
-			value = list_size:ftr_court_participant_list
+			value = scope:ftr_court_monarch.var:ftr_court_sync_count_tmp
 		}
+	}
+	# 清理最高统治者身上的临时变量
+	scope:ftr_court_monarch = {
+		remove_variable = ftr_court_sync_count_tmp
 	}
 
 	# 血缘继承：询问子女 / 兄弟姐妹
@@ -348,16 +278,17 @@ ftr_court_decline_contest_effect = {
 	remove_character_flag = ftr_court_asked_participation
 }
 
-# 在任意角色域执行：刷新其自身、或其宗主所拥有的朝堂角逐
+# 在任意角色域执行：刷新其自身、或其宗主所拥有的朝堂角逐的支持者计数。
+# （参与者列表主存储为最高统治者 ftr_court_claimants，由参与事件维护，此处仅刷新支持者计数。）
 ftr_court_refresh_local_effect = {
 	every_owned_story = {
 		limit = { story_type = ftr_court_struggle }
-		ftr_court_update_candidates_effect = yes
+		ftr_court_refresh_backer_count_effect = yes
 	}
 	top_liege ?= {
 		every_owned_story = {
 			limit = { story_type = ftr_court_struggle }
-			ftr_court_update_candidates_effect = yes
+			ftr_court_refresh_backer_count_effect = yes
 		}
 	}
 }

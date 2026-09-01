@@ -63,16 +63,6 @@ ftr_court_struggle = {
 			label = "FTR_COURT_CLAIMANTS"
 		}
 
-		# 共治拉锯：0 = 完全忠于君主，50 = 平衡，100 = 完全倒向共治者
-		tug_of_war_counter = {
-			variable_name = "ftr_court_regency_swing"
-			min = 0
-			max = 100
-			label = "FTR_COURT_SWING"
-			min_label = "FTR_COURT_SWING_LOYAL"
-			max_label = "FTR_COURT_SWING_DIARCH"
-		}
-
 		custom_string_key = "FTR_COURT_STRINGS"
 	}
 
@@ -85,7 +75,6 @@ ftr_court_struggle = {
 				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
 			}
 			effect = {
-				ftr_court_update_candidates_effect = yes
 				ftr_court_swing_yearly_effect = yes
 			}
 		}
@@ -106,29 +95,7 @@ ftr_court_struggle = {
 				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
 			}
 			effect = {
-				ftr_court_update_candidates_effect = yes
 				ftr_court_launch_participation_asks_effect = yes
-				ftr_court_refresh_backer_count_effect = yes
-			}
-		}
-		fallback = {
-			end_story = yes
-		}
-	}
-
-	################## 定期同步参与者（最高统治者 → story） ##################
-
-	# 新方案：参与者列表主存储放在最高统治者（story_owner）的个人变量列表 ftr_court_claimants 上。
-	# 此处定期从最高统治者列表同步到 story 的 ftr_court_participant_list，
-	# 供 story 逻辑与侧栏可视化使用。
-	effect_group = {
-		months = 1
-		triggered_effect = {
-			trigger = {
-				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
-			}
-			effect = {
-				ftr_court_update_candidates_effect = yes
 				ftr_court_refresh_backer_count_effect = yes
 			}
 		}

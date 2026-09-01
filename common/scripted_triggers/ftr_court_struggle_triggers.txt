@@ -184,7 +184,7 @@ ftr_court_monarch_weak_trigger = {
 
 ########## 四、阶段判定 ##########
 
-# 候选人数量达标（数量由 ftr_court_update_candidates_effect 写入变量）
+# 候选人数量达标（数量由参与事件 0040 写入 ftr_court_candidate_count）
 ftr_court_has_enough_candidates_trigger = {
 	has_variable = ftr_court_candidate_count
 	var:ftr_court_candidate_count >= ftr_court_min_candidates_value

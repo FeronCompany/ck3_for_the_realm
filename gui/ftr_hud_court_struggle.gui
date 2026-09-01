@@ -32,7 +32,7 @@
 			{
 				texture = "gfx/interface/icons/icon_ftr_court_struggle.dds"
 				# 每次点击都先同步数据，再切换窗口开/关
-				onclick = "[GetScriptedGui('ftr_court_sync_ui_data').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				#onclick = "[GetScriptedGui('ftr_court_sync_ui_data').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 				onclick = "[GetVariableSystem.Toggle( 'ftr_court_struggle_window_open' )]"
 				onclick = "[GetVariableSystem.Clear('ftr_show_my_realm_tab_toggle')]"
 				onclick = "[GetVariableSystem.Clear('ftr_show_liege_realm_tab_toggle')]"

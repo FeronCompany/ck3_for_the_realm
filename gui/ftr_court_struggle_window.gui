@@ -65,7 +65,7 @@ window = {
 						portrait_head_small = {
 							name = "player_head_portrait"
 							visible = "[Character.IsValid]"
-							datacontext = "[GetPlayer.MakeScope.Var('ftr_court_ui_monarch_char').Char]"
+							datacontext = "[GetPlayer.GetTopLiege]"
 						}
 						# 摄政权势平衡条
 						vbox = {
@@ -74,7 +74,7 @@ window = {
 								size = { 300 14 }
 								min = 0
 								max = 100
-								value = "[GetPlayer.MakeScope.Var('ftr_court_ui_swing').GetValue]"
+								value = "[GetPlayer.GetTopLiege.MakeScope.ScriptValue( 'ftr_get_diarchy_swing' )]"
 								progresstexture = "gfx/interface/progressbars/progress_blue.dds"
 								noprogresstexture = "gfx/interface/progressbars/progress_blue_bg.dds"
 							}
@@ -88,7 +88,7 @@ window = {
 						# 共治者头像（常驻；无共治者时角色变量无效显示为空）
 						portrait_head_small = {
 							name = "regent_head_portrait_my"
-							datacontext = "[GetPlayer.MakeScope.Var('ftr_court_ui_diarch_char').Char]"
+							datacontext = "[GetPlayer.GetTopLiege.GetDiarchy.GetDiarch]"
 						}
 						expand = {}
 					}
@@ -141,7 +141,6 @@ window = {
 									layoutpolicy_horizontal = expanding
 									text_single = {
 										margin = { 10 8 }
-										visible = "[GetPlayer.MakeScope.Var('ftr_court_ui_has_diarch').IsEqual('1')]"
 										text = "ftr_court_ui_diarch_backers_label"
 									}
 									hbox = {
@@ -153,7 +152,6 @@ window = {
 												hbox = {
 													margin = { 10 0 }
 													spacing = 12
-													visible = "[GetPlayer.MakeScope.Var('ftr_court_ui_has_diarch').IsEqual('1')]"
 													datamodel = "[GetPlayer.MakeScope.GetList('ftr_court_ui_diarch_backers')]"
 													layoutpolicy_horizontal = fixed
 													item = {
@@ -174,19 +172,18 @@ window = {
 								margin = { 10 14 }
 								text = "ftr_court_ui_heirs_label"
 							}
-							# 暂无参与者时的占位提示（有朝堂 story 但参与者为 0）
-							text_single = {
-								margin = { 20 4 }
-								text = "ftr_court_ui_no_claimants"
-								visible = "[And(GetPlayer.MakeScope.Var('ftr_court_ui_active').IsEqual('1'), GetPlayer.MakeScope.Var('ftr_court_ui_count').IsEqual('0'))]"
-							}
+							## 暂无参与者时的占位提示（有朝堂 story 但参与者为 0）
+							#text_single = {
+							#	margin = { 20 4 }
+							#	text = "ftr_court_ui_no_claimants"
+							#	visible = "[And(GetPlayer.MakeScope.Var('ftr_court_ui_active').IsEqual('1'), GetPlayer.MakeScope.Var('ftr_court_ui_count').IsEqual('0'))]"
+							#}
 							# 每个继任者一行：vbox { hbox { 继任者头像 + hbox{该继任者的支持者} + 空白 } }
-							# 数据源：ftr_court_ui_claimants（由 ftr_court_sync_ui_from_story_effect 从 story 的 ftr_court_participant_list 同步）
 							vbox = {
 								margin = { 20 20 }
 								spacing = 12
 								layoutpolicy_horizontal = expanding
-								datamodel = "[GetPlayer.MakeScope.GetList('ftr_court_ui_claimants')]"
+								datamodel = "[GetPlayer.GetTopLiege.MakeScope.GetList('ftr_court_claimants')]"
 								item = {
 									hbox = {
 										layoutpolicy_horizontal = expanding
@@ -208,7 +205,7 @@ window = {
 												{
 													hbox = {
 														spacing = 6
-														datamodel = "[CharacterListItem.GetCharacter.MakeScope.GetList('ftr_court_heir_backers')]"
+														datamodel = "[CharacterListItem.GetCharacter.MakeScope.GetList('ftr_court_supporters')]"
 														layoutpolicy_horizontal = expanding
 														item = {
 															ftr_court_small_icon = {

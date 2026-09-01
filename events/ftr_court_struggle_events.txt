@@ -1052,34 +1052,36 @@ ftr_court_struggle.0040 = {
 			modifier = { add = -50  has_trait = content }
 			modifier = { add = -30  has_trait = craven }
 		}
-		# 参与角逐：加 flag + 加入 story 的参与者列表。
-		# 关键：直接在事件域保存参与者，然后进入 scope:ftr_court_story（最高统治者 story）作用域，
-		# 在其中 add_to_variable_list 把参与者加入 ftr_court_participant_list。
+		# 参与角逐：加 flag + 加入最高统治者个人维护的参与者列表 ftr_court_claimants。
+		# 新方案：参与者列表主存储放在最高统治者（scope:ftr_court_monarch）的个人变量列表上，
+		# 避免 story 域变量读取问题。加入后同步到 story 的 ftr_court_participant_list。
 		save_scope_as = ftr_court_entering_claimant
 		add_character_flag = ftr_court_participating
 		remove_character_flag = ftr_court_asked_participation
-		scope:ftr_court_story = {
-			# 在最高统治者 story 作用域内加入参与者（无重复风险：每人仅被询问一次）
+		# 计算竞争力评分（在候选人身上）
+		set_variable = {
+			name = ftr_claim_strength
+			value = ftr_court_claim_strength_value
+		}
+		# 把参与者加入最高统治者的 ftr_court_claimants 列表
+		scope:ftr_court_monarch = {
+			add_to_variable_list = {
+				name = ftr_court_claimants
+				target = scope:ftr_court_entering_claimant
+			}
+		}
+		# 同步到 story 的 ftr_court_participant_list（供 story 逻辑与可视化使用）
+		scope:ftr_court_story ?= {
 			add_to_variable_list = {
 				name = ftr_court_participant_list
 				target = scope:ftr_court_entering_claimant
 			}
-			# 更新参与者计数
 			set_variable = {
 				name = ftr_court_participant_count
 				value = list_size:ftr_court_participant_list
 			}
 			set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
-			# 计算竞争力评分（在候选人身上）
-			scope:ftr_court_entering_claimant = {
-				set_variable = {
-					name = ftr_claim_strength
-					value = ftr_court_claim_strength_value
-				}
-			}
 			ftr_court_update_phase_effect = yes
-			# 兜底：参与后立即同步到最高统治者的 ftr_court_ui_claimants
-			ftr_court_sync_participants_to_monarch_effect = yes
 		}
 		# 通知朝廷
 		scope:ftr_court_monarch = {

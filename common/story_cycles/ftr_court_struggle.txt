@@ -87,8 +87,6 @@ ftr_court_struggle = {
 			effect = {
 				ftr_court_update_candidates_effect = yes
 				ftr_court_swing_yearly_effect = yes
-				# 兜底：把参与角逐者列表同步到最高统治者的 ftr_court_ui_claimants
-				ftr_court_sync_participants_to_monarch_effect = yes
 			}
 		}
 		# 政权不再符合条件（被征服、降级、绝嗣）时收场
@@ -111,8 +109,6 @@ ftr_court_struggle = {
 				ftr_court_update_candidates_effect = yes
 				ftr_court_launch_participation_asks_effect = yes
 				ftr_court_refresh_backer_count_effect = yes
-				# 兜底：同步到最高统治者的 ftr_court_ui_claimants
-				ftr_court_sync_participants_to_monarch_effect = yes
 			}
 		}
 		fallback = {
@@ -120,10 +116,11 @@ ftr_court_struggle = {
 		}
 	}
 
-	################## 每月同步参与角逐者到最高统治者 ##################
+	################## 定期同步参与者（最高统治者 → story） ##################
 
-	# 兜底机制：把 story 的 ftr_court_participant_list 每月同步到最高统治者身上的
-	# ftr_court_ui_claimants 变量列表，任何打开 UI 的角色都读取最高统治者的该列表。
+	# 新方案：参与者列表主存储放在最高统治者（story_owner）的个人变量列表 ftr_court_claimants 上。
+	# 此处定期从最高统治者列表同步到 story 的 ftr_court_participant_list，
+	# 供 story 逻辑与侧栏可视化使用。
 	effect_group = {
 		months = 1
 		triggered_effect = {
@@ -131,7 +128,8 @@ ftr_court_struggle = {
 				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
 			}
 			effect = {
-				ftr_court_sync_participants_to_monarch_effect = yes
+				ftr_court_update_candidates_effect = yes
+				ftr_court_refresh_backer_count_effect = yes
 			}
 		}
 		fallback = {

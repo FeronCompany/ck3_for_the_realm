@@ -263,16 +263,16 @@ ftr_court_loyalists_hold_trigger = {
 # 竞争者能否发动政变（走 coup 计谋）
 # 求值域：候选人自身
 ftr_court_can_launch_coup_trigger = {
-	has_variable = ftr_court_backer_count
-	var:ftr_court_backer_count >= ftr_court_min_backers_value
+	has_variable = ftr_court_support_count
+	var:ftr_court_support_count >= ftr_court_min_backers_value
 	ftr_court_own_struggle_in_crisis_trigger = yes
 }
 
 # 竞争者能否起兵内战
 # 求值域：候选人自身
 ftr_court_can_declare_succession_war_trigger = {
-	has_variable = ftr_court_backer_count
-	var:ftr_court_backer_count >= ftr_court_min_backers_value
+	has_variable = ftr_court_support_count
+	var:ftr_court_support_count >= ftr_court_min_backers_value
 	ftr_court_own_struggle_in_crisis_trigger = yes
 	NOT = { is_at_war = yes }
 	# 无地者也能起兵：CB 会为其创建临时公国

@@ -58,7 +58,7 @@ ftr_court_back_claimant_interaction = {
 	}
 	can_send = {}
 	on_accept = {
-		# ---- 若已支持他人，改投新主：与旧主及其支持者关系严重恶化 ----
+		# ---- 若已支持他人，改投新主：从旧主支持者列表移除自己，并与旧主及其支持者关系严重恶化 ----
 		scope:actor = {
 			if = {
 				limit = {
@@ -66,6 +66,10 @@ ftr_court_back_claimant_interaction = {
 					NOT = { var:ftr_court_backer_of ?= { this = scope:recipient } }
 				}
 				save_scope_as = ftr_court_old_backed
+				# 从旧主的支持者列表移除自己（新方案：支持者列表存于被支持者身上）
+				scope:ftr_court_old_backed = {
+					ftr_court_remove_backer_effect = { BACKER = scope:actor }
+				}
 				# 旧主记恨
 				var:ftr_court_backer_of ?= {
 					add_opinion = { target = scope:actor  modifier = ftr_court_betrayed_opinion }
@@ -99,7 +103,12 @@ ftr_court_back_claimant_interaction = {
 			}
 			add_opinion = { target = scope:recipient  modifier = ftr_court_backer_opinion }
 		}
+		# 把 actor 加入 recipient（被支持权贵）的个人支持者列表
 		scope:recipient = {
+			add_to_variable_list = {
+				name = ftr_court_supporters
+				target = scope:actor
+			}
 			add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
 		}
 
@@ -208,7 +217,9 @@ ftr_court_withdraw_backing_interaction = {
 			remove_variable = ftr_court_backer_of
 			add_opinion = { target = scope:recipient  modifier = ftr_political_opponent_opinion }
 		}
+		# 从被支持者的个人支持者列表移除自己（新方案：支持者列表存于被支持者身上）
 		scope:recipient = {
+			ftr_court_remove_backer_effect = { BACKER = scope:actor }
 			add_opinion = { target = scope:actor  modifier = ftr_political_opponent_opinion }
 		}
 		scope:actor = { ftr_court_refresh_local_effect = yes }

@@ -1,6 +1,6 @@
 ﻿# 朝堂局势窗口 —— 分层展示朝廷权力格局。
 # 数据源：玩家域变量列表（由 ftr_court_sync_ui_data 镜像）。
-# 布局：君主[+摄政]居中 → 摄政权势平衡条 → 配偶/姬妾 → 权臣/内阁 → 继任者 → 追随者。
+# 布局：君主[+摄政] 及其支持者 → 摄政权势平衡条 → 权臣/内阁 → 继任者（参与角逐者）及其支持者。
 window = {
 	name = "ftr_court_struggle_window"
 	parentanchor = center
@@ -21,13 +21,9 @@ window = {
 				using = Window_Margins
 
 				# ==================== 顶部背景区（图片作为背景，标题叠加其上，节省空间） ====================
-				# CK3 支持 background + 叠加内容（原版 widget_header_with_picture 同款机制）：
-				# 图片铺满顶部横幅区域作为背景，标题/关闭按钮叠加其上，不再有独立的文字条 + 图片块。
-				# 注：header 插图是横向横幅图，若强行铺满窗口 1/3 高度会严重放大失真，故采用横幅比例背景。
 				widget = {
 					size = { 100% 140 }
 					layoutpolicy_horizontal = expanding
-					# ---- 背景图片 ----
 					background = {
 						fittype = centercrop
 						texture = "gfx/interface/illustrations/window_headers/header_military.dds"
@@ -36,11 +32,9 @@ window = {
 							blend_mode = alphamultiply
 						}
 					}
-					# ---- 叠加：标题（水平居中）+ 关闭按钮（右上角） ----
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						margin = { 8 6 }
-						# 左右 expand 对称，让标题水平居中
 						expand = {}
 						text_single = {
 							text = "ftr_court_ui_title"
@@ -57,20 +51,15 @@ window = {
 					}
 				}
 
-				# ==================== 1. 君主 + 摄政 + 平衡条（居中，固定高度避免遮挡） ====================
-				# 结构：hbox { 最高统治者头像 + 摄政权势平衡条 + 共治者头像 }（单行，平衡条在头像之间）
-				# 共治者头像位置常驻：有摄政/共治者显示头像，无则显示空位。
-				# 平衡条始终显示，置于君主与摄政头像之间以节省垂直空间。
-				# 头像 tooltip：portrait_head_small 模板内置 character_tooltip（portrait_base），
-				# 不要在此手动 using = character_tooltip，否则可能干扰内置行为。
+				# ==================== 1. 君主 + 共治者 + 平衡条（居中） ====================
 				widget = {
-					margin = { 0 12 }
+					margin_top = 12
+					margin_bottom = 12
 					layoutpolicy_horizontal = expanding
 					size = { 100% 120 }
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						spacing = 14
-						# 左占位，让下方内容组水平居中
 						expand = {}
 						# 最高统治者头像
 						portrait_head_small = {
@@ -78,17 +67,14 @@ window = {
 							visible = "[Character.IsValid]"
 							datacontext = "[GetPlayer.MakeScope.Var('ftr_court_ui_monarch_char').Char]"
 						}
-						# 摄政权势平衡条（位于君主与摄政头像之间，节省独立行的垂直空间）
+						# 摄政权势平衡条
 						vbox = {
 							layoutpolicy_horizontal = fixed
 							progressbar = {
 								size = { 300 14 }
-								# 共治者势力条：范围 0（完全忠于君主）~ 100（共治者完全掌控）。
-								# ftr_court_ui_swing 直接为 0~100（swing 核心范围已改）。
 								min = 0
 								max = 100
 								value = "[GetPlayer.MakeScope.Var('ftr_court_ui_swing').GetValue]"
-								# progresstexture（有进度）/ noprogresstexture（无进度）保证 value=0 时条仍可见
 								progresstexture = "gfx/interface/progressbars/progress_blue.dds"
 								noprogresstexture = "gfx/interface/progressbars/progress_blue_bg.dds"
 							}
@@ -104,12 +90,11 @@ window = {
 							name = "regent_head_portrait_my"
 							datacontext = "[GetPlayer.MakeScope.Var('ftr_court_ui_diarch_char').Char]"
 						}
-						# 右占位，让下方内容组水平居中
 						expand = {}
 					}
 				}
 
-				# ==================== 列表区（可滚动，避免内容溢出显示不全） ====================
+				# ==================== 列表区（可滚动） ====================
 				scrollbox = {
 					layoutpolicy_vertical = expanding
 					layoutpolicy_horizontal = expanding
@@ -118,95 +103,105 @@ window = {
 						vbox = {
 							layoutpolicy_horizontal = expanding
 
-							# ==================== 2. 权臣 / 内阁 ====================
-							text_single = {
-								margin = { 10 14 }
-								text = "ftr_court_ui_ministers_label"
-							}
-							scrollbox = {
-								name = "memeber_list"
-								layoutpolicy_vertical = expanding
+							# ==================== 2. 君主与共治者的支持者 ====================
+							hbox = {
 								layoutpolicy_horizontal = expanding
-								blockoverride "scrollbox_content"
-								{
+								# 君主支持者
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = {
+										margin = { 10 8 }
+										text = "ftr_court_ui_monarch_backers_label"
+									}
 									hbox = {
-										margin = { 10 0 }
-										spacing = 12
-										datamodel = "[GetPlayer.MakeScope.GetList('ftr_court_ui_ministers')]"
-										layoutpolicy_horizontal = fixed
-										item = {
-											ftr_court_small_icon = {
-												datacontext = "[CharacterListItem.GetCharacter]"
+										layoutpolicy_horizontal = expanding
+										scrollbox = {
+											layoutpolicy_horizontal = expanding
+											blockoverride "scrollbox_content"
+											{
+												hbox = {
+													margin = { 10 0 }
+													spacing = 12
+													datamodel = "[GetPlayer.MakeScope.GetList('ftr_court_ui_monarch_backers')]"
+													layoutpolicy_horizontal = fixed
+													item = {
+														ftr_court_small_icon = {
+															datacontext = "[CharacterListItem.GetCharacter]"
+														}
+													}
+												}
 											}
 										}
+										expand = {}
 									}
-									expand = {}
+								}
+								
+								# 共治者支持者
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = {
+										margin = { 10 8 }
+										visible = "[GetPlayer.MakeScope.Var('ftr_court_ui_has_diarch').IsEqual('1')]"
+										text = "ftr_court_ui_diarch_backers_label"
+									}
+									hbox = {
+										layoutpolicy_horizontal = expanding
+										scrollbox = {
+											layoutpolicy_horizontal = expanding
+											blockoverride "scrollbox_content"
+											{
+												hbox = {
+													margin = { 10 0 }
+													spacing = 12
+													visible = "[GetPlayer.MakeScope.Var('ftr_court_ui_has_diarch').IsEqual('1')]"
+													datamodel = "[GetPlayer.MakeScope.GetList('ftr_court_ui_diarch_backers')]"
+													layoutpolicy_horizontal = fixed
+													item = {
+														ftr_court_small_icon = {
+															datacontext = "[CharacterListItem.GetCharacter]"
+														}
+													}
+												}
+											}
+										}
+										expand = {}
+									}
 								}
 							}
 
-							# ==================== 3. 配偶 / 姬妾 ====================
-							text_single = {
-								margin = { 10 14 }
-								text = "ftr_court_ui_spouses_label"
-							}
-							scrollbox = {
-								name = "spouse_list"
-								layoutpolicy_vertical = expanding
-								layoutpolicy_horizontal = expanding
-								blockoverride "scrollbox_content"
-								{
-									hbox = {
-										margin = { 10 0 }
-										spacing = 12
-										datamodel = "[GetPlayer.MakeScope.GetList('ftr_court_ui_spouses')]"
-										layoutpolicy_horizontal = fixed
-										item = {
-											ftr_court_small_icon = {
-												datacontext = "[CharacterListItem.GetCharacter]"
-											}
-										}
-									}
-									expand = {}
-								}
-							}
-
-							# ==================== 4. 继任者 ====================
+							# ==================== 3. 继任者（参与角逐者）及其支持者 ====================
 							text_single = {
 								margin = { 10 14 }
 								text = "ftr_court_ui_heirs_label"
 							}
-							# 每个继任者一行：vbox { hbox { 继任者头像 + hbox{该继任者的追随者} + 空白 } }
-							# 追随者通过继任者身上的 ftr_court_heir_backers 列表（scripted_gui 镜像）嵌套读取；
-							# 仅在有朝堂 story（ftr_court_ui_active）时显示追随者，无 story 则隐藏。
+							# 暂无参与者时的占位提示（有朝堂 story 但参与者为 0）
+							text_single = {
+								margin = { 20 4 }
+								text = "ftr_court_ui_no_claimants"
+								visible = "[And(GetPlayer.MakeScope.Var('ftr_court_ui_active').IsEqual('1'), GetPlayer.MakeScope.Var('ftr_court_ui_count').IsEqual('0'))]"
+							}
+							# 每个继任者一行：vbox { hbox { 继任者头像 + hbox{该继任者的支持者} + 空白 } }
+							# 数据源：ftr_court_ui_claimants（由 ftr_court_sync_ui_from_story_effect 从 story 的 ftr_court_participant_list 同步）
 							vbox = {
 								margin = { 20 20 }
-								spacing = 12   # 继任者条目之间的垂直间距
+								spacing = 12
 								layoutpolicy_horizontal = expanding
-								datamodel = "[GetPlayer.MakeScope.GetList('ftr_court_ui_heirs')]"
+								datamodel = "[GetPlayer.MakeScope.GetList('ftr_court_ui_claimants')]"
 								item = {
 									hbox = {
 										layoutpolicy_horizontal = expanding
 										spacing = 8
-										# 继任者头像（fixed 靠左，即便无追随者也固定在最左）
 										ftr_court_small_icon = {
 											layoutpolicy_horizontal = fixed
 											datacontext = "[CharacterListItem.GetCharacter]"
 										}
-										# 该继任者的追随者（有 story 时显示整个区）
-										# 固定显示"支持者"标签 + 追随者头像 scrollbox：
-										#   无追随者时仍有"支持者"标签，避免头像右侧大片空白被误认为错误；
-										#   追随者过多时 scrollbox 横向滚动，避免撑出行宽。
-										# 注：不在此做动态"有无追随者"判断——嵌套 datamodel 中的空判断不可靠
-										#     （IsDataModelEmpty / Scope.Var 在此上下文求值失败，error.log 有报错）。
 										hbox = {
 											spacing = 6
-											# 固定"支持者"浅色标签
 											text_single = {
 												text = "ftr_court_ui_backers_label"
 												fontsize = 11
 												alpha = 0.7
 											}
-											# 追随者头像 scrollbox
 											scrollbox = {
 												layoutpolicy_horizontal = expanding
 												blockoverride "scrollbox_content"
@@ -225,7 +220,6 @@ window = {
 												}
 											}
 										}
-										# 空白区域（撑满剩余，让行内内容靠左、留白）
 										expand = {}
 									}
 								}
@@ -242,8 +236,7 @@ window = {
 # ==================== 模板 ====================
 types Lists
 {
-	# 小图标（配偶/姬妾/权臣/内阁/继任者/追随者通用，仅头像）
-	# 列表容器负责整体靠左；此处 vbox 撑满格子、头像在格子内水平居中。
+	# 小图标（权臣/内阁/继任者/支持者通用，仅头像）
 	# fixedgridbox 网格中头像居中于格子；hbox 列表中多个头像靠左排列、间距由 hbox 的 spacing 控制。
 	type ftr_court_small_icon = vbox {
 		datacontext = "[Scope.GetCharacter]"

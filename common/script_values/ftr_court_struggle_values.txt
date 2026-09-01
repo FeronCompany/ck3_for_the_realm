@@ -13,8 +13,13 @@ ftr_court_pulse_chance_crisis_value = 20
 ftr_court_cooldown_years_value = 5
 # 竞争者数量下限（低于则不激活议题1）
 ftr_court_min_candidates_value = 2
-# 展示的竞争者上限（前 N 名进入朝堂名单）
+# 展示的竞争者上限（参与角逐者最多 5 人）
 ftr_court_max_candidates_value = 5
+# 参与者列表定期刷新的随机间隔（天）：30-60
+ftr_court_refresh_interval_min_value = 30
+ftr_court_refresh_interval_max_value = 60
+# 臣属公开支持时，触发君主警觉事件的概率（%）
+ftr_court_monarch_alert_chance_value = 20
 
 ########## 二、准入门槛 ##########
 # 君主进入"高龄"的年龄
@@ -130,10 +135,10 @@ ftr_court_claim_strength_value = {
 
 	### 支持者数量
 	if = {
-		limit = { has_variable = ftr_court_backer_count }
+		limit = { has_variable = ftr_court_support_count }
 		add = {
 			value = ftr_court_claim_backer_value
-			multiply = var:ftr_court_backer_count
+			multiply = var:ftr_court_support_count
 		}
 	}
 
@@ -173,8 +178,6 @@ ftr_court_swing_strong_bias_value = -4
 # 影响力（minor 30 / medium 60 / major 100 / massive 150）与威望量级不同，分设两组常量。
 ftr_court_back_claimant_prestige_cost_value = 120
 ftr_court_back_claimant_influence_cost_value = 40
-ftr_court_defect_prestige_cost_value = 75
-ftr_court_defect_influence_cost_value = 25
 ftr_court_assist_monarch_prestige_cost_value = 90
 ftr_court_assist_monarch_influence_cost_value = 30
 ftr_court_promise_council_prestige_cost_value = 180

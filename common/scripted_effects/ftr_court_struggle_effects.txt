@@ -26,8 +26,15 @@ ftr_court_setup_effect = {
 	set_variable = { name = ftr_court_regency_swing  value = 0 }
 	set_variable = { name = ftr_court_phase  value = 0 }
 
-	# 建立候选池
-	ftr_court_update_candidates_effect = yes
+	# 建立参与角逐者列表（初始为空，由启动询问事件填充）。
+	# 注意：必须用 clear_variable_list 初始化列表变量，不能用 remove_variable——
+	# remove_variable 会删除整个列表变量，导致后续 add_to_variable_list 无法写入，参与者列表恒为空。
+	clear_variable_list = ftr_court_participant_list
+	set_variable = { name = ftr_court_participant_count  value = 0 }
+
+	# 启动：询问利益相关方是否参与角逐
+	ftr_court_launch_participation_asks_effect = yes
+
 	# 刷新支持者计数
 	ftr_court_refresh_backer_count_effect = yes
 }
@@ -38,18 +45,26 @@ ftr_court_cleanup_effect = {
 
 	# 清理临时公国（兜底，防止异常路径泄漏）
 	every_in_list = {
-		list = ftr_court_claimant_list
+		list = ftr_court_participant_list
 		ftr_court_destroy_temp_duchy_effect = yes
 	}
 
 	# 清理候选人个体变量
 	every_in_list = {
-		list = ftr_court_claimant_list
+		list = ftr_court_participant_list
 		remove_variable = ftr_claim_strength
 		remove_variable = ftr_court_backer_count
 		remove_variable = ftr_court_backer_of
 		remove_character_flag = ftr_court_pooled
 		remove_character_flag = ftr_court_notified
+	}
+	# 清理参与角逐者（参与 / 拒绝标记在角色上，此处一并清除）
+	every_in_list = {
+		list = ftr_court_participant_list
+		remove_character_flag = ftr_court_participating
+		remove_variable = ftr_claim_strength
+		remove_variable = ftr_court_backer_count
+		remove_variable = ftr_court_backer_of
 	}
 	# 清理君主与朝堂成员的开始通知标记
 	story_owner = {
@@ -61,112 +76,107 @@ ftr_court_cleanup_effect = {
 	remove_variable = ftr_court_candidate_pool
 	remove_variable = ftr_court_claimant_list
 	remove_variable = ftr_court_candidate_count
+	remove_variable = ftr_court_support_count
 	remove_variable = ftr_court_top_score
 	remove_variable = ftr_court_second_score
 	remove_variable = ftr_court_top_gap
 	remove_variable = ftr_court_regency_swing
 	remove_variable = ftr_court_phase
+	remove_variable = ftr_court_participant_list
+	remove_variable = ftr_court_participant_count
 }
 
 ######################################################
 ### 二、候选池与竞争力排名
 ######################################################
 
-# 在 story 域执行：重建候选池、重算评分、选出前 N 名
+# 在 story 域执行：定期刷新参与角逐者列表。
+# 移除不再符合条件的参与者（失能 / 被剥夺继承权 / 被囚禁 / 死亡），
+# 并统计当前参与人数。
 ftr_court_update_candidates_effect = {
 	save_scope_as = ftr_court_story
 	story_owner = { save_scope_as = ftr_court_monarch }
 
-	# 清空旧池（先清标记，避免 flag 残留）
+	# ---- 1. 移除不再符合资格的参与者 ----
 	every_in_list = {
-		list = ftr_court_candidate_pool
-		remove_character_flag = ftr_court_pooled
+		list = ftr_court_participant_list
+		limit = { NOT = { ftr_court_participant_remains_valid_trigger = yes } }
+		save_scope_as = ftr_court_removed_participant
+		# 清理个体状态
+		remove_character_flag = ftr_court_participating
+		remove_variable = ftr_claim_strength
+		remove_variable = ftr_court_backer_count
+		remove_variable = ftr_court_backer_of
 	}
-	remove_variable = ftr_court_candidate_pool
-	remove_variable = ftr_court_claimant_list
-
-	# ---- 1. 收集候选人：继承人 + 成年子女 + 成年手足 ----
+	# 重建列表（移除后的清理在 every_in_list 中无法直接改列表，改为重建）
+	clear_variable_list = ftr_court_participant_list
 	scope:ftr_court_monarch = {
-		every_heir = {
-			limit = { ftr_court_claimant_valid_trigger = yes }
-			ftr_court_try_pool_candidate_effect = yes
+		every_vassal = {
+			limit = {
+				has_character_flag = ftr_court_participating
+				ftr_court_participant_remains_valid_trigger = yes
+			}
+			ftr_court_add_participant_effect = yes
+		}
+		every_courtier = {
+			limit = {
+				has_character_flag = ftr_court_participating
+				ftr_court_participant_remains_valid_trigger = yes
+			}
+			ftr_court_add_participant_effect = yes
 		}
 		every_child = {
-			limit = { ftr_court_claimant_valid_trigger = yes }
-			ftr_court_try_pool_candidate_effect = yes
+			limit = {
+				has_character_flag = ftr_court_participating
+				ftr_court_participant_remains_valid_trigger = yes
+			}
+			ftr_court_add_participant_effect = yes
 		}
 		every_sibling = {
-			limit = { ftr_court_claimant_valid_trigger = yes }
-			ftr_court_try_pool_candidate_effect = yes
+			limit = {
+				has_character_flag = ftr_court_participating
+				ftr_court_participant_remains_valid_trigger = yes
+			}
+			ftr_court_add_participant_effect = yes
 		}
 	}
 
-	# ---- 2. 计算竞争力评分 ----
-	every_in_list = {
-		list = ftr_court_candidate_pool
-		set_variable = {
-			name = ftr_claim_strength
-			value = ftr_court_claim_strength_value
-		}
-	}
-
-	# ---- 3. 统计支持者 ----
-	ftr_court_refresh_backer_count_effect = yes
-
-	# ---- 4. 按评分降序取前 N 名 ----
-	scope:ftr_court_story = {
-		set_variable = { name = ftr_court_rank_counter  value = 0 }
-		set_variable = { name = ftr_court_top_score  value = 0 }
-		set_variable = { name = ftr_court_second_score  value = 0 }
-	}
-
-	ordered_in_list = {
-		list = ftr_court_candidate_pool
-		order_by = var:ftr_claim_strength
-		save_scope_as = ftr_court_candidate
-		scope:ftr_court_story = {
-			# 记录第一名分数
-			if = {
-				limit = { var:ftr_court_rank_counter = 0 }
-				set_variable = {
-					name = ftr_court_top_score
-					value = scope:ftr_court_candidate.var:ftr_claim_strength
-				}
-			}
-			# 记录第二名分数
-			else_if = {
-				limit = { var:ftr_court_rank_counter = 1 }
-				set_variable = {
-					name = ftr_court_second_score
-					value = scope:ftr_court_candidate.var:ftr_claim_strength
-				}
-			}
-			# 前 N 名进入朝堂展示名单
-			if = {
-				limit = { var:ftr_court_rank_counter < ftr_court_max_candidates_value }
-				add_to_variable_list = {
-					name = ftr_court_claimant_list
-					target = scope:ftr_court_candidate
-				}
-			}
-			change_variable = { name = ftr_court_rank_counter  add = 1 }
-		}
-	}
-
-	# ---- 5. 写入数量与前两名差距 ----
+	# ---- 2. 统计参与人数 ----
 	scope:ftr_court_story = {
 		set_variable = {
-			name = ftr_court_candidate_count
-			value = list_size:ftr_court_claimant_list
+			name = ftr_court_participant_count
+			value = list_size:ftr_court_participant_list
 		}
-		set_variable = { name = ftr_court_top_gap  value = var:ftr_court_top_score }
-		change_variable = { name = ftr_court_top_gap  subtract = var:ftr_court_second_score }
-		remove_variable = ftr_court_rank_counter
+		set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
 		ftr_court_update_phase_effect = yes
 	}
 }
 
-# 在 story 域执行：依据竞争者人数与前两名差距，更新阶段号
+# 在参与角逐者域执行：去重后加入参与者列表
+ftr_court_add_participant_effect = {
+	save_scope_as = ftr_court_participant
+	scope:ftr_court_story = {
+		every_in_list = {
+			list = ftr_court_participant_list
+			limit = { this = scope:ftr_court_participant }
+			add_character_flag = ftr_court_already_in_participant_list
+		}
+	}
+	if = {
+		limit = { NOT = { has_character_flag = ftr_court_already_in_participant_list } }
+		save_scope_as = ftr_court_participant
+		scope:ftr_court_story = {
+			add_to_variable_list = {
+				name = ftr_court_participant_list
+				target = scope:ftr_court_participant
+			}
+		}
+	}
+	remove_character_flag = ftr_court_already_in_participant_list
+}
+
+# 在 story 域执行：依据参与角逐人数更新阶段号。
+# 放宽后阶段主要取决于参与者是否达到最低门槛。
 ftr_court_update_phase_effect = {
 	save_scope_as = ftr_court_story
 	set_variable = { name = ftr_court_phase  value = 0 }
@@ -175,34 +185,133 @@ ftr_court_update_phase_effect = {
 		limit = { var:ftr_court_candidate_count >= ftr_court_min_candidates_value }
 		set_variable = { name = ftr_court_phase  value = 1 }
 		if = {
-			limit = { var:ftr_court_top_gap <= ftr_court_contested_gap_value }
+			limit = { var:ftr_court_candidate_count >= 3 }
 			set_variable = { name = ftr_court_phase  value = 2 }
 			if = {
-				limit = {
-					var:ftr_court_top_gap <= ftr_court_crisis_gap_value
-					story_owner ?= { ftr_court_monarch_weak_trigger = yes }
-				}
+				limit = { story_owner ?= { ftr_court_monarch_weak_trigger = yes } }
 				set_variable = { name = ftr_court_phase  value = 3 }
 			}
 		}
 	}
 }
 
-# 在候选人域执行：去重后加入候选池
-ftr_court_try_pool_candidate_effect = {
-	if = {
-		limit = {
-			NOT = { has_character_flag = ftr_court_pooled }
+# 在 story 域执行：启动/定期询问潜在继任者是否参与角逐。
+# 血缘继承：询问子女 / 兄弟姐妹（按性别继承法过滤）；选举继承：主头衔继承顺位。
+# 已明确表示不参与者（ftr_court_declined_contest）不询问。
+# 参与人数达到上限（5）后不再询问。
+ftr_court_launch_participation_asks_effect = {
+	save_scope_as = ftr_court_story
+	story_owner = { save_scope_as = ftr_court_monarch }
+
+	scope:ftr_court_story = {
+		set_variable = {
+			name = ftr_court_participant_count
+			value = list_size:ftr_court_participant_list
 		}
-		add_character_flag = ftr_court_pooled
-		save_scope_as = ftr_court_candidate
-		scope:ftr_court_story = {
-			add_to_variable_list = {
-				name = ftr_court_candidate_pool
-				target = scope:ftr_court_candidate
+	}
+
+	# 血缘继承：询问子女 / 兄弟姐妹
+	if = {
+		limit = { scope:ftr_court_monarch = { ftr_court_hereditary_succession_trigger = yes } }
+		scope:ftr_court_monarch = {
+			every_child = {
+				limit = {
+					ftr_court_can_be_asked_participate_trigger = yes
+					ftr_court_hereditary_claimant_candidate_trigger = yes
+				}
+				save_scope_as = ftr_court_potential_claimant
+				scope:ftr_court_story = {
+					if = {
+						limit = { var:ftr_court_participant_count < ftr_court_max_candidates_value }
+						scope:ftr_court_potential_claimant = {
+							add_character_flag = { flag = ftr_court_asked_participation }
+							trigger_event = {
+								id = ftr_court_struggle.0040
+								days = 2
+							}
+						}
+					}
+				}
+			}
+			every_sibling = {
+				limit = {
+					ftr_court_can_be_asked_participate_trigger = yes
+					ftr_court_hereditary_claimant_candidate_trigger = yes
+				}
+				save_scope_as = ftr_court_potential_claimant
+				scope:ftr_court_story = {
+					if = {
+						limit = { var:ftr_court_participant_count < ftr_court_max_candidates_value }
+						scope:ftr_court_potential_claimant = {
+							add_character_flag = { flag = ftr_court_asked_participation }
+							trigger_event = {
+								id = ftr_court_struggle.0040
+								days = 2
+							}
+						}
+					}
+				}
 			}
 		}
 	}
+	# 选举继承：按主头衔继承顺位依次询问
+	else = {
+		scope:ftr_court_monarch = {
+			primary_title = {
+				every_title_heir = {
+					limit = {
+						ftr_court_can_be_asked_participate_trigger = yes
+						ftr_court_elective_claimant_candidate_trigger = yes
+					}
+					save_scope_as = ftr_court_potential_claimant
+					scope:ftr_court_story = {
+						if = {
+							limit = { var:ftr_court_participant_count < ftr_court_max_candidates_value }
+							scope:ftr_court_potential_claimant = {
+								add_character_flag = { flag = ftr_court_asked_participation }
+								trigger_event = {
+									id = ftr_court_struggle.0040
+									days = 2
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# 在潜在继任者域执行：选择参与角逐。
+# 加入参与者列表，添加参与 flag。
+ftr_court_join_contest_effect = {
+	save_scope_as = ftr_court_contender
+	add_character_flag = ftr_court_participating
+	remove_character_flag = ftr_court_asked_participation
+	ftr_court_add_participant_effect = yes
+	# 加入后同步参与者数量：既更新 ftr_court_participant_count（阶段判断），
+	# 也更新 ftr_court_candidate_count（供 UI 数量、阶段计算使用），保持两者一致。
+	scope:ftr_court_story = {
+		set_variable = {
+			name = ftr_court_participant_count
+			value = list_size:ftr_court_participant_list
+		}
+		set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
+		ftr_court_update_phase_effect = yes
+	}
+	# 计算竞争力评分
+	set_variable = {
+		name = ftr_claim_strength
+		value = ftr_court_claim_strength_value
+	}
+}
+
+# 在潜在继任者域执行：明确表示不参与。
+# 打终身 flag，防止别人主动支持自己作为继承人。
+ftr_court_decline_contest_effect = {
+	save_scope_as = ftr_court_contender
+	add_character_flag = ftr_court_declined_contest
+	remove_character_flag = ftr_court_asked_participation
 }
 
 # 在任意角色域执行：刷新其自身、或其宗主所拥有的朝堂角逐
@@ -223,15 +332,27 @@ ftr_court_refresh_local_effect = {
 ### 三、支持者记账
 ######################################################
 
-# 在 story 域执行：重新统计每位候选人的支持者数量
+# 在 story 域执行：重新统计每位权贵（君主 / 共治者 / 参与角逐者）的支持者数量。
+# 支持者计数统一存为角色上的 ftr_court_support_count 变量。
 ftr_court_refresh_backer_count_effect = {
 	save_scope_as = ftr_court_story
 	story_owner = { save_scope_as = ftr_court_monarch }
 
 	# 清零（必须显式 set，避免 change_variable 对不存在变量报错）
 	every_in_list = {
-		list = ftr_court_claimant_list
-		set_variable = { name = ftr_court_backer_count  value = 0 }
+		list = ftr_court_participant_list
+		set_variable = { name = ftr_court_support_count  value = 0 }
+	}
+	scope:ftr_court_monarch = {
+		set_variable = { name = ftr_court_support_count  value = 0 }
+	}
+	scope:ftr_court_monarch = {
+		if = {
+			limit = { exists = diarch }
+			diarch = {
+				set_variable = { name = ftr_court_support_count  value = 0 }
+			}
+		}
 	}
 
 	# 统计：直接封臣 + 廷臣
@@ -247,16 +368,16 @@ ftr_court_refresh_backer_count_effect = {
 	}
 }
 
-# 在潜在支持者域执行：其人头计入所支持的对象
+# 在潜在支持者域执行：其人头计入所支持的权贵对象。
+# 依赖 scope:ftr_court_backed_target = 所支持的对象；scope:ftr_court_story = 故事。
 ftr_court_count_one_backer_effect = {
 	save_scope_as = ftr_court_backer
 	var:ftr_court_backer_of ?= {
 		save_scope_as = ftr_court_backed_target
-		scope:ftr_court_story = {
-			every_in_list = {
-				list = ftr_court_claimant_list
-				limit = { this = scope:ftr_court_backed_target }
-				change_variable = { name = ftr_court_backer_count  add = 1 }
+		scope:ftr_court_backed_target = {
+			if = {
+				limit = { ftr_court_is_supported_person_trigger = yes }
+				change_variable = { name = ftr_court_support_count  add = 1 }
 			}
 		}
 	}
@@ -597,7 +718,7 @@ ftr_court_nominate_effect = {
 	}
 	scope:ftr_court_story ?= {
 		every_in_list = {
-			list = ftr_court_claimant_list
+			list = ftr_court_participant_list
 			limit = { NOT = { this = scope:ftr_court_nominee } }
 			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
 			if = {
@@ -634,6 +755,8 @@ ftr_court_clear_claimant_status_effect = {
 	remove_variable = ftr_court_backer_count
 	remove_variable = ftr_court_backer_of
 	remove_character_flag = ftr_court_pooled
+	remove_character_flag = ftr_court_participating
+	remove_character_flag = ftr_court_asked_participation
 	ftr_court_revoke_temp_duchy_effect = yes
 }
 
@@ -719,7 +842,7 @@ ftr_court_save_ranked_claimants_effect = {
 	set_variable = { name = ftr_court_rank_counter  value = 0 }
 
 	ordered_in_list = {
-		list = ftr_court_claimant_list
+		list = ftr_court_participant_list
 		order_by = var:ftr_claim_strength
 		save_scope_as = ftr_court_pick
 		scope:ftr_court_story = {
@@ -859,76 +982,9 @@ ftr_court_send_court_toast_effect = {
 ### 十、UI 数据同步
 ######################################################
 
-# 在成员角色域执行：把自身加入 root（玩家）域的指定列表。
-# 参数：LIST = 列表名
-ftr_court_add_ui_member_effect = {
-	save_scope_as = ftr_court_ui_member
-	root = {
-		add_to_variable_list = {
-			name = $LIST$
-			target = scope:ftr_court_ui_member
-		}
-	}
-}
-
-# 在候选人域执行：把候选人加入玩家域继任者列表，最多保留 5 位。
-# 核心政治逻辑：最高统治者的子女优先参与继位角逐（不分继承顺位高低），
-# 孙辈顺位虽靠前但非角逐主角——本效果只由 every_child / every_sibling 调用，
-# 天然只收集直系血亲，用 root 域计数器截断到最多 5 位。
-# 依赖：root = 玩家。
-ftr_court_add_heir_effect = {
-	save_scope_as = ftr_court_heir_candidate
-	root = {
-		if = {
-			limit = { NOT = { has_variable = ftr_court_heir_count } }
-			set_variable = { name = ftr_court_heir_count  value = 0 }
-		}
-		if = {
-			limit = { var:ftr_court_heir_count < 5 }
-			scope:ftr_court_heir_candidate ?= {
-				ftr_court_add_ui_member_effect = { LIST = ftr_court_ui_heirs }
-			}
-			change_variable = { name = ftr_court_heir_count  add = 1 }
-		}
-	}
-}
-
-# 在君主域执行：收集权臣 + 内阁成员（排除配偶，避免与后宫格重复），
-# 参考 ftr_my_powerful_subject_list 的两段式：add_to_list 集中收集 → every_in_list 转存到 root（玩家）域。
-# 用 is_councillor_of = prev 识别内阁，覆盖「身为封臣的内阁」与「身为廷臣的内阁」。
-ftr_court_collect_ministers_effect = {
-	every_vassal = {
-		limit = {
-			OR = {
-				is_powerful_vassal = yes
-				is_councillor_of = prev
-			}
-			NOT = { has_character_flag = ftr_court_in_spouses }
-		}
-		add_to_list = ftr_court_ministers_list
-	}
-	every_courtier = {
-		limit = {
-			is_councillor_of = prev
-			NOT = { has_character_flag = ftr_court_in_spouses }
-		}
-		add_to_list = ftr_court_ministers_list
-	}
-	every_in_list = {
-		list = ftr_court_ministers_list
-		limit = { is_alive = yes }
-		save_scope_as = ftr_court_ui_member
-		root = {
-			add_to_variable_list = {
-				name = ftr_court_ui_ministers
-				target = scope:ftr_court_ui_member
-			}
-		}
-	}
-}
-
 # 在君主域执行：收集朝廷核心成员，按类别写入玩家域的独立列表。
-# 布局（自上而下）：君主[+摄政] → 配偶/姬妾 → 权臣/内阁 → 继任者 → 追随者。
+# 布局（自上而下）：君主[+摄政] → 权臣/内阁 → 继任者（参与角逐者）。
+# 每个权贵（君主 / 共治者 / 参与角逐的继任者）各有一条支持者列表。
 ftr_court_sync_courtiers_effect = {
 	save_scope_as = ftr_court_court_monarch
 
@@ -937,12 +993,8 @@ ftr_court_sync_courtiers_effect = {
 		set_variable = { name = ftr_court_ui_has_diarch  value = 0 }
 		# 清空共治者角色变量：无共治者时 GUI 常驻空位需读到无效角色，避免残留上一次的旧值
 		remove_variable = ftr_court_ui_diarch_char
-		clear_variable_list = ftr_court_ui_spouses
-		clear_variable_list = ftr_court_ui_ministers
-		clear_variable_list = ftr_court_ui_heirs
-		clear_variable_list = ftr_court_ui_backers
-		# 继任者计数器复位（ftr_court_add_heir_effect 用它截断到 5）
-		set_variable = { name = ftr_court_heir_count  value = 0 }
+		clear_variable_list = ftr_court_ui_monarch_backers
+		clear_variable_list = ftr_court_ui_diarch_backers
 	}
 
 	# ---- 1. 君主（靠上居中，存单角色变量） ----
@@ -975,150 +1027,64 @@ ftr_court_sync_courtiers_effect = {
 		}
 	}
 
-	# ---- 3. 配偶 + 姬妾（打标记供权臣/内阁排除） ----
-	every_spouse = {
-		add_character_flag = ftr_court_in_spouses
-		ftr_court_add_ui_member_effect = { LIST = ftr_court_ui_spouses }
-	}
-	every_concubine = {
-		add_character_flag = ftr_court_in_spouses
-		ftr_court_add_ui_member_effect = { LIST = ftr_court_ui_spouses }
-	}
+	# ---- 3. 各权贵的支持者列表 ----
+	# 参与角逐的继任者列表已由 ftr_court_sync_ui_from_story_effect 从 story 的
+	# ftr_court_participant_list 镜像到玩家域的 ftr_court_ui_claimants，此处直接沿用。
+	# 先清空所有支持者列表，再统一填充。
 
-	# ---- 4. 权臣 + 内阁成员（排除已列入后宫者，避免重复） ----
-	# 收集逻辑集中在 ftr_court_collect_ministers_effect（参考 ftr_my_powerful_subject_list 模式）。
-	ftr_court_collect_ministers_effect = yes
-
-	# ---- 5. 继任者：按政体/继承法区分获取逻辑 ----
-	# 血缘继承（分割/长子幼子）：优先血亲——有继承权的子女 + 同宗族亲兄弟姐妹。
-	#            性别优先级：男性优先时，有 >=1 男性继承人则不添加女性；女性优先颠倒。
-	#            有 >=1 成年子女时，不添加兄弟姐妹。
-	# 选举/不稳定（选侯/部分头衔选举/欢呼）：直接按头衔继承顺位。
-	if = {
-		limit = { ftr_court_hereditary_succession_trigger = yes }
-
-		# --- 有继承权的子女，按性别法优先级过滤 ---
-		# CK3 性别法：male_only_law / female_only_law 是 title law（has_title_law 判断，
-		# 见原版 00_auto_character_triggers.txt:7,13）。male_preference/female_preference/equal
-		# 是继承法 gender_law 字段，无独立 realm law 可查。因此：
-		#   - male_only_law  → 仅男性
-		#   - female_only_law → 仅女性
-		#   - 其余（默认 male_preference / equal）→ 先男后女（男性优先，避免女儿挤掉儿子）
-		# 计数器控制：优先性别占满 5 位则另一性别不进入。
-		if = {
-			# 仅男性继承
-			limit = {
-				primary_title ?= { has_title_law = male_only_law }
-			}
-			every_child = {
-				limit = {
-					is_alive = yes
-					is_child_of = scope:ftr_court_court_monarch
-					is_male = yes
-				}
-				ftr_court_add_heir_effect = yes
-			}
-		}
-		else_if = {
-			# 仅女性继承
-			limit = {
-				primary_title ?= { has_title_law = female_only_law }
-			}
-			every_child = {
-				limit = {
-					is_alive = yes
-					is_child_of = scope:ftr_court_court_monarch
-					is_female = yes
-				}
-				ftr_court_add_heir_effect = yes
-			}
-		}
-		else = {
-			# 默认男性优先（male_preference / equal）：先男后女
-			every_child = {
-				limit = {
-					is_alive = yes
-					is_child_of = scope:ftr_court_court_monarch
-					is_male = yes
-				}
-				ftr_court_add_heir_effect = yes
-			}
-			every_child = {
-				limit = {
-					is_alive = yes
-					is_child_of = scope:ftr_court_court_monarch
-					is_female = yes
-				}
-				ftr_court_add_heir_effect = yes
-			}
-		}
-
-		# --- 同宗族亲兄弟姐妹：仅当无任何成年子女时参与 ---
-		if = {
-			limit = {
-				NOT = {
-					OR = {
-						ftr_court_has_male_heir_trigger = yes
-						ftr_court_has_female_heir_trigger = yes
-					}
-				}
-			}
-			every_sibling = {
-				limit = {
-					is_alive = yes
-					is_adult = yes
-					is_sibling_of = scope:ftr_court_court_monarch
-					dynasty ?= {
-						this = scope:ftr_court_court_monarch.dynasty
-					}
-				}
-				ftr_court_add_heir_effect = yes
-			}
-		}
-	}
-	else = {
-		# 选举/不稳定继承：按头衔继承顺位收集 title heir，计数器截断到 5
-		primary_title = {
-			save_scope_as = ftr_court_heir_title_scope
-			every_title_heir = {
-				limit = {
-					is_alive = yes
-				}
-				ftr_court_add_heir_effect = yes
-			}
-		}
-	}
-
-	# ---- 6. 每个继任者各自的追随者（存继任者身上的 ftr_court_heir_backers 列表） ----
-	# 供 GUI 继任者条目内嵌显示（hbox { 继任者头像 + 该继任者的追随者 + 空白 }）。
-	# 追随者 = 朝堂封臣/廷臣中已站队（ftr_court_backer_of）支持某位竞争者者。
-	# 仅在有朝堂 story（存在站队）时填充；无 story 则列表为空，GUI 端也以 ftr_court_ui_active 隐藏。
-	# 先清空所有相关继任者的追随者列表，再统一填充。
+	# 3.1 清空继任者们的支持者列表（存于各继任者身上的 ftr_court_heir_backers）
 	root = {
 		every_in_list = {
-			list = ftr_court_ui_heirs
+			list = ftr_court_ui_claimants
+			limit = { is_alive = yes }
 			clear_variable_list = ftr_court_heir_backers
 		}
+		# 君主 / 共治者自己的支持者列表（玩家域）
+		clear_variable_list = ftr_court_ui_monarch_backers
+		clear_variable_list = ftr_court_ui_diarch_backers
 	}
-	every_vassal = {
-		limit = { has_variable = ftr_court_backer_of }
-		var:ftr_court_backer_of ?= {
-			clear_variable_list = ftr_court_heir_backers
-		}
-	}
-	every_courtier = {
-		limit = { has_variable = ftr_court_backer_of }
-		var:ftr_court_backer_of ?= {
-			clear_variable_list = ftr_court_heir_backers
-		}
-	}
+
+	# 3.2 填充：遍历当前君主的封臣与廷臣，按其支持的权贵分类加入对应支持者列表。
+	# 注意：var:ftr_court_backer_of 作用域 = 被支持者本身。
+	#   - 被支持者 = 君主 → 加入玩家域 ftr_court_ui_monarch_backers
+	#   - 被支持者 = 共治者 → 加入玩家域 ftr_court_ui_diarch_backers
+	#   - 被支持者 = 参与角逐的继任者 → 加入其自身的 ftr_court_heir_backers（GUI 从继任者身上读取）
+	ftr_court_collect_supporters_effect = yes
+}
+
+# 在君主域执行：收集朝堂支持者，按其支持的权贵分类写入对应列表。
+# 由 ftr_court_sync_courtiers_effect 调用（第 3.2 节）。
+ftr_court_collect_supporters_effect = {
+	save_scope_as = ftr_court_backed_monarch
 	every_vassal = {
 		limit = { ftr_court_has_backing_trigger = yes }
 		save_scope_as = ftr_court_backer_scope
 		var:ftr_court_backer_of ?= {
-			add_to_variable_list = {
-				name = ftr_court_heir_backers
-				target = scope:ftr_court_backer_scope
+			save_scope_as = ftr_court_backed_scope
+			if = {
+				limit = { ftr_court_is_struggle_monarch_trigger = yes }
+				root = {
+					add_to_variable_list = {
+						name = ftr_court_ui_monarch_backers
+						target = scope:ftr_court_backer_scope
+					}
+				}
+			}
+			else_if = {
+				limit = { is_diarch = yes }
+				root = {
+					add_to_variable_list = {
+						name = ftr_court_ui_diarch_backers
+						target = scope:ftr_court_backer_scope
+					}
+				}
+			}
+			else = {
+				# 参与角逐的继任者：加入其自身的支持者列表（GUI 从继任者身上读取）
+				add_to_variable_list = {
+					name = ftr_court_heir_backers
+					target = scope:ftr_court_backer_scope
+				}
 			}
 		}
 	}
@@ -1126,48 +1092,109 @@ ftr_court_sync_courtiers_effect = {
 		limit = { ftr_court_has_backing_trigger = yes }
 		save_scope_as = ftr_court_backer_scope
 		var:ftr_court_backer_of ?= {
-			add_to_variable_list = {
-				name = ftr_court_heir_backers
-				target = scope:ftr_court_backer_scope
+			save_scope_as = ftr_court_backed_scope
+			if = {
+				limit = { ftr_court_is_struggle_monarch_trigger = yes }
+				root = {
+					add_to_variable_list = {
+						name = ftr_court_ui_monarch_backers
+						target = scope:ftr_court_backer_scope
+					}
+				}
+			}
+			else_if = {
+				limit = { is_diarch = yes }
+				root = {
+					add_to_variable_list = {
+						name = ftr_court_ui_diarch_backers
+						target = scope:ftr_court_backer_scope
+					}
+				}
+			}
+			else = {
+				add_to_variable_list = {
+					name = ftr_court_heir_backers
+					target = scope:ftr_court_backer_scope
+				}
 			}
 		}
-	}
-
-	# ---- 7. 追随者：朝堂封臣中已站队支持某位继任竞争者者（全局列表，供旧版展示） ----
-	every_vassal = {
-		limit = { ftr_court_has_backing_trigger = yes }
-		ftr_court_add_ui_member_effect = { LIST = ftr_court_ui_backers }
-	}
-
-	# ---- 清理配偶标记 ----
-	every_spouse = {
-		remove_character_flag = ftr_court_in_spouses
-	}
-	every_concubine = {
-		remove_character_flag = ftr_court_in_spouses
 	}
 }
 
-# 在持有朝堂 story 的角色域执行：把 story 变量镜像到 root（玩家）域。
+# 在 story 域执行：把 story 的参与角逐者列表 ftr_court_participant_list 同步到
+# 最高统治者（story_owner）身上的 ftr_court_ui_claimants 变量列表。
+# 兜底机制：每月由 story 的 effect_group 调用，参与/退出时也额外调用一次，
+# 确保最高统治者身上的 ftr_court_ui_claimants 始终反映最新参与角逐者。
+ftr_court_sync_participants_to_monarch_effect = {
+	save_scope_as = ftr_court_sync_story
+	story_owner = {
+		# 在最高统治者身上操作其 ftr_court_ui_claimants 列表
+		save_scope_as = ftr_court_sync_monarch
+		clear_variable_list = ftr_court_ui_claimants
+	}
+	# 从 story 的 ftr_court_participant_list 复制到最高统治者的 ftr_court_ui_claimants
+	every_in_list = {
+		list = ftr_court_participant_list
+		limit = { is_alive = yes }
+		save_scope_as = ftr_court_sync_participant
+		scope:ftr_court_sync_monarch = {
+			add_to_variable_list = {
+				name = ftr_court_ui_claimants
+				target = scope:ftr_court_sync_participant
+			}
+		}
+	}
+}
+
+# 在持有朝堂 story 的角色域执行：把最高统治者 story 的变量镜像到玩家域。
 # 由 scripted_gui ftr_court_sync_ui_data 在三段数据源判定后调用。
+# 数据源 = 最高统治者身上的 ftr_court_ui_claimants（由 ftr_court_sync_participants_to_monarch_effect
+# 每月从 story 的 ftr_court_participant_list 同步而来）。
 ftr_court_sync_ui_from_story_effect = {
 	every_owned_story = {
 		limit = { story_type = ftr_court_struggle }
+		save_scope_as = ftr_court_sync_story
+		# 此块内 this = story（最高统治者的 story）。
+		# 第零步：打开 UI 时强制从 story 的 ftr_court_participant_list 刷新最高统治者列表，
+		# 确保 UI 读取到最新的参与角逐者（兜底机制）。
+		ftr_court_sync_participants_to_monarch_effect = yes
+		# 第一步：先清空玩家域的继任者列表，并写入标量变量。
 		root = {
-			set_variable = { name = ftr_court_ui_active  value = 1 }
-			# 共治者势力条（0~100）：swing 已直接为 0~100（0=忠于君主，50=平衡，100=共治掌控），无需再映射。
-			set_variable = { name = ftr_court_ui_swing  value = prev.var:ftr_court_regency_swing }
-			set_variable = { name = ftr_court_ui_phase  value = prev.var:ftr_court_phase }
-			set_variable = { name = ftr_court_ui_count  value = prev.var:ftr_court_candidate_count }
-			set_variable = { name = ftr_court_ui_gap  value = prev.var:ftr_court_top_gap }
 			clear_variable_list = ftr_court_ui_claimants
+			set_variable = { name = ftr_court_ui_active  value = 1 }
+			set_variable = {
+				name = ftr_court_ui_swing
+				value = scope:ftr_court_sync_story.var:ftr_court_regency_swing
+			}
+			set_variable = {
+				name = ftr_court_ui_phase
+				value = scope:ftr_court_sync_story.var:ftr_court_phase
+			}
+			set_variable = {
+				name = ftr_court_ui_gap
+				value = scope:ftr_court_sync_story.var:ftr_court_top_gap
+			}
+		}
+		# 第二步：从最高统治者（story_owner）身上的 ftr_court_ui_claimants 复制到玩家域。
+		# 该列表由每月同步维护，反映最新参与角逐者。读取 story_owner 的列表，写入 root（玩家）。
+		story_owner = {
 			every_in_list = {
-				list = ftr_court_claimant_list
+				list = ftr_court_ui_claimants
 				limit = { is_alive = yes }
-				add_to_variable_list = {
-					name = ftr_court_ui_claimants
-					target = prev
+				save_scope_as = ftr_court_sync_participant
+				root = {
+					add_to_variable_list = {
+						name = ftr_court_ui_claimants
+						target = scope:ftr_court_sync_participant
+					}
 				}
+			}
+		}
+		# 第三步：把参与者数量镜像到玩家域（取最高统治者 ftr_court_ui_claimants 的大小）。
+		root = {
+			set_variable = {
+				name = ftr_court_ui_count
+				value = list_size:ftr_court_ui_claimants
 			}
 		}
 	}

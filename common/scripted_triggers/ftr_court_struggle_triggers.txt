@@ -10,9 +10,12 @@ ftr_court_realm_tier_valid_trigger = {
 	highest_held_title_tier >= tier_kingdom
 }
 
-# 存在继承顺位：政权必须有继承人
+# 存在继承顺位：最高统治者的主头衔继承顺位列表不为空即触发
+# 全面放宽：不要求候选人数、不要求继承人成年/有能力，只要主头衔有继承顺位即可。
 ftr_court_has_succession_order_trigger = {
-	any_heir = { always = yes }
+	primary_title = {
+		any_title_heir = { always = yes }
+	}
 }
 
 # 准入总判定：在最高统治者身上求值
@@ -50,6 +53,111 @@ ftr_court_claimant_valid_trigger = {
 	dynasty ?= {
 		this = scope:ftr_court_monarch.dynasty
 	}
+}
+
+########## 二之二、参与角逐系统 ##########
+
+# 求值域：this = 潜在继任者。是否可以被询问是否参与角逐。
+# 血缘继承：子女 / 兄弟姐妹（按性别继承法过滤）；选举继承：主头衔继承顺位。
+# 依赖 scope:ftr_court_monarch（君主）。
+ftr_court_can_be_asked_participate_trigger = {
+	exists = scope:ftr_court_monarch
+	is_alive = yes
+	is_adult = yes
+	NOT = { this = scope:ftr_court_monarch }
+	NOT = { is_imprisoned = yes }
+	NOT = { has_trait = incapable }
+	# 已明确表示不参与者不再询问
+	NOT = { has_character_flag = ftr_court_declined_contest }
+	# 已参与角逐者不再询问
+	NOT = { has_character_flag = ftr_court_participating }
+}
+
+# 求值域：this = 潜在继任者。按性别继承法过滤的血缘继承资格。
+# 依赖 scope:ftr_court_monarch（君主）。
+ftr_court_hereditary_claimant_candidate_trigger = {
+	exists = scope:ftr_court_monarch
+	is_alive = yes
+	is_adult = yes
+	NOT = { is_imprisoned = yes }
+	NOT = { has_trait = incapable }
+	OR = {
+		# 子女
+		AND = {
+			is_child_of = scope:ftr_court_monarch
+			ftr_court_gender_succession_allows_trigger = yes
+		}
+		# 兄弟姐妹（仅当君主无任何成年子女时才询问手足，参考原 UI 血缘逻辑）
+		AND = {
+			is_sibling_of = scope:ftr_court_monarch
+			NOT = {
+				scope:ftr_court_monarch = {
+					any_child = { is_adult = yes }
+				}
+			}
+			dynasty ?= { this = scope:ftr_court_monarch.dynasty }
+		}
+	}
+}
+
+# 求值域：this = 潜在继任者。性别继承法是否允许其角逐（仅男性 / 仅女性 / 默认男性优先）。
+ftr_court_gender_succession_allows_trigger = {
+	OR = {
+		# 仅男性继承：仅男性
+		AND = {
+			primary_title ?= { has_title_law = male_only_law }
+			is_male = yes
+		}
+		# 仅女性继承：仅女性
+		AND = {
+			primary_title ?= { has_title_law = female_only_law }
+			is_female = yes
+		}
+		# 其余（male_preference / equal）：男性优先——已有成年男性子女时不询问女性，否则男女皆可
+		AND = {
+			NOT = { primary_title ?= { has_title_law = male_only_law } }
+			NOT = { primary_title ?= { has_title_law = female_only_law } }
+			OR = {
+				is_male = yes
+				AND = {
+					is_female = yes
+					NOT = {
+						scope:ftr_court_monarch = {
+							any_child = { is_adult = yes  is_male = yes }
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# 求值域：this = 潜在继任者。选举继承顺位资格（主头衔的 title heir）。
+ftr_court_elective_claimant_candidate_trigger = {
+	exists = scope:ftr_court_monarch
+	is_alive = yes
+	is_adult = yes
+	NOT = { is_imprisoned = yes }
+	NOT = { has_trait = incapable }
+	scope:ftr_court_monarch = {
+		primary_title = {
+			any_title_heir = {
+				this = prev
+			}
+		}
+	}
+}
+
+# 求值域：this = 潜在继任者。是否仍符合参与角逐的资格（用于定期刷新移除）。
+ftr_court_participant_remains_valid_trigger = {
+	is_alive = yes
+	is_adult = yes
+	NOT = { is_imprisoned = yes }
+	NOT = { has_trait = incapable }
+	# 被剥夺继承权者移除
+	NOT = { has_trait = disinherited }
+	# 仍然参与角逐
+	has_character_flag = ftr_court_participating
 }
 
 ########## 三、君主状态 ##########
@@ -94,117 +202,12 @@ ftr_court_has_many_candidates_trigger = {
 # 尚未建立、读不到该变量导致准入恒失败的缺陷）。
 # 血缘继承：有继承权的子女（含未成年）或（无成年子女时）同宗族成年手足；
 # 选举继承：主头衔顺位继承者。
-# 注意：不用 $MIN$ 宏参数（嵌套 scripted_trigger 内宏参数会向上传播导致调用方被要求传参，
-#       引发崩溃）。故拆成 enough(>=2) 与 many(>=3) 两个独立 trigger。
-# 求值域：君主。
-
-# 候选至少 2 人（最低触发门槛）
-ftr_court_has_enough_claimants_trigger = {
-	OR = {
-		# 血缘继承
-		AND = {
-			ftr_court_hereditary_succession_trigger = yes
-			OR = {
-				any_child = {
-					limit = {
-						is_alive = yes
-						NOT = { is_imprisoned = yes }
-						NOT = { has_trait = incapable }
-					}
-					count >= 2
-				}
-				AND = {
-					# 无成年子女时，同宗族成年手足也算（参考 UI 血缘分支）
-					NOT = { any_child = { is_adult = yes } }
-					any_sibling = {
-						limit = {
-							is_alive = yes
-							is_adult = yes
-							NOT = { is_imprisoned = yes }
-							NOT = { has_trait = incapable }
-							dynasty ?= { this = root.dynasty }
-						}
-						count >= 2
-					}
-				}
-			}
-		}
-		# 选举继承：主头衔顺位继承者
-		AND = {
-			ftr_court_elective_succession_trigger = yes
-			primary_title = {
-				any_title_heir = {
-					limit = {
-						is_alive = yes
-						NOT = { is_imprisoned = yes }
-					}
-					count >= 2
-				}
-			}
-		}
-	}
-}
-
-# 候选至少 3 人（竞争者众多，自行酝酿）
-ftr_court_has_many_claimants_trigger = {
-	OR = {
-		# 血缘继承
-		AND = {
-			ftr_court_hereditary_succession_trigger = yes
-			OR = {
-				any_child = {
-					limit = {
-						is_alive = yes
-						NOT = { is_imprisoned = yes }
-						NOT = { has_trait = incapable }
-					}
-					count >= 3
-				}
-				AND = {
-					# 无成年子女时，同宗族成年手足也算（参考 UI 血缘分支）
-					NOT = { any_child = { is_adult = yes } }
-					any_sibling = {
-						limit = {
-							is_alive = yes
-							is_adult = yes
-							NOT = { is_imprisoned = yes }
-							NOT = { has_trait = incapable }
-							dynasty ?= { this = root.dynasty }
-						}
-						count >= 3
-					}
-				}
-			}
-		}
-		# 选举继承：主头衔顺位继承者
-		AND = {
-			ftr_court_elective_succession_trigger = yes
-			primary_title = {
-				any_title_heir = {
-					limit = {
-						is_alive = yes
-						NOT = { is_imprisoned = yes }
-					}
-					count >= 3
-				}
-			}
-		}
-	}
-}
-
 # 议题1 是否应当激活（在君主身上求值）
-# 候选数用君主域实时判定（ftr_court_has_enough/many_claimants_trigger，参考 UI 继任者收集逻辑），
-# 而非 story 域变量——on_action 准入时 story 尚未建立，读不到 ftr_court_candidate_count。
+# 全面放宽：只要最高统治者的主头衔继承顺位列表非空即触发，
+# 不再要求候选人数达标或君主衰弱/竞争者众多。
 ftr_court_should_activate_succession_trigger = {
 	ftr_court_struggle_valid_trigger = yes
 	NOT = { ftr_court_in_cooldown_trigger = yes }
-	ftr_court_has_enough_claimants_trigger = yes
-	OR = {
-		ftr_court_monarch_infirm_trigger = yes
-		ftr_court_monarch_weak_trigger = yes
-		# 竞争者众多（三人成势）也会自行酝酿
-		ftr_court_has_many_claimants_trigger = yes
-	}
 }
 
 # 前两名评分接近 -> contested
@@ -317,10 +320,22 @@ ftr_court_is_struggle_monarch_trigger = {
 	ftr_court_realm_tier_valid_trigger = yes
 }
 
-# 玩家是竞争者之一
+# 玩家是竞争者之一（参与角逐的继任者）
 ftr_court_is_active_claimant_trigger = {
-	has_variable = ftr_claim_strength
+	has_character_flag = ftr_court_participating
 	NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+}
+
+# 可被臣属支持的对象（权贵）：最高统治者 / 共治者 / 参与角逐的继任者
+ftr_court_is_supported_person_trigger = {
+	OR = {
+		# 最高统治者本人
+		ftr_court_is_struggle_monarch_trigger = yes
+		# 共治者
+		is_diarch = yes
+		# 参与角逐的继任者
+		has_character_flag = ftr_court_participating
+	}
 }
 
 # 玩家有站队对象（已卷入）
@@ -328,11 +343,11 @@ ftr_court_has_backed_someone_trigger = {
 	has_variable = ftr_court_backer_of
 }
 
-# 已站队且支持对象仍在竞争（用于统计支持者数量时过滤失效站队）
+# 已站队且支持对象仍是权贵（用于统计支持者数量时过滤失效站队）
 ftr_court_has_backing_trigger = {
 	has_variable = ftr_court_backer_of
 	var:ftr_court_backer_of ?= {
-		has_variable = ftr_claim_strength
+		ftr_court_is_supported_person_trigger = yes
 	}
 }
 

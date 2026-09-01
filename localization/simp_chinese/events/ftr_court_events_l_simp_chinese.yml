@@ -2,7 +2,7 @@
 
  ###### 0001 潜伏 ######
  ftr_court_struggle.0001.t:0 "殿中低语"
- ftr_court_struggle.0001.desc:0 "下人们私下议论，[scope:ftr_court_candidate.GetFullName]昼夜不停地会见访客——来的都是些有头有脸、腰缠万贯的人物。抓不到把柄。至少眼下还抓不到。"
+ ftr_court_struggle.0001.desc:0 "下人们私下议论，[ftr_court_candidate.GetFullName]昼夜不停地会见访客——来的都是些有头有脸、腰缠万贯的人物。抓不到把柄。至少眼下还抓不到。"
  ftr_court_struggle.0001.a:0 "这等小事，不值得我过问。"
  ftr_court_struggle.0001.b:0 "传他来见，让他知道我的不满。"
  ftr_court_struggle.0001.c:0 "由他去经营自己的小朝廷，我且看着。"
@@ -23,7 +23,7 @@
 
  ###### 0010 老君王的命运 ######
  ftr_court_struggle.0010.t:0 "废黜之君"
- ftr_court_struggle.0010.desc:0 "[scope:ftr_court_old_monarch.GetFullName]如今坐在我曾经下跪的位置上。举国屏息，看我将如何处置这顶坠落的后冠。"
+ ftr_court_struggle.0010.desc:0 "[ftr_court_old_monarch.GetFullName]如今坐在我曾经下跪的位置上。举国屏息，看我将如何处置这顶坠落的后冠。"
  ftr_court_struggle.0010.a:0 "软禁即可，留他性命。"
  ftr_court_struggle.0010.b:0 "投入地牢，让他好生体会其中分量。"
  ftr_court_struggle.0010.c:0 "坠落的后冠，留着颈上人头何用。"
@@ -37,13 +37,13 @@
 
  ###### 0012 竞争者的抉择 ######
  ftr_court_struggle.0012.t:0 "屈膝，还是起兵"
- ftr_court_struggle.0012.desc:0 "[scope:ftr_court_new_monarch.GetFullName]头戴的那顶冠冕，论理本该是我的。我麾下的兵马仍听我号令。问题只在于，我敢不敢。"
+ ftr_court_struggle.0012.desc:0 "[ftr_court_new_monarch.GetFullName]头戴的那顶冠冕，论理本该是我的。我麾下的兵马仍听我号令。问题只在于，我敢不敢。"
  ftr_court_struggle.0012.a:0 "决不。我要以武力主张我的权利。"
  ftr_court_struggle.0012.b:0 "忍辱负重，屈膝称臣。"
 
  ###### 0013 处置叛乱者 ######
  ftr_court_struggle.0013.t:0 "阶下之囚"
- ftr_court_struggle.0013.desc:0 "[scope:ftr_court_warleader.GetFullName]押上一切来赌我的王冠，结果输了个精光。继承之名已从名册上抹去，叛旗已被践碎，叛乱者如今跪在我的地牢里。剩下的，是决定这份「忠心」究竟值多少。"
+ ftr_court_struggle.0013.desc:0 "[ftr_court_warleader.GetFullName]押上一切来赌我的王冠，结果输了个精光。继承之名已从名册上抹去，叛旗已被践碎，叛乱者如今跪在我的地牢里。剩下的，是决定这份「忠心」究竟值多少。"
  ftr_court_struggle.0013.a:0 "让他在地牢里了此残生。"
  ftr_court_struggle.0013.b:0 "将他们逐出国境。"
  ftr_court_struggle.0013.c:0 "杀一儆百。"
@@ -51,19 +51,19 @@
 
  ###### 0016 内阁承诺首次提醒 ######
  ftr_court_struggle.0016.t:0 "欠下的席位"
- ftr_court_struggle.0016.desc:0 "王冠已落到[ROOT.GetTitledFirstNamePossessive]头上，随之一同而来的，还有通往大位路上一笔笔许下的承诺。[scope:ftr_court_promised_vassal.GetFullName]当年出力扶持，换的是一个内阁席位。满朝文武都在看着，这些话究竟算不算数。"
+ ftr_court_struggle.0016.desc:0 "王冠已落到[ROOT.GetTitledFirstNamePossessive]头上，随之一同而来的，还有通往大位路上一笔笔许下的承诺。[ftr_court_promised_vassal.GetFullName]当年出力扶持，换的是一个内阁席位。满朝文武都在看着，这些话究竟算不算数。"
  ftr_court_struggle.0016.a:0 "一诺千金，授职。"
  ftr_court_struggle.0016.b:0 "时机未到，容后再议。"
 
  ###### 0017 内阁承诺终裁 ######
  ftr_court_struggle.0017.t:0 "耐心耗尽"
- ftr_court_struggle.0017.desc:0 "[scope:ftr_court_promised_vassal.GetFullName]已经等得够久了。自那日许下内阁席位，数月过去，职位却始终没有着落。今日，他们要一个明确的答复——满朝文武，同样在看。"
+ ftr_court_struggle.0017.desc:0 "[ftr_court_promised_vassal.GetFullName]已经等得够久了。自那日许下内阁席位，数月过去，职位却始终没有着落。今日，他们要一个明确的答复——满朝文武，同样在看。"
  ftr_court_struggle.0017.a:0 "罢了，授职。"
  ftr_court_struggle.0017.b:0 "王冠不欠任何人。驳回。"
 
  ###### 0018 废黜昏君 ######
  ftr_court_struggle.0018.t:0 "提线在手"
- ftr_court_struggle.0018.desc:0 "[scope:ftr_court_monarch.GetTitledFirstName]在别人递来的任何文书上盖印，近来每一道诏令都带着我的指纹。满朝向我鞠躬，只是名义上跪在他们面前。一切只差一步——而且不会有人哀悼。"
+ ftr_court_struggle.0018.desc:0 "[ftr_court_monarch.GetTitledFirstName]在别人递来的任何文书上盖印，近来每一道诏令都带着我的指纹。满朝向我鞠躬，只是名义上跪在他们面前。一切只差一步——而且不会有人哀悼。"
  ftr_court_struggle.0018.a:0 "提线在手，何不连龙椅一起拿过来？"
  ftr_court_struggle.0018.b:0 "提线已经够了——暂时。"
 
@@ -75,40 +75,52 @@
  ###### 0014 朝堂站队 ######
  ftr_court_struggle.0014.t:0 "择主而事"
  ftr_court_struggle.0014.desc:0 "朝堂正在悄然分化，中立正成为最危险的立场。是时候决定该追随哪颗星了。"
- ftr_court_struggle.0014.a:0 "拥立[scope:ftr_court_claimant_1.GetFullName]"
- ftr_court_struggle.0014.b:0 "拥立[scope:ftr_court_claimant_2.GetFullName]"
- ftr_court_struggle.0014.c:0 "拥立[scope:ftr_court_claimant_3.GetFullName]"
- ftr_court_struggle.0014.d:0 "拥立[scope:ftr_court_claimant_4.GetFullName]"
- ftr_court_struggle.0014.e:0 "拥立[scope:ftr_court_claimant_5.GetFullName]"
+ ftr_court_struggle.0014.a:0 "拥立[ftr_court_claimant_1.GetFullName]"
+ ftr_court_struggle.0014.b:0 "拥立[ftr_court_claimant_2.GetFullName]"
+ ftr_court_struggle.0014.c:0 "拥立[ftr_court_claimant_3.GetFullName]"
+ ftr_court_struggle.0014.d:0 "拥立[ftr_court_claimant_4.GetFullName]"
+ ftr_court_struggle.0014.e:0 "拥立[ftr_court_claimant_5.GetFullName]"
  ftr_court_struggle.0014.f:0 "静观其变。"
 
  ###### 0015 竞争者抉择 ######
  ftr_court_struggle.0015.t:0 "良机已至"
- ftr_court_struggle.0015.desc:0 "支持者已经聚拢，积怨早已摆上台面，年迈的[scope:ftr_court_monarch.GetTitledFirstName]一天弱过一天。众人都在等一个信号。此刻若再迟疑，他们便会转头去寻别人。"
+ ftr_court_struggle.0015.desc:0 "支持者已经聚拢，积怨早已摆上台面，年迈的[ftr_court_monarch.GetTitledFirstName]一天弱过一天。众人都在等一个信号。此刻若再迟疑，他们便会转头去寻别人。"
  ftr_court_struggle.0015.a:0 "举旗起兵。"
  ftr_court_struggle.0015.b:0 "暗影中动手。"
  ftr_court_struggle.0015.c:0 "再等等，从长计议。"
 
  ###### 0020 共治请愿 ######
  ftr_court_struggle.0020.t:0 "请分国事之忧"
- ftr_court_struggle.0020.desc:0 "[scope:actor.GetFullName]恭恭敬敬地跪下，以最谦卑的措辞奏请——将治国之重担分而担之。措辞无懈可击。正因如此，才最危险。"
+ ftr_court_struggle.0020.desc:0 "[actor.GetFullName]恭恭敬敬地跪下，以最谦卑的措辞奏请——将治国之重担分而担之。措辞无懈可击。正因如此，才最危险。"
  ftr_court_struggle.0020.a:0 "好吧。分忧就分忧。"
  ftr_court_struggle.0020.b:0 "君权不可与人分。驳回。"
 
  ###### 0030 立储 ######
  ftr_court_struggle.0030.t:0 "册立储君"
  ftr_court_struggle.0030.desc:0 "国本所在，不可不明。我当着满朝文武，立谁为储？"
- ftr_court_struggle.0030.a:0 "立[scope:ftr_court_claimant_1.GetFullName]"
- ftr_court_struggle.0030.b:0 "立[scope:ftr_court_claimant_2.GetFullName]"
- ftr_court_struggle.0030.c:0 "立[scope:ftr_court_claimant_3.GetFullName]"
- ftr_court_struggle.0030.d:0 "立[scope:ftr_court_claimant_4.GetFullName]"
- ftr_court_struggle.0030.e:0 "立[scope:ftr_court_claimant_5.GetFullName]"
+ ftr_court_struggle.0030.a:0 "立[ftr_court_claimant_1.GetFullName]"
+ ftr_court_struggle.0030.b:0 "立[ftr_court_claimant_2.GetFullName]"
+ ftr_court_struggle.0030.c:0 "立[ftr_court_claimant_3.GetFullName]"
+ ftr_court_struggle.0030.d:0 "立[ftr_court_claimant_4.GetFullName]"
+ ftr_court_struggle.0030.e:0 "立[ftr_court_claimant_5.GetFullName]"
 
  ###### 0031 压制竞争者 ######
  ftr_court_struggle.0031.t:0 "杀一儆百"
  ftr_court_struggle.0031.desc:0 "其中一人过于放肆了。削去他的羽翼，其余人自会记住自己的本分。"
- ftr_court_struggle.0031.a:0 "对[scope:ftr_court_claimant_1.GetFullName]下手"
- ftr_court_struggle.0031.b:0 "对[scope:ftr_court_claimant_2.GetFullName]下手"
- ftr_court_struggle.0031.c:0 "对[scope:ftr_court_claimant_3.GetFullName]下手"
- ftr_court_struggle.0031.d:0 "对[scope:ftr_court_claimant_4.GetFullName]下手"
- ftr_court_struggle.0031.e:0 "对[scope:ftr_court_claimant_5.GetFullName]下手"
+ ftr_court_struggle.0031.a:0 "对[ftr_court_claimant_1.GetFullName]下手"
+ ftr_court_struggle.0031.b:0 "对[ftr_court_claimant_2.GetFullName]下手"
+ ftr_court_struggle.0031.c:0 "对[ftr_court_claimant_3.GetFullName]下手"
+ ftr_court_struggle.0031.d:0 "对[ftr_court_claimant_4.GetFullName]下手"
+ ftr_court_struggle.0031.e:0 "对[ftr_court_claimant_5.GetFullName]下手"
+
+ ###### 0040 是否参与继位角逐 ######
+ ftr_court_struggle.0040.t:0 "是否参与角逐"
+ ftr_court_struggle.0040.desc:0 "[ftr_court_monarch.GetTitledFirstName]年事已高，大位归属已被重新抛向风口浪尖。[ROOT.GetFullName]是挺身而出、角逐大位，还是退居一旁，坐看他人相争？"
+ ftr_court_struggle.0040.a:0 "我要角逐这大位。"
+ ftr_court_struggle.0040.b:0 "这场角逐，我无意参与。"
+
+ ###### 0041 君主警觉 ######
+ ftr_court_struggle.0041.t:0 "不忠的耳语"
+ ftr_court_struggle.0041.desc:0 "有密报传到[ROOT.GetTitledFirstName]耳中，称某位臣属已公开为朝堂上的另一方背书。当大位悬而未决时，究竟谁的忠诚还靠得住？"
+ ftr_court_struggle.0041.a:0 "我要好生盯着[ftr_court_supported.GetFullName]。"
+ ftr_court_struggle.0041.b:0 "无足轻重罢了。"

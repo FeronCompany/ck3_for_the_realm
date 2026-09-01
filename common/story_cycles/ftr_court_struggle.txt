@@ -21,40 +21,10 @@ ftr_court_struggle = {
 
 	on_setup = {
 		ftr_court_setup_effect = yes
-		# 朝堂权力角逐开始：通知最高统治者、内阁、强势臣属、未被剥夺继承权的继任者。
-		# 用 ftr_court_notified 标记去重（同一人可能同时是内阁/强势臣属/继任者）。
+		# 朝堂权力角逐开始：通知最高统治者。
 		story_owner = {
 			add_character_flag = { flag = ftr_court_notified }
 			trigger_event = { id = ftr_court_struggle.0019 }
-		}
-		story_owner = {
-			every_councillor = {
-				limit = {
-					NOT = { this = root }
-					NOT = { has_character_flag = ftr_court_notified }
-				}
-				add_character_flag = { flag = ftr_court_notified }
-				trigger_event = { id = ftr_court_struggle.0019  days = 1 }
-			}
-		}
-		story_owner = {
-			every_powerful_vassal = {
-				limit = {
-					NOT = { this = root }
-					NOT = { has_character_flag = ftr_court_notified }
-				}
-				add_character_flag = { flag = ftr_court_notified }
-				trigger_event = { id = ftr_court_struggle.0019  days = 2 }
-			}
-		}
-		every_in_list = {
-			list = ftr_court_claimant_list
-			limit = {
-				NOT = { has_trait = disinherited }
-				NOT = { has_character_flag = ftr_court_notified }
-			}
-			add_character_flag = { flag = ftr_court_notified }
-			trigger_event = { id = ftr_court_struggle.0019  days = 3 }
 		}
 	}
 
@@ -89,7 +59,7 @@ ftr_court_struggle = {
 	visualization = {
 		# 继任竞争者名单（按竞争力降序，最多五人）
 		character_list = {
-			variable_name = "ftr_court_claimant_list"
+			variable_name = "ftr_court_participant_list"
 			label = "FTR_COURT_CLAIMANTS"
 		}
 
@@ -101,14 +71,6 @@ ftr_court_struggle = {
 			label = "FTR_COURT_SWING"
 			min_label = "FTR_COURT_SWING_LOYAL"
 			max_label = "FTR_COURT_SWING_DIARCH"
-		}
-
-		# 竞争者人数
-		basic_counter = {
-			variable_name = "ftr_court_candidate_count"
-			min = 0
-			max = 5
-			label = "FTR_COURT_CANDIDATE_COUNT"
 		}
 
 		custom_string_key = "FTR_COURT_STRINGS"
@@ -130,9 +92,53 @@ ftr_court_struggle = {
 			effect = {
 				ftr_court_update_candidates_effect = yes
 				ftr_court_swing_yearly_effect = yes
+				# 兜底：把参与角逐者列表同步到最高统治者的 ftr_court_ui_claimants
+				ftr_court_sync_participants_to_monarch_effect = yes
 			}
 		}
 		# 政权不再符合条件（被征服、降级、绝嗣）时收场
+		fallback = {
+			end_story = yes
+		}
+	}
+
+	################## 参与者刷新（30-60 天随机） ##################
+
+	# 定期移除不符合条件的参与者（失能 / 被剥夺继承权 / 被囚禁 / 死亡），
+	# 并让之前未参与且未明确表示不参与的潜在继承人有一次选择的机会。
+	effect_group = {
+		days = { ftr_court_refresh_interval_min_value  ftr_court_refresh_interval_max_value }
+		triggered_effect = {
+			trigger = {
+				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
+			}
+			effect = {
+				ftr_court_update_candidates_effect = yes
+				ftr_court_launch_participation_asks_effect = yes
+				ftr_court_refresh_backer_count_effect = yes
+				# 兜底：同步到最高统治者的 ftr_court_ui_claimants
+				ftr_court_sync_participants_to_monarch_effect = yes
+			}
+		}
+		fallback = {
+			end_story = yes
+		}
+	}
+
+	################## 每月同步参与角逐者到最高统治者 ##################
+
+	# 兜底机制：把 story 的 ftr_court_participant_list 每月同步到最高统治者身上的
+	# ftr_court_ui_claimants 变量列表，任何打开 UI 的角色都读取最高统治者的该列表。
+	effect_group = {
+		months = 1
+		triggered_effect = {
+			trigger = {
+				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
+			}
+			effect = {
+				ftr_court_sync_participants_to_monarch_effect = yes
+			}
+		}
 		fallback = {
 			end_story = yes
 		}
@@ -173,7 +179,7 @@ ftr_court_struggle = {
 					}
 					# 询问竞争力最高的竞争者是否起兵（事件 0015，无地者由此路径开战）
 					ordered_in_list = {
-						list = ftr_court_claimant_list
+						list = ftr_court_participant_list
 						order_by = var:ftr_claim_strength
 						save_scope_as = ftr_court_ringleader
 						scope:ftr_court_ringleader ?= {

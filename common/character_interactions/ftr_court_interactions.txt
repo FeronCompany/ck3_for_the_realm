@@ -18,7 +18,8 @@
 ### 议题 1：继任之争
 ############################################################################
 
-######### 公开支持某位继任竞争者 #########
+######### 公开支持某位权贵（最高统治者 / 共治者 / 参与角逐的继任者） #########
+# 若此前已支持他人，改投新主会严重破坏与旧主及其支持者的关系（原 defect 效果并入此处）。
 ftr_court_back_claimant_interaction = {
 	category = interaction_category_diplomacy
 	common_interaction = yes
@@ -32,13 +33,12 @@ ftr_court_back_claimant_interaction = {
 	ai_frequency = 48
 	is_shown = {
 		NOT = { scope:actor = scope:recipient }
-		scope:recipient = { ftr_court_is_active_claimant_trigger = yes }
+		# 支持对象必须是权贵（君主 / 共治者 / 参与角逐的继任者）
+		scope:recipient = { ftr_court_is_supported_person_trigger = yes }
 		scope:actor = {
 			# 无地廷臣无法主动发起交互，参与一律走事件（ftr_court_struggle.0014）
 			is_landed = yes
 			NOT = { ftr_court_is_struggle_monarch_trigger = yes }
-			# 一人不事二主
-			NOT = { ftr_court_has_backed_someone_trigger = yes }
 		}
 	}
 	is_valid_showing_failures_only = {
@@ -58,7 +58,39 @@ ftr_court_back_claimant_interaction = {
 	}
 	can_send = {}
 	on_accept = {
+		# ---- 若已支持他人，改投新主：与旧主及其支持者关系严重恶化 ----
 		scope:actor = {
+			if = {
+				limit = {
+					has_variable = ftr_court_backer_of
+					NOT = { var:ftr_court_backer_of ?= { this = scope:recipient } }
+				}
+				save_scope_as = ftr_court_old_backed
+				# 旧主记恨
+				var:ftr_court_backer_of ?= {
+					add_opinion = { target = scope:actor  modifier = ftr_court_betrayed_opinion }
+				}
+				# 旧主的支持者们（除了自己）也会敌视改投者
+				scope:ftr_court_old_backed = {
+					every_vassal = {
+						limit = {
+							has_variable = ftr_court_backer_of
+							var:ftr_court_backer_of ?= { this = scope:ftr_court_old_backed }
+							NOT = { this = scope:actor }
+						}
+						add_opinion = { target = scope:actor  modifier = ftr_court_rival_claimant_opinion }
+					}
+					every_courtier = {
+						limit = {
+							has_variable = ftr_court_backer_of
+							var:ftr_court_backer_of ?= { this = scope:ftr_court_old_backed }
+							NOT = { this = scope:actor }
+						}
+						add_opinion = { target = scope:actor  modifier = ftr_court_rival_claimant_opinion }
+					}
+				}
+			}
+			# 更新自己的被支持者变量
 			set_variable = { name = ftr_court_backer_of  value = scope:recipient }
 			ftr_court_pay_cost_effect = {
 				OTHER = scope:recipient
@@ -82,7 +114,7 @@ ftr_court_back_claimant_interaction = {
 			limit = { exists = scope:ftr_court_story }
 			scope:ftr_court_story = {
 				every_in_list = {
-					list = ftr_court_claimant_list
+					list = ftr_court_participant_list
 					limit = { NOT = { this = scope:recipient } }
 					add_opinion = { target = scope:actor  modifier = ftr_court_rival_claimant_opinion }
 				}
@@ -93,6 +125,34 @@ ftr_court_back_claimant_interaction = {
 					ftr_court_send_court_toast_effect = {
 						TITLE = ftr_court_notice_backing
 						ICON = scope:actor
+					}
+				}
+			}
+		}
+
+		# ---- 公开支持有概率触发君主警觉事件，恶化君主与被支持者的关系 ----
+		if = {
+			limit = {
+				NOT = { scope:recipient = scope:actor }
+			}
+			# 被支持者不是君主本人（支持君主不会让君主"警觉"）
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+			}
+			# 概率触发（random + chance 作为概率门）
+			random = {
+				chance = ftr_court_monarch_alert_chance_value
+				# 保存被支持者供警觉事件使用
+				scope:recipient = {
+					save_scope_as = ftr_court_supported
+				}
+				scope:actor.top_liege ?= {
+					save_scope_as = ftr_court_monarch
+				}
+				scope:ftr_court_monarch ?= {
+					trigger_event = {
+						id = ftr_court_struggle.0041
+						days = 1
 					}
 				}
 			}
@@ -159,77 +219,6 @@ ftr_court_withdraw_backing_interaction = {
 		modifier = {
 			add = 40
 			opinion = { target = scope:recipient  value < 0 }
-		}
-	}
-}
-
-######### 倒戈：改换门庭支持另一位竞争者 #########
-ftr_court_defect_interaction = {
-	category = interaction_category_diplomacy
-	common_interaction = yes
-	desc = ftr_court_defect_interaction_desc
-	cooldown_against_recipient = { years = 5 }
-	ai_targets = {
-		ai_recipients = courtiers
-		ai_recipients = close_family
-		max = 1
-	}
-	ai_frequency = 96
-	is_shown = {
-		NOT = { scope:actor = scope:recipient }
-		scope:recipient = { ftr_court_is_active_claimant_trigger = yes }
-		# 此前支持的是别人
-		scope:actor = {
-			# 无地廷臣无法主动发起交互
-			is_landed = yes
-			ftr_court_has_backed_someone_trigger = yes
-			NOT = { var:ftr_court_backer_of ?= { this = scope:recipient } }
-		}
-	}
-	is_valid_showing_failures_only = {
-		scope:actor = {
-			is_capable_adult = yes
-			NOT = { is_imprisoned = yes }
-			ftr_court_can_pay_cost_trigger = {
-				OTHER = scope:recipient
-				PRESTIGE = ftr_court_defect_prestige_cost_value
-				INFLUENCE = ftr_court_defect_influence_cost_value
-			}
-		}
-	}
-	can_send = {}
-	on_accept = {
-		# 旧主记恨
-		scope:actor = {
-			var:ftr_court_backer_of ?= {
-				add_opinion = { target = scope:actor  modifier = ftr_court_betrayed_opinion }
-			}
-			set_variable = { name = ftr_court_backer_of  value = scope:recipient }
-			ftr_court_pay_cost_effect = {
-				OTHER = scope:recipient
-				PRESTIGE = ftr_court_defect_prestige_cost_value
-				INFLUENCE = ftr_court_defect_influence_cost_value
-			}
-		}
-		scope:recipient = {
-			add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
-		}
-		scope:actor = { ftr_court_refresh_local_effect = yes }
-	}
-	on_decline = {}
-	ai_will_do = {
-		base = -40
-		modifier = {
-			add = 50
-			scope:recipient = { has_trait = ambitious }
-		}
-		modifier = {
-			add = 30
-			scope:actor = { has_trait = ambitious }
-		}
-		modifier = {
-			add = 25
-			opinion = { target = scope:recipient  value >= 50 }
 		}
 	}
 }
@@ -421,20 +410,32 @@ ftr_court_petition_coregency_interaction = {
 	}
 }
 
-######### 许诺内阁席位，结纳人心 #########
-ftr_court_promise_council_seat_interaction = {
+######### 许诺支持：许以内阁席位 / 许以宽免义务 #########
+# 合并原两个 promise 交互，许诺内容做成 send_option 选项。
+ftr_court_promise_interaction = {
 	category = interaction_category_diplomacy
 	common_interaction = yes
-	desc = ftr_court_promise_council_seat_interaction_desc
+	desc = ftr_court_promise_interaction_desc
 	cooldown_against_recipient = { years = 3 }
 	ai_targets = {
 		ai_recipients = peer_vassals
 		max = 2
 	}
 	ai_frequency = 72
+
+	send_option = {
+		flag = ftr_promise_council
+		localization = ftr_court_promise_council_option
+	}
+	send_option = {
+		flag = ftr_promise_contract
+		localization = ftr_court_promise_contract_option
+	}
+	send_options_exclusive = yes
+
 	is_shown = {
 		NOT = { scope:actor = scope:recipient }
-		# 只有竞争者或共治者才许得出官位
+		# 只有竞争者（参与角逐）或共治者才许得出筹码
 		scope:actor = {
 			# 无地竞争者无法主动发起交互（拉拢走事件）
 			is_landed = yes
@@ -443,39 +444,66 @@ ftr_court_promise_council_seat_interaction = {
 				has_active_diarchy = yes
 			}
 		}
+		# 契约放宽仅对有地臣属；内阁席位对朝堂成员（封臣/廷臣）均可
 		scope:recipient = { ftr_court_is_court_member_trigger = yes }
 	}
 	is_valid_showing_failures_only = {
 		scope:actor = {
 			is_capable_adult = yes
 			NOT = { is_imprisoned = yes }
+			# 两种许诺的支付门槛取较高者（统一用内阁席位成本判定，宽松）
 			ftr_court_can_pay_cost_trigger = {
 				OTHER = scope:recipient
 				PRESTIGE = ftr_court_promise_council_prestige_cost_value
 				INFLUENCE = ftr_court_promise_council_influence_cost_value
 			}
 		}
+		scope:recipient = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+		}
 	}
 	can_send = {}
 	on_accept = {
-		scope:actor = {
-			ftr_court_pay_cost_effect = {
-				OTHER = scope:recipient
-				PRESTIGE = ftr_court_promise_council_prestige_cost_value
-				INFLUENCE = ftr_court_promise_council_influence_cost_value
+		# 依 send_option 选择许诺内容
+		if = {
+			limit = { scope:actor = { has_character_flag = ftr_promise_council } }
+			scope:actor = {
+				ftr_court_pay_cost_effect = {
+					OTHER = scope:recipient
+					PRESTIGE = ftr_court_promise_council_prestige_cost_value
+					INFLUENCE = ftr_court_promise_council_influence_cost_value
+				}
+				# 欠账计数：继承后依此触发提醒事件
+				if = {
+					limit = { NOT = { has_variable = ftr_court_owes_council } }
+					set_variable = { name = ftr_court_owes_council  value = 0 }
+				}
+				change_variable = { name = ftr_court_owes_council  add = 1 }
+				remove_character_flag = ftr_promise_council
 			}
-			# 欠账计数：继承后依此触发提醒事件
-			if = {
-				limit = { NOT = { has_variable = ftr_court_owes_council } }
-				set_variable = { name = ftr_court_owes_council  value = 0 }
+			# 记在被承诺者身上，便于日后集中兑现
+			scope:recipient = {
+				set_variable = { name = ftr_court_promised_by  value = scope:actor }
+				set_variable = { name = ftr_court_promise_council  value = 1 }
+				add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
 			}
-			change_variable = { name = ftr_court_owes_council  add = 1 }
 		}
-		# 记在被承诺者身上，便于日后集中兑现
-		scope:recipient = {
-			set_variable = { name = ftr_court_promised_by  value = scope:actor }
-			set_variable = { name = ftr_court_promise_council  value = 1 }
-			add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
+		else = {
+			# 契约放宽
+			scope:actor = {
+				ftr_court_pay_cost_effect = {
+					OTHER = scope:recipient
+					PRESTIGE = ftr_court_promise_contract_prestige_cost_value
+					INFLUENCE = ftr_court_promise_contract_influence_cost_value
+				}
+				remove_character_flag = ftr_promise_contract
+			}
+			scope:recipient = {
+				set_variable = { name = ftr_court_promised_by  value = scope:actor }
+				set_variable = { name = ftr_court_promise_contract  value = 1 }
+				add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
+			}
 		}
 	}
 	on_decline = {}
@@ -488,65 +516,6 @@ ftr_court_promise_council_seat_interaction = {
 		modifier = {
 			add = 25
 			scope:recipient = { is_powerful_vassal_of = scope:actor.top_liege }
-		}
-	}
-}
-
-######### 许诺放宽臣属契约 #########
-ftr_court_promise_contract_relief_interaction = {
-	category = interaction_category_diplomacy
-	common_interaction = yes
-	desc = ftr_court_promise_contract_relief_interaction_desc
-	cooldown_against_recipient = { years = 3 }
-	ai_targets = {
-		ai_recipients = peer_vassals
-		max = 2
-	}
-	ai_frequency = 72
-	is_shown = {
-		NOT = { scope:actor = scope:recipient }
-		scope:actor = {
-			# 无地竞争者无法主动发起交互（拉拢走事件）
-			is_landed = yes
-			OR = {
-				ftr_court_is_active_claimant_trigger = yes
-				has_active_diarchy = yes
-			}
-		}
-		scope:recipient = { is_landed = yes }
-	}
-	is_valid_showing_failures_only = {
-		scope:actor = {
-			is_capable_adult = yes
-			NOT = { is_imprisoned = yes }
-			ftr_court_can_pay_cost_trigger = {
-				OTHER = scope:recipient
-				PRESTIGE = ftr_court_promise_contract_prestige_cost_value
-				INFLUENCE = ftr_court_promise_contract_influence_cost_value
-			}
-		}
-	}
-	can_send = {}
-	on_accept = {
-		scope:actor = {
-			ftr_court_pay_cost_effect = {
-				OTHER = scope:recipient
-				PRESTIGE = ftr_court_promise_contract_prestige_cost_value
-				INFLUENCE = ftr_court_promise_contract_influence_cost_value
-			}
-		}
-		scope:recipient = {
-			set_variable = { name = ftr_court_promised_by  value = scope:actor }
-			set_variable = { name = ftr_court_promise_contract  value = 1 }
-			add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
-		}
-	}
-	on_decline = {}
-	ai_will_do = {
-		base = 10
-		modifier = {
-			add = 40
-			scope:actor = { opinion = { target = scope:recipient  value < 30 } }
 		}
 		modifier = {
 			add = 30

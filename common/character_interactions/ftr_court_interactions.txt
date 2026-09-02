@@ -142,10 +142,10 @@ ftr_court_back_claimant_interaction = {
 		if = {
 			limit = {
 				NOT = { scope:recipient = scope:actor }
-			}
-			# 被支持者不是君主本人（支持君主不会让君主"警觉"）
-			scope:recipient = {
-				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				# 被支持者不是君主本人（支持君主不会让君主"警觉"）
+				scope:recipient = {
+					NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				}
 			}
 			# 概率触发（random + chance 作为概率门）
 			random = {

@@ -8,14 +8,13 @@ ftr_court_struggle_ongoing = {
 	monthly_prestige = -0.1
 }
 
-# 兑现「更高俸禄」的承诺
+# 兑现「更高俸禄」的承诺（经济效果由 ftr_court_fulfill_promises_effect 一次性 add_gold 补偿，
+# CK3 modifier 无"固定每月金币"属性，故此处仅作文案/状态标记）
 ftr_court_promised_wage_modifier = {
 	icon = stewardship
-	monthly_gold = 2
 }
 
-# 兑现「契约放宽」的承诺
+# 兑现「契约放宽」的承诺（同上，一次性 add_gold 见兑现效果）
 ftr_court_promised_contract_modifier = {
 	icon = diplomacy
-	monthly_gold = 1
 }

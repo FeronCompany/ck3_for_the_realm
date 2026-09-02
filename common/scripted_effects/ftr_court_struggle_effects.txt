@@ -24,7 +24,8 @@ ftr_court_setup_effect = {
 	set_variable = { name = ftr_court_second_score  value = 0 }
 	set_variable = { name = ftr_court_top_gap  value = 999 }
 	set_variable = { name = ftr_court_regency_swing  value = 0 }
-	set_variable = { name = ftr_court_phase  value = 0 }
+	# 烈度替代原 ftr_court_phase（0-3 离散阶段）：连续 0-200，由参与者加入/手段/君主状态驱动
+	set_variable = { name = ftr_court_struggle_intensity  value = ftr_court_intensity_min_value }
 
 	# 建立参与角逐者列表（初始为空，由启动询问事件填充）。
 	# 注意：必须用 clear_variable_list 初始化列表变量，不能用 remove_variable——
@@ -88,7 +89,7 @@ ftr_court_cleanup_effect = {
 	remove_variable = ftr_court_second_score
 	remove_variable = ftr_court_top_gap
 	remove_variable = ftr_court_regency_swing
-	remove_variable = ftr_court_phase
+	remove_variable = ftr_court_struggle_intensity
 	remove_variable = ftr_court_participant_list
 	remove_variable = ftr_court_participant_count
 }
@@ -121,23 +122,98 @@ ftr_court_add_participant_effect = {
 	remove_character_flag = ftr_court_already_in_participant_list
 }
 
-# 在 story 域执行：依据参与角逐人数更新阶段号。
-# 放宽后阶段主要取决于参与者是否达到最低门槛。
-ftr_court_update_phase_effect = {
+# 在 story 域执行：参与者加入角逐时的烈度抬升。
+# 烈度替代原 ftr_court_phase 离散定档。有人决定参与角逐即象征争夺成形，
+# 若烈度仍处平静区则抬到酝酿区起点（至少进入对抗酝酿）。
+ftr_court_on_participant_join_effect = {
 	save_scope_as = ftr_court_story
-	set_variable = { name = ftr_court_phase  value = 0 }
+	# 有人参与角逐，对抗升温：若低于酝酿起点则至少拉过 quiet_bound
+	if = {
+		limit = {
+			has_variable = ftr_court_struggle_intensity
+			var:ftr_court_struggle_intensity < ftr_court_intensity_quiet_bound_value
+		}
+		set_variable = { name = ftr_court_struggle_intensity  value = ftr_court_intensity_quiet_bound_value }
+	}
+	else_if = {
+		limit = {
+			has_variable = ftr_court_struggle_intensity
+			var:ftr_court_struggle_intensity >= ftr_court_intensity_quiet_bound_value
+		}
+		# 已入酝酿则温和累积张力
+		change_variable = {
+			name = ftr_court_struggle_intensity
+			add = ftr_court_intensity_tension_bias_value
+		}
+	}
+	# 夹紧到 0-200 区间，防止越界
+	if = {
+		limit = { var:ftr_court_struggle_intensity > ftr_court_intensity_max_value }
+		set_variable = { name = ftr_court_struggle_intensity  value = ftr_court_intensity_max_value }
+	}
+}
+
+# 在 story 域执行：烈度年度维护（自然回落 + 君主状态偏置 + 竞争者张力）。
+# 替代原阶段定档逻辑，是烈度随时间自然演化的主循环（承接 §12.3.2）。
+# 无参与者（candidate_count < min）时向 0 回落，避免长期无人对抗仍高温。
+ftr_court_refresh_intensity_effect = {
+	save_scope_as = ftr_court_story
+	story_owner = { save_scope_as = ftr_court_monarch }
 
 	if = {
-		limit = { var:ftr_court_candidate_count >= ftr_court_min_candidates_value }
-		set_variable = { name = ftr_court_phase  value = 1 }
+		limit = { scope:ftr_court_monarch = { ftr_court_has_succession_order_trigger = yes } }
 		if = {
-			limit = { var:ftr_court_candidate_count >= 3 }
-			set_variable = { name = ftr_court_phase  value = 2 }
+			limit = { ftr_court_has_active_struggle_trigger = yes }
+			# 有参与者在角逐：向低区缓慢自然回落（防单向锁死不回落）
 			if = {
-				limit = { story_owner ?= { ftr_court_monarch_weak_trigger = yes } }
-				set_variable = { name = ftr_court_phase  value = 3 }
+				limit = { var:ftr_court_struggle_intensity > ftr_court_intensity_quiet_bound_value }
+				change_variable = {
+					name = ftr_court_struggle_intensity
+					subtract = ftr_court_intensity_yearly_decay_value
+				}
+			}
+			# 君主失能/弱势：逐年推高烈度（承接 ftr_court_monarch_weak_trigger 语义）
+			if = {
+				limit = { scope:ftr_court_monarch = { ftr_court_monarch_infirm_trigger = yes } }
+				change_variable = {
+					name = ftr_court_struggle_intensity
+					add = ftr_court_intensity_weak_bias_value
+				}
+			}
+			else_if = {
+				limit = {
+					scope:ftr_court_monarch = {
+						prestige >= ftr_court_monarch_weak_prestige_value
+						piety >= ftr_court_monarch_weak_piety_value
+					}
+				}
+				# 君主强势：逐年压低烈度
+				change_variable = {
+					name = ftr_court_struggle_intensity
+					add = ftr_court_intensity_strong_bias_value
+				}
 			}
 		}
+		else = {
+			# 无参与者：向 0 回落到平静，避免残温空转
+			if = {
+				limit = { var:ftr_court_struggle_intensity > ftr_court_intensity_quiet_bound_value }
+				change_variable = {
+					name = ftr_court_struggle_intensity
+					subtract = ftr_court_intensity_yearly_decay_value
+				}
+			}
+		}
+	}
+
+	# 夹紧到 0-200 区间
+	if = {
+		limit = { var:ftr_court_struggle_intensity < ftr_court_intensity_min_value }
+		set_variable = { name = ftr_court_struggle_intensity  value = ftr_court_intensity_min_value }
+	}
+	else_if = {
+		limit = { var:ftr_court_struggle_intensity > ftr_court_intensity_max_value }
+		set_variable = { name = ftr_court_struggle_intensity  value = ftr_court_intensity_max_value }
 	}
 }
 
@@ -247,15 +323,16 @@ ftr_court_join_contest_effect = {
 	add_character_flag = ftr_court_participating
 	remove_character_flag = ftr_court_asked_participation
 	ftr_court_add_participant_effect = yes
-	# 加入后同步参与者数量：既更新 ftr_court_participant_count（阶段判断），
-	# 也更新 ftr_court_candidate_count（供 UI 数量、阶段计算使用），保持两者一致。
+	# 加入后同步参与者数量：既更新 ftr_court_participant_count，
+	# 也更新 ftr_court_candidate_count（供 UI 数量 / 烈度触发门槛使用），保持两者一致。
 	scope:ftr_court_story = {
 		set_variable = {
 			name = ftr_court_participant_count
 			value = list_size:ftr_court_participant_list
 		}
 		set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
-		ftr_court_update_phase_effect = yes
+		# 参与者加入：抬升烈度（替代原 phase 定档）
+		ftr_court_on_participant_join_effect = yes
 	}
 	# 计算竞争力评分
 	set_variable = {
@@ -971,10 +1048,7 @@ ftr_court_sync_ui_from_story_effect = {
 				name = ftr_court_ui_swing
 				value = scope:ftr_court_sync_story.var:ftr_court_regency_swing
 			}
-			set_variable = {
-				name = ftr_court_ui_phase
-				value = scope:ftr_court_sync_story.var:ftr_court_phase
-			}
+			# 烈度已通过 story 面板的 basic_counter 直接读 story 变量展示，无需镜像到玩家域
 			set_variable = {
 				name = ftr_court_ui_gap
 				value = scope:ftr_court_sync_story.var:ftr_court_top_gap

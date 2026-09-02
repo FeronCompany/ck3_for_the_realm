@@ -6,6 +6,7 @@
  FTR_COURT_STRINGS:0 "The great and the powerful circle one another over the question of who shall inherit the realm."
  FTR_COURT_CLAIMANTS:0 "Claimants"
  FTR_COURT_CANDIDATE_COUNT:0 "Claimants"
+ FTR_COURT_INTENSITY:0 "<FTR>Court Intensity"
  FTR_COURT_SWING:0 "Balance of Power"
  FTR_COURT_SWING_LOYAL:0 "The Crown Holds"
  FTR_COURT_SWING_DIARCH:0 "The Co-Ruler Rises"
@@ -78,11 +79,9 @@
  ftr_court_ui_diarch_backers_label:0 "Supporters of the Co-Ruler"
  ftr_court_ui_no_claimants:0 "No one has yet entered the contest for the throne."
 
- ###### Phase Descriptions ######
- ftr_court_ui_phase_0:0 "The matter is settled — the succession has not yet begun to stir."
- ftr_court_ui_phase_1:0 "Murmurs: the claimants have begun to gather factions."
- ftr_court_ui_phase_2:0 "Deadlock: the court has split into two camps."
- ftr_court_ui_phase_3:0 "On a knife's edge: coup and civil war are imminent!"
+ ###### Court Intensity scale (story panel basic_counter labels) ######
+ ftr_court_ui_intensity_quiet:0 "Quiet"
+ ftr_court_ui_intensity_critical:0 "Critical"
 
  ###### Misc ######
  ftr_show_stance_in_court_tt:0 "Already declared a stance this year"

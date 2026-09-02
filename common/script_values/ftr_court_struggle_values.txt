@@ -21,6 +21,37 @@ ftr_court_refresh_interval_max_value = 60
 # 臣属公开支持时，触发君主警觉事件的概率（%）
 ftr_court_monarch_alert_chance_value = 20
 
+########## 一之二、烈度（var:ftr_court_struggle_intensity，0-200）##########
+# 烈度替代原 ftr_court_phase（0-3 离散阶段）。区间对齐 §12.3.1：
+#   0-40  平静/潜伏   40-90 酝酿   90-140 对立   140-170 濒危（政变/内战窗口）  170-200 临界（废黜昏君）
+# 边界命名用直白 bound，triggers 里以 `>= 某 bound` 判定进入某区：
+#   < quiet_bound(=40)           → 平静
+#   >= stir_bound(=90)           → 对立（0014 站队 / 对立脉冲）
+#   >= high_bound(=140)          → 濒危（危机脉冲 / 政变·内战出口，对应旧 crisis）
+#   >= critical_bound(=170)      → 临界（0018 废黜昏君等最强手段）
+ftr_court_intensity_min_value = 0
+ftr_court_intensity_max_value = 200
+ftr_court_intensity_quiet_bound_value = 40
+ftr_court_intensity_stir_bound_value = 90
+ftr_court_intensity_high_bound_value = 140
+ftr_court_intensity_critical_bound_value = 170
+# 内斗循环（60-120 天）随机间隔
+ftr_court_strife_interval_min_value = 60
+ftr_court_strife_interval_max_value = 120
+# 出手基线概率（%，随烈度升高，后续手段事件族接入时叠加）
+ftr_court_strife_base_chance_value = 15
+# 年度自然回落（向 0 缓慢回归，防单向锁死不回落）
+ftr_court_intensity_yearly_decay_value = 5
+# 君主失能/弱势时年度正向偏置（推高烈度，承接 ftr_court_monarch_weak 语义）
+ftr_court_intensity_weak_bias_value = 6
+# 君主强势（声望/虔诚充足）时年度负向偏置（压低烈度）
+ftr_court_intensity_strong_bias_value = -4
+# 竞争者张力：前两名评分接近或参与者站队变化时的偏置
+ftr_court_intensity_tension_bias_value = 4
+# 缓和决议（§12.5 / §12.11）：一次下调幅度与冷却
+ftr_court_ease_intensity_drop_value = 80
+ftr_court_ease_cooldown_years_value = 10
+
 ########## 二、准入门槛 ##########
 # 君主进入"高龄"的年龄
 ftr_court_monarch_elderly_age_value = 60

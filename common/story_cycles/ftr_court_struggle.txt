@@ -5,11 +5,11 @@
 ### 议题1 继任之争：竞争者以「竞争力评分」排名，取前五名进入朝堂名单
 ### 议题2 共治夺权：以 ftr_court_regency_swing 为拉锯轴
 ###
-### 阶段（var:ftr_court_phase）：
-###   0 dormant   —— 竞争者不足，静默
-###   1 simmering —— 暗中角力
-###   2 contested —— 势均力敌，公开对立
-###   3 crisis    —— 政变/内战窗口开启
+### 烈度（var:ftr_court_struggle_intensity，0-200）替代原离散 ftr_court_phase：
+###   0-40   平静/潜伏     40-90  酝酿
+###   90-140 对立（0014 站队 / 对立脉冲）
+###   140-170 濒危（危机脉冲 / 政变·内战出口开启，story 图标亮剑）
+###   170-200 临界（0018 废黜昏君等最强手段）
 ###
 ### 作用域约定：root / scope:story = 故事本体；owner = 在位君主
 ##############################################################
@@ -41,9 +41,12 @@ ftr_court_struggle = {
 
 	################## 外观 ##################
 
-	# 危机阶段改用剑图标，其余沿用宫廷政治图标
+	# 烈度进入濒危/危机区（>=140）改用剑图标，其余沿用宫廷政治图标
 	icon = {
-		trigger = { var:ftr_court_phase >= 3 }
+		trigger = {
+			has_variable = ftr_court_struggle_intensity
+			var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+		}
 		reference = "gfx/interface/icons/story_cycles/story_icon_conqueror.dds"
 	}
 	icon = {
@@ -63,10 +66,20 @@ ftr_court_struggle = {
 			label = "FTR_COURT_CLAIMANTS"
 		}
 
+		# 朝堂烈度进度条（0 平静 ↔ 200 临界；随烈度升高逼近政变/内战）
+		basic_counter = {
+			variable_name = "ftr_court_struggle_intensity"
+			min = 0
+			max = 200
+			label = "FTR_COURT_INTENSITY"
+			min_label = "ftr_court_ui_intensity_quiet"
+			max_label = "ftr_court_ui_intensity_critical"
+		}
+
 		custom_string_key = "FTR_COURT_STRINGS"
 	}
 
-	################## 年度维护：拉锯回落与阶段 ##################
+	################## 年度维护：拉锯回落、烈度 ##################
 
 	effect_group = {
 		years = 1
@@ -76,6 +89,8 @@ ftr_court_struggle = {
 			}
 			effect = {
 				ftr_court_swing_yearly_effect = yes
+				# 烈度年度维护（自然回落 + 君主状态偏置；替代原 phase 定档）
+				ftr_court_refresh_intensity_effect = yes
 			}
 		}
 		# 政权不再符合条件（被征服、降级、绝嗣）时收场

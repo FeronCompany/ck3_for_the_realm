@@ -13,6 +13,7 @@ ftr_court_struggle.0001 = {
 
 	left_portrait = {
 		character = root
+		animation = personality_rational
 	}
 
 	immediate = {
@@ -61,6 +62,7 @@ ftr_court_struggle.0003 = {
 
 	left_portrait = {
 		character = root
+		animation = anger
 	}
 
 	immediate = {
@@ -110,6 +112,7 @@ ftr_court_struggle.0005 = {
 
 	left_portrait = {
 		character = root
+		animation = rage
 	}
 
 	immediate = {
@@ -170,9 +173,11 @@ ftr_court_struggle.0010 = {
 
 	left_portrait = {
 		character = root
+		animation = personality_bold
 	}
 	right_portrait = {
 		character = scope:ftr_court_old_monarch
+		animation = beg
 	}
 
 	immediate = {
@@ -235,6 +240,7 @@ ftr_court_struggle.0011 = {
 
 	left_portrait = {
 		character = root
+		animation = personality_rational
 	}
 
 	immediate = {
@@ -343,9 +349,11 @@ ftr_court_struggle.0012 = {
 
 	left_portrait = {
 		character = root
+		animation = rage
 	}
 	right_portrait = {
 		character = scope:ftr_court_new_monarch
+		animation = shock
 	}
 
 	option = { # Never. I press my claim by force.
@@ -406,9 +414,11 @@ ftr_court_struggle.0016 = {
 
 	left_portrait = {
 		character = root
+		animation = personality_rational
 	}
 	right_portrait = {
 		character = scope:ftr_court_promised_vassal
+		animation = happiness
 	}
 
 	# 无欠账则事件静默取消
@@ -487,9 +497,11 @@ ftr_court_struggle.0017 = {
 
 	left_portrait = {
 		character = root
+		animation = anger
 	}
 	right_portrait = {
 		character = scope:ftr_court_promised_vassal
+		animation = personality_rational
 	}
 
 	# 无欠账则事件静默取消（如承诺已被其它途径兑现）
@@ -568,9 +580,11 @@ ftr_court_struggle.0018 = {
 
 	left_portrait = {
 		character = root
+		animation = scheme
 	}
 	right_portrait = {
 		character = scope:ftr_court_monarch
+		animation = fear
 	}
 
 	immediate = {
@@ -628,6 +642,7 @@ ftr_court_struggle.0014 = {
 
 	left_portrait = {
 		character = root
+		animation = personality_rational
 	}
 
 	immediate = {
@@ -727,9 +742,11 @@ ftr_court_struggle.0015 = {
 
 	left_portrait = {
 		character = root
+		animation = scheme
 	}
 	right_portrait = {
 		character = scope:ftr_court_monarch
+		animation = shock
 	}
 
 	immediate = {
@@ -760,14 +777,15 @@ ftr_court_struggle.0015 = {
 	}
 	option = { # Strike from the shadows
 		name = ftr_court_struggle.0015.b
-		trigger = { government_allows = administrative }
+		# 政变走 ftr 的 coup scheme，不限政体（封建制亦可用；coup 密谋不要求领地）。
+		# 依赖：发起者为君主的朝堂成员（coup valid = courtier/vassal），危机时通常满足。
 		ai_chance = {
 			base = 25
 			modifier = { add = 30  has_trait = ambitious }
 			modifier = { add = 20  intrigue >= 15 }
 			modifier = { add = -40  has_trait = just }
 		}
-		# 行政制竞争者以政变（coup 计谋）夺位，无需领地
+		# 竞争者以政变（coup 计谋）夺位，无需领地
 		start_scheme = {
 			type = coup
 			target_character = scope:ftr_court_monarch
@@ -798,9 +816,11 @@ ftr_court_struggle.0013 = {
 
 	left_portrait = {
 		character = root
+		animation = rage
 	}
 	right_portrait = {
 		character = scope:ftr_court_warleader
+		animation = fear
 	}
 
 	immediate = {
@@ -872,9 +892,11 @@ ftr_court_struggle.0020 = {
 
 	left_portrait = {
 		character = root
+		animation = personality_rational
 	}
 	right_portrait = {
 		character = scope:actor
+		animation = beg
 	}
 
 	option = { # Grant them a share of power
@@ -933,9 +955,11 @@ ftr_court_struggle.0019 = {
 
 	left_portrait = {
 		character = root
+		animation = shock
 	}
 	right_portrait = {
 		character = scope:ftr_court_monarch
+		animation = personality_bold
 	}
 
 	immediate = {
@@ -976,9 +1000,11 @@ ftr_court_struggle.0040 = {
 
 	left_portrait = {
 		character = root
+		animation = scheme
 	}
 	right_portrait = {
 		character = scope:ftr_court_monarch
+		animation = personality_rational
 	}
 
 	immediate = {
@@ -1079,7 +1105,8 @@ ftr_court_struggle.0040 = {
 				value = list_size:ftr_court_participant_list
 			}
 			set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
-			ftr_court_update_phase_effect = yes
+			# 参与者加入：抬升烈度（替代原 phase 定档）
+			ftr_court_on_participant_join_effect = yes
 		}
 		# 通知朝廷
 		scope:ftr_court_monarch = {
@@ -1115,9 +1142,11 @@ ftr_court_struggle.0041 = {
 
 	left_portrait = {
 		character = root
+		animation = anger
 	}
 	right_portrait = {
 		character = scope:ftr_court_supported
+		animation = shock
 	}
 
 	immediate = {

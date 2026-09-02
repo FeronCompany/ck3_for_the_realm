@@ -210,21 +210,42 @@ ftr_court_should_activate_succession_trigger = {
 	NOT = { ftr_court_in_cooldown_trigger = yes }
 }
 
-# 前两名评分接近 -> contested
-ftr_court_is_contested_trigger = {
-	has_variable = ftr_court_top_gap
-	var:ftr_court_top_gap <= ftr_court_contested_gap_value
+# ---- 烈度判定（替代原 ftr_court_phase 0-3 离散阶段）----
+# 各 trigger 求值域：story（root = 故事本体）。烈度 = var:ftr_court_struggle_intensity（0-200）。
+
+# 参与者数量是否已进入角逐下限（有至少 ftr_court_min_candidates_value 名参与者才谈得上对抗）
+ftr_court_has_active_struggle_trigger = {
+	has_variable = ftr_court_candidate_count
+	var:ftr_court_candidate_count >= ftr_court_min_candidates_value
 }
 
-# 前两名评分极其接近 -> crisis（政变/内战窗口开启）
-# 求值域：story（root = 故事本体）
+# 烈度是否进入「对立」区（>=90）：两派公开倾轧、对立脉冲 / 0014 站队等在此区触发。
+ftr_court_is_contested_trigger = {
+	ftr_court_has_active_struggle_trigger = yes
+	has_variable = ftr_court_struggle_intensity
+	var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
+}
+
+# 烈度是否进入「濒危/危机」区（>=140）：政变/内战出口开启、危机脉冲在此区触发。
+# 原逻辑含「君主衰弱」要求，烈度化后该偏置已通过 ftr_court_intensity_weak_bias_value 计入烈度，
+# 故此处不再单独要求君主弱（君主弱会推高烈度，间接进入此窗口）。
 ftr_court_is_crisis_trigger = {
-	ftr_court_is_contested_trigger = yes
-	var:ftr_court_top_gap <= ftr_court_crisis_gap_value
-	story_owner ?= {
-		ftr_court_monarch_weak_trigger = yes
-		NOT = { ftr_court_in_cooldown_trigger = yes }
-	}
+	ftr_court_has_active_struggle_trigger = yes
+	has_variable = ftr_court_struggle_intensity
+	var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+}
+
+# 烈度是否进入「临界」区（>=170）：废黜昏君（0018）等最强手段在此区开放。
+ftr_court_intensity_critical_trigger = {
+	has_variable = ftr_court_struggle_intensity
+	var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
+}
+
+# 缓和决议的可用前提：烈度高于门槛才值得烧资源缓和（§12.5 / §12.11）
+ftr_court_ease_struggle_valid_trigger = {
+	has_variable = ftr_court_struggle_intensity
+	var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+	NOT = { has_character_flag = ftr_court_eased_struggle }
 }
 
 ########## 五、议题2：共治夺权 ##########
@@ -403,8 +424,9 @@ ftr_court_hereditary_succession_trigger = {
 # 求值域：君主。
 ftr_court_elective_succession_trigger = {
 	OR = {
-		# 任一最高头衔采用选举继承法
-		any_title = {
+		# 任一公爵级及以上直辖头衔采用选举继承法（CK3 无 any_title，用 any_held_title）
+		any_held_title = {
+			tier >= tier_duchy
 			OR = {
 				has_title_law = feudal_elective_succession_law
 				has_title_law = princely_elective_succession_law

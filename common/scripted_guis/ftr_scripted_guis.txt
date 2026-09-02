@@ -65,7 +65,6 @@ ftr_court_sync_ui_data = {
 		# 先复位
 		set_variable = { name = ftr_court_ui_active  value = 0 }
 		set_variable = { name = ftr_court_ui_swing  value = 0 }
-		set_variable = { name = ftr_court_ui_phase  value = 0 }
 		set_variable = { name = ftr_court_ui_count  value = 0 }
 		set_variable = { name = ftr_court_ui_gap  value = 999 }
 		clear_variable_list = ftr_court_ui_claimants

@@ -6,6 +6,7 @@
  FTR_COURT_STRINGS:0 "权贵们围绕大位的归属彼此试探、结党倾轧。"
  FTR_COURT_CLAIMANTS:0 "继任竞争者"
  FTR_COURT_CANDIDATE_COUNT:0 "竞争者人数"
+ FTR_COURT_INTENSITY:0 "<FTR>朝堂烈度"
  FTR_COURT_SWING:0 "权力天平"
  FTR_COURT_SWING_LOYAL:0 "君权稳固"
  FTR_COURT_SWING_DIARCH:0 "共治得势"
@@ -78,11 +79,9 @@
  ftr_court_ui_diarch_backers_label:0 "共治者支持者"
  ftr_court_ui_no_claimants:0 "尚无任何人参与继位角逐。"
 
- ###### 阶段描述 ######
- ftr_court_ui_phase_0:0 "大局已定，继位之争尚未成形。"
- ftr_court_ui_phase_1:0 "暗流涌动：继任者们开始结党。"
- ftr_court_ui_phase_2:0 "势均力敌：朝堂分裂为两派。"
- ftr_court_ui_phase_3:0 "一触即发：政变与内战一触即发！"
+ ###### 烈度刻度（story 面板 basic_counter 两端标签） ######
+ ftr_court_ui_intensity_quiet:0 "平静"
+ ftr_court_ui_intensity_critical:0 "临界"
 
  ###### 杂项 ######
  ftr_show_stance_in_court_tt:0 "今年已表明过立场"

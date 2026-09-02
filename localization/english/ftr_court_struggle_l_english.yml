@@ -85,3 +85,6 @@
 
  ###### Misc ######
  ftr_show_stance_in_court_tt:0 "Already declared a stance this year"
+
+###### DEBUG backing message (remove later; left=backer, right=backed) ######
+ ftr_court_debug_backing_notify:0 "[DEBUG] A courtier has openly declared a stance."

@@ -1086,3 +1086,22 @@ ftr_court_sync_ui_from_story_effect = {
 # 决策：清算即免债。竞争者被尽数清算时，其生前许下的承诺同步作废，
 # 新君只继承存活者的承诺（见 0011.b）。
 # 注意：不能在 clear_claimant_status_effect 内做——该效果也被非清算路径调用。
+
+###### DEBUG ###### （后续统一移除）
+# 站队 debug 通知：直接给朝堂君主 send_interface_message（左=支持者，右=被支持者）。
+# 调用处前提：
+#   root = 支持者；scope:ftr_court_story 已保存；scope:ftr_court_debug_backed = 被支持者
+# send_interface_message 仅当接收角色（君主）为当前玩家时才显示到其 UI，AI 君主自动无显示，无需额外 is_ai 判定。
+ftr_court_debug_backing_notice_effect = {
+	save_scope_as = ftr_court_debug_backer
+	scope:ftr_court_story ?= {
+		owner = {
+			send_interface_message = {
+				type = event_generic_good
+				title = ftr_court_debug_backing_notify
+				left_icon = scope:ftr_court_debug_backer
+				right_icon = scope:ftr_court_debug_backed
+			}
+		}
+	}
+}

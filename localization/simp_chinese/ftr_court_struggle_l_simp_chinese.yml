@@ -85,3 +85,6 @@
 
  ###### 杂项 ######
  ftr_show_stance_in_court_tt:0 "今年已表明过立场"
+
+###### DEBUG 站队消息（后续统一移除；左=支持者，右=被支持者） ######
+ ftr_court_debug_backing_notify:0 "【调试】朝堂站队：有人公开表态。"

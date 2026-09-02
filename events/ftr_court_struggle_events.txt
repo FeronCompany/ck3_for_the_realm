@@ -684,6 +684,9 @@ ftr_court_struggle.0014 = {
 		scope:ftr_court_claimant_1 = {
 			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
 		}
+		# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
+		scope:ftr_court_claimant_1 = { save_scope_as = ftr_court_debug_backed }
+		ftr_court_debug_backing_notice_effect = yes
 	}
 	option = { # Back the second
 		name = ftr_court_struggle.0014.b
@@ -693,6 +696,9 @@ ftr_court_struggle.0014 = {
 		scope:ftr_court_claimant_2 = {
 			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
 		}
+		# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
+		scope:ftr_court_claimant_2 = { save_scope_as = ftr_court_debug_backed }
+		ftr_court_debug_backing_notice_effect = yes
 	}
 	option = { # Back a dark horse
 		name = ftr_court_struggle.0014.c
@@ -702,6 +708,9 @@ ftr_court_struggle.0014 = {
 		scope:ftr_court_claimant_3 = {
 			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
 		}
+		# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
+		scope:ftr_court_claimant_3 = { save_scope_as = ftr_court_debug_backed }
+		ftr_court_debug_backing_notice_effect = yes
 	}
 	option = { # Back the fourth
 		name = ftr_court_struggle.0014.d
@@ -711,6 +720,9 @@ ftr_court_struggle.0014 = {
 		scope:ftr_court_claimant_4 = {
 			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
 		}
+		# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
+		scope:ftr_court_claimant_4 = { save_scope_as = ftr_court_debug_backed }
+		ftr_court_debug_backing_notice_effect = yes
 	}
 	option = { # Back the fifth
 		name = ftr_court_struggle.0014.e
@@ -720,6 +732,9 @@ ftr_court_struggle.0014 = {
 		scope:ftr_court_claimant_5 = {
 			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
 		}
+		# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
+		scope:ftr_court_claimant_5 = { save_scope_as = ftr_court_debug_backed }
+		ftr_court_debug_backing_notice_effect = yes
 	}
 	option = { # Watch and wait
 		name = ftr_court_struggle.0014.f
@@ -1062,11 +1077,15 @@ ftr_court_struggle.0040 = {
 		name = ftr_court_struggle.0040.a
 		trigger = {
 			exists = scope:ftr_court_story
-			scope:ftr_court_story = {
-				has_variable = ftr_court_participant_count
-				var:ftr_court_participant_count < ftr_court_max_candidates_value
-			}
 			NOT = { has_character_flag = ftr_court_declined_contest }
+			# 名额未满可加入；或主头衔第一顺位继承人必须入局（不受 5 人上限约束）
+			OR = {
+				scope:ftr_court_story = {
+					has_variable = ftr_court_participant_count
+					var:ftr_court_participant_count < ftr_court_max_candidates_value
+				}
+				is_primary_heir_of = scope:ftr_court_monarch
+			}
 		}
 		ai_chance = {
 			base = 35
@@ -1118,6 +1137,10 @@ ftr_court_struggle.0040 = {
 	}
 	option = { # I want no part in this contest
 		name = ftr_court_struggle.0040.b
+		trigger = {
+			# 主头衔第一顺位继承人不得拒绝参与角逐（只能选 a）
+			NOT = { is_primary_heir_of = scope:ftr_court_monarch }
+		}
 		ai_chance = {
 			base = 65
 			modifier = { add = 40  has_trait = content }

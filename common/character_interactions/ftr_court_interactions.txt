@@ -135,6 +135,9 @@ ftr_court_back_claimant_interaction = {
 						ICON = scope:actor
 					}
 				}
+				# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
+				scope:recipient = { save_scope_as = ftr_court_debug_backed }
+				ftr_court_debug_backing_notice_effect = yes
 			}
 		}
 

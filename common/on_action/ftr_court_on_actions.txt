@@ -27,16 +27,7 @@ ftr_court_try_start_on_action = {
 	}
 }
 
-########## 二、候选池增量刷新 ##########
-
-# 新子女出生意味着新的潜在竞争者出现
-ftr_court_on_child_born_on_action = {
-	effect = {
-		ftr_court_refresh_local_effect = yes
-	}
-}
-
-########## 三、收场 ##########
+########## 二、收场 ##########
 
 # 政权不再符合条件时（被征服、降级、绝嗣）由 story 的 fallback 自行 end_story，
 # 此处仅作兜底，清理无人认领的残留故事。
@@ -64,13 +55,6 @@ random_yearly_everyone_pulse = {
 	on_actions = {
 		ftr_court_try_start_on_action
 		ftr_court_validate_on_action
-	}
-}
-
-# 子女出生时刷新父母所在朝堂的候选池
-on_birth_child = {
-	on_actions = {
-		ftr_court_on_child_born_on_action
 	}
 }
 

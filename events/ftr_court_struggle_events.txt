@@ -134,7 +134,6 @@ ftr_court_struggle.0005 = {
 				limit = { NOT = { this = scope:ftr_court_monarch } }
 				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
 			}
-			ftr_court_refresh_backer_count_effect = yes
 		}
 	}
 	option = { # Crack down on the ringleader
@@ -154,7 +153,6 @@ ftr_court_struggle.0005 = {
 				}
 				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_rival_claimant_opinion }
 			}
-			ftr_court_refresh_backer_count_effect = yes
 		}
 	}
 }

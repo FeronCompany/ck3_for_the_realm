@@ -261,21 +261,24 @@ ftr_court_loyalists_hold_trigger = {
 ########## 六、行动资格 ##########
 
 # 竞争者能否发动政变（走 coup 计谋）
-# 求值域：候选人自身
+# 求值域：候选人自身（支持者列表 ftr_court_supporters 直接维护在角色上）
 ftr_court_can_launch_coup_trigger = {
-	has_variable = ftr_court_support_count
-	var:ftr_court_support_count >= ftr_court_min_backers_value
 	ftr_court_own_struggle_in_crisis_trigger = yes
+	ftr_court_supporters_adequate_trigger = yes
 }
 
 # 竞争者能否起兵内战
-# 求值域：候选人自身
+# 求值域：候选人自身（支持者列表 ftr_court_supporters 直接维护在角色上）
 ftr_court_can_declare_succession_war_trigger = {
-	has_variable = ftr_court_support_count
-	var:ftr_court_support_count >= ftr_court_min_backers_value
 	ftr_court_own_struggle_in_crisis_trigger = yes
 	NOT = { is_at_war = yes }
+	ftr_court_supporters_adequate_trigger = yes
 	# 无地者也能起兵：CB 会为其创建临时公国
+}
+
+# 求值域：候选人自身。判断其 ftr_court_supporters 支持者列表是否达到起事下限。
+ftr_court_supporters_adequate_trigger = {
+	list_size:ftr_court_supporters >= ftr_court_min_backers_value
 }
 
 # 从自身出发，找到所参与的朝堂争夺并判断其是否已进入危机

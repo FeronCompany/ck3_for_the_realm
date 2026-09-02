@@ -127,7 +127,6 @@ ftr_court_back_claimant_interaction = {
 					limit = { NOT = { this = scope:recipient } }
 					add_opinion = { target = scope:actor  modifier = ftr_court_rival_claimant_opinion }
 				}
-				ftr_court_refresh_backer_count_effect = yes
 				# 朝堂通报：公开表态
 				owner = {
 					save_scope_as = ftr_court_monarch
@@ -222,7 +221,6 @@ ftr_court_withdraw_backing_interaction = {
 			ftr_court_remove_backer_effect = { BACKER = scope:actor }
 			add_opinion = { target = scope:actor  modifier = ftr_political_opponent_opinion }
 		}
-		scope:actor = { ftr_court_refresh_local_effect = yes }
 	}
 	on_decline = {}
 	ai_will_do = {

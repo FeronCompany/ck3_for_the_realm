@@ -133,13 +133,10 @@ ftr_court_claim_strength_value = {
 		add = ftr_court_claim_opinion_low_value
 	}
 
-	### 支持者数量
-	if = {
-		limit = { has_variable = ftr_court_support_count }
-		add = {
-			value = ftr_court_claim_backer_value
-			multiply = var:ftr_court_support_count
-		}
+	### 支持者数量（支持者列表直接维护在权贵身上，用 list_size 取大小）
+	add = {
+		value = ftr_court_claim_backer_value
+		multiply = list_size:ftr_court_supporters
 	}
 
 	### 永不出现负分，便于展示

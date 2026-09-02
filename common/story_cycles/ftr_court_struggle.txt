@@ -57,7 +57,7 @@ ftr_court_struggle = {
 	################## 面板可视化 ##################
 
 	visualization = {
-		# 继任竞争者名单（按竞争力降序，最多五人）
+		# 继任竞争者名单（最多五人）
 		character_list = {
 			variable_name = "ftr_court_participant_list"
 			label = "FTR_COURT_CLAIMANTS"
@@ -66,7 +66,7 @@ ftr_court_struggle = {
 		custom_string_key = "FTR_COURT_STRINGS"
 	}
 
-	################## 年度维护：刷新候选池、拉锯与阶段 ##################
+	################## 年度维护：拉锯回落与阶段 ##################
 
 	effect_group = {
 		years = 1
@@ -84,10 +84,9 @@ ftr_court_struggle = {
 		}
 	}
 
-	################## 参与者刷新（30-60 天随机） ##################
+	################## 参与者询问刷新（30-60 天随机） ##################
 
-	# 定期移除不符合条件的参与者（失能 / 被剥夺继承权 / 被囚禁 / 死亡），
-	# 并让之前未参与且未明确表示不参与的潜在继承人有一次选择的机会。
+	# 定期重新询问：给之前未参与且未明确表示不参与的潜在继承人一次选择机会。
 	effect_group = {
 		days = { ftr_court_refresh_interval_min_value  ftr_court_refresh_interval_max_value }
 		triggered_effect = {
@@ -96,7 +95,6 @@ ftr_court_struggle = {
 			}
 			effect = {
 				ftr_court_launch_participation_asks_effect = yes
-				ftr_court_refresh_backer_count_effect = yes
 			}
 		}
 		fallback = {

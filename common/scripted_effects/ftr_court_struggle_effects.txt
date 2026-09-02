@@ -34,9 +34,6 @@ ftr_court_setup_effect = {
 
 	# 启动：询问利益相关方是否参与角逐
 	ftr_court_launch_participation_asks_effect = yes
-
-	# 刷新支持者计数
-	ftr_court_refresh_backer_count_effect = yes
 }
 
 # 在 story 域执行：结束后清理，移除一切残留
@@ -53,7 +50,6 @@ ftr_court_cleanup_effect = {
 	every_in_list = {
 		list = ftr_court_participant_list
 		remove_variable = ftr_claim_strength
-		remove_variable = ftr_court_support_count
 		remove_variable = ftr_court_backer_of
 		clear_variable_list = ftr_court_supporters
 		remove_character_flag = ftr_court_pooled
@@ -64,7 +60,6 @@ ftr_court_cleanup_effect = {
 		list = ftr_court_participant_list
 		remove_character_flag = ftr_court_participating
 		remove_variable = ftr_claim_strength
-		remove_variable = ftr_court_support_count
 		remove_variable = ftr_court_backer_of
 		clear_variable_list = ftr_court_supporters
 	}
@@ -89,7 +84,6 @@ ftr_court_cleanup_effect = {
 	remove_variable = ftr_court_candidate_pool
 	remove_variable = ftr_court_claimant_list
 	remove_variable = ftr_court_candidate_count
-	remove_variable = ftr_court_support_count
 	remove_variable = ftr_court_top_score
 	remove_variable = ftr_court_second_score
 	remove_variable = ftr_court_top_gap
@@ -278,59 +272,9 @@ ftr_court_decline_contest_effect = {
 	remove_character_flag = ftr_court_asked_participation
 }
 
-# 在任意角色域执行：刷新其自身、或其宗主所拥有的朝堂角逐的支持者计数。
-# （参与者列表主存储为最高统治者 ftr_court_claimants，由参与事件维护，此处仅刷新支持者计数。）
-ftr_court_refresh_local_effect = {
-	every_owned_story = {
-		limit = { story_type = ftr_court_struggle }
-		ftr_court_refresh_backer_count_effect = yes
-	}
-	top_liege ?= {
-		every_owned_story = {
-			limit = { story_type = ftr_court_struggle }
-			ftr_court_refresh_backer_count_effect = yes
-		}
-	}
-}
-
 ######################################################
 ### 三、支持者记账
 ######################################################
-
-# 在 story 域执行：重新统计每位权贵（君主 / 共治者 / 参与角逐者）的支持者数量。
-# 新方案：支持者列表存在各权贵身上的 ftr_court_supporters 变量列表，
-# 支持者计数直接取该列表大小，存为角色上的 ftr_court_support_count。
-ftr_court_refresh_backer_count_effect = {
-	save_scope_as = ftr_court_story
-	story_owner = { save_scope_as = ftr_court_monarch }
-
-	# 君主本人
-	scope:ftr_court_monarch = {
-		set_variable = {
-			name = ftr_court_support_count
-			value = list_size:ftr_court_supporters
-		}
-		# 共治者
-		if = {
-			limit = { exists = diarch }
-			diarch = {
-				set_variable = {
-					name = ftr_court_support_count
-					value = list_size:ftr_court_supporters
-				}
-			}
-		}
-	}
-	# 每个参与角逐者
-	every_in_list = {
-		list = ftr_court_participant_list
-		limit = { is_alive = yes }
-		set_variable = {
-			name = ftr_court_support_count
-			value = list_size:ftr_court_supporters
-		}
-	}
-}
 
 # 在被支持者（权贵）域执行：从自己的 ftr_court_supporters 支持者列表移除指定角色。
 # 参数：BACKER = 要移除的支持者（角色 scope）。
@@ -662,7 +606,6 @@ ftr_court_schedule_council_reminder_effect = {
 # 在角色域执行：清理其竞争状态（退出朝堂角逐）
 ftr_court_clear_claimant_status_effect = {
 	remove_variable = ftr_claim_strength
-	remove_variable = ftr_court_support_count
 	remove_variable = ftr_court_backer_of
 	clear_variable_list = ftr_court_supporters
 	remove_character_flag = ftr_court_pooled

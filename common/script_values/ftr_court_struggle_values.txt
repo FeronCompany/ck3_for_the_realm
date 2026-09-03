@@ -40,6 +40,21 @@ ftr_court_strife_interval_min_value = 60
 ftr_court_strife_interval_max_value = 120
 # 出手基线概率（%，随烈度升高，后续手段事件族接入时叠加）
 ftr_court_strife_base_chance_value = 15
+# 强出口轮概率（%）：烈度 ≥90 的每次主时钟，按此概率推进一次强出口检查
+# （0014 站队 / 0015 政变·起兵 / 0018 废黜 + 0003/0005 通知），约每 3-4 轮一次
+ftr_court_strife_exit_chance_value = 25
+# 各手段成功推高烈度的增量（§12.3.2：低+5~10 / 中+15~25 / 高+30~50）
+ftr_court_strife_low_intensity_value = 8
+ftr_court_strife_mid_intensity_value = 20
+ftr_court_strife_high_intensity_value = 35
+# 诬陷链（手段 2.1）相关
+ftr_court_calumny_prestige_value = 250      # 被伪证/放谣抹黑的威望损失
+ftr_court_poison_intrigue_threshold_value = 14  # 下毒成功率参照的密谋门槛
+# 下毒健康减益的持续时间（天）：剧毒重而短，慢性毒绵长持久、压低实力
+ftr_court_severe_poison_days_value = 730    # 0055 剧毒：failing_health(-0.5) 持续 2 年
+ftr_court_chronic_poison_days_value = 1095  # 0056 慢性虚毒：旅行食毒(health-0.25/prowess-4) 持续 3 年
+# 0081 被掳后屈服退让：竞争力评分一次性下调量（认栽出局）
+ftr_court_coerce_penalty_value = 40
 # 年度自然回落（向 0 缓慢回归，防单向锁死不回落）
 ftr_court_intensity_yearly_decay_value = 5
 # 君主失能/弱势时年度正向偏置（推高烈度，承接 ftr_court_monarch_weak 语义）
@@ -51,6 +66,11 @@ ftr_court_intensity_tension_bias_value = 4
 # 缓和决议（§12.5 / §12.11）：一次下调幅度与冷却
 ftr_court_ease_intensity_drop_value = 80
 ftr_court_ease_cooldown_years_value = 10
+# 双轨成本：行政制君主耗官方影响力，非行政制耗威望（大量）
+ftr_court_ease_influence_cost_value = 200
+ftr_court_ease_prestige_cost_value = 400
+# 缓和决议对竞争者的好感缓和幅度
+ftr_court_ease_opinion_gain_value = 20
 
 ########## 二、准入门槛 ##########
 # 君主进入"高龄"的年龄
@@ -175,28 +195,29 @@ ftr_court_claim_strength_value = {
 }
 
 ########## 五、共治拉锯 ##########
-# ftr_court_regency_swing 范围：0（完全忠于君主）~ 100（完全倒向共治者），50 = 平衡。
+# ftr_court_regency_swing 范围：0（完全忠于君主）~ 100（完全倒向共治者），50 = 中性。
 # 无共治者时 = 0。支持君主向 0 移动，支持共治者向 100 移动。
+# 阈值口径（§3.2）：0 君权稳固下限 | 30 辅政稳固判定 | 50 中性 | 70 共治请愿 | 90 废黜昏君（且君主失能）
 ftr_court_swing_min_value = 0
 ftr_court_swing_max_value = 100
-# 拉锯进入"共治请愿"的阈值（原 -100~100 的 40 映射为 50+40/2=70）
+# 拉锯进入"共治请愿"的阈值
 ftr_court_swing_regency_threshold_value = 70
-# 拉锯进入"夺位"的阈值（原 75 映射为 50+75/2≈88）
-ftr_court_swing_usurp_threshold_value = 88
-# 拉锯进入"辅政稳固"的阈值（原 -40 映射为 50-40/2=30，即偏向君主不超过 30）
+# 拉锯进入"夺位"的阈值（且君主失能）
+ftr_court_swing_usurp_threshold_value = 90
+# 拉锯进入"辅政稳固"的阈值（偏向君主 ≤30）
 ftr_court_swing_loyal_threshold_value = 30
 # 平衡中点（回落基准）
 ftr_court_swing_balance_value = 50
 
-# 单次站队对拉锯的影响
-ftr_court_swing_support_diarch_value = 8
-ftr_court_swing_support_monarch_value = -8
-# 每年向平衡中点（50）自然回落，避免单向累积锁死
-ftr_court_swing_yearly_decay_value = 5
-# 君主 incapable / 高龄时每年的正向偏置（向共治）
-ftr_court_swing_infirm_bias_value = 4
-# 君主强势（高声望/高虔诚）时每年的负向偏置（向君主）
-ftr_court_swing_strong_bias_value = -4
+# 单次移轴 ±5：辅政 −5（向君主）、游说劝忠 −5 / 劝进 +5、请愿获准 +5（正=倒向共治，负=忠于君主）
+ftr_court_swing_support_diarch_value = 5
+ftr_court_swing_support_monarch_value = -5
+# 每年向平衡中点（50）自然回落 ±3，避免单向累积锁死
+ftr_court_swing_yearly_decay_value = 3
+# 君主 incapable / 高龄时每年 +2（向共治）
+ftr_court_swing_infirm_bias_value = 2
+# 君主强势（声望充足）时每年 −2（向君主）
+ftr_court_swing_strong_bias_value = -2
 
 ########## 六、资源消耗（双轨制） ##########
 # Mod 自带的 ftr_political_influence 已废弃（早于官方行政制实践）。
@@ -206,6 +227,8 @@ ftr_court_swing_strong_bias_value = -4
 # 影响力（minor 30 / medium 60 / major 100 / massive 150）与威望量级不同，分设两组常量。
 ftr_court_back_claimant_prestige_cost_value = 120
 ftr_court_back_claimant_influence_cost_value = 40
+# 公开支持君主的子女 / 继承人时授予的背书声望（原 ftr_support_heir 公开效果，§7.3）
+ftr_court_heir_backing_prestige_value = 200
 ftr_court_assist_monarch_prestige_cost_value = 90
 ftr_court_assist_monarch_influence_cost_value = 30
 ftr_court_promise_council_prestige_cost_value = 180

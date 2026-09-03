@@ -335,6 +335,37 @@ ftr_court_needs_temp_duchy_trigger = {
 	NOT = { is_imprisoned = yes }
 }
 
+# 2.2 派间谍调查（0060）触发者资格（§9.2，root = 潜在触发者）
+# 三种合法来源，任满足其一：
+#   ① 最高统治者（持有朝堂 story 的独立统治者）
+#   ② 有头衔 / 领地的参与者（is_landed 即持有头衔与领地，且其 top_liege / employer 持有 story）
+#   ③ 参与者的有头衔 / 领地支持者（backer_of 指向某参与者且自己有领地）
+# 注：无地廷臣不在池内（调查需自有班底与头衔地位）。
+ftr_court_can_order_investigation_trigger = {
+	OR = {
+		# ① 最高统治者
+		AND = {
+			is_independent_ruler = yes
+			any_owned_story = { type = ftr_court_struggle }
+		}
+		# ② 有领地的参与者（须在朝堂中：所属 top_liege / employer 持有 story）
+		AND = {
+			is_landed = yes
+			has_character_flag = ftr_court_participating
+			OR = {
+				top_liege ?= { any_owned_story = { type = ftr_court_struggle } }
+				employer ?= { any_owned_story = { type = ftr_court_struggle } }
+			}
+		}
+		# ③ 参与者的有领地支持者
+		AND = {
+			is_landed = yes
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= { has_character_flag = ftr_court_participating }
+		}
+	}
+}
+
 ########## 七、身份判定（用于交互/决议的可见性） ##########
 
 # 玩家是当前朝堂的最高统治者

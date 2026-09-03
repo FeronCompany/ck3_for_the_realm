@@ -1105,3 +1105,248 @@ ftr_court_debug_backing_notice_effect = {
 		}
 	}
 }
+
+# 缓和内部矛盾（§12.5 / §12.11）：root = 君主（story owner）。
+# 作用：支付双轨成本、大幅降烈度、缓和与各竞争者的关系、设休战窗口 flag。
+ftr_court_ease_struggle_effect = {
+	save_scope_as = ftr_court_ease_monarch
+	# 1) 双轨成本：行政制君主耗官方影响力，非行政制耗大量威望
+	if = {
+		limit = { government_allows = administrative }
+		change_influence = {
+			value = 0
+			subtract = ftr_court_ease_influence_cost_value
+		}
+	}
+	else = {
+		add_prestige = {
+			value = 0
+			subtract = ftr_court_ease_prestige_cost_value
+		}
+	}
+	# 2) 定位朝堂故事并大幅降烈度
+	every_owned_story = {
+		limit = { story_type = ftr_court_struggle }
+		save_scope_as = ftr_court_ease_story
+		if = {
+			limit = {
+				has_variable = ftr_court_struggle_intensity
+				var:ftr_court_struggle_intensity > ftr_court_intensity_min_value
+			}
+			change_variable = {
+				name = ftr_court_struggle_intensity
+				subtract = ftr_court_ease_intensity_drop_value
+			}
+			if = {
+				limit = { var:ftr_court_struggle_intensity < ftr_court_intensity_min_value }
+				set_variable = { name = ftr_court_struggle_intensity  value = ftr_court_intensity_min_value }
+			}
+		}
+	}
+	# 3) 缓和与各竞争者的关系（君主个人参与者列表 ftr_court_claimants）：竞争者念君主恩情
+	every_in_list = {
+		list = ftr_court_claimants
+		save_scope_as = ftr_court_eased_claimant
+		add_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_eased_opinion }
+		remove_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_rival_claimant_opinion }
+	}
+	# 4) 休战窗口：期间内斗循环不择强手段（冷却与决议 cooldown 一致）
+	add_character_flag = { flag = ftr_court_eased_struggle  years = ftr_court_ease_cooldown_years_value }
+}
+
+# 内斗出手（§12.4 手段 2.1 诬陷下毒链，首个可用手段族；其余手段族随后接入）：
+# story 域。参与者 >=2 且烈度进入对立(>=90)后，随机一名竞争者向另一名竞争者出手。
+# 手手段随烈度升级：对立区(90-140)→0050 放谣；濒危区(>=140)→0051 伪造 / 0052 下毒。
+ftr_court_strife_slander_effect = {
+	save_scope_as = ftr_court_strife_story
+	set_variable = { name = ftr_court_strife_pick  value = 0 }
+	random_in_list = {
+		list = ftr_court_participant_list
+		limit = {
+			NOT = { has_character_flag = ftr_court_strife_active }
+			NOT = { this = scope:ftr_court_strife_story.story_owner }
+		}
+		save_scope_as = ftr_court_strife_actor
+		if = {
+			limit = { var:ftr_court_strife_pick = 0 }
+			# 目标：另一名竞争者（参与者 >=2 时才成立）
+			set_variable = { name = ftr_court_strife_pick  value = 1 }
+			random_in_list = {
+				list = ftr_court_participant_list
+				limit = {
+					NOT = { this = scope:ftr_court_strife_actor }
+					NOT = { this = scope:ftr_court_strife_story.story_owner }
+				}
+				save_scope_as = ftr_court_strife_victim
+			}
+			# 把 victim 存到 actor 身上，供手段事件读取
+			scope:ftr_court_strife_actor ?= {
+				set_variable = { name = ftr_court_strife_victim  value = scope:ftr_court_strife_victim }
+				# 手段随烈度升级（诬陷链 / 牵制 / 绑架 / 谋杀），按概率触发，保留"不触发"
+				if = {
+					limit = {
+						scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
+					}
+					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0052 } }
+					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0090 } }
+					random = { chance = 25  trigger_event = { id = ftr_court_struggle.0080 } }
+				}
+				else_if = {
+					limit = {
+						scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+					}
+					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0051 } }
+					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0090 } }
+					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0080 } }
+				}
+				else = {
+					random = { chance = 40  trigger_event = { id = ftr_court_struggle.0050 } }
+					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0070 } }
+				}
+			}
+		}
+	}
+	remove_variable = ftr_court_strife_pick
+}
+
+# 内斗强出口轮（§4.3 主时钟强出口分支）：
+# story 域，由内斗主时钟在互殴手段派发后调用。按 ftr_court_strife_exit_chance_value 决定本轮是否推进。
+# 烈度档：90-139（对立）→ 0003 通知 + 0014 站队询问；
+#         ≥140（濒危） → 0005 通知 + 0014 + 0015（评分最高者）；
+#         ≥170（临界） 且满足废黜条件 → 0018（朝堂最强势力）。各出口沿用既有 3 年防骚扰 flag。
+ftr_court_strife_exit_pulse_effect = {
+	save_scope_as = ftr_court_strife_exit_story
+	random = {
+		chance = ftr_court_strife_exit_chance_value
+		# 通知事件按烈度区分：濒危以上 0005（一触即发）、对立区 0003（势均力敌）
+		if = {
+			limit = { var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value }
+			story_owner = { trigger_event = { id = ftr_court_struggle.0005 } }
+		}
+		else_if = {
+			limit = { var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value }
+			story_owner = { trigger_event = { id = ftr_court_struggle.0003 } }
+		}
+		# 0014 站队：询问一名未站队的封臣（random_courtier 路径覆盖无地廷臣）
+		story_owner = {
+			random_vassal = {
+				limit = {
+					is_capable_adult = yes
+					NOT = { has_variable = ftr_court_backer_of }
+					NOT = { has_character_flag = ftr_court_asked_stance }
+				}
+				add_character_flag = { flag = ftr_court_asked_stance  years = 3 }
+				trigger_event = { id = ftr_court_struggle.0014  days = 2 }
+			}
+			random_courtier = {
+				limit = {
+					is_capable_adult = yes
+					NOT = { has_variable = ftr_court_backer_of }
+					NOT = { has_character_flag = ftr_court_asked_stance }
+				}
+				add_character_flag = { flag = ftr_court_asked_stance  years = 3 }
+				trigger_event = { id = ftr_court_struggle.0014  days = 2 }
+			}
+		}
+		# 0015 良机已至：仅濒危（≥140），推给竞争力最高且未询问过者
+		if = {
+			limit = { var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value }
+			ordered_in_list = {
+				list = ftr_court_participant_list
+				order_by = var:ftr_claim_strength
+				save_scope_as = ftr_court_exit_ringleader
+				scope:ftr_court_exit_ringleader ?= {
+					if = {
+						limit = { NOT = { has_character_flag = ftr_court_asked_to_rebel } }
+						trigger_event = { id = ftr_court_struggle.0015  days = 4 }
+					}
+				}
+			}
+		}
+		# 0018 废黜昏君：临界（≥170）且满足废黜条件 → 推给朝堂最强势力
+		if = {
+			limit = {
+				var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
+				ftr_court_can_attempt_usurp_trigger = yes
+			}
+			story_owner = {
+				clear_variable_list = ftr_court_usurp_candidates
+				every_vassal = {
+					limit = {
+						is_capable_adult = yes
+						NOT = { has_character_flag = ftr_court_asked_usurp }
+					}
+					add_to_list = ftr_court_usurp_candidates
+				}
+				every_courtier = {
+					limit = {
+						is_capable_adult = yes
+						NOT = { has_character_flag = ftr_court_asked_usurp }
+					}
+					add_to_list = ftr_court_usurp_candidates
+				}
+				set_variable = { name = ftr_court_usurp_pick  value = 0 }
+				ordered_in_list = {
+					list = ftr_court_usurp_candidates
+					order_by = max_military_strength
+					save_scope_as = ftr_court_exit_usurper
+					root = {
+						if = {
+							limit = { var:ftr_court_usurp_pick = 0 }
+							scope:ftr_court_exit_usurper ?= {
+								add_character_flag = { flag = ftr_court_asked_usurp  years = 3 }
+								trigger_event = { id = ftr_court_struggle.0018  days = 2 }
+							}
+						}
+						change_variable = { name = ftr_court_usurp_pick  add = 1 }
+					}
+				}
+				remove_variable = ftr_court_usurp_pick
+			}
+		}
+	}
+}
+
+# 议题 2 阵营拉锯：无地参与者的「暗中策动」等价链入口（§9.6）
+# story 域。当权力天平偏向共治者（≥70）且存在共治者时，随机一名无地参与者暗中联络朝臣削弱共治（00A1）。
+ftr_court_landless_swing_effect = {
+	save_scope_as = ftr_court_strife_story
+	random = {
+		chance = 25
+		if = {
+			limit = {
+				var:ftr_court_regency_swing >= ftr_court_swing_regency_threshold_value
+				story_owner ?= { exists = diarch }
+			}
+			random_in_list = {
+				list = ftr_court_participant_list
+				limit = {
+					is_landed = no
+					NOT = { has_character_flag = ftr_court_strife_active }
+				}
+				save_scope_as = ftr_court_landless_actor
+				scope:ftr_court_landless_actor ?= {
+					add_character_flag = { flag = ftr_court_strife_active  years = 1 }
+					trigger_event = { id = ftr_court_struggle.00A1  days = 2 }
+				}
+			}
+		}
+	}
+}
+
+# 议题 2：共治者反击（§9.6）——swing ≤30（辅政稳固）时，共治者阵营暗中游说拉回（00A2）。
+ftr_court_diarch_backlash_effect = {
+	save_scope_as = ftr_court_strife_story
+	random = {
+		chance = 20
+		if = {
+			limit = {
+				var:ftr_court_regency_swing <= ftr_court_swing_loyal_threshold_value
+				story_owner ?= { exists = diarch }
+			}
+			story_owner = {
+				diarch ?= { trigger_event = { id = ftr_court_struggle.00A2  days = 2 } }
+			}
+		}
+	}
+}

@@ -176,6 +176,20 @@ ftr_court_rival_claimant_opinion = {
 	stacking = yes
 }
 
+# 缓和内部矛盾：竞争者感念君主施恩、姿态缓和（缓和决议授予，见 §12.11）
+ftr_court_eased_opinion = {
+	opinion = 25
+	years = 10
+	decaying = yes
+}
+
+# 被竞争者针对/暗算的敌意（内斗手段授予，见 §12.4.2）
+ftr_court_targeted_opinion = {
+	opinion = -30
+	years = 5
+	decaying = yes
+}
+
 # 承诺（内阁席位/契约放宽）到期未兑现
 ftr_court_betrayed_opinion = {
 	opinion = -50

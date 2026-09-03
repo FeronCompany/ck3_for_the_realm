@@ -22,8 +22,9 @@
  ftr_court_succession_war_invalidated_desc:0 "这场继位之战因故无果而终。"
 
  ###### 角色交互 ######
- ftr_court_back_claimant_interaction:0 "<FTR>公开表态支持"
- ftr_court_back_claimant_interaction_desc:0 "公开为这位权贵背书，其余竞争者不会善罢甘休。"
+ ftr_court_back_claimant_interaction:0 "<FTR>表态支持"
+ ftr_court_back_claimant_interaction_desc:0 "支持这位权贵（或君主的子女 / 继承人）。公开背书会令其余竞争者芥蒂并惊动君主；秘密支持则不动声色。"
+ ftr_back_claimant_options_tt:0 "支持方式"
  ftr_court_withdraw_backing_interaction:0 "<FTR>撤回支持"
  ftr_court_withdraw_backing_interaction_desc:0 "重归中立。抽身之人，鲜有被轻易原谅的。"
  ftr_court_assist_monarch_interaction:0 "<FTR>尽心辅政"
@@ -88,3 +89,17 @@
 
 ###### DEBUG 站队消息（后续统一移除；左=支持者，右=被支持者） ######
  ftr_court_debug_backing_notify:0 "【调试】朝堂站队：有人公开表态。"
+
+###### 缓和内部矛盾决议（§12.5 / §12.11） ######
+ ftr_court_ease_struggle_decision:0 "<FTR>缓和内部矛盾"
+ ftr_court_ease_struggle_decision_desc:0 "朝堂烈度过高，继位之争眼看就要演变成刀兵相见。你愿意付出可观的代价，向主要竞争者示好、缓和彼此剑拔弩张的关系，为朝局争取一段喘息之机。"
+ ftr_court_ease_struggle_decision_tooltip:0 "大幅降低朝堂烈度，缓和与各竞争者的关系，并获得一段休战期。"
+ ftr_court_ease_struggle_decision_confirm:0 "尽力安抚各方。"
+ ftr_court_investigate_decision:0 "<FTR>派间谍彻查"
+ ftr_court_investigate_decision_desc:0 "朝堂上明争暗斗愈演愈烈，你打算遣最精干的密探暗中彻查那个风头最劲的竞争者，看他有无可被拿捏的把柄。"
+ ftr_court_investigate_decision_tooltip:0 "调查头号竞争者：查实则其声望受损、与你不睦，朝堂烈度微升。"
+ ftr_court_investigate_decision_confirm:0 "遣密探彻查。"
+ ftr_court_use_leverage_decision:0 "<FTR>利用把柄"
+ ftr_court_use_leverage_decision_desc:0 "你手里握着某人的把柄。是借此逼其退让、当众揭穿，还是好聚好散还他自由，皆在你一念之间。"
+ ftr_court_use_leverage_decision_tooltip:0 "对把柄目标施加影响：逼其让利、公开揭穿，或归还把柄换人情。"
+ ftr_court_use_leverage_decision_confirm:0 "是时候用上这张牌了。"

@@ -23,7 +23,8 @@
 
  ###### Interactions ######
  ftr_court_back_claimant_interaction:0 "<FTR>Declare Support"
- ftr_court_back_claimant_interaction_desc:0 "Publicly throw your weight behind this magnate. Other contenders will not forget it."
+ ftr_court_back_claimant_interaction_desc:0 "Back this magnate (or the liege's child / heir). An open declaration breeds rival resentment and may alert the monarch; secret support stays hidden."
+ ftr_back_claimant_options_tt:0 "How to Support"
  ftr_court_withdraw_backing_interaction:0 "<FTR>Withdraw Support"
  ftr_court_withdraw_backing_interaction_desc:0 "Step back into neutrality. Few forgive a withdrawn hand."
  ftr_court_assist_monarch_interaction:0 "<FTR>Steadfast Service"
@@ -88,3 +89,17 @@
 
 ###### DEBUG backing message (remove later; left=backer, right=backed) ######
  ftr_court_debug_backing_notify:0 "[DEBUG] A courtier has openly declared a stance."
+
+###### Ease internal strife decision (§12.5 / §12.11) ######
+ ftr_court_ease_struggle_decision:0 "<FTR>Ease Internal Strife"
+ ftr_court_ease_struggle_decision_desc:0 "The court has grown so heated over the succession that it threatens to spill into open bloodshed. You are willing to pay a heavy price to extend goodwill to the leading claimants and calm their hostility, buying the realm a breathing space."
+ ftr_court_ease_struggle_decision_tooltip:0 "Sharply lower court intensity, ease relations with all claimants, and gain a period of truce."
+ ftr_court_ease_struggle_decision_confirm:0 "Do all you can to appease every faction."
+ ftr_court_investigate_decision:0 "<FTR>Dispatch Spies"
+ ftr_court_investigate_decision_desc:0 "The intrigues at court grow ever hotter. Send your ablest agents to investigate the most prominent claimant and uncover leverage against them."
+ ftr_court_investigate_decision_tooltip:0 "Investigate the leading claimant: exposure costs them prestige and goodwill toward you, slightly raising court intensity."
+ ftr_court_investigate_decision_confirm:0 "Dispatch the spies."
+ ftr_court_use_leverage_decision:0 "<FTR>Use the Leverage"
+ ftr_court_use_leverage_decision_desc:0 "You hold someone's secret in your hand. Press them to yield, expose it openly, or return it for goodwill — the choice is yours."
+ ftr_court_use_leverage_decision_tooltip:0 "Apply pressure on the leverage target: force a concession, expose them, or return the secret in exchange for goodwill."
+ ftr_court_use_leverage_decision_confirm:0 "Time to play this card."

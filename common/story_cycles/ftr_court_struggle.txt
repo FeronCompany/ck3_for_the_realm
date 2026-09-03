@@ -77,6 +77,12 @@ ftr_court_struggle = {
 		}
 
 		custom_string_key = "FTR_COURT_STRINGS"
+
+		# 缓和内部矛盾决议入口：由官方 story 面板渲染为决策按钮，
+		# 君主（story owner）可直接点击办理，引擎自动处理可点/灰显与执行。
+		decisions = {
+			ftr_court_ease_struggle_decision
+		}
 	}
 
 	################## 年度维护：拉锯回落、烈度 ##################
@@ -117,138 +123,43 @@ ftr_court_struggle = {
 		}
 	}
 
-	################## 危机阶段脉冲 ##################
+	################## 内斗主时钟（60-120 天，§12.4.1） ##################
 
-	# 注意：trigger_event 的 root 取当前作用域，而事件是 character_event，
-	# 因此必须包在 owner 中执行，否则 root 会变成故事本体。
+	# 竞争者之间的暗中倾轧：参与者>=2 且烈度达对立(>=90)后，随机竞争者向另一竞争者出手。
+	# 手段随烈度升级（诬陷链 0050-0052，后续手段族在此接入）。缓和决议休战期内不出手。
 	effect_group = {
-		years = 1
-		chance = 20
-		random_valid = {
-			triggered_effect = {
-				trigger = { ftr_court_is_crisis_trigger = yes }
-				effect = {
-					story_owner = { trigger_event = { id = ftr_court_struggle.0005 } }
-					# 询问一名未站队的封臣（事件 0014 同时覆盖无地廷臣）
-					story_owner = {
-						random_vassal = {
-							limit = {
-								is_capable_adult = yes
-								NOT = { has_variable = ftr_court_backer_of }
-								NOT = { has_character_flag = ftr_court_asked_stance }
-							}
-							add_character_flag = { flag = ftr_court_asked_stance  years = 3 }
-							trigger_event = { id = ftr_court_struggle.0014  days = 2 }
-						}
-						random_courtier = {
-							limit = {
-								is_capable_adult = yes
-								NOT = { has_variable = ftr_court_backer_of }
-								NOT = { has_character_flag = ftr_court_asked_stance }
-							}
-							add_character_flag = { flag = ftr_court_asked_stance  years = 3 }
-							trigger_event = { id = ftr_court_struggle.0014  days = 2 }
-						}
-					}
-					# 询问竞争力最高的竞争者是否起兵（事件 0015，无地者由此路径开战）
-					ordered_in_list = {
-						list = ftr_court_participant_list
-						order_by = var:ftr_claim_strength
-						save_scope_as = ftr_court_ringleader
-						scope:ftr_court_ringleader ?= {
-							if = {
-								limit = { NOT = { has_character_flag = ftr_court_asked_to_rebel } }
-								trigger_event = { id = ftr_court_struggle.0015  days = 4 }
-							}
-						}
-					}
-					# 废黜昏君窗口：拉锯达到夺位阈值且君主失能时，
-					# 向朝堂中最强势力推送夺位抉择（事件 0018）
-					if = {
-						limit = { ftr_court_can_attempt_usurp_trigger = yes }
-						story_owner = {
-							every_vassal = {
-								limit = {
-									is_capable_adult = yes
-									NOT = { has_character_flag = ftr_court_asked_usurp }
-								}
-								add_to_list = ftr_court_usurp_candidates
-							}
-							every_courtier = {
-								limit = {
-									is_capable_adult = yes
-									NOT = { has_character_flag = ftr_court_asked_usurp }
-								}
-								add_to_list = ftr_court_usurp_candidates
-							}
-							set_variable = { name = ftr_court_usurp_pick  value = 0 }
-							ordered_in_list = {
-								list = ftr_court_usurp_candidates
-								order_by = max_military_strength
-								save_scope_as = ftr_court_usurper
-								root = {
-									if = {
-										limit = { var:ftr_court_usurp_pick = 0 }
-										scope:ftr_court_usurper ?= {
-											add_character_flag = { flag = ftr_court_asked_usurp  years = 3 }
-											trigger_event = { id = ftr_court_struggle.0018  days = 2 }
-										}
-									}
-									change_variable = { name = ftr_court_usurp_pick  add = 1 }
-								}
-							}
-							remove_variable = ftr_court_usurp_pick
-						}
-					}
+		days = { ftr_court_strife_interval_min_value  ftr_court_strife_interval_max_value }
+		triggered_effect = {
+			trigger = {
+				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
+				ftr_court_has_active_struggle_trigger = yes
+				has_variable = ftr_court_struggle_intensity
+				var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
+				story_owner ?= {
+					NOT = { has_character_flag = ftr_court_eased_struggle }
 				}
 			}
+			effect = {
+				# 竞争者互殴手段派发
+				ftr_court_strife_slander_effect = yes
+				# 强出口轮：0014 站队 / 0015 政变·起兵 / 0018 废黜 + 通知事件（按烈度档，见 §4.3）
+				ftr_court_strife_exit_pulse_effect = yes
+				# 议题 2 阵营拉锯：无地者暗中策动 / 共治者反击（§9.6）
+				ftr_court_landless_swing_effect = yes
+				ftr_court_diarch_backlash_effect = yes
+			}
+		}
+		fallback = {
+			end_story = yes
 		}
 	}
 
-	################## 对立阶段脉冲 ##################
+	################## 潜伏点缀（0001，静默期氛围） ##################
 
+	# 低烈度（<90）时偶尔以 0001 点缀朝堂氛围；由内斗主时钟的触发校验天然保证
+	# 互殴/强出口只在烈度 ≥90 后出现，此处独立小轮负责安静期（0-90）的点缀。
 	effect_group = {
-		years = 1
-		chance = 14
-		random_valid = {
-			triggered_effect = {
-				trigger = {
-					NOT = { ftr_court_is_crisis_trigger = yes }
-					ftr_court_is_contested_trigger = yes
-				}
-				effect = {
-					story_owner = { trigger_event = { id = ftr_court_struggle.0003 } }
-					# 询问一名未站队的封臣或廷臣（0014，无地廷臣由此参与）
-					story_owner = {
-						random_vassal = {
-							limit = {
-								is_capable_adult = yes
-								NOT = { has_variable = ftr_court_backer_of }
-								NOT = { has_character_flag = ftr_court_asked_stance }
-							}
-							add_character_flag = { flag = ftr_court_asked_stance  years = 3 }
-							trigger_event = { id = ftr_court_struggle.0014  days = 2 }
-						}
-						random_courtier = {
-							limit = {
-								is_capable_adult = yes
-								NOT = { has_variable = ftr_court_backer_of }
-								NOT = { has_character_flag = ftr_court_asked_stance }
-							}
-							add_character_flag = { flag = ftr_court_asked_stance  years = 3 }
-							trigger_event = { id = ftr_court_struggle.0014  days = 2 }
-						}
-					}
-				}
-			}
-		}
-	}
-
-	################## 潜伏阶段脉冲（两年一次，最稀疏） ##################
-
-	effect_group = {
-		years = 2
-		chance = 8
+		days = { ftr_court_strife_interval_min_value  ftr_court_strife_interval_max_value }
 		random_valid = {
 			triggered_effect = {
 				trigger = {
@@ -256,9 +167,12 @@ ftr_court_struggle = {
 					story_owner ?= { ftr_court_has_succession_order_trigger = yes }
 				}
 				effect = {
-					story_owner = { trigger_event = { id = ftr_court_struggle.0001 } }
+					random = { chance = 8  story_owner = { trigger_event = { id = ftr_court_struggle.0001 } } }
 				}
 			}
+		}
+		fallback = {
+			end_story = yes
 		}
 	}
 }

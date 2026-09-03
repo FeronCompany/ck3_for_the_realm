@@ -165,10 +165,10 @@ ftr_court_participant_remains_valid_trigger = {
 # 君主因年老体衰或精神异常而不能正常履职
 ftr_court_monarch_infirm_trigger = {
 	OR = {
-		has_trait = incapable
 		has_trait = lunatic
 		has_trait = possessed
 		has_trait = depressed
+		add_trait = blind
 		age >= ftr_court_monarch_elderly_age_value
 	}
 }

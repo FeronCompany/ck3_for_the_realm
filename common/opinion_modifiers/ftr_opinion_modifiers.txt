@@ -197,3 +197,11 @@ ftr_court_betrayed_opinion = {
 	decaying = yes
 	stacking = yes
 }
+
+# 直接赠金收买（许诺交互「直接现付」选项）
+ftr_court_bribed_opinion = {
+	opinion = 40
+	years = 10
+	decaying = yes
+	stacking = yes
+}

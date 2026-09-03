@@ -235,6 +235,12 @@ ftr_court_promise_council_prestige_cost_value = 180
 ftr_court_promise_council_influence_cost_value = 60
 ftr_court_promise_contract_prestige_cost_value = 150
 ftr_court_promise_contract_influence_cost_value = 50
+# 许诺交互的「直接现付」选项（§7.4 兑现模式之外的选择，无需日后兑现）：
+#   直接赠金 —— 一次性金币厚礼，即刻落袋
+ftr_court_promise_gold_cost_value = 150
+#   直接示好 —— 双轨成本（行政制花影响力 / 非行政制花威望），当即见效
+ftr_court_promise_favor_prestige_cost_value = 110
+ftr_court_promise_favor_influence_cost_value = 40
 ftr_court_request_coregency_prestige_cost_value = 240
 ftr_court_request_coregency_influence_cost_value = 80
 # 游说（推拉权力天平）

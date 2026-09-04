@@ -125,8 +125,12 @@ ftr_court_struggle = {
 
 	################## 内斗主时钟（60-120 天，§12.4.1） ##################
 
-	# 竞争者之间的暗中倾轧：参与者>=2 且烈度达对立(>=90)后，随机竞争者向另一竞争者出手。
-	# 手段随烈度升级（诬陷链 0050-0052，后续手段族在此接入）。缓和决议休战期内不出手。
+	# 内斗主时钟（60-120 天，§12.4.1）：只留心跳——守卫通过后把"这一拍选哪一族出手"交给
+	# on_action 随机池 ftr_court_struggle_main_pulse（参考原版 pet_dog 机制：心跳 +
+	# story_owner = { trigger_event = { on_action = X } } + random_events 加权表；
+	# 池内事件可直接访问 scope:story）。各族入口（互殴手段族 / 强出口族 / 无地拉锯 /
+	# 共治反击）作为 hidden 族调度事件挂在池上，由引擎按权重每拍随机选一族执行，
+	# 新增事件链只需往 on_action 池登记即可接入。缓和决议休战期内不触发心跳。
 	effect_group = {
 		days = { ftr_court_strife_interval_min_value  ftr_court_strife_interval_max_value }
 		triggered_effect = {
@@ -140,13 +144,11 @@ ftr_court_struggle = {
 				}
 			}
 			effect = {
-				# 竞争者互殴手段派发
-				ftr_court_strife_slander_effect = yes
-				# 强出口轮：0014 站队 / 0015 政变·起兵 / 0018 废黜 + 通知事件（按烈度档，见 §4.3）
-				ftr_court_strife_exit_pulse_effect = yes
-				# 议题 2 阵营拉锯：无地者暗中策动 / 共治者反击（§9.6）
-				ftr_court_landless_swing_effect = yes
-				ftr_court_diarch_backlash_effect = yes
+				# 心跳拍：直接把"选族"交给 on_action 随机池（参考原版 pet_dog：
+				# story_owner = { trigger_event = { on_action = X } }，池内事件可直接访问 scope:story）
+				story_owner = {
+					trigger_event = { on_action = ftr_court_struggle_main_pulse }
+				}
 			}
 		}
 		fallback = {

@@ -278,6 +278,16 @@ ftr_court_back_claimant_interaction = {
 			scope:ftr_backing_in_public = yes
 			scope:actor = { has_character_flag = ftr_liege_warn_not_support_heir }
 		}
+		# —— 君主健康驱动：加成随最高统治者健康值线性递减（大位越近越早占队）——
+		modifier = {
+			add = {
+				value = ftr_court_monarch_health_urgency_base_value
+				subtract = {
+					value = scope:actor.top_liege.health
+					multiply = ftr_court_monarch_health_urgency_slope_value
+				}
+			}
+		}
 	}
 
 	ai_accept = {
@@ -1017,6 +1027,16 @@ ftr_court_promise_interaction = {
 			add = 10
 			scope:ftr_court_promise_favor = yes
 			scope:actor = { has_trait = honest }
+		}
+		# —— 君主健康驱动：加成随最高统治者健康值线性递减（窗口越短越急迫）——
+		modifier = {
+			add = {
+				value = ftr_court_monarch_health_urgency_base_value
+				subtract = {
+					value = scope:actor.top_liege.health
+					multiply = ftr_court_monarch_health_urgency_slope_value
+				}
+			}
 		}
 	}
 

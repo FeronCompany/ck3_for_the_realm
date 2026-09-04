@@ -81,3 +81,24 @@ on_death = {
 		ftr_court_on_council_promise_check_on_action
 	}
 }
+
+######################################################
+### 三、内斗主时钟随机池（由 story 心跳每 60–120 天调用）
+### 参考原版 pet_dog / tax_rivalry：心跳 effect_group →
+### story_owner = { trigger_event = { on_action = X } } →
+### on_action 以 random_events 加权表随机挑一族 hidden 调度事件。
+### 每拍只随机触发一族入口；各族内部再按既有 effect 选角/派发。
+######################################################
+
+ftr_court_struggle_main_pulse = {
+	random_events = {
+		# 互殴手段族（0050–0052 / 0070 / 0080 / 0090）
+		60 = ftr_court_struggle.0211
+		# 强出口族（0003 / 0005 通知 + 0014 / 0015 / 0018）
+		35 = ftr_court_struggle.0212
+		# 无地拉锯（00A1，需天平 ≥70 且有共治者）
+		15 = ftr_court_struggle.0213
+		# 共治反击（00A2，需天平 ≤30 且有共治者）
+		12 = ftr_court_struggle.0214
+	}
+}

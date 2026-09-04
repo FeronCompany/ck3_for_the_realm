@@ -75,6 +75,11 @@ ftr_court_ease_opinion_gain_value = 20
 ########## 二、准入门槛 ##########
 # 君主进入"高龄"的年龄
 ftr_court_monarch_elderly_age_value = 60
+# AI 押注/拉票的君主健康线性驱动：加成 = base − slope × 君主health
+# 参考档：excellent=7 / good=5 / medium=4 / fine=3 / poor=1 / dying=0，
+# 按默认值：dying≈+55、poor≈+45、fine≈+25、medium≈+15、good≈+5、excellent≈−15
+ftr_court_monarch_health_urgency_base_value = 55
+ftr_court_monarch_health_urgency_slope_value = 10
 # 前两名评分差距小于此值 -> contested
 ftr_court_contested_gap_value = 20
 # 前两名评分差距小于此值 -> crisis
@@ -257,6 +262,10 @@ ftr_court_succession_war_prestige_cost_value = 350
 ########## 六之二、奖惩幅度 ##########
 # 危机事件中压制参与角逐头目的扣分
 ftr_court_crisis_repress_value = -60
+# 君主强力出手（0003.c 禁止内斗 / 0005.b/c 压制）对烈度的单次抑制量
+ftr_court_monarch_restraint_drop_value = 8
+# 0011.b「擒贼擒王」定向逮捕的成功基础概率（%）
+ftr_court_arrest_success_base_value = 75
 # 威望与恐惧
 ftr_court_prestige_minor_value = 100
 ftr_court_dread_minor_value = 10

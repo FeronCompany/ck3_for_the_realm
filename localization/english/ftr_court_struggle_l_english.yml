@@ -65,6 +65,7 @@
  ftr_court_notice_join_contest:0 "A Claimant Enters the Contest"
 
  ###### Lobby Interaction ######
+ ftr_court_lobby_interaction:0 "<FTR>Lobby"
  ftr_court_lobby_interaction_desc:0 "Work upon a fellow courtier to pull them toward one camp or the other. Words are cheap; conviction is not."
  ftr_court_lobby_diarch:0 "Urge them to back the co-ruler"
  ftr_court_lobby_monarch:0 "Urge them to stand by the Crown"

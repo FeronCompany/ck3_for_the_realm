@@ -525,7 +525,7 @@ ftr_court_assist_monarch_interaction = {
 			}
 			add_character_flag = { flag = ftr_court_assisted_this_year  years = 1 }
 		}
-		# 拉锯向君主一侧移动
+		# 拉锯向君主一侧移动（官方 diarchy swing：负值 = liege 得势）
 		scope:recipient = {
 			every_owned_story = {
 				limit = { story_type = ftr_court_struggle }
@@ -535,17 +535,6 @@ ftr_court_assist_monarch_interaction = {
 			update_diarchy_swing_with_perspective_effect = {
 				SWING = minor_sop_swing_liege_gain
 				LIEGE = scope:recipient
-			}
-		}
-		if = {
-			limit = { exists = scope:ftr_court_story }
-			scope:ftr_court_story = {
-				set_variable = {
-					name = ftr_court_swing_amount
-					value = ftr_court_swing_support_monarch_value
-				}
-				ftr_court_shift_swing_effect = yes
-				remove_variable = ftr_court_swing_amount
 			}
 		}
 	}
@@ -1150,12 +1139,22 @@ ftr_court_lobby_interaction = {
 			# 无地廷臣不能主动发起交互
 			is_landed = yes
 			NOT = { ftr_court_is_struggle_monarch_trigger = yes }
-			# 双方处于同一朝堂（故事挂在君主身上）
+			# 游说是围绕"共治权力天平"拉拢人心：领主（朝堂故事 owner）须有共治者才谈得上推拉
+			# 双方处于同一朝堂（故事挂在君主身上），且该领主处于共治状态
 			OR = {
-				top_liege ?= { any_owned_story = { type = ftr_court_struggle } }
+				AND = {
+					exists = top_liege
+					top_liege = {
+						any_owned_story = { type = ftr_court_struggle }
+						has_active_diarchy = yes
+					}
+				}
 				AND = {
 					exists = employer
-					employer ?= { any_owned_story = { type = ftr_court_struggle } }
+					employer = {
+						any_owned_story = { type = ftr_court_struggle }
+						has_active_diarchy = yes
+					}
 				}
 			}
 		}
@@ -1208,23 +1207,25 @@ ftr_court_lobby_interaction = {
 		if = {
 			limit = { exists = scope:ftr_court_story }
 			scope:ftr_court_story = {
-				if = {
-					limit = { scope:actor = { has_character_flag = lobby_diarch } }
-					# 劝进：游说对象被拉向共治阵营
-					set_variable = {
-						name = ftr_court_swing_amount
-						value = ftr_court_swing_support_diarch_value
-					}
+				story_owner = { save_scope_as = ftr_court_lobby_monarch }
+			}
+		}
+		# 官方 diarchy swing：劝进 +5（diarch 侧）、劝忠 −5（liege 侧）
+		scope:ftr_court_lobby_monarch ?= {
+			if = {
+				limit = { scope:actor = { has_character_flag = lobby_diarch } }
+				# 劝进：游说对象被拉向共治阵营
+				update_diarchy_swing_with_perspective_effect = {
+					SWING = minor_sop_swing_diarch_gain
+					LIEGE = scope:ftr_court_lobby_monarch
 				}
-				else = {
-					# 劝忠：游说对象被拉回君主阵营
-					set_variable = {
-						name = ftr_court_swing_amount
-						value = ftr_court_swing_support_monarch_value
-					}
+			}
+			else = {
+				# 劝忠：游说对象被拉回君主阵营
+				update_diarchy_swing_with_perspective_effect = {
+					SWING = minor_sop_swing_liege_gain
+					LIEGE = scope:ftr_court_lobby_monarch
 				}
-				ftr_court_shift_swing_effect = yes
-				remove_variable = ftr_court_swing_amount
 			}
 		}
 

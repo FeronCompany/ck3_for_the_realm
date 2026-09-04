@@ -200,29 +200,16 @@ ftr_court_claim_strength_value = {
 }
 
 ########## 五、共治拉锯 ##########
-# ftr_court_regency_swing 范围：0（完全忠于君主）~ 100（完全倒向共治者），50 = 中性。
-# 无共治者时 = 0。支持君主向 0 移动，支持共治者向 100 移动。
-# 阈值口径（§3.2）：0 君权稳固下限 | 30 辅政稳固判定 | 50 中性 | 70 共治请愿 | 90 废黜昏君（且君主失能）
-ftr_court_swing_min_value = 0
-ftr_court_swing_max_value = 100
+# 权力天平已迁移至官方 diarchy swing（diarchy_swing，0–100：0 = 君主全权，100 = 共治全权，50 = 中性）。
+# 移动 swing 统一调用官方 update_diarchy_swing_with_perspective_effect；
+# 年度自然回落 / 平衡由官方 diarchy 的 swing_balance 机制维护（已废除自建 ftr_court_regency_swing 及 ±5/±3/±2 移轴常量）。
+# 阈值口径（§3.2，对照官方 swing 数值）：30 辅政稳固判定 | 50 中性 | 70 共治请愿 | 90 废黜昏君（且君主失能）
 # 拉锯进入"共治请愿"的阈值
 ftr_court_swing_regency_threshold_value = 70
 # 拉锯进入"夺位"的阈值（且君主失能）
 ftr_court_swing_usurp_threshold_value = 90
 # 拉锯进入"辅政稳固"的阈值（偏向君主 ≤30）
 ftr_court_swing_loyal_threshold_value = 30
-# 平衡中点（回落基准）
-ftr_court_swing_balance_value = 50
-
-# 单次移轴 ±5：辅政 −5（向君主）、游说劝忠 −5 / 劝进 +5、请愿获准 +5（正=倒向共治，负=忠于君主）
-ftr_court_swing_support_diarch_value = 5
-ftr_court_swing_support_monarch_value = -5
-# 每年向平衡中点（50）自然回落 ±3，避免单向累积锁死
-ftr_court_swing_yearly_decay_value = 3
-# 君主 incapable / 高龄时每年 +2（向共治）
-ftr_court_swing_infirm_bias_value = 2
-# 君主强势（声望充足）时每年 −2（向君主）
-ftr_court_swing_strong_bias_value = -2
 
 ########## 六、资源消耗（双轨制） ##########
 # Mod 自带的 ftr_political_influence 已废弃（早于官方行政制实践）。

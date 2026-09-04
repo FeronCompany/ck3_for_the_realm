@@ -226,7 +226,6 @@ ftr_court_struggle.0005 = {
 		name = ftr_court_struggle.0005.c
 		ai_chance = {
 			base = 30
-			modifier = { add = 30  has_trait = cruel }
 			modifier = { add = 25  has_trait = callous }
 			modifier = { add = 20  has_trait = paranoid }
 			modifier = { add = -20  has_trait = compassionate }
@@ -1147,13 +1146,12 @@ ftr_court_struggle.0020 = {
 			limit = { story_type = ftr_court_struggle }
 			save_scope_as = ftr_court_story
 		}
-		scope:ftr_court_story ?= {
-			set_variable = {
-				name = ftr_court_swing_amount
-				value = ftr_court_swing_support_diarch_value
+		# 官方 diarchy swing：允诺共治请愿 → swing 向共治者一侧 +5
+		scope:ftr_court_monarch = {
+			update_diarchy_swing_with_perspective_effect = {
+				SWING = minor_sop_swing_diarch_gain
+				LIEGE = scope:ftr_court_monarch
 			}
-			ftr_court_shift_swing_effect = yes
-			remove_variable = ftr_court_swing_amount
 		}
 		scope:actor = {
 			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_alliance_opinion }
@@ -1423,19 +1421,14 @@ ftr_court_struggle.0041 = {
 				}
 			}
 		}
-		# 若被支持者是共治者，君主警觉还会影响权力天平
-		every_owned_story = {
-			limit = { story_type = ftr_court_struggle }
-			scope:ftr_court_supported ?= {
-				if = {
-					limit = { is_diarch = yes }
-					prev = {
-						set_variable = {
-							name = ftr_court_swing_amount
-							value = ftr_court_swing_support_monarch_value
-						}
-						ftr_court_shift_swing_effect = yes
-						remove_variable = ftr_court_swing_amount
+		# 若被支持者是共治者，君主警觉还会影响权力天平（官方 swing 向君主侧移动）
+		scope:ftr_court_supported ?= {
+			if = {
+				limit = { is_diarch = yes }
+				scope:ftr_court_monarch = {
+					update_diarchy_swing_with_perspective_effect = {
+						SWING = minor_sop_swing_liege_gain
+						LIEGE = scope:ftr_court_monarch
 					}
 				}
 			}
@@ -2817,13 +2810,11 @@ ftr_court_struggle.00A1 = {
 		# 暗中进言削弱共治：55% 成功（把天平向君主拉回，不留痕迹）；否则风声走漏、声望受损（互斥）
 		random = {
 			chance = 55
-			scope:ftr_court_story ?= {
-				set_variable = {
-					name = ftr_court_swing_amount
-					value = ftr_court_swing_support_monarch_value
+			scope:ftr_court_story_owner ?= {
+				update_diarchy_swing_with_perspective_effect = {
+					SWING = minor_sop_swing_liege_gain
+					LIEGE = scope:ftr_court_story_owner
 				}
-				ftr_court_shift_swing_effect = yes
-				remove_variable = ftr_court_swing_amount
 			}
 			# 成功标记：供失败兜底判定
 			set_variable = { name = ftr_court_sway_succeeded  value = 1 }
@@ -2845,15 +2836,13 @@ ftr_court_struggle.00A1 = {
 			modifier = { add = 20  has_trait = greedy }
 			modifier = { add = -20  has_trait = just }
 		}
-		# 收买共治者左右，稳妥拉回天平
+		# 收买共治者左右，稳妥拉回天平（官方 swing 向君主侧）
 		change_gold = -60
-		scope:ftr_court_story ?= {
-			set_variable = {
-				name = ftr_court_swing_amount
-				value = ftr_court_swing_support_monarch_value
+		scope:ftr_court_story_owner ?= {
+			update_diarchy_swing_with_perspective_effect = {
+				SWING = minor_sop_swing_liege_gain
+				LIEGE = scope:ftr_court_story_owner
 			}
-			ftr_court_shift_swing_effect = yes
-			remove_variable = ftr_court_swing_amount
 		}
 	}
 	option = { # Bide my time
@@ -2923,14 +2912,12 @@ ftr_court_struggle.00A2 = {
 			modifier = { add = 20  has_trait = ambitious }
 			modifier = { add = -20  has_trait = content }
 		}
-		# 密令亲信游说，把天平向自己拉回
-		scope:ftr_court_story ?= {
-			set_variable = {
-				name = ftr_court_swing_amount
-				value = ftr_court_swing_support_diarch_value
+		# 密令亲信游说，把天平向自己（共治者）拉回（官方 swing 向 diarch 侧）
+		scope:ftr_court_story_owner ?= {
+			update_diarchy_swing_with_perspective_effect = {
+				SWING = minor_sop_swing_diarch_gain
+				LIEGE = scope:ftr_court_story_owner
 			}
-			ftr_court_shift_swing_effect = yes
-			remove_variable = ftr_court_swing_amount
 		}
 	}
 	option = { # Endure for now

@@ -65,6 +65,7 @@
  ftr_court_notice_join_contest:0 "有人参与继位角逐"
 
  ###### 游说交互 ######
+ ftr_court_lobby_interaction:0 "<FTR>游说"
  ftr_court_lobby_interaction_desc:0 "对同僚进行游说，将其拉向其中一方阵营。话语不值钱，人心才值钱。"
  ftr_court_lobby_diarch:0 "劝其支持共治者"
  ftr_court_lobby_monarch:0 "劝其效忠君主"

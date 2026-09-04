@@ -3,7 +3,7 @@
 ### 挂在独立王国/帝国/霸权的最高统治者（story owner）身上
 ###
 ### 议题1 继任之争：竞争者以「竞争力评分」排名，取前五名进入朝堂名单
-### 议题2 共治夺权：以 ftr_court_regency_swing 为拉锯轴
+### 议题2 共治夺权：以官方 diarchy swing（diarchy_swing）为拉锯轴
 ###
 ### 烈度（var:ftr_court_struggle_intensity，0-200）替代原离散 ftr_court_phase：
 ###   0-40   平静/潜伏     40-90  酝酿
@@ -94,7 +94,7 @@ ftr_court_struggle = {
 				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
 			}
 			effect = {
-				ftr_court_swing_yearly_effect = yes
+				# 议题2 权力天平交由官方 diarchy swing 的 swing_balance 机制自然维护
 				# 烈度年度维护（自然回落 + 君主状态偏置；替代原 phase 定档）
 				ftr_court_refresh_intensity_effect = yes
 			}

@@ -260,23 +260,26 @@ ftr_court_should_activate_regency_trigger = {
 	}
 }
 
-# 拉锯足以发起共治请愿
+# 拉锯足以发起共治请愿（官方 swing：story_owner = 拥有 diarchy 的君主；无共治者时 swing 为 0）
 ftr_court_can_petition_coregency_trigger = {
-	has_variable = ftr_court_regency_swing
-	var:ftr_court_regency_swing >= ftr_court_swing_regency_threshold_value
+	story_owner ?= {
+		diarchy_swing >= ftr_court_swing_regency_threshold_value
+	}
 }
 
-# 拉锯足以尝试夺位
+# 拉锯足以尝试夺位（官方 swing + 君主失能）
 ftr_court_can_attempt_usurp_trigger = {
-	has_variable = ftr_court_regency_swing
-	var:ftr_court_regency_swing >= ftr_court_swing_usurp_threshold_value
-	ftr_court_monarch_infirm_trigger = yes
+	story_owner ?= {
+		diarchy_swing >= ftr_court_swing_usurp_threshold_value
+		ftr_court_monarch_infirm_trigger = yes
+	}
 }
 
-# 辅政成功、大权稳固
+# 辅政成功、大权稳固（官方 swing 偏向君主）
 ftr_court_loyalists_hold_trigger = {
-	has_variable = ftr_court_regency_swing
-	var:ftr_court_regency_swing <= ftr_court_swing_loyal_threshold_value
+	story_owner ?= {
+		diarchy_swing <= ftr_court_swing_loyal_threshold_value
+	}
 }
 
 ########## 六、行动资格 ##########

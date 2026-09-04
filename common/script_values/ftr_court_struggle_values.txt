@@ -199,6 +199,13 @@ ftr_court_claim_strength_value = {
 	max = 0
 }
 
+########## 四·B、支持者人数（查询用） ##########
+# 求值域：this = 某权贵（君主 / 共治者 / 参与角逐者）。
+# 调试决议 ftr_court_debug_report_claimants_decision 在 custom_tooltip 文本中引用本值，逐行显示各竞争者支持者数
+ftr_court_supporters_count_value = {
+	value = list_size:ftr_court_supporters
+}
+
 ########## 五、共治拉锯 ##########
 # 权力天平已迁移至官方 diarchy swing（diarchy_swing，0–100：0 = 君主全权，100 = 共治全权，50 = 中性）。
 # 移动 swing 统一调用官方 update_diarchy_swing_with_perspective_effect；

@@ -151,6 +151,11 @@
 ###### DEBUG backing message (remove later; left=backer, right=backed) ######
  ftr_court_debug_backing_notify:0 "[DEBUG] A courtier has openly declared a stance."
 
+###### DEBUG list claimants decision (ftr_court_debug_report_claimants_decision) ######
+ ftr_court_debug_claimants_report_header_tt:0 "[DEBUG] Current court claimants:"
+ ftr_court_debug_claimant_line_tt:0 "· [ftr_claimant.GetShortUIName]: supporters [ftr_claimant.MakeScope.ScriptValue('ftr_court_supporters_count_value')|V0]"
+ ftr_court_debug_no_court_tt:0 "[DEBUG] You are not part of any court with an ongoing succession struggle."
+
 ###### Ease internal strife decision (§12.5 / §12.11) ######
  ftr_court_ease_struggle_decision:0 "<FTR>Ease Internal Strife"
  ftr_court_ease_struggle_decision_desc:0 "The court has grown so heated over the succession that it threatens to spill into open bloodshed. You are willing to pay a heavy price to extend goodwill to the leading claimants and calm their hostility, buying the realm a breathing space."

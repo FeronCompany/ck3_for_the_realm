@@ -151,6 +151,11 @@
 ###### DEBUG 站队消息（后续统一移除；左=支持者，右=被支持者） ######
  ftr_court_debug_backing_notify:0 "【调试】朝堂站队：有人公开表态。"
 
+###### DEBUG 查看竞争者决议（ftr_court_debug_report_claimants_decision） ######
+ ftr_court_debug_claimants_report_header_tt:0 "【调试】当前朝堂参与竞争者："
+ ftr_court_debug_claimant_line_tt:0 "· [ftr_claimant.GetShortUIName]：支持者 [ftr_claimant.MakeScope.ScriptValue('ftr_court_supporters_count_value')|V0] 人"
+ ftr_court_debug_no_court_tt:0 "【调试】你不在任何拥有朝堂权力角逐的宫廷中。"
+
 ###### 缓和内部矛盾决议（§12.5 / §12.11） ######
  ftr_court_ease_struggle_decision:0 "<FTR>缓和内部矛盾"
  ftr_court_ease_struggle_decision_desc:0 "朝堂烈度过高，继位之争眼看就要演变成刀兵相见。你愿意付出可观的代价，向主要竞争者示好、缓和彼此剑拔弩张的关系，为朝局争取一段喘息之机。"

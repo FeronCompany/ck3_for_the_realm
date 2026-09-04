@@ -52,10 +52,11 @@ ftr_update_my_realm_pg_participants_list = {
 	}
 }
 
-# 朝堂局势 UI 数据同步：把玩家相关朝堂 story 的变量镜像到玩家域，
-# 供 gui 读取（CK3 无法在 data function 中直接访问 story 变量）。
-# 数据源优先级：自己的朝堂 → top_liege → employer（无地廷臣也能看自己主家的局势）。
-# 在 HUD 点击与窗口打开/刷新时执行。
+# 朝堂局势 UI 数据同步：同步朝堂 story 的元信息到玩家域。
+# 说明：支持者列表与参与者列表均以「各权贵角色身上的主存储列表」为准
+# （君主/共治者/参与竞争者各自的 ftr_court_supporters，参与者名单在最高统治者 ftr_court_claimants），
+# 窗口 GUI（ftr_court_struggle_window.gui）直接按 GetPlayer.GetTopLiege / GetDiarch / 参与者角色读取，
+# 无需把支持者镜像到玩家域。
 ftr_court_sync_ui_data = {
 	scope = character
 	is_shown = {
@@ -64,14 +65,11 @@ ftr_court_sync_ui_data = {
 	effect = {
 		# 先复位
 		set_variable = { name = ftr_court_ui_active  value = 0 }
-		set_variable = { name = ftr_court_ui_swing  value = 0 }
 		set_variable = { name = ftr_court_ui_count  value = 0 }
 		set_variable = { name = ftr_court_ui_gap  value = 999 }
 		clear_variable_list = ftr_court_ui_claimants
-		clear_variable_list = ftr_court_ui_monarch_backers
-		clear_variable_list = ftr_court_ui_diarch_backers
 
-		# 1) 自己的朝堂：先镜像 story（竞争者/追随者数据），再收集朝廷成员
+		# 1) 自己的朝堂：先镜像 story 的竞争者名单与角色元信息，再收集朝廷成员
 		if = {
 			limit = {
 				any_owned_story = { type = ftr_court_struggle }

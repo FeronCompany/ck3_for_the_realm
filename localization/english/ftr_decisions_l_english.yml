@@ -92,6 +92,11 @@
  ftr_strengthen_diarch_power_decision_desc:0 "Strengthen Diarch Power"
  ftr_strengthen_diarch_power_decision_confirm:0 "Strengthen Diarch Power"
 
+ ftr_court_debug_report_claimants_decision:0 "<FTR>DEBUG:List Court Claimants & Supporters"
+ ftr_court_debug_report_claimants_decision_tooltip:0 "List Court Claimants & Supporters"
+ ftr_court_debug_report_claimants_decision_desc:0 "List each participating claimant and their number of supporters."
+ ftr_court_debug_report_claimants_decision_confirm:0 "View"
+
  ftr_pg_ai_make_own_proposal_decision:0 "<FTR> Make Proposal"
  ftr_pg_ai_make_own_proposal_decision_tooltip:0 "Make proposal in your realm"
  ftr_pg_ai_make_own_proposal_decision_desc:0 "Make proposal in your realm for consideration by members of your inner circle."

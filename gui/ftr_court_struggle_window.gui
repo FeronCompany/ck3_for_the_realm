@@ -1,5 +1,8 @@
 ﻿# 朝堂局势窗口 —— 分层展示朝廷权力格局。
-# 数据源：玩家域变量列表（由 ftr_court_sync_ui_data 镜像）。
+# 数据源：各权贵角色身上的主存储列表。
+#   - 君主支持者 / 参与者列表：最高统治者（GetPlayer.GetTopLiege）身上的 ftr_court_supporters / ftr_court_claimants
+#   - 共治者支持者：共治者身上的 ftr_court_supporters
+#   - 参与者支持者：各参与者身上的 ftr_court_supporters
 # 布局：君主[+摄政] 及其支持者 → 摄政权势平衡条 → 权臣/内阁 → 继任者（参与角逐者）及其支持者。
 window = {
 	name = "ftr_court_struggle_window"
@@ -122,7 +125,7 @@ window = {
 												hbox = {
 													margin = { 10 0 }
 													spacing = 12
-													datamodel = "[GetPlayer.GetTopLiege.MakeScope.GetList('ftr_court_ui_monarch_backers')]"
+													datamodel = "[GetPlayer.GetTopLiege.MakeScope.GetList('ftr_court_supporters')]"
 													layoutpolicy_horizontal = fixed
 													item = {
 														ftr_court_small_icon = {
@@ -178,46 +181,15 @@ window = {
 							#	text = "ftr_court_ui_no_claimants"
 							#	visible = "[And(GetPlayer.MakeScope.Var('ftr_court_ui_active').IsEqual('1'), GetPlayer.MakeScope.Var('ftr_court_ui_count').IsEqual('0'))]"
 							#}
-							# 每个继任者一行：vbox { hbox { 继任者头像 + hbox{该继任者的支持者} + 空白 } }
+							# 每个继任者一行 = 模板 ftr_court_claimant_row（继任者头像 + 该继任者的支持者）
 							vbox = {
 								margin = { 20 20 }
 								spacing = 12
 								layoutpolicy_horizontal = expanding
 								datamodel = "[GetPlayer.GetTopLiege.MakeScope.GetList('ftr_court_claimants')]"
 								item = {
-									hbox = {
-										layoutpolicy_horizontal = expanding
-										spacing = 8
-										ftr_court_small_icon = {
-											layoutpolicy_horizontal = fixed
-											datacontext = "[CharacterListItem.GetCharacter]"
-										}
-										hbox = {
-											spacing = 6
-											text_single = {
-												text = "ftr_court_ui_backers_label"
-												fontsize = 11
-												alpha = 0.7
-											}
-											scrollbox = {
-												layoutpolicy_horizontal = expanding
-												blockoverride "scrollbox_content"
-												{
-													hbox = {
-														spacing = 6
-														datamodel = "[CharacterListItem.GetCharacter.MakeScope.GetList('ftr_court_supporters')]"
-														layoutpolicy_horizontal = expanding
-														item = {
-															ftr_court_small_icon = {
-																layoutpolicy_horizontal = fixed
-																datacontext = "[CharacterListItem.GetCharacter]"
-															}
-														}
-													}
-												}
-											}
-										}
-										expand = {}
+									ftr_court_claimant_row = {
+										datacontext = "[CharacterListItem.GetCharacter]"
 									}
 								}
 							}
@@ -240,6 +212,39 @@ types Lists
 		layoutpolicy_horizontal = expanding
 		portrait_head_small = {
 			size = { 64 64 }
+		}
+	}
+
+	# 继任者（参与角逐者）一行：左侧该继任者头像，右侧其支持者图标。
+	# 用法：作为「参与者列表」datamodel 的 item（datacontext 由外层列表提供，
+	# 通过 CharacterListItem.GetCharacter 取得当前参与者，再读其 ftr_court_supporters）。
+	type ftr_court_claimant_row = hbox {
+		datacontext = "[Scope.GetCharacter]"
+		layoutpolicy_horizontal = expanding
+		spacing = 8
+		ftr_court_small_icon = {
+			layoutpolicy_horizontal = fixed
+			datacontext = "[Character]"
+		}
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			blockoverride "scrollbox_content"
+			{
+				hbox = {
+					datamodel = "[Character.MakeScope.GetList('ftr_court_supporters')]"
+					parentanchor = left|vcenter
+					item = {
+						portrait_head_small = {
+							datacontext = "[CharacterListItem.GetCharacter]"
+						}
+						#ftr_court_small_icon = {
+						#	layoutpolicy_horizontal = fixed
+						#	#datacontext = "[CharacterListItem.GetCharacter]"
+						#	datacontext = "[Scope.Char]"
+						#}
+					}
+				}
+			}
 		}
 	}
 }

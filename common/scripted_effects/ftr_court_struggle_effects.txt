@@ -838,117 +838,16 @@ ftr_court_send_court_toast_effect = {
 ### 十、UI 数据同步
 ######################################################
 
-# 在君主域执行：收集朝廷核心成员，按类别写入玩家域的独立列表。
-# 布局（自上而下）：君主[+摄政] → 权臣/内阁 → 继任者（参与角逐者）。
-# 每个权贵（君主 / 共治者 / 参与角逐的继任者）各有一条支持者列表。
+# [备用占位] 在君主域执行：收集朝廷核心成员按类别写入玩家域（旧「镜像到玩家域」方案）。
+# 现状：GUI（ftr_court_struggle_window.gui）已改为直接从各权贵角色身上读取——
+#   君主/参与者名单 ← GetPlayer.GetTopLiege 身上的 ftr_court_claimants；
+#   君主/共治者/参与者的支持者 ← 各自权贵身上的 ftr_court_supporters；
+#   swing ← 官方 diarchy_swing（ftr_get_diarchy_swing）。
+# 因此本 effect 及其镜像变量（ftr_court_ui_has_diarch / ftr_court_ui_monarch_char /
+# ftr_court_ui_diarch_char / ftr_court_ui_monarch_backers / ftr_court_ui_diarch_backers /
+# ftr_court_heir_backers）已无消费方，暂时清空备用；如需恢复「刷新时重建朝廷核心名单」
+# 的机制，可在此重新实现（数据主存储不变，仍为各权贵角色身上的 ftr_court_supporters）。
 ftr_court_sync_courtiers_effect = {
-	save_scope_as = ftr_court_court_monarch
-
-	root = {
-		# 复位标记与列表
-		set_variable = { name = ftr_court_ui_has_diarch  value = 0 }
-		# 清空共治者角色变量：无共治者时 GUI 常驻空位需读到无效角色，避免残留上一次的旧值
-		remove_variable = ftr_court_ui_diarch_char
-		clear_variable_list = ftr_court_ui_monarch_backers
-		clear_variable_list = ftr_court_ui_diarch_backers
-	}
-
-	# ---- 1. 君主（靠上居中，存单角色变量） ----
-	save_scope_as = ftr_court_ui_rule
-	root = {
-		set_variable = {
-			name = ftr_court_ui_monarch_char
-			value = scope:ftr_court_ui_rule
-		}
-	}
-
-	# ---- 2. 摄政/共治者（与君主并排居中；无则不显示，存单角色变量） ----
-	if = {
-		limit = { exists = diarch }
-		diarch ?= {
-			save_scope_as = ftr_court_ui_diarch_char_scope
-		}
-		root = {
-			set_variable = {
-				name = ftr_court_ui_diarch_char
-				value = scope:ftr_court_ui_diarch_char_scope
-			}
-			set_variable = { name = ftr_court_ui_has_diarch  value = 1 }
-		}
-	}
-	# 注：无共治者时 swing 镜像已废弃——GUI 直接读官方 diarchy_swing（无共治者自然为 0）
-
-	# ---- 3. 各权贵的支持者列表 ----
-	# 新方案：支持者列表存于各权贵（君主 / 共治者 / 参与角逐者）身上的 ftr_court_supporters。
-	# 参与角逐者列表已由 ftr_court_sync_ui_from_story_effect 镜像到玩家域 ftr_court_ui_claimants。
-	# 此处把各权贵的 ftr_court_supporters 复制到 GUI 读取的目标列表。
-
-	# 3.1 清空目标列表
-	root = {
-		every_in_list = {
-			list = ftr_court_ui_claimants
-			limit = { is_alive = yes }
-			clear_variable_list = ftr_court_heir_backers
-		}
-		# 君主 / 共治者自己的支持者列表（玩家域）
-		clear_variable_list = ftr_court_ui_monarch_backers
-		clear_variable_list = ftr_court_ui_diarch_backers
-	}
-
-	# 3.2 填充：直接从各权贵身上的 ftr_court_supporters 复制。
-	#   - 君主 → 玩家域 ftr_court_ui_monarch_backers
-	#   - 共治者 → 玩家域 ftr_court_ui_diarch_backers
-	#   - 参与角逐者 → 其自身的 ftr_court_heir_backers（GUI 从继任者身上读取）
-	scope:ftr_court_court_monarch = {
-		# 君主支持者
-		every_in_list = {
-			list = ftr_court_supporters
-			limit = { is_alive = yes }
-			save_scope_as = ftr_court_sync_backer
-			root = {
-				add_to_variable_list = {
-					name = ftr_court_ui_monarch_backers
-					target = scope:ftr_court_sync_backer
-				}
-			}
-		}
-		# 共治者支持者
-		if = {
-			limit = { exists = diarch }
-			diarch = {
-				every_in_list = {
-					list = ftr_court_supporters
-					limit = { is_alive = yes }
-					save_scope_as = ftr_court_sync_backer
-					root = {
-						add_to_variable_list = {
-							name = ftr_court_ui_diarch_backers
-							target = scope:ftr_court_sync_backer
-						}
-					}
-				}
-			}
-		}
-	}
-	# 参与角逐者的支持者：复制到各参与者自身
-	root = {
-		every_in_list = {
-			list = ftr_court_ui_claimants
-			limit = { is_alive = yes }
-			save_scope_as = ftr_court_sync_claimant
-			scope:ftr_court_sync_claimant = {
-				every_in_list = {
-					list = ftr_court_supporters
-					limit = { is_alive = yes }
-					save_scope_as = ftr_court_sync_backer
-					add_to_variable_list = {
-						name = ftr_court_heir_backers
-						target = scope:ftr_court_sync_backer
-					}
-				}
-			}
-		}
-	}
 }
 
 # 在持有朝堂 story 的角色域执行：把最高统治者 story 的变量镜像到玩家域。

@@ -195,3 +195,9 @@
  ftr_court_struggle.00A2.desc:0 "保皇党步步紧逼，[ROOT.GetTitledFirstName]的共治地位摇摇欲坠。是命亲信在朝堂内外游说拉拢，还是暂且蛰伏？"
  ftr_court_struggle.00A2.a:0 "密令亲信游说，把人心拉回来。"
  ftr_court_struggle.00A2.b:0 "暂避锋芒，来日再战。"
+
+###### 0999 DEBUG 查看竞争者名单（ftr_court_debug_report_claimants_decision）######
+ ftr_court_struggle.0999.t:0 "【调试】朝堂竞争者一览"
+ ftr_court_struggle.0999.desc:0 "逐行查看当前参与角逐的竞争者及其支持者人数。将鼠标移至下方选项查看名单。"
+ ftr_court_struggle.0999.a:0 "查看名单"
+ ftr_court_struggle.0999.b:0 "关闭"

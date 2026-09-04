@@ -196,4 +196,10 @@
  ftr_court_struggle.00A2.a:0 "Dispatch allies to win back hearts."
  ftr_court_struggle.00A2.b:0 "Bide my time for a better day."
 
+###### 0999 DEBUG list claimants (ftr_court_debug_report_claimants_decision) ######
+ ftr_court_struggle.0999.t:0 "[DEBUG] Court Claimants Overview"
+ ftr_court_struggle.0999.desc:0 "List each current claimant and their number of supporters. Hover over the option below to view the list."
+ ftr_court_struggle.0999.a:0 "View List"
+ ftr_court_struggle.0999.b:0 "Close"
+
 

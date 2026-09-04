@@ -49,3 +49,36 @@ ftr_strengthen_diarch_power_decision = { # Debug decision
 		always = no
 	}
 }
+
+ftr_court_debug_report_claimants_decision = { # Debug decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
+	decision_group_type = debug
+	desc = ftr_court_debug_report_claimants_decision_desc
+	selection_tooltip = ftr_court_debug_report_claimants_decision_tooltip
+	is_shown = {
+		debug_only = yes
+		is_ai = no
+	}
+	cost = {
+		#prestige = { value = 100 }
+	}
+	effect = {
+		top_liege = {
+			custom_tooltip = {
+				text = ftr_court_debug_claimants_report_header_tt
+			}
+			every_in_list = {
+				variable = ftr_court_claimants
+				save_temporary_scope_as = ftr_claimant
+				custom_tooltip = {
+					text = ftr_court_debug_claimant_line_tt
+				}
+			}
+		}
+	}
+	ai_potential = {
+		always = no
+	}
+}

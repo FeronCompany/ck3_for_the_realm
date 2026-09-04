@@ -1094,14 +1094,12 @@ ftr_court_sync_ui_from_story_effect = {
 # send_interface_message 仅当接收角色（君主）为当前玩家时才显示到其 UI，AI 君主自动无显示，无需额外 is_ai 判定。
 ftr_court_debug_backing_notice_effect = {
 	save_scope_as = ftr_court_debug_backer
-	scope:ftr_court_story ?= {
-		owner = {
-			send_interface_message = {
-				type = event_generic_good
-				title = ftr_court_debug_backing_notify
-				left_icon = scope:ftr_court_debug_backer
-				right_icon = scope:ftr_court_debug_backed
-			}
+	top_liege ?= {
+		send_interface_message = {
+			type = event_generic_good
+			title = ftr_court_debug_backing_notify
+			left_icon = scope:ftr_court_debug_backer
+			right_icon = scope:ftr_court_debug_backed
 		}
 	}
 }

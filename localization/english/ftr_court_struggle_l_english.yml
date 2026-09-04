@@ -25,6 +25,7 @@
  ftr_court_back_claimant_interaction:0 "<FTR>Declare Support"
  ftr_court_back_claimant_interaction_desc:0 "Back this magnate (or the liege's child / heir). An open declaration breeds rival resentment and may alert the monarch; secret support stays hidden."
  ftr_back_claimant_options_tt:0 "How to Support"
+ ftr_court_back_claimant_alert_tt:0 "An open declaration has a small chance of stirring the monarch's suspicion"
  ftr_court_withdraw_backing_interaction:0 "<FTR>Withdraw Support"
  ftr_court_withdraw_backing_interaction_desc:0 "Step back into neutrality. Few forgive a withdrawn hand."
  ftr_court_assist_monarch_interaction:0 "<FTR>Steadfast Service"

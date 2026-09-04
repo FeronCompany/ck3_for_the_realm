@@ -190,6 +190,7 @@ ftr_court_back_claimant_interaction = {
 			}
 
 			# ---- 公开支持小概率触发君主警觉事件，恶化君主与被支持者的关系 ----
+			# 概率触发本身在预览中不显示效果，用 custom_tooltip 明确展示"有小概率引发警觉"。
 			if = {
 				limit = {
 					NOT = { scope:recipient = scope:actor }
@@ -198,21 +199,25 @@ ftr_court_back_claimant_interaction = {
 						NOT = { ftr_court_is_struggle_monarch_trigger = yes }
 					}
 				}
-				# 概率触发（random + chance 作为概率门）
+				# 概率触发（random + chance 作为概率门）；chance 之后的执行体用 custom_tooltip
+				# 包裹，使预览中能显示"有小概率引发警觉"的说明
 				random = {
 					chance = ftr_court_monarch_alert_chance_value
-					# 保存被支持者与背书者供警觉事件使用
-					scope:recipient = {
-						save_scope_as = ftr_court_supported
-					}
-					scope:actor = { save_scope_as = ftr_court_backer }
-					scope:actor.top_liege ?= {
-						save_scope_as = ftr_court_monarch
-					}
-					scope:ftr_court_monarch ?= {
-						trigger_event = {
-							id = ftr_court_struggle.0041
-							days = 1
+					custom_tooltip = {
+						text = ftr_court_back_claimant_alert_tt
+						# 保存被支持者与背书者供警觉事件使用
+						scope:recipient = {
+							save_scope_as = ftr_court_supported
+						}
+						scope:actor = { save_scope_as = ftr_court_backer }
+						scope:actor.top_liege ?= {
+							save_scope_as = ftr_court_monarch
+						}
+						scope:ftr_court_monarch ?= {
+							trigger_event = {
+								id = ftr_court_struggle.0041
+								days = 1
+							}
 						}
 					}
 				}

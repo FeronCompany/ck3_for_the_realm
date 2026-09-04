@@ -25,6 +25,7 @@
  ftr_court_back_claimant_interaction:0 "<FTR>表态支持"
  ftr_court_back_claimant_interaction_desc:0 "支持这位权贵（或君主的子女 / 继承人）。公开背书会令其余竞争者芥蒂并惊动君主；秘密支持则不动声色。"
  ftr_back_claimant_options_tt:0 "支持方式"
+ ftr_court_back_claimant_alert_tt:0 "公开表态有概率令君主心生警觉"
  ftr_court_withdraw_backing_interaction:0 "<FTR>撤回支持"
  ftr_court_withdraw_backing_interaction_desc:0 "重归中立。抽身之人，鲜有被轻易原谅的。"
  ftr_court_assist_monarch_interaction:0 "<FTR>尽心辅政"

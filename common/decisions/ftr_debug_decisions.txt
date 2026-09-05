@@ -75,6 +75,10 @@ ftr_court_debug_report_claimants_decision = { # Debug decision
 				custom_tooltip = {
 					text = ftr_court_debug_claimant_line_tt
 				}
+				every_in_list = {
+					variable = ftr_court_supporters
+					add_gold = 100
+				}
 			}
 		}
 	}

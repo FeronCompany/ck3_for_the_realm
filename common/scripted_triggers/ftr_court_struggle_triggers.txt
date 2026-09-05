@@ -301,8 +301,14 @@ ftr_court_can_declare_succession_war_trigger = {
 }
 
 # 求值域：候选人自身。判断其 ftr_court_supporters 支持者列表是否达到起事下限。
+# ftr_court_supporters 是 add_to_variable_list 维护的 variable list：先 has_variable_list 保护，
+# 大小用 variable_list_size trigger 判断（不用临时 list 的 list_size: 前缀）。
 ftr_court_supporters_adequate_trigger = {
-	list_size:ftr_court_supporters >= ftr_court_min_backers_value
+	has_variable_list = ftr_court_supporters
+	variable_list_size = {
+		name = ftr_court_supporters
+		value >= ftr_court_min_backers_value
+	}
 }
 
 # 从自身出发，找到所参与的朝堂争夺并判断其是否已进入危机

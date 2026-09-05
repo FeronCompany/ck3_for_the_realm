@@ -171,7 +171,7 @@ ftr_court_back_claimant_interaction = {
 				limit = { exists = scope:ftr_court_story }
 				scope:ftr_court_story = {
 					every_in_list = {
-						list = ftr_court_participant_list
+						variable = ftr_court_participant_list
 						limit = { NOT = { this = scope:recipient } }
 						add_opinion = { target = scope:actor  modifier = ftr_court_rival_claimant_opinion }
 					}
@@ -226,14 +226,15 @@ ftr_court_back_claimant_interaction = {
 	}
 	on_decline = {}
 	ai_will_do = {
-		base = -20
+		base = -10
 		modifier = {
 			add = 30
 			scope:recipient = { has_trait = ambitious }
 		}
-		modifier = {
-			add = 20
-			opinion = { target = scope:recipient  value >= 50 }
+		opinion_modifier = {
+			who = scope:actor
+			opinion_target = scope:recipient
+			multiplier = 1
 		}
 		modifier = {
 			add = -30

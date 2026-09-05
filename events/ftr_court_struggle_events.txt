@@ -25,7 +25,7 @@ ftr_court_struggle.0001 = {
 		}
 		scope:ftr_court_story ?= {
 			random_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				save_scope_as = ftr_court_candidate
 			}
 		}
@@ -199,7 +199,7 @@ ftr_court_struggle.0005 = {
 		# 立即压制参与角逐者，把权力天平拉回君权一侧；同时压一档烈度
 		scope:ftr_court_story ?= {
 			every_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				limit = { NOT = { this = scope:ftr_court_monarch } }
 				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
 			}
@@ -234,7 +234,7 @@ ftr_court_struggle.0005 = {
 		# 直接压制参与角逐的头目，其余参与者心怀忌惮；烈度随之回落
 		scope:ftr_court_story ?= {
 			ordered_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				order_by = var:ftr_claim_strength
 				save_scope_as = ftr_court_ringleader
 			}
@@ -358,7 +358,7 @@ ftr_court_struggle.0011 = {
 		# 找出威胁最大的竞争者（有地、有兵、未被囚禁且非新君）——供逮捕/起兵事件使用
 		scope:ftr_court_story ?= {
 			ordered_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				order_by = max_military_strength
 				limit = {
 					NOT = { this = scope:ftr_court_new_monarch }
@@ -436,7 +436,7 @@ ftr_court_struggle.0011 = {
 			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
 			scope:ftr_court_story ?= {
 				every_in_list = {
-					list = ftr_court_participant_list
+					variable = ftr_court_participant_list
 					limit = { NOT = { this = scope:ftr_court_dissenter } }
 					add_opinion = { target = scope:ftr_court_new_monarch  modifier = ftr_political_opponent_opinion }
 				}
@@ -812,7 +812,7 @@ ftr_court_struggle.0014 = {
 		# 视为公开站队：其余竞争者同生芥蒂（对齐交互公开分支；不触发 0041）
 		scope:ftr_court_story ?= {
 			every_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				limit = {
 					NOT = { this = scope:ftr_court_claimant_1 }
 					NOT = { this = scope:ftr_court_asked }
@@ -843,7 +843,7 @@ ftr_court_struggle.0014 = {
 		# 视为公开站队：其余竞争者同生芥蒂（对齐交互公开分支；不触发 0041）
 		scope:ftr_court_story ?= {
 			every_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				limit = {
 					NOT = { this = scope:ftr_court_claimant_2 }
 					NOT = { this = scope:ftr_court_asked }
@@ -874,7 +874,7 @@ ftr_court_struggle.0014 = {
 		# 视为公开站队：其余竞争者同生芥蒂（对齐交互公开分支；不触发 0041）
 		scope:ftr_court_story ?= {
 			every_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				limit = {
 					NOT = { this = scope:ftr_court_claimant_3 }
 					NOT = { this = scope:ftr_court_asked }
@@ -905,7 +905,7 @@ ftr_court_struggle.0014 = {
 		# 视为公开站队：其余竞争者同生芥蒂（对齐交互公开分支；不触发 0041）
 		scope:ftr_court_story ?= {
 			every_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				limit = {
 					NOT = { this = scope:ftr_court_claimant_4 }
 					NOT = { this = scope:ftr_court_asked }
@@ -936,7 +936,7 @@ ftr_court_struggle.0014 = {
 		# 视为公开站队：其余竞争者同生芥蒂（对齐交互公开分支；不触发 0041）
 		scope:ftr_court_story ?= {
 			every_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				limit = {
 					NOT = { this = scope:ftr_court_claimant_5 }
 					NOT = { this = scope:ftr_court_asked }
@@ -1334,7 +1334,7 @@ ftr_court_struggle.0040 = {
 			}
 			set_variable = {
 				name = ftr_court_participant_count
-				value = list_size:ftr_court_participant_list
+				value = ftr_court_participant_list_count_value
 			}
 			set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
 			# 参与者加入：抬升烈度（替代原 phase 定档）
@@ -2191,7 +2191,7 @@ ftr_court_struggle.0060 = {
 			story_owner = { save_scope_as = ftr_court_monarch }
 			# 取头号竞争者（评分最高者）；root 本人即头号时顺延评分次高者（不调查自己）
 			ordered_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				order_by = var:ftr_claim_strength
 				limit = { NOT = { this = root } }
 				save_scope_as = ftr_court_ringleader

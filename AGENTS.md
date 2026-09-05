@@ -394,8 +394,8 @@ ftr_my_trait = {
 ### 5.1 改动前
 
 ```
-1. 优先查原版文件（game/，含 .info 与 game/localization/english/）确认写法与语义
-2. 查不到或需 Mod 侧细节时，再在 document/ 搜相关语法 → 精读对应章节
+1. 先查 document/ 语法文档 → 精读对应章节（文档为主）
+2. 语法文档没写清或不完整时，再查原版文件（game/，含 .info 与 game/localization/english/）核对写法与语义
 3. 在 game/common/<目录>/ 确认原版有无同名对象 → 决定"新增"还是"覆盖"
 4. 在 Mod 内找最接近的现有实现作为模板
 5. 对于拿不准的需求项，主动提出问题明确需求
@@ -542,9 +542,11 @@ python tools/validate_scripts.py --no-ref
 | 相关 Mod | `../remove-make-up` |
 | **报错日志** | `C:\Users\Administrator\Documents\Paradox Interactive\Crusader Kings III\logs\error.log` |
 
-以上路径已配置在 `for_the_realm.code-workspace`（多根工作区），**原版脚本可直接检索**，是写代码时最权威的参照。
+以上路径已配置在 `for_the_realm.code-workspace`（多根工作区），**原版脚本可直接检索**，作为语法文档的补充核对（先查 `document/`，文档没写清再查原版）。
 
 ### 8.1 查阅原版的正确姿势
+
+> 适用时机：仅当 `document/` 语法文档没写清或不完整时，才进原版核对（见 §5.1）。
 
 ```
 1. 先读 game/common/<目录>/_xxx.info     ← 官方语法说明，最权威
@@ -624,7 +626,7 @@ custom_description = {
 
 ## 10. 行为准则
 
-1. **原版文件最优先** —— 任何语法/机制不确定时，先查 `game/` 原版文件（`common/<目录>/*.info`、`00_*.txt`、`events/`、`game/localization/english/`）确认写法与语义，再查 `document/` 知识库，最后才考虑网络检索；不要凭记忆写码
+1. **语法文档优先** —— 任何语法/机制不确定时，先查 `document/` 知识库（自建文档为主）；语法文档没写清或不完整时，再查 `game/` 原版文件（`common/<目录>/*.info`、`00_*.txt`、`events/`、`game/localization/english/`）核对；最后才考虑网络检索；不要凭记忆写码
 2. **最小化改动** —— 能抽 scripted_effect 就不复制粘贴；能间接覆盖就不整体重定义
 3. **双语同步是硬要求** —— 改任何用户可见文本，两份 yml 一起改
 4. **不确定就加 `exists` / `?=`** —— 避免"无效作用域"报错

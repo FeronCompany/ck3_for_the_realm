@@ -43,13 +43,13 @@ ftr_court_cleanup_effect = {
 
 	# 清理临时公国（兜底，防止异常路径泄漏）
 	every_in_list = {
-		list = ftr_court_participant_list
+		variable = ftr_court_participant_list
 		ftr_court_destroy_temp_duchy_effect = yes
 	}
 
 	# 清理候选人个体变量
 	every_in_list = {
-		list = ftr_court_participant_list
+		variable = ftr_court_participant_list
 		remove_variable = ftr_claim_strength
 		remove_variable = ftr_court_backer_of
 		clear_variable_list = ftr_court_supporters
@@ -58,7 +58,7 @@ ftr_court_cleanup_effect = {
 	}
 	# 清理参与角逐者（参与 / 拒绝标记在角色上，此处一并清除）
 	every_in_list = {
-		list = ftr_court_participant_list
+		variable = ftr_court_participant_list
 		remove_character_flag = ftr_court_participating
 		remove_variable = ftr_claim_strength
 		remove_variable = ftr_court_backer_of
@@ -74,7 +74,7 @@ ftr_court_cleanup_effect = {
 	}
 	# 清理所有参与角逐者身上的支持者列表
 	every_in_list = {
-		list = ftr_court_participant_list
+		variable = ftr_court_participant_list
 		clear_variable_list = ftr_court_supporters
 	}
 	# 若最高统治者本人或共治者也在角逐（罕见），一并清理
@@ -103,7 +103,7 @@ ftr_court_add_participant_effect = {
 	save_scope_as = ftr_court_participant
 	scope:ftr_court_monarch = {
 		every_in_list = {
-			list = ftr_court_claimants
+			variable = ftr_court_claimants
 			limit = { this = scope:ftr_court_participant }
 			add_character_flag = ftr_court_already_in_participant_list
 		}
@@ -224,12 +224,13 @@ ftr_court_launch_participation_asks_effect = {
 	save_scope_as = ftr_court_story
 	story_owner = { save_scope_as = ftr_court_monarch }
 
-	# 参与者数取自最高统治者个人列表 ftr_court_claimants（新方案主存储）。
-	# 在最高统治者作用域求 list_size，写入 story 的 ftr_court_participant_count。
+	# 参与者数取自最高统治者个人列表 ftr_court_claimants（新方案主存储，variable list）。
+	# variable list 的数值大小不可裸用 list_size:，改引用计数 script value（has_variable_list + 遍历累加），
+	# 在最高统治者作用域求值后写入 story 的 ftr_court_participant_count。
 	scope:ftr_court_monarch = {
 		set_variable = {
 			name = ftr_court_sync_count_tmp
-			value = list_size:ftr_court_claimants
+			value = ftr_court_claimants_count_value
 		}
 	}
 	scope:ftr_court_story = {
@@ -327,7 +328,7 @@ ftr_court_join_contest_effect = {
 	scope:ftr_court_story = {
 		set_variable = {
 			name = ftr_court_participant_count
-			value = list_size:ftr_court_participant_list
+			value = ftr_court_participant_list_count_value
 		}
 		set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
 		# 参与者加入：抬升烈度（替代原 phase 定档）
@@ -354,13 +355,16 @@ ftr_court_decline_contest_effect = {
 
 # 在被支持者（权贵）域执行：从自己的 ftr_court_supporters 支持者列表移除指定角色。
 # 参数：BACKER = 要移除的支持者（角色 scope）。
-# 采用原版 remove_from_list 模式：遍历支持者列表，对匹配 BACKER 的元素调用
-# remove_from_list 从当前作用域（被支持者）的列表移除它（对齐 story_cycle_mongol_invasion_events）。
+# 注意：ftr_court_supporters 是 add_to_variable_list 维护的 variable list（存在被支持者身上），
+# 移除成员用 remove_list_variable（对齐原版 tests/event_target_lists_tests.txt），
+# 不能用 local list 的 remove_from_list。先 has_variable_list 保护避免对空列表操作。
 ftr_court_remove_backer_effect = {
-	every_in_list = {
-		list = ftr_court_supporters
-		limit = { this = $BACKER$ }
-		remove_from_list = ftr_court_supporters
+	if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		remove_list_variable = {
+			name = ftr_court_supporters
+			target = $BACKER$
+		}
 	}
 }
 
@@ -698,7 +702,7 @@ ftr_court_save_ranked_claimants_effect = {
 	set_variable = { name = ftr_court_rank_counter  value = 0 }
 
 	ordered_in_list = {
-		list = ftr_court_participant_list
+		variable = ftr_court_participant_list
 		order_by = var:ftr_claim_strength
 		save_scope_as = ftr_court_pick
 		scope:ftr_court_story = {
@@ -874,7 +878,7 @@ ftr_court_sync_ui_from_story_effect = {
 		# 新方案主存储：参与者参与时直接写入该列表，此处读取并复制到玩家域 ftr_court_ui_claimants。
 		story_owner = {
 			every_in_list = {
-				list = ftr_court_claimants
+				variable = ftr_court_claimants
 				limit = { is_alive = yes }
 				save_scope_as = ftr_court_sync_participant
 				root = {
@@ -885,11 +889,11 @@ ftr_court_sync_ui_from_story_effect = {
 				}
 			}
 		}
-		# 第三步：把参与者数量镜像到玩家域（取最高统治者 ftr_court_claimants 的大小）。
+		# 第三步：把参与者数量镜像到玩家域（variable list 数值计数引用 script value，不裸用 list_size）。
 		root = {
 			set_variable = {
 				name = ftr_court_ui_count
-				value = list_size:ftr_court_ui_claimants
+				value = ftr_court_ui_claimants_count_value
 			}
 		}
 	}
@@ -959,7 +963,7 @@ ftr_court_ease_struggle_effect = {
 	}
 	# 3) 缓和与各竞争者的关系（君主个人参与者列表 ftr_court_claimants）：竞争者念君主恩情
 	every_in_list = {
-		list = ftr_court_claimants
+		variable = ftr_court_claimants
 		save_scope_as = ftr_court_eased_claimant
 		add_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_eased_opinion }
 		remove_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_rival_claimant_opinion }
@@ -975,7 +979,7 @@ ftr_court_strife_slander_effect = {
 	save_scope_as = ftr_court_strife_story
 	set_variable = { name = ftr_court_strife_pick  value = 0 }
 	random_in_list = {
-		list = ftr_court_participant_list
+		variable = ftr_court_participant_list
 		limit = {
 			NOT = { has_character_flag = ftr_court_strife_active }
 			NOT = { this = scope:ftr_court_strife_story.story_owner }
@@ -986,7 +990,7 @@ ftr_court_strife_slander_effect = {
 			# 目标：另一名竞争者（参与者 >=2 时才成立）
 			set_variable = { name = ftr_court_strife_pick  value = 1 }
 			random_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				limit = {
 					NOT = { this = scope:ftr_court_strife_actor }
 					NOT = { this = scope:ftr_court_strife_story.story_owner }
@@ -1066,7 +1070,7 @@ ftr_court_strife_exit_pulse_effect = {
 		if = {
 			limit = { var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value }
 			ordered_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				order_by = var:ftr_claim_strength
 				save_scope_as = ftr_court_exit_ringleader
 				scope:ftr_court_exit_ringleader ?= {
@@ -1084,7 +1088,8 @@ ftr_court_strife_exit_pulse_effect = {
 				ftr_court_can_attempt_usurp_trigger = yes
 			}
 			story_owner = {
-				clear_variable_list = ftr_court_usurp_candidates
+				# usurp_candidates 为作用域内临时 local list（add_to_list → 遍历用 list =），
+				# 不需要（也不应）用 variable list 的 clear_variable_list 清理。
 				every_vassal = {
 					limit = {
 						is_capable_adult = yes
@@ -1136,7 +1141,7 @@ ftr_court_landless_swing_effect = {
 				}
 			}
 			random_in_list = {
-				list = ftr_court_participant_list
+				variable = ftr_court_participant_list
 				limit = {
 					is_landed = no
 					NOT = { has_character_flag = ftr_court_strife_active }

@@ -189,21 +189,71 @@ ftr_court_claim_strength_value = {
 		add = ftr_court_claim_opinion_low_value
 	}
 
-	### 支持者数量（支持者列表直接维护在权贵身上，用 list_size 取大小）
+	### 支持者数量（支持者列表直接维护在权贵身上；variable list 数值计数引用 ftr_court_supporters_count_value）
 	add = {
 		value = ftr_court_claim_backer_value
-		multiply = list_size:ftr_court_supporters
+		multiply = ftr_court_supporters_count_value
 	}
 
 	### 永不出现负分，便于展示
 	max = 0
 }
 
-########## 四·B、支持者人数（查询用） ##########
-# 求值域：this = 某权贵（君主 / 共治者 / 参与角逐者）。
-# 调试决议 ftr_court_debug_report_claimants_decision 在 custom_tooltip 文本中引用本值，逐行显示各竞争者支持者数
+########## 四·B、列表人数（查询用） ##########
+# 重要：以下 court 名单均为 add_to_variable_list 维护的 variable list。
+# 取大小有两种合法姿势：
+#   1) trigger/limit 里判断：variable_list_size = { name = 名单 value … }（原版 tests 权威）；
+#   2) 需要数值（set_variable / multiply / tooltip 文本）：不能裸用 list_size:（那是 add_to_list 临时 list 的语法），
+#      必须 has_variable_list 保护后用 every_in_list variable= 遍历累加（对齐原版 script value 计数范式）。
+# 下面三个 count value 即按姿势 2 实现，供各调用点引用。
+
+# 求值域：this = 某权贵（君主 / 共治者 / 参与角逐者）。数其 ftr_court_supporters 支持者。
+# 调试决议 ftr_court_debug_report_claimants_decision 在 custom_tooltip 文本中引用本值，逐行显示各竞争者支持者数。
 ftr_court_supporters_count_value = {
-	value = list_size:ftr_court_supporters
+	value = 0
+	if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		every_in_list = {
+			variable = ftr_court_supporters
+			add = 1
+		}
+	}
+}
+
+# 求值域：this = 拥有 ftr_court_claimants 名单的角色（通常是君主 / story owner）。
+ftr_court_claimants_count_value = {
+	value = 0
+	if = {
+		limit = { has_variable_list = ftr_court_claimants }
+		every_in_list = {
+			variable = ftr_court_claimants
+			add = 1
+		}
+	}
+}
+
+# 求值域：this = 持有朝堂 story 的 story（ftr_court_participant_list 挂在其上）。
+ftr_court_participant_list_count_value = {
+	value = 0
+	if = {
+		limit = { has_variable_list = ftr_court_participant_list }
+		every_in_list = {
+			variable = ftr_court_participant_list
+			add = 1
+		}
+	}
+}
+
+# 求值域：this = 玩家（root）。数玩家域镜像名单 ftr_court_ui_claimants。
+ftr_court_ui_claimants_count_value = {
+	value = 0
+	if = {
+		limit = { has_variable_list = ftr_court_ui_claimants }
+		every_in_list = {
+			variable = ftr_court_ui_claimants
+			add = 1
+		}
+	}
 }
 
 ########## 五、共治拉锯 ##########

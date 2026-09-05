@@ -8,6 +8,47 @@ on_title_gain = {
 		ftr_ursurp_tyrant_succession_effects
 		ftr_remove_empire_for_hegemony_effects
 		ftr_auto_assign_baronies_effects
+		# 政权易主（退位/被废/篡夺/派系逼宫）时，朝堂权力角逐 story 跟随新君转移
+		ftr_court_handover_on_title_gain_effect
+	}
+}
+
+# 非死亡权力交接的朝堂故事转移守卫。
+# 作用域（官方 on_title_gain）：root = 新 holder，scope:title = 易主的头衔，
+# scope:previous_holder = 前 holder（可能已死）。
+# 死亡继承场景前 holder 已死 → is_alive 过滤掉，交给 story 的 on_owner_death 处理；
+# 此处只接管「前 holder 存活却失去政权」的退位/被废/篡夺/逼宫。
+ftr_court_handover_on_title_gain_effect = {
+	trigger = {
+		# 仅政权级头衔（王国及以上）易主
+		scope:title ?= {
+			tier >= tier_kingdom
+		}
+		# 只处理权力交接类（排除 inheritance/granted/created 等日常流转）
+		scope:transfer_type ?= {
+			OR = {
+				flag:abdication
+				flag:stepped_down
+				flag:faction_demand
+				flag:usurped
+			}
+		}
+		# 前 holder 存活且其名下确有朝堂故事
+		scope:previous_holder ?= {
+			is_alive = yes
+			any_owned_story = { story_type = ftr_court_struggle }
+		}
+		# 新 holder 目前没有自己的朝堂故事（防重复转移）
+		NOT = { any_owned_story = { story_type = ftr_court_struggle } }
+	}
+	effect = {
+		root = { save_scope_as = ftr_court_new_monarch }
+		scope:previous_holder = {
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
+				ftr_court_transfer_story_effect = yes
+			}
+		}
 	}
 }
 

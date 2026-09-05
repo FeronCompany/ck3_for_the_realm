@@ -41,13 +41,13 @@ ftr_court_back_claimant_interaction = {
 	}
 	send_options_exclusive = yes
 	ai_targets = {
-		ai_recipients = courtiers
 		ai_recipients = peer_vassals
-		ai_recipients = dynasty
+		ai_recipients = realm_characters
 		ai_recipients = liege
 		ai_recipients = vassals
-		ai_recipients = realm_characters
-		max = 5
+		ai_recipients = dynasty
+		ai_recipients = courtiers
+		max = 10
 	}
 	ai_frequency = 12
 	is_shown = {
@@ -58,7 +58,13 @@ ftr_court_back_claimant_interaction = {
 			scope:recipient = {
 				OR = {
 					is_child_of = scope:actor.top_liege
-					is_heir_of = scope:actor.top_liege
+					is_sibling_of = scope:actor.top_liege
+					AND = {
+						scope:actor.top_liege = {
+							has_realm_law = acclamation_succession_law
+						}
+						is_vassal_of = scope:actor.top_liege
+					}
 				}
 			}
 		}
@@ -283,6 +289,138 @@ ftr_court_back_claimant_interaction = {
 			add = -20
 			scope:ftr_backing_in_public = yes
 			scope:actor = { has_character_flag = ftr_liege_warn_not_support_heir }
+		}
+		# —— 立场感知：不同臣属立场（vassal stance）更愿背书符合其继承偏好的候选者 ——
+		# 参考：common/vassal_stances/00_vassal_stances.txt 中各 stance 的 heir_score
+		# （原版继承界面中不同立场封臣的支持分布即源于该评分）。
+		# 仅对「非现任君主」的候选对象（参与者 / 君主子女 / 继承人）叠加；
+		# 支持现任君主属效忠语境，交由下方 opinion_modifier 按好感处理。
+		# 宫廷派 courtly：亲善合群、慷慨大方、长于外交者；厌恶悭吝孤僻
+		modifier = {
+			add = 30
+			scope:actor = { has_vassal_stance = courtly }
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				OR = {
+					has_trait = gregarious
+					has_trait = generous
+					diplomacy >= 6
+				}
+			}
+		}
+		modifier = {
+			add = -20
+			scope:actor = { has_vassal_stance = courtly }
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				OR = {
+					has_trait = greedy
+					has_trait = shy
+				}
+			}
+		}
+		# 武勋派 glory_hound：勇武果决、骄横好胜者；看轻怯懦守成
+		modifier = {
+			add = 30
+			scope:actor = { has_vassal_stance = glory_hound }
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				OR = {
+					has_trait = brave
+					has_trait = arrogant
+					martial >= 6
+				}
+			}
+		}
+		modifier = {
+			add = -20
+			scope:actor = { has_vassal_stance = glory_hound }
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				OR = {
+					has_trait = craven
+					has_trait = content
+				}
+			}
+		}
+		# 守成派 parochial：稳健理财、安分守成者；厌恶野心外露之辈
+		modifier = {
+			add = 30
+			scope:actor = { has_vassal_stance = parochial }
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				OR = {
+					has_trait = content
+					has_trait = stubborn
+					stewardship >= 6
+				}
+			}
+		}
+		modifier = {
+			add = -30
+			scope:actor = { has_vassal_stance = parochial }
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				has_trait = ambitious
+			}
+		}
+		# 虔诚派 zealot：笃信谦和、博学多闻、品性端正者；鄙夷玩世不恭
+		modifier = {
+			add = 30
+			scope:actor = { has_vassal_stance = zealot }
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				OR = {
+					has_trait = zealous
+					has_trait = humble
+					learning >= 6
+				}
+				NOT = { has_trait = cynical }
+			}
+		}
+		modifier = {
+			add = -20
+			scope:actor = { has_vassal_stance = zealot }
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				has_trait = cynical
+			}
+		}
+		# 好战派 belligerent：尚武嗜权、威慑四方者；看轻怯懦谦退
+		modifier = {
+			add = 30
+			scope:actor = { has_vassal_stance = belligerent }
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				OR = {
+					has_trait = wrathful
+					has_trait = ambitious
+					prowess >= 6
+				}
+			}
+		}
+		modifier = {
+			add = -20
+			scope:actor = { has_vassal_stance = belligerent }
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				OR = {
+					has_trait = craven
+					has_trait = humble
+				}
+			}
+		}
+		# 少数派 minority：亲爱同袍、守护少数社群，愿背书与本派同气连枝者
+		modifier = {
+			add = 20
+			scope:actor = { has_vassal_stance = minority }
+			scope:recipient = {
+				NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+				OR = {
+					faith = scope:actor.faith
+					culture = scope:actor.culture
+				}
+			}
 		}
 		# —— 君主健康驱动：加成随最高统治者健康值线性递减（大位越近越早占队）——
 		modifier = {

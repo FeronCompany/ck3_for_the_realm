@@ -94,6 +94,111 @@ ftr_court_cleanup_effect = {
 }
 
 ######################################################
+### 一之二、权力交接：故事随政权延续
+######################################################
+
+# 【通用交接】在 story 域执行：把朝堂故事移交给新君，角逐不落幕。
+# 调用方需预先设置 scope:ftr_court_new_monarch（接管政权者）。
+# 适用场景：君主驾崩由继承人继位 / 政变夺位 / 让位 / 被派系推翻等一切政权易主。
+# 设计（对齐原版 seljuk / black_death 的 make_story_owner 范式）：
+#   - 竞争者名单主存储挂在旧君主身上，须整体迁移到新君身上
+#     （GUI 从 GetPlayer.GetTopLiege 读取），避免换主后窗口空白。
+#   - 若新君本人此前就是角逐参与者，继承大位后不再是竞争者：
+#     把他从竞争者名单（新君主存储 + story participant_list）中移除，
+#     并清理其竞争者个体标记；其名下既有支持者保留为「君主支持者」。
+#   - 若新君曾站队支持某权贵（旧朝参与者），登基后解除该关系。
+ftr_court_transfer_story_effect = {
+	# 记录旧君（当前 story owner，已失位/驾崩）与新君
+	story_owner = { save_scope_as = ftr_court_old_monarch }
+
+	if = {
+		limit = { exists = scope:ftr_court_new_monarch }
+
+		# 1) 迁移竞争者名单（旧君 → 新君）；新君本人若曾是参与者则在此剔除
+		scope:ftr_court_new_monarch = {
+			clear_variable_list = ftr_court_claimants
+		}
+		scope:ftr_court_old_monarch = {
+			every_in_list = {
+				variable = ftr_court_claimants
+				limit = {
+					is_alive = yes
+					NOT = { this = scope:ftr_court_new_monarch }
+				}
+				save_scope_as = ftr_court_inherited_claimant
+				scope:ftr_court_new_monarch = {
+					add_to_variable_list = {
+						name = ftr_court_claimants
+						target = scope:ftr_court_inherited_claimant
+					}
+				}
+			}
+		}
+		# 旧君名单已迁走，清理残留
+		scope:ftr_court_old_monarch = { clear_variable_list = ftr_court_claimants }
+
+		# 2) story 参与者名单同步剔除新君（若他在名单中）
+		if = {
+			limit = {
+				is_target_in_variable_list = {
+					name = ftr_court_participant_list
+					target = scope:ftr_court_new_monarch
+				}
+			}
+			remove_list_variable = {
+				name = ftr_court_participant_list
+				target = scope:ftr_court_new_monarch
+			}
+		}
+
+		# 3) 新君不再是竞争者：清理参与/站队个体标记与临时公国
+		#    （自身 ftr_court_supporters 保留，GUI 读作君主支持者）
+		scope:ftr_court_new_monarch = {
+			# 若新君曾站队支持某权贵（旧朝参与者），登基后解除该关系：
+			# 从被支持者的支持者列表移除自己，再清掉自己的站队变量。
+			if = {
+				limit = { has_variable = ftr_court_backer_of }
+				var:ftr_court_backer_of ?= {
+					ftr_court_remove_backer_effect = { BACKER = prev }
+				}
+			}
+			remove_character_flag = ftr_court_participating
+			remove_character_flag = ftr_court_asked_participation
+			remove_variable = ftr_claim_strength
+			remove_variable = ftr_court_backer_of
+			remove_character_flag = ftr_court_pooled
+			ftr_court_revoke_temp_duchy_effect = yes
+		}
+
+		# 4) 刷新参与计数（variable list 数值计数引用 count value）
+		set_variable = {
+			name = ftr_court_participant_count
+			value = ftr_court_participant_list_count_value
+		}
+		set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
+
+		# 5) 故事所有权移交新君
+		make_story_owner = scope:ftr_court_new_monarch
+	}
+}
+
+# 在 story 域执行（由 story_cycle 的 on_owner_death 调用）：君主驾崩时的交接入口。
+# 找出主要继承人 → 复用通用交接；无主要继承人 → 收场（end_story → on_end 统一清理）。
+ftr_court_owner_death_effect = {
+	# 记录旧君（当前 story owner，已驾崩）与主要继承人
+	story_owner = { save_scope_as = ftr_court_old_monarch }
+	story_owner.primary_heir ?= { save_scope_as = ftr_court_new_monarch }
+
+	if = {
+		limit = { exists = scope:ftr_court_new_monarch }
+		ftr_court_transfer_story_effect = yes
+	}
+	else = {
+		end_story = yes
+	}
+}
+
+######################################################
 ### 二、候选池与竞争力排名
 ######################################################
 
@@ -586,11 +691,20 @@ ftr_court_usurp_throne_effect = {
 		}
 	}
 
-	# 旧君被废后其名下的朝堂角逐收场（旧君尚存但已失位，story 的 owner 不会自行转移）
-	scope:ftr_court_old_monarch = {
-		every_owned_story = {
-			limit = { story_type = ftr_court_struggle }
-			end_story = yes
+	# 权力交接：朝堂角逐 story 归属政权而非个人，旧君失位后应移交新君
+	# （而非 end_story 等待下一年重启）。通用交接会迁移竞争者名单、把新君
+	# 从参与者名单除名并清理其竞争身份；无主头衔可夺（纯虚位）时故事照旧结束。
+	if = {
+		limit = {
+			scope:ftr_court_old_monarch = {
+				any_owned_story = { story_type = ftr_court_struggle }
+			}
+		}
+		scope:ftr_court_old_monarch = {
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
+				ftr_court_transfer_story_effect = yes
+			}
 		}
 	}
 }

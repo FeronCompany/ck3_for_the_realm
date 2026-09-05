@@ -175,12 +175,6 @@ window = {
 								margin = { 10 14 }
 								text = "ftr_court_ui_heirs_label"
 							}
-							## 暂无参与者时的占位提示（有朝堂 story 但参与者为 0）
-							#text_single = {
-							#	margin = { 20 4 }
-							#	text = "ftr_court_ui_no_claimants"
-							#	visible = "[And(GetPlayer.MakeScope.Var('ftr_court_ui_active').IsEqual('1'), GetPlayer.MakeScope.Var('ftr_court_ui_count').IsEqual('0'))]"
-							#}
 							# 每个继任者一行 = 模板 ftr_court_claimant_row（继任者头像 + 该继任者的支持者）
 							vbox = {
 								margin = { 20 20 }
@@ -231,19 +225,19 @@ types Lists
 			blockoverride "scrollbox_content"
 			{
 				hbox = {
-					datamodel = "[Character.MakeScope.GetList('ftr_court_supporters')]"
-					parentanchor = left|vcenter
-					item = {
-						portrait_head_small = {
-							datacontext = "[CharacterListItem.GetCharacter]"
+					layoutpolicy_horizontal = expanding
+					hbox = {
+						datamodel = "[Character.MakeScope.GetList('ftr_court_supporters')]"
+						item = {
+							ftr_court_small_icon = {
+								layoutpolicy_horizontal = fixed
+								datacontext = "[Scope.Char]"
+							}
 						}
-						#ftr_court_small_icon = {
-						#	layoutpolicy_horizontal = fixed
-						#	#datacontext = "[CharacterListItem.GetCharacter]"
-						#	datacontext = "[Scope.Char]"
-						#}
 					}
+					expand = {}
 				}
+				
 			}
 		}
 	}

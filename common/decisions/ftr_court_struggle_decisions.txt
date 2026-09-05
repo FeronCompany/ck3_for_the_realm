@@ -17,15 +17,17 @@ ftr_court_ease_struggle_decision = {
 	}
 
 	is_valid = {
-		# 有朝堂故事且烈度 ≥ 濒危阈值（对立已过，濒危才值得烧资源缓和）
-		any_owned_story = {
-			story_type = ftr_court_struggle
-			has_variable = ftr_court_struggle_intensity
-			var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+		# 1) 有朝堂故事且烈度 ≥ 濒危阈值（对立已过，濒危才值得烧资源缓和）。
+		#    any_owned_story 内嵌变量比较无法被引擎自动渲染成 Requirements 文本，必须包 custom_description。
+		custom_description = {
+			text = ftr_court_ease_struggle_decision_crisis_tt
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				has_variable = ftr_court_struggle_intensity
+				var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+			}
 		}
-		# 不在缓和冷却/休战期内
-		NOT = { has_character_flag = ftr_court_eased_struggle }
-		# 双轨资源足够
+		# 2) 双轨资源足够
 		OR = {
 			AND = {
 				government_allows = administrative

@@ -1,0 +1,1364 @@
+﻿##############################################################
+### 朝堂权力角逐 COURT STRUGGLE — 交互层
+###
+### 议题1：公开站队、撤回支持、倒戈
+### 议题2：辅政保皇、请愿共治、以官位与契约为筹码结纳人心
+###
+### 记账约定（均记在【被承诺者/支持者】身上，便于一对多结算）：
+###   ftr_court_backer_of     —— 我支持谁
+###   ftr_court_promised_by   —— 谁向我承诺过
+###   ftr_court_promise_council / ftr_court_promise_contract —— 承诺类型
+##############################################################
+
+########## 定位所属朝堂（供各交互复用） ##########
+# 注意：这是 effect，用于把君主名下正在进行的角逐存为 scope:ftr_court_story。
+# 调用方需在之后用 if = { limit = { exists = scope:ftr_court_story } ... } 包裹后续逻辑。
+
+############################################################################
+### 议题 1：继任之争
+############################################################################
+
+######### 支持某权贵 / 君主的子女与继承人（公开或秘密） #########
+# 支持对象：权贵（君主 / 共治者 / 参与角逐者）或君主的子女 / 继承人（提前押注，§7.3）。
+# 公开分支 = 表态支持：朝堂通报、其余参与者记恨、小概率君主警觉 0041；对象为继承人时另授予背书声望。
+# 秘密分支 = 只记朝堂支持账（backer_of / supporters），不通报、不树敌、不触发警觉。
+# 原 ftr_support_heir_interaction（支持继承人）已并入本交互并废弃（§7.3）。
+# 若此前已支持他人，改投新主会严重破坏与旧主及其支持者的关系（公开/秘密皆然）。
+ftr_court_back_claimant_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	desc = ftr_court_back_claimant_interaction_desc
+	cooldown_against_recipient = { years = 5 }
+	options_heading = ftr_back_claimant_options_tt
+	send_option = { # Support in secret
+		flag = ftr_backing_in_secret
+		localization = ftr_support_in_secret_tt
+	}
+	send_option = { # Support in public
+		flag = ftr_backing_in_public
+		localization = ftr_support_in_public_tt
+		starts_enabled = { always = yes }
+	}
+	send_options_exclusive = yes
+	ai_targets = {
+		ai_recipients = courtiers
+		ai_recipients = peer_vassals
+		ai_recipients = dynasty
+		ai_recipients = liege
+		ai_recipients = vassals
+		ai_recipients = realm_characters
+		max = 5
+	}
+	ai_frequency = 12
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		# 支持对象：权贵（君主 / 共治者 / 参与角逐的继任者）或君主的子女 / 继承人
+		OR = {
+			scope:recipient = { ftr_court_is_supported_person_trigger = yes }
+			scope:recipient = {
+				OR = {
+					is_child_of = scope:actor.top_liege
+					is_heir_of = scope:actor.top_liege
+				}
+			}
+		}
+		scope:actor = {
+			# 无地廷臣无法主动发起交互，参与一律走事件（ftr_court_struggle.0014）
+			is_landed = yes
+			NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+			ftr_court_can_pay_cost_trigger = {
+				OTHER = scope:recipient
+				PRESTIGE = ftr_court_back_claimant_prestige_cost_value
+				INFLUENCE = ftr_court_back_claimant_influence_cost_value
+			}
+		}
+		scope:recipient = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+			# 资格过滤（承接原 support_heir 语义）
+			NOT = { has_trait = disinherited }
+			NOT = { has_trait = disputed_heritage }
+			NOT = { has_trait = denounced }
+		}
+	}
+	can_send = {}
+	on_accept = {
+		# ---- 若已支持他人，改投新主：从旧主支持者列表移除自己，并与旧主及其支持者关系严重恶化 ----
+		scope:actor = {
+			if = {
+				limit = {
+					has_variable = ftr_court_backer_of
+					NOT = { var:ftr_court_backer_of ?= { this = scope:recipient } }
+				}
+				save_scope_as = ftr_court_old_backed
+				# 从旧主的支持者列表移除自己（新方案：支持者列表存于被支持者身上）
+				scope:ftr_court_old_backed = {
+					ftr_court_remove_backer_effect = { BACKER = scope:actor }
+				}
+				# 旧主记恨
+				var:ftr_court_backer_of ?= {
+					add_opinion = { target = scope:actor  modifier = ftr_court_betrayed_opinion }
+				}
+				# 旧主的支持者们（除了自己）也会敌视改投者
+				scope:ftr_court_old_backed = {
+					every_vassal = {
+						limit = {
+							has_variable = ftr_court_backer_of
+							var:ftr_court_backer_of ?= { this = scope:ftr_court_old_backed }
+							NOT = { this = scope:actor }
+						}
+						add_opinion = { target = scope:actor  modifier = ftr_court_rival_claimant_opinion }
+					}
+					every_courtier = {
+						limit = {
+							has_variable = ftr_court_backer_of
+							var:ftr_court_backer_of ?= { this = scope:ftr_court_old_backed }
+							NOT = { this = scope:actor }
+						}
+						add_opinion = { target = scope:actor  modifier = ftr_court_rival_claimant_opinion }
+					}
+				}
+			}
+			# 更新自己的被支持者变量
+			set_variable = { name = ftr_court_backer_of  value = scope:recipient }
+			ftr_court_pay_cost_effect = {
+				OTHER = scope:recipient
+				PRESTIGE = ftr_court_back_claimant_prestige_cost_value
+				INFLUENCE = ftr_court_back_claimant_influence_cost_value
+			}
+			add_opinion = { target = scope:recipient  modifier = ftr_court_backer_opinion }
+		}
+		# 把 actor 加入 recipient（被支持权贵）的个人支持者列表（公开/秘密共用，记账唯一）
+		scope:recipient = {
+			add_to_variable_list = {
+				name = ftr_court_supporters
+				target = scope:actor
+			}
+			add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
+		}
+
+		# ---- 公开分支：通报 + 树敌 + 背书声望 + 君主警觉 ----
+		if = {
+			limit = { NOT = { scope:ftr_backing_in_secret = yes } }
+			# 公开支持君主的子女 / 继承人：授予背书声望（原 support_heir 公开效果）
+			if = {
+				limit = {
+					scope:recipient ?= {
+						OR = {
+							is_child_of = scope:actor.top_liege
+							is_heir_of = scope:actor.top_liege
+						}
+					}
+				}
+				scope:recipient = {
+					add_prestige = ftr_court_heir_backing_prestige_value
+				}
+			}
+			# 站队公开，其余竞争者同生芥蒂
+			scope:actor.top_liege ?= {
+				every_owned_story = {
+					limit = { story_type = ftr_court_struggle }
+					save_scope_as = ftr_court_story
+				}
+			}
+			if = {
+				limit = { exists = scope:ftr_court_story }
+				scope:ftr_court_story = {
+					every_in_list = {
+						variable = ftr_court_participant_list
+						limit = { NOT = { this = scope:recipient } }
+						add_opinion = { target = scope:actor  modifier = ftr_court_rival_claimant_opinion }
+					}
+					# 朝堂通报：公开表态
+					owner = {
+						save_scope_as = ftr_court_monarch
+						ftr_court_send_court_toast_effect = {
+							TITLE = ftr_court_notice_backing
+							ICON = scope:actor
+						}
+					}
+					# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
+					scope:recipient = { save_scope_as = ftr_court_debug_backed }
+					ftr_court_debug_backing_notice_effect = yes
+				}
+			}
+
+			# ---- 公开支持小概率触发君主警觉事件，恶化君主与被支持者的关系 ----
+			# 概率触发本身在预览中不显示效果，用 custom_tooltip 明确展示"有小概率引发警觉"。
+			if = {
+				limit = {
+					NOT = { scope:recipient = scope:actor }
+					# 被支持者不是君主本人（支持君主不会让君主"警觉"）
+					scope:recipient = {
+						NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+					}
+				}
+				# 概率触发（random + chance 作为概率门）；chance 之后的执行体用 custom_tooltip
+				# 包裹，使预览中能显示"有小概率引发警觉"的说明
+				random = {
+					chance = ftr_court_monarch_alert_chance_value
+					custom_tooltip = {
+						text = ftr_court_back_claimant_alert_tt
+						# 保存被支持者与背书者供警觉事件使用
+						scope:recipient = {
+							save_scope_as = ftr_court_supported
+						}
+						scope:actor = { save_scope_as = ftr_court_backer }
+						scope:actor.top_liege ?= {
+							save_scope_as = ftr_court_monarch
+						}
+						scope:ftr_court_monarch ?= {
+							trigger_event = {
+								id = ftr_court_struggle.0041
+								days = 1
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	on_decline = {}
+	ai_will_do = {
+		base = -10
+		modifier = {
+			add = 30
+			scope:recipient = { has_trait = ambitious }
+		}
+		opinion_modifier = {
+			who = scope:actor
+			opinion_target = scope:recipient
+			multiplier = 1
+		}
+		modifier = {
+			add = -30
+			scope:actor = { has_trait = content }
+		}
+		# 自身是继承人时不轻易为他人公开背书（原 support_heir 语义）
+		modifier = {
+			add = -200
+			scope:actor = { is_heir_of = top_liege }
+		}
+		# 与对象结盟者更愿支持
+		modifier = {
+			add = 50
+			scope:actor = { is_allied_to = scope:recipient }
+		}
+		# 主公有共治者时，朝堂拉锯激烈，更倾向押注
+		modifier = {
+			add = 20
+			scope:actor.top_liege = { has_active_diarchy = yes }
+		}
+		# 曾被君主警告公开背书者收敛（转入秘密或停手）
+		modifier = {
+			add = -40
+			scope:actor = { has_character_flag = ftr_liege_warn_not_support_heir }
+		}
+		# 选项感知：多疑者畏公开树敌，但仍可秘密押注（按拟采取的方案核算）
+		modifier = {
+			add = -10
+			scope:actor = { has_trait = paranoid }
+			scope:ftr_backing_in_public = yes
+		}
+		# 走秘密支持：无树敌与警觉风险，谨慎者亦无顾虑
+		modifier = {
+			add = 15
+			scope:ftr_backing_in_secret = yes
+			scope:actor = {
+				OR = {
+					has_trait = paranoid
+					has_trait = shy
+					has_trait = craven
+				}
+			}
+		}
+		# 拟公开支持却曾被君主警告：大幅却步
+		modifier = {
+			add = -20
+			scope:ftr_backing_in_public = yes
+			scope:actor = { has_character_flag = ftr_liege_warn_not_support_heir }
+		}
+		# —— 君主健康驱动：加成随最高统治者健康值线性递减（大位越近越早占队）——
+		modifier = {
+			add = {
+				value = ftr_court_monarch_health_urgency_base_value
+				subtract = {
+					value = scope:actor.top_liege.health
+					multiply = ftr_court_monarch_health_urgency_slope_value
+				}
+			}
+		}
+	}
+
+	ai_accept = {
+		# 获得一份支持或押注总体有益，但公开拥立也会招风树敌
+		base = 20
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.5
+		}
+		# 支持对象是君主本人：忠君表态，天然欢迎
+		modifier = {
+			desc = ftr_court_accept_back_claimant_monarch
+			add = 30
+			scope:recipient = { ftr_court_is_struggle_monarch_trigger = yes }
+		}
+		# 朝堂存在共治角力时，每份支持都更有分量
+		modifier = {
+			desc = ftr_court_accept_back_claimant_diarchy
+			add = 20
+			scope:recipient = {
+				ftr_court_is_struggle_monarch_trigger = yes
+				has_active_diarchy = yes
+			}
+		}
+		# 野心勃勃者渴求每一份助力
+		modifier = {
+			desc = ftr_court_accept_back_claimant_ambitious
+			add = 15
+			scope:recipient = { has_trait = ambitious }
+		}
+		# 自命不凡者乐于受拥戴声张声势
+		modifier = {
+			desc = ftr_court_accept_back_claimant_arrogant
+			add = 15
+			scope:recipient = { has_trait = arrogant }
+		}
+		# 勇毅者不惧公开站队引来嫉恨
+		modifier = {
+			desc = ftr_court_accept_back_claimant_brave
+			add = 15
+			scope:recipient = { has_trait = brave }
+		}
+		# 多疑者忌惮公开拥立使自己成为靶子
+		modifier = {
+			desc = ftr_court_accept_back_claimant_paranoid
+			add = -25
+			scope:recipient = { has_trait = paranoid }
+		}
+		# 怯懦者不愿卷入公开争斗
+		modifier = {
+			desc = ftr_court_accept_back_claimant_craven
+			add = -15
+			scope:recipient = { has_trait = craven }
+		}
+		# 知足者不喜节外生枝
+		modifier = {
+			desc = ftr_court_accept_back_claimant_content
+			add = -10
+			scope:recipient = { has_trait = content }
+		}
+		# 选项感知（对方按所持「秘密/公开」意图评估）：
+		# 秘密支持免于朝堂侧目，受者更安心
+		modifier = {
+			desc = ftr_court_accept_back_claimant_secret
+			add = 15
+			scope:ftr_backing_in_secret = yes
+		}
+		# 公开拥立声势正合野心勃勃者的胃口
+		modifier = {
+			desc = ftr_court_accept_back_claimant_public
+			add = 15
+			scope:ftr_backing_in_public = yes
+			scope:recipient = { has_trait = ambitious }
+		}
+	}
+}
+
+######### 撤回支持，重归中立 #########
+ftr_court_withdraw_backing_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	desc = ftr_court_withdraw_backing_interaction_desc
+	cooldown_against_recipient = { years = 2 }
+	ai_targets = {
+		ai_recipients = courtiers
+		ai_recipients = close_family
+		max = 1
+	}
+	ai_frequency = 24
+	is_shown = {
+		scope:actor = {
+			# 无地廷臣无法主动发起交互（站队走事件 0014，撤回暂无事件路径）
+			is_landed = yes
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= { this = scope:recipient }
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+		}
+	}
+	can_send = {}
+	on_accept = {
+		scope:actor = {
+			remove_variable = ftr_court_backer_of
+			add_opinion = { target = scope:recipient  modifier = ftr_political_opponent_opinion }
+		}
+		# 从被支持者的个人支持者列表移除自己（新方案：支持者列表存于被支持者身上）
+		scope:recipient = {
+			ftr_court_remove_backer_effect = { BACKER = scope:actor }
+			add_opinion = { target = scope:actor  modifier = ftr_political_opponent_opinion }
+		}
+	}
+	on_decline = {}
+	ai_will_do = {
+		base = -30
+		modifier = {
+			add = 40
+			opinion = { target = scope:recipient  value < 0 }
+		}
+		# 多疑者风声不对先抽身自保，不愿与人捆绑过深
+		modifier = {
+			add = 15
+			scope:actor = { has_trait = paranoid }
+		}
+	}
+
+	ai_accept = {
+		# 强留一个离心的人弊大于利：总体放行，仅在惜才/急需实力时挽留
+		base = 50
+		# 被支持者越器重此人越惜才，越不愿放人（好感高 → 接受度降）
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = -0.5
+		}
+		# 竞逐正酣、局面胶着，缺不得爪牙
+		modifier = {
+			desc = ftr_court_accept_withdraw_struggle
+			add = -25
+			scope:recipient = {
+				any_owned_story = {
+					story_type = ftr_court_struggle
+					has_variable = ftr_court_struggle_intensity
+					var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
+				}
+			}
+		}
+		# 野心勃勃者绝不轻易让麾下力量流失
+		modifier = {
+			desc = ftr_court_accept_withdraw_ambitious
+			add = -20
+			scope:recipient = { has_trait = ambitious }
+		}
+		# 刚愎自用者拉不下脸，宁可挽留也不愿见人转投
+		modifier = {
+			desc = ftr_court_accept_withdraw_arrogant
+			add = -15
+			scope:recipient = { has_trait = arrogant }
+		}
+		# 多疑者怕强留之人怀恨反噬，宁愿好聚好散
+		modifier = {
+			desc = ftr_court_accept_withdraw_paranoid
+			add = 15
+			scope:recipient = { has_trait = paranoid }
+		}
+		# 随遇而安者不强留人
+		modifier = {
+			desc = ftr_court_accept_withdraw_content
+			add = 10
+			scope:recipient = { has_trait = content }
+		}
+	}
+}
+
+############################################################################
+### 议题 2：共治夺权
+############################################################################
+
+######### 辅政：尽心王事，防止大权旁落 #########
+ftr_court_assist_monarch_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	desc = ftr_court_assist_monarch_interaction_desc
+	notification_text = ftr_court_assist_monarch_interaction_notification
+	greeting = positive
+	cooldown_against_recipient = { years = 2 }
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_frequency = 36
+	is_shown = {
+		scope:actor = {
+			OR = {
+				is_councillor_of = scope:recipient
+				is_powerful_vassal_of = scope:recipient
+			}
+		}
+		scope:recipient = {
+			ftr_court_is_struggle_monarch_trigger = yes
+			ftr_court_monarch_infirm_trigger = yes
+			# 最高统治者必须存在共治者（辅政针对君主与共治者的权力拉锯）
+			has_active_diarchy = yes
+			# 发起者不能是共治者本人（共治者不向自己辅政）
+			NOT = { diarch = scope:actor }
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+			NOT = { has_character_flag = ftr_court_assisted_this_year }
+			ftr_court_can_pay_cost_trigger = {
+				OTHER = scope:recipient
+				PRESTIGE = ftr_court_assist_monarch_prestige_cost_value
+				INFLUENCE = ftr_court_assist_monarch_influence_cost_value
+			}
+		}
+	}
+	can_send = {}
+	on_accept = {
+		scope:actor = {
+			ftr_court_pay_cost_effect = {
+				OTHER = scope:recipient
+				PRESTIGE = ftr_court_assist_monarch_prestige_cost_value
+				INFLUENCE = ftr_court_assist_monarch_influence_cost_value
+			}
+			add_character_flag = { flag = ftr_court_assisted_this_year  years = 1 }
+		}
+		# 拉锯向君主一侧移动（官方 diarchy swing：负值 = liege 得势）
+		scope:recipient = {
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
+				save_scope_as = ftr_court_story
+			}
+			add_opinion = { target = scope:actor  modifier = ftr_court_loyalist_opinion }
+			update_diarchy_swing_with_perspective_effect = {
+				SWING = minor_sop_swing_liege_gain
+				LIEGE = scope:recipient
+			}
+		}
+	}
+	on_decline = {}
+	ai_will_do = {
+		base = 0
+		# 与最高统治者的关系（意见修正值）：君主越器重发起者，发起者越愿辅政
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 1.0
+			desc = AI_OPINION_REASON
+		}
+		# 与共治者的关系（意见修正值）：共治者越器重发起者，发起者越不愿辅政打压共治者
+		# 负权重稍大：并非每个臣子都愿冒风险做忠臣
+		opinion_modifier = {
+			who = scope:recipient.diarch
+			opinion_target = scope:actor
+			multiplier = -1.5
+			desc = AI_OPINION_REASON
+		}
+		# 有忠信特质：天性忠贞，愿辅佐君主
+		modifier = {
+			add = 40
+			scope:actor = { has_trait = loyal }
+		}
+		# 与共治者是仇敌：借辅政打压共治者
+		modifier = {
+			add = 40
+			scope:actor = { has_relation_rival = scope:recipient.diarch }
+		}
+		# 多疑者恐出头勤王反遭共治者及其党羽记恨
+		modifier = {
+			add = -15
+			scope:actor = { has_trait = paranoid }
+		}
+	}
+
+	ai_accept = {
+		# 有人勤王助己压制共治者，君主通常乐见，但需掂量来人是否可信
+		base = 30
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.75
+		}
+		# 素来忠贞的臣下值得倚重
+		modifier = {
+			desc = ftr_court_accept_assist_loyal
+			add = 20
+			scope:actor = { has_trait = loyal }
+		}
+		# 关系紧密者更可信
+		modifier = {
+			desc = ftr_court_accept_assist_allied
+			add = 15
+			scope:actor = { is_allied_to = scope:recipient }
+		}
+		# 曾公开支持他人者「勤王」或另有盘算
+		modifier = {
+			desc = ftr_court_accept_assist_backer
+			add = -40
+			scope:actor = { has_variable = ftr_court_backer_of }
+		}
+		# 曾因背立被君主警告过者不可轻信
+		modifier = {
+			desc = ftr_court_accept_assist_warned
+			add = -30
+			scope:actor = { has_character_flag = ftr_liege_warn_not_support_heir }
+		}
+		# 花言巧语者未必真心
+		modifier = {
+			desc = ftr_court_accept_assist_deceitful
+			add = -15
+			scope:actor = { has_trait = deceitful }
+		}
+		# 野心过盛者借辅政近身揽权，须防
+		modifier = {
+			desc = ftr_court_accept_assist_ambitious
+			add = -15
+			scope:actor = { has_trait = ambitious }
+		}
+		# 多疑的君主对来投者格外审慎
+		modifier = {
+			desc = ftr_court_accept_assist_paranoid
+			add = -10
+			scope:recipient = { has_trait = paranoid }
+		}
+	}
+}
+
+######### 请愿共治：权臣试探大位 #########
+ftr_court_petition_coregency_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	desc = ftr_court_petition_coregency_interaction_desc
+	cooldown_against_recipient = { years = 3 }
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_frequency = 6
+	is_shown = {
+		scope:recipient = {
+			ftr_court_is_struggle_monarch_trigger = yes
+			ftr_court_monarch_infirm_trigger = yes
+			NOT = { has_active_diarchy = yes }
+		}
+		scope:actor = {
+			OR = {
+				is_councillor_of = scope:recipient
+				is_powerful_vassal_of = scope:recipient
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+			ftr_court_can_pay_cost_trigger = {
+				OTHER = scope:recipient
+				PRESTIGE = ftr_court_request_coregency_prestige_cost_value
+				INFLUENCE = ftr_court_request_coregency_influence_cost_value
+			}
+		}
+		# 需已积累足够的朝堂倾向
+		scope:recipient = {
+			any_owned_story = {
+				type = ftr_court_struggle
+				ftr_court_can_petition_coregency_trigger = yes
+			}
+		}
+	}
+	can_send = {}
+	on_accept = {
+		scope:actor = {
+			ftr_court_pay_cost_effect = {
+				OTHER = scope:recipient
+				PRESTIGE = ftr_court_request_coregency_prestige_cost_value
+				INFLUENCE = ftr_court_request_coregency_influence_cost_value
+			}
+		}
+		# 请愿结果交由事件裁决，君主可允可拒
+		scope:recipient = {
+			save_scope_as = ftr_court_monarch
+			# 朝堂通报：共治请愿已呈递
+			ftr_court_send_court_toast_effect = {
+				TITLE = ftr_court_notice_petition
+				ICON = scope:actor
+			}
+			trigger_event = {
+				id = ftr_court_struggle.0020
+				days = 1
+			}
+		}
+	}
+	on_decline = {}
+	ai_will_do = {
+		base = -60
+		modifier = {
+			add = 50
+			scope:actor = { has_trait = ambitious }
+		}
+		modifier = {
+			add = 25
+			scope:actor = { is_powerful_vassal_of = scope:recipient }
+		}
+		# 公然请立共治近乎逼宫，多疑者绝不轻蹈险地
+		modifier = {
+			add = -20
+			scope:actor = { has_trait = paranoid }
+		}
+	}
+
+	ai_accept = {
+		# 分权大位非同小可：仅对信得过、且实在需要其分忧的人松口
+		base = -40
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.5
+		}
+		# 素来忠贞的臣下，分权亦不虞反噬
+		modifier = {
+			desc = ftr_court_accept_petition_loyal
+			add = 35
+			scope:actor = { has_trait = loyal }
+		}
+		# 能力卓著者能真正分忧（声望高者治政名声在外）
+		modifier = {
+			desc = ftr_court_accept_petition_prestige
+			add = 15
+			scope:actor = { prestige_level >= 3 }
+		}
+		# 病弱君主渴望强援分担朝政（本交互已要求君主失能/衰弱）
+		modifier = {
+			desc = ftr_court_accept_petition_need
+			add = 30
+			scope:recipient = { has_trait = craven }
+		}
+		# 慷慨、轻信者更愿托付
+		modifier = {
+			desc = ftr_court_accept_petition_generous
+			add = 20
+			scope:recipient = { has_trait = generous }
+		}
+		modifier = {
+			desc = ftr_court_accept_petition_trusting
+			add = 15
+			scope:recipient = { has_trait = trusting }
+		}
+		# 权欲旺盛的君主绝不分权
+		modifier = {
+			desc = ftr_court_accept_petition_monarch_ambitious
+			add = -40
+			scope:recipient = { has_trait = ambitious }
+		}
+		# 刚愎自用者自视独力可支
+		modifier = {
+			desc = ftr_court_accept_petition_arrogant
+			add = -25
+			scope:recipient = { has_trait = arrogant }
+		}
+		# 守成者不愿轻改朝局
+		modifier = {
+			desc = ftr_court_accept_petition_content
+			add = -20
+			scope:recipient = { has_trait = content }
+		}
+		# 多疑的君主恐请立实为染指大宝
+		modifier = {
+			desc = ftr_court_accept_petition_paranoid
+			add = -15
+			scope:recipient = { has_trait = paranoid }
+		}
+		# 来者是头号强藩时，名为辅政实为逼宫
+		modifier = {
+			desc = ftr_court_accept_petition_powerful
+			add = -20
+			scope:actor = { is_powerful_vassal_of = scope:recipient }
+		}
+		# 来者野心昭彰者不可托付
+		modifier = {
+			desc = ftr_court_accept_petition_actor_ambitious
+			add = -30
+			scope:actor = { has_trait = ambitious }
+		}
+		# 巧言令色者恐揽权谋私
+		modifier = {
+			desc = ftr_court_accept_petition_deceitful
+			add = -20
+			scope:actor = { has_trait = deceitful }
+		}
+	}
+}
+
+######### 许诺支持：许以内阁席位 / 许以宽免义务 #########
+# 合并原两个 promise 交互，许诺内容做成 send_option 选项。
+ftr_court_promise_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	desc = ftr_court_promise_interaction_desc
+	cooldown_against_recipient = { years = 3 }
+	ai_targets = {
+		ai_recipients = peer_vassals
+		max = 5
+	}
+	ai_frequency = 12
+
+	send_option = {
+		flag = ftr_promise_council
+		localization = ftr_court_promise_council_option
+	}
+	send_option = {
+		flag = ftr_promise_contract
+		localization = ftr_court_promise_contract_option
+	}
+	send_option = {
+		flag = ftr_court_promise_gold
+		localization = ftr_court_promise_gold_option
+		# 须拿得出这笔厚礼
+		is_valid = {
+			scope:actor = { gold >= ftr_court_promise_gold_cost_value }
+		}
+	}
+	send_option = {
+		flag = ftr_court_promise_favor
+		localization = ftr_court_promise_favor_option
+		# 须付得起双轨成本
+		is_valid = {
+			ftr_court_can_pay_cost_trigger = {
+				OTHER = scope:recipient
+				PRESTIGE = ftr_court_promise_favor_prestige_cost_value
+				INFLUENCE = ftr_court_promise_favor_influence_cost_value
+			}
+		}
+	}
+	send_options_exclusive = yes
+
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		# 只有竞争者（参与角逐）或共治者才许得出筹码
+		scope:actor = {
+			# 无地竞争者无法主动发起交互（拉拢走事件）
+			is_landed = yes
+			OR = {
+				ftr_court_is_active_claimant_trigger = yes
+				has_active_diarchy = yes
+			}
+		}
+		# 契约放宽仅对有地臣属；内阁席位对朝堂成员（封臣/廷臣）均可
+		scope:recipient = { ftr_court_is_court_member_trigger = yes }
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+		}
+		scope:recipient = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+		}
+	}
+	can_send = {}
+	on_accept = {
+		# 依 send_option 选择：直接现付（赠金 / 双轨示好）当场了断，或许诺未来回报（记账待兑现）
+		if = {
+			limit = { scope:actor = { has_character_flag = ftr_court_promise_gold } }
+			# 直接赠金：金币当场易手，收买人情，无须日后兑现
+			scope:actor = {
+				pay_short_term_gold = {
+					target = scope:recipient
+					gold = ftr_court_promise_gold_cost_value
+				}
+				remove_character_flag = ftr_court_promise_gold
+			}
+			scope:recipient = {
+				add_opinion = { target = scope:actor  modifier = ftr_court_bribed_opinion }
+			}
+		}
+		else_if = {
+			limit = { scope:actor = { has_character_flag = ftr_court_promise_favor } }
+			# 直接示好：双轨资源当即花费，不记账（无须日后兑现）
+			scope:actor = {
+				ftr_court_pay_cost_effect = {
+					OTHER = scope:recipient
+					PRESTIGE = ftr_court_promise_favor_prestige_cost_value
+					INFLUENCE = ftr_court_promise_favor_influence_cost_value
+				}
+				remove_character_flag = ftr_court_promise_favor
+			}
+			scope:recipient = {
+				add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
+			}
+		}
+		else = {
+			# 许诺未来回报（许以内阁席位 / 许以宽免义务）
+			if = {
+				limit = { scope:actor = { has_character_flag = ftr_promise_council } }
+				scope:actor = {
+					ftr_court_pay_cost_effect = {
+						OTHER = scope:recipient
+						PRESTIGE = ftr_court_promise_council_prestige_cost_value
+						INFLUENCE = ftr_court_promise_council_influence_cost_value
+					}
+					# 欠账计数：继承后依此触发提醒事件
+					if = {
+						limit = { NOT = { has_variable = ftr_court_owes_council } }
+						set_variable = { name = ftr_court_owes_council  value = 0 }
+					}
+					change_variable = { name = ftr_court_owes_council  add = 1 }
+					remove_character_flag = ftr_promise_council
+				}
+				# 记在被承诺者身上，便于日后集中兑现
+				scope:recipient = {
+					set_variable = { name = ftr_court_promised_by  value = scope:actor }
+					set_variable = { name = ftr_court_promise_council  value = 1 }
+					add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
+				}
+			}
+			else = {
+				# 契约放宽
+				scope:actor = {
+					ftr_court_pay_cost_effect = {
+						OTHER = scope:recipient
+						PRESTIGE = ftr_court_promise_contract_prestige_cost_value
+						INFLUENCE = ftr_court_promise_contract_influence_cost_value
+					}
+					remove_character_flag = ftr_promise_contract
+				}
+				scope:recipient = {
+					set_variable = { name = ftr_court_promised_by  value = scope:actor }
+					set_variable = { name = ftr_court_promise_contract  value = 1 }
+					add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
+				}
+			}
+		}
+	}
+	on_decline = {}
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = 40
+			scope:actor = { opinion = { target = scope:recipient  value < 30 } }
+		}
+		modifier = {
+			add = 25
+			scope:recipient = { is_powerful_vassal_of = scope:actor.top_liege }
+		}
+		modifier = {
+			add = 30
+			scope:recipient = { has_trait = greedy }
+		}
+		# 多疑者不轻许重诺：许下易，兑现难，恐来日生怨
+		modifier = {
+			add = -10
+			scope:actor = { has_trait = paranoid }
+		}
+		# —— 选项感知：AI 拟用的方案须付得起（资源门槛进 AI 决策而非改选项触发）——
+		modifier = {
+			add = -200
+			scope:ftr_promise_council = yes
+			scope:actor = {
+				NOT = {
+					ftr_court_can_pay_cost_trigger = {
+						OTHER = scope:recipient
+						PRESTIGE = ftr_court_promise_council_prestige_cost_value
+						INFLUENCE = ftr_court_promise_council_influence_cost_value
+					}
+				}
+			}
+		}
+		modifier = {
+			add = -200
+			scope:ftr_promise_contract = yes
+			scope:actor = {
+				NOT = {
+					ftr_court_can_pay_cost_trigger = {
+						OTHER = scope:recipient
+						PRESTIGE = ftr_court_promise_contract_prestige_cost_value
+						INFLUENCE = ftr_court_promise_contract_influence_cost_value
+					}
+				}
+			}
+		}
+		modifier = {
+			add = -200
+			scope:ftr_court_promise_gold = yes
+			scope:actor = { gold < ftr_court_promise_gold_cost_value }
+		}
+		modifier = {
+			add = -200
+			scope:ftr_court_promise_favor = yes
+			scope:actor = {
+				NOT = {
+					ftr_court_can_pay_cost_trigger = {
+						OTHER = scope:recipient
+						PRESTIGE = ftr_court_promise_favor_prestige_cost_value
+						INFLUENCE = ftr_court_promise_favor_influence_cost_value
+					}
+				}
+			}
+		}
+		# —— 人格对方案的偏好 ——
+		# 进取者重实权：偏爱许以内阁席位
+		modifier = {
+			add = 15
+			scope:ftr_promise_council = yes
+			scope:actor = { has_trait = ambitious }
+		}
+		# 知足者不愿背日后兑现的包袱
+		modifier = {
+			add = -15
+			scope:ftr_promise_council = yes
+			scope:actor = { has_trait = content }
+		}
+		# 贪财者偏爱真金白银
+		modifier = {
+			add = 15
+			scope:ftr_court_promise_gold = yes
+			scope:actor = { has_trait = greedy }
+		}
+		# 诚实者轻「空头许诺」，宁作当下的双轨示好
+		modifier = {
+			add = 10
+			scope:ftr_court_promise_favor = yes
+			scope:actor = { has_trait = honest }
+		}
+		# —— 君主健康驱动：加成随最高统治者健康值线性递减（窗口越短越急迫）——
+		modifier = {
+			add = {
+				value = ftr_court_monarch_health_urgency_base_value
+				subtract = {
+					value = scope:actor.top_liege.health
+					multiply = ftr_court_monarch_health_urgency_slope_value
+				}
+			}
+		}
+	}
+
+	ai_accept = {
+		# 平白得到许诺的席位或宽免，多不愿拂却——但也会掂量许诺者的立场与为人
+		base = 10
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.7
+		}
+		# 见利而喜者欣然受之
+		modifier = {
+			desc = ftr_court_accept_promise_greedy
+			add = 30
+			scope:recipient = { has_trait = greedy }
+		}
+		# 上进者乐于抓住进身之阶
+		modifier = {
+			desc = ftr_court_accept_promise_ambitious
+			add = 20
+			scope:recipient = { has_trait = ambitious }
+		}
+		# 轻信者把许诺当承诺
+		modifier = {
+			desc = ftr_court_accept_promise_trusting
+			add = 15
+			scope:recipient = { has_trait = trusting }
+		}
+		# 多疑者疑心许诺背后另有图谋
+		modifier = {
+			desc = ftr_court_accept_promise_paranoid
+			add = -15
+			scope:recipient = { has_trait = paranoid }
+		}
+		# 忠贞者生怕受他派许诺玷污操守
+		modifier = {
+			desc = ftr_court_accept_promise_loyal
+			add = -15
+			scope:recipient = { has_trait = loyal }
+		}
+		# 守正者不轻受政治交易
+		modifier = {
+			desc = ftr_court_accept_promise_honest
+			add = -15
+			scope:recipient = { has_trait = honest }
+		}
+		# 已有既定派系者，忌再受他派许诺落人口实
+		modifier = {
+			desc = ftr_court_accept_promise_backer
+			add = -30
+			scope:recipient = { has_variable = ftr_court_backer_of }
+		}
+		# 视许诺者为仇雠则绝不受之
+		modifier = {
+			desc = ftr_court_accept_promise_rival
+			add = -60
+			scope:recipient = { has_relation_rival = scope:actor }
+		}
+		# 选项感知（对方按许诺者所选方案评估）：
+		# 真金白银当下落袋，比空口许诺更有分量
+		modifier = {
+			desc = ftr_court_accept_promise_gold_offered
+			add = 15
+			scope:ftr_court_promise_gold = yes
+		}
+		# 许以内阁席位：进取者盼的是实权，而非眼前的钱
+		modifier = {
+			desc = ftr_court_accept_promise_council_offered
+			add = 10
+			scope:ftr_promise_council = yes
+			scope:recipient = { has_trait = ambitious }
+		}
+	}
+}
+
+######### 游说：拉拢同僚推动权力天平（议题 2 的主动博弈） #########
+# 权臣阵营借此推高天平，保皇阵营借此巩固人心。
+# 被游说者可以是封臣或无地廷臣——廷臣由此获得被动参与路径。
+ftr_court_lobby_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	desc = ftr_court_lobby_interaction_desc
+	cooldown_against_recipient = { years = 1 }
+
+	send_option = {
+		flag = lobby_diarch
+		localization = ftr_court_lobby_diarch
+	}
+	send_option = {
+		flag = lobby_monarch
+		localization = ftr_court_lobby_monarch
+	}
+	send_options_exclusive = yes
+
+	ai_targets = {
+		ai_recipients = peer_vassals
+		ai_recipients = courtiers
+		max = 2
+	}
+	ai_frequency = 12
+
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		scope:actor = {
+			# 无地廷臣不能主动发起交互
+			is_landed = yes
+			NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+			# 游说是围绕"共治权力天平"拉拢人心：领主（朝堂故事 owner）须有共治者才谈得上推拉
+			# 双方处于同一朝堂（故事挂在君主身上），且该领主处于共治状态
+			OR = {
+				AND = {
+					exists = top_liege
+					top_liege = {
+						any_owned_story = { type = ftr_court_struggle }
+						has_active_diarchy = yes
+					}
+				}
+				AND = {
+					exists = employer
+					employer = {
+						any_owned_story = { type = ftr_court_struggle }
+						has_active_diarchy = yes
+					}
+				}
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+			ftr_court_can_pay_cost_trigger = {
+				OTHER = scope:recipient
+				PRESTIGE = ftr_court_lobby_prestige_cost_value
+				INFLUENCE = ftr_court_lobby_influence_cost_value
+			}
+		}
+		scope:recipient = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+		}
+	}
+	can_send = {}
+	on_accept = {
+		scope:actor = {
+			ftr_court_pay_cost_effect = {
+				OTHER = scope:recipient
+				PRESTIGE = ftr_court_lobby_prestige_cost_value
+				INFLUENCE = ftr_court_lobby_influence_cost_value
+			}
+		}
+
+		# 定位所属朝堂
+		scope:actor.top_liege ?= {
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
+				save_scope_as = ftr_court_story
+			}
+		}
+		if = {
+			limit = {
+				NOT = { exists = scope:ftr_court_story }
+				exists = scope:actor.employer
+			}
+			scope:actor.employer = {
+				every_owned_story = {
+					limit = { story_type = ftr_court_struggle }
+					save_scope_as = ftr_court_story
+				}
+			}
+		}
+
+		if = {
+			limit = { exists = scope:ftr_court_story }
+			scope:ftr_court_story = {
+				story_owner = { save_scope_as = ftr_court_lobby_monarch }
+			}
+		}
+		# 官方 diarchy swing：劝进 +5（diarch 侧）、劝忠 −5（liege 侧）
+		scope:ftr_court_lobby_monarch ?= {
+			if = {
+				limit = { scope:actor = { has_character_flag = lobby_diarch } }
+				# 劝进：游说对象被拉向共治阵营
+				update_diarchy_swing_with_perspective_effect = {
+					SWING = minor_sop_swing_diarch_gain
+					LIEGE = scope:ftr_court_lobby_monarch
+				}
+			}
+			else = {
+				# 劝忠：游说对象被拉回君主阵营
+				update_diarchy_swing_with_perspective_effect = {
+					SWING = minor_sop_swing_liege_gain
+					LIEGE = scope:ftr_court_lobby_monarch
+				}
+			}
+		}
+
+		# 人情记账
+		if = {
+			limit = { scope:actor = { has_character_flag = lobby_diarch } }
+			scope:recipient = {
+				add_opinion = { target = scope:actor  modifier = ftr_political_alliance_opinion }
+			}
+		}
+		else = {
+			scope:actor.top_liege ?= {
+				save_scope_as = ftr_court_monarch
+			}
+			scope:recipient = {
+				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_loyalist_opinion }
+			}
+		}
+	}
+	on_decline = {}
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 25
+			scope:actor = { has_trait = ambitious }
+		}
+		modifier = {
+			add = 25
+			scope:actor = { has_trait = gregarious }
+		}
+		modifier = {
+			add = -30
+			scope:actor = { has_trait = shy }
+		}
+		# 多疑者忌惮高调拉人引人侧目，亦难辨游说对象的真心
+		modifier = {
+			add = -15
+			scope:actor = { has_trait = paranoid }
+		}
+		# —— 选项感知（按 AI 拟采用的劝进/劝忠方案）——
+		# 拟劝进：共治者本人，或已拥立共治者者
+		modifier = {
+			add = 15
+			scope:lobby_diarch = yes
+			scope:actor = {
+				OR = {
+					this = scope:actor.top_liege.diarch
+					AND = {
+						has_variable = ftr_court_backer_of
+						var:ftr_court_backer_of ?= { this = scope:actor.top_liege.diarch }
+					}
+				}
+			}
+		}
+		# 拟劝忠：与君主相善者更愿为君张目
+		modifier = {
+			add = 10
+			scope:lobby_monarch = yes
+			scope:actor = { opinion = { target = scope:actor.top_liege  value > 0 } }
+		}
+	}
+
+	ai_accept = {
+		# 被游说改变朝堂立场是件大事：没想法的人看交情，有立场的人看利益
+		base = -10
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.9
+		}
+		# 交游广阔者好攀谈，易被说动
+		modifier = {
+			desc = ftr_court_accept_lobby_gregarious
+			add = 25
+			scope:recipient = { has_trait = gregarious }
+		}
+		# 上进者乐见多方卖好
+		modifier = {
+			desc = ftr_court_accept_lobby_ambitious
+			add = 20
+			scope:recipient = { has_trait = ambitious }
+		}
+		# 立场已定者（已有支持对象）不为所动
+		modifier = {
+			desc = ftr_court_accept_lobby_backer
+			add = -60
+			scope:recipient = { has_variable = ftr_court_backer_of }
+		}
+		# 疑心重者把游说当试探，不肯露底
+		modifier = {
+			desc = ftr_court_accept_lobby_paranoid
+			add = -20
+			scope:recipient = { has_trait = paranoid }
+		}
+		# 固执己见者不听人言
+		modifier = {
+			desc = ftr_court_accept_lobby_stubborn
+			add = -25
+			scope:recipient = { has_trait = stubborn }
+		}
+		# 守正者厌弃朝堂钻营
+		modifier = {
+			desc = ftr_court_accept_lobby_honest
+			add = -15
+			scope:recipient = { has_trait = honest }
+		}
+		# 视游说者为仇雠者话不投机
+		modifier = {
+			desc = ftr_court_accept_lobby_rival
+			add = -50
+			scope:recipient = { has_relation_rival = scope:actor }
+		}
+		# 能言善辩者说辞更动人心
+		modifier = {
+			desc = ftr_court_accept_lobby_suasive
+			add = 10
+			scope:actor = { has_trait = gregarious }
+		}
+		# 选项感知（对方按所持「劝忠/劝进」意图评估）：
+		# 劝其效忠君主：感念旧主者更愿听
+		modifier = {
+			desc = ftr_court_accept_lobby_urge_monarch
+			add = 15
+			scope:lobby_monarch = yes
+			scope:recipient = { opinion = { target = scope:actor.top_liege  value > 0 } }
+		}
+		# 劝其转向共治：与共治者亲近者更动心
+		modifier = {
+			desc = ftr_court_accept_lobby_urge_diarch
+			add = 15
+			scope:lobby_diarch = yes
+			scope:recipient = { opinion = { target = scope:actor.top_liege.diarch  value > 0 } }
+		}
+	}
+}

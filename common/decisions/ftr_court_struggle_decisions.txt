@@ -1,0 +1,221 @@
+﻿# 朝堂权力角逐 —— 缓和内部矛盾决议（§12.5 / §12.11）
+# 求值域：君主（story owner）。当朝堂烈度过高时，以高成本换取烈度骤降 + 缓和与竞争者关系 + 短暂休战。
+
+ftr_court_ease_struggle_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_court_ease_struggle_decision_desc
+	selection_tooltip = ftr_court_ease_struggle_decision_tooltip
+	cooldown = { years = ftr_court_ease_cooldown_years_value }
+
+	is_shown = {
+		is_ruler = yes
+		# 拥有朝堂权力角逐故事
+		any_owned_story = { story_type = ftr_court_struggle }
+	}
+
+	is_valid = {
+		# 1) 有朝堂故事且烈度 ≥ 濒危阈值（对立已过，濒危才值得烧资源缓和）。
+		#    any_owned_story 内嵌变量比较无法被引擎自动渲染成 Requirements 文本，必须包 custom_description。
+		custom_description = {
+			text = ftr_court_ease_struggle_decision_crisis_tt
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				has_variable = ftr_court_struggle_intensity
+				var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+			}
+		}
+		# 2) 双轨资源足够
+		OR = {
+			AND = {
+				government_allows = administrative
+				influence >= ftr_court_ease_influence_cost_value
+			}
+			AND = {
+				NOT = { government_allows = administrative }
+				prestige >= ftr_court_ease_prestige_cost_value
+			}
+		}
+	}
+
+	effect = {
+		ftr_court_ease_struggle_effect = yes
+	}
+
+	ai_check_interval = 60
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 0
+		# 烈度越高越倾向救火（濒爆必缓和）
+		modifier = {
+			add = 60
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
+			}
+		}
+		modifier = {
+			add = 30
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+			}
+		}
+		# 资源不足以负担成本
+		modifier = {
+			add = -50
+			OR = {
+				AND = {
+					government_allows = administrative
+					influence < ftr_court_ease_influence_cost_value
+				}
+				AND = {
+					NOT = { government_allows = administrative }
+					prestige < ftr_court_ease_prestige_cost_value
+				}
+			}
+		}
+		# 人格：谨慎/和谐型更愿缓和；嗜权/野心型宁坐观爆点渔利
+		modifier = {
+			add = 20
+			OR = {
+				has_trait = patient
+				has_trait = calm
+				has_trait = temperate
+			}
+		}
+		modifier = {
+			add = -15
+			has_trait = ambitious
+		}
+		}
+
+		# 朝堂权力角逐 —— 派间谍调查头号竞争者（手段 2.2 主动入口，§9.2）
+		# 求值域：触发池成员（最高统治者 / 有头衔·领地的参与者 / 参与者的有头衔·领地支持者）。
+		# 查实可压制头号竞争者；AI 依「我支持的候选人」处境决定是否出手（§7.3 AI 决策）。
+		ftr_court_investigate_decision = {
+		picture = {
+			reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+		}
+		decision_group_type = realm
+		desc = ftr_court_investigate_decision_desc
+		selection_tooltip = ftr_court_investigate_decision_tooltip
+		cooldown = { years = 3 }
+
+		is_shown = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+			# 资格：触发池成员（最高统治者 / 有头衔·领地参与者 / 参与者有头衔·领地支持者）
+			ftr_court_can_order_investigation_trigger = yes
+			# 朝堂烈度进入对立以上才有值得彻查的对手
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				has_variable = ftr_court_struggle_intensity
+				var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
+			}
+			NOT = { has_character_flag = ftr_court_investigate_cooldown }
+		}
+
+		is_valid = {
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				has_variable = ftr_court_struggle_intensity
+				var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
+			}
+		}
+
+		effect = {
+			add_character_flag = { flag = ftr_court_investigate_cooldown  years = 3 }
+			trigger_event = ftr_court_struggle.0060
+		}
+
+		ai_check_interval = 60
+		ai_potential = {
+			always = yes
+		}
+		ai_will_do = {
+			base = 0
+			# 我支持的候选人 C 与头号接近 / 落后时，倾向出手拆台
+			modifier = {
+				add = 35
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= {
+					has_character_flag = ftr_court_participating
+				}
+			}
+			# 君主 / 参与者被猜忌型人格驱动
+			modifier = {
+				add = 25
+				OR = {
+					has_trait = paranoid
+					has_trait = ambitious
+				}
+			}
+			modifier = {
+				add = -30
+				has_trait = trusting
+			}
+			# 曾因公开背书被警告者收敛（转地下，避免惊动君主）
+			modifier = {
+				add = -25
+				has_character_flag = ftr_liege_warn_not_support_heir
+			}
+			}
+			}
+
+			# 朝堂权力角逐 —— 使用把柄（手段 2.3 后续入口，§9.3）
+			# 求值域：持有 ftr_court_has_leverage 且已记录 ftr_court_leverage_target 的发起竞争者。
+			ftr_court_use_leverage_decision = {
+			picture = {
+			reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+			}
+			decision_group_type = realm
+			desc = ftr_court_use_leverage_decision_desc
+			selection_tooltip = ftr_court_use_leverage_decision_tooltip
+			cooldown = { years = 1 }
+
+			is_shown = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+			has_character_flag = ftr_court_has_leverage
+			has_variable = ftr_court_leverage_target
+			var:ftr_court_leverage_target ?= { is_alive = yes }
+			}
+
+			is_valid = {
+			always = yes
+			}
+
+			effect = {
+			trigger_event = ftr_court_struggle.0071
+			}
+
+			ai_check_interval = 60
+			ai_potential = {
+			always = yes
+			}
+			ai_will_do = {
+			base = 0
+			modifier = {
+				add = 30
+				has_trait = deceitful
+			}
+			modifier = {
+				add = 25
+				has_trait = ambitious
+			}
+			modifier = {
+				add = -25
+				has_trait = just
+			}
+			modifier = {
+				add = -20
+				has_trait = content
+			}
+			}
+			}
+}

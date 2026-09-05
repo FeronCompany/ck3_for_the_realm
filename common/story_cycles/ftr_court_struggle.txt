@@ -1,0 +1,180 @@
+﻿##############################################################
+### 朝堂权力角逐 COURT STRUGGLE
+### 挂在独立王国/帝国/霸权的最高统治者（story owner）身上
+###
+### 议题1 继任之争：竞争者以「竞争力评分」排名，取前五名进入朝堂名单
+### 议题2 共治夺权：以官方 diarchy swing（diarchy_swing）为拉锯轴
+###
+### 烈度（var:ftr_court_struggle_intensity，0-200）替代原离散 ftr_court_phase：
+###   0-40   平静/潜伏     40-90  酝酿
+###   90-140 对立（0014 站队 / 对立脉冲）
+###   140-170 濒危（危机脉冲 / 政变·内战出口开启，story 图标亮剑）
+###   170-200 临界（0018 废黜昏君等最强手段）
+###
+### 作用域约定：root / scope:story = 故事本体；owner = 在位君主
+##############################################################
+
+ftr_court_struggle = {
+	visible = yes
+
+	################## 生命周期 ##################
+
+	on_setup = {
+		ftr_court_setup_effect = yes
+		# 朝堂权力角逐开始：通知最高统治者。
+		story_owner = {
+			add_character_flag = { flag = ftr_court_notified }
+			trigger_event = { id = ftr_court_struggle.0019 }
+		}
+	}
+
+	on_owner_death = {
+		# 君主驾崩：本轮角逐落幕。
+		# 清理统一交给 on_end 处理，此处只结束故事，避免清理两遍。
+		# 新君是否重启角逐交由下一年的年度检查判定——刻意避开继承结算的时序风险。
+		end_story = yes
+	}
+
+	on_end = {
+		ftr_court_cleanup_effect = yes
+	}
+
+	################## 外观 ##################
+
+	# 烈度进入濒危/危机区（>=140）改用剑图标，其余沿用宫廷政治图标
+	icon = {
+		trigger = {
+			has_variable = ftr_court_struggle_intensity
+			var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+		}
+		reference = "gfx/interface/icons/story_cycles/story_icon_conqueror.dds"
+	}
+	icon = {
+		reference = "gfx/interface/icons/story_cycles/story_icon_palace_politics.dds"
+	}
+
+	background = {
+		reference = "gfx/interface/illustrations/event_scenes/corridor_day.dds"
+	}
+
+	################## 面板可视化 ##################
+
+	visualization = {
+		# 继任竞争者名单（最多五人）
+		character_list = {
+			variable_name = "ftr_court_participant_list"
+			label = "FTR_COURT_CLAIMANTS"
+		}
+
+		# 朝堂烈度进度条（0 平静 ↔ 200 临界；随烈度升高逼近政变/内战）
+		basic_counter = {
+			variable_name = "ftr_court_struggle_intensity"
+			min = 0
+			max = 200
+			label = "FTR_COURT_INTENSITY"
+			min_label = "ftr_court_ui_intensity_quiet"
+			max_label = "ftr_court_ui_intensity_critical"
+		}
+
+		custom_string_key = "FTR_COURT_STRINGS"
+
+		# 缓和内部矛盾决议入口：由官方 story 面板渲染为决策按钮，
+		# 君主（story owner）可直接点击办理，引擎自动处理可点/灰显与执行。
+		decisions = {
+			ftr_court_ease_struggle_decision
+		}
+	}
+
+	################## 年度维护：拉锯回落、烈度 ##################
+
+	effect_group = {
+		years = 1
+		triggered_effect = {
+			trigger = {
+				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
+			}
+			effect = {
+				# 议题2 权力天平交由官方 diarchy swing 的 swing_balance 机制自然维护
+				# 烈度年度维护（自然回落 + 君主状态偏置；替代原 phase 定档）
+				ftr_court_refresh_intensity_effect = yes
+			}
+		}
+		# 政权不再符合条件（被征服、降级、绝嗣）时收场
+		fallback = {
+			end_story = yes
+		}
+	}
+
+	################## 参与者询问刷新（30-60 天随机） ##################
+
+	# 定期重新询问：给之前未参与且未明确表示不参与的潜在继承人一次选择机会。
+	effect_group = {
+		days = { ftr_court_refresh_interval_min_value  ftr_court_refresh_interval_max_value }
+		triggered_effect = {
+			trigger = {
+				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
+			}
+			effect = {
+				ftr_court_launch_participation_asks_effect = yes
+			}
+		}
+		fallback = {
+			end_story = yes
+		}
+	}
+
+	################## 内斗主时钟（60-120 天，§12.4.1） ##################
+
+	# 内斗主时钟（60-120 天，§12.4.1）：只留心跳——守卫通过后把"这一拍选哪一族出手"交给
+	# on_action 随机池 ftr_court_struggle_main_pulse（参考原版 pet_dog 机制：心跳 +
+	# story_owner = { trigger_event = { on_action = X } } + random_events 加权表；
+	# 池内事件可直接访问 scope:story）。各族入口（互殴手段族 / 强出口族 / 无地拉锯 /
+	# 共治反击）作为 hidden 族调度事件挂在池上，由引擎按权重每拍随机选一族执行，
+	# 新增事件链只需往 on_action 池登记即可接入。缓和决议休战期内不触发心跳。
+	effect_group = {
+		days = { ftr_court_strife_interval_min_value  ftr_court_strife_interval_max_value }
+		triggered_effect = {
+			trigger = {
+				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
+				ftr_court_has_active_struggle_trigger = yes
+				has_variable = ftr_court_struggle_intensity
+				var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
+				story_owner ?= {
+					NOT = { has_character_flag = ftr_court_eased_struggle }
+				}
+			}
+			effect = {
+				# 心跳拍：直接把"选族"交给 on_action 随机池（参考原版 pet_dog：
+				# story_owner = { trigger_event = { on_action = X } }，池内事件可直接访问 scope:story）
+				story_owner = {
+					trigger_event = { on_action = ftr_court_struggle_main_pulse }
+				}
+			}
+		}
+		fallback = {
+			end_story = yes
+		}
+	}
+
+	################## 潜伏点缀（0001，静默期氛围） ##################
+
+	# 低烈度（<90）时偶尔以 0001 点缀朝堂氛围；由内斗主时钟的触发校验天然保证
+	# 互殴/强出口只在烈度 ≥90 后出现，此处独立小轮负责安静期（0-90）的点缀。
+	effect_group = {
+		days = { ftr_court_strife_interval_min_value  ftr_court_strife_interval_max_value }
+		random_valid = {
+			triggered_effect = {
+				trigger = {
+					NOT = { ftr_court_is_contested_trigger = yes }
+					story_owner ?= { ftr_court_has_succession_order_trigger = yes }
+				}
+				effect = {
+					random = { chance = 8  story_owner = { trigger_event = { id = ftr_court_struggle.0001 } } }
+				}
+			}
+		}
+		fallback = {
+			end_story = yes
+		}
+	}
+}

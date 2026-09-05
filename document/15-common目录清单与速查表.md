@@ -577,8 +577,10 @@ clamp_variable = { name = X  min = a  max = b }
 | `var:X` | 对象变量 |
 | `local_var:X` | 局部变量 |
 | `global_var:X` | 全局变量 |
-| `list:X` / `list_size:X` | 变量列表 / 列表大小 |
+| `list:X` / `list_size:X` | 作用域内临时 list 遍历 / 大小（`add_to_list` 建的名单用） |
 | `flag:X` | 标记（可作 switch 分支键） |
+
+> 注：`add_to_variable_list` 建的 **variable list** 遍历用 `variable = X`、存在用 `has_variable_list`、大小用 `variable_list_size`（trigger），**不要**对 variable list 用 `list =` / `list_size:`（详见 [01-词法 §4.3](01-词法、数据类型与值系统.md#43-变量列表List)）。
 
 ---
 

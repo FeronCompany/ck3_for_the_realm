@@ -1,0 +1,345 @@
+﻿##############################################################
+### 朝堂权力角逐 COURT STRUGGLE — 数值层
+### 议题1 继任之争 / 议题2 共治夺权
+### 所有权重与阈值集中于此，禁止在别处硬编码
+##############################################################
+
+########## 一、频率控制 ##########
+# 各阶段年度事件脉冲概率（%），dormant 不产生事件
+ftr_court_pulse_chance_simmering_value = 8
+ftr_court_pulse_chance_contested_value = 14
+ftr_court_pulse_chance_crisis_value = 20
+# 一次危机结算后的冷却年数，防止连锁内战
+ftr_court_cooldown_years_value = 5
+# 竞争者数量下限（低于则不激活议题1）
+ftr_court_min_candidates_value = 2
+# 展示的竞争者上限（参与角逐者最多 5 人）
+ftr_court_max_candidates_value = 5
+# 参与者列表定期刷新的随机间隔（天）：30-60
+ftr_court_refresh_interval_min_value = 30
+ftr_court_refresh_interval_max_value = 60
+# 臣属公开支持时，触发君主警觉事件的概率（%）
+ftr_court_monarch_alert_chance_value = 20
+
+########## 一之二、烈度（var:ftr_court_struggle_intensity，0-200）##########
+# 烈度替代原 ftr_court_phase（0-3 离散阶段）。区间对齐 §12.3.1：
+#   0-40  平静/潜伏   40-90 酝酿   90-140 对立   140-170 濒危（政变/内战窗口）  170-200 临界（废黜昏君）
+# 边界命名用直白 bound，triggers 里以 `>= 某 bound` 判定进入某区：
+#   < quiet_bound(=40)           → 平静
+#   >= stir_bound(=90)           → 对立（0014 站队 / 对立脉冲）
+#   >= high_bound(=140)          → 濒危（危机脉冲 / 政变·内战出口，对应旧 crisis）
+#   >= critical_bound(=170)      → 临界（0018 废黜昏君等最强手段）
+ftr_court_intensity_min_value = 0
+ftr_court_intensity_max_value = 200
+ftr_court_intensity_quiet_bound_value = 40
+ftr_court_intensity_stir_bound_value = 90
+ftr_court_intensity_high_bound_value = 140
+ftr_court_intensity_critical_bound_value = 170
+# 内斗循环（60-120 天）随机间隔
+ftr_court_strife_interval_min_value = 60
+ftr_court_strife_interval_max_value = 120
+# 出手基线概率（%，随烈度升高，后续手段事件族接入时叠加）
+ftr_court_strife_base_chance_value = 15
+# 强出口轮概率（%）：烈度 ≥90 的每次主时钟，按此概率推进一次强出口检查
+# （0014 站队 / 0015 政变·起兵 / 0018 废黜 + 0003/0005 通知），约每 3-4 轮一次
+ftr_court_strife_exit_chance_value = 25
+# 各手段成功推高烈度的增量（§12.3.2：低+5~10 / 中+15~25 / 高+30~50）
+ftr_court_strife_low_intensity_value = 8
+ftr_court_strife_mid_intensity_value = 20
+ftr_court_strife_high_intensity_value = 35
+# 诬陷链（手段 2.1）相关
+ftr_court_calumny_prestige_value = 250      # 被伪证/放谣抹黑的威望损失
+ftr_court_poison_intrigue_threshold_value = 14  # 下毒成功率参照的密谋门槛
+# 下毒健康减益的持续时间（天）：剧毒重而短，慢性毒绵长持久、压低实力
+ftr_court_severe_poison_days_value = 730    # 0055 剧毒：failing_health(-0.5) 持续 2 年
+ftr_court_chronic_poison_days_value = 1095  # 0056 慢性虚毒：旅行食毒(health-0.25/prowess-4) 持续 3 年
+# 0081 被掳后屈服退让：竞争力评分一次性下调量（认栽出局）
+ftr_court_coerce_penalty_value = 40
+# 年度自然回落（向 0 缓慢回归，防单向锁死不回落）
+ftr_court_intensity_yearly_decay_value = 5
+# 君主失能/弱势时年度正向偏置（推高烈度，承接 ftr_court_monarch_weak 语义）
+ftr_court_intensity_weak_bias_value = 6
+# 君主强势（声望/虔诚充足）时年度负向偏置（压低烈度）
+ftr_court_intensity_strong_bias_value = -4
+# 竞争者张力：前两名评分接近或参与者站队变化时的偏置
+ftr_court_intensity_tension_bias_value = 4
+# 缓和决议（§12.5 / §12.11）：一次下调幅度与冷却
+ftr_court_ease_intensity_drop_value = 80
+ftr_court_ease_cooldown_years_value = 10
+# 双轨成本：行政制君主耗官方影响力，非行政制耗威望（大量）
+ftr_court_ease_influence_cost_value = 200
+ftr_court_ease_prestige_cost_value = 400
+# 缓和决议对竞争者的好感缓和幅度
+ftr_court_ease_opinion_gain_value = 20
+
+########## 二、准入门槛 ##########
+# 君主进入"高龄"的年龄
+ftr_court_monarch_elderly_age_value = 60
+# AI 押注/拉票的君主健康线性驱动：加成 = base − slope × 君主health
+# 参考档：excellent=7 / good=5 / medium=4 / fine=3 / poor=1 / dying=0，
+# 按默认值：dying≈+55、poor≈+45、fine≈+25、medium≈+15、good≈+5、excellent≈−15
+ftr_court_monarch_health_urgency_base_value = 55
+ftr_court_monarch_health_urgency_slope_value = 10
+# 前两名评分差距小于此值 -> contested
+ftr_court_contested_gap_value = 20
+# 前两名评分差距小于此值 -> crisis
+ftr_court_crisis_gap_value = 8
+# 发动政变/内战所需的最少支持者
+ftr_court_min_backers_value = 2
+# 君主弱势判定：声望低于此值
+ftr_court_monarch_weak_prestige_value = 500
+# 君主弱势判定：虔诚低于此值
+ftr_court_monarch_weak_piety_value = 500
+
+########## 三、竞争力评分构成 ##########
+ftr_court_claim_adult_value = 20
+ftr_court_claim_prime_age_value = 10
+ftr_court_claim_old_age_value = -10
+ftr_court_claim_average_attribute_factor_value = 2
+ftr_court_claim_landed_value = 25
+ftr_court_claim_councillor_value = 15
+ftr_court_claim_diarch_value = 40
+ftr_court_claim_spouse_value = 10
+ftr_court_claim_primary_heir_value = 25
+ftr_court_claim_backer_value = 5
+# 君主好感分段加成
+ftr_court_claim_opinion_high_value = 15
+ftr_court_claim_opinion_mid_value = 5
+ftr_court_claim_opinion_low_value = -10
+
+# 特质加成
+ftr_court_claim_ambitious_value = 30
+ftr_court_claim_brave_value = 10
+ftr_court_claim_genius_value = 20
+ftr_court_claim_content_value = -30
+ftr_court_claim_craven_value = -20
+ftr_court_claim_humble_value = -15
+ftr_court_claim_incapable_value = -100
+ftr_court_claim_lunatic_value = -25
+ftr_court_claim_inbred_value = -15
+ftr_court_claim_drunkard_value = -10
+ftr_court_claim_reclusive_value = -10
+ftr_court_claim_shy_value = -8
+
+# 平均属性（0-10 左右）
+ftr_court_claim_average_attribute_value = {
+	value = 0
+	add = diplomacy
+	add = stewardship
+	add = martial
+	add = intrigue
+	add = learning
+	divide = 5
+	multiply = ftr_court_claim_average_attribute_factor_value
+}
+
+########## 四、竞争力评分总分 ##########
+# 求值时的作用域：this = 候选人，scope:ftr_court_monarch = 在位君主
+ftr_court_claim_strength_value = {
+	value = 0
+
+	### 成年与年龄阶段
+	if = {
+		limit = { is_adult = yes }
+		add = ftr_court_claim_adult_value
+		if = {
+			limit = { age >= 16  age <= 45 }
+			add = ftr_court_claim_prime_age_value
+		}
+		else_if = {
+			limit = { age >= ftr_court_monarch_elderly_age_value }
+			add = ftr_court_claim_old_age_value
+		}
+	}
+
+	### 个人能力
+	add = ftr_court_claim_average_attribute_value
+
+	### 特质
+	if = { limit = { has_trait = ambitious }		add = ftr_court_claim_ambitious_value }
+	if = { limit = { has_trait = brave }			add = ftr_court_claim_brave_value }
+	if = { limit = { has_trait = intellect_good_3 }	add = ftr_court_claim_genius_value }
+	if = { limit = { has_trait = content }			add = ftr_court_claim_content_value }
+	if = { limit = { has_trait = craven }			add = ftr_court_claim_craven_value }
+	if = { limit = { has_trait = humble }			add = ftr_court_claim_humble_value }
+	if = { limit = { has_trait = incapable }		add = ftr_court_claim_incapable_value }
+	if = { limit = { has_trait = lunatic }			add = ftr_court_claim_lunatic_value }
+	if = { limit = { has_trait = inbred }			add = ftr_court_claim_inbred_value }
+	if = { limit = { has_trait = drunkard }			add = ftr_court_claim_drunkard_value }
+	if = { limit = { has_trait = reclusive }		add = ftr_court_claim_reclusive_value }
+	if = { limit = { has_trait = shy }				add = ftr_court_claim_shy_value }
+
+	### 实力与身份
+	if = { limit = { is_landed = yes }									add = ftr_court_claim_landed_value }
+	if = { limit = { is_councillor_of = scope:ftr_court_monarch }		add = ftr_court_claim_councillor_value }
+	if = { limit = { is_diarch_of_target = scope:ftr_court_monarch }	add = ftr_court_claim_diarch_value }
+	if = { limit = { is_spouse_of = scope:ftr_court_monarch }			add = ftr_court_claim_spouse_value }
+	if = { limit = { is_heir_of = scope:ftr_court_monarch }				add = ftr_court_claim_primary_heir_value }
+
+	### 人望：君主好感（分段判定，避免在数值上下文直接引用 opinion）
+	if = {
+		limit = { opinion = { target = scope:ftr_court_monarch  value >= 50 } }
+		add = ftr_court_claim_opinion_high_value
+	}
+	else_if = {
+		limit = { opinion = { target = scope:ftr_court_monarch  value >= 0 } }
+		add = ftr_court_claim_opinion_mid_value
+	}
+	else = {
+		add = ftr_court_claim_opinion_low_value
+	}
+
+	### 支持者数量（支持者列表直接维护在权贵身上；variable list 数值计数引用 ftr_court_supporters_count_value）
+	add = {
+		value = ftr_court_claim_backer_value
+		multiply = ftr_court_supporters_count_value
+	}
+
+	### 永不出现负分，便于展示
+	max = 0
+}
+
+########## 四·B、列表人数（查询用） ##########
+# 重要：以下 court 名单均为 add_to_variable_list 维护的 variable list。
+# 取大小有两种合法姿势：
+#   1) trigger/limit 里判断：variable_list_size = { name = 名单 value … }（原版 tests 权威）；
+#   2) 需要数值（set_variable / multiply / tooltip 文本）：不能裸用 list_size:（那是 add_to_list 临时 list 的语法），
+#      必须 has_variable_list 保护后用 every_in_list variable= 遍历累加（对齐原版 script value 计数范式）。
+# 下面三个 count value 即按姿势 2 实现，供各调用点引用。
+
+# 求值域：this = 某权贵（君主 / 共治者 / 参与角逐者）。数其 ftr_court_supporters 支持者。
+# 调试决议 ftr_court_debug_report_claimants_decision 在 custom_tooltip 文本中引用本值，逐行显示各竞争者支持者数。
+ftr_court_supporters_count_value = {
+	value = 0
+	if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		every_in_list = {
+			variable = ftr_court_supporters
+			add = 1
+		}
+	}
+}
+
+# 求值域：this = 拥有 ftr_court_claimants 名单的角色（通常是君主 / story owner）。
+ftr_court_claimants_count_value = {
+	value = 0
+	if = {
+		limit = { has_variable_list = ftr_court_claimants }
+		every_in_list = {
+			variable = ftr_court_claimants
+			add = 1
+		}
+	}
+}
+
+# 求值域：this = 持有朝堂 story 的 story（ftr_court_participant_list 挂在其上）。
+ftr_court_participant_list_count_value = {
+	value = 0
+	if = {
+		limit = { has_variable_list = ftr_court_participant_list }
+		every_in_list = {
+			variable = ftr_court_participant_list
+			add = 1
+		}
+	}
+}
+
+# 求值域：this = 玩家（root）。数玩家域镜像名单 ftr_court_ui_claimants。
+ftr_court_ui_claimants_count_value = {
+	value = 0
+	if = {
+		limit = { has_variable_list = ftr_court_ui_claimants }
+		every_in_list = {
+			variable = ftr_court_ui_claimants
+			add = 1
+		}
+	}
+}
+
+########## 五、共治拉锯 ##########
+# 权力天平已迁移至官方 diarchy swing（diarchy_swing，0–100：0 = 君主全权，100 = 共治全权，50 = 中性）。
+# 移动 swing 统一调用官方 update_diarchy_swing_with_perspective_effect；
+# 年度自然回落 / 平衡由官方 diarchy 的 swing_balance 机制维护（已废除自建 ftr_court_regency_swing 及 ±5/±3/±2 移轴常量）。
+# 阈值口径（§3.2，对照官方 swing 数值）：30 辅政稳固判定 | 50 中性 | 70 共治请愿 | 90 废黜昏君（且君主失能）
+# 拉锯进入"共治请愿"的阈值
+ftr_court_swing_regency_threshold_value = 70
+# 拉锯进入"夺位"的阈值（且君主失能）
+ftr_court_swing_usurp_threshold_value = 90
+# 拉锯进入"辅政稳固"的阈值（偏向君主 ≤30）
+ftr_court_swing_loyal_threshold_value = 30
+
+########## 六、资源消耗（双轨制） ##########
+# Mod 自带的 ftr_political_influence 已废弃（早于官方行政制实践）。
+# 支付规则：
+#   双方均为行政制 -> 消耗官方影响力(influence)
+#   任一方非行政制 -> 消耗威望(prestige)
+# 影响力（minor 30 / medium 60 / major 100 / massive 150）与威望量级不同，分设两组常量。
+ftr_court_back_claimant_prestige_cost_value = 120
+ftr_court_back_claimant_influence_cost_value = 40
+# 公开支持君主的子女 / 继承人时授予的背书声望（原 ftr_support_heir 公开效果，§7.3）
+ftr_court_heir_backing_prestige_value = 200
+ftr_court_assist_monarch_prestige_cost_value = 90
+ftr_court_assist_monarch_influence_cost_value = 30
+ftr_court_promise_council_prestige_cost_value = 180
+ftr_court_promise_council_influence_cost_value = 60
+ftr_court_promise_contract_prestige_cost_value = 150
+ftr_court_promise_contract_influence_cost_value = 50
+# 许诺交互的「直接现付」选项（§7.4 兑现模式之外的选择，无需日后兑现）：
+#   直接赠金 —— 一次性金币厚礼，即刻落袋
+ftr_court_promise_gold_cost_value = 150
+#   直接示好 —— 双轨成本（行政制花影响力 / 非行政制花威望），当即见效
+ftr_court_promise_favor_prestige_cost_value = 110
+ftr_court_promise_favor_influence_cost_value = 40
+ftr_court_request_coregency_prestige_cost_value = 240
+ftr_court_request_coregency_influence_cost_value = 80
+# 游说（推拉权力天平）
+ftr_court_lobby_prestige_cost_value = 90
+ftr_court_lobby_influence_cost_value = 30
+
+# 恩宠（事件 0001.c 君主示好）：双轨受益量
+ftr_court_favor_prestige_value = 100
+# 恩宠的影响力走官方 minor_influence_gain = 30，无需另设常量
+
+# 内战宣战的威望成本
+ftr_court_succession_war_prestige_cost_value = 350
+
+########## 六之二、奖惩幅度 ##########
+# 危机事件中压制参与角逐头目的扣分
+ftr_court_crisis_repress_value = -60
+# 君主强力出手（0003.c 禁止内斗 / 0005.b/c 压制）对烈度的单次抑制量
+ftr_court_monarch_restraint_drop_value = 8
+# 0011.b「擒贼擒王」定向逮捕的成功基础概率（%）
+ftr_court_arrest_success_base_value = 75
+# 威望与恐惧
+ftr_court_prestige_minor_value = 100
+ftr_court_dread_minor_value = 10
+ftr_court_dread_medium_value = 25
+ftr_court_dread_major_value = 50
+
+########## 六之四、内阁席位承诺兑现 ##########
+# 继承后首次提醒的延迟（日），随机区间错开多个承诺，避免同日密集弹窗
+ftr_court_council_remind_delay_min_value = 3
+ftr_court_council_remind_delay_max_value = 7
+# 推迟后的终裁延迟（日）：180-360 天，届时不可再推迟
+ftr_court_council_final_delay_min_value = 180
+ftr_court_council_final_delay_max_value = 360
+# 同一继承中多个被承诺者的串行间隔（日）
+ftr_court_council_queue_delay_min_value = 5
+ftr_court_council_queue_delay_max_value = 15
+# 终裁拒绝承诺的声望惩罚
+ftr_court_betray_prestige_loss_value = -150
+
+########## 六之三、叛乱代价 ##########
+# 造反不能白和平：叛乱失败必须付出实质代价
+ftr_court_rebellion_prestige_loss_value = -300
+ftr_court_rebellion_piety_loss_value = -100
+# 叛乱失败后双方停战天数（5 年），防止立刻再来一次
+ftr_court_rebellion_truce_days_value = 1825
+
+########## 七、内战与临时头衔 ##########
+# 无地竞争者起兵时创建的临时公国（纯虚拟，战后必定销毁）
+ftr_court_temp_duchy_count_value = 1
+# 临时公国被销毁时的补偿金币
+ftr_court_temp_duchy_compensation_value = 150
+
+

@@ -1,4 +1,4 @@
-# AGENTS.md — For The Realm (朝野纷争) 开发指导
+﻿# AGENTS.md — For The Realm (朝野纷争) 开发指导
 
 > 本文件供 AI 编码助手（CodeBuddy / Copilot / Cursor 等）阅读。
 > **动手改代码前请先读完本文件**，尤其是「核心约定」与「禁忌」两节。
@@ -73,13 +73,14 @@ for_the_realm/
 │
 ├── gfx/interface/icons/        # 图标（.dds）
 ├── gui/                        # 界面（.gui + scripted_widgets/）
+├── tools/                      # 开发工具（validate_scripts.py 语法校验，见 §5.5）
 │
-└── document/                   # **P 语言知识库（17 篇，约 14000 行）**
+└── document/                   # **P 语言知识库（18 篇，约 15000 行）**
 ```
 
 ### 2.1 `document/` 知识库（重要）
 
-`document/` 下有 17 篇 P 语言完整文档，是**本项目的自建知识库**，遇到语法/系统问题**优先查阅**：
+`document/` 下有 18 篇 P 语言完整文档，是**本项目的自建知识库**，遇到语法/系统问题**优先查阅**：
 
 | 编号 | 文档 | 何时查阅 |
 |---|---|---|
@@ -100,6 +101,7 @@ for_the_realm/
 | 14 | 内阁职位、臣属契约与臣属立场 | 改 `subject_contracts/` 时 |
 | 15 | common 目录清单与速查表 | **速查语法、查某个目录是干什么的** |
 | 16 | 多系统选型指南与开发实践 | **选型、默认值陷阱、调试、`ftr_` 命名规范** |
+| 17 | GUI 界面设计与 scripted_guis | 改 `gui/` `scripted_guis/` 时；GUI 语法、数据同步 |
 
 > 用法：先用 `search_content` 在 `document/` 里搜关键字，再精读对应章节。
 
@@ -182,6 +184,8 @@ can_keep_single_heir_succession_law_trigger = {
 - 块级改动 → 上下各一行 `###### OVERRIDE ######`
 - 单行改动 → 行尾追加 `### OVERRIDE`
 - 纯新增（原版没有的分支）也可用此标记，便于日后合并上游更新
+
+**例外：on_action 挂载点不适用 override 标记**。`common/on_action/` 下对原版挂载点（如 `random_yearly_everyone_pulse`、`on_birth_child`、`on_death`）**重复定义同名 on_action 只是向 `on_actions` 列表追加回调，是合并式语义**（后定义不覆盖前定义），并非"覆盖重定义原版对象"。因此只需**沿用原名、声明新的 on_action 回调**，无需加 `###### OVERRIDE ######`，加了反而误导（误导为覆盖）。
 
 **当前分布**（共 44 处）：`ftr_governments.txt`(14)、`ftr_realm_laws.txt`(6)、`ftr_override_interations.txt`(6)、`ftr_celestial.txt`(6)、`ftr_override_effects.txt`(4)、`ftr_scripted_triggers.txt`(3)、`ftr_cb_groups.txt`(2)、`ftr_traits.txt`(2)、`ftr_defines.txt`(1)。
 
@@ -325,6 +329,8 @@ ftr_my_event.0001 = {
 3. 用 `###### OVERRIDE ######` 包裹改动
 4. 若只需改其中一处，优先用 scripted_trigger 间接覆盖，减少冲突面
 
+> ⚠ 例外：**on_action 挂载点不是"覆盖"**。原版 on_action 挂载点的重复定义是**追加回调的合并语义**，只需沿用原名声明新回调，**不要加 override 标记**（见 §3.4）。
+
 示例（覆盖特质 `murderer`）：
 
 ```paradox
@@ -388,9 +394,11 @@ ftr_my_trait = {
 ### 5.1 改动前
 
 ```
-1. 在 document/ 搜相关语法 → 精读对应章节
-2. 在 game/common/<目录>/ 确认原版有无同名对象 → 决定"新增"还是"覆盖"
-3. 在 Mod 内找最接近的现有实现作为模板
+1. 先查 document/ 语法文档 → 精读对应章节（文档为主）
+2. 语法文档没写清或不完整时，再查原版文件（game/，含 .info 与 game/localization/english/）核对写法与语义
+3. 在 game/common/<目录>/ 确认原版有无同名对象 → 决定"新增"还是"覆盖"
+4. 在 Mod 内找最接近的现有实现作为模板
+5. 对于拿不准的需求项，主动提出问题明确需求
 ```
 
 ### 5.2 改动中
@@ -399,12 +407,13 @@ ftr_my_trait = {
 4. 写脚本（Tab 缩进、ftr_ 前缀、OVERRIDE 标记）
 5. 写双语本地化（键名完全一致、新增内容加 <FTR>）
 6. 确认文件带 BOM
+7. 运行校验脚本（见 §5.5）确认无 Error
 ```
 
 ### 5.3 改动后（人工确认）
 
 ```
-7. 启动游戏 → 检查 error.log 有无本 Mod 报错
+7. 启动游戏 → 检查 error.log 有无本 Mod 报错，如果error.log有报错而检验脚本没有发现，提醒开发者是否更新脚本
 8. 控制台验证对象已加载
 9. 用 effect 命令直接触发脚本片段
 10. 观察 UI：名称、描述、custom_description 是否正常
@@ -425,6 +434,49 @@ ftr_my_trait = {
 - [ ] 动态描述第一条是 `NOT = { exists = this }`
 - [ ] 改动了功能 → `readme.md` 双语同步
 - [ ] 没有提交 `.bak`、空文件、调试残留
+
+### 5.5 语法校验脚本（每次改动后必跑）
+
+`tools/validate_scripts.py` 是本 Mod 的 P 语言语法快速校验器，**每次改脚本/本地化后必须运行**，确保 `error.log` 干净。
+
+```bash
+# 校验整个 mod（常用，带原版引用一致性检查——推荐每次都带 --game-path）
+python tools/validate_scripts.py --game-path "C:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\game"
+
+# 只校验某个目录/文件（改动局部时更快）
+python tools/validate_scripts.py common/decisions --game-path <游戏路径>
+python tools/validate_scripts.py events/ftr_court_struggle_events.txt --game-path <游戏路径>
+
+# 自动为缺失 BOM 的文件补上 BOM
+python tools/validate_scripts.py --fix-bom
+
+# 跳过引用一致性检查（不提供游戏目录时自动跳过）
+python tools/validate_scripts.py
+python tools/validate_scripts.py --no-ref
+```
+
+**校验项**（1-9 为硬性 Error，10-14 为 Warning）：
+
+| # | 校验项 | 级别 |
+|---|---|---|
+| 1 | `.txt`/`.yml` 必须为 **UTF-8 with BOM**（缺 BOM 中文乱码、本地化不加载） | Error |
+| 2 | 花括号 `{}` 配对（跳过字符串与注释内的括号） | Error |
+| 3 | `.yml` 语言头（`l_english:`/`l_simp_chinese:`）+ 键值 `key:0 "text"` 格式 | Error |
+| 4 | 事件文件须声明 `namespace` | Error |
+| 5 | **引用一致性**（需 `--game-path`）：`has_trait`/`has_realm_law`/`has_title_law`/`X_effect`/`X_trigger`/`X_value` 引用的对象名须在游戏/本 mod 白名单中 | Error |
+| 6 | **已知非法模式**：`starts_enabled = yes`、`send_interface_message type = msg_generic`、`start_scheme target`（应 `target_character`）、`has_army`、`start_story` 等历史踩坑写法 | Error |
+| 7 | **GUI 语义**：`Custom()`/`CustomDescription()` data function 不存在、`text = {}` 文本块、`ScriptValue('x')` 引用的非 script value、`gridbox` 放 datamodel | Error/Warning |
+| 8 | 决议须写 `ai_check_interval` 或 `ai_goal`（二选一） | Warning |
+| 9 | 缩进规范：common 用 Tab、localization 用空格 | Warning |
+| 10 | 新增顶层对象须带 `ftr_` 前缀（覆盖原版需 `###### OVERRIDE ######`） | Warning |
+| 11 | 双语本地化键名一致性（english 与 simp_chinese 成对） | Warning |
+
+> ⚠ **引用一致性检查能抓"语法过但 error.log 报错"的语义错误**（如引用了不存在的 trait/law/effect/trigger/value）。已实际抓到过：`has_trait = genius`（应 `intellect_good_3`）、`melancholic`（应 `depressed`）、`monastic`（不存在）、性别法 `male_preferred_law`（应 `has_title_law = male_only_law/female_only_law`）。
+> **注意事项**：脚本会同时加载 mod 自身定义的 trait/law/effect/trigger/value 进白名单，避免 mod 新增对象误报；未提供 `--game-path` 时引用检查自动跳过。
+
+**退出码**：`0` = 全通过；`1` = 有 Error（**必须修复**，会引发加载失败）；`2` = 仅有 Warning（规范提示，建议处理）。
+
+> 该脚本是启发式检查，无法替代实际启动游戏看 `error.log`。遇到脚本未覆盖的语法问题仍以 [文档 01](document/01-词法、数据类型与值系统.md) 与游戏 `error.log` 为准。
 
 ---
 
@@ -488,10 +540,13 @@ ftr_my_trait = {
 | 游戏原版脚本 | `C:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\game` |
 | 游戏备份 | `D:\ck3_backup\game` |
 | 相关 Mod | `../remove-make-up` |
+| **报错日志** | `C:\Users\Administrator\Documents\Paradox Interactive\Crusader Kings III\logs\error.log` |
 
-以上路径已配置在 `for_the_realm.code-workspace`（多根工作区），**原版脚本可直接检索**，是写代码时最权威的参照。
+以上路径已配置在 `for_the_realm.code-workspace`（多根工作区），**原版脚本可直接检索**，作为语法文档的补充核对（先查 `document/`，文档没写清再查原版）。
 
 ### 8.1 查阅原版的正确姿势
+
+> 适用时机：仅当 `document/` 语法文档没写清或不完整时，才进原版核对（见 §5.1）。
 
 ```
 1. 先读 game/common/<目录>/_xxx.info     ← 官方语法说明，最权威
@@ -571,7 +626,7 @@ custom_description = {
 
 ## 10. 行为准则
 
-1. **先查文档再动手** —— `document/` 17 篇 + 原版 `.info` 优先于凭记忆写码
+1. **语法文档优先** —— 任何语法/机制不确定时，先查 `document/` 知识库（自建文档为主）；语法文档没写清或不完整时，再查 `game/` 原版文件（`common/<目录>/*.info`、`00_*.txt`、`events/`、`game/localization/english/`）核对；最后才考虑网络检索；不要凭记忆写码
 2. **最小化改动** —— 能抽 scripted_effect 就不复制粘贴；能间接覆盖就不整体重定义
 3. **双语同步是硬要求** —— 改任何用户可见文本，两份 yml 一起改
 4. **不确定就加 `exists` / `?=`** —— 避免"无效作用域"报错

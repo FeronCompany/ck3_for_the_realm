@@ -51,3 +51,68 @@ ftr_update_my_realm_pg_participants_list = {
 		}
 	}
 }
+
+# 朝堂局势 UI 数据同步：同步朝堂 story 的元信息到玩家域。
+# 说明：支持者列表与参与者列表均以「各权贵角色身上的主存储列表」为准
+# （君主/共治者/参与竞争者各自的 ftr_court_supporters，参与者名单在最高统治者 ftr_court_claimants），
+# 窗口 GUI（ftr_court_struggle_window.gui）直接按 GetPlayer.GetTopLiege / GetDiarch / 参与者角色读取，
+# 无需把支持者镜像到玩家域。
+ftr_court_sync_ui_data = {
+	scope = character
+	is_shown = {
+		always = yes
+	}
+	effect = {
+		# 先复位
+		set_variable = { name = ftr_court_ui_active  value = 0 }
+		set_variable = { name = ftr_court_ui_count  value = 0 }
+		set_variable = { name = ftr_court_ui_gap  value = 999 }
+		clear_variable_list = ftr_court_ui_claimants
+
+		# 1) 自己的朝堂：先镜像 story 的竞争者名单与角色元信息，再收集朝廷成员
+		if = {
+			limit = {
+				any_owned_story = { type = ftr_court_struggle }
+			}
+			ftr_court_sync_ui_from_story_effect = yes
+			ftr_court_sync_courtiers_effect = yes
+		}
+		# 2) 宗主的朝堂
+		else_if = {
+			limit = {
+				exists = top_liege
+				top_liege = {
+					any_owned_story = { type = ftr_court_struggle }
+				}
+			}
+			top_liege = { ftr_court_sync_ui_from_story_effect = yes }
+			top_liege = { ftr_court_sync_courtiers_effect = yes }
+		}
+		# 3) 雇主的朝堂（无地廷臣）
+		else_if = {
+			limit = {
+				exists = employer
+				employer = {
+					any_owned_story = { type = ftr_court_struggle }
+				}
+			}
+			employer = { ftr_court_sync_ui_from_story_effect = yes }
+			employer = { ftr_court_sync_courtiers_effect = yes }
+		}
+		# 4) 无朝堂角逐：仍收集朝廷核心成员供展示
+		else_if = {
+			limit = {
+				ftr_court_is_struggle_monarch_trigger = yes
+			}
+			ftr_court_sync_courtiers_effect = yes
+		}
+		else_if = {
+			limit = { exists = top_liege }
+			top_liege = { ftr_court_sync_courtiers_effect = yes }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { ftr_court_sync_courtiers_effect = yes }
+		}
+	}
+}

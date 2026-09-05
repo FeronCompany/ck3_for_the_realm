@@ -52,7 +52,9 @@ ftr_court_cleanup_effect = {
 		variable = ftr_court_participant_list
 		remove_variable = ftr_claim_strength
 		remove_variable = ftr_court_backer_of
-		clear_variable_list = ftr_court_supporters
+		remove_variable = ftr_court_participant_of
+		# 候选人也可能被他人支持：解除支持者背书并清空支持者名单
+		ftr_court_release_all_backers_effect = yes
 		remove_character_flag = ftr_court_pooled
 		remove_character_flag = ftr_court_notified
 	}
@@ -62,7 +64,8 @@ ftr_court_cleanup_effect = {
 		remove_character_flag = ftr_court_participating
 		remove_variable = ftr_claim_strength
 		remove_variable = ftr_court_backer_of
-		clear_variable_list = ftr_court_supporters
+		remove_variable = ftr_court_participant_of
+		ftr_court_release_all_backers_effect = yes
 	}
 	# 清理君主与朝堂成员的开始通知标记，以及最高统治者身上的个人参与者/支持者列表
 	story_owner = {
@@ -70,16 +73,12 @@ ftr_court_cleanup_effect = {
 		every_councillor = { remove_character_flag = ftr_court_notified }
 		every_powerful_vassal = { remove_character_flag = ftr_court_notified }
 		clear_variable_list = ftr_court_claimants
-		clear_variable_list = ftr_court_supporters
+		# 君主亦是被支持权贵（GUI 读其 ftr_court_supporters）：解除其支持者背书
+		ftr_court_release_all_backers_effect = yes
 	}
-	# 清理所有参与角逐者身上的支持者列表
-	every_in_list = {
-		variable = ftr_court_participant_list
-		clear_variable_list = ftr_court_supporters
-	}
-	# 若最高统治者本人或共治者也在角逐（罕见），一并清理
+	# 若最高统治者本人或共治者也在角逐（罕见），一并清理其支持者背书
 	story_owner = {
-		diarch ?= { clear_variable_list = ftr_court_supporters }
+		diarch ?= { ftr_court_release_all_backers_effect = yes }
 	}
 
 	remove_variable = ftr_court_candidate_pool
@@ -132,6 +131,8 @@ ftr_court_transfer_story_effect = {
 						target = scope:ftr_court_inherited_claimant
 					}
 				}
+				# 政权易主后，参与者登记的所属君主 backlink 更新为新君（供死亡清理反查）
+				set_variable = { name = ftr_court_participant_of  value = scope:ftr_court_new_monarch }
 			}
 		}
 		# 旧君名单已迁走，清理残留
@@ -166,6 +167,7 @@ ftr_court_transfer_story_effect = {
 			remove_character_flag = ftr_court_asked_participation
 			remove_variable = ftr_claim_strength
 			remove_variable = ftr_court_backer_of
+			remove_variable = ftr_court_participant_of
 			remove_character_flag = ftr_court_pooled
 			ftr_court_revoke_temp_duchy_effect = yes
 		}
@@ -199,6 +201,80 @@ ftr_court_owner_death_effect = {
 }
 
 ######################################################
+### 一之三、角色死亡：清理朝堂名单残留
+######################################################
+
+# 在死者域执行（root = 死者，由 on_death 调用）。
+# 名单存储：竞争者主名单 = 最高统治者身上的 ftr_court_claimants + story 的 ftr_court_participant_list
+# （两者保持同步）；支持者名单 = 被支持者身上的 ftr_court_supporters。
+# 反查方式：参与者身上登记 var:ftr_court_participant_of（所属君主 target）；
+#           支持者身上已有 var:ftr_court_backer_of（被支持权贵 target）。
+# 场景1：死者是某竞争者的支持者 → 从被支持者的支持者名单移除；
+# 场景2：死者本人是竞争者 → 从所属政权名单（君主主名单 + story 名单）移除并刷新计数。
+ftr_court_death_cleanup_effect = {
+	# 1) 支持者除名：死者曾站队某权贵 → 从该权贵的 ftr_court_supporters 移除
+	if = {
+		limit = { has_variable = ftr_court_backer_of }
+		var:ftr_court_backer_of ?= {
+			ftr_court_remove_backer_effect = { BACKER = root }
+		}
+		remove_variable = ftr_court_backer_of
+	}
+
+	# 2) 竞争者除名：经 backlink 找到所属政权，同步清君主主名单与 story 名单
+	if = {
+		limit = { has_variable = ftr_court_participant_of }
+		var:ftr_court_participant_of ?= {
+			save_scope_as = ftr_court_dead_owner
+			# 从最高统治者个人参与者名单移除（GUI 主存储）
+			if = {
+				limit = {
+					is_target_in_variable_list = {
+						name = ftr_court_claimants
+						target = root
+					}
+				}
+				remove_list_variable = {
+					name = ftr_court_claimants
+					target = root
+				}
+			}
+			# 进入该政权的朝堂故事，清理 story 名单并刷新计数
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
+				if = {
+					limit = {
+						is_target_in_variable_list = {
+							name = ftr_court_participant_list
+							target = root
+						}
+					}
+					remove_list_variable = {
+						name = ftr_court_participant_list
+						target = root
+					}
+				}
+				# 刷新参与计数（variable list 计数引用 count value）
+				set_variable = {
+					name = ftr_court_participant_count
+					value = ftr_court_participant_list_count_value
+				}
+				set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
+			}
+		}
+		# 死者作为竞争者死亡：解除其名下支持者们的背书（支持者不再"已站队"）
+		ftr_court_release_all_backers_effect = yes
+		# 清除死者的竞争者个体状态（含 backlink 与临时公国）
+		remove_variable = ftr_court_participant_of
+		remove_character_flag = ftr_court_participating
+		remove_character_flag = ftr_court_pooled
+		remove_character_flag = ftr_court_asked_participation
+		remove_variable = ftr_claim_strength
+		ftr_court_revoke_temp_duchy_effect = yes
+	}
+}
+
+######################################################
 ### 二、候选池与竞争力排名
 ######################################################
 
@@ -224,6 +300,8 @@ ftr_court_add_participant_effect = {
 		}
 	}
 	remove_character_flag = ftr_court_already_in_participant_list
+	# 登记所属朝堂君主（角色 target），供角色死亡 / 政权易主时反查并清理名单
+	set_variable = { name = ftr_court_participant_of  value = scope:ftr_court_monarch }
 }
 
 # 在 story 域执行：参与者加入角逐时的烈度抬升。
@@ -470,6 +548,24 @@ ftr_court_remove_backer_effect = {
 			name = ftr_court_supporters
 			target = $BACKER$
 		}
+	}
+}
+
+# 在被支持者（权贵）域执行：解除自己名下所有支持者的背书关系（供本权贵被移出角逐时调用）。
+# 背书是双向记账：被支持者身上的 ftr_court_supporters 名单 + 支持者本人的 ftr_court_backer_of。
+# 若本权贵（被支持对象）死亡 / 被捕清算 / 退出角逐，其支持者不应继续"已站队"——
+# 清空名单的同时须逐个抹去支持者身上的 ftr_court_backer_of，避免悬空背书占用其站队资格。
+# 注意：新君登基（ftr_court_transfer_story_effect）复用本 effect 逻辑前须确认——
+# 新君旧日的支持者会保留并读作「君主支持者」，故 transfer 场景不调用本 effect。
+ftr_court_release_all_backers_effect = {
+	if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		every_in_list = {
+			variable = ftr_court_supporters
+			# 清空所有支持者的背书记忆
+			remove_variable = ftr_court_backer_of
+		}
+		clear_variable_list = ftr_court_supporters
 	}
 }
 
@@ -723,11 +819,14 @@ ftr_court_schedule_council_reminder_effect = {
 	}
 }
 
-# 在角色域执行：清理其竞争状态（退出朝堂角逐）
+# 在角色域执行：清理其竞争状态（退出朝堂角逐）。
+# 同时解除其名下所有支持者的背书（支持者不再"已站队"），防止悬空背书占用站队资格。
 ftr_court_clear_claimant_status_effect = {
 	remove_variable = ftr_claim_strength
 	remove_variable = ftr_court_backer_of
-	clear_variable_list = ftr_court_supporters
+	remove_variable = ftr_court_participant_of
+	# 解除自身支持者们的背书并清空支持者名单
+	ftr_court_release_all_backers_effect = yes
 	remove_character_flag = ftr_court_pooled
 	remove_character_flag = ftr_court_participating
 	remove_character_flag = ftr_court_asked_participation

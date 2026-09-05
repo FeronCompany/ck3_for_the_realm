@@ -86,6 +86,13 @@ ftr_court_contested_gap_value = 20
 ftr_court_crisis_gap_value = 8
 # 发动政变/内战所需的最少支持者
 ftr_court_min_backers_value = 2
+# 支持者拥挤度抑制步长：目标每多一名既有支持者，AI 主动背书的意愿按此值递减。
+# ftr_court_backing_crowd_penalty_value 逐名遍历名单累减该步长（第一名豁免），
+# 使支持者越多时"锦上添花"越不值（参考竞争力中 ftr_court_claim_backer_value 的同向逻辑）。
+ftr_court_backing_crowd_penalty_step_value = 18
+# 黑马激励：目标尚无任何支持者时，AI 背书的意愿额外加成。
+# 与拥挤惩罚配合形成"无人支持者更值得押注"的双向机制，防止支持者扎堆第一继承人。
+ftr_court_backing_underdog_bonus_value = 35
 # 君主弱势判定：声望低于此值
 ftr_court_monarch_weak_prestige_value = 500
 # 君主弱势判定：虔诚低于此值
@@ -216,6 +223,24 @@ ftr_court_supporters_count_value = {
 		every_in_list = {
 			variable = ftr_court_supporters
 			add = 1
+		}
+	}
+}
+
+# 求值域：this = 拟背书者（actor），scope:recipient = 被支持的权贵。
+# AI 主动背书交互 ftr_court_back_claimant_interaction 的 ai_will_do 引用本值：
+# 逐名遍历目标既有支持者名单，每名扣减一步长（首名豁免），线性压制"锦上添花"式背书。
+ftr_court_backing_crowd_penalty_value = {
+	value = 0
+	scope:recipient = {
+		if = {
+			limit = { has_variable_list = ftr_court_supporters }
+			every_in_list = {
+				variable = ftr_court_supporters
+				subtract = ftr_court_backing_crowd_penalty_step_value
+			}
+			# 豁免第一名：对象已有 1 名支持者时仍可正常押注
+			add = ftr_court_backing_crowd_penalty_step_value
 		}
 	}
 }

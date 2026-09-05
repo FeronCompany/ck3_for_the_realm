@@ -415,6 +415,129 @@ ftr_court_has_backing_trigger = {
 	}
 }
 
+# 黑马判定：候选目前没有任何支持者（供 AI 站队/背书时"雪中送炭"偏好复用）。
+# 求值域：候选本人（this = 候选人）。
+ftr_court_has_no_supporters_trigger = {
+	NOT = {
+		has_variable_list = ftr_court_supporters
+		variable_list_size = { name = ftr_court_supporters  value >= 1 }
+	}
+}
+
+########## 七之二、AI 背书立场偏好（事件 0014 站队用） ##########
+# 供 0014 五个站队选项复用：把"封臣立场 ↔ 候选特质"是否契合做成参数化 trigger，
+# 契合加分 / 违背减分，使 AI 不只看名次而按自身立场挑选对象（对齐交互 ai_will_do 的 stance 语义）。
+# 参数：CANDIDATE = 被评估的候选；ACTOR = 朝臣本人（求值域当前 this 即朝臣）。
+ftr_court_backing_stance_fit_trigger = {
+	OR = {
+		AND = {
+			has_vassal_stance = courtly
+			$CANDIDATE$ = {
+				OR = {
+					has_trait = gregarious
+					has_trait = generous
+					diplomacy >= 6
+				}
+			}
+		}
+		AND = {
+			has_vassal_stance = glory_hound
+			$CANDIDATE$ = {
+				OR = {
+					has_trait = brave
+					has_trait = arrogant
+					martial >= 6
+				}
+			}
+		}
+		AND = {
+			has_vassal_stance = parochial
+			$CANDIDATE$ = {
+				OR = {
+					has_trait = content
+					has_trait = stubborn
+					stewardship >= 6
+				}
+			}
+		}
+		AND = {
+			has_vassal_stance = zealot
+			$CANDIDATE$ = {
+				NOT = { has_trait = cynical }
+				OR = {
+					has_trait = zealous
+					has_trait = humble
+					learning >= 6
+				}
+			}
+		}
+		AND = {
+			has_vassal_stance = belligerent
+			$CANDIDATE$ = {
+				OR = {
+					has_trait = wrathful
+					has_trait = ambitious
+					prowess >= 6
+				}
+			}
+		}
+		AND = {
+			has_vassal_stance = minority
+			$CANDIDATE$ = {
+				OR = {
+					faith = $ACTOR$.faith
+					culture = $ACTOR$.culture
+				}
+			}
+		}
+	}
+}
+
+# 立场相悖：候选特质触犯朝臣立场所忌
+ftr_court_backing_stance_misfit_trigger = {
+	OR = {
+		AND = {
+			has_vassal_stance = courtly
+			$CANDIDATE$ = {
+				OR = {
+					has_trait = greedy
+					has_trait = shy
+				}
+			}
+		}
+		AND = {
+			has_vassal_stance = glory_hound
+			$CANDIDATE$ = {
+				OR = {
+					has_trait = craven
+					has_trait = content
+				}
+			}
+		}
+		AND = {
+			has_vassal_stance = parochial
+			$CANDIDATE$ = {
+				has_trait = ambitious
+			}
+		}
+		AND = {
+			has_vassal_stance = zealot
+			$CANDIDATE$ = {
+				has_trait = cynical
+			}
+		}
+		AND = {
+			has_vassal_stance = belligerent
+			$CANDIDATE$ = {
+				OR = {
+					has_trait = craven
+					has_trait = humble
+				}
+			}
+		}
+	}
+}
+
 ########## 八、资源支付（双轨制） ##########
 
 # Mod 自带的 ftr_political_influence 已废弃。

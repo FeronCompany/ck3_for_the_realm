@@ -233,7 +233,7 @@ ftr_court_back_claimant_interaction = {
 	}
 	on_decline = {}
 	ai_will_do = {
-		base = -10
+		base = -20
 		modifier = {
 			add = 30
 			scope:recipient = { has_trait = ambitious }
@@ -241,7 +241,12 @@ ftr_court_back_claimant_interaction = {
 		opinion_modifier = {
 			who = scope:actor
 			opinion_target = scope:recipient
-			multiplier = 1
+			multiplier = 0.5
+		}
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.25
 		}
 		modifier = {
 			add = -30
@@ -251,6 +256,16 @@ ftr_court_back_claimant_interaction = {
 		modifier = {
 			add = -200
 			scope:actor = { is_heir_of = top_liege }
+		}
+		# 非最高领主直属封臣：离朝堂核心远，押注鞭长莫及，意愿大幅下降
+		# （直属封臣 = is_vassal_of top_liege；actor 若本身就是 top_liege——
+		# 独立君主为继承人站台属原 support_heir 语义，不在此列。）
+		modifier = {
+			add = -150
+			scope:actor = {
+				NOT = { this = top_liege }
+				NOT = { is_vassal_of = top_liege }
+			}
 		}
 		# 与对象结盟者更愿支持
 		modifier = {
@@ -422,6 +437,24 @@ ftr_court_back_claimant_interaction = {
 					culture = scope:actor.culture
 				}
 			}
+		}
+		# —— 黑马激励：目标尚无任何支持者时，押注反而更被珍视（雪中送炭）——
+		# 与下方拥挤惩罚互为镜像：无人支持者 +加成、已有人扎堆者 +扣分，
+		# 使 AI 主动背书的对象不会只集中于顺位最高的第一继承人。
+		modifier = {
+			add = { value = ftr_court_backing_underdog_bonus_value }
+			scope:recipient = {
+				NOT = {
+					has_variable_list = ftr_court_supporters
+					variable_list_size = { name = ftr_court_supporters  value >= 1 }
+				}
+			}
+		}
+		# —— 目标拥挤度递减：对象已有支持者越多，锦上添花边际价值越低 ——
+		# 惩罚值由 ftr_court_backing_crowd_penalty_value 函数计算：每多一名既有支持者
+		# 按 ftr_court_backing_crowd_penalty_step_value 递减（第一名豁免），无上限。
+		modifier = {
+			add = { value = ftr_court_backing_crowd_penalty_value }
 		}
 		# —— 君主健康驱动：加成随最高统治者健康值线性递减（大位越近越早占队）——
 		modifier = {

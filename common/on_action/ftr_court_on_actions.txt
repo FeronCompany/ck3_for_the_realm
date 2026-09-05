@@ -76,9 +76,25 @@ ftr_court_on_council_promise_check_on_action = {
 	}
 }
 
+# 角色死亡时的朝堂名单清理（root = 死者）。
+# 任何角色死亡都可能涉入朝堂（作为支持者或参与者），用变量前置过滤，
+# 仅当死者身上确有朝堂关系（支持者登记 / 所属政权 backlink）才进入 effect。
+ftr_court_death_cleanup_on_action = {
+	trigger = {
+		OR = {
+			has_variable = ftr_court_backer_of
+			has_variable = ftr_court_participant_of
+		}
+	}
+	effect = {
+		ftr_court_death_cleanup_effect = yes
+	}
+}
+
 on_death = {
 	on_actions = {
 		ftr_court_on_council_promise_check_on_action
+		ftr_court_death_cleanup_on_action
 	}
 }
 

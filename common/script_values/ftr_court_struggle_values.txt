@@ -70,8 +70,6 @@ ftr_court_poison_intrigue_threshold_value = 14  # 下毒成功率参照的密谋
 # 下毒健康减益的持续时间（天）：剧毒重而短，慢性毒绵长持久、压低实力
 ftr_court_severe_poison_days_value = 730    # 0055 剧毒：failing_health(-0.5) 持续 2 年
 ftr_court_chronic_poison_days_value = 1095  # 0056 慢性虚毒：旅行食毒(health-0.25/prowess-4) 持续 3 年
-# 0081 被掳后屈服退让：竞争力评分一次性下调量（认栽出局）
-ftr_court_coerce_penalty_value = 40
 # 年度自然回落（向 0 缓慢回归，防单向锁死不回落）
 ftr_court_intensity_yearly_decay_value = 5
 # 君主失能/弱势时年度正向偏置（推高烈度，承接 ftr_court_monarch_weak 语义）
@@ -120,7 +118,6 @@ ftr_court_claim_adult_value = 20
 ftr_court_claim_prime_age_value = 10
 ftr_court_claim_old_age_value = -10
 ftr_court_claim_average_attribute_factor_value = 2
-ftr_court_claim_landed_value = 25
 ftr_court_claim_councillor_value = 15
 ftr_court_claim_diarch_value = 40
 ftr_court_claim_spouse_value = 10
@@ -130,6 +127,15 @@ ftr_court_claim_backer_value = 5
 ftr_court_claim_opinion_high_value = 15
 ftr_court_claim_opinion_mid_value = 5
 ftr_court_claim_opinion_low_value = -10
+
+# 1.4 实时硬实力维度（顺序仍按"越低档越易被压制"设计，随头衔/军力/威望/影响力实时浮动）
+ftr_court_claim_emperor_tier_value = 45     # 皇帝：头衔等级分
+ftr_court_claim_kingdom_tier_value = 30     # 国王
+ftr_court_claim_duchy_tier_value = 15       # 公爵
+ftr_court_claim_county_tier_value = 5       # 伯爵（最低有地档）
+ftr_court_claim_military_factor_value = 0.01  # 兵力加分系数：每 100 兵 ≈ 1 分
+ftr_court_claim_prestige_factor_value = 6    # 威望等级加分：每级 +6
+ftr_court_claim_influence_factor_value = 0.01 # 影响力加分系数：行政制每 100 影响力 ≈ 1 分
 
 # 特质加成
 ftr_court_claim_ambitious_value = 30
@@ -157,8 +163,10 @@ ftr_court_claim_average_attribute_value = {
 	multiply = ftr_court_claim_average_attribute_factor_value
 }
 
-########## 四、竞争力评分总分 ##########
+########## 四、竞争力评分总分（实时综合判断） ##########
 # 求值时的作用域：this = 候选人，scope:ftr_court_monarch = 在位君主
+# 1.4 起不再依赖存储变量 ftr_claim_strength；排序/选头目处直接按本实时值评估，
+# 每次求值均按候选人当下的头衔等级、兵力、威望等级、影响力等综合浮动。
 ftr_court_claim_strength_value = {
 	value = 0
 
@@ -193,8 +201,46 @@ ftr_court_claim_strength_value = {
 	if = { limit = { has_trait = reclusive }		add = ftr_court_claim_reclusive_value }
 	if = { limit = { has_trait = shy }				add = ftr_court_claim_shy_value }
 
-	### 实力与身份
-	if = { limit = { is_landed = yes }									add = ftr_court_claim_landed_value }
+	### 实时硬实力：头衔等级（无地皇子不拿此档，仍可靠继承/亲缘/支持者得分）
+	if = {
+		limit = { highest_held_title_tier >= tier_emperor }
+		add = ftr_court_claim_emperor_tier_value
+	}
+	else_if = {
+		limit = { highest_held_title_tier >= tier_kingdom }
+		add = ftr_court_claim_kingdom_tier_value
+	}
+	else_if = {
+		limit = { highest_held_title_tier >= tier_duchy }
+		add = ftr_court_claim_duchy_tier_value
+	}
+	else_if = {
+		limit = { highest_held_title_tier >= tier_county }
+		add = ftr_court_claim_county_tier_value
+	}
+
+	### 实时硬实力：兵力（取最大军力，系数缩放避免淹没其它维度）
+	add = {
+		value = max_military_strength
+		multiply = ftr_court_claim_military_factor_value
+	}
+
+	### 实时硬实力：威望等级
+	add = {
+		value = prestige_level
+		multiply = ftr_court_claim_prestige_factor_value
+	}
+
+	### 实时硬实力：影响力（仅行政制角色具备）
+	if = {
+		limit = { government_allows = administrative }
+		add = {
+			value = influence
+			multiply = ftr_court_claim_influence_factor_value
+		}
+	}
+
+	### 身份地位
 	if = { limit = { is_councillor_of = scope:ftr_court_monarch }		add = ftr_court_claim_councillor_value }
 	if = { limit = { is_diarch_of_target = scope:ftr_court_monarch }	add = ftr_court_claim_diarch_value }
 	if = { limit = { is_spouse_of = scope:ftr_court_monarch }			add = ftr_court_claim_spouse_value }
@@ -219,8 +265,8 @@ ftr_court_claim_strength_value = {
 		multiply = ftr_court_supporters_count_value
 	}
 
-	### 永不出现负分，便于展示
-	max = 0
+	### 防负分，便于展示（用 min 而非 max：低于 0 抬回 0）
+	min = 0
 }
 
 ########## 四·B、列表人数（查询用） ##########
@@ -346,8 +392,6 @@ ftr_court_favor_prestige_value = 100
 ftr_court_succession_war_prestige_cost_value = 350
 
 ########## 六之二、奖惩幅度 ##########
-# 危机事件中压制参与角逐头目的扣分
-ftr_court_crisis_repress_value = -60
 # 君主强力出手（0003.c 禁止内斗 / 0005.b/c 压制）对烈度的单次抑制量
 ftr_court_monarch_restraint_drop_value = 8
 # 0011.b「擒贼擒王」定向逮捕的成功基础概率（%）

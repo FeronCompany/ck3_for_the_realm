@@ -47,6 +47,7 @@
  ftr_court_rival_claimant_opinion:0 "Backed my rival"
  ftr_court_betrayed_opinion:0 "Abandoned me"
  ftr_court_bribed_opinion:0 "Received a heavy bribe"
+ ftr_court_backer_discouraged_opinion:0 "Shaken in their support"
 
  ###### Character Modifiers ######
  ftr_court_struggle_ongoing:0 "Succession Struggle"

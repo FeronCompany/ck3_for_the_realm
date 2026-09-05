@@ -108,7 +108,7 @@
 
  ###### 0041 君主警觉 ######
  ftr_court_struggle.0041.t:0 "不忠的耳语"
- ftr_court_struggle.0041.desc:0 "有密报传到[ROOT.GetTitledFirstName]耳中，称某位臣属已公开为朝堂上的另一方背书。当大位悬而未决时，究竟谁的忠诚还靠得住？"
+ ftr_court_struggle.0041.desc:0 "有密报传到[ftr_court_monarch.GetTitledFirstName]耳中，称某位臣属已公开为朝堂上的另一方背书。当大位悬而未决时，究竟谁的忠诚还靠得住？"
  ftr_court_struggle.0041.a:0 "我要好生盯着[ftr_court_supported.GetFullName]。"
  ftr_court_struggle.0041.b:0 "无足轻重罢了。"
 

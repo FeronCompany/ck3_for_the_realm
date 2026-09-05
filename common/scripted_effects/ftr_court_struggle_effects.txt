@@ -50,7 +50,6 @@ ftr_court_cleanup_effect = {
 	# 清理候选人个体变量
 	every_in_list = {
 		variable = ftr_court_participant_list
-		remove_variable = ftr_claim_strength
 		remove_variable = ftr_court_backer_of
 		remove_variable = ftr_court_participant_of
 		# 候选人也可能被他人支持：解除支持者背书并清空支持者名单
@@ -62,7 +61,6 @@ ftr_court_cleanup_effect = {
 	every_in_list = {
 		variable = ftr_court_participant_list
 		remove_character_flag = ftr_court_participating
-		remove_variable = ftr_claim_strength
 		remove_variable = ftr_court_backer_of
 		remove_variable = ftr_court_participant_of
 		ftr_court_release_all_backers_effect = yes
@@ -214,7 +212,6 @@ ftr_court_transfer_story_effect = {
 			}
 			remove_character_flag = ftr_court_participating
 			remove_character_flag = ftr_court_asked_participation
-			remove_variable = ftr_claim_strength
 			remove_variable = ftr_court_backer_of
 			remove_variable = ftr_court_participant_of
 			remove_character_flag = ftr_court_pooled
@@ -318,7 +315,6 @@ ftr_court_death_cleanup_effect = {
 		remove_character_flag = ftr_court_participating
 		remove_character_flag = ftr_court_pooled
 		remove_character_flag = ftr_court_asked_participation
-		remove_variable = ftr_claim_strength
 		ftr_court_revoke_temp_duchy_effect = yes
 	}
 }
@@ -566,11 +562,6 @@ ftr_court_join_contest_effect = {
 		# 参与者加入：抬升烈度（替代原 phase 定档）
 		ftr_court_on_participant_join_effect = yes
 	}
-	# 计算竞争力评分
-	set_variable = {
-		name = ftr_claim_strength
-		value = ftr_court_claim_strength_value
-	}
 }
 
 # 在潜在继任者域执行：明确表示不参与。
@@ -723,6 +714,41 @@ ftr_court_release_all_backers_effect = {
 			remove_variable = ftr_court_backer_of
 		}
 		clear_variable_list = ftr_court_supporters
+	}
+}
+
+# 在被支持者（权贵）域执行：其支持者受压制而离心。
+# 替代旧的"直接扣 ftr_claim_strength"做法（实时评分已无存储变量可扣）——
+# 随机一名支持者退出支持，其余支持者对该权贵好感下降。
+# 依赖：进入时 this = 被支持者（权贵），其身上有 ftr_court_supporters 名单。
+ftr_court_discourage_backers_effect = {
+	save_scope_as = ftr_court_patron_holder
+	if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		# 1) 随机一名支持者动摇退出支持（退出者解除背书、对原主交恶）
+		random_in_list = {
+			variable = ftr_court_supporters
+			save_scope_as = ftr_court_defecting_backer
+			scope:ftr_court_defecting_backer = {
+				remove_variable = ftr_court_backer_of
+				add_opinion = { target = scope:ftr_court_patron_holder  modifier = ftr_court_backer_discouraged_opinion }
+			}
+		}
+		# 2) 把退出者移出被支持者的支持者名单
+		scope:ftr_court_patron_holder = {
+			if = {
+				limit = { exists = scope:ftr_court_defecting_backer }
+				ftr_court_remove_backer_effect = { BACKER = scope:ftr_court_defecting_backer }
+			}
+		}
+		# 3) 其余支持者离心（对权贵好感下降）
+		scope:ftr_court_patron_holder = {
+			every_in_list = {
+				variable = ftr_court_supporters
+				limit = { NOT = { this = scope:ftr_court_defecting_backer } }
+				add_opinion = { target = scope:ftr_court_patron_holder  modifier = ftr_court_backer_discouraged_opinion }
+			}
+		}
 	}
 }
 
@@ -979,7 +1005,6 @@ ftr_court_schedule_council_reminder_effect = {
 # 在角色域执行：清理其竞争状态（退出朝堂角逐）。
 # 同时解除其名下所有支持者的背书（支持者不再"已站队"），防止悬空背书占用站队资格。
 ftr_court_clear_claimant_status_effect = {
-	remove_variable = ftr_claim_strength
 	remove_variable = ftr_court_backer_of
 	remove_variable = ftr_court_participant_of
 	# 解除自身支持者们的背书并清空支持者名单
@@ -1065,15 +1090,15 @@ ftr_court_queue_next_council_reminder_effect = {
 ### 七之二、名次保存与承诺兑现
 ######################################################
 
-# 在 story 域执行：把前五名竞争者按名次存为 scope:ftr_court_claimant_1 ~ 5，
+# 在 story 域执行：把名单中的前五名竞争者按顺序存为 scope:ftr_court_claimant_1 ~ 5，
 # 供事件以固定选项呈现（CK3 无法动态生成事件选项）。
+# 简化说明：不再按 ftr_claim_strength 排序，直接从变量列表逐个取出（顺序 = 加入名单顺序）。
 ftr_court_save_ranked_claimants_effect = {
 	save_scope_as = ftr_court_story
 	set_variable = { name = ftr_court_rank_counter  value = 0 }
 
-	ordered_in_list = {
+	every_in_list = {
 		variable = ftr_court_participant_list
-		order_by = var:ftr_claim_strength
 		save_scope_as = ftr_court_pick
 		scope:ftr_court_story = {
 			if = {
@@ -1404,6 +1429,8 @@ ftr_court_strife_slander_effect = {
 #         ≥170（临界） 且满足废黜条件 → 0018（朝堂最强势力）。各出口沿用既有 3 年防骚扰 flag。
 ftr_court_strife_exit_pulse_effect = {
 	save_scope_as = ftr_court_strife_exit_story
+	# 保存君主命名域，供下方 order_by = ftr_court_claim_strength_value 实时评估使用
+	story_owner = { save_scope_as = ftr_court_monarch }
 	random = {
 		chance = ftr_court_strife_exit_chance_value
 		# 通知事件按烈度区分：濒危以上 0005（一触即发）、对立区 0003（势均力敌）
@@ -1441,7 +1468,7 @@ ftr_court_strife_exit_pulse_effect = {
 			limit = { var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value }
 			ordered_in_list = {
 				variable = ftr_court_participant_list
-				order_by = var:ftr_claim_strength
+				order_by = ftr_court_claim_strength_value
 				save_scope_as = ftr_court_exit_ringleader
 				scope:ftr_court_exit_ringleader ?= {
 					if = {

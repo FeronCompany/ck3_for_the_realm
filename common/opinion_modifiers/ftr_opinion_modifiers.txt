@@ -198,6 +198,14 @@ ftr_court_betrayed_opinion = {
 	stacking = yes
 }
 
+# 头目受压制 / 认栽退出一线后，其支持者离心（对权贵好感下降）
+ftr_court_backer_discouraged_opinion = {
+	opinion = -20
+	years = 10
+	decaying = yes
+	stacking = yes
+}
+
 # 直接赠金收买（许诺交互「直接现付」选项）
 ftr_court_bribed_opinion = {
 	opinion = 40

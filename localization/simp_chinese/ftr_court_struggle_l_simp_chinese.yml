@@ -47,6 +47,7 @@
  ftr_court_rival_claimant_opinion:0 "曾拥戴我的对手"
  ftr_court_betrayed_opinion:0 "背弃了我"
  ftr_court_bribed_opinion:0 "收受了我的重金"
+ ftr_court_backer_discouraged_opinion:0 "对我的前途心生犹疑"
 
  ###### 角色修正 ######
  ftr_court_struggle_ongoing:0 "继位之争"

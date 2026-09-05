@@ -231,18 +231,16 @@ ftr_court_struggle.0005 = {
 			modifier = { add = -20  has_trait = compassionate }
 			modifier = { add = -15  has_trait = forgiving }
 		}
-		# 直接压制参与角逐的头目，其余参与者心怀忌惮；烈度随之回落
+		# 直接压制参与角逐的头目：头目被拿捏，其支持者离心动摇；烈度随之回落。
+		# （实时综合评分已无存储变量可扣，改用“支持者离心”体现压制。）
 		scope:ftr_court_story ?= {
 			ordered_in_list = {
 				variable = ftr_court_participant_list
-				order_by = var:ftr_claim_strength
+				order_by = ftr_court_claim_strength_value
 				save_scope_as = ftr_court_ringleader
 			}
 			scope:ftr_court_ringleader ?= {
-				if = {
-					limit = { has_variable = ftr_claim_strength }
-					change_variable = { name = ftr_claim_strength  add = ftr_court_crisis_repress_value }
-				}
+				ftr_court_discourage_backers_effect = yes
 				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_rival_claimant_opinion }
 			}
 			if = {
@@ -1246,14 +1244,11 @@ ftr_court_struggle.0040 = {
 		# 参与角逐：加 flag + 加入最高统治者个人维护的参与者列表 ftr_court_claimants。
 		# 新方案：参与者列表主存储放在最高统治者（scope:ftr_court_monarch）的个人变量列表上，
 		# 避免 story 域变量读取问题。加入后同步到 story 的 ftr_court_participant_list。
+		# （1.4 起不再把竞争力快照存为 ftr_claim_strength——排序处一律实时评估
+		#   ftr_court_claim_strength_value。）
 		save_scope_as = ftr_court_entering_claimant
 		add_character_flag = ftr_court_participating
 		remove_character_flag = ftr_court_asked_participation
-		# 计算竞争力评分（在候选人身上）
-		set_variable = {
-			name = ftr_claim_strength
-			value = ftr_court_claim_strength_value
-		}
 		# 把参与者加入最高统治者的 ftr_court_claimants 列表
 		scope:ftr_court_monarch = {
 			add_to_variable_list = {
@@ -2129,10 +2124,10 @@ ftr_court_struggle.0060 = {
 		}
 		scope:ftr_court_story ?= {
 			story_owner = { save_scope_as = ftr_court_monarch }
-			# 取头号竞争者（评分最高者）；root 本人即头号时顺延评分次高者（不调查自己）
+			# 取头号竞争者（实时综合评分最高者）；root 本人即头号时顺延评分次高者（不调查自己）
 			ordered_in_list = {
 				variable = ftr_court_participant_list
-				order_by = var:ftr_claim_strength
+				order_by = ftr_court_claim_strength_value
 				limit = { NOT = { this = root } }
 				save_scope_as = ftr_court_ringleader
 			}
@@ -2586,15 +2581,9 @@ ftr_court_struggle.0081 = {
 			modifier = { add = 25  has_trait = craven }
 			modifier = { add = -25  has_trait = brave }
 		}
-		# 认栽：竞争力大幅下滑，退出一线角逐（由主时钟/排序自然边缘化）
-		change_variable = {
-			name = ftr_claim_strength
-			subtract = ftr_court_coerce_penalty_value
-		}
-		if = {
-			limit = { var:ftr_claim_strength < 0 }
-			set_variable = { name = ftr_claim_strength  value = 0 }
-		}
+		# 认栽退出一线：其支持者离心（随机退出 / 好感下降）。实时综合评分无存储分可扣，
+		# 用“追随者动摇”体现认栽失势；随主时钟 / 实时排序自然边缘化。
+		ftr_court_discourage_backers_effect = yes
 		remove_character_flag = ftr_court_coerced
 		scope:ftr_court_actor ?= {
 			add_prestige = ftr_court_prestige_minor_value

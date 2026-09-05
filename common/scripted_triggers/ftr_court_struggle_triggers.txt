@@ -424,6 +424,26 @@ ftr_court_has_no_supporters_trigger = {
 	}
 }
 
+# 是否处于某场可表态的继任之争朝堂（求值域：潜在支持者本人 this）。
+# 判定链：本人需有朝堂地位（封臣走 top_liege，无地廷臣走 employer），
+# 该最高统治者正持有 ftr_court_struggle 且参与者名单至少有一名可支持对象
+# （名单计数不能裸用 list_size，须用 variable_list_size trigger 判断）。
+# 用于「表态支持」决议的 is_shown 与 AI 可用性判定。
+ftr_court_in_declarable_struggle_trigger = {
+	is_capable_adult = yes
+	NOT = { is_imprisoned = yes }
+	top_liege = {
+		custom_tooltip = {
+			text = ftr_top_liege_has_more_than_one_claimants_text
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				has_variable_list = ftr_court_participant_list
+				variable_list_size = { name = ftr_court_participant_list  value >= 1 }
+			}
+		}
+	}
+}
+
 ########## 七之二、AI 背书立场偏好（事件 0014 站队用） ##########
 # 供 0014 五个站队选项复用：把"封臣立场 ↔ 候选特质"是否契合做成参数化 trigger，
 # 契合加分 / 违背减分，使 AI 不只看名次而按自身立场挑选对象（对齐交互 ai_will_do 的 stance 语义）。

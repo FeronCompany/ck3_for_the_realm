@@ -750,9 +750,12 @@ ftr_court_struggle.0018 = {
 	}
 }
 
-######### 0014 朝堂站队（root = 被询问的朝堂成员，可为无地廷臣） #########
-# 由 story 的对立/危机脉冲推送。
-# 存在意义：无地廷臣不能主动发起角色交互，其参与一律依赖事件触发。
+######### 0014 朝堂站队（root = 被询问/主动表态的朝堂成员，可为无地廷臣） #########
+# 触发源：
+#   1) story 的对立/危机脉冲推送（随机询问一名未站队封臣/廷臣）；
+#   2) 决策 ftr_court_declare_backing_decision（玩家/AI 主动表态，原支持交互已废除）。
+# 五个支持选项统一调用记账 effect ftr_court_apply_backing_effect（改投清理/好感/树敌/
+# 背书声望/谋略警觉 0041），供被动询问与主动表态共用同一套账目。
 ftr_court_struggle.0014 = {
 	type = character_event
 	title = ftr_court_struggle.0014.t
@@ -797,435 +800,45 @@ ftr_court_struggle.0014 = {
 		trigger = { exists = scope:ftr_court_claimant_1 }
 		ai_chance = {
 			base = 20
-			modifier = { add = 15  has_trait = ambitious }
-			# 黑马激励：尚无任何支持者时押注更被珍视
-			modifier = {
-				add = { value = ftr_court_backing_underdog_bonus_value }
-				scope:ftr_court_claimant_1 = {
-					ftr_court_has_no_supporters_trigger = yes
-				}
-			}
-			# 好感：敬慕者乐于押注
-			modifier = { add = 35  opinion = { target = scope:ftr_court_claimant_1  value >= 75 } }
-			modifier = { add = 20  opinion = { target = scope:ftr_court_claimant_1  value >= 40 } }
-			modifier = { add = -25  opinion = { target = scope:ftr_court_claimant_1  value <= -25 } }
-			# 姻亲 / 同盟：联姻结盟者互为奥援
-			modifier = { add = 30  scope:ftr_court_asked = { is_allied_to = scope:ftr_court_claimant_1 } }
-			# 封臣立场：契合特质偏好则押注、违背立场所忌则却步
-			modifier = {
-				add = 30
-				ftr_court_backing_stance_fit_trigger = {
-					CANDIDATE = scope:ftr_court_claimant_1
-					ACTOR = scope:ftr_court_asked
-				}
-			}
-			modifier = {
-				add = -25
-				ftr_court_backing_stance_misfit_trigger = {
-					CANDIDATE = scope:ftr_court_claimant_1
-					ACTOR = scope:ftr_court_asked
-				}
-			}
-			# 防拥挤：已有支持者越多，锦上添花越不值（每多 1 名再压一段）
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_1 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 2 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_1 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 3 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_1 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 4 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_1 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 5 }
-				}
-			}
+			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_1 }
 		}
-		set_variable = { name = ftr_court_backer_of  value = scope:ftr_court_claimant_1 }
-		scope:ftr_court_claimant_1 = {
-			add_to_variable_list = {
-				name = ftr_court_supporters
-				target = scope:ftr_court_asked
-			}
-			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
-		}
-		# 视为公开站队：其余竞争者同生芥蒂（对齐交互公开分支；不触发 0041）
-		scope:ftr_court_story ?= {
-			every_in_list = {
-				variable = ftr_court_participant_list
-				limit = {
-					NOT = { this = scope:ftr_court_claimant_1 }
-					NOT = { this = scope:ftr_court_asked }
-				}
-				add_opinion = { target = scope:ftr_court_asked  modifier = ftr_court_rival_claimant_opinion }
-			}
-		}
-		# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
-		scope:ftr_court_claimant_1 = { save_scope_as = ftr_court_debug_backed }
-		ftr_court_debug_backing_notice_effect = yes
+		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_1 }
 	}
 	option = { # Back the second
 		name = ftr_court_struggle.0014.b
 		trigger = { exists = scope:ftr_court_claimant_2 }
 		ai_chance = {
 			base = 18
-			modifier = { add = 15  has_trait = ambitious }
-			# 黑马激励：尚无任何支持者时押注更被珍视
-			modifier = {
-				add = { value = ftr_court_backing_underdog_bonus_value }
-				scope:ftr_court_claimant_2 = {
-					ftr_court_has_no_supporters_trigger = yes
-				}
-			}
-			# 好感：敬慕者乐于押注
-			modifier = { add = 35  opinion = { target = scope:ftr_court_claimant_2  value >= 75 } }
-			modifier = { add = 20  opinion = { target = scope:ftr_court_claimant_2  value >= 40 } }
-			modifier = { add = -25  opinion = { target = scope:ftr_court_claimant_2  value <= -25 } }
-			# 姻亲 / 同盟：联姻结盟者互为奥援
-			modifier = { add = 30  scope:ftr_court_asked = { is_allied_to = scope:ftr_court_claimant_2 } }
-			# 封臣立场：契合特质偏好则押注、违背立场所忌则却步
-			modifier = {
-				add = 30
-				ftr_court_backing_stance_fit_trigger = {
-					CANDIDATE = scope:ftr_court_claimant_2
-					ACTOR = scope:ftr_court_asked
-				}
-			}
-			modifier = {
-				add = -25
-				ftr_court_backing_stance_misfit_trigger = {
-					CANDIDATE = scope:ftr_court_claimant_2
-					ACTOR = scope:ftr_court_asked
-				}
-			}
-			# 防拥挤：已有支持者越多，锦上添花越不值（每多 1 名再压一段）
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_2 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 2 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_2 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 3 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_2 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 4 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_2 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 5 }
-				}
-			}
+			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_2 }
 		}
-		set_variable = { name = ftr_court_backer_of  value = scope:ftr_court_claimant_2 }
-		scope:ftr_court_claimant_2 = {
-			add_to_variable_list = {
-				name = ftr_court_supporters
-				target = scope:ftr_court_asked
-			}
-			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
-		}
-		# 视为公开站队：其余竞争者同生芥蒂（对齐交互公开分支；不触发 0041）
-		scope:ftr_court_story ?= {
-			every_in_list = {
-				variable = ftr_court_participant_list
-				limit = {
-					NOT = { this = scope:ftr_court_claimant_2 }
-					NOT = { this = scope:ftr_court_asked }
-				}
-				add_opinion = { target = scope:ftr_court_asked  modifier = ftr_court_rival_claimant_opinion }
-			}
-		}
-		# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
-		scope:ftr_court_claimant_2 = { save_scope_as = ftr_court_debug_backed }
-		ftr_court_debug_backing_notice_effect = yes
+		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_2 }
 	}
 	option = { # Back a dark horse
 		name = ftr_court_struggle.0014.c
 		trigger = { exists = scope:ftr_court_claimant_3 }
 		ai_chance = {
 			base = 16
-			modifier = { add = 15  has_trait = ambitious }
-			# 黑马激励：尚无任何支持者时押注更被珍视
-			modifier = {
-				add = { value = ftr_court_backing_underdog_bonus_value }
-				scope:ftr_court_claimant_3 = {
-					ftr_court_has_no_supporters_trigger = yes
-				}
-			}
-			# 好感：敬慕者乐于押注
-			modifier = { add = 35  opinion = { target = scope:ftr_court_claimant_3  value >= 75 } }
-			modifier = { add = 20  opinion = { target = scope:ftr_court_claimant_3  value >= 40 } }
-			modifier = { add = -25  opinion = { target = scope:ftr_court_claimant_3  value <= -25 } }
-			# 姻亲 / 同盟：联姻结盟者互为奥援
-			modifier = { add = 30  scope:ftr_court_asked = { is_allied_to = scope:ftr_court_claimant_3 } }
-			# 封臣立场：契合特质偏好则押注、违背立场所忌则却步
-			modifier = {
-				add = 30
-				ftr_court_backing_stance_fit_trigger = {
-					CANDIDATE = scope:ftr_court_claimant_3
-					ACTOR = scope:ftr_court_asked
-				}
-			}
-			modifier = {
-				add = -25
-				ftr_court_backing_stance_misfit_trigger = {
-					CANDIDATE = scope:ftr_court_claimant_3
-					ACTOR = scope:ftr_court_asked
-				}
-			}
-			# 防拥挤：已有支持者越多，锦上添花越不值（每多 1 名再压一段）
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_3 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 2 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_3 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 3 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_3 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 4 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_3 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 5 }
-				}
-			}
+			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_3 }
 		}
-		set_variable = { name = ftr_court_backer_of  value = scope:ftr_court_claimant_3 }
-		scope:ftr_court_claimant_3 = {
-			add_to_variable_list = {
-				name = ftr_court_supporters
-				target = scope:ftr_court_asked
-			}
-			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
-		}
-		# 视为公开站队：其余竞争者同生芥蒂（对齐交互公开分支；不触发 0041）
-		scope:ftr_court_story ?= {
-			every_in_list = {
-				variable = ftr_court_participant_list
-				limit = {
-					NOT = { this = scope:ftr_court_claimant_3 }
-					NOT = { this = scope:ftr_court_asked }
-				}
-				add_opinion = { target = scope:ftr_court_asked  modifier = ftr_court_rival_claimant_opinion }
-			}
-		}
-		# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
-		scope:ftr_court_claimant_3 = { save_scope_as = ftr_court_debug_backed }
-		ftr_court_debug_backing_notice_effect = yes
+		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_3 }
 	}
 	option = { # Back the fourth
 		name = ftr_court_struggle.0014.d
 		trigger = { exists = scope:ftr_court_claimant_4 }
 		ai_chance = {
 			base = 14
-			modifier = { add = 15  has_trait = ambitious }
-			# 黑马激励：尚无任何支持者时押注更被珍视
-			modifier = {
-				add = { value = ftr_court_backing_underdog_bonus_value }
-				scope:ftr_court_claimant_4 = {
-					ftr_court_has_no_supporters_trigger = yes
-				}
-			}
-			# 好感：敬慕者乐于押注
-			modifier = { add = 35  opinion = { target = scope:ftr_court_claimant_4  value >= 75 } }
-			modifier = { add = 20  opinion = { target = scope:ftr_court_claimant_4  value >= 40 } }
-			modifier = { add = -25  opinion = { target = scope:ftr_court_claimant_4  value <= -25 } }
-			# 姻亲 / 同盟：联姻结盟者互为奥援
-			modifier = { add = 30  scope:ftr_court_asked = { is_allied_to = scope:ftr_court_claimant_4 } }
-			# 封臣立场：契合特质偏好则押注、违背立场所忌则却步
-			modifier = {
-				add = 30
-				ftr_court_backing_stance_fit_trigger = {
-					CANDIDATE = scope:ftr_court_claimant_4
-					ACTOR = scope:ftr_court_asked
-				}
-			}
-			modifier = {
-				add = -25
-				ftr_court_backing_stance_misfit_trigger = {
-					CANDIDATE = scope:ftr_court_claimant_4
-					ACTOR = scope:ftr_court_asked
-				}
-			}
-			# 防拥挤：已有支持者越多，锦上添花越不值（每多 1 名再压一段）
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_4 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 2 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_4 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 3 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_4 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 4 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_4 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 5 }
-				}
-			}
+			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_4 }
 		}
-		set_variable = { name = ftr_court_backer_of  value = scope:ftr_court_claimant_4 }
-		scope:ftr_court_claimant_4 = {
-			add_to_variable_list = {
-				name = ftr_court_supporters
-				target = scope:ftr_court_asked
-			}
-			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
-		}
-		# 视为公开站队：其余竞争者同生芥蒂（对齐交互公开分支；不触发 0041）
-		scope:ftr_court_story ?= {
-			every_in_list = {
-				variable = ftr_court_participant_list
-				limit = {
-					NOT = { this = scope:ftr_court_claimant_4 }
-					NOT = { this = scope:ftr_court_asked }
-				}
-				add_opinion = { target = scope:ftr_court_asked  modifier = ftr_court_rival_claimant_opinion }
-			}
-		}
-		# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
-		scope:ftr_court_claimant_4 = { save_scope_as = ftr_court_debug_backed }
-		ftr_court_debug_backing_notice_effect = yes
+		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_4 }
 	}
 	option = { # Back the fifth
 		name = ftr_court_struggle.0014.e
 		trigger = { exists = scope:ftr_court_claimant_5 }
 		ai_chance = {
 			base = 14
-			modifier = { add = 15  has_trait = ambitious }
-			# 黑马激励：尚无任何支持者时押注更被珍视
-			modifier = {
-				add = { value = ftr_court_backing_underdog_bonus_value }
-				scope:ftr_court_claimant_5 = {
-					ftr_court_has_no_supporters_trigger = yes
-				}
-			}
-			# 好感：敬慕者乐于押注
-			modifier = { add = 35  opinion = { target = scope:ftr_court_claimant_5  value >= 75 } }
-			modifier = { add = 20  opinion = { target = scope:ftr_court_claimant_5  value >= 40 } }
-			modifier = { add = -25  opinion = { target = scope:ftr_court_claimant_5  value <= -25 } }
-			# 姻亲 / 同盟：联姻结盟者互为奥援
-			modifier = { add = 30  scope:ftr_court_asked = { is_allied_to = scope:ftr_court_claimant_5 } }
-			# 封臣立场：契合特质偏好则押注、违背立场所忌则却步
-			modifier = {
-				add = 30
-				ftr_court_backing_stance_fit_trigger = {
-					CANDIDATE = scope:ftr_court_claimant_5
-					ACTOR = scope:ftr_court_asked
-				}
-			}
-			modifier = {
-				add = -25
-				ftr_court_backing_stance_misfit_trigger = {
-					CANDIDATE = scope:ftr_court_claimant_5
-					ACTOR = scope:ftr_court_asked
-				}
-			}
-			# 防拥挤：已有支持者越多，锦上添花越不值（每多 1 名再压一段）
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_5 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 2 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_5 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 3 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_5 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 4 }
-				}
-			}
-			modifier = {
-				add = -15
-				scope:ftr_court_claimant_5 = {
-					has_variable_list = ftr_court_supporters
-					variable_list_size = { name = ftr_court_supporters  value >= 5 }
-				}
-			}
+			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_5 }
 		}
-		set_variable = { name = ftr_court_backer_of  value = scope:ftr_court_claimant_5 }
-		scope:ftr_court_claimant_5 = {
-			add_to_variable_list = {
-				name = ftr_court_supporters
-				target = scope:ftr_court_asked
-			}
-			add_opinion = { target = scope:ftr_court_asked  modifier = ftr_political_alliance_opinion }
-		}
-		# 视为公开站队：其余竞争者同生芥蒂（对齐交互公开分支；不触发 0041）
-		scope:ftr_court_story ?= {
-			every_in_list = {
-				variable = ftr_court_participant_list
-				limit = {
-					NOT = { this = scope:ftr_court_claimant_5 }
-					NOT = { this = scope:ftr_court_asked }
-				}
-				add_opinion = { target = scope:ftr_court_asked  modifier = ftr_court_rival_claimant_opinion }
-			}
-		}
-		# ### DEBUG ### 通知玩家「谁支持了谁」（后续统一移除）
-		scope:ftr_court_claimant_5 = { save_scope_as = ftr_court_debug_backed }
-		ftr_court_debug_backing_notice_effect = yes
+		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_5 }
 	}
 	option = { # Watch and wait
 		name = ftr_court_struggle.0014.f
@@ -1651,7 +1264,8 @@ ftr_court_struggle.0040 = {
 }
 
 ######### 0041 君主警觉（root = 最高统治者） #########
-# 由 ftr_court_back_claimant_interaction 公开支持触发（小概率）。
+# 由公共记账 effect ftr_court_apply_backing_effect 触发（0014 站队 / 表态支持决议，
+# 小概率；概率按背书者与被支持者的谋略对抗浮动）。
 # 使君主对被支持的权贵心生芥蒂，降低相互关系。
 # 若被支持者是君主的子女 / 继承人，公开背书还触发「惊君处置」：
 # 君主选择怀有芥蒂（a）时，背书者（scope:ftr_court_backer）被打上 15 年警告 flag

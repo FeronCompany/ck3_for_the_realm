@@ -1,0 +1,93 @@
+﻿##############################################################
+### 朝堂权力角逐 COURT STRUGGLE — 朝堂背书/站队 AI 权重
+###
+### 复用方式（对齐原版 employer_boon_*_ai_chance_modifier 惯例）：
+###   在事件选项 ai_chance 内平级引用，例如
+###   ai_chance = {
+###       base = 20
+###       ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_1 }
+###   }
+### 参数：$CLAIMANT$ = 被评估的候选（角色 scope）。
+### 求值上下文：this = 被询问/表态的朝堂成员（root），scope:ftr_court_asked 亦指向其人。
+##############################################################
+
+# 主动/被动表态支持某候选的共享 AI 权重（0014 五个选项 a–e 复用）。
+# 语义分层：
+#   1) 人格基础：野心者更愿占队；
+#   2) 黑马激励：候选尚无支持者时押注更被珍视（与防拥挤构成双向机制）；
+#   3) 好感线性加权：对被支持者好感越高越乐于押注；
+#   4) 姻亲/同盟：联姻结盟者互为奥援；
+#   5) 封臣立场：候选特质契合自身立场则押注、触犯立场所忌则却步；
+#   6) 防拥挤：候选已有支持者越多，锦上添花越不值（逐名压价）。
+ftr_court_back_support_ai_modifier = {
+	# 野心者乐于押注
+	modifier = {
+		add = 15
+		has_trait = ambitious
+	}
+	# 黑马激励：尚无任何支持者时押注更被珍视
+	modifier = {
+		add = {
+			value = ftr_court_backing_underdog_bonus_value
+		}
+		$CLAIMANT$ = {
+			ftr_court_has_no_supporters_trigger = yes
+		}
+	}
+	# 好感：敬慕者乐于押注（按好感数值线性加权）
+	opinion_modifier = {
+		who = scope:ftr_court_asked
+		opinion_target = $CLAIMANT$
+		multiplier = 0.5
+	}
+	# 姻亲 / 同盟：联姻结盟者互为奥援
+	modifier = {
+		add = 30
+		scope:ftr_court_asked = { is_allied_to = $CLAIMANT$ }
+	}
+	# 封臣立场：契合特质偏好则押注
+	modifier = {
+		add = 30
+		ftr_court_backing_stance_fit_trigger = {
+			CANDIDATE = $CLAIMANT$
+			ACTOR = scope:ftr_court_asked
+		}
+	}
+	# 封臣立场：违背立场所忌则却步
+	modifier = {
+		add = -25
+		ftr_court_backing_stance_misfit_trigger = {
+			CANDIDATE = $CLAIMANT$
+			ACTOR = scope:ftr_court_asked
+		}
+	}
+	# 防拥挤：已有支持者越多，锦上添花越不值（每多 1 名再压一段）
+	modifier = {
+		add = -15
+		$CLAIMANT$ = {
+			has_variable_list = ftr_court_supporters
+			variable_list_size = { name = ftr_court_supporters  value >= 2 }
+		}
+	}
+	modifier = {
+		add = -15
+		$CLAIMANT$ = {
+			has_variable_list = ftr_court_supporters
+			variable_list_size = { name = ftr_court_supporters  value >= 3 }
+		}
+	}
+	modifier = {
+		add = -15
+		$CLAIMANT$ = {
+			has_variable_list = ftr_court_supporters
+			variable_list_size = { name = ftr_court_supporters  value >= 4 }
+		}
+	}
+	modifier = {
+		add = -15
+		$CLAIMANT$ = {
+			has_variable_list = ftr_court_supporters
+			variable_list_size = { name = ftr_court_supporters  value >= 5 }
+		}
+	}
+}

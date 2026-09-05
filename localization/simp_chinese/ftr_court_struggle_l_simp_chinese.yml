@@ -170,3 +170,10 @@
  ftr_court_use_leverage_decision_desc:0 "你手里握着某人的把柄。是借此逼其退让、当众揭穿，还是好聚好散还他自由，皆在你一念之间。"
  ftr_court_use_leverage_decision_tooltip:0 "对把柄目标施加影响：逼其让利、公开揭穿，或归还把柄换人情。"
  ftr_court_use_leverage_decision_confirm:0 "是时候用上这张牌了。"
+
+###### 主动表态支持决议（原表态支持交互已废除，§7.3） ######
+ ftr_court_declare_backing_decision:0 "<FTR>表态支持"
+ ftr_court_declare_backing_decision_desc:0 "你身处一场继位之争。若至今尚未押注，或想改换门庭，此刻便可公开表明立场、拥立你所中意的竞争者。"
+ ftr_court_declare_backing_decision_tooltip:0 "选择一名参与角逐的竞争者并公开表态支持：其余竞争者将同生芥蒂，小概率惊动君主。"
+ ftr_court_declare_backing_decision_confirm:0 "公开表明立场。"
+ ftr_top_liege_has_more_than_one_claimants_text:0 "最高领主有不止一位觊觎者"

@@ -551,6 +551,114 @@ ftr_court_remove_backer_effect = {
 	}
 }
 
+# 在支持者域执行：公开支持某权贵的完整记账（供 0014 五个选项与主动决议共用，替代原交互 on_accept）。
+# 参数：$CLAIMANT$ = 被支持者（角色 scope 表达式，如 scope:ftr_court_claimant_1）。
+# 依赖：scope:ftr_court_story 已保存（0014 immediate 已保存；主动决议同样经 0014 触发）。
+# 含：改投清理（曾支持他人则先从旧主账目移除并令旧主/其支持者记恨）→ 新主记账（backer_of /
+# supporters / 双向好感）→ 公开树敌（其余参与者）→ 支持君主子女/继承人的背书声望 →
+# 君主警觉 0041（概率随双方谋略浮动）。
+ftr_court_apply_backing_effect = {
+	# 支持者即当前 root，登记为 ftr_court_backer 供警觉事件使用
+	save_scope_as = ftr_court_backer
+	# ---- 1) 改投清理：此前已支持他人且非本目标 ----
+	if = {
+		limit = {
+			has_variable = ftr_court_backer_of
+			NOT = { var:ftr_court_backer_of ?= { this = $CLAIMANT$ } }
+		}
+		save_scope_as = ftr_court_old_backed
+		# 旧主从自己的支持者名单移除本支持者
+		var:ftr_court_backer_of ?= {
+			ftr_court_remove_backer_effect = { BACKER = root }
+		}
+		# 旧主记恨
+		scope:ftr_court_old_backed = {
+			add_opinion = { target = root  modifier = ftr_court_betrayed_opinion }
+			# 旧主的支持者们（有地与廷臣，除自己外）同仇敌忾
+			every_vassal = {
+				limit = {
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { this = scope:ftr_court_old_backed }
+					NOT = { this = root }
+				}
+				add_opinion = { target = root  modifier = ftr_court_rival_claimant_opinion }
+			}
+			every_courtier = {
+				limit = {
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { this = scope:ftr_court_old_backed }
+					NOT = { this = root }
+				}
+				add_opinion = { target = root  modifier = ftr_court_rival_claimant_opinion }
+			}
+		}
+	}
+	# ---- 2) 支持者侧记账：更新站队对象 + 对受支持者表达好感 ----
+	set_variable = { name = ftr_court_backer_of  value = $CLAIMANT$ }
+	add_opinion = { target = $CLAIMANT$  modifier = ftr_court_backer_opinion }
+	# ---- 3) 被支持者侧记账：登记支持者（防重）、回赠政治盟友好感、另存 debug 与被警觉用作用域 ----
+	$CLAIMANT$ = {
+		if = {
+			limit = {
+				NOT = {
+					is_target_in_variable_list = {
+						name = ftr_court_supporters
+						target = root
+					}
+				}
+			}
+			add_to_variable_list = {
+				name = ftr_court_supporters
+				target = root
+			}
+		}
+		add_opinion = { target = root  modifier = ftr_political_alliance_opinion }
+		save_scope_as = ftr_court_debug_backed
+		save_scope_as = ftr_court_supported
+	}
+	# ---- 4) 公开树敌：其余参与者同生芥蒂（对齐 0014 / 交互公开分支）----
+	scope:ftr_court_story ?= {
+		every_in_list = {
+			variable = ftr_court_participant_list
+			limit = {
+				NOT = { this = $CLAIMANT$ }
+				NOT = { this = root }
+			}
+			add_opinion = { target = root  modifier = ftr_court_rival_claimant_opinion }
+		}
+	}
+	# ---- 5) 背书声望：支持对象是君主的子女 / 继承人 ----
+	$CLAIMANT$ = {
+		if = {
+			limit = {
+				exists = scope:ftr_court_monarch
+				OR = {
+					is_child_of = scope:ftr_court_monarch
+					is_heir_of = scope:ftr_court_monarch
+				}
+			}
+			add_prestige = ftr_court_heir_backing_prestige_value
+		}
+	}
+	# ---- 6) 君主警觉：支持君主本人不构成"惊君"；其余对象按谋略对抗概率触发 0041 ----
+	if = {
+		limit = {
+			exists = scope:ftr_court_monarch
+			NOT = { $CLAIMANT$ = scope:ftr_court_monarch }
+			$CLAIMANT$ = { NOT = { ftr_court_is_struggle_monarch_trigger = yes } }
+		}
+		random = {
+			chance = ftr_court_backing_alert_chance_value
+			scope:ftr_court_monarch ?= {
+				save_scope_as = ftr_court_monarch
+				trigger_event = { id = ftr_court_struggle.0041  days = 1 }
+			}
+		}
+	}
+	# ---- 7) DEBUG 通知「谁支持了谁」（后续统一移除）----
+	ftr_court_debug_backing_notice_effect = yes
+}
+
 # 在被支持者（权贵）域执行：解除自己名下所有支持者的背书关系（供本权贵被移出角逐时调用）。
 # 背书是双向记账：被支持者身上的 ftr_court_supporters 名单 + 支持者本人的 ftr_court_backer_of。
 # 若本权贵（被支持对象）死亡 / 被捕清算 / 退出角逐，其支持者不应继续"已站队"——

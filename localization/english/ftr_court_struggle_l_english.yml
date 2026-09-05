@@ -170,3 +170,10 @@
  ftr_court_use_leverage_decision_desc:0 "You hold someone's secret in your hand. Press them to yield, expose it openly, or return it for goodwill — the choice is yours."
  ftr_court_use_leverage_decision_tooltip:0 "Apply pressure on the leverage target: force a concession, expose them, or return the secret in exchange for goodwill."
  ftr_court_use_leverage_decision_confirm:0 "Time to play this card."
+
+###### Declare support decision (replaces the former support interaction, §7.3) ######
+ ftr_court_declare_backing_decision:0 "<FTR>Declare Support"
+ ftr_court_declare_backing_decision_desc:0 "You stand amid a succession struggle. If you have yet to take a side — or wish to switch allegiance — you may now openly declare for the claimant of your choice."
+ ftr_court_declare_backing_decision_tooltip:0 "Choose a claimant in the contest and openly declare your support: the other claimants will resent you, and there is a small chance of stirring the monarch's suspicion."
+ ftr_court_declare_backing_decision_confirm:0 "Declare my allegiance."
+ ftr_top_liege_has_more_than_one_claimants_text:0 "Top liege has more than one ambitious claimants"

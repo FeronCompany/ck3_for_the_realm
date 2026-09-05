@@ -18,8 +18,25 @@ ftr_court_max_candidates_value = 5
 # 参与者列表定期刷新的随机间隔（天）：30-60
 ftr_court_refresh_interval_min_value = 30
 ftr_court_refresh_interval_max_value = 60
-# 臣属公开支持时，触发君主警觉事件的概率（%）
+# 臣属公开支持时，触发君主警觉事件的基础概率（%）
 ftr_court_monarch_alert_chance_value = 20
+# 谋略警觉调制系数：支持者每点谋略压低警觉（瞒天过海）；被支持者每点谋略抬升警觉（易露破绽）
+ftr_court_alert_intrigue_hide_factor_value = 0.8
+ftr_court_alert_intrigue_suspect_factor_value = 0.4
+# 求值域：this = 支持者（背书人），scope:ftr_court_supported = 被支持者。
+# 警觉概率随双方谋略对抗浮动：支持者狡黠则不易被察觉，被支持者树大招风则易被盯上。
+# 计算结果会被引擎 clamp 到 0-100。
+ftr_court_backing_alert_chance_value = {
+	value = ftr_court_monarch_alert_chance_value
+	subtract = {
+		value = this.intrigue
+		multiply = ftr_court_alert_intrigue_hide_factor_value
+	}
+	add = {
+		value = scope:ftr_court_supported.intrigue
+		multiply = ftr_court_alert_intrigue_suspect_factor_value
+	}
+}
 
 ########## 一之二、烈度（var:ftr_court_struggle_intensity，0-200）##########
 # 烈度替代原 ftr_court_phase（0-3 离散阶段）。区间对齐 §12.3.1：

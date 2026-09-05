@@ -216,6 +216,158 @@ ftr_court_ease_struggle_decision = {
 				add = -20
 				has_trait = content
 			}
+		}
+	}
+}
+
+##############################################################
+### 朝堂权力角逐 — 主动表态支持决议
+###
+### 背景：原「支持某权贵」走 character_interaction（ftr_court_back_claimant_interaction），
+###       其 AI 目标依赖 ai_targets 关系池——当最高统治者的孩子都是无地廷臣时，
+###       他们不属于任何 AI 大臣的 vassals/courtiers/dynasty 候选，AI 永远"看不见"，
+###       因此无人会主动背书。决议没有目标池限制（actor 自己触发，候选在 0014 事件内
+###       按名次动态列出），正好绕开该缺陷。
+###
+### 使用方式：
+###   - AI：拥有朝堂角逐且未表态（或想改投）时会评估本决议，点决议 → 触发 0014，
+###         由 0014 事件选项（关系 / 立场 / 拥挤 / 黑马权重）自动选择支持对象。
+###   - 玩家：同样可在决议面板主动"表态支持"，随后在 0014 中选择对象。
+### 防骚扰：触发前打上与 0014 推送同款的 ftr_court_asked_stance（3 年），避免反复弹。
+##############################################################
+ftr_court_declare_backing_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_court_declare_backing_decision_desc
+	selection_tooltip = ftr_court_declare_backing_decision_tooltip
+	cooldown = { years = 5 }
+
+	is_shown = {
+		is_landed = yes
+		is_independent_ruler = no
+		# 防骚扰：近期刚被征询 / 刚表过态（与 0014 推送共用同一冷却）
+		NOT = { has_character_flag = ftr_court_asked_stance }
+	}
+
+	is_valid = {
+		ftr_court_in_declarable_struggle_trigger = yes
+	}
+
+	effect = {
+		# 与 0014 推送同款防骚扰：3 年内不再主动表态 / 不被反复征询
+		add_character_flag = { flag = ftr_court_asked_stance  years = 3 }
+		# 复用 0014 站队事件：其 immediate 会重新定位君主/story 并保存前五名候选，
+		# 五个支持选项由公共记账 effect（ftr_court_apply_backing_effect）完成记账、
+		# 树敌、声望与谋略警觉；已站队者改投亦被支持。
+		trigger_event = { id = ftr_court_struggle.0014  days = 2 }
+	}
+
+	ai_check_interval = 12
+	ai_potential = {
+		ftr_court_in_declarable_struggle_trigger = yes
+		NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+		NOT = { has_character_flag = ftr_court_asked_stance }
+	}
+	ai_will_do = {
+		# 无目标决议只决定"是否现在表态"；具体支持谁由 0014 事件选项的权重完成。
+		base = 15
+		# 人格：野心者更愿占队，安于现状者保持沉默
+		modifier = {
+			add = 25
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -30
+			has_trait = content
+		}
+		modifier = {
+			add = -15
+			has_trait = craven
+		}
+		modifier = {
+			add = -100
+			NOT = { is_vassl_of = top_liege }
+		}
+		# 曾被君主警告者收敛（15 年警告 flag）
+		modifier = {
+			add = -40
+			has_character_flag = ftr_liege_warn_not_support_heir
+		}
+		# 共治分权之际，押注更有意义
+		modifier = {
+			add = 20
+			top_liege ?= { has_active_diarchy = yes }
+		}
+		# 君主健康驱动：大位越近越值得提前占队（this = 决策者，经 top_liege / employer 读君主健康）
+		modifier = {
+			add = {
+				value = ftr_court_monarch_health_urgency_base_value
+				subtract = {
+					value = this.top_liege.health
+					multiply = ftr_court_monarch_health_urgency_slope_value
+				}
 			}
+			top_liege ?= {
+				any_owned_story = {
+					story_type = ftr_court_struggle
+					has_variable = ftr_court_struggle_intensity
+				}
 			}
+		}
+		# ---- 已站队者改投：意愿随与现任支持对象的双向好感浮动（仍允许，供策略性换边）----
+		# 双向好感的取法（均切到现任支持对象作用域，避免把 var 作 trigger target）：
+		#   opinion = { target = root }        → 现任对决策者的好感
+		#   reverse_opinion = { target = root } → 决策者对现任的好感
+		# 默认：改投有破坏关系成本，意愿略降
+		modifier = {
+			add = -25
+			has_variable = ftr_court_backer_of
+		}
+		# 现任支持对象器重此人（现任对决策者好感 ≥ 40）：盟友情分深，轻易不愿背弃
+		modifier = {
+			add = -30
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= {
+				opinion = {
+					target = root
+					value >= 40
+				}
+			}
+		}
+		# 决策者敬重现任支持对象（决策者对现任好感 ≥ 40）：以诚相待，不愿无故背弃
+		modifier = {
+			add = -30
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= {
+				reverse_opinion = {
+					target = root
+					value >= 40
+				}
+			}
+		}
+		# 现任支持对象已与决策者交恶（现任对决策者好感 < 0）：联盟名存实亡，改投顾虑大减
+		modifier = {
+			add = 30
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= {
+				opinion = {
+					target = root
+					value < 0
+				}
+			}
+		}
+		# 决策者已厌弃现任支持对象（决策者对现任好感 < 0）：离心离德，换边几无心理负担
+		modifier = {
+			add = 30
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= {
+				reverse_opinion = {
+					target = root
+					value < 0
+				}
+			}
+		}
+	}
 }

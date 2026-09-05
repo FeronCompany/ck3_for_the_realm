@@ -795,7 +795,11 @@ ftr_court_struggle.0014 = {
 
 	option = { # Back the strongest
 		name = ftr_court_struggle.0014.a
-		trigger = { exists = scope:ftr_court_claimant_1 }
+		# 不能支持自己：若 root 本人是参与者（可能进入前五名单），该选项隐藏
+		trigger = {
+			exists = scope:ftr_court_claimant_1
+			scope:ftr_court_claimant_1 = { NOT = { this = root } }
+		}
 		ai_chance = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_1 }
@@ -804,7 +808,10 @@ ftr_court_struggle.0014 = {
 	}
 	option = { # Back the second
 		name = ftr_court_struggle.0014.b
-		trigger = { exists = scope:ftr_court_claimant_2 }
+		trigger = {
+			exists = scope:ftr_court_claimant_2
+			scope:ftr_court_claimant_2 = { NOT = { this = root } }
+		}
 		ai_chance = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_2 }
@@ -813,7 +820,10 @@ ftr_court_struggle.0014 = {
 	}
 	option = { # Back a dark horse
 		name = ftr_court_struggle.0014.c
-		trigger = { exists = scope:ftr_court_claimant_3 }
+		trigger = {
+			exists = scope:ftr_court_claimant_3
+			scope:ftr_court_claimant_3 = { NOT = { this = root } }
+		}
 		ai_chance = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_3 }
@@ -822,7 +832,10 @@ ftr_court_struggle.0014 = {
 	}
 	option = { # Back the fourth
 		name = ftr_court_struggle.0014.d
-		trigger = { exists = scope:ftr_court_claimant_4 }
+		trigger = {
+			exists = scope:ftr_court_claimant_4
+			scope:ftr_court_claimant_4 = { NOT = { this = root } }
+		}
 		ai_chance = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_4 }
@@ -831,7 +844,10 @@ ftr_court_struggle.0014 = {
 	}
 	option = { # Back the fifth
 		name = ftr_court_struggle.0014.e
-		trigger = { exists = scope:ftr_court_claimant_5 }
+		trigger = {
+			exists = scope:ftr_court_claimant_5
+			scope:ftr_court_claimant_5 = { NOT = { this = root } }
+		}
 		ai_chance = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_5 }

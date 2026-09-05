@@ -689,9 +689,12 @@ ftr_court_apply_backing_effect = {
 		}
 		random = {
 			chance = ftr_court_backing_alert_chance_value
-			scope:ftr_court_monarch ?= {
-				save_scope_as = ftr_court_monarch
-				trigger_event = { id = ftr_court_struggle.0041  days = 1 }
+			custom_tooltip = {
+				text = ftr_court_apply_backing_effect.liege_notify_text
+				scope:ftr_court_monarch ?= {
+					save_scope_as = ftr_court_monarch
+					trigger_event = { id = ftr_court_struggle.0041  days = 1 }
+				}
 			}
 		}
 	}

@@ -86,6 +86,7 @@
  ftr_court_struggle.0014.d:0 "Back [ftr_court_claimant_4.GetFullName]"
  ftr_court_struggle.0014.e:0 "Back [ftr_court_claimant_5.GetFullName]"
  ftr_court_struggle.0014.f:0 "Watch and wait."
+ ftr_court_apply_backing_effect.liege_notify_text:0 "This may lead to alert and anger of top liege"
 
  ###### 0015 竞争者抉择 ######
  ftr_court_struggle.0015.t:0 "The Time Is Now"

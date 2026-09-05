@@ -246,6 +246,8 @@ ftr_court_declare_backing_decision = {
 	is_shown = {
 		is_landed = yes
 		is_independent_ruler = no
+		# 已参与角逐者本人是竞争者，不应再通过本决议"表态支持他人"
+		NOT = { has_character_flag = ftr_court_participating }
 		# 防骚扰：近期刚被征询 / 刚表过态（与 0014 推送共用同一冷却）
 		NOT = { has_character_flag = ftr_court_asked_stance }
 	}
@@ -267,6 +269,8 @@ ftr_court_declare_backing_decision = {
 	ai_potential = {
 		ftr_court_in_declarable_struggle_trigger = yes
 		NOT = { ftr_court_is_struggle_monarch_trigger = yes }
+		# 已参与角逐者本人是竞争者，AI 不再通过本决议表态
+		NOT = { has_character_flag = ftr_court_participating }
 		NOT = { has_character_flag = ftr_court_asked_stance }
 	}
 	ai_will_do = {

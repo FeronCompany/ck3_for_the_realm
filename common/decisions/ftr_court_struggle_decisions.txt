@@ -1,6 +1,5 @@
 ﻿# 朝堂权力角逐 —— 缓和内部矛盾决议（§12.5 / §12.11）
 # 求值域：君主（story owner）。当朝堂烈度过高时，以高成本换取烈度骤降 + 缓和与竞争者关系 + 短暂休战。
-
 ftr_court_ease_struggle_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
@@ -92,130 +91,130 @@ ftr_court_ease_struggle_decision = {
 			add = -15
 			has_trait = ambitious
 		}
+	}
+}
+
+# 朝堂权力角逐 —— 派间谍调查头号竞争者（手段 2.2 主动入口，§9.2）
+# 求值域：触发池成员（最高统治者 / 有头衔·领地的参与者 / 参与者的有头衔·领地支持者）。
+# 查实可压制头号竞争者；AI 依「我支持的候选人」处境决定是否出手（§7.3 AI 决策）。
+ftr_court_investigate_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_court_investigate_decision_desc
+	selection_tooltip = ftr_court_investigate_decision_tooltip
+	cooldown = { years = 3 }
+
+	is_shown = {
+		is_capable_adult = yes
+		NOT = { is_imprisoned = yes }
+		# 资格：触发池成员（最高统治者 / 有头衔·领地参与者 / 参与者有头衔·领地支持者）
+		ftr_court_can_order_investigation_trigger = yes
+		# 朝堂烈度进入对立以上才有值得彻查的对手
+		any_owned_story = {
+			story_type = ftr_court_struggle
+			has_variable = ftr_court_struggle_intensity
+			var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
 		}
+		NOT = { has_character_flag = ftr_court_investigate_cooldown }
+	}
 
-		# 朝堂权力角逐 —— 派间谍调查头号竞争者（手段 2.2 主动入口，§9.2）
-		# 求值域：触发池成员（最高统治者 / 有头衔·领地的参与者 / 参与者的有头衔·领地支持者）。
-		# 查实可压制头号竞争者；AI 依「我支持的候选人」处境决定是否出手（§7.3 AI 决策）。
-		ftr_court_investigate_decision = {
-		picture = {
-			reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	is_valid = {
+		any_owned_story = {
+			story_type = ftr_court_struggle
+			has_variable = ftr_court_struggle_intensity
+			var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
 		}
-		decision_group_type = realm
-		desc = ftr_court_investigate_decision_desc
-		selection_tooltip = ftr_court_investigate_decision_tooltip
-		cooldown = { years = 3 }
+	}
 
-		is_shown = {
-			is_capable_adult = yes
-			NOT = { is_imprisoned = yes }
-			# 资格：触发池成员（最高统治者 / 有头衔·领地参与者 / 参与者有头衔·领地支持者）
-			ftr_court_can_order_investigation_trigger = yes
-			# 朝堂烈度进入对立以上才有值得彻查的对手
-			any_owned_story = {
-				story_type = ftr_court_struggle
-				has_variable = ftr_court_struggle_intensity
-				var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
-			}
-			NOT = { has_character_flag = ftr_court_investigate_cooldown }
-		}
+	effect = {
+		add_character_flag = { flag = ftr_court_investigate_cooldown  years = 3 }
+		trigger_event = { id = ftr_court_struggle.0060 }
+	}
 
-		is_valid = {
-			any_owned_story = {
-				story_type = ftr_court_struggle
-				has_variable = ftr_court_struggle_intensity
-				var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
+	ai_check_interval = 60
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 0
+		# 我支持的候选人 C 与头号接近 / 落后时，倾向出手拆台
+		modifier = {
+			add = 35
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= {
+				has_character_flag = ftr_court_participating
 			}
 		}
-
-		effect = {
-			add_character_flag = { flag = ftr_court_investigate_cooldown  years = 3 }
-			trigger_event = ftr_court_struggle.0060
-		}
-
-		ai_check_interval = 60
-		ai_potential = {
-			always = yes
-		}
-		ai_will_do = {
-			base = 0
-			# 我支持的候选人 C 与头号接近 / 落后时，倾向出手拆台
-			modifier = {
-				add = 35
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= {
-					has_character_flag = ftr_court_participating
-				}
-			}
-			# 君主 / 参与者被猜忌型人格驱动
-			modifier = {
-				add = 25
-				OR = {
-					has_trait = paranoid
-					has_trait = ambitious
-				}
-			}
-			modifier = {
-				add = -30
-				has_trait = trusting
-			}
-			# 曾因公开背书被警告者收敛（转地下，避免惊动君主）
-			modifier = {
-				add = -25
-				has_character_flag = ftr_liege_warn_not_support_heir
-			}
-			}
-			}
-
-			# 朝堂权力角逐 —— 使用把柄（手段 2.3 后续入口，§9.3）
-			# 求值域：持有 ftr_court_has_leverage 且已记录 ftr_court_leverage_target 的发起竞争者。
-			ftr_court_use_leverage_decision = {
-			picture = {
-			reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
-			}
-			decision_group_type = realm
-			desc = ftr_court_use_leverage_decision_desc
-			selection_tooltip = ftr_court_use_leverage_decision_tooltip
-			cooldown = { years = 1 }
-
-			is_shown = {
-			is_capable_adult = yes
-			NOT = { is_imprisoned = yes }
-			has_character_flag = ftr_court_has_leverage
-			has_variable = ftr_court_leverage_target
-			var:ftr_court_leverage_target ?= { is_alive = yes }
-			}
-
-			is_valid = {
-			always = yes
-			}
-
-			effect = {
-			trigger_event = ftr_court_struggle.0071
-			}
-
-			ai_check_interval = 60
-			ai_potential = {
-			always = yes
-			}
-			ai_will_do = {
-			base = 0
-			modifier = {
-				add = 30
-				has_trait = deceitful
-			}
-			modifier = {
-				add = 25
+		# 君主 / 参与者被猜忌型人格驱动
+		modifier = {
+			add = 25
+			OR = {
+				has_trait = paranoid
 				has_trait = ambitious
 			}
-			modifier = {
-				add = -25
-				has_trait = just
-			}
-			modifier = {
-				add = -20
-				has_trait = content
-			}
+		}
+		modifier = {
+			add = -30
+			has_trait = trusting
+		}
+		# 曾因公开背书被警告者收敛（转地下，避免惊动君主）
+		modifier = {
+			add = -25
+			has_character_flag = ftr_liege_warn_not_support_heir
+		}
+	}
+}
+
+# 朝堂权力角逐 —— 使用把柄（手段 2.3 后续入口，§9.3）
+# 求值域：持有 ftr_court_has_leverage 且已记录 ftr_court_leverage_target 的发起竞争者。
+ftr_court_use_leverage_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_court_use_leverage_decision_desc
+	selection_tooltip = ftr_court_use_leverage_decision_tooltip
+	cooldown = { years = 1 }
+
+	is_shown = {
+		is_capable_adult = yes
+		NOT = { is_imprisoned = yes }
+		has_character_flag = ftr_court_has_leverage
+		has_variable = ftr_court_leverage_target
+		var:ftr_court_leverage_target ?= { is_alive = yes }
+	}
+
+	is_valid = {
+		always = yes
+	}
+
+	effect = {
+		trigger_event = { id = ftr_court_struggle.0071 }
+	}
+
+	ai_check_interval = 60
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 30
+			has_trait = deceitful
+		}
+		modifier = {
+			add = 25
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -25
+			has_trait = just
+		}
+		modifier = {
+			add = -20
+			has_trait = content
 		}
 	}
 }
@@ -288,7 +287,7 @@ ftr_court_declare_backing_decision = {
 		}
 		modifier = {
 			add = -100
-			NOT = { is_vassl_of = top_liege }
+			NOT = { is_vassal_of = top_liege }
 		}
 		# 曾被君主警告者收敛（15 年警告 flag）
 		modifier = {

@@ -401,7 +401,7 @@ ftr_court_struggle.0011 = {
 			chance = ftr_court_arrest_success_base_value
 			scope:ftr_court_dissenter ?= {
 				ftr_court_clear_claimant_status_effect = yes
-				imprison = { type = dungeon }
+				imprison = { type = dungeon  target = scope:ftr_court_dissenter }
 			}
 			add_dread = ftr_court_dread_medium_value
 			# 成功标记：供失败兜底判定（互斥）
@@ -808,7 +808,7 @@ ftr_court_struggle.0014 = {
 		name = ftr_court_struggle.0014.b
 		trigger = { exists = scope:ftr_court_claimant_2 }
 		ai_chance = {
-			base = 18
+			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_2 }
 		}
 		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_2 }
@@ -817,7 +817,7 @@ ftr_court_struggle.0014 = {
 		name = ftr_court_struggle.0014.c
 		trigger = { exists = scope:ftr_court_claimant_3 }
 		ai_chance = {
-			base = 16
+			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_3 }
 		}
 		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_3 }
@@ -826,7 +826,7 @@ ftr_court_struggle.0014 = {
 		name = ftr_court_struggle.0014.d
 		trigger = { exists = scope:ftr_court_claimant_4 }
 		ai_chance = {
-			base = 14
+			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_4 }
 		}
 		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_4 }
@@ -835,7 +835,7 @@ ftr_court_struggle.0014 = {
 		name = ftr_court_struggle.0014.e
 		trigger = { exists = scope:ftr_court_claimant_5 }
 		ai_chance = {
-			base = 14
+			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_5 }
 		}
 		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_5 }
@@ -843,10 +843,9 @@ ftr_court_struggle.0014 = {
 	option = { # Watch and wait
 		name = ftr_court_struggle.0014.f
 		ai_chance = {
-			base = 35
-			modifier = { add = 45  has_trait = content }
-			modifier = { add = 30  has_trait = craven }
-			modifier = { add = 20  has_trait = humble }
+			base = 15
+			modifier = { add = 15  has_trait = content }
+			modifier = { add = 20  has_trait = craven }
 			modifier = { add = -25  has_trait = ambitious }
 		}
 	}
@@ -1974,7 +1973,7 @@ ftr_court_struggle.0058 = {
 			modifier = { add = -25  has_trait = forgiving }
 		}
 		scope:ftr_court_inq_actor ?= {
-			imprison = { type = house_arrest }
+			imprison = { type = house_arrest  target = scope:ftr_court_inq_actor }
 			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
 		}
 		add_tyranny = minor_tyranny_value
@@ -2509,7 +2508,11 @@ ftr_court_struggle.0071 = {
 		}
 		# 还其把柄，换取交情
 		scope:ftr_court_leverage_holder_victim ?= {
-			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = grateful_opinion }
+			add_opinion = {
+				target = scope:ftr_court_leverage_holder_actor
+				modifier = grateful_opinion
+				opinion = 25
+			}
 		}
 		remove_character_flag = ftr_court_has_leverage
 	}
@@ -2778,7 +2781,7 @@ ftr_court_struggle.00A1 = {
 			modifier = { add = -20  has_trait = just }
 		}
 		# 收买共治者左右，稳妥拉回天平（官方 swing 向君主侧）
-		change_gold = -60
+		add_gold = -60
 		scope:ftr_court_story_owner ?= {
 			update_diarchy_swing_with_perspective_effect = {
 				SWING = minor_sop_swing_liege_gain
@@ -2884,7 +2887,6 @@ ftr_court_struggle.00A2 = {
 ftr_court_struggle.0211 = {
 	type = character_event
 	hidden = yes
-	is_triggered_only = yes
 	immediate = {
 		scope:story = { ftr_court_strife_slander_effect = yes }
 	}
@@ -2894,7 +2896,6 @@ ftr_court_struggle.0211 = {
 ftr_court_struggle.0212 = {
 	type = character_event
 	hidden = yes
-	is_triggered_only = yes
 	immediate = {
 		scope:story = { ftr_court_strife_exit_pulse_effect = yes }
 	}
@@ -2904,7 +2905,6 @@ ftr_court_struggle.0212 = {
 ftr_court_struggle.0213 = {
 	type = character_event
 	hidden = yes
-	is_triggered_only = yes
 	immediate = {
 		scope:story = { ftr_court_landless_swing_effect = yes }
 	}
@@ -2914,7 +2914,6 @@ ftr_court_struggle.0213 = {
 ftr_court_struggle.0214 = {
 	type = character_event
 	hidden = yes
-	is_triggered_only = yes
 	immediate = {
 		scope:story = { ftr_court_diarch_backlash_effect = yes }
 	}

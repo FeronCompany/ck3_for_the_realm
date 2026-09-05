@@ -58,7 +58,6 @@ ftr_court_back_support_ai_modifier = {
 		add = -25
 		ftr_court_backing_stance_misfit_trigger = {
 			CANDIDATE = $CLAIMANT$
-			ACTOR = scope:ftr_court_asked
 		}
 	}
 	# 防拥挤：已有支持者越多，锦上添花越不值（每多 1 名再压一段）

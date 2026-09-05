@@ -15,11 +15,23 @@ For The Realm (朝野纷争) —— P 语言语法快速校验脚本
   7. 事件文件须声明 namespace
   8. 决议须写 ai_check_interval 或 ai_goal
   9. 双语本地化键名一致性（english 与 simp_chinese 成对）
+  10. 引用一致性（--game-path 时启用，语义级）：
+      * scripted_effect / scripted_trigger / script value / trait / law 引用白名单检查
+      * scripted_effect / scripted_trigger 定义收集覆盖**整个 mod 任意 .txt 顶层**
+        （CK3 允许用 scripted_effect/trigger 关键词在 events 等任意文件顶层定义，
+        原版 birth_events.txt 等有先例 —— 不是只能放在 common/scripted_effects/）
+      * save_scope_value_as 的动态作用域值名不算 script value，读取豁免误报
+      * 引擎预置触发豁免：is_valid_agent_standard_trigger（原版无定义文件）
+  11. 非法写法启发式（本次排错新增）：
+      * scop:（应写 scope:，曾致死亡杀手/好感作用域丢失）
+      * change_gold 非有效效果（应为 add_gold / transfer_gold）
+      * scripted_effect / trigger 定义顶格检查
 
 用法：
-    python tools/validate_scripts.py                 # 校验整个 mod
-    python tools/validate_scripts.py common/events   # 校验指定目录/文件
-    python tools/validate_scripts.py --fix-bom       # 自动为缺失 BOM 的文件补上 BOM
+    python tools/validate_scripts.py --game-path "…/game"   # 全量 + 引用白名单
+    python tools/validate_scripts.py                        # 仅基础检查
+    python tools/validate_scripts.py common/events          # 校验指定目录/文件
+    python tools/validate_scripts.py --fix-bom              # 自动为缺失 BOM 的文件补上 BOM
 
 退出码：0 = 通过，1 = 有错误（Error 级），2 = 仅有警告（Warning 级）
 """
@@ -117,6 +129,21 @@ def rel(p):
 GAME_PATH = ""          # 由 main() 解析 --game-path 设置
 _game_objects = None    # { "trait": {...}, "law": {...}, ... } 缓存
 
+# 引擎预置 / 上下文内建触发器（原版无 scripted_triggers 定义文件，但引擎接受）。
+# 实证：is_valid_agent_standard_trigger 在原版全部 scheme 的 valid_agent 中大量使用，
+# 全 game 检索其 scripted_triggers 定义 = 0 命中 —— 属引擎为 scheme 提供的内建触发。
+# 若再发现同类内建名字，追加到此集合。
+ENGINE_BUILTIN_TRIGGERS = {
+    "is_valid_agent_standard_trigger",
+}
+
+# 引擎内建效果（原版 scripted_effects 无定义，但属于引擎关键字），极少需要追加。
+ENGINE_BUILTIN_EFFECTS = set()
+
+# 引擎内建脚本值（save_scope_value_as 动态作用域值名等，无需预定义 script value）。
+# 实证：原版 981 个不同 save_scope_value_as name 均未在 script_values 定义，属合法用法。
+ENGINE_BUILTIN_VALUES = set()
+
 
 def load_game_objects():
     """加载游戏目录中的对象白名单。返回 { 类别: {对象名} }。失败则返回 None。"""
@@ -163,9 +190,11 @@ def load_game_objects():
             else:
                 for m in re.finditer(r"^([\w.]+)\s*=\s*\{", text, re.M):
                     _game_objects[cat].add(m.group(1))
-    # trait 额外收录"原版脚本实际使用过的 has_trait = X"——
-    # CK3 有 trait 别名（如 lunatic/possessed 定义键不同但脚本可用），
-    # 用实际使用作为白名单比定义键更可靠，避免误报。
+    # 额外收录：
+    #   a) 全 game（common + events）中"关键词式"定义的 scripted_effect/trigger——
+    #      CK3 允许 scripted_effect / scripted_trigger 定义在任意 .txt 顶层
+    #      （原版 birth_events.txt 等大量先例），故只扫 common/scripted_effects 会漏。
+    #   b) has_trait = X 实际使用（trait 别名，见上）。
     for sub in ("common", "events"):
         d = os.path.join(GAME_PATH, sub)
         if not os.path.isdir(d):
@@ -182,6 +211,13 @@ def load_game_objects():
                     continue
                 for m in re.finditer(r"has_trait\s*=\s*([\w]+)", t):
                     _game_objects["trait"].add(m.group(1))
+                for m in re.finditer(r"scripted_effect\s+([\w.]+)\s*=\s*\{", t):
+                    _game_objects["effect"].add(m.group(1))
+                for m in re.finditer(r"scripted_trigger\s+([\w.]+)\s*=\s*\{", t):
+                    _game_objects["trigger"].add(m.group(1))
+    # c) 引擎内建名字（无定义文件，但引擎接受）
+    _game_objects["trigger"] |= ENGINE_BUILTIN_TRIGGERS
+    _game_objects["effect"] |= ENGINE_BUILTIN_EFFECTS
     return _game_objects
 
 
@@ -400,15 +436,27 @@ def check_decision(path, text):
     for i, raw in enumerate(lines, start=1):
         stripped = raw.lstrip()
         m = TOP_OBJ_RE.match(raw)
-        if m and m.group("indent") == "" and depth == 0:
-            # 新顶层对象开始
-            if in_block and not has_ai:
-                warn(path, block_start, f"决议/对象 '{in_block}' 未写 ai_check_interval 或 ai_goal")
-            in_block = m.group("name")
-            block_start = i
-            depth = 1
-            has_ai = False
-            continue
+        if m and m.group("indent") == "":
+            if depth == 0:
+                # 新顶层对象开始
+                if in_block and not has_ai:
+                    warn(path, block_start, f"决议/对象 '{in_block}' 未写 ai_check_interval 或 ai_goal")
+                in_block = m.group("name")
+                block_start = i
+                depth = 1
+                has_ai = False
+                continue
+            else:
+                # 顶层对象嵌套：前一个决议缺 }，后面的决议被吞进上一对象块内。
+                # 实证：ease/investigate/use_leverage 三个决议互相嵌套致全部失效。
+                err(path, i,
+                    f"顶层决议 '{m.group('name')}' 出现在上一决议块内"
+                    f"（上一决议 '{in_block}' 缺对应 }}）—— 对象互相嵌套会导致后续决议失效")
+                in_block = m.group("name")
+                block_start = i
+                depth = 1
+                has_ai = False
+                continue
         if depth > 0:
             depth += raw.count("{") - raw.count("}")
             if "ai_check_interval" in raw or "ai_goal" in raw:
@@ -436,6 +484,83 @@ KNOWN_BAD_KEYS = {
 }
 
 
+# 收集整个 mod 的关键词式 scripted_effect/trigger 定义（缓存一次，供每文件检查复用）
+_mod_defined = None     # {"effect": set, "trigger": set, ...}
+_mod_scope_values = None  # save_scope_value_as 的动态作用域值名集合
+
+
+def collect_mod_definitions():
+    """扫描整个 mod（common + events + gui 目录）中所有可复用定义。
+
+    注意：CK3 允许 scripted_effect / scripted_trigger 以关键词形式
+    （`scripted_effect NAME = {`）定义在**任意** .txt 顶层 —— 原版
+    birth_events.txt / kurultai_task_events.txt 等都有先例。因此收集定义
+    不能只看 common/scripted_effects 与 common/scripted_triggers。
+    本函数同时收集 save_scope_value_as 的动态作用域值名（见 ENGINE_BUILTIN_VALUES）。
+    """
+    global _mod_defined, _mod_scope_values
+    if _mod_defined is not None:
+        return _mod_defined
+    defined = {"effect": set(), "trigger": set(), "value": set(),
+               "trait": set(), "law": set()}
+    scope_values = set()
+    for sub in ("common", "events"):
+        base = os.path.join(ROOT, sub)
+        if not os.path.isdir(base):
+            continue
+        for dirpath, _, fns in os.walk(base):
+            for fn in fns:
+                if not fn.endswith(".txt"):
+                    continue
+                try:
+                    with open(os.path.join(dirpath, fn), encoding="utf-8-sig",
+                              errors="replace") as f:
+                        t = f.read()
+                except OSError:
+                    continue
+                # 关键词式定义（可出现在任意 txt 顶层）
+                for m in re.finditer(r"scripted_effect\s+([\w.]+)\s*=\s*\{", t):
+                    defined["effect"].add(m.group(1))
+                for m in re.finditer(r"scripted_trigger\s+([\w.]+)\s*=\s*\{", t):
+                    defined["trigger"].add(m.group(1))
+                # 目录式定义（common/traits、common/laws、common/scripted_effects、
+                # common/scripted_triggers 等分组块）
+                rel = os.path.relpath(dirpath, ROOT).replace("\\", "/")
+                if "common/traits" in rel:
+                    for m in re.finditer(r"^(\s*)([\w.]+)\s*=\s*\{", t, re.M):
+                        defined["trait"].add(m.group(2))
+                if "common/laws" in rel:
+                    for m in re.finditer(r"^(\s*)([\w.]+)\s*=\s*\{", t, re.M):
+                        defined["law"].add(m.group(2))
+                if "common/scripted_effects" in rel:
+                    for m in re.finditer(r"^(\s*)([\w.]+)\s*=\s*\{", t, re.M):
+                        defined["effect"].add(m.group(2))
+                if "common/scripted_triggers" in rel:
+                    for m in re.finditer(r"^(\s*)([\w.]+)\s*=\s*\{", t, re.M):
+                        defined["trigger"].add(m.group(2))
+                # save_scope_value_as 动态作用域值名
+                for m in re.finditer(r"save_scope_value_as\s*=\s*\{[^}]*name\s*=\s*([\w.]+)",
+                                     t, re.S):
+                    scope_values.add(m.group(1))
+    # 目录式 script_values 值（NAME = 数字/公式，无花括号）
+    sv_dir = os.path.join(ROOT, "common", "script_values")
+    if os.path.isdir(sv_dir):
+        for fn in os.listdir(sv_dir):
+            if not fn.endswith(".txt"):
+                continue
+            try:
+                with open(os.path.join(sv_dir, fn), encoding="utf-8-sig",
+                          errors="replace") as f:
+                    t = f.read()
+            except OSError:
+                continue
+            for m in re.finditer(r"^([\w.]+)\s*=\s*[^\{]", t, re.M):
+                defined["value"].add(m.group(1))
+    _mod_defined = defined
+    _mod_scope_values = scope_values
+    return defined
+
+
 def check_reference(path, text):
     """检查 mod 脚本中的对象引用是否在游戏/本 mod 白名单内。"""
     if not GAME_PATH:
@@ -443,34 +568,11 @@ def check_reference(path, text):
     objs = load_game_objects()
     if objs is None:
         return
+    mod_defined = collect_mod_definitions()
 
-    # 收集本 mod 已定义的 scripted effect/trigger/value/trait/law（避免误报自身新增）
-    mod_defined = {"effect": set(), "trigger": set(), "value": set(),
-                   "trait": set(), "law": set()}
-    dir_map = {
-        "effect": "scripted_effects", "trigger": "scripted_triggers",
-        "value": "script_values", "trait": "traits", "law": "laws",
-    }
-    for cat in mod_defined:
-        d = os.path.join(ROOT, "common", dir_map[cat])
-        if os.path.isdir(d):
-            for fn in os.listdir(d):
-                if fn.endswith(".txt"):
-                    try:
-                        with open(os.path.join(d, fn), encoding="utf-8-sig",
-                                  errors="replace") as f:
-                            t = f.read()
-                    except OSError:
-                        continue
-                    if cat == "value":
-                        for m in re.finditer(r"^([\w.]+)\s*=\s*[^\{]", t, re.M):
-                            mod_defined[cat].add(m.group(1))
-                    if cat in ("trait", "law"):
-                        for m in re.finditer(r"^(\s*)([\w.]+)\s*=\s*\{", t, re.M):
-                            mod_defined[cat].add(m.group(2))
-                    for m in re.finditer(r"^([\w.]+)\s*=\s*\{", t, re.M):
-                        mod_defined[cat].add(m.group(1))
-
+    # 本文件内 save_scope_value_as 名（读入文本中 `name = X` 行）——
+    # 这些是动态作用域值，不是 script value，绝不能当"未定义 script value"报错。
+    file_scope_values = set(_mod_scope_values or ())
     lines = text.splitlines()
     for i, raw in enumerate(lines, start=1):
         # has_trait = X
@@ -489,7 +591,7 @@ def check_reference(path, text):
             name = m.group(1)
             if name not in objs["law"] and name not in mod_defined["law"]:
                 err(path, i, f"头衔法律 '{name}' 不在游戏/本 mod laws 白名单中")
-        # 引用 scripted effect：xxx_effect
+        # 引用 scripted effect：xxx_effect（keyword 定义 / 目录定义 / 引擎内建）
         for m in re.finditer(r"\b([\w]+_effect)\s*=\s*yes", raw):
             name = m.group(1)
             if name not in objs["effect"] and name not in mod_defined["effect"]:
@@ -502,6 +604,9 @@ def check_reference(path, text):
         # script value 引用（var: 除外）
         for m in re.finditer(r"\b(ftr_[a-z0-9_]+_value)\b", raw):
             name = m.group(1)
+            # save_scope_value_as 动态作用域值名不是 script value
+            if name in file_scope_values:
+                continue
             if name not in objs["value"] and name not in mod_defined["value"]:
                 err(path, i, f"脚本值 '{name}' 未定义（不在游戏/本 mod script_values 中）")
         # 已知非法关键字
@@ -532,6 +637,18 @@ def check_bad_patterns(path, text):
            re.search(r"years\s*=", raw):
             # 仅当同文件出现 modifier 属性 + years 混排时才提示（粗粒度）
             pass
+        # 以下为本次排错新增的启发式检测：先剔除行注释后再匹配，避免注释内文字误报。
+        #   CK3 无块注释；`#` 出现即注释到行尾。带引号的字符串内不出现这些词即可。
+        code = raw.split("#", 1)[0]
+        # 5) 常见拼写：scop: / rooot 等（应写 scope:）
+        for m in re.finditer(r"\bscop:\s*[\w.]+", code):
+            err(path, i, f"疑似拼写错误 'scop:'（应写 'scope:'）: {m.group(0)}")
+        # 6) 无效资金效果 change_gold（引擎无此效果；实证 councillor/decision 曾误用报错）
+        if re.search(r"\bchange_gold\s*=", code):
+            err(path, i, "change_gold 不是有效效果（应为 add_gold / transfer_gold）")
+        # 7) scripted_effect / scripted_trigger 定义必须顶格；缩进内出现意味着被引擎忽略
+        if re.match(r"^\t+scripted_(effect|trigger)\s+", raw):
+            warn(path, i, "scripted_effect/trigger 定义应顶格写在文件顶层（缩进内定义会被引擎忽略）")
 
 
 # ---------- 9C. GUI 语义检查 ----------

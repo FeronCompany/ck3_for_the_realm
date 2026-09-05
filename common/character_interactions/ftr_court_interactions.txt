@@ -471,10 +471,12 @@ ftr_court_promise_interaction = {
 		localization = ftr_court_promise_favor_option
 		# 须付得起双轨成本
 		is_valid = {
-			ftr_court_can_pay_cost_trigger = {
-				OTHER = scope:recipient
-				PRESTIGE = ftr_court_promise_favor_prestige_cost_value
-				INFLUENCE = ftr_court_promise_favor_influence_cost_value
+			scope:actor = {
+				ftr_court_can_pay_cost_trigger = {
+					OTHER = scope:recipient
+					PRESTIGE = ftr_court_promise_favor_prestige_cost_value
+					INFLUENCE = ftr_court_promise_favor_influence_cost_value
+				}
 			}
 		}
 	}

@@ -1111,7 +1111,6 @@ ftr_decision_events.0014 = {
 			trait = patient
 			trait = diligent
 			trait = beauty_good_3
-			dna = ftr_beauty_dna_01
 			save_scope_as = wife
 		}
 	}

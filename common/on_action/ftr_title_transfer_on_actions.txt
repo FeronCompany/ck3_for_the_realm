@@ -1,9 +1,6 @@
 ﻿
 on_title_gain = {
 	on_actions = {
-		#ftr_title_gain_effects
-		#ftr_title_gain_warlord_effects
-		#ftr_title_conquerd_effects
 		ftr_ursurp_discontent_effects
 		ftr_ursurp_tyrant_succession_effects
 		ftr_remove_empire_for_hegemony_effects
@@ -25,13 +22,11 @@ ftr_court_handover_on_title_gain_effect = {
 			tier >= tier_kingdom
 		}
 		# 只处理权力交接类（排除 inheritance/granted/created 等日常流转）
-		scope:transfer_type ?= {
-			OR = {
-				flag:abdication
-				flag:stepped_down
-				flag:faction_demand
-				flag:usurped
-			}
+		OR = {
+			scope:transfer_type = flag:abdication
+			scope:transfer_type = flag:stepped_down
+			scope:transfer_type = flag:faction_demand
+			scope:transfer_type = flag:usurped
 		}
 		# 前 holder 存活且其名下确有朝堂故事
 		scope:previous_holder ?= {
@@ -48,73 +43,6 @@ ftr_court_handover_on_title_gain_effect = {
 				limit = { story_type = ftr_court_struggle }
 				ftr_court_transfer_story_effect = yes
 			}
-		}
-	}
-}
-
-ftr_title_gain_effects = {
-	trigger = {
-		OR = {
-			scope:transfer_type = flag:granted
-			scope:transfer_type = flag:created
-			scope:transfer_type = flag:inheritance
-			scope:transfer_type = flag:usurped
-			scope:transfer_type = flag:revoked
-			scope:transfer_type = flag:conquest
-			scope:transfer_type = flag:conquest_holy_war
-			scope:transfer_type = flag:conquest_claim
-			scope:transfer_type = flag:conquest_populist
-		}
-		government_has_flag = government_is_centralism
-		is_independent_ruler = no
-	}
-	effect = {
-		if = {
-			every_held_title = {
-				limit = {
-					tier >= tier_duchy
-					NOT = {
-						has_title_law = bureacratic_succession_law
-					}
-				}
-				add_title_law = bureacratic_succession_law
-			}
-		}
-	}	
-}
-
-ftr_title_conquerd_effects = {
-	trigger = {
-		scope:title = {
-			tier >= tier_duchy
-			OR = {
-				has_title_law = bureacratic_succession_law
-				has_title_law = warlord_succession_law
-			}
-		}
-		OR = {
-			scope:transfer_type = flag:granted
-			scope:transfer_type = flag:created
-			scope:transfer_type = flag:revoked
-			scope:transfer_type = flag:conquest
-			scope:transfer_type = flag:conquest_holy_war
-			scope:transfer_type = flag:conquest_claim
-			scope:transfer_type = flag:conquest_populist
-			scope:transfer_type = flag:usurped
-			scope:transfer_type = flag:inheritance
-			scope:transfer_type = flag:returned
-		}
-		OR = {
-			is_independent_ruler = yes
-			AND = {
-				NOT = { government_has_flag = government_is_centralism }
-			}
-		}
-	}
-	effect = {
-		trigger_event = {
-			id = ftr_realm_event.1009
-			days = 1
 		}
 	}
 }

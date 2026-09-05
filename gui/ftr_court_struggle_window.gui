@@ -56,8 +56,7 @@ window = {
 
 				# ==================== 1. 君主 + 共治者 + 平衡条（居中） ====================
 				widget = {
-					margin_top = 12
-					margin_bottom = 12
+					margin = { 0 12 }
 					layoutpolicy_horizontal = expanding
 					size = { 100% 120 }
 					hbox = {

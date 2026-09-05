@@ -143,20 +143,16 @@ ftr_court_gender_succession_allows_trigger = {
 	}
 }
 
-# 求值域：this = 潜在继任者。选举继承顺位资格（主头衔的 title heir）。
+# 求值域：this = 潜在继任者（title heir 之一）。选举继承顺位资格（主头衔的 title heir）。
+# 注意：本 trigger 仅在调用方对主头衔 every_title_heir 遍历的 limit 中使用，this 已确属
+# title heir，因此无需在此重复进入主头衔嵌套比较（原写法以 this = prev 比较角色与领地
+# 头衔两类作用域，触发 jomini 类型错误）。
 ftr_court_elective_claimant_candidate_trigger = {
 	exists = scope:ftr_court_monarch
 	is_alive = yes
 	is_adult = yes
 	NOT = { is_imprisoned = yes }
 	NOT = { has_trait = incapable }
-	scope:ftr_court_monarch = {
-		primary_title = {
-			any_title_heir = {
-				this = prev
-			}
-		}
-	}
 }
 
 # 求值域：this = 潜在继任者。是否仍符合参与角逐的资格（用于定期刷新移除）。
@@ -179,7 +175,7 @@ ftr_court_monarch_infirm_trigger = {
 		has_trait = lunatic
 		has_trait = possessed
 		has_trait = depressed
-		add_trait = blind
+		has_trait = blind
 		age >= ftr_court_monarch_elderly_age_value
 	}
 }

@@ -760,6 +760,8 @@ l_simp_chinese:
 | `Missing closing brace` | 缺 `}` | 逐层检查缩进 |
 | 数据库对象重复定义 | 两个 Mod 定义了同名 ID | 加前缀 |
 | 事件 ID 冲突 | namespace + number 重复 | 换编号 |
+| 多个顶层决议/对象互相嵌套 | 前一个决议缺 `}`，后一个决议被吞进前块（曾致 ease/investigate/use_leverage 全部失效） | 用 validate_scripts 的顶层对象配对检查重建该文件 |
+| 引用了不存在的法律/特质（如 `is_vassl_of`、`bureacratic_succession_law`） | 拼写错误或照抄了他处名称 | 在 `validate_scripts --game-path` 引用检查中定位 |
 
 ### 6.2 运行期错误
 
@@ -774,6 +776,10 @@ l_simp_chinese:
 | 事件里读不到局部变量 | on_action 的 effect 与事件是**两条域链** | 改用 `save_scope_as` |
 | 游戏卡住 | `while` 死循环 / on_action `fallback` 死循环 | 加 `count`；检查 fallback 链 |
 | 稀有事件总触发 | `random_events` 缺 `0` 权重条目 | 加 `100 = 0` |
+| 效果 `imprison`/`add_opinion` 无效果 | 缺 `target` / `opinion` 值（曾在 court 事件漏写） | 补 `target = scope:x` 与好感数值 |
+| 死亡结算后 `killer`/好感为空 | 作用域拼成 `scop:recipient`，且对**已死角色**操作 | 改 `scope:` 并在对死者操作前判 `is_alive` |
+| 反复刷"此作用域不支持变量" | 在死亡/失效作用域上 `remove_list_variable`（常在 death 链误触） | 先 `exists` / `is_alive` 再清理 |
+| `scope:transfer_type = flag:x` 报"Invalid right side" | 用 `?= { OR = { flag:x } }` 嵌套写法（右值解析为 none） | 改成与 `title_on_actions.txt` 一致的直接枚举比较 |
 
 ### 6.3 逻辑错误（不报错但行为异常）
 

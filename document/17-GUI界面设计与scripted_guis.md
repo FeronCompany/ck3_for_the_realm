@@ -528,6 +528,12 @@ ftr_court_sync_ui_data = {
 
 `game/gui/scripted_widgets/*.txt` 的用途：**让一个写在 `.gui` 文件里、但没有任何引擎代码引用的控件，在启动时自动挂到根界面上**。
 
+> ⚠ **停用的功能要删文件，不能只注释挂载行**：`.gui` 文件即使没有挂载，仍会被引擎解析；
+> 若其内部引用已不存在的交互 / ScriptValue / 文本键，会持续刷 `Unlocalized text` 与 ScriptValue 报错。
+> 本 Mod 曾保留停用的"政治博弈"窗口（`ftr_political_game_window.gui` / `ftr_hud_political_game.gui`，
+> 其交互 `ftr_change_law_*` 已删除），导致整组 GUI 加载错误 —— 已整体删除文件并清掉挂载注释。
+> 通用原则：废弃子系统应**删除文件**，而不是把 scripted_widgets 行注释掉。
+
 ### 8.1 本 Mod 用法（`gui/scripted_widgets/ftr_scripted_widgets.txt`）
 
 ```paradox
@@ -681,6 +687,9 @@ widget = {
 | 界面变量名冲突 | 用 `ftr_` 前缀，避免与原版/其他 Mod 撞 `GetVariableSystem` 键 |
 | 中文乱码 | `.gui` 文件也必须 UTF-8 with BOM |
 | `item` 里 datacontext 拿不到数据 | `datamodel` 列表项的默认上下文是列表项对象（如 `CharacterListItem`），要先 `.GetCharacter` 再设给子控件 |
+| 普通 `widget = { }` 顶层写 `margin_top` / `margin_bottom` | 报 `Property 'margin_top' not handled` —— 普通 widget 不是布局容器，单边 margin 不生效 | 用双值 `margin = { 水平 垂直 }`（如 `margin = { 0 12 }`），或改放 hbox/vbox 子项上 |
+| `ScriptValue('x')` 报未定义 | ScriptValue 要求名字是**已定义的 script value**；读普通角色变量请用 `Var('...').GetValue` | 在 `common/script_values/` 定义同名值，或改用 Var |
+| 停用功能后仍报 GUI 文本/数据错误 | 只注释了 scripted_widgets 挂载，`.gui` 文件仍被解析 | **删除废弃 GUI 文件**并同步清理挂载注释与本地化引用 |
 
 ---
 

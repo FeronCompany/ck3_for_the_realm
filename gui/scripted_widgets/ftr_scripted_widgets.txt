@@ -1,7 +1,4 @@
-﻿#gui/ftr_hud_political_game.gui = ftr_hud_political_game
-#gui/ftr_political_game_window.gui = ftr_political_game_window
-
-# 朝堂局势 HUD 单元（独立小按钮，挂载于 right|vcenter，避免与原版 HUD 冲突）
+﻿# 朝堂局势 HUD 单元（独立小按钮，挂载于 right|vcenter，避免与原版 HUD 冲突）
 gui/ftr_hud_court_struggle.gui = ftr_hud_court_struggle
 # 朝堂局势窗口（点击 HUD 单元开关）
 gui/ftr_court_struggle_window.gui = ftr_court_struggle_window

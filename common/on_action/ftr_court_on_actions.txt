@@ -29,14 +29,15 @@ ftr_court_try_start_on_action = {
 
 ########## 二、收场 ##########
 
-# 政权不再符合条件时（被征服、降级、绝嗣）由 story 的 fallback 自行 end_story，
-# 此处仅作兜底，清理无人认领的残留故事。
+# 收紧后的兜底收场：仅当故事持有者不再是最高领主（失去独立 / 等级跌至王国以下）才收场；
+# 被囚禁、战争、暂时无继承顺位等临时失效一概保留（由 story 的 effect_group fallback 同判）。
+# story owner 驾崩无继承的收场由 on_owner_death → end_story 独立处理，不在此重复。
 ftr_court_validate_on_action = {
 	trigger = {
-		# is_independent_ruler 为廉价前置（valid 内含，但先短路排除非独立角色，性能更优）
-		is_independent_ruler = yes
-		# 政权不再符合准入（被降级 / 无继承顺位 / 绝嗣 / 囚禁等）时收场
-		NOT = { ftr_court_struggle_valid_trigger = yes }
+		# 身上确实挂着朝堂故事，且持有者已非最高领主才需要兜底收场
+		any_owned_story = { type = ftr_court_struggle }
+		is_alive = yes
+		NOT = { ftr_court_story_owner_is_supreme_liege_trigger = yes }
 	}
 	effect = {
 		every_owned_story = {

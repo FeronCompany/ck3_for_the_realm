@@ -72,6 +72,11 @@
  ftr_court_struggle.0019.desc:0 "继承问题已经有了答案——不，不是答案，而是被重新抛向风口浪尖。在[ftr_court_monarch.GetTitledFirstName]周围，竞争者虎视眈眈，内阁成员各自选边。朝堂上的权力角逐已经开始，每一个有权势的人都必须决定自己的立场归于何处。"
  ftr_court_struggle.0019.a:0 "我会密切关注这股权力潮汐。"
 
+###### 0021 朝堂权力角逐落幕 ######
+ ftr_court_struggle.0021.t:0 "尘埃落定"
+ ftr_court_struggle.0021.desc:0 "围绕[ftr_court_monarch.GetTitledFirstName]的那场权力角逐已落下帷幕。朝堂上唇枪舌剑的纷争止息，暗流也随之平息。有人如愿以偿，有人黯然退场，更多的人只是长舒一口气——这场博弈终于有了结果。"
+ ftr_court_struggle.0021.a:0 "一切终于归于平静。"
+
  ###### 0014 朝堂站队 ######
  ftr_court_struggle.0014.t:0 "择主而事"
  ftr_court_struggle.0014.desc:0 "朝堂正在悄然分化，中立正成为最危险的立场。是时候决定该追随哪颗星了。"

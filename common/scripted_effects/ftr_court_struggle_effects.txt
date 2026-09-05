@@ -92,6 +92,55 @@ ftr_court_cleanup_effect = {
 	remove_variable = ftr_court_participant_count
 }
 
+# 在 story 域执行：故事落幕通知（须在 cleanup 前调用，因 cleanup 会清空名单）。
+# 向三方各发一则落幕通知（0021）：最高领主（story_owner）、共治者（diarch，若存在）、
+# 全部竞争者（ftr_court_participant_list 中的在世者）。
+ftr_court_notify_struggle_end_effect = {
+	save_scope_as = ftr_court_story
+	# 1) 最高领主（故事主人仍在世时通知）
+	story_owner ?= {
+		if = {
+			limit = { is_alive = yes }
+			trigger_event = { id = ftr_court_struggle.0021  days = 2 }
+		}
+	}
+	# 2) 共治者（若存在且仍在世）
+	story_owner ?= {
+		diarch ?= {
+			if = {
+				limit = { is_alive = yes }
+				trigger_event = { id = ftr_court_struggle.0021  days = 2 }
+			}
+		}
+	}
+	# 3) 全部竞争者（在世者；曾参与角逐者即便已退出也在名单外——名单只留当前参与者）
+	every_in_list = {
+		variable = ftr_court_participant_list
+		if = {
+			limit = { is_alive = yes }
+			trigger_event = { id = ftr_court_struggle.0021  days = 2 }
+		}
+	}
+}
+
+# 在 story 域执行：收场判定（供各 effect_group 的 fallback 复用）。
+# 收紧后的规则：只有当故事持有者（story_owner）不再是最高领主
+# （失去独立，或等级跌至王国以下）时才 end_story；
+# 被囚禁 / 暂时无继承顺位 / 战争中 等临时失效不在此收场（fallback 落空即保留）。
+# 注意：death 交接（有继承 → transfer；无继承 → end_story）由 on_owner_death 独立处理，
+# 不经此 effect。
+ftr_court_end_story_if_owner_deposed_effect = {
+	# 持有者已不再是最高领主 → 结束故事（触发 on_end → 落幕通知 + cleanup）
+	if = {
+		limit = {
+			story_owner ?= {
+				NOT = { ftr_court_story_owner_is_supreme_liege_trigger = yes }
+			}
+		}
+		end_story = yes
+	}
+}
+
 ######################################################
 ### 一之二、权力交接：故事随政权延续
 ######################################################
@@ -1236,12 +1285,12 @@ ftr_court_sync_ui_from_story_effect = {
 ftr_court_debug_backing_notice_effect = {
 	save_scope_as = ftr_court_debug_backer
 	top_liege ?= {
-		send_interface_message = {
-			type = event_generic_good
-			title = ftr_court_debug_backing_notify
-			left_icon = scope:ftr_court_debug_backer
-			right_icon = scope:ftr_court_debug_backed
-		}
+		#send_interface_message = {
+		#	type = event_generic_good
+		#	title = ftr_court_debug_backing_notify
+		#	left_icon = scope:ftr_court_debug_backer
+		#	right_icon = scope:ftr_court_debug_backed
+		#}
 	}
 }
 

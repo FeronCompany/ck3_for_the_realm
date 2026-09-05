@@ -1107,6 +1107,50 @@ ftr_court_struggle.0019 = {
 	}
 }
 
+######### 0021 朝堂权力角逐落幕（root = 被通知者：最高领主 / 共治者 / 竞争者） #########
+# 由 story 的 on_end（经 ftr_court_notify_struggle_end_effect）触发，通知：
+#   最高领主（story_owner，仍在世时）、共治者（diarch，若存在）、所有竞争者（在世者）。
+# 作用域：root = 被通知者；immediate 定位君主存入 scope:ftr_court_monarch（对齐 0019）。
+ftr_court_struggle.0021 = {
+	type = character_event
+	title = ftr_court_struggle.0021.t
+	desc = ftr_court_struggle.0021.desc
+	theme = diplomacy
+
+	left_portrait = {
+		character = root
+		animation = personality_brave
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+		animation = personality_dignified
+	}
+
+	immediate = {
+		# 定位君主：独立统治者即本人；否则走 top_liege / employer（封臣/廷臣）；
+		# 都找不到时兜底用 root 自身，避免 scope 缺失（对齐 0019）。
+		if = {
+			limit = { is_independent_ruler = yes }
+			save_scope_as = ftr_court_monarch
+		}
+		else_if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+		else = {
+			save_scope_as = ftr_court_monarch
+		}
+	}
+
+	option = { # The dust settles
+		name = ftr_court_struggle.0021.a
+	}
+}
+
 ######### 0040 是否参与继位角逐（root = 潜在继任者） #########
 # 由 story 的启动 / 定期刷新（ftr_court_launch_participation_asks_effect）推给潜在继任者。
 # 血缘继承：询问君主子女 / 兄弟姐妹；选举继承：按主头衔继承顺位询问。

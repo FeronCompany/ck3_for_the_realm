@@ -27,6 +27,17 @@ ftr_court_struggle_valid_trigger = {
 	NOT = { is_imprisoned = yes }
 }
 
+# 收场核心判定：故事持有者是否仍是「最高领主」（求值域：story_owner）。
+# 只有失去最高领主地位（不再独立，或等级跌至王国以下）才应当收场 end_story；
+# 被囚禁、暂时无继承顺位、战争中 等临时失效一律不触发收场（保留故事等待恢复或真失位）。
+# 注意：story owner 驾崩后 is_ruler / is_independent_ruler 在引擎语义下通常会失效，
+# 死亡交接（有继承人 → transfer；无继承人 → end_story）已由 on_owner_death 独立处理，
+# 此处判定不重复考虑死亡。
+ftr_court_story_owner_is_supreme_liege_trigger = {
+	is_independent_ruler = yes
+	ftr_court_realm_tier_valid_trigger = yes
+}
+
 # 冷却期内不再激活（配合 add_character_flag 使用）
 ftr_court_in_cooldown_trigger = {
 	has_character_flag = ftr_court_cooldown

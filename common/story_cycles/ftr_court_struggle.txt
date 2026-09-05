@@ -36,6 +36,9 @@ ftr_court_struggle = {
 	}
 
 	on_end = {
+		# 落幕通知必须赶在 cleanup 之前：cleanup 会清空参与者名单与 story 变量，
+		# 通知 effect 依赖名单仍在（遍历在世竞争者逐一发 0021）。
+		ftr_court_notify_struggle_end_effect = yes
 		ftr_court_cleanup_effect = yes
 	}
 
@@ -99,9 +102,10 @@ ftr_court_struggle = {
 				ftr_court_refresh_intensity_effect = yes
 			}
 		}
-		# 政权不再符合条件（被征服、降级、绝嗣）时收场
+		# 收场收紧：仅当持有者不再是最高领主（失去独立 / 等级跌至王国以下）时才 end_story；
+		# 被囚禁、战争、暂时无继承顺位等临时失效不在此收场（由其他 effect_group 各自 fallback 同判）
 		fallback = {
-			end_story = yes
+			ftr_court_end_story_if_owner_deposed_effect = yes
 		}
 	}
 
@@ -119,7 +123,7 @@ ftr_court_struggle = {
 			}
 		}
 		fallback = {
-			end_story = yes
+			ftr_court_end_story_if_owner_deposed_effect = yes
 		}
 	}
 
@@ -152,7 +156,7 @@ ftr_court_struggle = {
 			}
 		}
 		fallback = {
-			end_story = yes
+			ftr_court_end_story_if_owner_deposed_effect = yes
 		}
 	}
 
@@ -174,7 +178,7 @@ ftr_court_struggle = {
 			}
 		}
 		fallback = {
-			end_story = yes
+			ftr_court_end_story_if_owner_deposed_effect = yes
 		}
 	}
 }

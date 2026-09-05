@@ -72,6 +72,11 @@
  ftr_court_struggle.0019.desc:0 "The question of succession has been answered — no, not answered, but thrown open. Around [ftr_court_monarch.GetTitledFirstName], claimants circle and councillors choose sides. The struggle for the Crown has begun, and every man and woman of power must now decide where their allegiance lies."
  ftr_court_struggle.0019.a:0 "I will watch the tide of power closely."
 
+###### 0021 The court struggle ends ######
+ ftr_court_struggle.0021.t:0 "The Dust Settles"
+ ftr_court_struggle.0021.desc:0 "The struggle for power around [ftr_court_monarch.GetTitledFirstName] has come to an end. The quarrelling voices of the court fall silent and the undercurrents fade. Some have gained what they sought, others have stepped away in defeat, and many simply breathe a sigh of relief — the contest is over at last."
+ ftr_court_struggle.0021.a:0 "At last, calm returns."
+
  ###### 0014 朝堂站队 ######
  ftr_court_struggle.0014.t:0 "Choosing Sides"
  ftr_court_struggle.0014.desc:0 "The court is quietly splitting into camps, and neutrality is becoming the most dangerous position of all. It is time to decide whose star to follow."

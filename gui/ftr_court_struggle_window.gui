@@ -178,7 +178,7 @@ window = {
 							# 每个继任者一行 = 模板 ftr_court_claimant_row（继任者头像 + 该继任者的支持者）
 							vbox = {
 								margin = { 20 20 }
-								spacing = 12
+								spacing = 24
 								layoutpolicy_horizontal = expanding
 								datamodel = "[GetPlayer.GetTopLiege.MakeScope.GetList('ftr_court_claimants')]"
 								item = {
@@ -220,25 +220,31 @@ types Lists
 			layoutpolicy_horizontal = fixed
 			datacontext = "[Character]"
 		}
-		scrollbox = {
+		hbox = {
 			layoutpolicy_horizontal = expanding
-			blockoverride "scrollbox_content"
-			{
-				hbox = {
-					layoutpolicy_horizontal = expanding
-					hbox = {
-						datamodel = "[Character.MakeScope.GetList('ftr_court_supporters')]"
-						item = {
-							ftr_court_small_icon = {
-								layoutpolicy_horizontal = fixed
-								datacontext = "[Scope.Char]"
-							}
+			layoutpolicy_vertical = expanding
+			background = {
+				using = Background_Area_Solid
+				margin = { 10 0 }
+				margin_top = 20
+			}
+			fixedgridbox = {
+				addcolumn = 80
+				addrow = 90
+				datamodel = "[Character.MakeScope.GetList('ftr_court_supporters')]"
+				datamodel_wrap = 6
+				flipdirection = yes
+				item = {
+					container = {
+						datacontext = "[Scope.Char]"
+						portrait_head_small = {
+							size = { 64 64 }
 						}
 					}
-					expand = {}
 				}
-				
 			}
+			expand = {}
 		}
+		
 	}
 }

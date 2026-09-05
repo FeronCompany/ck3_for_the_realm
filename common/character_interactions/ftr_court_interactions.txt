@@ -71,6 +71,7 @@ ftr_court_back_claimant_interaction = {
 		scope:actor = {
 			# 无地廷臣无法主动发起交互，参与一律走事件（ftr_court_struggle.0014）
 			is_landed = yes
+			primary_title.tier >= tier_county
 			NOT = { ftr_court_is_struggle_monarch_trigger = yes }
 		}
 	}

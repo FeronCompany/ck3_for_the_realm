@@ -602,14 +602,15 @@ ftr_court_remove_backer_effect = {
 	}
 }
 
-# 在支持者域执行：公开支持某权贵的完整记账（供 0014 五个选项与主动决议共用，替代原交互 on_accept）。
-# 参数：$CLAIMANT$ = 被支持者（角色 scope 表达式，如 scope:ftr_court_claimant_1）。
-# 依赖：scope:ftr_court_story 已保存（0014 immediate 已保存；主动决议同样经 0014 触发）。
+# 在支持者域执行：公开支持某权贵的完整记账（供 0022「拥立需得首肯」接受分支调用，替代原交互 on_accept）。
+# 参数：$CLAIMANT$ = 被支持者（角色 scope 表达式，如 scope:ftr_court_offer_recipient）。
+# 依赖：scope:ftr_court_story 已保存（0022 immediate 已保存）。
 # 含：改投清理（曾支持他人则先从旧主账目移除并令旧主/其支持者记恨）→ 新主记账（backer_of /
 # supporters / 双向好感）→ 公开树敌（其余参与者）→ 支持君主子女/继承人的背书声望 →
 # 君主警觉 0041（概率随双方谋略浮动）。
 ftr_court_apply_backing_effect = {
-	# 支持者即当前 root，登记为 ftr_court_backer 供警觉事件使用
+	# 进入时须处于「支持者」作用域（this = 支持者），登记为 ftr_court_backer 供全函数与警觉事件使用。
+	# 注意：不以 root 指代支持者——0022 接受背书场景在切换作用域后调用，root 未必是支持者。
 	save_scope_as = ftr_court_backer
 	# ---- 1) 改投清理：此前已支持他人且非本目标 ----
 	if = {
@@ -620,27 +621,27 @@ ftr_court_apply_backing_effect = {
 		save_scope_as = ftr_court_old_backed
 		# 旧主从自己的支持者名单移除本支持者
 		var:ftr_court_backer_of ?= {
-			ftr_court_remove_backer_effect = { BACKER = root }
+			ftr_court_remove_backer_effect = { BACKER = scope:ftr_court_backer }
 		}
 		# 旧主记恨
 		scope:ftr_court_old_backed = {
-			add_opinion = { target = root  modifier = ftr_court_betrayed_opinion }
+			add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_betrayed_opinion }
 			# 旧主的支持者们（有地与廷臣，除自己外）同仇敌忾
 			every_vassal = {
 				limit = {
 					has_variable = ftr_court_backer_of
 					var:ftr_court_backer_of ?= { this = scope:ftr_court_old_backed }
-					NOT = { this = root }
+					NOT = { this = scope:ftr_court_backer }
 				}
-				add_opinion = { target = root  modifier = ftr_court_rival_claimant_opinion }
+				add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_rival_claimant_opinion }
 			}
 			every_courtier = {
 				limit = {
 					has_variable = ftr_court_backer_of
 					var:ftr_court_backer_of ?= { this = scope:ftr_court_old_backed }
-					NOT = { this = root }
+					NOT = { this = scope:ftr_court_backer }
 				}
-				add_opinion = { target = root  modifier = ftr_court_rival_claimant_opinion }
+				add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_rival_claimant_opinion }
 			}
 		}
 	}
@@ -654,16 +655,16 @@ ftr_court_apply_backing_effect = {
 				NOT = {
 					is_target_in_variable_list = {
 						name = ftr_court_supporters
-						target = root
+						target = scope:ftr_court_backer
 					}
 				}
 			}
 			add_to_variable_list = {
 				name = ftr_court_supporters
-				target = root
+				target = scope:ftr_court_backer
 			}
 		}
-		add_opinion = { target = root  modifier = ftr_political_alliance_opinion }
+		add_opinion = { target = scope:ftr_court_backer  modifier = ftr_political_alliance_opinion }
 		save_scope_as = ftr_court_debug_backed
 		save_scope_as = ftr_court_supported
 	}
@@ -673,9 +674,9 @@ ftr_court_apply_backing_effect = {
 			variable = ftr_court_participant_list
 			limit = {
 				NOT = { this = $CLAIMANT$ }
-				NOT = { this = root }
+				NOT = { this = scope:ftr_court_backer }
 			}
-			add_opinion = { target = root  modifier = ftr_court_rival_claimant_opinion }
+			add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_rival_claimant_opinion }
 		}
 	}
 	# ---- 5) 背书声望：支持对象是君主的子女 / 继承人 ----
@@ -749,20 +750,27 @@ ftr_court_reward_ascended_claimant_backers_effect = {
 		every_in_list = {
 			variable = ftr_court_supporters
 			limit = { is_alive = yes }
-			# 威望 / 影响力：行政制支持者获官方影响力，其余获威望
-			if = {
-				limit = { government_allows = administrative }
-				change_influence = medium_influence_gain
-			}
-			else = {
-				add_prestige = ftr_court_ascension_backer_prestige_value
-			}
-			# 金钱
-			add_gold = ftr_court_ascension_backer_gold_value
-			# 税收加成（持续若干年）
-			add_character_modifier = {
-				modifier = ftr_court_ascension_backer_modifier
-				years = ftr_court_ascension_backer_tax_years_value
+			# 提醒受赏者收到的好处（send_interface_message 仅当接收者为当前玩家时显示）
+			send_interface_message = {
+				type = event_generic_good
+				title = ftr_court_ascension_backer_reward_notify
+				desc = ftr_court_ascension_backer_reward_notify_desc
+				left_icon = scope:ftr_court_ascended_monarch
+				# 威望 / 影响力：行政制支持者获官方影响力，其余获威望
+				if = {
+					limit = { government_allows = administrative }
+					change_influence = medium_influence_gain
+				}
+				else = {
+					add_prestige = ftr_court_ascension_backer_prestige_value
+				}
+				# 金钱
+				add_gold = ftr_court_ascension_backer_gold_value
+				# 税收加成（持续若干年）
+				add_character_modifier = {
+					modifier = ftr_court_ascension_backer_modifier
+					years = ftr_court_ascension_backer_tax_years_value
+				}
 			}
 			# 亲密关系留任：联盟 / 好友 / 挚友
 			if = {

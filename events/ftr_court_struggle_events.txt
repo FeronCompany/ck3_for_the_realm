@@ -752,8 +752,8 @@ ftr_court_struggle.0018 = {
 # 触发源：
 #   1) story 的对立/危机脉冲推送（随机询问一名未站队封臣/廷臣）；
 #   2) 决策 ftr_court_declare_backing_decision（玩家/AI 主动表态，原支持交互已废除）。
-# 五个支持选项统一调用记账 effect ftr_court_apply_backing_effect（改投清理/好感/树敌/
-# 背书声望/谋略警觉 0041），供被动询问与主动表态共用同一套账目。
+# 五个支持选项不再直接建立背书：先把支持者身份暂存到被支持者身上并触发 0022，
+# 由被支持者决定是否接受这份公开拥立（接受才走 ftr_court_apply_backing_effect 全套记账）。
 ftr_court_struggle.0014 = {
 	type = character_event
 	title = ftr_court_struggle.0014.t
@@ -804,7 +804,16 @@ ftr_court_struggle.0014 = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_1 }
 		}
-		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_1 }
+		# 效果对玩家不可见：把全部请求效果包进 custom_tooltip，只显示一句流程说明
+		# （向被支持者提出拥立 → 由其定夺 → 接受才建立公开背书）
+		custom_tooltip = {
+			text = ftr_court_struggle.0014.offer_back_tt
+			save_scope_as = ftr_court_pending_offerer
+			scope:ftr_court_claimant_1 = {
+				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
+				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+			}
+		}
 	}
 	option = { # Back the second
 		name = ftr_court_struggle.0014.b
@@ -816,7 +825,14 @@ ftr_court_struggle.0014 = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_2 }
 		}
-		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_2 }
+		custom_tooltip = {
+			text = ftr_court_struggle.0014.offer_back_tt
+			save_scope_as = ftr_court_pending_offerer
+			scope:ftr_court_claimant_2 = {
+				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
+				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+			}
+		}
 	}
 	option = { # Back a dark horse
 		name = ftr_court_struggle.0014.c
@@ -828,7 +844,14 @@ ftr_court_struggle.0014 = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_3 }
 		}
-		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_3 }
+		custom_tooltip = {
+			text = ftr_court_struggle.0014.offer_back_tt
+			save_scope_as = ftr_court_pending_offerer
+			scope:ftr_court_claimant_3 = {
+				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
+				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+			}
+		}
 	}
 	option = { # Back the fourth
 		name = ftr_court_struggle.0014.d
@@ -840,7 +863,14 @@ ftr_court_struggle.0014 = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_4 }
 		}
-		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_4 }
+		custom_tooltip = {
+			text = ftr_court_struggle.0014.offer_back_tt
+			save_scope_as = ftr_court_pending_offerer
+			scope:ftr_court_claimant_4 = {
+				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
+				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+			}
+		}
 	}
 	option = { # Back the fifth
 		name = ftr_court_struggle.0014.e
@@ -852,7 +882,14 @@ ftr_court_struggle.0014 = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_5 }
 		}
-		ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_claimant_5 }
+		custom_tooltip = {
+			text = ftr_court_struggle.0014.offer_back_tt
+			save_scope_as = ftr_court_pending_offerer
+			scope:ftr_court_claimant_5 = {
+				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
+				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+			}
+		}
 	}
 	option = { # Watch and wait
 		name = ftr_court_struggle.0014.f
@@ -861,6 +898,121 @@ ftr_court_struggle.0014 = {
 			modifier = { add = 15  has_trait = content }
 			modifier = { add = 20  has_trait = craven }
 			modifier = { add = -25  has_trait = ambitious }
+		}
+	}
+}
+
+######### 0022 拥立需得首肯（root = 被支持的权贵/竞争者） #########
+# 0014 站队 / 表态支持选中某人后，不再直接建立背书：先在 root（被支持者）上暂存
+# 支持者身份（var:ftr_court_pending_backer），再触发本事件（延迟 2 天），由被支持者定夺。
+# 接受 → 切回支持者作用域调用公共记账 ftr_court_apply_backing_effect（登记背书 + 双向好感 +
+# 树敌/声望/0041 警觉全套）；拒绝 → 双方交恶（两个专用 opinion modifier）。
+ftr_court_struggle.0022 = {
+	type = character_event
+	title = ftr_court_struggle.0022.t
+	desc = ftr_court_struggle.0022.desc
+	theme = diplomacy
+
+	trigger = {
+		has_variable = ftr_court_pending_backer
+		var:ftr_court_pending_backer ?= { is_alive = yes }
+	}
+
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:ftr_court_offerer
+		animation = happiness
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_offer_recipient
+		# 读回提出支持者；读完即清，避免残留串扰下次请求
+		var:ftr_court_pending_backer ?= { save_scope_as = ftr_court_offerer }
+		remove_variable = ftr_court_pending_backer
+		# 定位君主 / story：支持者属于该政权（封臣走 top_liege、廷臣走 employer），
+		# 供公共记账 effect 的树敌与 0041 警觉环节使用
+		scope:ftr_court_offerer ?= {
+			if = {
+				limit = { exists = top_liege }
+				top_liege = {
+					save_scope_as = ftr_court_monarch
+					every_owned_story = {
+						limit = { story_type = ftr_court_struggle }
+						save_scope_as = ftr_court_story
+					}
+				}
+			}
+			else_if = {
+				limit = { exists = employer }
+				employer = {
+					save_scope_as = ftr_court_monarch
+					every_owned_story = {
+						limit = { story_type = ftr_court_struggle }
+						save_scope_as = ftr_court_story
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Accept their backing
+		name = ftr_court_struggle.0022.a
+		trigger = { exists = scope:ftr_court_offerer }
+		ai_chance = {
+			base = 65
+			modifier = { add = 20  has_trait = ambitious }
+			modifier = {
+				add = 15
+				opinion = { target = scope:ftr_court_offerer  value >= 40 }
+			}
+			# 姻亲 / 盟国来投更愿接纳
+			modifier = {
+				add = 15
+				scope:ftr_court_offerer = { is_allied_to = root }
+			}
+			# 生性谨慎者忌惮公开结党树敌
+			modifier = { add = -15  has_trait = paranoid }
+			modifier = { add = -10  has_trait = craven }
+		}
+		# 支持者侧记账：this = 支持者（ftr_court_offerer）；CLAIMANT = 被支持者（本事件 root）
+		scope:ftr_court_offerer = {
+			ftr_court_apply_backing_effect = { CLAIMANT = scope:ftr_court_offer_recipient }
+			# 接受结果通知支持者（send_interface_message 仅当接收者为当前玩家时显示）
+			send_interface_message = {
+				type = event_generic_good
+				title = ftr_court_struggle.0022.accept_notify
+				left_icon = scope:ftr_court_offer_recipient
+			}
+		}
+	}
+	option = { # Refuse their backing
+		name = ftr_court_struggle.0022.b
+		trigger = { exists = scope:ftr_court_offerer }
+		ai_chance = {
+			base = 35
+			modifier = { add = 20  has_trait = content }
+			modifier = { add = 20  has_trait = paranoid }
+			modifier = { add = -15  has_trait = ambitious }
+			modifier = {
+				add = 15
+				NOT = { opinion = { target = scope:ftr_court_offerer  value >= 0 } }
+			}
+		}
+		# 双边交恶：被支持者嫌贸然公开站队；支持者遭拒而蒙羞
+		add_opinion = { target = scope:ftr_court_offerer  modifier = ftr_court_backing_presumptuous_opinion }
+		scope:ftr_court_offerer = {
+			add_opinion = { target = scope:ftr_court_offer_recipient  modifier = ftr_court_backing_refused_opinion }
+			# 被拒后不落入原表态冷却：允许其另择明主，避免被单个竞争者「卡死」表态权
+			remove_character_flag = ftr_court_asked_stance
+			# 拒绝结果通知支持者（send_interface_message 仅当接收者为当前玩家时显示）
+			send_interface_message = {
+				type = event_generic_bad
+				title = ftr_court_struggle.0022.refuse_notify
+				left_icon = scope:ftr_court_offer_recipient
+			}
 		}
 	}
 }

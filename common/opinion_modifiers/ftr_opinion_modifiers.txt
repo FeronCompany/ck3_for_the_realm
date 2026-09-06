@@ -206,6 +206,22 @@ ftr_court_backer_discouraged_opinion = {
 	stacking = yes
 }
 
+# 背书被拒：主动公开拥立却被被支持者婉拒，拥立者受辱而怀怨（支持者 → 被支持者）
+ftr_court_backing_refused_opinion = {
+	opinion = -25
+	years = 10
+	decaying = yes
+	stacking = yes
+}
+
+# 拒人千里：贸然公开站队令被支持者陷入被动/难堪（被支持者 → 支持者）
+ftr_court_backing_presumptuous_opinion = {
+	opinion = -20
+	years = 10
+	decaying = yes
+	stacking = yes
+}
+
 # 直接赠金收买（许诺交互「直接现付」选项）
 ftr_court_bribed_opinion = {
 	opinion = 40

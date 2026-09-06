@@ -48,6 +48,8 @@
  ftr_court_betrayed_opinion:0 "Abandoned me"
  ftr_court_bribed_opinion:0 "Received a heavy bribe"
  ftr_court_backer_discouraged_opinion:0 "Shaken in their support"
+ ftr_court_backing_refused_opinion:0 "Publicly rebuffed their support"
+ ftr_court_backing_presumptuous_opinion:0 "Made bold presumption by backing"
 
  ###### Character Modifiers ######
  ftr_court_struggle_ongoing:0 "Succession Struggle"
@@ -66,6 +68,8 @@
  ftr_court_notice_usurp:0 "The Throne Has Changed Hands"
  ftr_court_notice_purge:0 "The Purge of the Court"
  ftr_court_notice_join_contest:0 "A Claimant Enters the Contest"
+ ftr_court_ascension_backer_reward_notify:0 "The New Sovereign Bestows Rewards"
+ ftr_court_ascension_backer_reward_notify_desc:0 "Your former ally has taken the throne, and the new sovereign rewards those who backed their claim. The prestige or influence, gold, and tax bonus you earned from the succession struggle have been granted."
 
  ###### Lobby Interaction ######
  ftr_court_lobby_interaction:0 "<FTR>Lobby"

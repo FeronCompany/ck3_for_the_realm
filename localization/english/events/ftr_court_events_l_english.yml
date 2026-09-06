@@ -87,6 +87,15 @@
  ftr_court_struggle.0014.e:0 "Back [ftr_court_claimant_5.GetFullName]"
  ftr_court_struggle.0014.f:0 "Watch and wait."
  ftr_court_apply_backing_effect.liege_notify_text:0 "This may lead to alert and anger of top liege"
+ ftr_court_struggle.0014.offer_back_tt:0 "Offer your open backing to the contender and await their answer. If accepted, the backing is formally established and goodwill grows between you, yet other claimants take offence and the liege may grow wary. If refused, your relationship sours."
+
+ ###### 0022 拥立需得首肯 ######
+ ftr_court_struggle.0022.t:0 "A Supporter Steps Forward"
+ ftr_court_struggle.0022.desc:0 "[ftr_court_offerer.GetTitledFirstName] approaches, vowing openly to back [ROOT.GetTitledFirstName]'s claim to the throne. Their allegiance could be a boon — or an invitation for scorn. Whether to accept it lies with [ROOT.GetFirstName] alone."
+ ftr_court_struggle.0022.a:0 "I will accept this backing."
+ ftr_court_struggle.0022.b:0 "No. I need no open supporters."
+ ftr_court_struggle.0022.accept_notify:0 "Your backing has been accepted"
+ ftr_court_struggle.0022.refuse_notify:0 "Your backing has been refused"
 
  ###### 0015 竞争者抉择 ######
  ftr_court_struggle.0015.t:0 "The Time Is Now"

@@ -87,6 +87,15 @@
  ftr_court_struggle.0014.e:0 "拥立[ftr_court_claimant_5.GetFullName]"
  ftr_court_struggle.0014.f:0 "静观其变。"
  ftr_court_apply_backing_effect.liege_notify_text:0 "此举可能引起最高领主的警觉与不满"
+ ftr_court_struggle.0014.offer_back_tt:0 "向对方提出公开拥立，等待其答复。若对方接受，则正式建立公开背书、双方互相提升好感，但其余竞争者会心生芥蒂，君主也可能因此警觉；若对方拒绝，则双方关系交恶。"
+
+ ###### 0022 拥立需得首肯 ######
+ ftr_court_struggle.0022.t:0 "有人愿执旗前驱"
+ ftr_court_struggle.0022.desc:0 "[ftr_court_offerer.GetTitledFirstName]来到面前，言辞恳切地表示愿公开拥立[ROOT.GetTitledFirstName]登上大位。这份站队是助力，也可能招来非议——是否接受，全看[ROOT.GetFirstName]一念。"
+ ftr_court_struggle.0022.a:0 "愿意收下这份拥立。"
+ ftr_court_struggle.0022.b:0 "不必了，我不需要公开站队。"
+ ftr_court_struggle.0022.accept_notify:0 "你的拥立被接受了"
+ ftr_court_struggle.0022.refuse_notify:0 "你的拥立被拒绝了"
 
  ###### 0015 竞争者抉择 ######
  ftr_court_struggle.0015.t:0 "良机已至"

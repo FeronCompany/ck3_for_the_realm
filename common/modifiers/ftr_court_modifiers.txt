@@ -18,3 +18,12 @@ ftr_court_promised_wage_modifier = {
 ftr_court_promised_contract_modifier = {
 	icon = diplomacy
 }
+
+# 从龙之功：竞争者成为故事所有者后给予其支持者的税收加成回报（持续 ftr_court_ascension_backer_tax_years_value 年）。
+# 若支持者有领地则提高领地税收；无地者至少获得月收入补贴。
+ftr_court_ascension_backer_modifier = {
+	icon = economy_positive
+	domain_tax_mult = 0.05
+	vassal_tax_mult = 0.05
+	monthly_income = 1
+}

@@ -56,6 +56,8 @@
  ftr_court_promised_wage_modifier_desc:0 "大位既定之后，兑现了当初许下的加俸之诺。"
  ftr_court_promised_contract_modifier:0 "许诺的宽免"
  ftr_court_promised_contract_modifier_desc:0 "大位既定之后，兑现了当初许下的减负之诺。"
+ ftr_court_ascension_backer_modifier:0 "<FTR>从龙之功"
+ ftr_court_ascension_backer_modifier_desc:0 "所支持之人终登大位，此税收加成是追随者的酬谢。"
 
  ###### 朝堂通报 ######
  ftr_court_notice_backing:0 "有人公开宣誓效忠"

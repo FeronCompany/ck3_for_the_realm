@@ -151,7 +151,8 @@ ftr_court_end_story_if_owner_deposed_effect = {
 #     （GUI 从 GetPlayer.GetTopLiege 读取），避免换主后窗口空白。
 #   - 若新君本人此前就是角逐参与者，继承大位后不再是竞争者：
 #     把他从竞争者名单（新君主存储 + story participant_list）中移除，
-#     并清理其竞争者个体标记；其名下既有支持者保留为「君主支持者」。
+#     并清理其竞争者个体标记；其名下旧支持者论功行赏，
+#     仅联盟/好友/挚友关系者留任为「君主支持者」，其余和平退出（无好感惩罚）。
 #   - 若新君曾站队支持某权贵（旧朝参与者），登基后解除该关系。
 ftr_court_transfer_story_effect = {
 	# 记录旧君（当前 story owner，已失位/驾崩）与新君
@@ -196,6 +197,16 @@ ftr_court_transfer_story_effect = {
 			remove_list_variable = {
 				name = ftr_court_participant_list
 				target = scope:ftr_court_new_monarch
+			}
+			# 2b) 竞争者成为故事所有者：对其旧支持者论功行赏，
+			#     并只保留联盟/好友/挚友关系的支持者，其余和平退出（无好感惩罚）。
+			# 防重入：同一角色一次登基仅结算一次（若有多个朝堂 story 逐一触发 transfer）。
+			scope:ftr_court_new_monarch = {
+				if = {
+					limit = { NOT = { has_character_flag = ftr_court_ascension_backers_rewarded } }
+					ftr_court_reward_ascended_claimant_backers_effect = yes
+					add_character_flag = ftr_court_ascension_backers_rewarded
+				}
 			}
 		}
 
@@ -718,6 +729,90 @@ ftr_court_release_all_backers_effect = {
 		}
 		clear_variable_list = ftr_court_supporters
 	}
+}
+
+# 在新君（原角逐参与者）域执行：竞争者成为故事所有者后的论功行赏。
+# 适用场景：ftr_court_transfer_story_effect 把新君从参与者名单移除（新君曾是竞争者）时调用。
+# 逻辑：
+#   1) 逐个遍历其名下 ftr_court_supporters 旧支持者，在世者发赏：
+#      威望 / 影响力（行政制支持者按官方影响力档、其余威望）+ 金钱 + 税收加成 modifier。
+#   2) 只保留与本人有联盟 / 好友 / 挚友关系的支持者；其余和平退出
+#      （解除背书、移出名单），不施加任何好感惩罚。
+# 依赖：进入时 this = 新君，其名下有 ftr_court_supporters（variable list）。
+ftr_court_reward_ascended_claimant_backers_effect = {
+	save_scope_as = ftr_court_ascended_monarch
+	# 初始化临时「留任者」名单（防旧残留）
+	clear_variable_list = ftr_court_keep_backers
+	if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		# ---- 1) 论功：逐名在世支持者发赏 + 甄别留任者 ----
+		every_in_list = {
+			variable = ftr_court_supporters
+			limit = { is_alive = yes }
+			# 威望 / 影响力：行政制支持者获官方影响力，其余获威望
+			if = {
+				limit = { government_allows = administrative }
+				change_influence = medium_influence_gain
+			}
+			else = {
+				add_prestige = ftr_court_ascension_backer_prestige_value
+			}
+			# 金钱
+			add_gold = ftr_court_ascension_backer_gold_value
+			# 税收加成（持续若干年）
+			add_character_modifier = {
+				modifier = ftr_court_ascension_backer_modifier
+				years = ftr_court_ascension_backer_tax_years_value
+			}
+			# 亲密关系留任：联盟 / 好友 / 挚友
+			if = {
+				limit = {
+					OR = {
+						is_allied_to = scope:ftr_court_ascended_monarch
+						has_relation_friend = scope:ftr_court_ascended_monarch
+						has_relation_best_friend = scope:ftr_court_ascended_monarch
+					}
+				}
+				add_character_flag = ftr_court_keep_backer
+				save_scope_as = ftr_court_kept_backer
+				scope:ftr_court_ascended_monarch = {
+					add_to_variable_list = {
+						name = ftr_court_keep_backers
+						target = scope:ftr_court_kept_backer
+					}
+				}
+			}
+		}
+		# ---- 2) 清场：其余支持者和平退出（解除背书，无好感惩罚）----
+		every_in_list = {
+			variable = ftr_court_supporters
+			limit = {
+				is_alive = yes
+				NOT = { has_character_flag = ftr_court_keep_backer }
+			}
+			remove_variable = ftr_court_backer_of
+		}
+		# ---- 3) 名单重建为留任者（亲密者继续作为君主支持者）----
+		clear_variable_list = ftr_court_supporters
+		if = {
+			limit = { has_variable_list = ftr_court_keep_backers }
+			every_in_list = {
+				variable = ftr_court_keep_backers
+				# 双记账一致：恢复留任者「我支持新君」的背书，再挂回新君支持者名单
+				set_variable = { name = ftr_court_backer_of  value = scope:ftr_court_ascended_monarch }
+				save_scope_as = ftr_court_kept_backer
+				scope:ftr_court_ascended_monarch = {
+					add_to_variable_list = {
+						name = ftr_court_supporters
+						target = scope:ftr_court_kept_backer
+					}
+				}
+				remove_character_flag = ftr_court_keep_backer
+			}
+		}
+	}
+	# 清理临时「留任者」名单（无论本权贵此前是否有支持者，均不残留）
+	remove_variable = ftr_court_keep_backers
 }
 
 # 在被支持者（权贵）域执行：其支持者受压制而离心。

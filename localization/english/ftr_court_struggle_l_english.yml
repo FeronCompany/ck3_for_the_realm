@@ -56,6 +56,8 @@
  ftr_court_promised_wage_modifier_desc:0 "A pledged increase in stipend, honoured after the throne was won."
  ftr_court_promised_contract_modifier:0 "Promised Relief"
  ftr_court_promised_contract_modifier_desc:0 "A pledged lightening of obligations, honoured after the throne was won."
+ ftr_court_ascension_backer_modifier:0 "<FTR>Reward of the Ascended"
+ ftr_court_ascension_backer_modifier_desc:0 "The one they backed now sits upon the throne; this tax bonus is a backer's reward."
 
  ###### Court Toast Notices ######
  ftr_court_notice_backing:0 "A Declaration of Allegiance"

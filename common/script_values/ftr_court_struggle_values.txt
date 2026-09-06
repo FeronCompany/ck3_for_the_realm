@@ -402,6 +402,15 @@ ftr_court_dread_minor_value = 10
 ftr_court_dread_medium_value = 25
 ftr_court_dread_major_value = 50
 
+########## 六之二·A、登基论功封赏（竞争者成为故事所有者后） ##########
+# 场景：角逐参与者（竞争者）最终成为故事所有者 / 新君时，对其名下支持者论功行赏
+# （见 ftr_court_reward_ascended_claimant_backers_effect，由 ftr_court_transfer_story_effect 调用）。
+# 非行政制支持者得威望；行政制支持者按官方 medium_influence_gain 档给影响力，无需另设常量。
+ftr_court_ascension_backer_prestige_value = 300
+ftr_court_ascension_backer_gold_value = 300
+# 税收加成（character modifier ftr_court_ascension_backer_modifier）的持续年限
+ftr_court_ascension_backer_tax_years_value = 10
+
 ########## 六之四、内阁席位承诺兑现 ##########
 # 继承后首次提醒的延迟（日），随机区间错开多个承诺，避免同日密集弹窗
 ftr_court_council_remind_delay_min_value = 3

@@ -1,0 +1,132 @@
+﻿##############################################################
+### 个人功勋 PERSONAL MERIT — 常量与数值（02-功勋系统设计.md §8）
+###
+### 记账约定（见 02 §2）：
+###   · 记录 = 记功方对效劳方的一枚 ftr_personal_merit_opinion 净额实例（1:1）；
+###   · 运算影子（只读/计算用，不算记录）：
+###       var:ftr_personal_merit_crown / _crown_to（从征功）
+###       var:ftr_personal_merit_backing / _backing_to（拥立功）
+###   · 可兑判定/消耗一律走影子数值，再同步摘旧挂新实例。
+##############################################################
+
+########## 一、获得幅度 ##########
+# 战斗：直属军 / 君主为主攻或主防之战
+ftr_personal_merit_battle_win_value = 10
+ftr_personal_merit_battle_lose_value = -10
+ftr_personal_merit_knight_win_value = 1
+# 背书（公开/秘密同 +10）、被劝背书 +5、劝人背书 +5
+ftr_personal_merit_backing_public_value = 10
+ftr_personal_merit_backing_persuaded_value = 5
+ftr_personal_merit_persuading_value = 5
+# 主动背书 - 被劝背书 的差额（apply_backing 默认记 +10，被劝场景回调 5 用）
+ftr_personal_merit_backing_active_premium_value = 5
+
+########## 二、兑现门槛与档位 ##########
+# 各兑现入口共同门槛（可兑余额 ≥ 该值）
+ftr_personal_merit_reward_min_value = 10
+# 年度论功：可入选下限与年触发概率（%）
+ftr_personal_merit_annual_min_value = 10
+ftr_personal_merit_annual_chance_value = 10
+# 赏钱档：小赏 / 大赏 / 年度中档
+ftr_personal_merit_reward_small_gold_value = 150
+ftr_personal_merit_reward_small_cost_value = 10
+ftr_personal_merit_reward_large_gold_value = 400
+ftr_personal_merit_reward_large_cost_value = 30
+ftr_personal_merit_annual_gold_value = 400
+ftr_personal_merit_annual_gold_cost_value = 30
+# 授地抵扣（county / duchy / kingdom / empire）
+ftr_personal_merit_title_consume_county_value = 10
+ftr_personal_merit_title_consume_duchy_value = 25
+ftr_personal_merit_title_consume_kingdom_value = 40
+ftr_personal_merit_title_consume_empire_value = 60
+# 以内阁职位抵功
+ftr_personal_merit_council_cost_value = 40
+# 内阁职位保护年限（flag 计时）
+ftr_personal_merit_council_tenure_years_value = 5
+
+########## 三、好感实例数值（求值域 = 记功方 / holder）##########
+# 从征功净额：求值域 = 记功方（holder）；scope:ftr_pm_subject = 效劳方
+ftr_personal_merit_crown_amount_value = {
+	value = 0
+	if = {
+		limit = {
+			scope:ftr_pm_subject ?= { has_variable = ftr_personal_merit_crown }
+		}
+		value = scope:ftr_pm_subject.var:ftr_personal_merit_crown
+	}
+}
+
+# 拥立功净额：求值域 = 记功方（holder）；scope:ftr_pm_subject = 效劳方
+ftr_personal_merit_backing_amount_value = {
+	value = 0
+	if = {
+		limit = {
+			scope:ftr_pm_subject ?= { has_variable = ftr_personal_merit_backing }
+		}
+		value = scope:ftr_pm_subject.var:ftr_personal_merit_backing
+	}
+}
+
+########## 四、可兑余额 ##########
+# 求值域 = 效劳方；scope:ftr_pm_holder = 现任最高领主（兑现方）
+ftr_personal_merit_redeemable_value = {
+	value = 0
+	# 从征账（holder == crown_to）
+	if = {
+		limit = {
+			scope:ftr_pm_holder ?= { always = yes }
+			has_variable = ftr_personal_merit_crown_to
+			var:ftr_personal_merit_crown_to ?= { this = scope:ftr_pm_holder }
+		}
+		add = var:ftr_personal_merit_crown
+	}
+	# 拥立账（holder == backing_to；fold 后应与现任领主不同，此处仍兼容）
+	if = {
+		limit = {
+			scope:ftr_pm_holder ?= { always = yes }
+			has_variable = ftr_personal_merit_backing_to
+			var:ftr_personal_merit_backing_to ?= { this = scope:ftr_pm_holder }
+		}
+		add = var:ftr_personal_merit_backing
+	}
+}
+
+########## 五、消耗（影子运算辅助，见 consume 效果）##########
+# 本步从拥立账可扣额度 = min(backing, remaining)。求值域 = 效劳方；
+# ftr_pm_remaining 为 consume 效果设置的临时余量变量。
+ftr_personal_merit_backing_take_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = ftr_personal_merit_backing
+			var:ftr_personal_merit_backing >= var:ftr_pm_remaining
+		}
+		value = var:ftr_pm_remaining
+	}
+	else_if = {
+		limit = {
+			has_variable = ftr_personal_merit_backing
+			var:ftr_personal_merit_backing > 0
+		}
+		value = var:ftr_personal_merit_backing
+	}
+}
+
+# 本步从从征账可扣额度 = min(crown, remaining)。求值域 = 效劳方。
+ftr_personal_merit_crown_take_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = ftr_personal_merit_crown
+			var:ftr_personal_merit_crown >= var:ftr_pm_remaining
+		}
+		value = var:ftr_pm_remaining
+	}
+	else_if = {
+		limit = {
+			has_variable = ftr_personal_merit_crown
+			var:ftr_personal_merit_crown > 0
+		}
+		value = var:ftr_personal_merit_crown
+	}
+}

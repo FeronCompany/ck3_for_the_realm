@@ -369,7 +369,7 @@ ftr_court_struggle.0011 = {
 		}
 	}
 
-	option = { # Pardon them and honour my promises
+	option = { # Pardon the remaining competitors
 		name = ftr_court_struggle.0011.a
 		ai_chance = {
 			base = 40
@@ -378,7 +378,6 @@ ftr_court_struggle.0011 = {
 				has_trait = just
 			}
 		}
-		ftr_court_fulfill_promises_effect = yes
 		add_prestige = ftr_court_prestige_minor_value
 	}
 	option = { # Strike the loudest voice first
@@ -394,7 +393,7 @@ ftr_court_struggle.0011 = {
 			modifier = { add = -25  has_trait = forgiving }
 		}
 		# 枪打出头鸟：逮捕威胁最大的对手（有地且有兵者）。
-		# 成功 → 囚禁并废其竞争地位、免其生前承诺；失败 → 对方不得不举兵造反。
+		# 成功 → 囚禁并废其竞争地位；失败 → 对方不得不举兵造反。
 		random = {
 			chance = ftr_court_arrest_success_base_value
 			scope:ftr_court_dissenter ?= {
@@ -404,25 +403,6 @@ ftr_court_struggle.0011 = {
 			add_dread = ftr_court_dread_medium_value
 			# 成功标记：供失败兜底判定（互斥）
 			set_variable = { name = ftr_court_arrest_succeeded  value = 1 }
-			# 被捕者生前许下的承诺一并作废
-			scope:ftr_court_new_monarch = {
-				every_vassal = {
-					limit = {
-						var:ftr_court_promised_by ?= { this = scope:ftr_court_dissenter }
-					}
-					remove_variable = ftr_court_promise_council
-					remove_variable = ftr_court_promise_contract
-					remove_variable = ftr_court_promised_by
-				}
-				every_courtier = {
-					limit = {
-						var:ftr_court_promised_by ?= { this = scope:ftr_court_dissenter }
-					}
-					remove_variable = ftr_court_promise_council
-					remove_variable = ftr_court_promise_contract
-					remove_variable = ftr_court_promised_by
-				}
-			}
 		}
 		if = {
 			limit = { NOT = { has_variable = ftr_court_arrest_succeeded } }
@@ -512,179 +492,6 @@ ftr_court_struggle.0012 = {
 	}
 }
 
-##############################################################
-### 内阁席位承诺：兑现链（0016 -> 0017）
-###
-### 记账：竞争者（新君）ftr_court_owes_council 计数；
-###       被承诺者 ftr_court_promise_council + ftr_court_promised_by。
-### 触发：夺位路径由 ftr_court_usurp_throne_effect 安排；
-###       自然继承路径由 on_death 的 primary_heir 检查安排。
-##############################################################
-
-######### 0016 首次提醒（root = 新君） #########
-# 可立刻任命（按才干分派官方五席），也可推迟一次（180-360 天后终裁）。
-ftr_court_struggle.0016 = {
-	type = character_event
-	title = ftr_court_struggle.0016.t
-	desc = ftr_court_struggle.0016.desc
-	theme = stewardship
-
-	left_portrait = {
-		character = root
-		animation = personality_rational
-	}
-	right_portrait = {
-		character = scope:ftr_court_promised_vassal
-		animation = happiness
-	}
-
-	# 无欠账则事件静默取消
-	trigger = {
-		has_variable = ftr_court_owes_council
-		var:ftr_court_owes_council > 0
-		OR = {
-			any_vassal = {
-				has_variable = ftr_court_promise_council
-				var:ftr_court_promised_by ?= { this = prev }
-			}
-			any_courtier = {
-				has_variable = ftr_court_promise_council
-				var:ftr_court_promised_by ?= { this = prev }
-			}
-		}
-	}
-
-	immediate = {
-		# 取一名被承诺者（先封臣后廷臣）
-		random_vassal = {
-			limit = {
-				has_variable = ftr_court_promise_council
-				var:ftr_court_promised_by ?= { this = prev }
-			}
-			save_scope_as = ftr_court_promised_vassal
-		}
-		if = {
-			limit = { NOT = { exists = scope:ftr_court_promised_vassal } }
-			random_courtier = {
-				limit = {
-					has_variable = ftr_court_promise_council
-					var:ftr_court_promised_by ?= { this = prev }
-				}
-				save_scope_as = ftr_court_promised_vassal
-			}
-		}
-	}
-
-	option = { # Grant them the promised seat
-		name = ftr_court_struggle.0016.a
-		ai_chance = {
-			base = 60
-			modifier = { add = 30  has_trait = just }
-			modifier = { add = -40  has_trait = deceitful }
-		}
-		trigger = { exists = scope:ftr_court_promised_vassal }
-		ftr_court_appoint_promised_councillor_effect = { TARGET = scope:ftr_court_promised_vassal }
-		# 还有别的欠账则串行下一个提醒
-		ftr_court_queue_next_council_reminder_effect = yes
-	}
-	option = { # Postpone it — they will not wait forever
-		name = ftr_court_struggle.0016.b
-		ai_chance = {
-			base = 40
-			modifier = { add = 40  has_trait = deceitful }
-			modifier = { add = 20  has_trait = impatient }
-			modifier = { add = -30  has_trait = just }
-		}
-		trigger = { exists = scope:ftr_court_promised_vassal }
-		# 唯一一次推迟：终裁事件只给任命或拒绝
-		trigger_event = {
-			id = ftr_court_struggle.0017
-			days = { ftr_court_council_final_delay_min_value  ftr_court_council_final_delay_max_value }
-		}
-	}
-}
-
-######### 0017 终裁（root = 新君） #########
-# 推迟后的最后通牒：要么给职位，要么完全拒绝。没有第三次机会。
-ftr_court_struggle.0017 = {
-	type = character_event
-	title = ftr_court_struggle.0017.t
-	desc = ftr_court_struggle.0017.desc
-	theme = stewardship
-
-	left_portrait = {
-		character = root
-		animation = anger
-	}
-	right_portrait = {
-		character = scope:ftr_court_promised_vassal
-		animation = personality_rational
-	}
-
-	# 无欠账则事件静默取消（如承诺已被其它途径兑现）
-	trigger = {
-		OR = {
-			any_vassal = {
-				has_variable = ftr_court_promise_council
-				var:ftr_court_promised_by ?= { this = prev }
-			}
-			any_courtier = {
-				has_variable = ftr_court_promise_council
-				var:ftr_court_promised_by ?= { this = prev }
-			}
-		}
-	}
-
-	immediate = {
-		random_vassal = {
-			limit = {
-				has_variable = ftr_court_promise_council
-				var:ftr_court_promised_by ?= { this = prev }
-			}
-			save_scope_as = ftr_court_promised_vassal
-		}
-		if = {
-			limit = { NOT = { exists = scope:ftr_court_promised_vassal } }
-			random_courtier = {
-				limit = {
-					has_variable = ftr_court_promise_council
-					var:ftr_court_promised_by ?= { this = prev }
-				}
-				save_scope_as = ftr_court_promised_vassal
-			}
-		}
-	}
-
-	option = { # A promise is a promise
-		name = ftr_court_struggle.0017.a
-		ai_chance = {
-			base = 55
-			modifier = { add = 30  has_trait = just }
-			modifier = { add = -40  has_trait = deceitful }
-		}
-		trigger = { exists = scope:ftr_court_promised_vassal }
-		ftr_court_appoint_promised_councillor_effect = { TARGET = scope:ftr_court_promised_vassal }
-		ftr_court_queue_next_council_reminder_effect = yes
-	}
-	option = { # The throne owes nothing
-		name = ftr_court_struggle.0017.b
-		ai_chance = {
-			base = 45
-			modifier = { add = 40  has_trait = deceitful }
-			modifier = { add = 30  has_trait = callous }
-			modifier = { add = -50  has_trait = just }
-			modifier = { add = -30  has_trait = forgiving }
-		}
-		trigger = { exists = scope:ftr_court_promised_vassal }
-		# 完全拒绝：背信弃义，人心尽失
-		scope:ftr_court_promised_vassal = {
-			add_opinion = { target = root  modifier = ftr_court_betrayed_opinion }
-		}
-		add_prestige = ftr_court_betray_prestige_loss_value
-		ftr_court_clear_council_promise_effect = { TARGET = scope:ftr_court_promised_vassal }
-		ftr_court_queue_next_council_reminder_effect = yes
-	}
-}
 
 ######### 0018 废黜昏君（root = 朝堂最强势力） #########
 # 由 story 的危机脉冲推送：拉锯达到夺位阈值且君主失能时，

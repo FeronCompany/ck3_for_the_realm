@@ -1,0 +1,84 @@
+﻿##############################################################
+### 个人功勋 PERSONAL MERIT — 条件
+##############################################################
+
+# 求值域：背书者（效劳方）。scope:ftr_court_story / scope:ftr_pm_claimant 由调用方提供。
+# 判断"被背书对象可产功勋"：朝堂角逐进行中、对象为权贵且非现任君主。
+# 现任君主定位沿用 court 约定（scope:ftr_court_monarch）。
+ftr_personal_merit_backing_eligible_trigger = {
+	scope:ftr_pm_claimant ?= {
+		exists = this
+		is_alive = yes
+		NOT = { this = scope:ftr_court_monarch }
+	}
+	scope:ftr_court_story ?= { exists = this }
+}
+
+# 求值域：效劳方。scope:ftr_pm_holder = 现任最高领主。
+# 判断效劳方对该记功方持有正向可兑余额。
+ftr_personal_merit_has_credit_trigger = {
+	scope:ftr_pm_holder ?= { exists = this }
+	OR = {
+		AND = {
+			has_variable = ftr_personal_merit_crown_to
+			var:ftr_personal_merit_crown_to ?= { this = scope:ftr_pm_holder }
+			has_variable = ftr_personal_merit_crown
+			var:ftr_personal_merit_crown > 0
+		}
+		AND = {
+			has_variable = ftr_personal_merit_backing_to
+			var:ftr_personal_merit_backing_to ?= { this = scope:ftr_pm_holder }
+			has_variable = ftr_personal_merit_backing
+			var:ftr_personal_merit_backing > 0
+		}
+	}
+}
+
+# 求值域：效劳方。scope:ftr_pm_holder = 现任最高领主。
+# 可兑余额 ≥ $MIN$（正数常量/脚本值）。
+ftr_personal_merit_redeemable_at_least_trigger = {
+	OR = {
+		AND = {
+			has_variable = ftr_personal_merit_crown_to
+			var:ftr_personal_merit_crown_to ?= { this = scope:ftr_pm_holder }
+			has_variable = ftr_personal_merit_crown
+			var:ftr_personal_merit_crown >= $MIN$
+		}
+		AND = {
+			has_variable = ftr_personal_merit_backing_to
+			var:ftr_personal_merit_backing_to ?= { this = scope:ftr_pm_holder }
+			has_variable = ftr_personal_merit_backing
+			var:ftr_personal_merit_backing >= $MIN$
+		}
+	}
+}
+
+# 求值域：效劳方。判断是否拥立对象 == 现任最高领主（应已由 validate 折叠）
+ftr_personal_merit_backing_folded_trigger = {
+	OR = {
+		NOT = { has_variable = ftr_personal_merit_backing_to }
+		AND = {
+			has_variable = ftr_personal_merit_backing_to
+			NOT = { scope:ftr_pm_holder ?= { this = var:ftr_personal_merit_backing_to } }
+		}
+	}
+}
+
+# 求值域：最高领主。scope:ftr_pm_subject = 效劳方。判断这是不是其"现任最高领主"
+# （战斗计入时用于排除领主亲自统军、私兵自战等）。
+ftr_personal_merit_is_lord_of_subject_trigger = {
+	scope:ftr_pm_subject ?= {
+		OR = {
+			AND = {
+				is_landed = yes
+				top_liege ?= { this = prevprev }
+			}
+			AND = {
+				NOT = { is_landed = yes }
+				employer ?= {
+					top_liege ?= { this = prevprev }
+				}
+			}
+		}
+	}
+}

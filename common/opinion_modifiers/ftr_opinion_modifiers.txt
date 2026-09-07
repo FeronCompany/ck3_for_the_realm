@@ -229,3 +229,13 @@ ftr_court_bribed_opinion = {
 	decaying = yes
 	stacking = yes
 }
+
+###### 个人功勋 PERSONAL MERIT ######
+
+# 个人功勋净额（记功方 → 效劳方的定向好感记录）。
+# 实例的 opinion 参数在 add_opinion 时按影子净额动态写入（1:1），净 0 即摘除；
+# 定义本身不含固定数值，仅提供图标/文案与"无衰减"语义。
+ftr_personal_merit_opinion = {
+	years = 1000
+	decaying = no
+}

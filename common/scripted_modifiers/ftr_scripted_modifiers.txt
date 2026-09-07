@@ -7,12 +7,6 @@ hostile_coup_agent_base_join_chance_modifier = {
 		desc = SCHEME_NOT_AGAINST_SELF
 	}
 	
-	#Target is not diplomatically available
-	modifier = {
-		add = -1000
-		is_busy_in_events_localised = no
-		desc = SCHEME_NOT_DIPLOMATICALLY_AVAILABLE
-	}
 
 	# Weak hook used
 	modifier = {
@@ -461,7 +455,7 @@ hostile_coup_agent_base_join_chance_modifier = {
 		scope:owner = {
 			has_royal_court = yes
 			court_owner = {
-				amenity_level = { type = court_lodging_standards value = medium_amenity_level }
+				amenity_level = { target = court_lodging_standards value = medium_amenity_level }
 			}
 		}
 		desc = BONUS_TO_AGENT_RECRUITMENT_FROM_AMENITIES
@@ -473,7 +467,7 @@ hostile_coup_agent_base_join_chance_modifier = {
 		scope:owner = {
 			has_royal_court = yes
 			court_owner = {
-				amenity_level = { type = court_lodging_standards value = high_amenity_level }
+				amenity_level = { target = court_lodging_standards value = high_amenity_level }
 			}
 		}
 		desc = BONUS_TO_AGENT_RECRUITMENT_FROM_AMENITIES
@@ -485,7 +479,7 @@ hostile_coup_agent_base_join_chance_modifier = {
 		scope:owner = {
 			has_royal_court = yes
 			court_owner = {
-				amenity_level = { type = court_lodging_standards value = very_high_amenity_level }
+				amenity_level = { target = court_lodging_standards value = very_high_amenity_level }
 			}
 		}
 		desc = BONUS_TO_AGENT_RECRUITMENT_FROM_AMENITIES
@@ -497,7 +491,7 @@ hostile_coup_agent_base_join_chance_modifier = {
 		scope:owner = {
 			has_royal_court = yes
 			court_owner = {
-				amenity_level = { type = court_lodging_standards value = max_amenity_level }
+				amenity_level = { target = court_lodging_standards value = max_amenity_level }
 			}
 		}
 		desc = BONUS_TO_AGENT_RECRUITMENT_FROM_AMENITIES

@@ -291,7 +291,7 @@
  ftr_decision_events.0014.desc:0 "A beautiful bride responded to your request. Now is back to estate."
  ftr_decision_events.0014.a:0 "Good."
 
- ftr_decision_events.0100.opening_empiress:0 "I have done what no-one else could. I have united the lands of [empire_1.GetNameNoTierNoTooltip] with those of [empire_2.GetNameNoTierNoTooltip] and [empire_3.GetNameNoTierNoTooltip]."
+ ftr_decision_events.0100.opening_empires:0 "I have done what no-one else could. I have united the lands of [empire_1.GetNameNoTierNoTooltip] with those of [empire_2.GetNameNoTierNoTooltip] and [empire_3.GetNameNoTierNoTooltip]."
 
  ftr_interaction_event.1001.t:0 "<FTR> Abolish Personal Fight"
  ftr_interaction_event.1001.desc:0 "Your liege [actor.GetName] heard that you are in an illegal law. Now [actor.GetHeShe] request you to stop the war and return to your estate."

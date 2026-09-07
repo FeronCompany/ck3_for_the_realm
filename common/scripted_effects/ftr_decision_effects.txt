@@ -77,10 +77,10 @@ found_new_dynasty_effect = {
 		}
 		scope:old_dynast = {
 			send_interface_message = {
-				text = "ftr_house_head_denounce_tt"
+				title = ftr_house_head_denounce_tt
+				desc = ftr_house_head_denounce_text
 				left_icon = scope:new_head
 				right_icon = scope:old_dynast
-				custom_tooltip = ftr_house_head_denounce_text
 			}
 		}
 	}

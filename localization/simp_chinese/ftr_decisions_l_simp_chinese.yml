@@ -92,6 +92,11 @@
  ftr_strengthen_diarch_power_decision_desc:0 "加强摄政权力"
  ftr_strengthen_diarch_power_decision_confirm:0 "加强摄政权力"
 
+ ftr_court_debug_report_claimants_decision:0 "<FTR>DEBUG:查看朝堂竞争者与支持者"
+ ftr_court_debug_report_claimants_decision_tooltip:0 "查看朝堂竞争者与支持者"
+ ftr_court_debug_report_claimants_decision_desc:0 "逐行列出每位参与竞争者及其支持者人数。"
+ ftr_court_debug_report_claimants_decision_confirm:0 "查看"
+
  ftr_pg_ai_make_own_proposal_decision:0 "<FTR>提交本地议案"
  ftr_pg_ai_make_own_proposal_decision_tooltip:0 "提交本地议案"
  ftr_pg_ai_make_own_proposal_decision_desc:0 "在你的领地内提交议案，交给领地内核心圈子成员审议。"

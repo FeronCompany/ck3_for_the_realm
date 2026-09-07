@@ -575,7 +575,7 @@ ftr_councillor_event.0004 = {
 		scope:secondary_actor = {
 			death = {
 				death_reason = death_mysterious
-				killer = scop:recipient
+				killer = scope:recipient
 			}
 		}
 		scope:recipient = {

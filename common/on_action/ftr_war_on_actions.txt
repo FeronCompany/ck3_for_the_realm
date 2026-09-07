@@ -1,9 +1,16 @@
 ﻿
-
-on_combat_end_winner = {
+# 指挥官战场成长：独立命名子 on_action，仅通过原版 on_combat_end_winner 追加引用。
+# 不要在 on_combat_end_winner 上直接写 effect（原版已定义，重复 effect 会顶掉原版结算并报错）。
+ftr_combat_end_commander_rank_up_on_action = {
 	effect = {
 		side_commander = {
 			ftr_battle_commander_rank_up_effect = yes
 		}
+	}
+}
+
+on_combat_end_winner = {
+	on_actions = {
+		ftr_combat_end_commander_rank_up_on_action
 	}
 }

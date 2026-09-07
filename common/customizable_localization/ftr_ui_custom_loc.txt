@@ -217,3 +217,5 @@ FTR_Bribe_Goal = {
 		fallback = yes
 	}
 }
+
+

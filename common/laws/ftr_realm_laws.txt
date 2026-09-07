@@ -1,4 +1,9 @@
 ﻿
+# 覆盖原版 imperial_bureaucracy 法律时须自带这些 @constant（原版定义于 00_realm_laws.txt 顶部，@ 常量不跨文件共享）
+@imperial_bureaucracy_cooldown_years_1 = 10
+@imperial_bureaucracy_cooldown_years_2 = 20
+@imperial_bureaucracy_cooldown_years_3 = 30
+
 imperial_bureaucracy = {
 	default = imperial_bureaucracy_1
 	cumulative = yes

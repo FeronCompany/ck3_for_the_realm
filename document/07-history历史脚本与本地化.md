@@ -646,7 +646,7 @@ l_english:
 
 ```mermaid
 graph TD
-    BR["[...] 语法"] --> SCOPE["域链部分<br/>ROOT / scope:name<br/>councillor / location"]
+    BR["[...] 语法"] --> SCOPE["域链部分<br/>ROOT / name（不用 scope: 前缀）<br/>councillor / location"]
     BR --> CHAIN["链接链<br/>.Char / .GetCulture<br/>.GetFaith / .GetTitle"]
     BR --> FN["数据函数<br/>GetName / GetHerHis<br/>GetTitledFirstName"]
     BR --> ARG["带参函数<br/>Custom('X')<br/>Custom2('X', arg)<br/>GetCouncillorPosition('x')"]

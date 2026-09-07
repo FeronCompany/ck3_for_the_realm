@@ -10,3 +10,12 @@ de_jure = {
 	}
 }
 
+# 继位内战专用组。
+# 不在此处叠加额外限制，具体门槛写在 ftr_succession_war 自身的 allowed_for_character 中，
+# 以便复用原版内战引擎的同时精确控制触发条件。
+ftr_civil_war = {
+	allowed_for_character = {
+		always = yes
+	}
+}
+

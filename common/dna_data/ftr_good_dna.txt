@@ -1,4 +1,4 @@
-
+﻿
 ftr_beauty_dna_01 = {
 	portrait_info = {
 		genes={

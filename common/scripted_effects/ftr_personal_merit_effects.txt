@@ -576,3 +576,95 @@ ftr_personal_merit_combat_loser_effect = {
 		ftr_personal_merit_battle_credit_effect = { AMOUNT = ftr_personal_merit_battle_lose_value }
 	}
 }
+
+##############################################################
+### 功勋名单 GUI（02 §4.1 界面辅助）
+### 在最高领主域为窗口构建按功勋降序的直属臣属/廷臣名单。
+###   ftr_personal_merit_ui_all —— 候选池（临时）
+###   ftr_personal_merit_ui_subjects —— 最终按功勋降序的字符列表（窗口 datamodel）
+###   var:ftr_personal_merit_ui_display —— 挂在每个候选身上的展示净额（行内文本用）
+##############################################################
+
+# 求值域 = 领主（名单持有者）。保存 ftr_pm_holder = 本领主供 redeemable 求值。
+ftr_personal_merit_build_ui_list_effect = {
+	save_scope_as = ftr_pm_holder
+	clear_variable_list = ftr_personal_merit_ui_all
+	clear_variable_list = ftr_personal_merit_ui_subjects
+
+	# 直属臣属（有正功勋者）
+	every_vassal = {
+		limit = { ftr_personal_merit_redeemable_value > 0 }
+		save_scope_as = ftr_pm_cand
+		set_variable = {
+			name = ftr_personal_merit_ui_display
+			value = ftr_personal_merit_redeemable_value
+		}
+		root = {
+			add_to_variable_list = {
+				name = ftr_personal_merit_ui_all
+				target = scope:ftr_pm_cand
+			}
+		}
+	}
+	# 直属廷臣（有正功勋者）
+	every_courtier = {
+		limit = { ftr_personal_merit_redeemable_value > 0 }
+		save_scope_as = ftr_pm_cand
+		set_variable = {
+			name = ftr_personal_merit_ui_display
+			value = ftr_personal_merit_redeemable_value
+		}
+		root = {
+			add_to_variable_list = {
+				name = ftr_personal_merit_ui_all
+				target = scope:ftr_pm_cand
+			}
+		}
+	}
+
+	# 按展示净额降序写入最终名单
+	if = {
+		limit = { has_variable_list = ftr_personal_merit_ui_all }
+		ordered_in_list = {
+			variable = ftr_personal_merit_ui_all
+			order_by = ftr_personal_merit_ui_display_value
+			save_scope_as = ftr_pm_cand
+			root = {
+				add_to_variable_list = {
+					name = ftr_personal_merit_ui_subjects
+					target = scope:ftr_pm_cand
+				}
+			}
+		}
+	}
+	clear_variable_list = ftr_personal_merit_ui_all
+}
+
+# 求值域 = 受勋者（效劳方）。GUI 行内"赏赐"快捷执行（等价奖励交互的小额分支）：
+# 领主付 150 金、受勋者 +150 金，扣 10 功勋，并即时刷新其领主名单。
+ftr_personal_merit_quick_reward_gold_effect = {
+	save_scope_as = ftr_pm_subject
+	ftr_personal_merit_locate_lord_effect = yes
+	if = {
+		limit = { exists = scope:ftr_pm_lord }
+		scope:ftr_pm_lord ?= { save_scope_as = ftr_pm_holder }
+	}
+	if = {
+		limit = {
+			exists = scope:ftr_pm_lord
+			scope:ftr_pm_lord = { gold >= ftr_personal_merit_reward_small_gold_value }
+			# 可兑余额 ≥ 小额成本
+			ftr_personal_merit_redeemable_value >= ftr_personal_merit_reward_small_cost_value
+		}
+		scope:ftr_pm_lord = {
+			add_gold = {
+				value = 0
+				subtract = ftr_personal_merit_reward_small_gold_value
+			}
+			ftr_personal_merit_build_ui_list_effect = yes
+		}
+		add_gold = ftr_personal_merit_reward_small_gold_value
+		ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_reward_small_cost_value }
+		add_opinion = { target = scope:ftr_pm_lord  modifier = grateful_opinion  opinion = 15 }
+	}
+}

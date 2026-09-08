@@ -20,6 +20,8 @@ ftr_personal_merit_backing_persuaded_value = 5
 ftr_personal_merit_persuading_value = 5
 # 主动背书 - 被劝背书 的差额（apply_backing 默认记 +10，被劝场景回调 5 用）
 ftr_personal_merit_backing_active_premium_value = 5
+# coup_scheme 参与者：密谋成功后对发起人（新君）的拥立功
+ftr_personal_merit_coup_support_value = 20
 
 ########## 二、兑现门槛与档位 ##########
 # 各兑现入口共同门槛（可兑余额 ≥ 该值）
@@ -88,6 +90,16 @@ ftr_personal_merit_redeemable_value = {
 			var:ftr_personal_merit_backing_to ?= { this = scope:ftr_pm_holder }
 		}
 		add = var:ftr_personal_merit_backing
+	}
+}
+
+########## 四之二、GUI 名单排序用 ##########
+# 求值域 = 效劳方：返回 build_ui_list_effect 预写好的展示净额（无则 0）。
+ftr_personal_merit_ui_display_value = {
+	value = 0
+	if = {
+		limit = { has_variable = ftr_personal_merit_ui_display }
+		value = var:ftr_personal_merit_ui_display
 	}
 }
 

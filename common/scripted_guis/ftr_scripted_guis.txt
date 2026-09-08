@@ -116,3 +116,34 @@ ftr_court_sync_ui_data = {
 		}
 	}
 }
+
+##############################################################
+### 个人功勋名单窗口 —— GUI 侧执行逻辑
+### 调用（GUI onclick）：
+###   GetScriptedGui('ftr_personal_merit_sync_ui').Execute(
+###       GuiScope.SetRoot( GetPlayer.GetTopLiege.MakeScope ).End )
+###   GetScriptedGui('ftr_personal_merit_quick_reward').Execute(
+###       GuiScope.SetRoot( Character.MakeScope ).End )
+##############################################################
+
+# 打开功勋名单前：以最高领主为 root 重建按功勋降序的名单
+ftr_personal_merit_sync_ui = {
+	scope = character
+	is_valid = {
+		always = yes
+	}
+	effect = {
+		ftr_personal_merit_build_ui_list_effect = yes
+	}
+}
+
+# 行内"赏赐"按钮：以受勋者为 root 执行小额论功（对应赏赐交互小额分支）
+ftr_personal_merit_quick_reward = {
+	scope = character
+	is_valid = {
+		always = yes
+	}
+	effect = {
+		ftr_personal_merit_quick_reward_gold_effect = yes
+	}
+}

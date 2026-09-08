@@ -2,3 +2,5 @@
 gui/ftr_hud_court_struggle.gui = ftr_hud_court_struggle
 # 朝堂局势窗口（点击 HUD 单元开关）
 gui/ftr_court_struggle_window.gui = ftr_court_struggle_window
+# 个人功勋名单窗口（右侧并排面板；朝堂窗口左下"功勋录"按钮开关）
+gui/ftr_personal_merit_window.gui = ftr_personal_merit_window

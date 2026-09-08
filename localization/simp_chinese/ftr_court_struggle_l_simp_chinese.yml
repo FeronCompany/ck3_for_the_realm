@@ -134,7 +134,7 @@
  ftr_court_accept_lobby_urge_diarch:0 "此人心向共治者"
 
  ###### 朝堂局势 UI ######
- ftr_court_ui_title:0 "<FTR>朝堂局势"
+ ftr_court_ui_title:0 "朝堂局势"
  ftr_court_ui_empty:0 "此宫廷暂无权力角逐。"
  ftr_court_ui_phase_desc:0 "本朝局势"
  ftr_court_ui_courtiers_label:0 "朝廷核心"

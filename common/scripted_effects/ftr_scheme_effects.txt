@@ -17,9 +17,10 @@ ftr_coup_success_effect = {
 					modifier = claimant_faction_member_opinion
 					target = scope:owner
 				}
-				reverse_add_opinion = {
-					modifier = claimant_faction_claimant_opinion
-					target = scope:owner
+				# 从龙功（coup_scheme）：参与者成功后对密谋发起人（新君）获得 +20 拥立功
+				ftr_personal_merit_backing_add_effect = {
+					CLAIMANT = scope:owner
+					AMOUNT = ftr_personal_merit_coup_support_value
 				}
 			}
 		}

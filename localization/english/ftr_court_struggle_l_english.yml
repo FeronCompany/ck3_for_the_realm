@@ -134,7 +134,7 @@
  ftr_court_accept_lobby_urge_diarch:0 "He holds the co-ruler in high regard"
 
  ###### Court Situation UI ######
- ftr_court_ui_title:0 "<FTR>Court Situation"
+ ftr_court_ui_title:0 "Court Situation"
  ftr_court_ui_empty:0 "No power struggle is stirring in this court."
  ftr_court_ui_phase_desc:0 "The state of the realm"
  ftr_court_ui_courtiers_label:0 "The Court"

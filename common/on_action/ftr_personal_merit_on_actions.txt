@@ -1,0 +1,96 @@
+﻿##############################################################
+### 个人功勋 PERSONAL MERIT — 调度层（02 §3.1 / §4.4）
+###
+### 挂载点均为原版合并语义（追加回调，不加 OVERRIDE）：
+###   on_combat_end_winner / on_combat_end_loser（战斗功勋）
+###   random_yearly_everyone_pulse（年度论功，每年 10%）
+##############################################################
+
+########## 一、战斗功勋回调 ##########
+
+ftr_personal_merit_combat_winner_on_action = {
+	effect = {
+		ftr_personal_merit_combat_winner_effect = yes
+	}
+}
+
+ftr_personal_merit_combat_loser_on_action = {
+	effect = {
+		ftr_personal_merit_combat_loser_effect = yes
+	}
+}
+
+########## 二、年度论功回调（每年每领主 10%） ##########
+
+ftr_personal_merit_annual_on_action = {
+	trigger = {
+		is_landed = yes
+		is_ruler = yes
+		is_capable_adult = yes
+		NOT = { is_imprisoned = yes }
+		NOT = { has_character_flag = ftr_personal_merit_annual_skip }
+	}
+	effect = {
+		# 存在有功勋的直属廷臣才掷年度概率
+		if = {
+			limit = {
+				any_courtier = {
+					OR = {
+						AND = {
+							has_variable = ftr_personal_merit_crown_to
+							var:ftr_personal_merit_crown_to ?= { this = root }
+							has_variable = ftr_personal_merit_crown
+							var:ftr_personal_merit_crown >= ftr_personal_merit_annual_min_value
+						}
+						AND = {
+							has_variable = ftr_personal_merit_backing_to
+							var:ftr_personal_merit_backing_to ?= { this = root }
+							has_variable = ftr_personal_merit_backing
+							var:ftr_personal_merit_backing >= ftr_personal_merit_annual_min_value
+						}
+					}
+				}
+			}
+			random = {
+				chance = ftr_personal_merit_annual_chance_value
+				trigger_event = ftr_personal_merit.0001
+			}
+		}
+	}
+}
+
+##############################################################
+### 挂载到原版 on_action
+##############################################################
+
+########## 三、授地抵扣（02 §4.2，on_title_gain 过滤） ##########
+
+ftr_personal_merit_title_gain_on_action = {
+	effect = {
+		ftr_personal_merit_consume_on_title_gain_effect = yes
+	}
+}
+
+on_combat_end_winner = {
+	on_actions = {
+		ftr_personal_merit_combat_winner_on_action
+	}
+}
+
+on_combat_end_loser = {
+	on_actions = {
+		ftr_personal_merit_combat_loser_on_action
+	}
+}
+
+random_yearly_everyone_pulse = {
+	on_actions = {
+		ftr_personal_merit_annual_on_action
+	}
+}
+
+on_title_gain = {
+	on_actions = {
+		ftr_personal_merit_title_gain_on_action
+	}
+}

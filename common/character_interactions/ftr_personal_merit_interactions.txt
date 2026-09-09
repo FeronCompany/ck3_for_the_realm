@@ -1,0 +1,325 @@
+﻿##############################################################
+### 个人功勋 PERSONAL MERIT — 兑现交互（02 §4.1 / §4.3）
+###
+### 方向约定：功勋实例/影子均记在【效劳方】侧，目标指向现任最高领主；
+###   记账与消耗入口见 ftr_personal_merit_effects.txt。
+##############################################################
+
+######### 领主论功：主动赏钱（需求：作用 1） #########
+ftr_personal_merit_reward_gold_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	desc = ftr_personal_merit_reward_gold_interaction_desc
+	cooldown_against_recipient = { years = 1 }
+	ai_targets = {
+		ai_recipients = peer_vassals
+		ai_recipients = courtiers
+		max = 3
+	}
+	ai_frequency = 12
+	is_shown = {
+		scope:actor = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+			is_landed = yes
+		}
+		scope:recipient = {
+			is_alive = yes
+			# 直属臣属或直属廷臣
+			OR = {
+				is_vassal_of = scope:actor
+				employer ?= { this = scope:actor }
+			}
+			OR = {
+				AND = {
+					has_variable = ftr_personal_merit_crown_to
+					var:ftr_personal_merit_crown_to ?= { this = scope:actor }
+					has_variable = ftr_personal_merit_crown
+					var:ftr_personal_merit_crown >= ftr_personal_merit_reward_min_value
+				}
+				AND = {
+					has_variable = ftr_personal_merit_backing_to
+					var:ftr_personal_merit_backing_to ?= { this = scope:actor }
+					has_variable = ftr_personal_merit_backing
+					var:ftr_personal_merit_backing >= ftr_personal_merit_reward_min_value
+				}
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = { NOT = { is_at_war = yes } }
+	}
+	can_send = {}
+
+	send_option = {
+		flag = ftr_pm_reward_small
+		localization = ftr_personal_merit_reward_small_option
+		is_valid = {
+			scope:actor = { gold >= ftr_personal_merit_reward_small_gold_value }
+		}
+	}
+	send_option = {
+		flag = ftr_pm_reward_large
+		localization = ftr_personal_merit_reward_large_option
+		is_valid = {
+			scope:actor = { gold >= ftr_personal_merit_reward_large_gold_value }
+		}
+	}
+
+	on_accept = {
+		# 领主付金、臣属得金
+		if = {
+			limit = { scope:ftr_pm_reward_small = yes }
+			scope:actor = { add_gold = { value = 0  subtract = ftr_personal_merit_reward_small_gold_value } }
+			scope:recipient = { add_gold = ftr_personal_merit_reward_small_gold_value }
+			scope:recipient = { ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_reward_small_cost_value } }
+		}
+		if = {
+			limit = { scope:ftr_pm_reward_large = yes }
+			scope:actor = { add_gold = { value = 0  subtract = ftr_personal_merit_reward_large_gold_value } }
+			scope:recipient = { add_gold = ftr_personal_merit_reward_large_gold_value }
+			scope:recipient = { ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_reward_large_cost_value } }
+		}
+		scope:recipient = {
+			add_opinion = { target = scope:actor  modifier = grateful_opinion  opinion = 15 }
+		}
+	}
+
+	on_decline = {}
+
+	ai_will_do = {
+		base = -40
+		modifier = {
+			add = 35
+			scope:recipient = {
+				OR = {
+					AND = {
+						has_variable = ftr_personal_merit_crown
+						var:ftr_personal_merit_crown >= ftr_personal_merit_reward_small_cost_value
+					}
+					AND = {
+						has_variable = ftr_personal_merit_backing
+						var:ftr_personal_merit_backing >= ftr_personal_merit_reward_small_cost_value
+					}
+				}
+			}
+		}
+		modifier = {
+			add = -50
+			scope:actor = { has_trait = greedy }
+		}
+		modifier = {
+			add = 30
+			scope:actor = { has_trait = just }
+		}
+	}
+	ai_accept = {
+		base = 50
+	}
+}
+
+######### 臣属请赏：请求金钱赏赐（需求：作用 3） #########
+ftr_personal_merit_request_gold_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	desc = ftr_personal_merit_request_gold_interaction_desc
+	cooldown_against_recipient = { years = 2 }
+	ai_targets = {
+		ai_recipients = liege
+		max = 1
+	}
+	ai_frequency = 12
+	is_shown = {
+		scope:actor = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+			OR = {
+				is_vassal_of = scope:recipient
+				employer ?= { this = scope:recipient }
+			}
+		}
+		scope:recipient = { is_landed = yes }
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			OR = {
+				AND = {
+					has_variable = ftr_personal_merit_crown_to
+					var:ftr_personal_merit_crown_to ?= { this = scope:recipient }
+					has_variable = ftr_personal_merit_crown
+					var:ftr_personal_merit_crown >= ftr_personal_merit_reward_min_value
+				}
+				AND = {
+					has_variable = ftr_personal_merit_backing_to
+					var:ftr_personal_merit_backing_to ?= { this = scope:recipient }
+					has_variable = ftr_personal_merit_backing
+					var:ftr_personal_merit_backing >= ftr_personal_merit_reward_min_value
+				}
+			}
+		}
+	}
+	can_send = {}
+
+	send_option = {
+		flag = ftr_pm_request_small
+		localization = ftr_personal_merit_request_small_option
+	}
+	send_option = {
+		flag = ftr_pm_request_large
+		localization = ftr_personal_merit_request_large_option
+	}
+
+	on_accept = {
+		if = {
+			limit = { scope:ftr_pm_request_small = yes }
+			scope:recipient = { add_gold = { value = 0  subtract = ftr_personal_merit_reward_small_gold_value } }
+			scope:actor = { add_gold = ftr_personal_merit_reward_small_gold_value }
+			scope:actor = { ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_reward_small_cost_value } }
+		}
+		if = {
+			limit = { scope:ftr_pm_request_large = yes }
+			scope:recipient = { add_gold = { value = 0  subtract = ftr_personal_merit_reward_large_gold_value } }
+			scope:actor = { add_gold = ftr_personal_merit_reward_large_gold_value }
+			scope:actor = { ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_reward_large_cost_value } }
+		}
+	}
+
+	on_decline = {}
+
+	ai_will_do = {
+		base = -10
+		modifier = {
+			add = 30
+			scope:actor = { has_trait = greedy }
+		}
+		modifier = {
+			add = -20
+			scope:actor = { has_trait = content }
+		}
+	}
+	ai_accept = {
+		base = -10
+		modifier = {
+			add = 25
+			scope:actor = {
+				OR = {
+					AND = {
+						has_variable = ftr_personal_merit_crown
+						var:ftr_personal_merit_crown >= ftr_personal_merit_reward_small_cost_value
+					}
+					AND = {
+						has_variable = ftr_personal_merit_backing
+						var:ftr_personal_merit_backing >= ftr_personal_merit_reward_small_cost_value
+					}
+				}
+			}
+		}
+		modifier = {
+			add = -40
+			scope:recipient = { gold < 300 }
+		}
+		modifier = {
+			add = 25
+			scope:recipient = { has_trait = just }
+		}
+		modifier = {
+			add = -20
+			scope:recipient = { has_trait = greedy }
+		}
+	}
+}
+
+######### 臣属请职：以内阁职位抵赏（需求：作用 3；5 年不可移除） #########
+ftr_personal_merit_request_council_interaction = {
+	category = interaction_category_vassal
+	common_interaction = yes
+	desc = ftr_personal_merit_request_council_interaction_desc
+	cooldown_against_recipient = { years = 5 }
+	ai_targets = {
+		ai_recipients = liege
+		max = 1
+	}
+	ai_frequency = 24
+	is_shown = {
+		scope:actor = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+			OR = {
+				is_vassal_of = scope:recipient
+				employer ?= { this = scope:recipient }
+			}
+		}
+		scope:recipient = { is_landed = yes }
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			OR = {
+				AND = {
+					has_variable = ftr_personal_merit_crown_to
+					var:ftr_personal_merit_crown_to ?= { this = scope:recipient }
+					has_variable = ftr_personal_merit_crown
+					var:ftr_personal_merit_crown >= ftr_personal_merit_council_cost_value
+				}
+				AND = {
+					has_variable = ftr_personal_merit_backing_to
+					var:ftr_personal_merit_backing_to ?= { this = scope:recipient }
+					has_variable = ftr_personal_merit_backing
+					var:ftr_personal_merit_backing >= ftr_personal_merit_council_cost_value
+				}
+			}
+		}
+	}
+	can_send = {}
+
+	on_accept = {
+		# 按对方最高属性授职（学识除外由 assign_appropriate 的职务 fallback 近似处理，
+		# 实施期如须精确排除学识，改为自行比对四维后再调用官方授职决策）
+		scope:recipient = {
+			ftr_personal_merit_grant_council_position_effect = { TARGET = scope:actor }
+		}
+		scope:actor = { ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_council_cost_value } }
+		# 5 年保护：届期内撤换入口按该 flag 灰显
+		scope:actor = {
+			add_character_flag = {
+				flag = ftr_personal_merit_council_tenure
+				years = ftr_personal_merit_council_tenure_years_value
+			}
+		}
+	}
+
+	on_decline = {}
+
+	ai_will_do = {
+		base = -10
+		modifier = {
+			add = 25
+			scope:actor = { has_trait = ambitious }
+		}
+	}
+	ai_accept = {
+		base = 0
+		modifier = {
+			add = 30
+			scope:actor = {
+				OR = {
+					AND = {
+						has_variable = ftr_personal_merit_crown
+						var:ftr_personal_merit_crown >= ftr_personal_merit_council_cost_value
+					}
+					AND = {
+						has_variable = ftr_personal_merit_backing
+						var:ftr_personal_merit_backing >= ftr_personal_merit_council_cost_value
+					}
+				}
+			}
+		}
+		modifier = {
+			add = 20
+			scope:recipient = { has_trait = just }
+		}
+		modifier = {
+			add = -30
+			scope:recipient = { has_trait = ambitious }
+		}
+	}
+}

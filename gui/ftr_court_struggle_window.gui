@@ -35,15 +35,38 @@ window = {
 							blend_mode = alphamultiply
 						}
 					}
-					hbox = {
+					vbox = {
 						layoutpolicy_horizontal = expanding
-						margin = { 8 6 }
-						expand = {}
-						text_single = {
-							text = "ftr_court_ui_title"
-							fontsize = 20
+						# 第一行：标题"朝堂局势"在上居中
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							margin = { 8 6 }
+							margin_bottom = 0
+							expand = {}
+							text_single = {
+								text = "ftr_court_ui_title"
+								fontsize = 20
+							}
+							expand = {}
 						}
-						expand = {}
+						# 第二行：功勋录按钮在下靠左（先置弹窗开关，再重建名单刷新数据）
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							margin_left = 8
+							margin_bottom = 6
+							button_standard_clean = {
+								name = "ftr_court_open_merit_button"
+								size = { 132 22 }
+								tooltip = "ftr_court_merit_list_tooltip"
+								onclick = "[GetVariableSystem.Set( 'ftr_personal_merit_window_open', 'true' )]"
+								onclick = "[GetScriptedGui('ftr_personal_merit_sync_ui').Execute( GuiScope.SetRoot( GetPlayer.GetTopLiege.MakeScope ).End )]"
+								text_single = {
+									text = "ftr_court_merit_list_button"
+									fontsize = 12
+								}
+							}
+							expand = {}
+						}
 					}
 					button_close = {
 						size = { 30 30 }
@@ -195,6 +218,10 @@ window = {
 	}
 }
 
+# ==================== 个人功勋名单窗口 ====================
+# 已迁移至独立文件 gui/ftr_personal_merit_window.gui（ftr_personal_merit_window + 行模板），
+# 由朝堂窗口左下"功勋录"按钮通过 UI 变量 ftr_personal_merit_window_open 开关。
+
 # ==================== 模板 ====================
 types Lists
 {
@@ -246,4 +273,6 @@ types Lists
 		}
 		
 	}
+
+	# 功勋名单行：已随功勋窗口迁至 gui/ftr_personal_merit_window.gui
 }

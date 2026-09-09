@@ -648,6 +648,18 @@ ftr_court_apply_backing_effect = {
 	# ---- 2) 支持者侧记账：更新站队对象 + 对受支持者表达好感 ----
 	set_variable = { name = ftr_court_backer_of  value = $CLAIMANT$ }
 	add_opinion = { target = $CLAIMANT$  modifier = ftr_court_backer_opinion }
+	# ---- 2.1) 功勋：背书"非现任君主"的合格权贵 → 拥立账 +10（支持现任君主不产功勋） ----
+	if = {
+		limit = {
+			exists = scope:ftr_court_monarch
+			NOT = { $CLAIMANT$ = scope:ftr_court_monarch }
+			$CLAIMANT$ = { NOT = { ftr_court_is_struggle_monarch_trigger = yes } }
+		}
+		ftr_personal_merit_backing_add_effect = {
+			CLAIMANT = $CLAIMANT$
+			AMOUNT = ftr_personal_merit_backing_public_value
+		}
+	}
 	# ---- 3) 被支持者侧记账：登记支持者（防重）、回赠政治盟友好感、另存 debug 与被警觉用作用域 ----
 	$CLAIMANT$ = {
 		if = {
@@ -727,6 +739,8 @@ ftr_court_release_all_backers_effect = {
 			variable = ftr_court_supporters
 			# 清空所有支持者的背书记忆
 			remove_variable = ftr_court_backer_of
+			# 被动结清拥立账（对象出局/清算/死亡——无惩罚语义由朝堂链保证）
+			ftr_personal_merit_backing_clear_effect = yes
 		}
 		clear_variable_list = ftr_court_supporters
 	}
@@ -1061,8 +1075,6 @@ ftr_court_usurp_throne_effect = {
 			id = ftr_court_struggle.0010
 			days = 3
 		}
-		# 内阁席位承诺：继承稍后提醒（随机延迟避免密集弹窗）
-		ftr_court_schedule_council_reminder_effect = yes
 		# 新君进入冷却期，避免刚上位就被连锁推翻
 		add_character_flag = {
 			flag = ftr_court_cooldown
@@ -1094,19 +1106,6 @@ ftr_court_usurp_throne_effect = {
 	}
 }
 
-# 在新君域执行：欠有内阁席位承诺时，安排首次提醒事件。
-ftr_court_schedule_council_reminder_effect = {
-	if = {
-		limit = {
-			has_variable = ftr_court_owes_council
-			var:ftr_court_owes_council > 0
-		}
-		trigger_event = {
-			id = ftr_court_struggle.0016
-			days = { ftr_court_council_remind_delay_min_value  ftr_court_council_remind_delay_max_value }
-		}
-	}
-}
 
 # 在角色域执行：清理其竞争状态（退出朝堂角逐）。
 # 同时解除其名下所有支持者的背书（支持者不再"已站队"），防止悬空背书占用站队资格。
@@ -1121,79 +1120,9 @@ ftr_court_clear_claimant_status_effect = {
 	ftr_court_revoke_temp_duchy_effect = yes
 }
 
-######################################################
-### 七之一、内阁席位承诺：实授与记账
-######################################################
-
-# 在任命者（新君）域执行：把被承诺者按其最强属性任命为内阁成员。
-# 直接复用官方 assign_appropriate_councillor_position_effect（00_councillor_effects.txt:806）：
-#   按最高技能 switch 首选职位 -> 职位空缺或现任可解雇则任命，否则四级 fallback。
-# 首选/备选均为官方五席（chancellor/steward/spymaster/marshal/court_chaplain），
-# 全政体通用，满足"必须是可任命的职位"。
-# 注意：不用 root（本 effect 会被其它 scripted effect 嵌套调用，root 不可靠），
-#       统一用 save_scope_as 固定任命者作用域。
-# 参数：TARGET = 被承诺者
-ftr_court_appoint_promised_councillor_effect = {
-	save_scope_as = ftr_court_council_owner
-
-	$TARGET$ ?= {
-		# 非封臣的承诺对象先拉入宫廷（官方 petition_liege 范式），否则无法就任
-		if = {
-			limit = {
-				NOT = { is_vassal_of = scope:ftr_court_council_owner }
-			}
-			scope:ftr_court_council_owner = {
-				add_courtier = prev
-			}
-		}
-	}
-	assign_appropriate_councillor_position_effect = { NEW_COUNCILLOR = $TARGET$ }
-	ftr_court_clear_council_promise_effect = { TARGET = $TARGET$ }
-}
-
-# 在任命者域执行：清除一笔内阁席位承诺（被承诺者记账 + 自身欠账计数）。
-# 参数：TARGET = 被承诺者
-ftr_court_clear_council_promise_effect = {
-	$TARGET$ ?= {
-		remove_variable = ftr_court_promise_council
-		remove_variable = ftr_court_promised_by
-	}
-	if = {
-		limit = { has_variable = ftr_court_owes_council }
-		change_variable = { name = ftr_court_owes_council  subtract = 1 }
-		if = {
-			limit = { var:ftr_court_owes_council <= 0 }
-			remove_variable = ftr_court_owes_council
-		}
-	}
-}
-
-# 在新君域执行：若还欠其它人内阁席位，串行排队下一个提醒（随机间隔避免密集弹窗）
-ftr_court_queue_next_council_reminder_effect = {
-	if = {
-		limit = {
-			has_variable = ftr_court_owes_council
-			var:ftr_court_owes_council > 0
-			OR = {
-				any_vassal = {
-					has_variable = ftr_court_promise_council
-					var:ftr_court_promised_by ?= { this = prev }
-				}
-				any_courtier = {
-					has_variable = ftr_court_promise_council
-					var:ftr_court_promised_by ?= { this = prev }
-				}
-			}
-		}
-		trigger_event = {
-			id = ftr_court_struggle.0016
-			days = { ftr_court_council_queue_delay_min_value  ftr_court_council_queue_delay_max_value }
-		}
-	}
-}
 
 ######################################################
-### 七之二、名次保存与承诺兑现
+### 七之二、名次保存（供 0011 固定选项）
 ######################################################
 
 # 在 story 域执行：把名单中的前五名竞争者按顺序存为 scope:ftr_court_claimant_1 ~ 5，
@@ -1234,41 +1163,6 @@ ftr_court_save_ranked_claimants_effect = {
 	remove_variable = ftr_court_rank_counter
 }
 
-# 在新君域执行：兑现夺位前许下的承诺，并清除记账
-ftr_court_fulfill_promises_effect = {
-	save_scope_as = ftr_court_new_monarch
-
-	every_vassal = {
-		limit = {
-			has_variable = ftr_court_promised_by
-			var:ftr_court_promised_by ?= { this = scope:ftr_court_new_monarch }
-		}
-		save_scope_as = ftr_court_promised_vassal
-
-		if = {
-			limit = { has_variable = ftr_court_promise_council }
-			# 内阁席位实授（按才干分派职位）并清理双端记账
-			scope:ftr_court_new_monarch = {
-				ftr_court_appoint_promised_councillor_effect = { TARGET = scope:ftr_court_promised_vassal }
-			}
-			add_opinion = { target = scope:ftr_court_new_monarch  modifier = ftr_court_loyalist_opinion }
-		}
-		if = {
-			limit = { has_variable = ftr_court_promise_contract }
-			add_character_modifier = {
-				modifier = ftr_court_promised_contract_modifier
-				years = 10
-			}
-			remove_variable = ftr_court_promise_contract
-		}
-		add_character_modifier = {
-			modifier = ftr_court_promised_wage_modifier
-			years = 10
-		}
-		add_opinion = { target = scope:ftr_court_new_monarch  modifier = ftr_political_alliance_opinion }
-		remove_variable = ftr_court_promised_by
-	}
-}
 
 ######################################################
 ### 七之三、资源支付（双轨制）
@@ -1404,9 +1298,6 @@ ftr_court_sync_ui_from_story_effect = {
 ### 九、清算免债
 ######################################################
 
-# 决策：清算即免债。竞争者被尽数清算时，其生前许下的承诺同步作废，
-# 新君只继承存活者的承诺（见 0011.b）。
-# 注意：不能在 clear_claimant_status_effect 内做——该效果也被非清算路径调用。
 
 ###### DEBUG ###### （后续统一移除）
 # 站队 debug 通知：直接给朝堂君主 send_interface_message（左=支持者，右=被支持者）。

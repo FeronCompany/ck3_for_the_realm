@@ -1,0 +1,670 @@
+﻿##############################################################
+### 个人功勋 PERSONAL MERIT — 记账/同步/消耗（02 §2.5）
+###
+### 作用域约定：除标注外，均以【效劳方】为当前域。
+###   从征影子：ftr_personal_merit_crown / _crown_to
+###   拥立影子：ftr_personal_merit_backing / _backing_to
+### 记录层实例：记功方(holder) → 效劳方，键 ftr_personal_merit_opinion。
+##############################################################
+
+# 定位效劳方所属"现任最高领主"，存为 scope:ftr_pm_lord。
+# 封臣走 top_liege；廷臣走 employer 链顶端；独立者（无主）不保存。
+ftr_personal_merit_locate_lord_effect = {
+	if = {
+		limit = {
+			is_landed = yes
+			top_liege ?= { exists = this }
+			NOT = { top_liege ?= { this = root } }
+		}
+		top_liege = { save_scope_as = ftr_pm_lord }
+	}
+	else_if = {
+		limit = {
+			NOT = { is_landed = yes }
+			employer ?= { exists = this }
+		}
+		employer = {
+			if = {
+				limit = {
+					top_liege ?= { exists = this }
+					NOT = { top_liege ?= { this = root } }
+				}
+				top_liege = { save_scope_as = ftr_pm_lord }
+			}
+			else = {
+				save_scope_as = ftr_pm_lord
+			}
+		}
+	}
+}
+
+# 摘除"该记功方 → 效劳方"的个人功勋好感实例（求值域 = 效劳方）。
+# scope:ftr_pm_holder 已由调用方保存。
+ftr_personal_merit_remove_instance_effect = {
+	scope:ftr_pm_holder ?= {
+		remove_opinion = {
+			target = root
+			modifier = ftr_personal_merit_opinion
+		}
+	}
+}
+
+# 关系校验 + 惰性结清（02 §2.2 第 1 条 / §2.3）。求值域 = 效劳方。
+# 1) 从征账随人走：crown_to ≠ 现任最高领主（或无主）→ 清零并摘旧实例；
+# 2) 拥立账若指向现任最高领主 → 折叠入从征账（登基论功自然可用）。
+ftr_personal_merit_validate_effect = {
+	save_scope_as = ftr_pm_subject
+	ftr_personal_merit_locate_lord_effect = yes
+
+	# 1) 从征账：君位更替/离境即清
+	if = {
+		limit = {
+			has_variable = ftr_personal_merit_crown
+			OR = {
+				NOT = { exists = scope:ftr_pm_lord }
+				NOT = { var:ftr_personal_merit_crown_to ?= { this = scope:ftr_pm_lord } }
+			}
+		}
+		if = {
+			limit = { has_variable = ftr_personal_merit_crown_to }
+			var:ftr_personal_merit_crown_to ?= {
+				save_scope_as = ftr_pm_holder
+				remove_opinion = {
+					target = scope:ftr_pm_subject
+					modifier = ftr_personal_merit_opinion
+				}
+			}
+		}
+		remove_variable = ftr_personal_merit_crown
+		remove_variable = ftr_personal_merit_crown_to
+	}
+
+	# 2) 拥立账折叠：backing_to == 现任最高领主 → 并入从征账后结清拥立
+	if = {
+		limit = {
+			exists = scope:ftr_pm_lord
+			has_variable = ftr_personal_merit_backing_to
+			var:ftr_personal_merit_backing_to ?= { this = scope:ftr_pm_lord }
+		}
+		# 并入从征账
+		if = {
+			limit = { has_variable = ftr_personal_merit_crown_to }
+			change_variable = {
+				name = ftr_personal_merit_crown
+				add = var:ftr_personal_merit_backing
+			}
+		}
+		else = {
+			set_variable = {
+				name = ftr_personal_merit_crown
+				value = var:ftr_personal_merit_backing
+			}
+			set_variable = {
+				name = ftr_personal_merit_crown_to
+				value = scope:ftr_pm_lord
+			}
+		}
+		# 摘除拥立实例并清零影子
+		var:ftr_personal_merit_backing_to ?= {
+			save_scope_as = ftr_pm_holder
+			ftr_personal_merit_remove_instance_effect = yes
+		}
+		remove_variable = ftr_personal_merit_backing
+		remove_variable = ftr_personal_merit_backing_to
+	}
+}
+
+# 从征记账（02 §3.1）。求值域 = 效劳方。参数 AMOUNT = ±值（脚本值/整数）。
+# 行为：校验后把数值记入从征影子（对象 = 现任最高领主），再摘旧挂新。
+ftr_personal_merit_crown_add_effect = {
+	ftr_personal_merit_validate_effect = yes
+	if = {
+		limit = { exists = scope:ftr_pm_lord }
+		if = {
+			limit = { has_variable = ftr_personal_merit_crown_to }
+			change_variable = {
+				name = ftr_personal_merit_crown
+				add = $AMOUNT$
+			}
+		}
+		else = {
+			set_variable = {
+				name = ftr_personal_merit_crown
+				value = $AMOUNT$
+			}
+			set_variable = {
+				name = ftr_personal_merit_crown_to
+				value = scope:ftr_pm_lord
+			}
+		}
+		# 摘旧挂新
+		scope:ftr_pm_lord = { save_scope_as = ftr_pm_holder }
+		ftr_personal_merit_remove_instance_effect = yes
+		if = {
+			limit = {
+				has_variable = ftr_personal_merit_crown
+				NOT = { var:ftr_personal_merit_crown = 0 }
+			}
+			scope:ftr_pm_holder = {
+				add_opinion = {
+					target = root
+					modifier = ftr_personal_merit_opinion
+					opinion = ftr_personal_merit_crown_amount_value
+				}
+			}
+		}
+	}
+}
+
+# 拥立记账（02 §3.2）。求值域 = 效劳方。参数 CLAIMANT = 被背书权贵；AMOUNT = 正数。
+# 规则：同刻至多一条拥立账（目标唯一）；调用方负责先清旧账/主动结清。
+ftr_personal_merit_backing_add_effect = {
+	save_scope_as = ftr_pm_subject
+	ftr_personal_merit_validate_effect = yes
+	if = {
+		limit = { $CLAIMANT$ ?= { exists = this } }
+		# 目标唯一：已拥立他人（且非本目标）→ 先结清旧拥立账（倒戈惩罚由朝堂链另行施加）
+		if = {
+			limit = {
+				has_variable = ftr_personal_merit_backing_to
+				NOT = { var:ftr_personal_merit_backing_to ?= { this = $CLAIMANT$ } }
+			}
+			ftr_personal_merit_backing_clear_effect = yes
+		}
+		if = {
+			limit = { has_variable = ftr_personal_merit_backing_to }
+			change_variable = {
+				name = ftr_personal_merit_backing
+				add = $AMOUNT$
+			}
+		}
+		else = {
+			set_variable = {
+				name = ftr_personal_merit_backing
+				value = $AMOUNT$
+			}
+			set_variable = {
+				name = ftr_personal_merit_backing_to
+				value = $CLAIMANT$
+			}
+		}
+		# 摘旧挂新（若对象恰为现任最高领主，validate 会折叠后由从征实例承载）
+		if = {
+			limit = {
+				NOT = { $CLAIMANT$ ?= { this = scope:ftr_pm_lord } }
+			}
+			$CLAIMANT$ ?= { save_scope_as = ftr_pm_holder }
+			ftr_personal_merit_remove_instance_effect = yes
+			if = {
+				limit = {
+					has_variable = ftr_personal_merit_backing
+					NOT = { var:ftr_personal_merit_backing = 0 }
+				}
+				scope:ftr_pm_holder = {
+					add_opinion = {
+						target = scope:ftr_pm_subject
+						modifier = ftr_personal_merit_opinion
+						opinion = ftr_personal_merit_backing_amount_value
+					}
+				}
+			}
+		}
+		else = {
+			# 对象 == 现任最高领主：已折叠，直接同步从征实例
+			if = {
+				limit = { has_variable = ftr_personal_merit_crown_to }
+				scope:ftr_pm_lord = { save_scope_as = ftr_pm_holder }
+				ftr_personal_merit_remove_instance_effect = yes
+				if = {
+					limit = {
+						has_variable = ftr_personal_merit_crown
+						NOT = { var:ftr_personal_merit_crown = 0 }
+					}
+					scope:ftr_pm_holder = {
+						add_opinion = {
+							target = root
+							modifier = ftr_personal_merit_opinion
+							opinion = ftr_personal_merit_crown_amount_value
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# 结清拥立账（02 §2.3）。求值域 = 效劳方。主动结清由调用方补背弃惩罚。
+ftr_personal_merit_backing_clear_effect = {
+	save_scope_as = ftr_pm_subject
+	if = {
+		limit = { has_variable = ftr_personal_merit_backing_to }
+		var:ftr_personal_merit_backing_to ?= {
+			save_scope_as = ftr_pm_holder
+			ftr_personal_merit_remove_instance_effect = yes
+		}
+	}
+	remove_variable = ftr_personal_merit_backing
+	remove_variable = ftr_personal_merit_backing_to
+}
+
+# 拥立账扣减（被劝背书回调用）：求值域 = 效劳方。参数 AMOUNT = 扣减量。
+# 余额不足则整账清零（不为负）。
+ftr_personal_merit_backing_deduct_effect = {
+	if = {
+		limit = {
+			has_variable = ftr_personal_merit_backing
+			var:ftr_personal_merit_backing > 0
+		}
+		if = {
+			limit = { var:ftr_personal_merit_backing >= $AMOUNT$ }
+			change_variable = {
+				name = ftr_personal_merit_backing
+				subtract = $AMOUNT$
+			}
+		}
+		else = {
+			ftr_personal_merit_backing_clear_effect = yes
+		}
+		ftr_personal_merit_sync_effect = yes
+	}
+}
+
+# 统一同步（02 §2.2 不变量）：按影子摘旧挂新，保证每关系仅一枚净额实例。
+ftr_personal_merit_sync_effect = {
+	save_scope_as = ftr_pm_subject
+	ftr_personal_merit_validate_effect = yes
+
+	# 从征关系
+	if = {
+		limit = { has_variable = ftr_personal_merit_crown_to }
+		var:ftr_personal_merit_crown_to ?= {
+			save_scope_as = ftr_pm_holder
+			ftr_personal_merit_remove_instance_effect = yes
+			if = {
+				limit = {
+					scope:ftr_pm_subject = {
+						has_variable = ftr_personal_merit_crown
+						NOT = { var:ftr_personal_merit_crown = 0 }
+					}
+				}
+				add_opinion = {
+					target = scope:ftr_pm_subject
+					modifier = ftr_personal_merit_opinion
+					opinion = ftr_personal_merit_crown_amount_value
+				}
+			}
+		}
+	}
+	# 拥立关系（validate 后其对象 ≠ 现任最高领主）
+	if = {
+		limit = { has_variable = ftr_personal_merit_backing_to }
+		var:ftr_personal_merit_backing_to ?= {
+			save_scope_as = ftr_pm_holder
+			ftr_personal_merit_remove_instance_effect = yes
+			if = {
+				limit = {
+					scope:ftr_pm_subject = {
+						has_variable = ftr_personal_merit_backing
+						NOT = { var:ftr_personal_merit_backing = 0 }
+					}
+				}
+				add_opinion = {
+					target = scope:ftr_pm_subject
+					modifier = ftr_personal_merit_opinion
+					opinion = ftr_personal_merit_backing_amount_value
+				}
+			}
+		}
+	}
+}
+
+# 消耗（02 §4.5）。求值域 = 效劳方。参数 AMOUNT = 扣减量（正数）。
+# 只扣"现任最高领主"名下关系（先拥立后从征，跨账滚入，不为负）。
+ftr_personal_merit_consume_effect = {
+	save_scope_as = ftr_pm_subject
+	ftr_personal_merit_validate_effect = yes
+	set_variable = { name = ftr_pm_remaining  value = $AMOUNT$ }
+	if = {
+		limit = { exists = scope:ftr_pm_lord }
+		# 1) 先扣拥立账（对象 == 现任最高领主；validate 后通常已折叠）
+		if = {
+			limit = {
+				has_variable = ftr_personal_merit_backing_to
+				has_variable = ftr_personal_merit_backing
+				var:ftr_personal_merit_backing > 0
+				var:ftr_personal_merit_backing_to ?= { this = scope:ftr_pm_lord }
+			}
+			change_variable = {
+				name = ftr_personal_merit_backing
+				subtract = ftr_personal_merit_backing_take_value
+			}
+			change_variable = {
+				name = ftr_pm_remaining
+				subtract = ftr_personal_merit_backing_take_value
+			}
+			if = {
+				limit = { var:ftr_personal_merit_backing <= 0 }
+				ftr_personal_merit_backing_clear_effect = yes
+			}
+		}
+		# 2) 再扣从征账
+		if = {
+			limit = {
+				has_variable = ftr_personal_merit_crown
+				var:ftr_personal_merit_crown > 0
+				var:ftr_pm_remaining > 0
+			}
+			change_variable = {
+				name = ftr_personal_merit_crown
+				subtract = ftr_personal_merit_crown_take_value
+			}
+			change_variable = {
+				name = ftr_pm_remaining
+				subtract = ftr_personal_merit_crown_take_value
+			}
+			if = {
+				limit = { var:ftr_personal_merit_crown <= 0 }
+				# 归零：清影子并摘实例
+				if = {
+					limit = { has_variable = ftr_personal_merit_crown_to }
+					var:ftr_personal_merit_crown_to ?= {
+						save_scope_as = ftr_pm_holder
+						ftr_personal_merit_remove_instance_effect = yes
+					}
+				}
+				remove_variable = ftr_personal_merit_crown
+				remove_variable = ftr_personal_merit_crown_to
+			}
+		}
+	}
+	remove_variable = ftr_pm_remaining
+	# 余额变动后统一重挂实例
+	ftr_personal_merit_sync_effect = yes
+}
+
+# 授地抵扣（02 §4.2）：求值域 = 受勋者（效劳方）。
+# 参数 AMOUNT = 按授予头衔档位换算好的扣减量（调用方用
+# ftr_personal_merit_title_consume_{county,duchy,kingdom,empire}_value 传入）。
+# consume 效果内部按"现任最高领主"名下可兑余额扣减（不足扣光、不为负）。
+ftr_personal_merit_consume_on_grant_effect = {
+	ftr_personal_merit_consume_effect = { AMOUNT = $AMOUNT$ }
+}
+
+# 授地抵扣（02 §4.2）· on_title_gain 路径：求值域 = 新头衔持有者（效劳方）。
+# root = 新持有者；scope:title = 新获头衔；scope:previous_holder = 原持有者。
+# 仅当原持有者 == 效劳方现任最高领主（即最高领主本人授土）时按头衔档位扣功勋。
+ftr_personal_merit_consume_on_title_gain_effect = {
+	save_scope_as = ftr_pm_subject
+	ftr_personal_merit_locate_lord_effect = yes
+	if = {
+		limit = {
+			exists = scope:ftr_pm_lord
+			scope:title ?= { exists = this  tier >= tier_county }
+			scope:previous_holder ?= { exists = this  this = scope:ftr_pm_lord }
+		}
+		if = {
+			limit = { scope:title.tier >= tier_empire }
+			ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_title_consume_empire_value }
+		}
+		else_if = {
+			limit = { scope:title.tier >= tier_kingdom }
+			ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_title_consume_kingdom_value }
+		}
+		else_if = {
+			limit = { scope:title.tier >= tier_duchy }
+			ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_title_consume_duchy_value }
+		}
+		else_if = {
+			limit = { scope:title.tier >= tier_county }
+			ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_title_consume_county_value }
+		}
+	}
+}
+
+# 年度论功·授以随机非首都伯爵领（02 §4.4 选项 b）：求值域 = 最高领主（root）。
+# 参数 TARGET = 受勋廷臣。随机挑一名 root 直辖、非首都的伯爵领，转移所有权给 TARGET，
+# 再按 county 档从其名下可兑功勋扣减（不足扣光）。
+ftr_personal_merit_grant_random_county_effect = {
+	save_scope_as = ftr_pm_liege
+	random_sub_realm_county = {
+		limit = {
+			holder ?= { this = root }
+			NOT = { this = root.capital_county }
+		}
+		save_scope_as = ftr_pm_grant_county
+	}
+	if = {
+		limit = {
+			exists = scope:ftr_pm_grant_county
+			$TARGET$ ?= { exists = this }
+		}
+		create_title_and_vassal_change = {
+			type = granted
+			save_scope_as = ftr_pm_title_change
+			add_claim_on_loss = no
+		}
+		scope:ftr_pm_grant_county = {
+			change_title_holder = {
+				holder = $TARGET$
+				change = scope:ftr_pm_title_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:ftr_pm_title_change
+		# 论功授地：扣 county 档功勋
+		$TARGET$ = {
+			ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_title_consume_county_value }
+		}
+	}
+}
+
+# 以内阁职位授功（02 §4.3 / §4.4 选项 c）：求值域 = 君主。
+# 参数 TARGET = 受勋者。职位按其最高属性（外交/管理/武艺/谋略，**学识除外**）选择，
+# 经原版 assign_councillor_type 实授，并以原版 block_firing_councillor_effect 上锁
+# （engine 会在届期内禁止该君主解雇此人，原版时长常量 council_position_locked_value = 5 年）。
+ftr_personal_merit_grant_council_position_effect = {
+	save_scope_as = ftr_pm_council_owner
+	$TARGET$ ?= {
+		save_scope_as = ftr_pm_councillor
+		# 属性最高的非学识职务；并列时优先级 外交 > 管理 > 武艺 > 谋略
+		if = {
+			limit = {
+				diplomacy >= stewardship
+				diplomacy >= martial
+				diplomacy >= intrigue
+			}
+			scope:ftr_pm_council_owner = {
+				assign_councillor_type = { type = councillor_chancellor  target = scope:ftr_pm_councillor }
+			}
+		}
+		else_if = {
+			limit = {
+				stewardship >= diplomacy
+				stewardship >= martial
+				stewardship >= intrigue
+			}
+			scope:ftr_pm_council_owner = {
+				assign_councillor_type = { type = councillor_steward  target = scope:ftr_pm_councillor }
+			}
+		}
+		else_if = {
+			limit = {
+				martial >= diplomacy
+				martial >= stewardship
+				martial >= intrigue
+			}
+			scope:ftr_pm_council_owner = {
+				assign_councillor_type = { type = councillor_marshal  target = scope:ftr_pm_councillor }
+			}
+		}
+		else = {
+			scope:ftr_pm_council_owner = {
+				assign_councillor_type = { type = councillor_spymaster  target = scope:ftr_pm_councillor }
+			}
+		}
+	}
+	# 上锁：5 年内不可撤换（原版引擎机制，须在被授职者域执行）
+	scope:ftr_pm_councillor ?= {
+		block_firing_councillor_effect = { COURT_OWNER = scope:ftr_pm_council_owner }
+	}
+}
+
+##############################################################
+### 战斗功勋（02 §3.1）——由 on_combat_end_* 挂载调用
+### root = 战斗方（胜负侧）；每侧逐将/逐骑士判定。
+##############################################################
+
+# 单个参战者（将/骑士）计功。求值域 = 效劳方本人。
+# 依赖外层已保存：scope:ftr_pm_army_owner（本军军主）、scope:ftr_pm_war（战斗所属战争）、
+#                scope:ftr_pm_side_primary（本方 primary participant）。
+# 参数 AMOUNT = 本次计功值（胜 +10 / 骑士胜 +1 / 败 −10）。
+ftr_personal_merit_battle_credit_effect = {
+	save_scope_as = ftr_pm_subject
+	ftr_personal_merit_locate_lord_effect = yes
+	if = {
+		limit = {
+			exists = scope:ftr_pm_lord
+			exists = scope:ftr_pm_army_owner
+		}
+		if = {
+			limit = { scope:ftr_pm_army_owner ?= { this = scope:ftr_pm_lord } }
+			# 直属军：军主 == 效劳方现任最高领主
+			ftr_personal_merit_crown_add_effect = { AMOUNT = $AMOUNT$ }
+		}
+		else_if = {
+			limit = {
+				# 主战：战争 primary_attacker / primary_defender == 现任最高领主，
+				# 且效劳方所在侧主方为同一人（与领主同方，排除反叛方）
+				scope:ftr_pm_side_primary ?= { this = scope:ftr_pm_lord }
+				scope:ftr_pm_war ?= {
+					OR = {
+						primary_attacker ?= { this = scope:ftr_pm_lord }
+						primary_defender ?= { this = scope:ftr_pm_lord }
+					}
+				}
+			}
+			ftr_personal_merit_crown_add_effect = { AMOUNT = $AMOUNT$ }
+		}
+	}
+}
+
+# 获胜侧：将领 +10、骑士 +1。
+ftr_personal_merit_combat_winner_effect = {
+	root.combat ?= { combat_war ?= { save_scope_as = ftr_pm_war } }
+	root.side_primary_participant ?= { save_scope_as = ftr_pm_side_primary }
+	every_side_commander = {
+		limit = {
+			NOT = { this = root.side_primary_participant }
+		}
+		commanding_army ?= { army_owner ?= { save_scope_as = ftr_pm_army_owner } }
+		ftr_personal_merit_battle_credit_effect = { AMOUNT = ftr_personal_merit_battle_win_value }
+	}
+	every_side_knight = {
+		knight_army ?= { army_owner ?= { save_scope_as = ftr_pm_army_owner } }
+		ftr_personal_merit_battle_credit_effect = { AMOUNT = ftr_personal_merit_knight_win_value }
+	}
+}
+
+# 战败侧：将领 −10（骑士不扣）。
+ftr_personal_merit_combat_loser_effect = {
+	root.combat ?= { combat_war ?= { save_scope_as = ftr_pm_war } }
+	root.side_primary_participant ?= { save_scope_as = ftr_pm_side_primary }
+	every_side_commander = {
+		limit = {
+			NOT = { this = root.side_primary_participant }
+		}
+		commanding_army ?= { army_owner ?= { save_scope_as = ftr_pm_army_owner } }
+		ftr_personal_merit_battle_credit_effect = { AMOUNT = ftr_personal_merit_battle_lose_value }
+	}
+}
+
+##############################################################
+### 功勋名单 GUI（02 §4.1 界面辅助）
+### 在最高领主域为窗口构建按功勋降序的直属臣属/廷臣名单。
+###   ftr_personal_merit_ui_all —— 候选池（临时）
+###   ftr_personal_merit_ui_subjects —— 最终按功勋降序的字符列表（窗口 datamodel）
+###   var:ftr_personal_merit_ui_display —— 挂在每个候选身上的展示净额（行内文本用）
+##############################################################
+
+# 求值域 = 领主（名单持有者）。保存 ftr_pm_holder = 本领主供 redeemable 求值。
+ftr_personal_merit_build_ui_list_effect = {
+	save_scope_as = ftr_pm_holder
+	clear_variable_list = ftr_personal_merit_ui_all
+	#clear_variable_list = ftr_personal_merit_ui_subjects
+
+	# 直属臣属（有正功勋者）
+	every_vassal = {
+		limit = { ftr_personal_merit_redeemable_value > 0 }
+		save_scope_as = ftr_pm_cand
+		set_variable = {
+			name = ftr_personal_merit_ui_display
+			value = ftr_personal_merit_redeemable_value
+		}
+		root = {
+			add_to_variable_list = {
+				name = ftr_personal_merit_ui_all
+				target = scope:ftr_pm_cand
+			}
+		}
+	}
+	# 直属廷臣（有正功勋者）
+	every_courtier = {
+		limit = { ftr_personal_merit_redeemable_value > 0 }
+		save_scope_as = ftr_pm_cand
+		set_variable = {
+			name = ftr_personal_merit_ui_display
+			value = ftr_personal_merit_redeemable_value
+		}
+		root = {
+			add_to_variable_list = {
+				name = ftr_personal_merit_ui_all
+				target = scope:ftr_pm_cand
+			}
+		}
+	}
+
+	# 按展示净额降序写入最终名单
+	#if = {
+	#	limit = { has_variable_list = ftr_personal_merit_ui_all }
+	#	ordered_in_list = {
+	#		variable = ftr_personal_merit_ui_all
+	#		order_by = ftr_personal_merit_ui_display_value
+	#		save_scope_as = ftr_pm_cand
+	#		root = {
+	#			add_to_variable_list = {
+	#				name = ftr_personal_merit_ui_subjects
+	#				target = scope:ftr_pm_cand
+	#			}
+	#		}
+	#	}
+	#}
+	#clear_variable_list = ftr_personal_merit_ui_all
+}
+
+# 求值域 = 受勋者（效劳方）。GUI 行内"赏赐"快捷执行（等价奖励交互的小额分支）：
+# 领主付 150 金、受勋者 +150 金，扣 10 功勋，并即时刷新其领主名单。
+ftr_personal_merit_quick_reward_gold_effect = {
+	save_scope_as = ftr_pm_subject
+	ftr_personal_merit_locate_lord_effect = yes
+	if = {
+		limit = { exists = scope:ftr_pm_lord }
+		scope:ftr_pm_lord ?= { save_scope_as = ftr_pm_holder }
+	}
+	if = {
+		limit = {
+			exists = scope:ftr_pm_lord
+			scope:ftr_pm_lord = { gold >= ftr_personal_merit_reward_small_gold_value }
+			# 可兑余额 ≥ 小额成本
+			ftr_personal_merit_redeemable_value >= ftr_personal_merit_reward_small_cost_value
+		}
+		scope:ftr_pm_lord = {
+			add_gold = {
+				value = 0
+				subtract = ftr_personal_merit_reward_small_gold_value
+			}
+			ftr_personal_merit_build_ui_list_effect = yes
+		}
+		add_gold = ftr_personal_merit_reward_small_gold_value
+		ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_reward_small_cost_value }
+		add_opinion = { target = scope:ftr_pm_lord  modifier = grateful_opinion  opinion = 15 }
+	}
+}

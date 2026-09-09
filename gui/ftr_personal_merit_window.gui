@@ -1,0 +1,97 @@
+# 个人功勋名单窗口（独立文件）。
+# 数据源：GetPlayer.GetTopLiege 身上的 ftr_personal_merit_ui_subjects（由 ftr_personal_merit_sync_ui 按功勋降序构建）。
+# 打开：朝堂窗口左下"功勋录"按钮 → onclick① 置 ftr_personal_merit_window_open（弹窗），onclick② 重建名单。
+# 呈现：右侧并排面板（贴屏幕右缘、垂直居中），与居中的朝堂局势窗口不重叠、清晰可见。
+# 每行：小头像 + 功勋值 + 赏赐按钮（执行小额论功，等价 ftr_personal_merit_reward_gold_interaction 小额分支）。
+window = {
+	name = "ftr_personal_merit_window"
+	parentanchor = right|vcenter
+	size = { 460 720 }
+	position = { -16 0 }
+	layer = windows_layer
+	visible = "[GetVariableSystem.Exists( 'ftr_personal_merit_window_open' )]"
+	using = Window_Background
+	using = Window_Decoration
+
+	margin_widget = {
+		size = { 100% 100% }
+		margin = { 10 26 }
+		margin_right = 13
+		widget = {
+			size = { 100% 100% }
+			vbox = {
+				using = Window_Margins
+
+				widget = {
+					size = { 100% 40 }
+					layoutpolicy_horizontal = expanding
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						expand = {}
+						text_single = {
+							text = "ftr_court_merit_window_title"
+							fontsize = 17
+						}
+						expand = {}
+					}
+					button_close = {
+						size = { 24 24 }
+						parentanchor = top|right
+						margin_right = 10
+						margin_top = 6
+						onclick = "[GetVariableSystem.Clear('ftr_personal_merit_window_open')]"
+					}
+				}
+
+				scrollbox = {
+					layoutpolicy_vertical = expanding
+					layoutpolicy_horizontal = expanding
+					blockoverride "scrollbox_content"
+					{
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 6
+							datamodel = "[GetPlayer.GetTopLiege.MakeScope.GetList('ftr_personal_merit_ui_all')]"
+							item = {
+								ftr_personal_merit_subject_row = {
+									datacontext = "[CharacterListItem.GetCharacter]"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+types Lists
+{
+	# 功勋名单行（vbox{ hbox{ 小头像 + 功勋值 + 赏赐按钮 } }）
+	type ftr_personal_merit_subject_row = hbox {
+		datacontext = "[Scope.GetCharacter]"
+		layoutpolicy_horizontal = expanding
+		background = {
+			using = Background_Area_Solid
+		}
+		portrait_head_small = {
+			size = { 64 64 }
+		}
+		text_single = {
+			layoutpolicy_horizontal = expanding
+			text = "[Character.MakeScope.Var('ftr_personal_merit_ui_display').GetValue]"
+			fontsize = 16
+		}
+		button_standard_clean = {
+			size = { 128 24 }
+			tooltip = "ftr_court_merit_reward_tooltip"
+			onclick = "[GetScriptedGui('ftr_personal_merit_quick_reward').Execute( GuiScope.SetRoot( Character.MakeScope ).End )]"
+			onclick = "[GetScriptedGui('ftr_personal_merit_sync_ui').Execute( GuiScope.SetRoot( GetPlayer.GetTopLiege.MakeScope ).End )]"
+			text_single = {
+				text = "ftr_court_merit_reward_button"
+				fontsize = 11
+			}
+		}
+		expand = {}
+	}
+}

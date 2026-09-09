@@ -589,7 +589,7 @@ ftr_personal_merit_combat_loser_effect = {
 ftr_personal_merit_build_ui_list_effect = {
 	save_scope_as = ftr_pm_holder
 	clear_variable_list = ftr_personal_merit_ui_all
-	clear_variable_list = ftr_personal_merit_ui_subjects
+	#clear_variable_list = ftr_personal_merit_ui_subjects
 
 	# 直属臣属（有正功勋者）
 	every_vassal = {
@@ -623,21 +623,21 @@ ftr_personal_merit_build_ui_list_effect = {
 	}
 
 	# 按展示净额降序写入最终名单
-	if = {
-		limit = { has_variable_list = ftr_personal_merit_ui_all }
-		ordered_in_list = {
-			variable = ftr_personal_merit_ui_all
-			order_by = ftr_personal_merit_ui_display_value
-			save_scope_as = ftr_pm_cand
-			root = {
-				add_to_variable_list = {
-					name = ftr_personal_merit_ui_subjects
-					target = scope:ftr_pm_cand
-				}
-			}
-		}
-	}
-	clear_variable_list = ftr_personal_merit_ui_all
+	#if = {
+	#	limit = { has_variable_list = ftr_personal_merit_ui_all }
+	#	ordered_in_list = {
+	#		variable = ftr_personal_merit_ui_all
+	#		order_by = ftr_personal_merit_ui_display_value
+	#		save_scope_as = ftr_pm_cand
+	#		root = {
+	#			add_to_variable_list = {
+	#				name = ftr_personal_merit_ui_subjects
+	#				target = scope:ftr_pm_cand
+	#			}
+	#		}
+	#	}
+	#}
+	#clear_variable_list = ftr_personal_merit_ui_all
 }
 
 # 求值域 = 受勋者（效劳方）。GUI 行内"赏赐"快捷执行（等价奖励交互的小额分支）：

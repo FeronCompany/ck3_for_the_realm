@@ -49,10 +49,9 @@ window = {
 					blockoverride "scrollbox_content"
 					{
 						vbox = {
-							layoutpolicy_vertical = expanding
 							layoutpolicy_horizontal = expanding
 							spacing = 6
-							datamodel = "[GetPlayer.GetTopLiege.MakeScope.GetList('ftr_personal_merit_ui_subjects')]"
+							datamodel = "[GetPlayer.GetTopLiege.MakeScope.GetList('ftr_personal_merit_ui_all')]"
 							item = {
 								ftr_personal_merit_subject_row = {
 									datacontext = "[CharacterListItem.GetCharacter]"
@@ -82,7 +81,6 @@ types Lists
 			layoutpolicy_horizontal = expanding
 			text = "[Character.MakeScope.Var('ftr_personal_merit_ui_display').GetValue]"
 			fontsize = 16
-			layoutpolicy_horizontal = fixed
 		}
 		button_standard_clean = {
 			size = { 128 24 }

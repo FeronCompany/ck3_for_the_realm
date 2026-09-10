@@ -86,12 +86,16 @@
  ftr_court_struggle.0014.d:0 "Back [ftr_court_claimant_4.GetFullName]"
  ftr_court_struggle.0014.e:0 "Back [ftr_court_claimant_5.GetFullName]"
  ftr_court_struggle.0014.f:0 "Watch and wait."
+ ftr_court_struggle.0014.g:0 "Swear to [ftr_court_monarch.GetTitledFirstName]"
+ ftr_court_struggle.0014.h:0 "Back the Co-Ruler [ftr_court_diarch.GetTitledFirstName]"
  ftr_court_apply_backing_effect.liege_notify_text:0 "This may lead to alert and anger of top liege"
  ftr_court_struggle.0014.offer_back_tt:0 "Offer your open backing to the contender and await their answer. If accepted, the backing is formally established and goodwill grows between you, yet other claimants take offence and the liege may grow wary. If refused, your relationship sours."
 
  ###### 0022 拥立需得首肯 ######
  ftr_court_struggle.0022.t:0 "A Supporter Steps Forward"
  ftr_court_struggle.0022.desc:0 "[ftr_court_offerer.GetTitledFirstName] approaches, vowing openly to back [ROOT.Char.GetTitledFirstName]'s claim to the throne. Their allegiance could be a boon — or an invitation for scorn. Whether to accept it lies with [ROOT.Char.GetFirstName] alone."
+ ftr_court_struggle.0022.desc_monarch:0 "[ftr_court_offerer.GetTitledFirstName] approaches, swearing open loyalty and offering to carry the Crown's banner in court. Such allegiance could be a boon — or an invitation for scorn. Whether to accept it lies with [ROOT.Char.GetFirstName] alone."
+ ftr_court_struggle.0022.desc_diarch:0 "[ftr_court_offerer.GetTitledFirstName] approaches, offering to back [ROOT.Char.GetTitledFirstName] openly as their partisan. It could be a boon — or draw the monarch's wary eye. Whether to accept it lies with [ROOT.Char.GetFirstName] alone."
  ftr_court_struggle.0022.a:0 "I will accept this backing."
  ftr_court_struggle.0022.b:0 "No. I need no open supporters."
  ftr_court_struggle.0022.accept_notify:0 "Your backing has been accepted"

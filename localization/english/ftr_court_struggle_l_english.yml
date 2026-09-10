@@ -28,10 +28,6 @@
  ftr_court_back_claimant_alert_tt:0 "An open declaration has a small chance of stirring the monarch's suspicion"
  ftr_court_withdraw_backing_interaction:0 "<FTR>Withdraw Support"
  ftr_court_withdraw_backing_interaction_desc:0 "Step back into neutrality. Few forgive a withdrawn hand."
- ftr_court_assist_monarch_interaction:0 "<FTR>Steadfast Service"
- ftr_court_assist_monarch_interaction_desc:0 "Tend to the affairs of state so that power does not slip from the Crown's grasp."
- ftr_court_assist_monarch_interaction_notification:0 "[actor.GetFirstNameNoTooltip] has offered to serve you in your regency."
- ftr_court_assist_monarch_interaction_greeting:0 "I come to serve, my liege. Let me ease the burden of your co-rule."
  ftr_court_petition_coregency_interaction:0 "<FTR>Petition for Co-Rule"
  ftr_court_petition_coregency_interaction_desc:0 "Ask that the burdens of the Crown be shared — for now."
  ftr_court_promise_interaction:0 "<FTR>Make a Promise"
@@ -43,7 +39,7 @@
 
  ###### Opinion Modifiers ######
  ftr_court_backer_opinion:0 "Backed my claim"
- ftr_court_loyalist_opinion:0 "Steadfast in my service"
+ ftr_court_loyalist_opinion:0 "Shown the Crown's mercy"
  ftr_court_rival_claimant_opinion:0 "Backed my rival"
  ftr_court_betrayed_opinion:0 "Abandoned me"
  ftr_court_bribed_opinion:0 "Received a heavy bribe"
@@ -72,10 +68,6 @@
  ftr_court_ascension_backer_reward_notify_desc:0 "Your former ally has taken the throne, and the new sovereign rewards those who backed their claim. The prestige or influence, gold, and tax bonus you earned from the succession struggle have been granted."
 
  ###### Lobby Interaction ######
- ftr_court_lobby_interaction:0 "<FTR>Lobby"
- ftr_court_lobby_interaction_desc:0 "Work upon a fellow courtier to pull them toward one camp or the other. Words are cheap; conviction is not."
- ftr_court_lobby_diarch:0 "Urge them to back the co-ruler"
- ftr_court_lobby_monarch:0 "Urge them to stand by the Crown"
 
  ###### AI Acceptance Reasons ######
  ftr_court_accept_back_claimant_monarch:0 "The monarch welcomes allegiance"
@@ -93,13 +85,6 @@
  ftr_court_accept_withdraw_arrogant:0 "Pride will not watch a defection quietly"
  ftr_court_accept_withdraw_paranoid:0 "He fears a resentful ally more than an honest parting"
  ftr_court_accept_withdraw_content:0 "He keeps no one against their will"
- ftr_court_accept_assist_loyal:0 "A proven loyalist is welcome beside the throne"
- ftr_court_accept_assist_allied:0 "An ally's offer rings true"
- ftr_court_accept_assist_backer:0 "He has pledged himself elsewhere - his zeal rings hollow"
- ftr_court_accept_assist_warned:0 "He has been warned before for double-dealing"
- ftr_court_accept_assist_deceitful:0 "Honeyed words do not prove a loyal heart"
- ftr_court_accept_assist_ambitious:0 "Ambition lurks behind the offered hand"
- ftr_court_accept_assist_paranoid:0 "The monarch is wary of all who come unbidden"
  ftr_court_accept_petition_loyal:0 "Long loyalty argues for trusting him with power"
  ftr_court_accept_petition_prestige:0 "A renowned statesman could truly share the burden"
  ftr_court_accept_petition_need:0 "Ailing and afraid, the monarch craves strong aid"
@@ -122,16 +107,6 @@
  ftr_court_accept_promise_rival:0 "He would take a viper before a favour from an enemy"
  ftr_court_accept_promise_gold_offered:0 "Gold in hand outweighs a promise on the wind"
  ftr_court_accept_promise_council_offered:0 "A seat at court appeals to his ambitions"
- ftr_court_accept_lobby_gregarious:0 "A social creature, he is easy to talk round"
- ftr_court_accept_lobby_ambitious:0 "He keeps his options open as he climbs"
- ftr_court_accept_lobby_backer:0 "His mind is made up and his word is given"
- ftr_court_accept_lobby_paranoid:0 "He reads every approach as a trap"
- ftr_court_accept_lobby_stubborn:0 "A stubborn mind is closed to argument"
- ftr_court_accept_lobby_honest:0 "He abhors the whisperings of faction"
- ftr_court_accept_lobby_rival:0 "Foes exchange blows, not arguments"
- ftr_court_accept_lobby_suasive:0 "A silver tongue carries conviction"
- ftr_court_accept_lobby_urge_monarch:0 "He holds his liege in high regard"
- ftr_court_accept_lobby_urge_diarch:0 "He holds the co-ruler in high regard"
 
  ###### Court Situation UI ######
  ftr_court_ui_title:0 "Court Situation"

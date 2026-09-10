@@ -598,6 +598,21 @@ ftr_court_struggle.0014 = {
 		scope:ftr_court_story ?= {
 			ftr_court_save_ranked_claimants_effect = yes
 		}
+		# 共治者作为独立可选目标（背书目标扩展）：
+		#   仅当存在共治者、其不是本人、且未占前五候选位（共治者可能同时是竞争者）时设立选项。
+		if = {
+			limit = {
+				exists = scope:ftr_court_monarch
+				scope:ftr_court_monarch = { exists = diarch }
+				NOT = { scope:ftr_court_monarch.diarch ?= { this = root } }
+				NOT = {
+					ftr_court_claimant_slots_contain_trigger = { WHO = scope:ftr_court_monarch.diarch }
+				}
+			}
+			scope:ftr_court_monarch = {
+				diarch ?= { save_scope_as = ftr_court_diarch }
+			}
+		}
 	}
 
 	option = { # Back the strongest
@@ -610,6 +625,7 @@ ftr_court_struggle.0014 = {
 		ai_chance = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_1 }
+			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_1 }
 		}
 		# 效果对玩家不可见：把全部请求效果包进 custom_tooltip，只显示一句流程说明
 		# （向被支持者提出拥立 → 由其定夺 → 接受才建立公开背书）
@@ -631,6 +647,7 @@ ftr_court_struggle.0014 = {
 		ai_chance = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_2 }
+			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_2 }
 		}
 		custom_tooltip = {
 			text = ftr_court_struggle.0014.offer_back_tt
@@ -650,6 +667,7 @@ ftr_court_struggle.0014 = {
 		ai_chance = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_3 }
+			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_3 }
 		}
 		custom_tooltip = {
 			text = ftr_court_struggle.0014.offer_back_tt
@@ -669,6 +687,7 @@ ftr_court_struggle.0014 = {
 		ai_chance = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_4 }
+			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_4 }
 		}
 		custom_tooltip = {
 			text = ftr_court_struggle.0014.offer_back_tt
@@ -688,11 +707,67 @@ ftr_court_struggle.0014 = {
 		ai_chance = {
 			base = 20
 			ftr_court_back_support_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_5 }
+			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_5 }
 		}
 		custom_tooltip = {
 			text = ftr_court_struggle.0014.offer_back_tt
 			save_scope_as = ftr_court_pending_offerer
 			scope:ftr_court_claimant_5 = {
+				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
+				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+			}
+		}
+	}
+	option = { # 支持君主（保皇表态）
+		name = ftr_court_struggle.0014.g
+		trigger = {
+			exists = scope:ftr_court_monarch
+			# 君主已占候选位（异常情况）则不重复出现
+			NOT = {
+				ftr_court_claimant_slots_contain_trigger = { WHO = scope:ftr_court_monarch }
+			}
+		}
+		ai_chance = {
+			# 基础倾向刻意压低：投资君主不如投资继承人，保皇由立场与情感驱动
+			base = 5
+			# 忠诚惯性（与 a–e 共用改投摩擦）
+			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_monarch }
+			# 保皇倾向：弱化双向好感，强化忠顺 / 公正 / 联盟 / 好友・挚友・情人，
+			# 并在「皇权受威胁」「继承人党羽拥挤且与我关系一般」时加成
+			ftr_court_back_monarch_ai_modifier = yes
+			# 守成者更愿维持现状；权欲旺盛者不屑保皇
+			modifier = { add = 15  has_trait = content }
+			modifier = { add = -20  has_trait = ambitious }
+		}
+		custom_tooltip = {
+			text = ftr_court_struggle.0014.offer_back_tt
+			save_scope_as = ftr_court_pending_offerer
+			scope:ftr_court_monarch = {
+				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
+				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+			}
+		}
+	}
+	option = { # 支持共治者（存在且未占候选位时才出现）
+		name = ftr_court_struggle.0014.h
+		trigger = {
+			exists = scope:ftr_court_diarch
+			NOT = { scope:ftr_court_diarch = { this = root } }
+			NOT = {
+				ftr_court_claimant_slots_contain_trigger = { WHO = scope:ftr_court_diarch }
+			}
+		}
+		ai_chance = {
+			base = 15
+			# 忠诚惯性（与 a–e 共用改投摩擦）
+			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_diarch }
+			# 共治者倾向：按共治类型分流（继承人/共治型看关系；官职线看与君主的关系）+ 私人纽带
+			ftr_court_back_diarch_ai_modifier = yes
+		}
+		custom_tooltip = {
+			text = ftr_court_struggle.0014.offer_back_tt
+			save_scope_as = ftr_court_pending_offerer
+			scope:ftr_court_diarch = {
 				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
 				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
 			}
@@ -717,7 +792,23 @@ ftr_court_struggle.0014 = {
 ftr_court_struggle.0022 = {
 	type = character_event
 	title = ftr_court_struggle.0022.t
-	desc = ftr_court_struggle.0022.desc
+	# 动态描述：被支持者是君主 / 共治者时改用「效忠 / 拥戴」口吻
+	# （原句「登上大位」只适用于竞争者，对在位者不成立）
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { ftr_court_is_struggle_monarch_trigger = yes }
+				desc = ftr_court_struggle.0022.desc_monarch
+			}
+			triggered_desc = {
+				trigger = {
+					liege ?= { diarch ?= { this = root } }
+				}
+				desc = ftr_court_struggle.0022.desc_diarch
+			}
+			desc = ftr_court_struggle.0022.desc
+		}
+	}
 	theme = diplomacy
 
 	trigger = {
@@ -1010,7 +1101,13 @@ ftr_court_struggle.0020 = {
 			limit = { story_type = ftr_court_struggle }
 			save_scope_as = ftr_court_story
 		}
-		# 官方 diarchy swing：允诺共治请愿 → swing 向共治者一侧 +5
+		# 1) 落地共治：共治主体是指定继承人 → 立太子；否则由请愿者取得摄政位
+		scope:ftr_court_monarch = {
+			ftr_court_establish_coregency_effect = {
+				PETITIONER = scope:actor
+			}
+		}
+		# 2) 官方 diarchy swing：允诺共治请愿 → swing 向共治者一侧 +5
 		scope:ftr_court_monarch = {
 			update_diarchy_swing_with_perspective_effect = {
 				SWING = minor_sop_swing_diarch_gain
@@ -2705,6 +2802,19 @@ ftr_court_struggle.00A1 = {
 		scope:ftr_court_story ?= {
 			story_owner = { save_scope_as = ftr_court_story_owner }
 		}
+		# 泛化（03 §7.1）：无朝堂角逐 story 但存在共治关系时，用共治君主补全作用域，
+		# 使本事件可作为「太子/权臣共治期」的日常 swing 拉锯层。
+		if = {
+			limit = { NOT = { exists = scope:ftr_court_story_owner } }
+			if = {
+				limit = { exists = liege }
+				liege = { save_scope_as = ftr_court_story_owner }
+			}
+			else_if = {
+				limit = { exists = top_liege }
+				top_liege = { save_scope_as = ftr_court_story_owner }
+			}
+		}
 	}
 
 	option = { # Whisper against the co-ruler
@@ -2810,6 +2920,19 @@ ftr_court_struggle.00A2 = {
 		}
 		scope:ftr_court_story ?= {
 			story_owner = { save_scope_as = ftr_court_story_owner }
+		}
+		# 泛化（03 §7.1）：无朝堂角逐 story 但存在共治关系时，用共治君主补全作用域
+		# （root = 共治者本人，liege 即其君主），使本事件成为共治期的共治者反击入口。
+		if = {
+			limit = { NOT = { exists = scope:ftr_court_story_owner } }
+			if = {
+				limit = { exists = liege }
+				liege = { save_scope_as = ftr_court_story_owner }
+			}
+			else_if = {
+				limit = { exists = top_liege }
+				top_liege = { save_scope_as = ftr_court_story_owner }
+			}
 		}
 	}
 

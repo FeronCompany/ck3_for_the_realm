@@ -1,0 +1,336 @@
+﻿##############################################################
+### 共治者机制强化 —— 决议
+### 设计出处：document/task_design/03-共治者机制强化设计.md §3 / §4
+###
+### 含：废太子（§3.2）、废黜（§4.1）、准备篡位（§4.4-A）、
+###     篡位落地（§4.4-B）、大赦天下（§4.6）
+##############################################################
+
+######################################################
+### 一、废太子（§3.2，求值域：主君）
+######################################################
+
+ftr_diarchy_abolish_crown_prince_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_diarchy_abolish_crown_prince_decision_desc
+	selection_tooltip = ftr_diarchy_abolish_crown_prince_decision_tooltip
+	cooldown = { years = 5 }
+
+	is_shown = {
+		is_independent_ruler = yes
+		is_capable_adult = yes
+		# 只有「太子共治」才是废太子
+		has_active_diarchy = yes
+		has_diarchy_type = ftr_diarchy_crown_prince
+	}
+
+	is_valid = {
+		exists = diarch
+		diarch ?= { is_alive = yes }
+	}
+
+	effect = {
+		ftr_diarchy_abolish_crown_prince_effect = { TARGET = diarch }
+	}
+
+	ai_check_interval = 120
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 0
+		# ① 双向好感：越互相厌恶，越想换掉太子
+		opinion_modifier = {
+			opinion_target = diarch
+			multiplier = ftr_diarchy_abolish_opinion_weight_value
+		}
+		opinion_modifier = {
+			opinion_target = root
+			who = diarch
+			multiplier = ftr_diarchy_abolish_opinion_weight_value
+		}
+		# ② 党羽压力：强力的党羽越多、内阁党羽越多、党羽军力越强 → 越有换太子的动力
+		modifier = {
+			add = ftr_diarchy_abolish_prince_pressure_value
+		}
+		# ③ 太子自身：野心勃勃 → 更该趁早换；忠厚老实 → 懒得动
+		modifier = {
+			add = 40
+			diarch ?= { has_trait = ambitious }
+		}
+		modifier = {
+			add = -30
+			diarch ?= { OR = { has_trait = content  has_trait = trusting } }
+		}
+		# ④ 太子已坐大（天平过高）→ 该动手了
+		modifier = {
+			add = 25
+			diarchy_swing >= 60
+		}
+	}
+}
+
+######################################################
+### 二、废黜（§4.1，求值域：共治者本人；仅官职线）
+######################################################
+
+ftr_diarchy_depose_liege_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_diarchy_depose_liege_decision_desc
+	selection_tooltip = ftr_diarchy_depose_liege_decision_tooltip
+	cooldown = { years = 10 }
+
+	is_shown = {
+		is_diarch = yes
+		# 官职线（非继承人共治者）；太子不可用（§3.1 权限边界）
+		ftr_diarchy_is_officer_line_diarch_trigger = yes
+		is_capable_adult = yes
+		NOT = { is_imprisoned = yes }
+		# 先完成土地积累（A1c）
+		is_landed = yes
+		ftr_diarchy_swing_at_least_depose_trigger = yes
+	}
+
+	is_valid = {
+		exists = liege
+		liege = {
+			is_alive = yes
+			is_imprisoned = no
+		}
+	}
+
+	effect = {
+		ftr_diarchy_oust_liege_to_heir_effect = yes
+	}
+
+	ai_check_interval = 120
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 0
+		# 主君孱弱 / 失能 → 更想废黜
+		modifier = {
+			add = 50
+			liege = { OR = { is_incapable = yes  has_trait = incapable } }
+		}
+		modifier = {
+			add = 30
+			liege = { is_adult = no }
+		}
+		# 主君强干 → 不敢动
+		modifier = {
+			add = -40
+			liege = {
+				OR = {
+					martial >= 15
+					diplomacy >= 15
+				}
+			}
+		}
+		# 关系尚可 → 暂不动手
+		modifier = {
+			add = -30
+			liege = {
+				opinion = {
+					target = root
+					value >= 50
+				}
+			}
+		}
+	}
+}
+
+######################################################
+### 三、准备篡位（§4.4-A，求值域：共治者本人）
+######################################################
+
+ftr_diarchy_prepare_coup_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_diarchy_prepare_coup_decision_desc
+	selection_tooltip = ftr_diarchy_prepare_coup_decision_tooltip
+	cooldown = { years = 5 }
+
+	is_shown = {
+		is_diarch = yes
+		is_capable_adult = yes
+		NOT = { is_imprisoned = yes }
+		ftr_diarchy_swing_at_least_depose_trigger = yes
+		# 同一轮只准备一次
+		NOT = { has_character_flag = ftr_diarchy_phase_a_done }
+		# 支持者数量门槛（D3：swing + 支持者双门槛）
+		custom_tooltip = {
+			text = ftr_diarchy_prepare_coup_supporters_tt
+			liege = {
+				any_vassal = {
+					count >= ftr_diarchy_prepare_coup_supporter_threshold_value
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { this = root }
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		exists = liege
+		liege = {
+			is_alive = yes
+			is_imprisoned = no
+		}
+	}
+
+	effect = {
+		ftr_diarchy_phase_a_start_effect = yes
+	}
+
+	# 决议对主君可见（警告而非秘密），主君可降 swing / 拉拢封臣反制
+	ai_check_interval = 60
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 0
+		# 官职线：更倾向先索官索地，篡位是后手
+		modifier = {
+			add = -20
+			ftr_diarchy_is_officer_line_diarch_trigger = yes
+		}
+		# 继承人线：直接夺位是主路径
+		modifier = {
+			add = 30
+			ftr_diarchy_is_heir_line_diarch_trigger = yes
+		}
+		# 天平越高越急
+		modifier = {
+			add = 30
+			liege = { diarchy_swing >= 90 }
+		}
+		# 主君强干 → 三思
+		modifier = {
+			add = -30
+			liege = {
+				OR = {
+					martial >= 15
+					diarchy_swing <= 40
+				}
+			}
+		}
+	}
+}
+
+######################################################
+### 四、篡位落地（§4.4-B，求值域：共治者本人；继承人线）
+######################################################
+
+ftr_diarchy_coup_landing_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_diarchy_coup_landing_decision_desc
+	selection_tooltip = ftr_diarchy_coup_landing_decision_tooltip
+
+	is_shown = {
+		is_diarch = yes
+		ftr_diarchy_is_heir_line_diarch_trigger = yes
+		is_capable_adult = yes
+		NOT = { is_imprisoned = yes }
+		# 独断档（≥90）：与 01 的「夺位」同档
+		ftr_diarchy_swing_at_least_absolute_trigger = yes
+		# 阶段 A 必须已完成
+		has_character_flag = ftr_diarchy_phase_a_done
+		# 解锁条件（D6 双通道）：无人反对 或 超时自动解锁
+		custom_tooltip = {
+			text = ftr_diarchy_coup_landing_unlocked_tt
+			OR = {
+				ftr_diarchy_phase_a_no_opposition_trigger = yes
+				ftr_diarchy_phase_a_timed_out_trigger = yes
+			}
+		}
+	}
+
+	is_valid = {
+		exists = liege
+		liege = {
+			is_alive = yes
+			is_imprisoned = no
+		}
+	}
+
+	effect = {
+		ftr_diarchy_oust_liege_to_self_effect = yes
+	}
+
+	ai_check_interval = 60
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 60
+		modifier = {
+			add = 40
+			liege = { diarchy_swing >= 90 }
+		}
+		modifier = {
+			add = -40
+			liege = { martial >= 18 }
+		}
+	}
+}
+
+######################################################
+### 五、大赦天下（§4.6，求值域：共治者本人）
+######################################################
+
+ftr_diarchy_amnesty_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_diarchy_amnesty_decision_desc
+	selection_tooltip = ftr_diarchy_amnesty_decision_tooltip
+	cooldown = { years = ftr_diarchy_amnesty_cooldown_years_value }
+
+	is_shown = {
+		is_diarch = yes
+		is_landed = yes
+		is_capable_adult = yes
+		ftr_diarchy_swing_at_least_amnesty_trigger = yes
+	}
+
+	is_valid = {
+		exists = liege
+		liege = { is_alive = yes }
+		# 有「不和」可洗才有意义
+		strife_opinion >= 10
+	}
+
+	effect = {
+		ftr_diarchy_amnesty_effect = yes
+	}
+
+	ai_check_interval = 120
+	ai_potential = {
+		always = yes
+	}
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = 50
+			strife_opinion >= 40
+		}
+		modifier = {
+			add = 20
+			has_trait = diplomat
+		}
+	}
+}

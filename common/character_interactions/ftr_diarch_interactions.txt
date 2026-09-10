@@ -1,0 +1,609 @@
+﻿##############################################################
+### 共治者机制强化 —— 角色交互
+### 设计出处：document/task_design/03-共治者机制强化设计.md §2 / §3 / §4
+###
+### 含：
+###   1) 覆盖原版 designate_heir_interaction（§2.2：手足候选 + 独占锁定 + 立储接线）
+###   2) 新增 ftr_diarch_designate_heir_interaction（§4.2 替主君立储）
+###   3) 新增 ftr_diarch_boost_succession_interaction（§4.3 拉升共治顺位）
+###   4) 新增 ftr_diarch_levy_vassal_interaction（§4.5 拉封臣入战）
+##############################################################
+
+######################################################
+### 一、覆盖原版：指定继承人（§2.2）
+### 原对象被引擎代码引用（"referenced in code"），必须沿用原名
+######################################################
+
+# Set one of your children (or, with no eligible child, a sibling) as heir
+designate_heir_interaction = {
+	icon = heir
+
+	category = interaction_category_diplomacy
+
+	desc = designate_heir_interaction_desc
+
+	is_shown = {
+		# Is candidate (recipient) valid?
+		###### OVERRIDE ######
+		# MOD：原版仅限子女；无「可继承子女」时追加手足候选（§2.2 1.1）
+		OR = {
+			scope:recipient = {
+				is_child_of = scope:actor
+			}
+			AND = {
+				scope:recipient = { is_sibling_of = scope:actor }
+				scope:actor = { ftr_diarchy_has_no_eligible_child_trigger = yes }
+			}
+		}
+		###### OVERRIDE ######
+		NOR = {
+			scope:recipient = scope:actor.designated_heir
+			scope:recipient = scope:actor
+		}
+
+		trigger_if = {
+			limit = {
+				scope:actor = { NOT = { primary_title = title:e_byzantium } }
+			}
+			custom_description = {
+				text = "dynasty_member_leads_election"
+				scope:actor = {
+					NAND = {
+						primary_title = {
+							has_title_law_flag = elective_succession_law
+						}
+						dynasty = primary_heir.dynasty
+					}
+				}
+			}
+		}
+	}
+
+	cost = {
+		prestige = {
+			value = {
+				if = {
+					limit = { 
+						scope:actor = { government_has_flag = government_is_mandala }
+					}
+					multiply = 0
+				}
+				else_if = {
+					limit = {
+						scope:actor = { government_has_flag = government_is_landless_adventurer }
+					}
+					multiply = {
+						value = 0
+						desc = "[adventurer|E]"
+					}
+				}
+				else = {
+					add = {
+						if = {
+							limit = {
+								scope:actor = {
+									government_allows = administrative
+									any_held_title = {
+										is_noble_family_title = yes
+									}
+								}
+							}
+							value = designate_heir_admin_prestige_cost
+						}
+						else = {
+							value = designate_heir_cost
+						}
+						desc = BASE
+					}
+				}
+			}
+		}
+		influence = {
+			value = {
+				add = 0
+				if = {
+					limit = {
+						scope:actor = {
+							government_allows = administrative
+							any_held_title = {
+								is_noble_family_title = yes
+							}
+						}
+					}
+					add = {
+						value = designate_heir_admin_influence_cost
+						desc = "[administrative_government|E]"
+					}
+				}
+			}
+		}
+		piety = {
+			value = {
+				add = 0
+				if = {
+					limit = {
+						scope:actor = { government_has_flag = government_is_mandala }
+					}
+					add = designate_heir_cost
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		trigger_if = {
+			limit = { exists = scope:recipient }
+			scope:recipient = {
+				is_eunuch_trigger = no
+				NOR = {
+					has_trait = disinherited
+					has_trait = devoted
+					has_trait = order_member
+					has_trait = bastard
+				}
+				house ?= scope:actor.house
+			}
+		}
+		scope:actor = {
+			can_designate_heir_trigger = yes
+			trigger_if = {
+				limit = {
+					government_allows = administrative
+					any_held_title = {
+						is_noble_family_title = yes
+					}
+				}
+				prestige >= designate_heir_admin_prestige_cost
+				influence >= designate_heir_admin_influence_cost
+				
+				custom_tooltip = {
+					text = valid_co_emperor_candidate_liege_trigger
+					scope:recipient.top_liege = scope:actor.top_liege
+				}
+			}
+			trigger_else_if = {
+				limit = {
+					NOR = { 
+						government_has_flag = government_is_mandala
+						government_has_flag = government_is_landless_adventurer
+					}
+				}
+				prestige >= designate_heir_cost
+			}
+			trigger_else = {}
+			trigger_if = {
+				limit = {
+					government_has_flag = government_is_landless_adventurer
+					exists = scope:recipient
+				}
+				scope:recipient = {
+					is_adult = yes
+				}
+			}
+			trigger_if = {
+				limit = {
+					government_has_flag = government_is_mandala
+				}
+				piety >= designate_heir_cost
+			}
+			###### OVERRIDE ######
+			# MOD：独占与锁定（§2.2）——已有任何共治者时不可再指定，改储须先废立
+			custom_tooltip = {
+				text = ftr_diarchy_designate_heir_no_diarchy_tt
+				NOT = { has_active_diarchy = yes }
+			}
+			###### OVERRIDE ######
+		}
+	}
+
+	on_auto_accept = {
+		scope:recipient = {
+			trigger_event = char_interaction.0120
+		}
+	}
+
+	on_accept = {
+		scope:actor = {
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = designate_heir_interaction_notification
+
+				left_icon = scope:actor					
+				right_icon = scope:recipient
+
+				set_designated_heir = scope:recipient
+			}
+			###### OVERRIDE ######
+			# MOD：立储接线——四条件成立时启动太子共治（§2.2 1.2）
+			ftr_diarchy_try_start_crown_prince_effect = { PRINCE = scope:recipient }
+			###### OVERRIDE ######
+		}
+	}
+
+	auto_accept = yes
+}
+
+######################################################
+### 二、§4.2 共治者替主君立储（swing ≥ 85，仅官职线）
+######################################################
+
+ftr_diarch_designate_heir_interaction = {
+	icon = heir
+	category = interaction_category_diplomacy
+	desc = ftr_diarch_designate_heir_interaction_desc
+
+	# 求值域：scope:actor = 共治者；scope:recipient = 被立为储君的候选人
+	is_shown = {
+		scope:actor = {
+			is_diarch = yes
+			ftr_diarchy_is_officer_line_diarch_trigger = yes
+			ftr_diarchy_swing_at_least_designate_trigger = yes
+		}
+		# 候选人：主君的子嗣或（无子嗣时）手足
+		OR = {
+			scope:recipient = { is_child_of = scope:actor.liege }
+			AND = {
+				scope:recipient = { is_sibling_of = scope:actor.liege }
+				scope:actor.liege = { ftr_diarchy_has_no_eligible_child_trigger = yes }
+			}
+		}
+		NOR = {
+			scope:recipient = scope:actor.liege.designated_heir
+			scope:recipient = scope:actor
+			scope:recipient = scope:actor.liege
+		}
+	}
+
+	cost = {
+		influence = { value = ftr_diarchy_designate_heir_influence_cost_value }
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_imprisoned = no
+			is_capable_adult = yes
+		}
+		scope:actor.liege = {
+			is_imprisoned = no
+			can_designate_heir_trigger = yes
+		}
+		scope:recipient = {
+			is_alive = yes
+			is_eunuch_trigger = no
+			NOR = {
+				has_trait = disinherited
+				has_trait = devoted
+				has_trait = order_member
+				has_trait = bastard
+			}
+			house ?= scope:actor.liege.house
+		}
+	}
+
+	on_accept = {
+		scope:actor.liege = {
+			set_designated_heir = scope:recipient
+		}
+		scope:actor = {
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = ftr_diarch_designate_heir_interaction_notification
+				left_icon = scope:actor
+				right_icon = scope:recipient
+			}
+		}
+	}
+
+	ai_accept = {
+		base = 100
+	}
+
+	# AI 倾向：优先挑选年幼、弱能、性格懦弱者（便于日后架空，§4.2）
+	ai_will_do = {
+		base = ftr_diarchy_ai_major_action_min_value
+		# 与候选人「双向好感」：越亲近越想扶他上位
+		opinion_modifier = {
+			opinion_target = scope:recipient
+			who = scope:actor
+			multiplier = 0.5
+		}
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 0.5
+		}
+		modifier = {
+			add = ftr_diarchy_ai_prefer_incompetent_weight
+			scope:recipient = { age < 12 }
+		}
+		modifier = {
+			add = ftr_diarchy_ai_incompetent_bonus_value
+			scope:recipient = {
+				OR = {
+					diplomacy < 6
+					martial < 6
+					learning < 6
+				}
+			}
+		}
+		modifier = {
+			add = ftr_diarchy_ai_incompetent_bonus_value
+			scope:recipient = {
+				OR = {
+					has_trait = shy
+					has_trait = craven
+					has_trait = content
+					has_trait = trusting
+				}
+			}
+		}
+		# 现有太子对共治者满意 → 江山稳固，无需另立储君
+		modifier = {
+			add = ftr_diarchy_ai_satisfied_prince_penalty_value
+			scope:actor.liege = {
+				has_active_diarchy = yes
+				has_diarchy_type = ftr_diarchy_crown_prince
+				diarch ?= {
+					opinion = {
+						target = scope:actor
+						value >= ftr_diarchy_ai_satisfied_prince_opinion_value
+					}
+				}
+			}
+		}
+		# 现有太子性情温顺、易于摆布 → 同样不必换人
+		modifier = {
+			add = ftr_diarchy_ai_satisfied_prince_penalty_value
+			scope:actor.liege = {
+				has_diarchy_type = ftr_diarchy_crown_prince
+				diarch ?= {
+					OR = {
+						has_trait = content
+						has_trait = trusting
+					}
+				}
+			}
+		}
+	}
+}
+
+######################################################
+### 三、§4.3 拉升自己继承人共治顺位（swing ≥ 80）
+######################################################
+
+# 注：落地方式为「在 liege 上登记候任共治者变量」，由 on_diarch_change 钩子实现顶替
+#     （不改原版 succession score 脚本值，详见设计文档 §4.3 机制说明）
+ftr_diarch_boost_succession_interaction = {
+	icon = heir
+	category = interaction_category_diplomacy
+	desc = ftr_diarch_boost_succession_interaction_desc
+
+	is_shown = {
+		scope:actor = {
+			is_diarch = yes
+			ftr_diarchy_swing_at_least_boost_trigger = yes
+			# 仅「自己的继承人」
+			designated_heir ?= { this = scope:recipient }
+		}
+		# 必须是主君直属封臣（非直属不可用）
+		scope:recipient = {
+			is_landed = yes
+			liege ?= { this = scope:actor.liege }
+		}
+	}
+
+	cost = {
+		influence = { value = ftr_diarchy_boost_line_influence_cost_value }
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_imprisoned = no
+			is_capable_adult = yes
+		}
+		scope:recipient = {
+			is_alive = yes
+			is_imprisoned = no
+			is_adult = yes
+		}
+	}
+
+	on_accept = {
+		scope:actor.liege = {
+			# 用 custom_tooltip 包裹变量写入：对外只显示可读说明，不暴露内部实现
+			custom_tooltip = {
+				text = ftr_diarch_boost_succession_effect_tt
+				set_variable = {
+					name = ftr_diarchy_boosted_candidate
+					value = scope:recipient
+					years = 20
+				}
+			}
+		}
+		scope:actor = {
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = ftr_diarch_boost_succession_interaction_notification
+				left_icon = scope:actor
+				right_icon = scope:recipient
+			}
+		}
+	}
+
+	ai_accept = {
+		base = 100
+	}
+
+	ai_will_do = {
+		base = ftr_diarchy_ai_major_action_min_value
+		modifier = {
+			add = 40
+			scope:actor = { liege = { diarchy_swing >= 90 } }
+		}
+		modifier = {
+			add = -30
+			scope:actor = { influence < ftr_diarchy_boost_line_influence_cost_value }
+		}
+	}
+}
+
+######################################################
+### 四、§4.5 拉封臣入战（swing ≥ 60，多货币可叠加）
+######################################################
+
+ftr_diarch_levy_vassal_interaction = {
+	icon = war
+	category = interaction_category_diplomacy
+	desc = ftr_diarch_levy_vassal_interaction_desc
+
+	# 求值域：scope:actor = 共治者；scope:recipient = 主君直属封臣
+	is_shown = {
+		scope:actor = {
+			is_diarch = yes
+			is_landed = yes
+			ftr_diarchy_swing_at_least_levy_trigger = yes
+		}
+		scope:recipient = {
+			is_landed = yes
+			is_independent_ruler = no
+			liege ?= { this = scope:actor.liege }
+			NOT = { this = scope:actor }
+			# 必拒者不出现在候选列表（§4.5 请求门槛）
+			opinion = {
+				target = scope:actor
+				value >= ftr_diarchy_levy_vassal_min_opinion_value
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_imprisoned = no
+			is_capable_adult = yes
+		}
+		scope:recipient = {
+			is_imprisoned = no
+			is_capable_adult = yes
+			NOT = { is_at_war_with = scope:actor }
+		}
+	}
+
+	can_send = {}
+
+	options_heading = ftr_diarchy_levy_options_tt
+	send_option = { # 金钱
+		flag = ftr_diarchy_levy_gold
+		localization = ftr_diarchy_levy_gold_tt
+		is_valid = {
+			scope:actor = { gold >= ftr_diarchy_levy_vassal_gold_cost_value }
+		}
+	}
+	send_option = { # 人情（hook）
+		flag = ftr_diarchy_levy_hook
+		localization = ftr_diarchy_levy_hook_tt
+		is_valid = {
+			scope:actor = { has_hook = scope:recipient }
+		}
+	}
+	send_option = { # 影响力
+		flag = ftr_diarchy_levy_influence
+		localization = ftr_diarchy_levy_influence_tt
+		is_valid = {
+			scope:actor = {
+				government_has_flag = government_is_administrative
+				influence >= ftr_diarchy_levy_vassal_influence_cost_value
+			}
+		}
+	}
+	# 多选可叠加：给得越多越容易同意（§4.5）
+	send_options_exclusive = no
+
+	on_accept = {
+		scope:actor = {
+			if = {
+				limit = { scope:ftr_diarchy_levy_gold = yes }
+				pay_short_term_gold = {
+					target = scope:recipient
+					gold = ftr_diarchy_levy_vassal_gold_cost_value
+				}
+			}
+			if = {
+				limit = { scope:ftr_diarchy_levy_hook = yes }
+				if = {
+					limit = { has_hook = scope:recipient }
+					remove_hook = { target = scope:recipient }
+				}
+			}
+			if = {
+				limit = { scope:ftr_diarchy_levy_influence = yes }
+				change_influence = ftr_diarchy_levy_vassal_influence_cost_value
+			}
+			# 拉入共治者所在的我方战线
+			ftr_diarchy_levy_vassal_to_wars_effect = { VASSAL = scope:recipient }
+		}
+	}
+
+	ai_accept = {
+		base = ftr_diarchy_levy_vassal_base_accept_value
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 0.5
+		}
+		opinion_modifier = {
+			opinion_target = scope:actor.liege
+			who = scope:recipient
+			multiplier = -0.5
+		}
+		modifier = {
+			add = ftr_diarchy_levy_vassal_accept_weight_gold_value
+			scope:ftr_diarchy_levy_gold = yes
+		}
+		modifier = {
+			add = ftr_diarchy_levy_vassal_accept_weight_hook_value
+			scope:ftr_diarchy_levy_hook = yes
+		}
+		modifier = {
+			add = ftr_diarchy_levy_vassal_accept_weight_influence_value
+			scope:ftr_diarchy_levy_influence = yes
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+		# 天平越高越想扩军
+		modifier = {
+			add = 40
+			scope:actor = { liege = { diarchy_swing >= 80 } }
+		}
+		# send_option 激活越多 → 代价越高 → 越不愿意（见脚本值）
+		modifier = {
+			add = ftr_diarchy_levy_vassal_option_cost_value
+		}
+		# 任意战争「敌我比 ≥ 2」→ 我方被压制，需要拉人
+		modifier = {
+			add = ftr_diarchy_levy_vassal_outnumbered_bonus_value
+			scope:actor = {
+				any_character_war = {
+					ftr_diarchy_war_outnumbered_trigger = yes
+				}
+			}
+		}
+		# 「所有战争」敌我比都 ≤ 0.5（且确实在打仗）→ 处处压倒性优势，不必拉人
+		modifier = {
+			add = ftr_diarchy_levy_vassal_overwhelming_penalty_value
+			scope:actor = {
+				is_at_war = yes
+				every_character_war = {
+					ftr_diarchy_war_overwhelming_trigger = yes
+				}
+			}
+		}
+		# 与目标关系越差，越可能白花
+		opinion_modifier = {
+			opinion_target = scope:actor
+			who = scope:recipient
+			multiplier = 0.3
+		}
+	}
+}

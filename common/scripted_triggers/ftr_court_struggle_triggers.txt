@@ -267,11 +267,13 @@ ftr_court_should_activate_regency_trigger = {
 	}
 }
 
-# 拉锯足以发起共治请愿（官方 swing：story_owner = 拥有 diarchy 的君主；无共治者时 swing 为 0）
+# 拉锯足以发起共治请愿（求值域 = 朝堂 story，story_owner 为君主）。
+# 裁定 R1：请愿仅在「朝中尚无共治者」时开放（`is_shown` 已作独占限制），而天平是 diarchy 的
+# 属性、无共治时恒为 0 ⇒ 唯一门槛 = 「朝堂已入对立区」
+# （复用 ftr_court_is_contested_trigger：参与者达标 + 烈度 ≥ 90）。原 swing ≥ 70 分支已删除。
 ftr_court_can_petition_coregency_trigger = {
-	story_owner ?= {
-		diarchy_swing >= ftr_court_swing_regency_threshold_value
-	}
+	story_owner ?= { NOT = { has_active_diarchy = yes } }
+	ftr_court_is_contested_trigger = yes
 }
 
 # 拉锯足以尝试夺位（官方 swing + 君主失能）
@@ -428,6 +430,34 @@ ftr_court_has_no_supporters_trigger = {
 	NOT = {
 		has_variable_list = ftr_court_supporters
 		variable_list_size = { name = ftr_court_supporters  value >= 1 }
+	}
+}
+
+# 求值域：无（只读事件 0014 已保存的候选位 scope）。参数 WHO = 待查角色 scope 表达式。
+# 判定 WHO 是否已占 0014 的前五候选位——供「君主 / 共治者亦可作为背书目标」时防重复选项
+# （共治者可能同时是竞争者）。名单不足 5 人时，未保存的候选位不参与判定。
+ftr_court_claimant_slots_contain_trigger = {
+	OR = {
+		AND = {
+			exists = scope:ftr_court_claimant_1
+			scope:ftr_court_claimant_1 = { this = $WHO$ }
+		}
+		AND = {
+			exists = scope:ftr_court_claimant_2
+			scope:ftr_court_claimant_2 = { this = $WHO$ }
+		}
+		AND = {
+			exists = scope:ftr_court_claimant_3
+			scope:ftr_court_claimant_3 = { this = $WHO$ }
+		}
+		AND = {
+			exists = scope:ftr_court_claimant_4
+			scope:ftr_court_claimant_4 = { this = $WHO$ }
+		}
+		AND = {
+			exists = scope:ftr_court_claimant_5
+			scope:ftr_court_claimant_5 = { this = $WHO$ }
+		}
 	}
 }
 

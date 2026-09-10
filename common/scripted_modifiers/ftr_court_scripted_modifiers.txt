@@ -90,3 +90,164 @@ ftr_court_back_support_ai_modifier = {
 		}
 	}
 }
+
+##############################################################
+### 忠诚惯性（改投摩擦）——所有背书选项共用
+###   a–e 候选 / g 君主 / h 共治者 均须平级引用本 modifier
+##############################################################
+
+# 参数：$CLAIMANT$ = 被评估的候选（角色 scope 表达式）。
+# 求值域：this = 表态者（scope:ftr_court_asked 同指）。
+ftr_court_back_stickiness_ai_modifier = {
+	# 维持现状：本候选正是我当前支持的对象 → 大幅加权（改投门槛随之抬高）
+	modifier = {
+		add = ftr_court_backing_stick_bonus_value
+		scope:ftr_court_asked = {
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= { this = $CLAIMANT$ }
+		}
+	}
+	# 改投减权：我已支持他人（且非本候选）→ 需要明显更强的理由才会换边
+	modifier = {
+		add = ftr_court_backing_switch_disincentive_value
+		scope:ftr_court_asked = {
+			has_variable = ftr_court_backer_of
+			NOT = { var:ftr_court_backer_of ?= { this = $CLAIMANT$ } }
+		}
+	}
+}
+
+##############################################################
+### 背书君主（保皇）倾向
+###
+### 设计口径：弱化基础倾向与双向好感，改由「忠顺 / 公正 / 私人纽带」驱动；
+### 并在皇权受威胁、或主要继承人党羽拥挤且与我关系一般时额外加成。
+### 求值域：this = 表态者（scope:ftr_court_asked 同指），固定对象 = scope:ftr_court_monarch。
+##############################################################
+
+ftr_court_back_monarch_ai_modifier = {
+	# 忠顺：loyal 特质
+	modifier = {
+		add = ftr_court_back_monarch_loyal_bonus_value
+		has_trait = loyal
+	}
+	# 忠顺：courtly 封臣立场（尊奉君权）
+	modifier = {
+		add = ftr_court_back_monarch_courtly_bonus_value
+		has_vassal_stance = courtly
+	}
+	# 公正：just 特质（重法统与名分）
+	modifier = {
+		add = ftr_court_back_monarch_just_bonus_value
+		has_trait = just
+	}
+	# 私人纽带：联盟 / 好友 / 挚友 / 情人
+	modifier = {
+		add = ftr_court_back_monarch_alliance_bonus_value
+		is_allied_to = scope:ftr_court_monarch
+	}
+	modifier = {
+		add = ftr_court_back_monarch_friend_bonus_value
+		has_relation_friend = scope:ftr_court_monarch
+	}
+	modifier = {
+		add = ftr_court_back_monarch_best_friend_bonus_value
+		has_relation_best_friend = scope:ftr_court_monarch
+	}
+	modifier = {
+		add = ftr_court_back_monarch_lover_bonus_value
+		has_relation_lover = scope:ftr_court_monarch
+	}
+	# 皇权受威胁：君主已有共治者且天平 ≥ 均势（共治者得势 → 保皇更有意义）
+	modifier = {
+		add = ftr_court_back_monarch_threatened_bonus_value
+		scope:ftr_court_monarch = {
+			has_active_diarchy = yes
+			diarchy_swing >= ftr_swing_tier_even_mid_value
+		}
+	}
+	# 主要继承人党羽太众多 + 我与其主要继承人关系一般 → 押注继承人不如保皇
+	# （「关系一般」判定口径：双方均谈不上交好，即双向好感都 < 交好分界）
+	modifier = {
+		add = ftr_court_back_monarch_crowded_heir_bonus_value
+		scope:ftr_court_monarch = {
+			designated_heir ?= {
+				has_variable_list = ftr_court_supporters
+				variable_list_size = {
+					name = ftr_court_supporters
+					value >= ftr_court_backing_heir_crowd_min_value
+				}
+				NOT = {
+					opinion = {
+						target = scope:ftr_court_asked
+						value >= ftr_court_backing_relation_good_value
+					}
+				}
+				NOT = {
+					reverse_opinion = {
+						target = scope:ftr_court_asked
+						value >= ftr_court_backing_relation_good_value
+					}
+				}
+			}
+		}
+	}
+}
+
+##############################################################
+### 背书共治者倾向
+###
+### 设计口径（按共治类型分流）：
+###   ① 继承人 / 共治型（太子・共治皇帝・共治君主・幼主）且与本人关系较好 → 押注储君 / 共帝；
+###   ② 官职线共治者（原版摄政 / 宰相 / 大秘书处等）且本人与君主关系不好 → 押注权臣；
+###   ③ 与共治者的私人纽带（联盟 / 好友 / 挚友 / 情人）→ 无条件加成。
+### 求值域：this = 表态者，固定对象 = scope:ftr_court_diarch（01 事件 0014 的 h 选项）。
+##############################################################
+
+ftr_court_back_diarch_ai_modifier = {
+	# ① 继承人 / 共治型 + 关系较好
+	modifier = {
+		add = ftr_court_back_diarch_heir_type_bonus_value
+		scope:ftr_court_monarch = { ftr_diarchy_is_heir_co_rule_type_trigger = yes }
+		OR = {
+			scope:ftr_court_diarch = {
+				opinion = {
+					target = scope:ftr_court_asked
+					value >= ftr_court_backing_relation_good_value
+				}
+			}
+			scope:ftr_court_diarch = {
+				reverse_opinion = {
+					target = scope:ftr_court_asked
+					value >= ftr_court_backing_relation_good_value
+				}
+			}
+		}
+	}
+	# ② 官职线共治者 + 本人与君主关系不好
+	modifier = {
+		add = ftr_court_back_diarch_officer_type_bonus_value
+		scope:ftr_court_monarch = { NOT = { ftr_diarchy_is_heir_co_rule_type_trigger = yes } }
+		OR = {
+			opinion = { target = scope:ftr_court_monarch  value < 0 }
+			reverse_opinion = { target = scope:ftr_court_monarch  value < 0 }
+		}
+	}
+	# ③ 私人纽带
+	modifier = {
+		add = ftr_court_back_diarch_alliance_bonus_value
+		is_allied_to = scope:ftr_court_diarch
+	}
+	modifier = {
+		add = ftr_court_back_diarch_friend_bonus_value
+		has_relation_friend = scope:ftr_court_diarch
+	}
+	modifier = {
+		add = ftr_court_back_diarch_best_friend_bonus_value
+		has_relation_best_friend = scope:ftr_court_diarch
+	}
+	modifier = {
+		add = ftr_court_back_diarch_lover_bonus_value
+		has_relation_lover = scope:ftr_court_diarch
+	}
+}

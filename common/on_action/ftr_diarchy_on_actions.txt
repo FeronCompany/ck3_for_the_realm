@@ -1,0 +1,88 @@
+﻿##############################################################
+### 共治者机制强化 —— 调度层（追加语义挂载，非覆盖）
+### 设计出处：document/task_design/03-共治者机制强化设计.md §3 / §4
+##############################################################
+
+########## 一、无地共治者授土提醒（§4.0） ##########
+
+# 求值域：任意角色（年度脉冲）
+ftr_diarchy_landless_reminder_on_action = {
+	trigger = {
+		ftr_diarchy_landless_reminder_trigger = yes
+		# 每 3 年一次：提醒后打 3 年冷却 flag
+		NOT = { has_character_flag = ftr_diarchy_land_reminder_cooldown }
+		exists = liege
+		liege = { ftr_diarchy_liege_has_land_to_give_trigger = yes }
+	}
+	effect = {
+		add_character_flag = {
+			flag = ftr_diarchy_land_reminder_cooldown
+			years = ftr_diarchy_grant_land_reminder_years_value
+		}
+		trigger_event = { id = ftr_diarchy.0200  days = 3 }
+	}
+}
+
+########## 二、共治者变更钩子（§4.3 拉升顺位的落地） ##########
+
+# 原版 on_diarch_change：root = 主君；scope:old_diarch = 前任共治者；
+# scope:reason = flag:death / depose / invalid / inheritance
+# 用途：若主君曾登记「候任共治者」（§4.3），在新共治者选出后顶替之。
+ftr_diarchy_diarch_change_on_action = {
+	trigger = {
+		has_variable = ftr_diarchy_boosted_candidate
+		has_active_diarchy = yes
+		# 候任者仍有效
+		var:ftr_diarchy_boosted_candidate ?= {
+			is_alive = yes
+			is_adult = yes
+			is_imprisoned = no
+			is_diarch = no
+		}
+		NOT = { diarch ?= { this = var:ftr_diarchy_boosted_candidate } }
+	}
+	effect = {
+		var:ftr_diarchy_boosted_candidate ?= { save_scope_as = ftr_diarchy_boost_target }
+		set_diarch = scope:ftr_diarchy_boost_target
+		remove_variable = ftr_diarchy_boosted_candidate
+	}
+}
+
+########## 三、季度背书博弈（§7.1） ##########
+
+# 求值域：季度脉冲下的可玩角色（root = 该角色）。
+# 仅由**君主**一侧执行（排除共治者自身），避免同一共治关系被算两次。
+# 注：季度脉冲只覆盖 playable 角色；AI 政权侧的 swing 仍由 00A1/00A2 故事链与引擎 swing_balance 自然演化。
+ftr_diarchy_quarterly_drift_on_action = {
+	trigger = {
+		is_diarch = no
+		has_active_diarchy = yes
+		exists = diarch
+	}
+	effect = {
+		ftr_diarchy_quarterly_swing_drift_effect = yes
+	}
+}
+
+########## 四、挂载到原版 on_action ##########
+
+# 注：**不设幼帝摄政兜底**——太子共治结束 + 新君登基时，原版会自行建立摄政
+# （`temporary_regency` 是代码默认类型且 `succession = yes`），无需 mod 主动补建。
+
+random_yearly_everyone_pulse = {
+	on_actions = {
+		ftr_diarchy_landless_reminder_on_action
+	}
+}
+
+quarterly_playable_pulse = {
+	on_actions = {
+		ftr_diarchy_quarterly_drift_on_action
+	}
+}
+
+on_diarch_change = {
+	on_actions = {
+		ftr_diarchy_diarch_change_on_action
+	}
+}

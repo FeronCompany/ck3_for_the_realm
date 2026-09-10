@@ -28,10 +28,6 @@
  ftr_court_back_claimant_alert_tt:0 "公开表态有概率令君主心生警觉"
  ftr_court_withdraw_backing_interaction:0 "<FTR>撤回支持"
  ftr_court_withdraw_backing_interaction_desc:0 "重归中立。抽身之人，鲜有被轻易原谅的。"
- ftr_court_assist_monarch_interaction:0 "<FTR>尽心辅政"
- ftr_court_assist_monarch_interaction_desc:0 "勉力维持朝政，不使大权旁落。"
- ftr_court_assist_monarch_interaction_notification:0 "[actor.GetFirstNameNoTooltip] 愿为陛下分忧，侍奉左右。"
- ftr_court_assist_monarch_interaction_greeting:0 "臣愿尽绵薄之力，助陛下共治之劳。"
  ftr_court_petition_coregency_interaction:0 "<FTR>奏请共治"
  ftr_court_petition_coregency_interaction_desc:0 "奏请与君主共担国事——至少眼下如此。"
  ftr_court_promise_interaction:0 "<FTR>许以重诺"
@@ -43,7 +39,7 @@
 
  ###### 好感修正 ######
  ftr_court_backer_opinion:0 "曾拥戴我继位"
- ftr_court_loyalist_opinion:0 "辅政有功"
+ ftr_court_loyalist_opinion:0 "感念君主宽赦"
  ftr_court_rival_claimant_opinion:0 "曾拥戴我的对手"
  ftr_court_betrayed_opinion:0 "背弃了我"
  ftr_court_bribed_opinion:0 "收受了我的重金"
@@ -72,10 +68,6 @@
  ftr_court_ascension_backer_reward_notify_desc:0 "新君登基，论功行赏：你曾拥立的竞争者在夺得大位后回报了你。你在继位之争中获得的威望或影响力、金钱以及税收加成已经入账。"
 
  ###### 游说交互 ######
- ftr_court_lobby_interaction:0 "<FTR>游说"
- ftr_court_lobby_interaction_desc:0 "对同僚进行游说，将其拉向其中一方阵营。话语不值钱，人心才值钱。"
- ftr_court_lobby_diarch:0 "劝其支持共治者"
- ftr_court_lobby_monarch:0 "劝其效忠君主"
 
  ###### AI 接受与否的理由 ######
  ftr_court_accept_back_claimant_monarch:0 "君主乐于接纳向自己效忠"
@@ -93,13 +85,6 @@
  ftr_court_accept_withdraw_arrogant:0 "此人刚愎自用，拉不下脸任人转投"
  ftr_court_accept_withdraw_paranoid:0 "此人多疑惧变，宁愿好聚好散"
  ftr_court_accept_withdraw_content:0 "此人随遇而安，不强留人"
- ftr_court_accept_assist_loyal:0 "此人素来忠贞，可堪倚重"
- ftr_court_accept_assist_allied:0 "结盟之谊使这份勤王之言更显可信"
- ftr_court_accept_assist_backer:0 "此人曾支持他人，勤王之心存疑"
- ftr_court_accept_assist_warned:0 "此人曾因背立受君警告，不可轻信"
- ftr_court_accept_assist_deceitful:0 "此人巧言令色，未必真心"
- ftr_court_accept_assist_ambitious:0 "此人野心过盛，恐借辅政近身揽权"
- ftr_court_accept_assist_paranoid:0 "君主生性多疑，对来投者格外审慎"
  ftr_court_accept_petition_loyal:0 "此人素来忠贞，分权亦不虞反噬"
  ftr_court_accept_petition_prestige:0 "此人声望卓著，能真正分担朝政"
  ftr_court_accept_petition_need:0 "君主自感力弱，急需强援分忧"
@@ -122,16 +107,6 @@
  ftr_court_accept_promise_rival:0 "视许诺者为仇雠，绝不受其恩惠"
  ftr_court_accept_promise_gold_offered:0 "真金白银比空口许诺更有分量"
  ftr_court_accept_promise_council_offered:0 "朝堂席位正合其进取之心"
- ftr_court_accept_lobby_gregarious:0 "此人好交游善攀谈，易被说动"
- ftr_court_accept_lobby_ambitious:0 "此人上进心切，乐见多方卖好"
- ftr_court_accept_lobby_backer:0 "此人立场已定，不为所动"
- ftr_court_accept_lobby_paranoid:0 "此人疑心重重，把游说当作试探"
- ftr_court_accept_lobby_stubborn:0 "此人固执己见，不听人言"
- ftr_court_accept_lobby_honest:0 "此人守正不阿，厌弃朝堂钻营"
- ftr_court_accept_lobby_rival:0 "视游说者为仇雠，话不投机"
- ftr_court_accept_lobby_suasive:0 "说客能言善辩，言辞更动人心"
- ftr_court_accept_lobby_urge_monarch:0 "此人心系君主"
- ftr_court_accept_lobby_urge_diarch:0 "此人心向共治者"
 
  ###### 朝堂局势 UI ######
  ftr_court_ui_title:0 "朝堂局势"

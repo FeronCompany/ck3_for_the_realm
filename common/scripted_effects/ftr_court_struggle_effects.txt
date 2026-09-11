@@ -1118,7 +1118,7 @@ ftr_court_usurp_throne_effect = {
 	if = {
 		limit = { exists = scope:ftr_court_seized_title }
 		create_title_and_vassal_change = {
-			type = all
+			type = usurped
 			save_scope_as = ftr_court_usurp_change
 		}
 		scope:ftr_court_seized_title = {
@@ -1513,7 +1513,7 @@ ftr_court_strife_exit_pulse_effect = {
 					NOT = { has_variable = ftr_court_backer_of }
 					NOT = { has_character_flag = ftr_court_asked_stance }
 				}
-				add_character_flag = { flag = ftr_court_asked_stance  years = 3 }
+				add_character_flag = { flag = ftr_court_asked_stance  years = ftr_court_ask_throttle_years_value }
 				trigger_event = { id = ftr_court_struggle.0014  days = 2 }
 			}
 			random_courtier = {
@@ -1522,7 +1522,7 @@ ftr_court_strife_exit_pulse_effect = {
 					NOT = { has_variable = ftr_court_backer_of }
 					NOT = { has_character_flag = ftr_court_asked_stance }
 				}
-				add_character_flag = { flag = ftr_court_asked_stance  years = 3 }
+				add_character_flag = { flag = ftr_court_asked_stance  years = ftr_court_ask_throttle_years_value }
 				trigger_event = { id = ftr_court_struggle.0014  days = 2 }
 			}
 		}
@@ -1573,7 +1573,7 @@ ftr_court_strife_exit_pulse_effect = {
 						if = {
 							limit = { var:ftr_court_usurp_pick = 0 }
 							scope:ftr_court_exit_usurper ?= {
-								add_character_flag = { flag = ftr_court_asked_usurp  years = 3 }
+								add_character_flag = { flag = ftr_court_asked_usurp  years = ftr_court_ask_throttle_years_value }
 								trigger_event = { id = ftr_court_struggle.0018  days = 2 }
 							}
 						}
@@ -1587,7 +1587,7 @@ ftr_court_strife_exit_pulse_effect = {
 }
 
 # 议题 2 阵营拉锯：无地参与者的「暗中策动」等价链入口（§9.6）
-# story 域。当权力天平偏向共治者（≥70）且存在共治者时，随机一名无地参与者暗中联络朝臣削弱共治（00A1）。
+# story 域。当权力天平偏向共治者（≥70）且存在共治者时，随机一名无地参与者暗中联络朝臣削弱共治（0083）。
 ftr_court_landless_swing_effect = {
 	save_scope_as = ftr_court_strife_story
 	random = {
@@ -1609,14 +1609,14 @@ ftr_court_landless_swing_effect = {
 				save_scope_as = ftr_court_landless_actor
 				scope:ftr_court_landless_actor ?= {
 					add_character_flag = { flag = ftr_court_strife_active  years = 1 }
-					trigger_event = { id = ftr_court_struggle.00A1  days = 2 }
+					trigger_event = { id = ftr_court_struggle.0083  days = 2 }
 				}
 			}
 		}
 	}
 }
 
-# 议题 2：共治者反击（§9.6）——swing ≤30（辅政稳固）时，共治者阵营暗中游说拉回（00A2）。
+# 议题 2：共治者反击（§9.6）——swing ≤30（辅政稳固）时，共治者阵营暗中游说拉回（0084）。
 ftr_court_diarch_backlash_effect = {
 	save_scope_as = ftr_court_strife_story
 	random = {
@@ -1630,7 +1630,202 @@ ftr_court_diarch_backlash_effect = {
 				}
 			}
 			story_owner = {
-				diarch ?= { trigger_event = { id = ftr_court_struggle.00A2  days = 2 } }
+				diarch ?= { trigger_event = { id = ftr_court_struggle.0084  days = 2 } }
+			}
+		}
+	}
+}
+
+######################################################
+### 十一、党羽逼宫（Backer Demand）
+### 设计出处：document/task_design/01 §13 / 03 §7.2
+### 触发：地位资格权贵（竞争者 / 共治者）的党羽（背书者）达到一定规模时，
+###       其党羽向最高领主发难（请立共治 / 逼宫退位）。
+######################################################
+
+# 求值域：君主。参数 CHAMPION = 被党羽拥立的竞争者。
+# 按政体分流启动共治并置初始天平：
+#   ① 东罗马 / 拜占庭（罗马皇帝 + 欢呼法）→ 共治皇帝 co_emperorship；
+#   ② 其他行政制（未采用欢呼法）→ 太子共治 ftr_diarchy_crown_prince；
+#   ③ 其他政体（可任命共治君主）→ 共治君主 co_monarchy；
+#   ④ 缺省 → 固化摄政 regency。
+ftr_court_establish_champion_coregency_effect = {
+	save_scope_as = ftr_court_coregency_liege
+	$CHAMPION$ ?= { save_scope_as = ftr_court_coregency_champion }
+
+	if = {
+		limit = {
+			exists = scope:ftr_court_coregency_champion
+			NOT = { has_active_diarchy = yes }
+			scope:ftr_court_coregency_champion = { ftr_court_champion_eligible_diarch_trigger = yes }
+		}
+
+		# ① 共治皇帝（欢呼法政权：罗马皇帝头衔，或文化解锁共帝）
+		if = {
+			limit = { may_appoint_co_emperors_trigger = yes }
+			try_start_diarchy = co_emperorship
+		}
+		# ② 太子共治（其他行政制：独立 + ≥王国）
+		else_if = {
+			limit = { ftr_diarchy_can_start_crown_prince_trigger = yes }
+			try_start_diarchy = ftr_diarchy_crown_prince
+		}
+		# ③ 共治君主（其他政体）
+		else_if = {
+			limit = { may_appoint_co_monarchs_trigger = yes }
+			try_start_diarchy = co_monarchy
+		}
+		# ④ 缺省：固化摄政
+		else = {
+			try_start_diarchy = regency
+		}
+
+		if = {
+			limit = { has_active_diarchy = yes }
+			set_diarch = scope:ftr_court_coregency_champion
+			set_diarchy_swing = ftr_court_backer_demand_initial_swing_value
+		}
+	}
+}
+
+# 求值域：朝堂 story。参数 DIARCH = 强迫旧君退位的共治者（新君）。
+# 复用 03 §4.4「共治者自立」结局：旧君失位被囚 → 共治者接手全部头衔 → 朝堂故事随政权移交新君。
+ftr_court_backer_force_abdication_effect = {
+	$DIARCH$ ?= {
+		ftr_diarchy_oust_liege_to_self_effect = yes
+		save_scope_as = ftr_court_new_monarch
+	}
+	if = {
+		limit = { exists = scope:ftr_court_new_monarch }
+		# 新君进入逼宫冷却，避免换届后立即被同一批党羽再逼
+		scope:ftr_court_new_monarch = {
+			add_character_flag = {
+				flag = ftr_court_backer_demand_cooldown
+				years = ftr_court_backer_demand_cooldown_years_value
+			}
+		}
+		# 故事归属政权：仅当 story 仍挂在旧君名下时才移交。
+		# 说明：on_title_gain 的 ftr_court_handover_on_title_gain_effect 可能已先行移交；
+		# 若旧君==新君仍再移交，会先 clear_variable_list 再遍历空表 → 丢失竞争者名单。
+		if = {
+			limit = { story_owner ?= { NOT = { this = scope:ftr_court_new_monarch } } }
+			ftr_court_transfer_story_effect = yes
+		}
+	}
+}
+
+# 求值域：朝堂 story。党羽逼宫主时钟派发（由族调度 0215 调用）。
+# 条件满足时向最高领主发 0085（请立共治）或 0086（逼宫退位）；跨事件传参走君主身上的临时变量。
+ftr_court_backer_demand_pulse_effect = {
+	save_scope_as = ftr_court_demand_story
+	story_owner = { save_scope_as = ftr_court_demand_monarch }
+
+	if = {
+		limit = {
+			exists = scope:ftr_court_demand_monarch
+			scope:ftr_court_demand_monarch = {
+				ftr_court_struggle_valid_trigger = yes
+				NOT = { ftr_court_backer_demand_in_cooldown_trigger = yes }
+			}
+		}
+
+		# 情形二：已有共治者，且共治者正是党羽拥立的对象、天平达强权上沿 → 逼宫退位
+		if = {
+			limit = {
+				scope:ftr_court_demand_monarch = {
+					has_active_diarchy = yes
+					exists = diarch
+					diarchy_swing >= ftr_court_backer_demand_abdication_swing_value
+					diarch ?= {
+						ftr_court_backer_demand_scale_reached_trigger = yes
+						ftr_court_champion_eligible_diarch_trigger = yes
+					}
+				}
+			}
+			scope:ftr_court_demand_monarch = {
+				diarch ?= { save_scope_as = ftr_court_demand_diarch }
+				scope:ftr_court_demand_diarch ?= {
+					random_in_list = {
+						variable = ftr_court_supporters
+						save_scope_as = ftr_court_demand_agitator
+					}
+				}
+				if = {
+					limit = { exists = scope:ftr_court_demand_diarch }
+					set_variable = {
+						name = ftr_court_demand_diarch
+						value = scope:ftr_court_demand_diarch
+						days = 30
+					}
+				}
+				if = {
+					limit = { exists = scope:ftr_court_demand_agitator }
+					set_variable = {
+						name = ftr_court_demand_agitator
+						value = scope:ftr_court_demand_agitator
+						days = 30
+					}
+				}
+				add_character_flag = {
+					flag = ftr_court_backer_demand_cooldown
+					years = ftr_court_backer_demand_cooldown_years_value
+				}
+				trigger_event = { id = ftr_court_struggle.0086  days = 2 }
+			}
+		}
+		# 情形一：尚无共治者 → 党羽要求拥立自己支持的竞争者共治
+		else_if = {
+			limit = { scope:ftr_court_demand_monarch = { NOT = { has_active_diarchy = yes } } }
+			# 选出党羽规模最大的合格竞争者（按规模降序取首个达标者）
+			set_variable = { name = ftr_court_demand_pick  value = 0 }
+			ordered_in_list = {
+				variable = ftr_court_participant_list
+				order_by = ftr_court_backer_demand_scale_value
+				save_scope_as = ftr_court_demand_candidate
+				scope:ftr_court_demand_story = {
+					if = {
+						limit = {
+							var:ftr_court_demand_pick = 0
+							scope:ftr_court_demand_candidate = {
+								ftr_court_backer_demand_scale_reached_trigger = yes
+								ftr_court_champion_eligible_diarch_trigger = yes
+							}
+						}
+						scope:ftr_court_demand_candidate = { save_scope_as = ftr_court_demand_champion }
+						change_variable = { name = ftr_court_demand_pick  add = 1 }
+					}
+				}
+			}
+			remove_variable = ftr_court_demand_pick
+
+			if = {
+				limit = { exists = scope:ftr_court_demand_champion }
+				scope:ftr_court_demand_champion = {
+					random_in_list = {
+						variable = ftr_court_supporters
+						save_scope_as = ftr_court_demand_agitator
+					}
+				}
+				scope:ftr_court_demand_monarch = {
+					set_variable = {
+						name = ftr_court_demand_champion
+						value = scope:ftr_court_demand_champion
+						days = 30
+					}
+					if = {
+						limit = { exists = scope:ftr_court_demand_agitator }
+						set_variable = {
+							name = ftr_court_demand_agitator
+							value = scope:ftr_court_demand_agitator
+							days = 30
+						}
+					}
+					add_character_flag = {
+						flag = ftr_court_backer_demand_cooldown
+						years = ftr_court_backer_demand_cooldown_years_value
+					}
+					trigger_event = { id = ftr_court_struggle.0085  days = 2 }
+				}
 			}
 		}
 	}

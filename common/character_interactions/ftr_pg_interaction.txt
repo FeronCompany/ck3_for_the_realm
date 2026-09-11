@@ -56,6 +56,18 @@ ftr_charge_interaction = {
 			multiplier = -2
 			desc = AI_OPINION_REASON
 		}
+		# 党羽政治：优先清除其他党羽的政敌
+		modifier = {
+			add = ftr_court_charge_rival_camp_bonus_value
+			scope:actor = { has_variable = ftr_court_backer_of }
+			scope:recipient = { has_variable = ftr_court_backer_of }
+			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
+		}
+		# 同一党羽（含本方党首本人）→ 不对自己人下手
+		modifier = {
+			add = ftr_court_charge_own_camp_penalty_value
+			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } }
+		}
 	}
 }
 
@@ -240,9 +252,29 @@ ftr_sow_discord_interaction = {
 				is_vassal_of = scope:secondary_actor
 			}
 		}
+		# 党羽政治：打击其他党羽（目标非我方党羽）→ 加权
+		modifier = {
+			add = ftr_court_sow_discord_rival_camp_bonus_value
+			scope:actor = { has_variable = ftr_court_backer_of }
+			scope:recipient = { has_variable = ftr_court_backer_of }
+			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
+		}
+		# 在其他党羽之间散谣：被打散的两方同属一个外营 → 再加权
+		modifier = {
+			add = ftr_court_sow_discord_inner_rival_bonus_value
+			scope:recipient = { ftr_court_same_camp_trigger = { OTHER = scope:secondary_actor } }
+			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
+		}
+		# 党羽内不内斗：目标属我方党羽 → 减权
+		modifier = {
+			add = ftr_court_sow_discord_own_camp_penalty_value
+			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } }
+		}
+		# 被离间的两方都是我的人（纯内斗）→ 再减权
+		modifier = {
+			add = ftr_court_sow_discord_inner_own_penalty_value
+			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } }
+			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:secondary_actor } }
+		}
 	}
 }
-
-######### Support Heir（已废弃移除） ##########
-# 已废弃：与朝堂 ftr_court_back_claimant_interaction 功能重叠（任务设计文档 §7.3）。
-# 其「公开/秘密背书、继承人声望加成、惊君处置」语义已并入朝堂交互，本块已删除（保留注释供追溯）。

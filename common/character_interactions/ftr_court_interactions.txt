@@ -23,8 +23,9 @@ ftr_court_withdraw_backing_interaction = {
 	desc = ftr_court_withdraw_backing_interaction_desc
 	cooldown_against_recipient = { years = 2 }
 	ai_targets = {
+		ai_recipients = peer_vassals
 		ai_recipients = courtiers
-		ai_recipients = close_family
+		ai_recipients = family
 		max = 1
 	}
 	ai_frequency = 24

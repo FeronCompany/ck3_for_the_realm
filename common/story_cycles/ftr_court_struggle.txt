@@ -81,10 +81,14 @@ ftr_court_struggle = {
 
 		custom_string_key = "FTR_COURT_STRINGS"
 
-		# 缓和内部矛盾决议入口：由官方 story 面板渲染为决策按钮，
-		# 君主（story owner）可直接点击办理，引擎自动处理可点/灰显与执行。
+		# 决议入口：由官方 story 面板渲染为决策按钮，君主（story owner）可直接点击办理，
+		# 引擎自动处理可点/灰显与执行。
 		decisions = {
 			ftr_court_ease_struggle_decision
+			# 废太子（03 §3.2）：同屏暴露在朝堂角逐面板，便于君主在烈度高企时直接废储。
+			# 可见/可用仍由决议自身的 is_shown（独立 + 能理政成年 + 已是太子共治）/ is_valid（有在世的共治者）决定：
+			# 非太子共治期间该按钮不出现，无需在此重复设条件。
+			ftr_diarchy_abolish_crown_prince_decision
 		}
 	}
 
@@ -116,7 +120,11 @@ ftr_court_struggle = {
 		days = { ftr_court_refresh_interval_min_value  ftr_court_refresh_interval_max_value }
 		triggered_effect = {
 			trigger = {
-				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
+				# 短路：无「未询问未拒绝」候选时整轮跳过，避免 30–60 天全量重扫
+				story_owner ?= {
+					ftr_court_struggle_valid_trigger = yes
+					ftr_court_has_unasked_candidate_trigger = yes
+				}
 			}
 			effect = {
 				ftr_court_launch_participation_asks_effect = yes

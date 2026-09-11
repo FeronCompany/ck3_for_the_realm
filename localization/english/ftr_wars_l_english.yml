@@ -5,3 +5,6 @@
  REPEL_BARBARIAN_DUCHY_CB_SPECIFIC_NAME: "Repel Barbarians-[TITLE.GetBaseName]"
  REPEL_BARBARIAN_KINGDOM_CB_NAME: "Repel Barbarians Kingdom Conquest"
  REPEL_BARBARIAN_KINGDOM_CB_SPECIFIC_NAME: "Repel Barbarians-[TITLE.GetBaseName]"
+ # ===== Mod war names (CB war_name field; missing causes "has no war_name scripted") =====
+ FTR_QINGJUNCE_WAR_NAME: "Cleanse the Sovereign's Side"
+ FTR_SUCCESSION_WAR_NAME: "War of Succession"

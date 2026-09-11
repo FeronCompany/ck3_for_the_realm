@@ -9,29 +9,23 @@
 ######################################################
 
 # 求值域：主君。参数 PRINCE = 被指定的继承人。
-# 四条件同时成立时启动太子共治（try_start_diarchy + set_diarch）。
 ftr_diarchy_try_start_crown_prince_effect = {
 	save_scope_as = ftr_diarchy_liege
 	if = {
 		limit = { scope:ftr_diarchy_liege = { ftr_diarchy_can_start_crown_prince_trigger = yes } }
-		$PRINCE$ ?= {
-			save_scope_as = ftr_diarchy_prince_candidate
-			scope:ftr_diarchy_liege = {
-				if = {
-					limit = {
-						scope:ftr_diarchy_prince_candidate = {
-							is_alive = yes
-							is_adult = yes
-							is_imprisoned = no
-							is_diarch = no
-						}
-					}
-					try_start_diarchy = ftr_diarchy_crown_prince
-					if = {
-						limit = { has_active_diarchy = yes }
-						set_diarch = scope:ftr_diarchy_prince_candidate
-					}
+		$PRINCE$ ?= { save_scope_as = ftr_diarchy_prince_candidate }
+		if = {
+			limit = {
+				exists = scope:ftr_diarchy_prince_candidate
+				scope:ftr_diarchy_prince_candidate = {
+					is_alive = yes
+					is_adult = yes
+					is_imprisoned = no
 				}
+			}
+			scope:ftr_diarchy_liege = {
+				try_start_diarchy = ftr_diarchy_crown_prince
+				set_diarch = scope:ftr_diarchy_prince_candidate
 			}
 		}
 	}
@@ -43,7 +37,7 @@ ftr_diarchy_try_start_crown_prince_effect = {
 
 # 求值域：主君。参数 RECIPIENT = 受地者（共治者）。
 # 优先划出「非首都伯爵领」；无则转移一个「公爵头衔」，
-# 该公国下属伯爵领与封臣随 type = all 一并转移（D1b）。
+# 该公国下属伯爵领与封臣随 type = granted 一并转移（D1b）。
 ftr_diarchy_grant_land_effect = {
 	save_scope_as = ftr_diarchy_grant_liege
 	$RECIPIENT$ ?= { save_scope_as = ftr_diarchy_grant_target }
@@ -74,7 +68,7 @@ ftr_diarchy_grant_land_effect = {
 			limit = { exists = scope:ftr_diarchy_grant_title }
 			scope:ftr_diarchy_grant_liege = {
 				create_title_and_vassal_change = {
-					type = all
+					type = granted
 					save_scope_as = ftr_diarchy_grant_change
 					add_claim_on_loss = no
 				}
@@ -126,7 +120,7 @@ ftr_diarchy_oust_liege_impl_effect = {
 		limit = { exists = scope:ftr_diarchy_new_holder }
 		scope:ftr_diarchy_old_liege = {
 			create_title_and_vassal_change = {
-				type = all
+				type = usurped
 				save_scope_as = ftr_diarchy_oust_change
 				add_claim_on_loss = no
 			}
@@ -222,20 +216,23 @@ ftr_diarchy_abolish_crown_prince_effect = {
 				opinion = ftr_diarchy_abolish_opinion_mutual_value
 			}
 			# 宫廷派不满（复用原版语义：指定了一个糟糕的储君）
+			# 注：vassal_stance 是 every_vassal 的直连过滤器（放进 limit 会报 Unknown trigger）；
+			#     designated_bad_regent_opinion 无静态数值，必须显式给 opinion。
 			every_vassal = {
-				limit = { vassal_stance = courtly }
+				vassal_stance = courtly
 				add_opinion = {
 					target = scope:ftr_diarchy_liege
 					modifier = designated_bad_regent_opinion
+					opinion = ftr_diarchy_abolish_courtly_opinion_value
 				}
 			}
-			# 2) 结束共治、清除储位
+			# 2) 结束共治
 			if = {
 				limit = { has_active_diarchy = yes }
 				depose_diarch = yes
 			}
-			# 注：set_designated_heir 置空写法待实测（见设计文档 §9 实施期登记项）
-			set_designated_heir = none
+			# 3) 清除储位：引擎不支持 set_designated_heir = none，须用原版 clear_designated_heir
+			clear_designated_heir = yes
 		}
 	}
 }
@@ -403,9 +400,17 @@ ftr_diarchy_phase_a_start_effect = {
 	remove_variable = ftr_diarchy_phase_a_opposed
 	remove_character_flag = ftr_diarchy_phase_a_done
 	remove_character_flag = ftr_diarchy_phase_a_timeout
-	# 阶段 A 窗口：1 年后自动解锁（D6 双通道之二）
-	add_character_flag = {
-		flag = ftr_diarchy_phase_a_timeout
+	# 阶段 A 双计时（D6 双通道）：
+	#   ① 表态窗口结束即结算 → ftr_diarchy.0021 置 ftr_diarchy_phase_a_done
+	#      （「全部表态」的代理，解锁「无人反对」路径）
+	#   ② 真·超时兜底 → ftr_diarchy.0022 置 ftr_diarchy_phase_a_timeout
+	#      （有清君侧战争久拖不决时，期满自动解锁）
+	trigger_event = {
+		id = ftr_diarchy.0021
+		days = ftr_diarchy_phase_a_settle_days_value
+	}
+	trigger_event = {
+		id = ftr_diarchy.0022
 		days = ftr_diarchy_phase_a_timeout_days_value
 	}
 
@@ -431,7 +436,7 @@ ftr_diarchy_phase_a_start_effect = {
 ftr_diarchy_phase_a_settle_effect = {
 	add_character_flag = {
 		flag = ftr_diarchy_phase_a_done
-		days = 1825
+		days = ftr_diarchy_phase_a_done_days_value
 	}
 }
 
@@ -557,7 +562,7 @@ ftr_qingjunce_defeat_effect = {
 
 # 求值域：君主（季度脉冲，playable）。
 # ① 按「背书共治者人数 − 背书君主人数」小幅移动 swing（无任何被动月度修正）；
-# ② 依天平档位概率派发 01 的共治拉锯事件（00A1 反共治 / 00A2 共治反击）；
+# ② 依天平档位概率派发 01 的共治拉锯事件（0083 反共治 / 0084 共治反击）；
 #    这两个事件已泛化：无朝堂角逐 story 时自动用共治关系补全作用域。
 ftr_diarchy_quarterly_swing_drift_effect = {
 	save_scope_as = ftr_diarchy_drift_liege
@@ -570,7 +575,7 @@ ftr_diarchy_quarterly_swing_drift_effect = {
 		}
 	}
 
-	# ② 共治者强势（≥70）：君主阵营有人暗中削弱共治（00A1）
+	# ② 共治者强势（≥70）：君主阵营有人暗中削弱共治（0083）
 	if = {
 		limit = { diarchy_swing >= ftr_swing_tier_strong_low_value }
 		random = {
@@ -588,20 +593,20 @@ ftr_diarchy_quarterly_swing_drift_effect = {
 					}
 				}
 				trigger_event = {
-					id = ftr_court_struggle.00A1
+					id = ftr_court_struggle.0083
 					days = { 1 10 }
 				}
 			}
 		}
 	}
-	# ③ 君主强势（≤30）：共治者阵营暗中反击（00A2）
+	# ③ 君主强势（≤30）：共治者阵营暗中反击（0084）
 	else_if = {
 		limit = { diarchy_swing <= ftr_swing_tier_loyal_value }
 		diarch ?= {
 			random = {
 				chance = ftr_diarchy_swing_event_chance_value
 				trigger_event = {
-					id = ftr_court_struggle.00A2
+					id = ftr_court_struggle.0084
 					days = { 1 10 }
 				}
 			}

@@ -6,17 +6,18 @@
 
 ### 一、政权准入
 
-# 求值域：统治者本人。行政政体 + 独立 + 主头衔 ≥ 王国
+# 求值域：统治者本人。行政类政体 + 独立 + 主头衔 ≥ 王国
 ftr_diarchy_realm_eligible_trigger = {
-	government_has_flag = government_is_administrative
+	government_allows = administrative
 	is_independent_ruler = yes
 	highest_held_title_tier >= tier_kingdom
 }
 
-# 求值域：统治者本人。太子共治准入：行政政体 + 无欢呼法 + 独立 + ≥王国 + 当前无共治
+# 求值域：统治者本人。太子共治准入：行政政体 + 独立 + ≥王国 + 当前无共治。
+# 注：不再排除欢呼法——欢呼法政权若为罗马/文化解锁共帝则走 co_emperorship（分支①，更优），
+#     其余欢呼法行政政权退而用太子共治，避免出现「无类型可用 → 只能固化摄政」的空档。
 ftr_diarchy_can_start_crown_prince_trigger = {
 	ftr_diarchy_realm_eligible_trigger = yes
-	NOT = { has_realm_law = acclamation_succession_law }
 	NOT = { has_active_diarchy = yes }
 	is_alive = yes
 	is_imprisoned = no

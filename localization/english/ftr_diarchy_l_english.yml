@@ -67,3 +67,17 @@
  ftr_qingjunce_victory_desc:0 "<FTR>Your banners have broken the co-ruler's grip. You shall be your sovereign's new regent."
  ftr_qingjunce_defeat_desc:0 "<FTR>Your rebellion has failed. You will spend the rest of your days in a cell."
  ftr_qingjunce_invalidated_desc:0 "<FTR>The situation has changed; this war has lost its meaning."
+
+ # ===== Decision confirm buttons (engine reads <key>_confirm) =====
+ ftr_diarchy_abolish_crown_prince_decision_confirm:0 "<FTR>Abolish the Crown Prince"
+ ftr_diarchy_depose_liege_decision_confirm:0 "<FTR>Depose Your Liege"
+ ftr_diarchy_prepare_coup_decision_confirm:0 "<FTR>Prepare a Coup"
+ ftr_diarchy_coup_landing_decision_confirm:0 "<FTR>Seize the Throne"
+ ftr_diarchy_amnesty_decision_confirm:0 "<FTR>Proclaim the Amnesty"
+
+ # ===== Diarchy type display name (engine reads <type>_diarchy_type / <type>_diarch_title;
+ #       missing either one makes the diarchy window title and swing tooltips show raw keys) =====
+ # Type name: diarchy window title / [liege_loc.GetDiarchyTypeName] in update_diarchy_swing_with_perspective_effect.preamble
+ ftr_diarchy_crown_prince_diarchy_type:0 "<FTR>Crown Prince Co-Rule"
+ # Diarch title: the office shown next to the diarch (cf. vanilla regency_diarch_title / co_monarchy_diarch_title)
+ ftr_diarchy_crown_prince_diarch_title:0 "<FTR>Crown Prince"

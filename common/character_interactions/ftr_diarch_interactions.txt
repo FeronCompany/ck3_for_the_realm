@@ -142,6 +142,10 @@ designate_heir_interaction = {
 					has_trait = bastard
 				}
 				house ?= scope:actor.house
+				###### OVERRIDE ######
+				# MOD：候选人本人不得已处于共治关系中。
+				has_active_diarchy = no
+				###### OVERRIDE ######
 			}
 		}
 		scope:actor = {
@@ -224,7 +228,7 @@ designate_heir_interaction = {
 }
 
 ######################################################
-### 二、§4.2 共治者替主君立储（swing ≥ 85，仅官职线）
+### 二、§4.2 共治者替主君立储（swing ≥ 80，仅官职线）
 ######################################################
 
 ftr_diarch_designate_heir_interaction = {
@@ -300,7 +304,11 @@ ftr_diarch_designate_heir_interaction = {
 
 	# AI 倾向：优先挑选年幼、弱能、性格懦弱者（便于日后架空，§4.2）
 	ai_will_do = {
-		base = ftr_diarchy_ai_major_action_min_value
+		# 交互的 ai_will_do / ai_accept 的 base 只接受数值字面量；脚本值须走 modifier.add
+		# （直接写 base = <脚本值> 会被 pdx_persistent_reader 判为 Malformed token 并刷 error.log）
+		modifier = {
+			add = ftr_diarchy_ai_major_action_min_value
+		}
 		# 与候选人「双向好感」：越亲近越想扶他上位
 		opinion_modifier = {
 			opinion_target = scope:recipient
@@ -435,7 +443,9 @@ ftr_diarch_boost_succession_interaction = {
 	}
 
 	ai_will_do = {
-		base = ftr_diarchy_ai_major_action_min_value
+		modifier = {
+			add = ftr_diarchy_ai_major_action_min_value
+		}
 		modifier = {
 			add = 40
 			scope:actor = { liege = { diarchy_swing >= 90 } }
@@ -510,7 +520,10 @@ ftr_diarch_levy_vassal_interaction = {
 		localization = ftr_diarchy_levy_influence_tt
 		is_valid = {
 			scope:actor = {
-				government_has_flag = government_is_administrative
+				# 与准入同一口径：用 government_allows = administrative。
+				# 若用 government_is_administrative，天朝 / 草原行政 / 官僚制 / 日本行政等
+				# 同样持有影响力资源的行政类政权会被挡在此选项之外。
+				government_allows = administrative
 				influence >= ftr_diarchy_levy_vassal_influence_cost_value
 			}
 		}
@@ -544,7 +557,9 @@ ftr_diarch_levy_vassal_interaction = {
 	}
 
 	ai_accept = {
-		base = ftr_diarchy_levy_vassal_base_accept_value
+		modifier = {
+			add = ftr_diarchy_levy_vassal_base_accept_value
+		}
 		opinion_modifier = {
 			opinion_target = scope:actor
 			who = scope:recipient
@@ -594,8 +609,10 @@ ftr_diarch_levy_vassal_interaction = {
 			add = ftr_diarchy_levy_vassal_overwhelming_penalty_value
 			scope:actor = {
 				is_at_war = yes
-				every_character_war = {
-					ftr_diarchy_war_overwhelming_trigger = yes
+				NOT = {
+					any_character_war = {
+						NOT = { ftr_diarchy_war_overwhelming_trigger = yes }
+					}
 				}
 			}
 		}

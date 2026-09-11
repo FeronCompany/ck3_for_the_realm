@@ -20,6 +20,9 @@ ftr_succession_war = {
 	# 针对整个政权而非某个头衔
 	target_titles = none
 
+	war_name = "FTR_SUCCESSION_WAR_NAME"
+	cb_name_no_target = "FTR_SUCCESSION_WAR_NAME"
+
 	# 无地皇子起兵时，不因"无地无兵"直接判负
 	landless_attacker_needs_armies = no
 	# 仅用于封臣对宗主

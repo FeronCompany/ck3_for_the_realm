@@ -15,6 +15,9 @@ ftr_qingjunce = {
 
 	target_titles = none
 
+	war_name = "FTR_QINGJUNCE_WAR_NAME"
+	cb_name_no_target = "FTR_QINGJUNCE_WAR_NAME"
+
 	# 仅用于封臣对主君
 	ai_only_against_liege = yes
 	# 清君侧不是例行公事：只有胜、败、失效三种结局

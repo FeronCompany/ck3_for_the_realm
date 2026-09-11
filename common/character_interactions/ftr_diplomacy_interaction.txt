@@ -215,13 +215,7 @@ ftr_buy_land_interaction = {
 				domain_size < domain_limit
 			}
 		}
-		modifier = {
-			add = -100
-			scope:actor = {
-				government_has_flag = government_is_centralism
-				is_independent_ruler = no
-			}
-		}
+		# 中央集权政体（centralism_government）已废弃：原 -100 抑制项的条件恒为假，故摘除
 		modifier = {
 			add = 20
 			scope:target = {
@@ -885,18 +879,16 @@ ftr_sue_for_peace_interaction = {
 	is_valid_showing_failures_only = {
 		scope:recipient = {
 			any_character_war = {
-				limit = {
-					scope:actor = {
-						is_participant_in_war = prev
-					}
-					OR = {
-						primary_attacker = scope:recipient
-						primary_defender = scope:recipient
-					}
-					NOR = {
-						primary_attacker = scope:actor
-						primary_defender = scope:actor
-					}
+				scope:actor = {
+					is_participant_in_war = prev
+				}
+				OR = {
+					primary_attacker = scope:recipient
+					primary_defender = scope:recipient
+				}
+				NOR = {
+					primary_attacker = scope:actor
+					primary_defender = scope:actor
 				}
 			}
 		}

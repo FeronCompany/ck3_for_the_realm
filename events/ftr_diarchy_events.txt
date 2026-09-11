@@ -184,6 +184,37 @@ ftr_diarchy.0300 = {
 }
 
 ######################################################
+### 0021 阶段 A 表态窗口结算（hidden，§4.4-A）
+### 由 ftr_diarchy_phase_a_start_effect 延时调度（SETTLE_DAYS 天后），
+### 置 ftr_diarchy_phase_a_done → 解锁落地决议的「无人反对」路径。
+######################################################
+
+ftr_diarchy.0021 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		ftr_diarchy_phase_a_settle_effect = yes
+	}
+}
+
+######################################################
+### 0022 阶段 A 超时兜底（hidden，§4.4-B）
+### 由 ftr_diarchy_phase_a_start_effect 延时调度（TIMEOUT_DAYS 天后），
+### 置 ftr_diarchy_phase_a_timeout → 有反对且清君侧久拖不决时强制解锁。
+######################################################
+
+ftr_diarchy.0022 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		add_character_flag = {
+			flag = ftr_diarchy_phase_a_timeout
+			days = ftr_diarchy_phase_a_done_days_value
+		}
+	}
+}
+
+######################################################
 ### 0200 无地共治者授土提醒（§4.0，每 3 年一次）
 ######################################################
 

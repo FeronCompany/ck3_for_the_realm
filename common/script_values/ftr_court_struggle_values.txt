@@ -236,7 +236,7 @@ ftr_court_claim_strength_value = {
 
 	### 实时硬实力：头衔等级（无地皇子不拿此档，仍可靠继承/亲缘/支持者得分）
 	if = {
-		limit = { highest_held_title_tier >= tier_emperor }
+		limit = { highest_held_title_tier >= tier_empire }
 		add = ftr_court_claim_emperor_tier_value
 	}
 	else_if = {
@@ -450,5 +450,71 @@ ftr_court_rebellion_truce_days_value = 1825
 ftr_court_temp_duchy_count_value = 1
 # 临时公国被销毁时的补偿金币
 ftr_court_temp_duchy_compensation_value = 150
+
+########## 八、党羽逼宫（Backer Demand）##########
+# 触发口径：资格权贵（竞争者 / 共治者）的党羽（背书者）达到一定「规模」时，其党羽向最高领主发难：
+#   ① 君主尚无共治者 → 党羽要求拥立自己支持的竞争者共治
+#      （类型按政体分流：东罗马/拜占庭 → 共治皇帝；其他行政制 → 太子；其他政体 → 共治君主；缺省 → 固化摄政）；
+#   ② 君主已有共治者且该共治者正是党羽拥立的对象、天平达强权上沿（≥80）→ 逼宫退位，共治者直接登基。
+# 「规模」= 支持者人数 + 每名强力封臣党羽的额外加权（体现分量而非纯人头，见 ftr_court_backer_demand_scale_value）。
+# 触发所需的最少党羽人数（硬下限：防止单人即逼宫）
+ftr_court_backer_demand_min_count_value = 3
+# 触发所需的党羽规模综合门槛（人数 + 强力封臣加权）
+ftr_court_backer_demand_threshold_value = 4
+# 每名强力封臣党羽在规模中的额外权重
+ftr_court_backer_demand_powerful_weight_value = 1
+# 同一政权两次党羽逼宫的冷却年数（防刷屏）
+ftr_court_backer_demand_cooldown_years_value = 3
+# 逼宫拥立共治者时的初始天平（取强权上沿：逼宫所得不可虚位，对齐 01 共治请愿落地）
+ftr_court_backer_demand_initial_swing_value = ftr_swing_tier_strong_high_value
+# 逼宫要求共治者退位所需的天平门槛（取强权上沿）
+ftr_court_backer_demand_abdication_swing_value = ftr_swing_tier_strong_high_value
+# 逼宫（无论允准或拒绝）对朝堂烈度的增量
+ftr_court_backer_demand_intensity_value = 20
+
+# 求值域：this = 权贵（竞争者 / 共治者）。其党羽规模综合值。
+ftr_court_backer_demand_scale_value = {
+	value = ftr_court_supporters_count_value
+	if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		every_in_list = {
+			variable = ftr_court_supporters
+			if = {
+				limit = { is_powerful_vassal = yes }
+				add = ftr_court_backer_demand_powerful_weight_value
+			}
+		}
+	}
+}
+
+########## 九、朝堂行为节流（统一常量组）##########
+# 统一管理 01/03 各「防骚扰 / 出手冷却」字符 flag 的时限，禁止各处硬编码年数。
+# 防骚扰类：对同一对象短期内不重复询问（003 组）
+ftr_court_ask_throttle_years_value = 3
+# 出手冷却类：同一手段短期内不重复（strife_active 普通 / 强手段两档）
+ftr_court_strife_active_years_value = 1
+ftr_court_strife_strong_active_years_value = 2
+# 受害者隐忍（strife_lying_low 标准档；另有 1 年短档保留内联）
+ftr_court_lying_low_years_value = 2
+# 持有把柄（has_leverage）
+ftr_court_leverage_years_value = 5
+# 被绑架胁迫（coerced）
+ftr_court_coerced_years_value = 2
+
+########## 十一、党羽政治：指控 / 散布不和 AI 倾向（§7.3）##########
+# 口径：AI 只对外营政敌出手，党羽内不内斗。阵营判定统一走 ftr_court_same_camp_trigger
+# （ftr_court_backer_of + 党首 ftr_court_supporters 双记账，§5.2）。
+# 指控：目标属其他党羽（政敌）→ 加权
+ftr_court_charge_rival_camp_bonus_value = 40
+# 指控：目标属我方党羽（含党首本人）→ 减权
+ftr_court_charge_own_camp_penalty_value = -80
+# 散布不和：目标属其他党羽 → 加权
+ftr_court_sow_discord_rival_camp_bonus_value = 30
+# 散布不和：被离间的两方（recipient 与 secondary_actor）同属一个外营 → 再加权（离间敌营内部）
+ftr_court_sow_discord_inner_rival_bonus_value = 30
+# 散布不和：目标属我方党羽 → 减权
+ftr_court_sow_discord_own_camp_penalty_value = -50
+# 散布不和：被离间的两方都是我的人（纯内斗）→ 再减权
+ftr_court_sow_discord_inner_own_penalty_value = -70
 
 

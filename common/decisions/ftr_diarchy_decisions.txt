@@ -165,6 +165,9 @@ ftr_diarchy_prepare_coup_decision = {
 		is_capable_adult = yes
 		NOT = { is_imprisoned = yes }
 		ftr_diarchy_swing_at_least_depose_trigger = yes
+		# 单一篡位入口：原版政变参数已生效的共治类型（共治皇帝/共治君主/摄政/宰相）
+		# 走原版 diarch_attempt_to_overthrow_liege，ftr 链对其隐藏（避免双入口）
+		NOT = { liege = { has_diarchy_active_parameter = regents_can_try_to_overthrow_present_lieges } }
 		# 同一轮只准备一次
 		NOT = { has_character_flag = ftr_diarchy_phase_a_done }
 		# 支持者数量门槛（D3：swing + 支持者双门槛）
@@ -244,6 +247,8 @@ ftr_diarchy_coup_landing_decision = {
 		ftr_diarchy_is_heir_line_diarch_trigger = yes
 		is_capable_adult = yes
 		NOT = { is_imprisoned = yes }
+		# 单一篡位入口：原版政变参数已生效的类型走原版决议，ftr 链对其隐藏（避免双入口）
+		NOT = { liege = { has_diarchy_active_parameter = regents_can_try_to_overthrow_present_lieges } }
 		# 独断档（≥90）：与 01 的「夺位」同档
 		ftr_diarchy_swing_at_least_absolute_trigger = yes
 		# 阶段 A 必须已完成

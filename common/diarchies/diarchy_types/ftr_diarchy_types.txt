@@ -13,13 +13,14 @@ ftr_diarchy_crown_prince = {
 	# 由 mod 立储接线显式启动（try_start_diarchy），不做引擎自动准入
 	start = { always = yes }
 
-	# 条件失效即自动结束：附庸 / 换政体 / 改用欢呼法 / 等级跌破王国
+	# 条件失效即自动结束：附庸 / 换政体 / 等级跌破王国
+	# 注：不再因「改用欢呼法」而结束——欢呼法行政政权可长期以太子共治承载储君位，
+	#     避免与 mod 的 ftr_ursurp_tyrant_succession_effects（会强加欢呼法）互斥而立即解体。
 	end = {
 		liege = {
 			OR = {
 				is_independent_ruler = no
-				NOT = { government_has_flag = government_is_administrative }
-				has_realm_law = acclamation_succession_law
+				NOT = { government_allows = administrative }
 				NOT = { highest_held_title_tier >= tier_kingdom }
 			}
 		}
@@ -95,6 +96,10 @@ ftr_diarchy_crown_prince = {
 	}
 
 	loyalty_score = { add = diarch_loyalty_score_type_co_emperorship_value }
+
+	# 「结束共治」交互（引擎必填：缺省会报 "End diarchy interaction '' not found" 并导致类型无法启用）。
+	# 取原版 co_rulership 同款：共治型不提供主动解散入口，解散一律走 mod 的废太子决议 / 篡位链。
+	end_interaction = systematically_maim_character_interaction
 
 	# 双向影响：储君积累行政影响力，主君获得辅政加成（复用原版已本地化的 modifier 名）
 	liege_modifier = {

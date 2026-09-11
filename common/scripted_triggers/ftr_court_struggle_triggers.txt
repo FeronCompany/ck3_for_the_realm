@@ -424,6 +424,20 @@ ftr_court_has_backing_trigger = {
 	}
 }
 
+# 党羽同阵营判定（供手段族 AI 的党羽立场过滤复用，§7.3）。
+# 求值域：this = 待判定者；参数 OTHER = 对照者（角色 scope 表达式）。
+# 成立：我已站队，且 OTHER 属我方党羽——① OTHER 在我支持党首的 ftr_court_supporters 名单内，
+# 或 ② OTHER 正是我支持的党首本人（党首亦属本阵营）。未站队者无阵营 → 恒为假。
+ftr_court_same_camp_trigger = {
+	has_variable = ftr_court_backer_of
+	var:ftr_court_backer_of ?= {
+		OR = {
+			is_target_in_variable_list = { name = ftr_court_supporters  target = $OTHER$ }
+			this = $OTHER$
+		}
+	}
+}
+
 # 黑马判定：候选目前没有任何支持者（供 AI 站队/背书时"雪中送炭"偏好复用）。
 # 求值域：候选本人（this = 候选人）。
 ftr_court_has_no_supporters_trigger = {
@@ -678,5 +692,54 @@ ftr_court_has_female_heir_trigger = {
 		is_female = yes
 		is_adult = yes
 	}
+}
+
+########## 十、党羽逼宫（Backer Demand） ##########
+
+# 求值域：this = 权贵（竞争者 / 共治者）。其党羽规模是否已达逼宫门槛。
+# 规模 = 支持者人数 + 强力封臣党羽加权（ftr_court_backer_demand_scale_value）。
+ftr_court_backer_demand_scale_reached_trigger = {
+	has_variable_list = ftr_court_supporters
+	variable_list_size = {
+		name = ftr_court_supporters
+		value >= ftr_court_backer_demand_min_count_value
+	}
+	ftr_court_backer_demand_scale_value >= ftr_court_backer_demand_threshold_value
+}
+
+# 求值域：this = 拟被拥立者（竞争者 / 共治者）。是否为合法的共治人选。
+ftr_court_champion_eligible_diarch_trigger = {
+	is_alive = yes
+	is_capable_adult = yes
+	NOT = { is_imprisoned = yes }
+	NOT = { has_trait = incapable }
+}
+
+# 求值域：君主。是否处于党羽逼宫冷却期（防同一政权连续逼宫刷屏）。
+ftr_court_backer_demand_in_cooldown_trigger = {
+	has_character_flag = ftr_court_backer_demand_cooldown
+}
+
+########## 十一、参与询问刷新短路 ##########
+
+# 求值域：最高领主。是否存在「尚未被询问参与」的潜在继任者。
+# 供 story 的参与询问 effect_group（30–60 天）作前置短路：无候选时整轮跳过，避免全量重扫。
+ftr_court_has_unasked_candidate_trigger = {
+	OR = {
+		any_child = { ftr_court_can_be_asked_participate_relative_trigger = yes }
+		any_sibling = { ftr_court_can_be_asked_participate_relative_trigger = yes }
+		primary_title = { any_title_heir = { ftr_court_can_be_asked_participate_relative_trigger = yes } }
+	}
+}
+
+# 求值域：this = 潜在候选。与 ftr_court_can_be_asked_participate_trigger 同口径，
+# 但不依赖 scope:ftr_court_monarch（供君主域短路判定复用）。
+ftr_court_can_be_asked_participate_relative_trigger = {
+	is_alive = yes
+	is_adult = yes
+	NOT = { is_imprisoned = yes }
+	NOT = { has_trait = incapable }
+	NOT = { has_character_flag = ftr_court_declined_contest }
+	NOT = { has_character_flag = ftr_court_participating }
 }
 

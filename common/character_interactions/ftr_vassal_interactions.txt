@@ -974,8 +974,7 @@ ftr_coup_interaction = {
 				is_independent_ruler = yes
 				AND = {
 					is_independent_ruler = no
-					NOT = { government_has_flag = government_is_centralism }
-					NOT = { government_has_flag = government_is_administrative }
+					NOT = { government_allows = administrative }
 				}
 			}
 		}

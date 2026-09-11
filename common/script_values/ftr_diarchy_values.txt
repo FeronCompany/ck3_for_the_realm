@@ -40,7 +40,7 @@ ftr_diarchy_swing_drift_per_backer_value = 1
 # 单季度 drift 上限 / 下限（幅度刻意压小）
 ftr_diarchy_swing_drift_cap_value = 3
 ftr_diarchy_swing_drift_cap_min_value = -3
-# 季度派发共治拉锯事件（00A1 / 00A2）的概率（%）
+# 季度派发共治拉锯事件（0083 / 0084）的概率（%）
 ftr_diarchy_swing_event_chance_value = 25
 
 # —— 背书盘点（求值域 = 君主）——
@@ -97,6 +97,8 @@ ftr_diarchy_backer_swing_drift_value = {
 ### 二、废太子（§3.2）
 # 双向固定好感惩罚
 ftr_diarchy_abolish_opinion_mutual_value = -50
+# 宫廷派（courtly 立场封臣）对废储之举的不满
+ftr_diarchy_abolish_courtly_opinion_value = -25
 
 ### 二之二、废太子 AI 倾向（§3.2）
 # 双向好感在 ai_will_do 中的权重（负值：越互相厌恶，越倾向换太子）
@@ -332,5 +334,10 @@ ftr_qingjunce_merit_value = 40
 ### 九、准备篡位（§4.4-A）
 # 表态阶段：封臣屈服时对共治者阵营的「不反对」记账量
 ftr_diarchy_phase_a_neutral_weight_value = 1
-# 阶段 A 超时自动解锁天数（D6 双通道）
+# 阶段 A 表态窗口（天）：窗口结束结算（置 ftr_diarchy_phase_a_done），
+# 解锁「无人反对」路径；期间若有封臣造反（ftr_diarchy_phase_a_opposed）则锁定。
+ftr_diarchy_phase_a_settle_days_value = 30
+# 阶段 A 结算 / 超时标记的存续天数（驱动落地解锁窗口）
+ftr_diarchy_phase_a_done_days_value = 1825
+# 阶段 A 真·超时自动解锁天数（D6 双通道；有清君侧战争久拖不决时到期解锁）
 ftr_diarchy_phase_a_timeout_days_value = 365

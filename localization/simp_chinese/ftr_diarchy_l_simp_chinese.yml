@@ -67,3 +67,17 @@
  ftr_qingjunce_victory_desc:0 "<FTR>你的旗帜压倒了共治者的权柄。你将成为君主的新摄政。"
  ftr_qingjunce_defeat_desc:0 "<FTR>清君侧失败。作为叛逆，你将在牢狱中度过余生。"
  ftr_qingjunce_invalidated_desc:0 "<FTR>局势业已改变，这场战争失去了意义。"
+
+ # ===== 决议确认按钮（引擎按 <key>_confirm 取键，缺省会在 error.log 报 Unrecognized loc key） =====
+ ftr_diarchy_abolish_crown_prince_decision_confirm:0 "<FTR>废黜太子"
+ ftr_diarchy_depose_liege_decision_confirm:0 "<FTR>废黜君主"
+ ftr_diarchy_prepare_coup_decision_confirm:0 "<FTR>准备篡位"
+ ftr_diarchy_coup_landing_decision_confirm:0 "<FTR>夺取大位"
+ ftr_diarchy_amnesty_decision_confirm:0 "<FTR>颁行大赦"
+
+ # ===== 共治类型显示名（引擎按 <type>_diarchy_type / <type>_diarch_title 取键；
+ #       缺任一条则共治窗口标题与 swing 变动提示会显示裸键） =====
+ # 类型名：共治窗口标题 / update_diarchy_swing_with_perspective_effect.preamble 的 [liege_loc.GetDiarchyTypeName]
+ ftr_diarchy_crown_prince_diarchy_type:0 "<FTR>太子共治"
+ # 共治者头衔：共治者名下显示的身份（对照原版 regency_diarch_title「摄政」/ co_monarchy_diarch_title「共治君主」）
+ ftr_diarchy_crown_prince_diarch_title:0 "<FTR>太子"

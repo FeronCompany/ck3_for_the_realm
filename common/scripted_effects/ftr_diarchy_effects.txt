@@ -1,0 +1,631 @@
+﻿##############################################################
+### 共治者机制强化 —— 脚本效果
+### 设计出处：document/task_design/03-共治者机制强化设计.md §2 / §3 / §4 / §5
+### 约定：每个效果首行注释标注求值域（this = 谁）与参数
+##############################################################
+
+######################################################
+### 一、立储接线（§2.2）
+######################################################
+
+# 求值域：主君。参数 PRINCE = 被指定的继承人。
+# 四条件同时成立时启动太子共治（try_start_diarchy + set_diarch）。
+ftr_diarchy_try_start_crown_prince_effect = {
+	save_scope_as = ftr_diarchy_liege
+	if = {
+		limit = { scope:ftr_diarchy_liege = { ftr_diarchy_can_start_crown_prince_trigger = yes } }
+		$PRINCE$ ?= {
+			save_scope_as = ftr_diarchy_prince_candidate
+			scope:ftr_diarchy_liege = {
+				if = {
+					limit = {
+						scope:ftr_diarchy_prince_candidate = {
+							is_alive = yes
+							is_adult = yes
+							is_imprisoned = no
+							is_diarch = no
+						}
+					}
+					try_start_diarchy = ftr_diarchy_crown_prince
+					if = {
+						limit = { has_active_diarchy = yes }
+						set_diarch = scope:ftr_diarchy_prince_candidate
+					}
+				}
+			}
+		}
+	}
+}
+
+######################################################
+### 二、无地共治者授土（§4.0）
+######################################################
+
+# 求值域：主君。参数 RECIPIENT = 受地者（共治者）。
+# 优先划出「非首都伯爵领」；无则转移一个「公爵头衔」，
+# 该公国下属伯爵领与封臣随 type = all 一并转移（D1b）。
+ftr_diarchy_grant_land_effect = {
+	save_scope_as = ftr_diarchy_grant_liege
+	$RECIPIENT$ ?= { save_scope_as = ftr_diarchy_grant_target }
+
+	if = {
+		limit = { exists = scope:ftr_diarchy_grant_target }
+
+		# 1) 非首都伯爵领
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				NOT = { this = scope:ftr_diarchy_grant_liege.capital_county }
+			}
+			save_scope_as = ftr_diarchy_grant_title
+		}
+
+		# 2) 无直辖伯爵领则取公爵头衔
+		if = {
+			limit = { NOT = { exists = scope:ftr_diarchy_grant_title } }
+			random_held_title = {
+				limit = { tier = tier_duchy }
+				save_scope_as = ftr_diarchy_grant_title
+			}
+		}
+
+		# 3) 转移
+		if = {
+			limit = { exists = scope:ftr_diarchy_grant_title }
+			scope:ftr_diarchy_grant_liege = {
+				create_title_and_vassal_change = {
+					type = all
+					save_scope_as = ftr_diarchy_grant_change
+					add_claim_on_loss = no
+				}
+			}
+			scope:ftr_diarchy_grant_title = {
+				change_title_holder = {
+					holder = scope:ftr_diarchy_grant_target
+					change = scope:ftr_diarchy_grant_change
+				}
+			}
+			scope:ftr_diarchy_grant_liege = {
+				resolve_title_and_vassal_change = scope:ftr_diarchy_grant_change
+			}
+			scope:ftr_diarchy_grant_target = {
+				add_character_flag = ftr_diarchy_granted_land
+			}
+		}
+	}
+}
+
+######################################################
+### 三、废黜 / 篡位 —— 共用结局（§4.1 与 §4.4 只差「谁上位」）
+######################################################
+
+# 求值域：共治者本人。参数 NEW_HOLDER = 继位者。
+# 结局：旧主失去所有头衔 → 由 NEW_HOLDER 接手 → 旧主被共治者囚禁 → 事件发落。
+ftr_diarchy_oust_liege_impl_effect = {
+	save_scope_as = ftr_diarchy_ouser
+	liege = { save_scope_as = ftr_diarchy_old_liege }
+
+	$NEW_HOLDER$ ?= { save_scope_as = ftr_diarchy_new_holder }
+
+	# 未指定 / 已失效的继位者 → 回退到指定继承人，再回退到原版继承法继承人
+	if = {
+		limit = { NOT = { exists = scope:ftr_diarchy_new_holder } }
+		scope:ftr_diarchy_old_liege = {
+			designated_heir ?= { save_scope_as = ftr_diarchy_new_holder }
+		}
+	}
+	if = {
+		limit = { NOT = { exists = scope:ftr_diarchy_new_holder } }
+		scope:ftr_diarchy_old_liege = {
+			primary_heir ?= { save_scope_as = ftr_diarchy_new_holder }
+		}
+	}
+
+	# 旧主失去所有头衔
+	if = {
+		limit = { exists = scope:ftr_diarchy_new_holder }
+		scope:ftr_diarchy_old_liege = {
+			create_title_and_vassal_change = {
+				type = all
+				save_scope_as = ftr_diarchy_oust_change
+				add_claim_on_loss = no
+			}
+			every_held_title = {
+				change_title_holder = {
+					holder = scope:ftr_diarchy_new_holder
+					change = scope:ftr_diarchy_oust_change
+				}
+			}
+			resolve_title_and_vassal_change = scope:ftr_diarchy_oust_change
+			add_opinion = {
+				target = scope:ftr_diarchy_ouser
+				modifier = ftr_diarchy_ousted_liege_opinion
+			}
+		}
+	}
+
+	# 囚禁旧主，随后交共治者发落
+	scope:ftr_diarchy_ouser = {
+		if = {
+			limit = {
+				exists = scope:ftr_diarchy_old_liege
+				scope:ftr_diarchy_old_liege = { is_imprisoned = no }
+			}
+			imprison = {
+				target = scope:ftr_diarchy_old_liege
+				type = house_arrest
+			}
+		}
+		# 事件间传参：把旧主存成变量（scope 不跨事件）
+		if = {
+			limit = { exists = scope:ftr_diarchy_old_liege }
+			set_variable = {
+				name = ftr_diarchy_deposed_liege
+				value = scope:ftr_diarchy_old_liege
+				days = 30
+			}
+		}
+		trigger_event = { id = ftr_diarchy.0100  days = 1 }
+	}
+}
+
+# 求值域：共治者本人。§4.1 废黜：由「指定继承人」接手（共治者隐于幕后）
+ftr_diarchy_oust_liege_to_heir_effect = {
+	save_scope_as = ftr_diarchy_ouser
+	liege = { save_scope_as = ftr_diarchy_old_liege }
+	scope:ftr_diarchy_old_liege = {
+		designated_heir ?= { save_scope_as = ftr_diarchy_new_holder }
+	}
+	ftr_diarchy_oust_liege_impl_effect = { NEW_HOLDER = scope:ftr_diarchy_new_holder }
+	# 从龙功：复用 02 既有记账（求值域 = 效劳方）
+	ftr_personal_merit_crown_add_effect = { AMOUNT = ftr_qingjunce_merit_value }
+}
+
+# 求值域：共治者本人。§4.4 篡位：共治者自立
+ftr_diarchy_oust_liege_to_self_effect = {
+	save_scope_as = ftr_diarchy_ouser
+	save_scope_as = ftr_diarchy_new_holder
+	liege = { save_scope_as = ftr_diarchy_old_liege }
+	ftr_diarchy_oust_liege_impl_effect = { NEW_HOLDER = scope:ftr_diarchy_ouser }
+}
+
+######################################################
+### 四、废太子（§3.2）
+######################################################
+
+# 求值域：主君。参数 TARGET = 被废的太子。
+ftr_diarchy_abolish_crown_prince_effect = {
+	save_scope_as = ftr_diarchy_liege
+	$TARGET$ ?= { save_scope_as = ftr_diarchy_deposed_prince }
+
+	if = {
+		limit = { exists = scope:ftr_diarchy_deposed_prince }
+
+		# 1) 原版废除继承权机制（加 disinherited trait，与 §2.2 候选过滤闭环）
+		scope:ftr_diarchy_deposed_prince = {
+			disinherit_effect = { DISINHERITOR = scope:ftr_diarchy_liege }
+			# 双向固定值好感惩罚：被废者 → 主君
+			add_opinion = {
+				target = scope:ftr_diarchy_liege
+				modifier = passed_me_over_for_regent_opinion
+				opinion = ftr_diarchy_abolish_opinion_mutual_value
+			}
+			# 复位入口标记：coup 计谋据此放行「前共治者」
+			add_character_flag = ftr_diarchy_deposed_prince
+		}
+
+		scope:ftr_diarchy_liege = {
+			# 双向固定值好感惩罚：主君 → 被废者
+			add_opinion = {
+				target = scope:ftr_diarchy_deposed_prince
+				modifier = designated_bad_regent_opinion
+				opinion = ftr_diarchy_abolish_opinion_mutual_value
+			}
+			# 宫廷派不满（复用原版语义：指定了一个糟糕的储君）
+			every_vassal = {
+				limit = { vassal_stance = courtly }
+				add_opinion = {
+					target = scope:ftr_diarchy_liege
+					modifier = designated_bad_regent_opinion
+				}
+			}
+			# 2) 结束共治、清除储位
+			if = {
+				limit = { has_active_diarchy = yes }
+				depose_diarch = yes
+			}
+			# 注：set_designated_heir 置空写法待实测（见设计文档 §9 实施期登记项）
+			set_designated_heir = none
+		}
+	}
+}
+
+######################################################
+### 五、大赦天下（§4.6）
+######################################################
+
+# 求值域：共治者本人。
+# 行为：① 固定值削减自身不和；
+#      ② 借原版赦免机制，把**主君全部直属封臣的罪行**一律「变成已处罚」；
+#      ③ 释放**主君监狱**与**共治者自己监狱**中的全部囚犯；
+#      ④ 所有受益者（被赦封臣 / 被释囚犯）大幅提升对共治者的好感，
+#         并按好感分档有概率触发 ftr_diarchy.0300 引导其为共治者背书；
+#      ⑤ 代价 = 主君不满。
+ftr_diarchy_amnesty_effect = {
+	save_scope_as = ftr_diarchy_amnestying_diarch
+	# 固定值削减自身不和
+	change_strife_opinion = ftr_diarchy_amnesty_strife_reduction_value
+
+	liege ?= {
+		# 代价：主君不满
+		add_opinion = {
+			target = scope:ftr_diarchy_amnestying_diarch
+			modifier = ftr_diarchy_amnesty_liege_opinion
+		}
+
+		# ② 赦免：主君所有直属封臣的罪行一律记为「已处罚」
+		# （原版效果内部自带 has_*_reason 判空，对无罪行者也安全）
+		custom_tooltip = {
+			text = ftr_diarchy_amnesty_pardon_tt
+			every_vassal = {
+				consume_all_criminal_reasons_effect = {
+					LIEGE = prev
+					CRIMINAL = this
+				}
+				ftr_diarchy_amnesty_beneficiary_effect = {
+					AMNESTIER = scope:ftr_diarchy_amnestying_diarch
+				}
+			}
+		}
+
+		# ③-a 释放主君监狱中的所有囚犯
+		custom_tooltip = {
+			text = ftr_diarchy_amnesty_release_tt
+			every_prisoner = {
+				release_from_prison = yes
+				ftr_diarchy_amnesty_beneficiary_effect = {
+					AMNESTIER = scope:ftr_diarchy_amnestying_diarch
+				}
+			}
+		}
+	}
+
+	# ③-b 释放共治者自己监狱中的所有囚犯
+	custom_tooltip = {
+		text = ftr_diarchy_amnesty_release_tt
+		every_prisoner = {
+			release_from_prison = yes
+			ftr_diarchy_amnesty_beneficiary_effect = {
+				AMNESTIER = scope:ftr_diarchy_amnestying_diarch
+			}
+		}
+	}
+}
+
+# 求值域：受益者本人。参数 AMNESTIER = 大赦发起者（共治者）。
+# ④ 受益者：大幅提升对共治者的好感 + 按好感分档概率触发背书引导事件。
+ftr_diarchy_amnesty_beneficiary_effect = {
+	$AMNESTIER$ ?= { save_scope_as = ftr_diarchy_amnesty_diarch }
+	if = {
+		limit = {
+			exists = scope:ftr_diarchy_amnesty_diarch
+			NOT = { this = scope:ftr_diarchy_amnesty_diarch }
+		}
+		# 大幅增加对共治者的好感
+		add_opinion = {
+			target = scope:ftr_diarchy_amnesty_diarch
+			modifier = ftr_diarchy_amnesty_beneficiary_opinion
+		}
+		# 供事件读取的施恩者指针（scope 不跨事件）
+		set_variable = {
+			name = ftr_diarchy_amnesty_patron
+			value = scope:ftr_diarchy_amnesty_diarch
+			days = 60
+		}
+		# 依好感度分档概率：高好感 25%，中好感 10%
+		if = {
+			limit = {
+				opinion = {
+					target = scope:ftr_diarchy_amnesty_diarch
+					value >= ftr_diarchy_amnesty_backing_opinion_high_value
+				}
+			}
+			random_list = {
+				# 25% 引导背书
+				25 = {
+					trigger_event = {
+						id = ftr_diarchy.0300
+						days = { 3 12 }
+					}
+				}
+				75 = { }
+			}
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = scope:ftr_diarchy_amnesty_diarch
+					value >= ftr_diarchy_amnesty_backing_opinion_mid_value
+				}
+			}
+			random_list = {
+				# 10% 引导背书
+				10 = {
+					trigger_event = {
+						id = ftr_diarchy.0300
+						days = { 3 12 }
+					}
+				}
+				90 = { }
+			}
+		}
+	}
+}
+
+# 求值域：受益者本人。参数 CHAMPION = 被背书者（共治者）。
+# 为共治者背书：按 01 的双记账规范登记（支持者侧 + 被支持者名单），并按 02 记拥立功。
+ftr_diarchy_amnesty_back_benefactor_effect = {
+	$CHAMPION$ ?= { save_scope_as = ftr_diarchy_backing_champion }
+	if = {
+		limit = { exists = scope:ftr_diarchy_backing_champion }
+		# 01 记账 ①：支持者侧——我背书的对象
+		set_variable = {
+			name = ftr_court_backer_of
+			value = scope:ftr_diarchy_backing_champion
+		}
+		# 01 记账 ②：被支持者侧名单（双记账一致）
+		scope:ftr_diarchy_backing_champion = {
+			add_to_variable_list = {
+				name = ftr_court_supporters
+				target = prev
+			}
+		}
+		# 好感：背书亲近
+		add_opinion = {
+			target = scope:ftr_diarchy_backing_champion
+			modifier = ftr_court_backer_opinion
+		}
+		# 02 记账：拥立功（求值域 = 效劳方 = 受益者本人）
+		ftr_personal_merit_backing_add_effect = {
+			CLAIMANT = scope:ftr_diarchy_backing_champion
+			AMOUNT = ftr_diarchy_amnesty_backing_merit_value
+		}
+	}
+}
+
+######################################################
+### 六、准备篡位：阶段 A（§4.4-A）
+######################################################
+
+# 求值域：共治者本人。广播表态 + 开启阶段 A 计时。
+ftr_diarchy_phase_a_start_effect = {
+	save_scope_as = ftr_diarchy_preparing_diarch
+	remove_variable = ftr_diarchy_phase_a_opposed
+	remove_character_flag = ftr_diarchy_phase_a_done
+	remove_character_flag = ftr_diarchy_phase_a_timeout
+	# 阶段 A 窗口：1 年后自动解锁（D6 双通道之二）
+	add_character_flag = {
+		flag = ftr_diarchy_phase_a_timeout
+		days = ftr_diarchy_phase_a_timeout_days_value
+	}
+
+	liege ?= {
+		save_scope_as = ftr_diarchy_prep_liege
+		# 通知主君：共治者准备篡位（公开警告，非秘密）
+		trigger_event = { id = ftr_diarchy.0010  days = 1 }
+		# 向全部直属封臣广播表态请求
+		every_vassal = {
+			limit = {
+				is_landed = yes
+				NOT = { this = scope:ftr_diarchy_preparing_diarch }
+			}
+			trigger_event = { id = ftr_diarchy.0020  days = 1 }
+		}
+	}
+
+	# 党羽相助（每党羽每阶段至多 1 次，无自身代价）
+	ftr_diarchy_call_supporters_to_help_effect = yes
+}
+
+# 求值域：共治者本人。阶段 A 收尾：记录完成标记并评估解锁。
+ftr_diarchy_phase_a_settle_effect = {
+	add_character_flag = {
+		flag = ftr_diarchy_phase_a_done
+		days = 1825
+	}
+}
+
+# 求值域：共治者本人。党羽相助：抬高本方胜算（复用 01 支持者记账）。
+# D13：每党羽每阶段至多出手 1 次、无自身代价。
+ftr_diarchy_call_supporters_to_help_effect = {
+	save_scope_as = ftr_diarchy_help_diarch
+	# 支持者 = 在 01 中登记为背书本共治者的有地封臣
+	liege ?= {
+		every_vassal = {
+			limit = {
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { this = scope:ftr_diarchy_help_diarch }
+				NOT = { has_character_flag = ftr_diarchy_helped_diarch }
+			}
+			add_character_flag = { flag = ftr_diarchy_helped_diarch  days = 365 }
+			# 出手：为本方增加天平优势（沿用 mod 既有调用形态）
+			scope:ftr_diarchy_help_diarch = {
+				liege = {
+					update_diarchy_swing_with_perspective_effect = {
+						SWING = minor_sop_swing_diarch_gain
+						LIEGE = liege
+					}
+				}
+			}
+		}
+	}
+}
+
+######################################################
+### 七、清君侧（§5）
+######################################################
+
+# 求值域：表态造反的封臣本人（§4.4-A 选项 b）。
+# 已有清君侧战争 → 直接加入（不重复开战）；否则对主君宣战。
+ftr_qingjunce_try_declare_war_effect = {
+	save_scope_as = ftr_qingjunce_declarer
+	liege ?= { save_scope_as = ftr_qingjunce_target_liege }
+	if = {
+		limit = {
+			exists = scope:ftr_qingjunce_target_liege
+			scope:ftr_qingjunce_target_liege = { is_alive = yes }
+		}
+		if = {
+			limit = { scope:ftr_qingjunce_target_liege = { has_variable = ftr_qingjunce_current_war } }
+			scope:ftr_qingjunce_target_liege = {
+				var:ftr_qingjunce_current_war ?= {
+					add_attacker = scope:ftr_qingjunce_declarer
+				}
+			}
+		}
+		else = {
+			scope:ftr_qingjunce_declarer = {
+				start_war = {
+					target = scope:ftr_qingjunce_target_liege
+					casus_belli = ftr_qingjunce
+				}
+			}
+		}
+	}
+}
+
+# 求值域：清君侧宣战方（封臣）本人。胜利：顶替现任共治者。
+# 依赖外层：scope:ftr_qingjunce_liege（主君）、scope:ftr_qingjunce_old_diarch（现任共治者）
+ftr_qingjunce_win_effect = {
+	save_scope_as = ftr_qingjunce_winner
+	scope:ftr_qingjunce_liege ?= {
+		# 免去现任共治者
+		if = {
+			limit = { has_active_diarchy = yes }
+			depose_diarch = yes
+		}
+		# 顶替：清君侧者成为新摄政（E1：depose + set_diarch）
+		if = { limit = { NOT = { has_active_diarchy = yes } }  try_start_diarchy = regency }
+		if = {
+			limit = { has_active_diarchy = yes }
+			set_diarch = scope:ftr_qingjunce_winner
+			update_diarchy_swing_with_perspective_effect = {
+				SWING = ftr_qingjunce_win_swing_value
+				LIEGE = liege
+			}
+		}
+	}
+	# 拥立功：复用 02 既有记账（求值域 = 效劳方 = 胜方本人）
+	ftr_personal_merit_crown_add_effect = { AMOUNT = ftr_qingjunce_merit_value }
+	# 现任共治者被囚（E2）
+	scope:ftr_qingjunce_old_diarch ?= {
+		if = { limit = { is_imprisoned = no }  imprison = { target = this  type = house_arrest } }
+		add_opinion = {
+			target = scope:ftr_qingjunce_winner
+			modifier = ftr_diarchy_ousted_liege_opinion
+		}
+	}
+}
+
+# 求值域：清君侧宣战方（封臣）本人。失败：永久监禁。
+ftr_qingjunce_defeat_effect = {
+	save_scope_as = ftr_qingjunce_loser
+	scope:ftr_qingjunce_liege ?= {
+		add_opinion = {
+			target = scope:ftr_qingjunce_loser
+			modifier = ftr_diarchy_deposed_prince_opinion
+		}
+		if = {
+			limit = { scope:ftr_qingjunce_loser = { is_imprisoned = no } }
+			imprison = {
+				target = scope:ftr_qingjunce_loser
+				type = house_arrest
+			}
+		}
+	}
+	# 现任共治者巩固权力：清君侧失败 ⇒ 篡位链解锁
+	scope:ftr_qingjunce_old_diarch ?= {
+		remove_variable = ftr_diarchy_phase_a_opposed
+		add_character_flag = { flag = ftr_diarchy_phase_a_timeout  days = 30 }
+		change_strife_opinion = ftr_qingjunce_defeat_strife_value
+	}
+}
+
+######################################################
+### 八、季度背书博弈（§7.1 整合：swing 唯一的人工成长源）
+######################################################
+
+# 求值域：君主（季度脉冲，playable）。
+# ① 按「背书共治者人数 − 背书君主人数」小幅移动 swing（无任何被动月度修正）；
+# ② 依天平档位概率派发 01 的共治拉锯事件（00A1 反共治 / 00A2 共治反击）；
+#    这两个事件已泛化：无朝堂角逐 story 时自动用共治关系补全作用域。
+ftr_diarchy_quarterly_swing_drift_effect = {
+	save_scope_as = ftr_diarchy_drift_liege
+
+	# ① 背书差 → swing 漂移（夹在 ±上限内，幅度刻意压小）
+	if = {
+		limit = { NOT = { ftr_diarchy_backer_swing_drift_value = 0 } }
+		hidden_effect = {
+			change_diarchy_swing = ftr_diarchy_backer_swing_drift_value
+		}
+	}
+
+	# ② 共治者强势（≥70）：君主阵营有人暗中削弱共治（00A1）
+	if = {
+		limit = { diarchy_swing >= ftr_swing_tier_strong_low_value }
+		random = {
+			chance = ftr_diarchy_swing_event_chance_value
+			random_vassal = {
+				limit = {
+					is_landed = yes
+					is_adult = yes
+					is_imprisoned = no
+					NOT = { this = prev.diarch }
+					# 排除共治者党羽（他们不会替君主出手）
+					NOT = {
+						has_variable = ftr_court_backer_of
+						var:ftr_court_backer_of ?= { this = prev.diarch }
+					}
+				}
+				trigger_event = {
+					id = ftr_court_struggle.00A1
+					days = { 1 10 }
+				}
+			}
+		}
+	}
+	# ③ 君主强势（≤30）：共治者阵营暗中反击（00A2）
+	else_if = {
+		limit = { diarchy_swing <= ftr_swing_tier_loyal_value }
+		diarch ?= {
+			random = {
+				chance = ftr_diarchy_swing_event_chance_value
+				trigger_event = {
+					id = ftr_court_struggle.00A2
+					days = { 1 10 }
+				}
+			}
+		}
+	}
+}
+
+# 求值域：共治者本人。把参数 VASSAL 拉入自己所在的我方战线（§4.5）
+ftr_diarchy_levy_vassal_to_wars_effect = {
+	save_scope_as = ftr_diarchy_levy_diarch
+	$VASSAL$ ?= { save_scope_as = ftr_diarchy_levy_vassal }
+	if = {
+		limit = { exists = scope:ftr_diarchy_levy_vassal }
+		scope:ftr_diarchy_levy_diarch = {
+			every_character_war = {
+				if = {
+					limit = { is_attacker = scope:ftr_diarchy_levy_diarch }
+					add_attacker = scope:ftr_diarchy_levy_vassal
+				}
+				else_if = {
+					limit = { is_defender = scope:ftr_diarchy_levy_diarch }
+					add_defender = scope:ftr_diarchy_levy_vassal
+				}
+			}
+		}
+	}
+}

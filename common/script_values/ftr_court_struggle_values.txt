@@ -108,6 +108,39 @@ ftr_court_backing_crowd_penalty_step_value = 18
 # 黑马激励：目标尚无任何支持者时，AI 背书的意愿额外加成。
 # 与拥挤惩罚配合形成"无人支持者更值得押注"的双向机制，防止支持者扎堆第一继承人。
 ftr_court_backing_underdog_bonus_value = 35
+# ---- 改投摩擦（AI 更不愿频繁变更背书对象）----
+# 决策层：已支持某人时，"再表态"本身的意愿惩罚（改投需更强理由）。
+ftr_court_backing_switch_disincentive_value = -35
+# 选项层：0014 权重的忠诚惯性——候选正是本方现任支持对象时的大幅加权。
+ftr_court_backing_stick_bonus_value = 70
+# 改投「安定期」年限：刚改投过的人在此期间更不愿再次变更。
+ftr_court_backing_switch_cooldown_years_value = 5
+# 安定期内的额外决策惩罚（与上一条配合：改投次数越多，越难再改）。
+ftr_court_backing_switch_recent_penalty_value = -40
+
+# ---- 背书君主 / 共治者的 AI 倾向常量 ----
+# 关系「交好」分界：双向好感 ≥ 此值算关系较好；< 此值算「一般」（谈不上交好）。
+ftr_court_backing_relation_good_value = 40
+# 「主要继承人党羽太众多」的判定下限（继承人自身支持者数 ≥ 此值）
+ftr_court_backing_heir_crowd_min_value = 3
+# —— 背书君主（保皇）——
+# 基础倾向在事件选项内压低（base = 5）：投资君主不如投资继承人，保皇主要由立场与情感驱动。
+ftr_court_back_monarch_loyal_bonus_value = 25        # 忠顺：loyal 特质
+ftr_court_back_monarch_courtly_bonus_value = 20      # 忠顺：courtly 封臣立场
+ftr_court_back_monarch_just_bonus_value = 20         # 公正：just 特质
+ftr_court_back_monarch_alliance_bonus_value = 30     # 与君主结盟
+ftr_court_back_monarch_friend_bonus_value = 25       # 君主是好友
+ftr_court_back_monarch_best_friend_bonus_value = 35  # 君主是挚友
+ftr_court_back_monarch_lover_bonus_value = 35        # 君主是情人
+ftr_court_back_monarch_threatened_bonus_value = 25   # 君主有共治者且其 swing ≥ 均势（皇权受威胁）
+ftr_court_back_monarch_crowded_heir_bonus_value = 25 # 主要继承人党羽拥挤且与我关系一般
+# —— 背书共治者 ——
+ftr_court_back_diarch_heir_type_bonus_value = 30     # 继承人/共治型共治者 + 关系较好
+ftr_court_back_diarch_officer_type_bonus_value = 25  # 官职线共治者 + 本人与君主关系不好
+ftr_court_back_diarch_alliance_bonus_value = 30      # 与共治者结盟
+ftr_court_back_diarch_friend_bonus_value = 25        # 共治者是好友
+ftr_court_back_diarch_best_friend_bonus_value = 35   # 共治者是挚友
+ftr_court_back_diarch_lover_bonus_value = 35         # 共治者是情人
 # 君主弱势判定：声望低于此值
 ftr_court_monarch_weak_prestige_value = 500
 # 君主弱势判定：虔诚低于此值
@@ -350,11 +383,11 @@ ftr_court_ui_claimants_count_value = {
 # 年度自然回落 / 平衡由官方 diarchy 的 swing_balance 机制维护（已废除自建 ftr_court_regency_swing 及 ±5/±3/±2 移轴常量）。
 # 阈值口径（§3.2，对照官方 swing 数值）：30 辅政稳固判定 | 50 中性 | 70 共治请愿 | 90 废黜昏君（且君主失能）
 # 拉锯进入"共治请愿"的阈值
-ftr_court_swing_regency_threshold_value = 70
+ftr_court_swing_regency_threshold_value = ftr_swing_tier_strong_low_value
 # 拉锯进入"夺位"的阈值（且君主失能）
-ftr_court_swing_usurp_threshold_value = 90
+ftr_court_swing_usurp_threshold_value = ftr_swing_tier_absolute_value
 # 拉锯进入"辅政稳固"的阈值（偏向君主 ≤30）
-ftr_court_swing_loyal_threshold_value = 30
+ftr_court_swing_loyal_threshold_value = ftr_swing_tier_loyal_value
 
 ########## 六、资源消耗（双轨制） ##########
 # Mod 自带的 ftr_political_influence 已废弃（早于官方行政制实践）。
@@ -366,13 +399,16 @@ ftr_court_back_claimant_prestige_cost_value = 120
 ftr_court_back_claimant_influence_cost_value = 40
 # 公开支持君主的子女 / 继承人时授予的背书声望（原 ftr_support_heir 公开效果，§7.3）
 ftr_court_heir_backing_prestige_value = 200
-ftr_court_assist_monarch_prestige_cost_value = 90
-ftr_court_assist_monarch_influence_cost_value = 30
 ftr_court_request_coregency_prestige_cost_value = 240
 ftr_court_request_coregency_influence_cost_value = 80
-# 游说（推拉权力天平）
-ftr_court_lobby_prestige_cost_value = 90
-ftr_court_lobby_influence_cost_value = 30
+# 请愿回退（请愿者取得 `regency`）的初始天平：取「强权上沿」。
+# 理由（裁定 R2）：请愿以君主失能前提，故给高初值；引擎每月按 0.25 向 regency 的
+# swing_balance = 50 回落，而原版在 swing ≤ 20 时允许免费结束摄政 —— 高初值可延长该窗口。
+ftr_court_petition_regency_initial_swing_value = ftr_swing_tier_strong_high_value
+# 请愿者补偿：共治主体不是请愿者本人（「太子优先」生效）时的「从龙之功」记账额（02 拥立账）
+ftr_court_petition_consolation_merit_value = 15
+# 请愿者补偿：君主已有可用指定继承人（且非请愿者本人）时，AI 发起请愿的意愿抑制值
+ftr_court_petition_heir_priority_disincentive_value = -40
 
 # 恩宠（事件 0001.c 君主示好）：双轨受益量
 ftr_court_favor_prestige_value = 100

@@ -58,6 +58,34 @@ ftr_success_coup_on_me_opinion = {
 	years = 100
 }
 
+# 共治者机制强化（03）：大赦天下的代价——主君对被共治者代行大赦不满
+ftr_diarchy_amnesty_liege_opinion = {
+	opinion = -20
+	years = 10
+	decaying = yes
+}
+
+# 共治者机制强化（03）：旧主对被废/被顶替的怨恨
+ftr_diarchy_ousted_liege_opinion = {
+	opinion = -100
+	years = 100
+	decaying = yes
+}
+
+# 共治者机制强化（03）：清君侧叛乱者的恶名（主君视角）
+ftr_diarchy_deposed_prince_opinion = {
+	opinion = -75
+	years = 50
+	decaying = yes
+}
+
+# 共治者机制强化（03）：大赦受益者对共治者的感激（大幅好感）
+ftr_diarchy_amnesty_beneficiary_opinion = {
+	opinion = 50
+	years = 25
+	decaying = yes
+}
+
 # Crime opinions
 ftr_attempted_coup_crime = {
 	opinion = -100
@@ -160,7 +188,7 @@ ftr_court_backer_opinion = {
 	stacking = yes
 }
 
-# 辅政有功，君主对功臣的感激
+# 君恩：获君主宽赦者对君主的感激（事件 0013.d 宽恕分支）
 ftr_court_loyalist_opinion = {
 	opinion = 25
 	years = 15

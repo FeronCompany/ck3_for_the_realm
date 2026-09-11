@@ -619,6 +619,11 @@ ftr_court_apply_backing_effect = {
 			NOT = { var:ftr_court_backer_of ?= { this = $CLAIMANT$ } }
 		}
 		save_scope_as = ftr_court_old_backed
+		# 改投「安定期」：刚背弃过的人，AI 短期内更不愿再次变更（选项/决策权重引用本 flag）
+		add_character_flag = {
+			flag = ftr_court_switched_backing
+			years = ftr_court_backing_switch_cooldown_years_value
+		}
 		# 旧主从自己的支持者名单移除本支持者
 		var:ftr_court_backer_of ?= {
 			ftr_court_remove_backer_effect = { BACKER = scope:ftr_court_backer }
@@ -880,6 +885,67 @@ ftr_court_discourage_backers_effect = {
 ###   - 年度自然回落 / 平衡由官方 diarchy 的 swing_balance 机制维护
 ###   - 已废除自建变量 ftr_court_regency_swing 及 ftr_court_shift_swing_effect / ftr_court_swing_yearly_effect
 ######################################################
+
+# 求值域：君主。参数 PETITIONER = 请愿者。
+# 共治请愿获准后的落地（03 §6 接线）：共治主体是指定继承人 → 立太子；否则请愿者取得摄政位。
+# 说明：`ftr_diarchy_crown_prince` 是 03 设计的行政制专属类型（end 含「非行政制即结束」），
+#       非行政政体下无法承载，退化为原版 `regency`（start = always = yes，任何统治者可用）。
+ftr_court_establish_coregency_effect = {
+	save_scope_as = ftr_court_petition_liege
+
+	# 1) 太子优先：已有可用的指定继承人且政体支持太子共治 → 建太子共治
+	if = {
+		limit = {
+			ftr_diarchy_can_start_crown_prince_trigger = yes
+			exists = designated_heir
+			designated_heir ?= {
+				is_alive = yes
+				is_adult = yes
+				is_imprisoned = no
+				is_diarch = no
+			}
+		}
+		ftr_diarchy_try_start_crown_prince_effect = { PRINCE = designated_heir }
+	}
+
+	# 2) 回退：请愿者取得摄政位。逼宫所得不可虚位：初始天平取「强权上沿」（80）——
+	#    君主失能才谈得上请愿，故给高初值，延长原版「可免费还政」（swing ≤ 20）的抵达时间
+	#    （引擎每月按 0.25 向 regency 的 swing_balance = 50 回落）。
+	if = {
+		limit = { NOT = { has_active_diarchy = yes } }
+		try_start_diarchy = regency
+		if = {
+			limit = { has_active_diarchy = yes }
+			set_diarch = $PETITIONER$
+			set_diarchy_swing = ftr_court_petition_regency_initial_swing_value
+		}
+	}
+
+	# 3) 请愿者补偿：共治主体并非请愿者本人（「太子优先」生效）时——君主好感 + 「从龙之功」
+	#    注：02 拥立账「目标唯一」，故请愿者已有旧拥立账时只给好感，避免清空其在继位角逐中的记账。
+	if = {
+		limit = {
+			exists = diarch
+			NOT = { diarch ?= { this = $PETITIONER$ } }
+			$PETITIONER$ ?= { is_alive = yes }
+		}
+		$PETITIONER$ = {
+			# 促成共治却未自据其位 → 君主视为可分忧的忠臣
+			add_opinion = {
+				target = scope:ftr_court_petition_liege
+				modifier = ftr_political_alliance_opinion
+			}
+			# 「从龙之功」：把拥立账记到新共治者名下（仅当当前没有别的拥立账）
+			if = {
+				limit = { NOT = { has_variable = ftr_personal_merit_backing_to } }
+				ftr_personal_merit_backing_add_effect = {
+					CLAIMANT = scope:ftr_court_petition_liege.diarch
+					AMOUNT = ftr_court_petition_consolation_merit_value
+				}
+			}
+		}
+	}
+}
 
 ######################################################
 ### 五、临时公国（无地竞争者起兵用）

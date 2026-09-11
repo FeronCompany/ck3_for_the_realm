@@ -1,0 +1,218 @@
+﻿##############################################################
+### 共治者机制强化 —— 事件
+### 命名空间：ftr_diarchy
+### 设计出处：document/task_design/03-共治者机制强化设计.md §3 / §4 / §5
+##############################################################
+
+namespace = ftr_diarchy
+
+######################################################
+### 0010 通知主君：共治者准备篡位（公开警告）
+######################################################
+
+ftr_diarchy.0010 = {
+	type = character_event
+	title = ftr_diarchy.0010.t
+	desc = ftr_diarchy.0010.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = diarch
+	}
+
+	immediate = {
+		diarch ?= { save_scope_as = ftr_diarchy_warning_diarch }
+	}
+
+	option = { # 已知晓
+		name = ftr_diarchy.0010.a
+	}
+}
+
+######################################################
+### 0020 封臣表态：屈服 / 清君侧（§4.4-A）
+######################################################
+
+ftr_diarchy.0020 = {
+	type = character_event
+	title = ftr_diarchy.0020.t
+	desc = ftr_diarchy.0020.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = liege.diarch
+	}
+	right_portrait = {
+		character = liege
+	}
+
+	immediate = {
+		liege.diarch ?= { save_scope_as = ftr_diarchy_phase_a_diarch }
+		liege ?= { save_scope_as = ftr_diarchy_phase_a_liege }
+	}
+
+	option = { # 向共治者屈服（仅记「不反对」，D5）
+		name = ftr_diarchy.0020.a
+		scope:ftr_diarchy_phase_a_diarch ?= {
+			liege ?= {
+				update_diarchy_swing_with_perspective_effect = {
+					SWING = minor_sop_swing_diarch_gain
+					LIEGE = liege
+				}
+			}
+		}
+	}
+
+	option = { # 以「清君侧」名义造反
+		name = ftr_diarchy.0020.b
+		# 记录「有人反对」→ 篡位落地决议被锁定（D6 通道一）
+		scope:ftr_diarchy_phase_a_diarch ?= {
+			set_variable = {
+				name = ftr_diarchy_phase_a_opposed
+				value = yes
+				days = 3650
+			}
+		}
+		# 立刻对主君开战（清君侧）
+		ftr_qingjunce_try_declare_war_effect = yes
+	}
+
+	option = { # 静观其变
+		name = ftr_diarchy.0020.c
+	}
+}
+
+######################################################
+### 0100 发落被废黜的旧主（§4.1 / §4.4 共用结局）
+######################################################
+
+ftr_diarchy.0100 = {
+	type = character_event
+	title = ftr_diarchy.0100.t
+	desc = ftr_diarchy.0100.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = var:ftr_diarchy_deposed_liege
+	}
+
+	immediate = {
+		var:ftr_diarchy_deposed_liege ?= { save_scope_as = ftr_diarchy_fallen_liege }
+	}
+
+	option = { # 终身软禁
+		name = ftr_diarchy.0100.a
+	}
+
+	option = { # 流放
+		name = ftr_diarchy.0100.b
+		scope:ftr_diarchy_fallen_liege ?= {
+			release_from_prison = yes
+			add_character_flag = ftr_diarchy_exiled
+		}
+	}
+
+	option = { # 处死
+		name = ftr_diarchy.0100.c
+		scope:ftr_diarchy_fallen_liege ?= {
+			death = { death_reason = death_execution }
+		}
+	}
+}
+
+######################################################
+### 0300 大赦受益者：引导为共治者背书（§4.6）
+######################################################
+
+ftr_diarchy.0300 = {
+	type = character_event
+	title = ftr_diarchy.0300.t
+	desc = ftr_diarchy.0300.desc
+	theme = diplomacy
+
+	left_portrait = {
+		character = var:ftr_diarchy_amnesty_patron
+	}
+	right_portrait = {
+		character = root
+	}
+
+	immediate = {
+		var:ftr_diarchy_amnesty_patron ?= { save_scope_as = ftr_diarchy_amnesty_patron_scope }
+	}
+
+	option = { # 投效：为他背书
+		name = ftr_diarchy.0300.a
+		ftr_diarchy_amnesty_back_benefactor_effect = { CHAMPION = var:ftr_diarchy_amnesty_patron }
+		ai_chance = {
+			base = 40
+			modifier = {
+				add = 40
+				opinion = {
+					target = var:ftr_diarchy_amnesty_patron
+					value >= 60
+				}
+			}
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = content
+					has_trait = trusting
+					has_trait = just
+				}
+			}
+			modifier = {
+				add = -30
+				has_trait = ambitious
+			}
+		}
+	}
+
+	option = { # 婉拒
+		name = ftr_diarchy.0300.b
+		ai_chance = {
+			base = 60
+			modifier = {
+				add = 40
+				opinion = {
+					target = var:ftr_diarchy_amnesty_patron
+					value < 40
+				}
+			}
+		}
+	}
+}
+
+######################################################
+### 0200 无地共治者授土提醒（§4.0，每 3 年一次）
+######################################################
+
+ftr_diarchy.0200 = {
+	type = character_event
+	title = ftr_diarchy.0200.t
+	desc = ftr_diarchy.0200.desc
+	theme = diplomacy
+
+	left_portrait = {
+		character = liege
+	}
+
+	option = { # 索取土地（无条件获取）
+		name = ftr_diarchy.0200.a
+		trigger = {
+			liege ?= { ftr_diarchy_liege_has_land_to_give_trigger = yes }
+		}
+		liege ?= {
+			ftr_diarchy_grant_land_effect = { RECIPIENT = root }
+		}
+	}
+
+	option = { # 暂不考虑（后续还会再刷）
+		name = ftr_diarchy.0200.b
+	}
+
+	option = { # 忠心事主（此后不再刷）
+		name = ftr_diarchy.0200.c
+		add_character_flag = ftr_diarchy_loyal_to_liege
+	}
+}

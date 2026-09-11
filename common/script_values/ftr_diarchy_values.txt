@@ -1,0 +1,336 @@
+﻿##############################################################
+### 共治者机制强化 —— 数值常量
+### 设计出处：document/task_design/03-共治者机制强化设计.md §7
+### 全部 AI 阈值与权重集中于此，禁止在脚本里硬编码（AGENTS §6）
+##############################################################
+
+### 〇、swing 统一档位（全 mod 共用；01 朝堂角逐与本系统都引用这一组，见设计 §7.1）
+# 辅政稳固：君主压制（01 保皇派胜利判定）
+ftr_swing_tier_loyal_value = 30
+# 均势中段：操纵内阁（01）
+ftr_swing_tier_even_mid_value = 50
+# 均势上沿：征调封臣入战（本文 §4.5）
+ftr_swing_tier_even_high_value = 60
+# 强权下沿：请愿共治（01）
+ftr_swing_tier_strong_low_value = 70
+# 强权上沿：废黜 / 篡位准备 / 大赦 / 立储 / 扶植
+ftr_swing_tier_strong_high_value = 80
+# 独断：夺位落地（01 夺位 + 本文 §4.4-B）
+ftr_swing_tier_absolute_value = 90
+
+### 一、权限门槛（共治者天平 swing，全部引用统一档位）
+# 废黜（§4.1）
+ftr_diarchy_depose_like_threshold_value = ftr_swing_tier_strong_high_value
+# 篡位落地（§4.4-B）——独断档
+ftr_diarchy_coup_landing_swing_value = ftr_swing_tier_absolute_value
+# 替主君立储（§4.2）
+ftr_diarchy_designate_heir_swing_value = ftr_swing_tier_strong_high_value
+# 拉升共治顺位（§4.3）
+ftr_diarchy_boost_line_swing_value = ftr_swing_tier_strong_high_value
+# 拉封臣入战（§4.5）
+ftr_diarchy_levy_vassal_swing_value = ftr_swing_tier_even_high_value
+# 大赦天下（§4.6）
+ftr_diarchy_amnesty_swing_value = ftr_swing_tier_strong_high_value
+# 准备篡位（§4.4-A）支持者数量门槛
+ftr_diarchy_prepare_coup_supporter_threshold_value = 2
+
+### 一之二、季度背书博弈（swing 唯一的人工成长源；无任何被动月度修正）
+# 每 1 名「净背书领先」折算的 swing 点
+ftr_diarchy_swing_drift_per_backer_value = 1
+# 单季度 drift 上限 / 下限（幅度刻意压小）
+ftr_diarchy_swing_drift_cap_value = 3
+ftr_diarchy_swing_drift_cap_min_value = -3
+# 季度派发共治拉锯事件（00A1 / 00A2）的概率（%）
+ftr_diarchy_swing_event_chance_value = 25
+
+# —— 背书盘点（求值域 = 君主）——
+# 背书共治者的人数（封臣 + 内阁）
+ftr_diarchy_diarch_backer_count_value = {
+	value = 0
+	if = {
+		limit = { exists = diarch }
+		every_vassal = {
+			limit = {
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { this = prev.diarch }
+			}
+			add = 1
+		}
+		every_councillor = {
+			limit = {
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { this = prev.diarch }
+			}
+			add = 1
+		}
+	}
+}
+
+# 背书君主本人的人数（封臣 + 内阁）
+ftr_diarchy_liege_backer_count_value = {
+	value = 0
+	every_vassal = {
+		limit = {
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= { this = prev }
+		}
+		add = 1
+	}
+	every_councillor = {
+		limit = {
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= { this = prev }
+		}
+		add = 1
+	}
+}
+
+# 季度 swing 漂移量 =（共治者背书 − 君主背书）× 每人折算，且夹在 ±上限内
+ftr_diarchy_backer_swing_drift_value = {
+	value = ftr_diarchy_diarch_backer_count_value
+	subtract = ftr_diarchy_liege_backer_count_value
+	multiply = ftr_diarchy_swing_drift_per_backer_value
+	max = ftr_diarchy_swing_drift_cap_value
+	min = ftr_diarchy_swing_drift_cap_min_value
+}
+
+### 二、废太子（§3.2）
+# 双向固定好感惩罚
+ftr_diarchy_abolish_opinion_mutual_value = -50
+
+### 二之二、废太子 AI 倾向（§3.2）
+# 双向好感在 ai_will_do 中的权重（负值：越互相厌恶，越倾向换太子）
+ftr_diarchy_abolish_opinion_weight_value = -0.4
+# 党羽压力换算：每名「强力封臣党羽」/「内阁党羽」/「党羽军力」的权重
+ftr_diarchy_abolish_powerful_backer_weight_value = 8
+ftr_diarchy_abolish_councillor_backer_weight_value = 6
+ftr_diarchy_abolish_backer_strength_weight_value = 0.005
+# 党羽压力上限（防止极端情况一项压过所有其他因素）
+ftr_diarchy_abolish_pressure_cap_value = 80
+
+# —— 太子党羽盘点（求值域 = 主君；党羽 = 在 01 中背书本太子的角色）——
+
+# 强力封臣党羽数
+ftr_diarchy_prince_powerful_backer_count_value = {
+	value = 0
+	if = {
+		limit = { exists = diarch }
+		every_vassal = {
+			limit = {
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { this = prev.diarch }
+				is_powerful_vassal_of = prev
+			}
+			add = 1
+		}
+	}
+}
+
+# 内阁成员党羽数
+ftr_diarchy_prince_councillor_backer_count_value = {
+	value = 0
+	if = {
+		limit = { exists = diarch }
+		every_councillor = {
+			limit = {
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { this = prev.diarch }
+			}
+			add = 1
+		}
+	}
+}
+
+# 党羽总军力（按封臣军力求和）
+ftr_diarchy_prince_backer_strength_value = {
+	value = 0
+	if = {
+		limit = { exists = diarch }
+		every_vassal = {
+			limit = {
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { this = prev.diarch }
+			}
+			add = current_military_strength
+		}
+	}
+}
+
+# 党羽压力综合值：党羽越强，主君越有换太子的动力
+ftr_diarchy_abolish_prince_pressure_value = {
+	value = 0
+	add = {
+		value = ftr_diarchy_prince_powerful_backer_count_value
+		multiply = ftr_diarchy_abolish_powerful_backer_weight_value
+	}
+	add = {
+		value = ftr_diarchy_prince_councillor_backer_count_value
+		multiply = ftr_diarchy_abolish_councillor_backer_weight_value
+	}
+	add = {
+		value = ftr_diarchy_prince_backer_strength_value
+		multiply = ftr_diarchy_abolish_backer_strength_weight_value
+	}
+	max = ftr_diarchy_abolish_pressure_cap_value
+}
+
+### 三、授土提醒（§4.0）
+# 无地共治者提醒间隔（年）
+ftr_diarchy_grant_land_reminder_years_value = 3
+
+### 三之二、交互成本（§4.2 / §4.3）
+ftr_diarchy_designate_heir_influence_cost_value = 150
+ftr_diarchy_boost_line_influence_cost_value = 100
+
+### 四、AI 权重（继承人线 / 官职线各写一套，见 §4.7 AI 口径）
+# 替主君立储时偏好「年幼 / 弱能 / 怯懦」
+ftr_diarchy_ai_prefer_incompetent_weight = 40
+# 替主君立储：候选人「弱能 / 怯懦」的通用加分
+ftr_diarchy_ai_incompetent_bonus_value = 20
+# 替主君立储：现有太子对共治者满意时的减分（满意则懒得换人）
+ftr_diarchy_ai_satisfied_prince_penalty_value = -60
+# 替主君立储：「满意」的好感阈值
+ftr_diarchy_ai_satisfied_prince_opinion_value = 50
+# AI 封臣起兵倾向的各因子权重
+ftr_diarchy_ai_revolt_weight_weak_liege_value = 40
+ftr_diarchy_ai_revolt_weight_good_opinion_value = -30
+ftr_diarchy_ai_revolt_weight_legitimacy_value = 25
+ftr_diarchy_ai_revolt_weight_supporter_power_value = 30
+# 起兵倾向阈值（低于此不造反）
+ftr_diarchy_ai_revolt_threshold_value = 50
+# 大动作决议对 AI 的最低意愿
+ftr_diarchy_ai_major_action_min_value = 30
+
+### 五、党羽相助（§4.4-A）
+ftr_diarchy_supporter_help_chance_value = 30
+ftr_diarchy_supporter_help_effect_value = 10
+
+### 六、拉封臣入战（§4.5）货币成本与同意加权
+ftr_diarchy_levy_vassal_gold_cost_value = 200
+ftr_diarchy_levy_vassal_accept_weight_gold_value = 20
+ftr_diarchy_levy_vassal_accept_weight_hook_value = 10
+ftr_diarchy_levy_vassal_accept_weight_influence_value = 20
+ftr_diarchy_levy_vassal_base_accept_value = -20
+# 影响力单价（offer influence 选项的实际扣量）
+ftr_diarchy_levy_vassal_influence_cost_value = 100
+# 必拒者过滤：目标对共治者的好感低于此值则不出现在候选列表
+ftr_diarchy_levy_vassal_min_opinion_value = -25
+# 拉人代价：每激活一项 send_option（黄金 / 人情 / 影响力）的减分
+ftr_diarchy_levy_vassal_per_option_penalty_value = -15
+# 拉人代价：同时动用两项以上代价时的额外递增减分
+ftr_diarchy_levy_vassal_multi_option_penalty_value = -15
+# 拉人意愿：敌我比 ≥ 2（我方被压制 → 需要拉人）的加分
+ftr_diarchy_levy_vassal_outnumbered_bonus_value = 40
+# 拉人意愿：敌我比 ≤ 0.5（我方压倒性优势 → 不必拉人）的减分
+ftr_diarchy_levy_vassal_overwhelming_penalty_value = -50
+
+# 拉封臣入战（§4.5）AI 意愿：send_option 激活越多越不愿出手。
+# 求值域 = 共治者（交互 actor）；send_option 的 flag 在此可见（同项目既有写法）。
+ftr_diarchy_levy_vassal_option_cost_value = {
+	value = 0
+	if = {
+		limit = { scope:ftr_diarchy_levy_gold = yes }
+		add = ftr_diarchy_levy_vassal_per_option_penalty_value
+	}
+	if = {
+		limit = { scope:ftr_diarchy_levy_hook = yes }
+		add = ftr_diarchy_levy_vassal_per_option_penalty_value
+	}
+	if = {
+		limit = { scope:ftr_diarchy_levy_influence = yes }
+		add = ftr_diarchy_levy_vassal_per_option_penalty_value
+	}
+	# 两种以上：额外递增
+	if = {
+		limit = {
+			OR = {
+				AND = {
+					scope:ftr_diarchy_levy_gold = yes
+					scope:ftr_diarchy_levy_hook = yes
+				}
+				AND = {
+					scope:ftr_diarchy_levy_gold = yes
+					scope:ftr_diarchy_levy_influence = yes
+				}
+				AND = {
+					scope:ftr_diarchy_levy_hook = yes
+					scope:ftr_diarchy_levy_influence = yes
+				}
+			}
+		}
+		add = ftr_diarchy_levy_vassal_multi_option_penalty_value
+	}
+	# 三种齐上：再加一层
+	if = {
+		limit = {
+			scope:ftr_diarchy_levy_gold = yes
+			scope:ftr_diarchy_levy_hook = yes
+			scope:ftr_diarchy_levy_influence = yes
+		}
+		add = ftr_diarchy_levy_vassal_multi_option_penalty_value
+	}
+}
+
+### 九、战争实力对比（用于「拉人意愿」判断）
+
+# 阈值：敌我比 ≥ 2 → 我方被压制，需要拉人；≤ 0.5 → 我方压倒，不必拉人
+ftr_diarchy_war_ratio_threshold_high_value = 2
+ftr_diarchy_war_ratio_threshold_low_value = 0.5
+
+# 求值域：war。攻方 / 守方总军力（原版同款写法：every_war_attacker / every_war_defender）
+ftr_diarchy_war_attacker_strength_value = {
+	value = 0
+	every_war_attacker = { add = current_military_strength }
+}
+ftr_diarchy_war_defender_strength_value = {
+	value = 0
+	every_war_defender = { add = current_military_strength }
+}
+
+# 求值域：war；参照 = scope:actor（我方）。
+# 敌我比 = 敌方军力 ÷ 我方军力（先按我在哪一侧定向，再取对方 / 我方）
+ftr_diarchy_war_enemy_to_our_ratio_value = {
+	value = 0
+	if = {
+		limit = { is_attacker = scope:actor }
+		# 我方 = 攻方，敌方 = 守方
+		value = ftr_diarchy_war_defender_strength_value
+		divide = ftr_diarchy_war_attacker_strength_value
+	}
+	else_if = {
+		limit = { is_defender = scope:actor }
+		# 我方 = 守方，敌方 = 攻方
+		value = ftr_diarchy_war_attacker_strength_value
+		divide = ftr_diarchy_war_defender_strength_value
+	}
+}
+
+### 七、大赦天下（§4.6）
+# 单次不和削减量（负值）
+ftr_diarchy_amnesty_strife_reduction_value = -40
+# 冷却年数
+ftr_diarchy_amnesty_cooldown_years_value = 5
+# 代价：主君好感与正统性
+ftr_diarchy_amnesty_liege_opinion_value = -20
+ftr_diarchy_amnesty_legitimacy_value = -5
+# 受益者背书引导：好感分档阈值（高好感档 / 中好感档；低于中档不引导）
+ftr_diarchy_amnesty_backing_opinion_high_value = 40
+ftr_diarchy_amnesty_backing_opinion_mid_value = 0
+# 受益者背书时按 02 记的拥立功（正数）
+ftr_diarchy_amnesty_backing_merit_value = 10
+
+### 八、清君侧（§5）
+# 胜利后新摄政的天平初值加成
+ftr_qingjunce_win_swing_value = 10
+# 战败方（现任共治者）被囚时的额外不和
+ftr_qingjunce_defeat_strife_value = 20
+# 宣战威望成本
+ftr_qingjunce_prestige_cost_value = 500
+# 胜方获得的功勋（复用 02 记账）
+ftr_qingjunce_merit_value = 40
+
+### 九、准备篡位（§4.4-A）
+# 表态阶段：封臣屈服时对共治者阵营的「不反对」记账量
+ftr_diarchy_phase_a_neutral_weight_value = 1
+# 阶段 A 超时自动解锁天数（D6 双通道）
+ftr_diarchy_phase_a_timeout_days_value = 365

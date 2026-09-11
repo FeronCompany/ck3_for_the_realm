@@ -1,0 +1,200 @@
+﻿##############################################################
+### 共治者机制强化 —— 触发器
+### 每个触发器均标注求值域（this = 谁）
+### 设计出处：document/task_design/03-共治者机制强化设计.md §1.3 / §3 / §4 / §5
+##############################################################
+
+### 一、政权准入
+
+# 求值域：统治者本人。行政政体 + 独立 + 主头衔 ≥ 王国
+ftr_diarchy_realm_eligible_trigger = {
+	government_has_flag = government_is_administrative
+	is_independent_ruler = yes
+	highest_held_title_tier >= tier_kingdom
+}
+
+# 求值域：统治者本人。太子共治准入：行政政体 + 无欢呼法 + 独立 + ≥王国 + 当前无共治
+ftr_diarchy_can_start_crown_prince_trigger = {
+	ftr_diarchy_realm_eligible_trigger = yes
+	NOT = { has_realm_law = acclamation_succession_law }
+	NOT = { has_active_diarchy = yes }
+	is_alive = yes
+	is_imprisoned = no
+}
+
+# 求值域：统治者本人。主君是否已有任何共治者（立储能入口锁定，§2.2 独占）
+ftr_diarchy_liege_has_any_diarch_trigger = {
+	has_active_diarchy = yes
+}
+
+### 二、身份分流（继承人线 / 官职线，§1.3）
+
+# 求值域：共治者本人。是否属于「继承人线」——太子类型 / 指定继承人 / 候任共治者
+ftr_diarchy_is_heir_line_diarch_trigger = {
+	is_diarch = yes
+	OR = {
+		is_designated_diarch = yes
+		liege = { has_diarchy_type = ftr_diarchy_crown_prince }
+		liege = {
+			designated_heir ?= { is_diarch_of_target = prev }
+		}
+	}
+}
+
+# 求值域：共治者本人。是否属于「官职线」——非继承人共治者（含原版 regency / co_monarchy / vizierate）
+ftr_diarchy_is_officer_line_diarch_trigger = {
+	is_diarch = yes
+	NOT = { ftr_diarchy_is_heir_line_diarch_trigger = yes }
+}
+
+# 求值域：共治者本人。是否为「太子共治」类型
+ftr_diarchy_is_crown_prince_trigger = {
+	is_diarch = yes
+	liege = { has_diarchy_type = ftr_diarchy_crown_prince }
+}
+
+# 求值域：君主本人。当前共治是否为「继承人 / 共治型」——太子 / 共治皇帝 / 共治君主 / 幼主共治。
+# 用于 01 背书共治者的 AI 分流（01 §7.1）：继承人·共治型看与本人的关系，官职线看与君主的关系。
+ftr_diarchy_is_heir_co_rule_type_trigger = {
+	has_active_diarchy = yes
+	OR = {
+		has_diarchy_type = ftr_diarchy_crown_prince
+		has_diarchy_type = co_emperorship
+		has_diarchy_type = co_monarchy
+		has_diarchy_type = junior_emperorship
+	}
+}
+
+# 求值域：共治者本人。是否为官职线且已完成土地积累（§4.1 前置，A1c「先索官索地」）
+ftr_diarchy_officer_line_landed_trigger = {
+	ftr_diarchy_is_officer_line_diarch_trigger = yes
+	is_landed = yes
+}
+
+### 三、天平门槛（求值域：共治者本人；swing 读自 liege）
+
+ftr_diarchy_swing_at_least_depose_trigger = {
+	liege = { diarchy_swing >= ftr_diarchy_depose_like_threshold_value }
+}
+# 独断档（≥90）：篡位落地
+ftr_diarchy_swing_at_least_absolute_trigger = {
+	liege = { diarchy_swing >= ftr_diarchy_coup_landing_swing_value }
+}
+ftr_diarchy_swing_at_least_designate_trigger = {
+	liege = { diarchy_swing >= ftr_diarchy_designate_heir_swing_value }
+}
+ftr_diarchy_swing_at_least_boost_trigger = {
+	liege = { diarchy_swing >= ftr_diarchy_boost_line_swing_value }
+}
+ftr_diarchy_swing_at_least_levy_trigger = {
+	liege = { diarchy_swing >= ftr_diarchy_levy_vassal_swing_value }
+}
+ftr_diarchy_swing_at_least_amnesty_trigger = {
+	liege = { diarchy_swing >= ftr_diarchy_amnesty_swing_value }
+}
+
+### 四、无地共治者授土提醒（§4.0，求值域：共治者本人）
+
+ftr_diarchy_landless_reminder_trigger = {
+	is_diarch = yes
+	is_alive = yes
+	is_adult = yes
+	is_landed = no
+	# 「忠心事主」后不再提醒
+	NOT = { has_character_flag = ftr_diarchy_loyal_to_liege }
+}
+
+# 求值域：主君本人。是否有可划出的地产（非首都伯爵领 或 公爵级头衔）
+ftr_diarchy_liege_has_land_to_give_trigger = {
+	OR = {
+		any_held_title = {
+			tier = tier_county
+			NOT = { this = prev.capital_county } 
+		}
+		any_held_title = { tier = tier_duchy }
+	}
+}
+
+### 五、立储候选（§2.2，求值域：主君本人）
+
+# 是否「没有可继承的子女」——用于决定是否追加手足候选
+ftr_diarchy_has_no_eligible_child_trigger = {
+	NOT = {
+		any_child = {
+			is_alive = yes
+			is_eunuch_trigger = no
+			NOR = {
+				has_trait = disinherited
+				has_trait = devoted
+				has_trait = order_member
+				has_trait = bastard
+			}
+			house ?= prev.house
+		}
+	}
+}
+
+# 求值域：君主本人。是否已挂「继承人线共治者」（改储锁定锚点，§2.2 B3）
+ftr_diarchy_liege_has_heir_line_diarch_trigger = {
+	has_active_diarchy = yes
+	OR = {
+		has_diarchy_type = ftr_diarchy_crown_prince
+		designated_heir ?= { is_diarch = yes }
+		designated_diarch ?= { is_diarch = yes }
+	}
+}
+
+### 六、阶段 A→B 解锁判定（§4.4，求值域：共治者本人）
+
+# 无人反对（无反对方）→ 可直接落地
+ftr_diarchy_phase_a_no_opposition_trigger = {
+	NOT = { has_variable = ftr_diarchy_phase_a_opposed }
+}
+
+# 超时自动解锁（D6 双通道之二）
+ftr_diarchy_phase_a_timed_out_trigger = {
+	has_character_flag = ftr_diarchy_phase_a_timeout
+}
+
+### 七、战争实力对比（§4.5 拉人意愿；求值域 = war，参照 = scope:actor 我方）
+
+# 我方处于劣势：敌我比 ≥ 2 → 需要拉人
+ftr_diarchy_war_outnumbered_trigger = {
+	ftr_diarchy_war_enemy_to_our_ratio_value >= ftr_diarchy_war_ratio_threshold_high_value
+}
+
+# 我方压倒性优势：敌我比 ≤ 0.5 → 不必拉人
+ftr_diarchy_war_overwhelming_trigger = {
+	ftr_diarchy_war_enemy_to_our_ratio_value <= ftr_diarchy_war_ratio_threshold_low_value
+}
+
+### 八、清君侧（§5，交互/决议求值域：作为宣战方的封臣本人）
+
+# 求值域：作为战争目标的**主君本人**。是否为合法清君侧目标：
+# 独立 + 主头衔 ≥ 王国 + 存在共治者。
+# 注（裁定 Q3）：**不再要求行政制**——非行政制政权经 01 请愿取得 `regency` 后，
+# 封臣同样需要「武力替换摄政」的入口，故沿用与太子准入相同的等级要求、去掉政体要求。
+ftr_qingjunce_target_eligible_trigger = {
+	is_independent_ruler = yes
+	highest_held_title_tier >= tier_kingdom
+	has_active_diarchy = yes
+	exists = diarch
+}
+
+ftr_qingjunce_can_declare_trigger = {
+	is_landed = yes
+	is_capable_adult = yes
+	NOT = { is_imprisoned = yes }
+	is_independent_ruler = no
+	exists = liege
+	# 目标：主君当前共治者
+	liege = {
+		has_active_diarchy = yes
+		exists = diarch
+		NOT = { diarch ?= { this = prev } }
+	}
+	# 未与主君处于同一场清君侧战争
+	liege = {
+		NOT = { has_variable = ftr_qingjunce_current_war }
+	}
+}

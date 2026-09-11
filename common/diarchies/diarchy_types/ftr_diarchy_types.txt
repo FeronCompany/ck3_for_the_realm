@@ -1,0 +1,121 @@
+﻿##############################################################
+### 共治者机制强化 —— 太子共治类型 ftr_diarchy_crown_prince
+###
+### 定位：行政类政体的「长期储君位」。与 junior_emperorship 的差异：
+###   1) 不要求欢呼法，也不自动「转正为共治皇帝」；
+###   2) 由 mod 效果显式启动（立储接线），条件失效时自动结束；
+###   3) 显式标记 hidden_parameter = ftr_diarchy_type_is_crown_prince，
+###      供 §2/§4 的身份分流判定使用。
+### 设计出处：document/task_design/03-共治者机制强化设计.md §3
+##############################################################
+
+ftr_diarchy_crown_prince = {
+	# 由 mod 立储接线显式启动（try_start_diarchy），不做引擎自动准入
+	start = { always = yes }
+
+	# 条件失效即自动结束：附庸 / 换政体 / 改用欢呼法 / 等级跌破王国
+	end = {
+		liege = {
+			OR = {
+				is_independent_ruler = no
+				NOT = { government_has_flag = government_is_administrative }
+				has_realm_law = acclamation_succession_law
+				NOT = { highest_held_title_tier >= tier_kingdom }
+			}
+		}
+	}
+
+	# Mandates：照抄 junior_emperorship 三件套
+	mandate = fill_coffers
+	mandate = swell_armies
+	mandate = promote_authority
+	aptitude_score = {
+		add = mandate_type_qualification:fill_coffers
+		add = mandate_type_qualification:swell_armies
+		add = mandate_type_qualification:promote_authority
+	}
+
+	# 权力天平阶梯 swing 0 / 20 / 40 / 60 / 80
+	power_level = {
+		swing = 0
+		parameter = diarch_is_preferred_liege_heir
+		parameter = liege_may_voluntarily_cede_authority
+	}
+	power_level = {
+		swing = 20
+		parameter = diarch_gain_skill_on_majority_t1
+		parameter = diarch_more_efficient_administrative_emperor_promotion_candidate_mild
+	}
+	power_level = {
+		swing = 40
+		parameter = diarch_gain_skill_on_majority_t2
+		parameter = diarch_more_efficient_administrative_emperor_promotion_candidate_medium
+	}
+	power_level = {
+		swing = 60
+		parameter = diarch_gain_skill_on_majority_t3
+		parameter = diarch_more_efficient_administrative_emperor_promotion_candidate_major
+	}
+	# 080：太子线巅峰档。
+	# 注（§4.4 实施口径）：**刻意不授予原版参数 regents_can_try_to_overthrow_present_lieges**，
+	# 改由 ftr 篡位链自持「天平 ≥ 80」门槛——这样原版 diarch_attempt_to_overthrow_liege
+	# 不会对太子共治出现，避免出现两个篡位入口（无需覆盖原版决议）。
+	power_level = {
+		swing = 80
+		parameter = diarch_gain_skill_on_majority_t4
+		parameter = diarch_more_efficient_administrative_emperor_promotion_candidate_massive
+	}
+
+	# 天平趋向值：随太子年龄缓慢抬升（照抄 junior_emperorship 的年龄曲线）
+	swing_balance = {
+		value = 0
+		if = {
+			limit = { child_is_teen_trigger = yes }
+			add = 30
+		}
+		else_if = {
+			limit = { child_old_enough_for_responsibility_trigger = yes }
+			add = 20
+		}
+		else_if = {
+			limit = { child_not_infant_trigger = yes }
+			add = 10
+		}
+	}
+
+	# 太子即指定继承人：不走 diarchy 继任补选
+	succession = no
+
+	# 隐藏参数：类型识别 + 共治身份（供身份分流与 UI 判定）
+	power_level = {
+		swing = 0
+		hidden_parameter = diarchy_is_co_rulership
+		hidden_parameter = ftr_diarchy_type_is_crown_prince
+		hidden_parameter = mandate_tempo_slow
+	}
+
+	loyalty_score = { add = diarch_loyalty_score_type_co_emperorship_value }
+
+	# 双向影响：储君积累行政影响力，主君获得辅政加成（复用原版已本地化的 modifier 名）
+	liege_modifier = {
+		name = from_diarch_monthly_influence_bonus
+		monthly_influence_mult = 0.05
+		scale = {
+			add = diarch.years_as_diarch
+			divide = co_emperor_scale_years_in_job_value
+			round = yes
+			add = 1
+		}
+	}
+
+	diarch_modifier = {
+		name = to_diarch_monthly_influence_add_bonus
+		monthly_influence = 1
+		scale = {
+			add = diarch.years_as_diarch
+			divide = co_emperor_scale_years_in_job_value
+			round = yes
+			add = 1
+		}
+	}
+}

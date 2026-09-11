@@ -13,6 +13,7 @@
  ftr_personal_merit.0001.b:0 "<FTR>授予一座非首都伯爵领（消耗 10 功勋）"
  ftr_personal_merit.0001.c:0 "<FTR>授以内阁职位（消耗 40 功勋）"
  ftr_personal_merit.0001.d:0 "<FTR>暂且搁置，日后再议"
+ ftr_court_persuade_backing_interaction:0 "<FTR>劝人背书"
  ftr_court_persuade_backing_interaction_desc:0 "游说同僚公开拥立你所支持的人。游说成功后，双方都会获得该权贵名下的功勋。劝进可产功勋：被劝者 +5、劝说者 +5。"
  ftr_court_merit_list_button:0 "功勋录"
  ftr_court_merit_list_tooltip:0 "打开功勋录：按功勋高低展示所有持有功勋的直属封臣与廷臣。"

@@ -1,0 +1,111 @@
+﻿##############################################################
+### 共治者机制强化 —— 清君侧宣战理由（§5）
+###
+### 定位：主君直属封臣以「清君侧」为名，武力介入君主与共治者的关系。
+###   胜 → 顶替现任共治者，成为君主摄政（E1：depose + set_diarch）
+###   现任共治者败 → 被囚（E2）
+###   清君侧方败 → 永久监禁（E3）
+###   主君不额外惩罚（E4，只走战争结算）
+### 战争对象 = 主君（共治者常无地，无法直接作为 war target）
+##############################################################
+
+ftr_qingjunce = {
+	group = ftr_civil_war
+	icon = claim_war
+
+	target_titles = none
+
+	# 仅用于封臣对主君
+	ai_only_against_liege = yes
+	# 清君侧不是例行公事：只有胜、败、失效三种结局
+	white_peace_possible = no
+
+	allowed_for_character = {
+		scope:attacker = { ftr_qingjunce_can_declare_trigger = yes }
+	}
+
+	allowed_against_character = {
+		scope:attacker = { top_liege = scope:defender }
+		scope:defender = { ftr_qingjunce_target_eligible_trigger = yes }
+	}
+
+	valid_to_start = {
+		always = yes
+	}
+
+	cost = {
+		prestige = {
+			value = ftr_qingjunce_prestige_cost_value
+		}
+	}
+
+	on_declaration = {
+		scope:war = { save_scope_as = ftr_qingjunce_war }
+		scope:attacker = { save_scope_as = ftr_qingjunce_leader }
+		scope:defender = { save_scope_as = ftr_qingjunce_liege }
+
+		# 通报朝堂
+		scope:defender = {
+			diarch ?= { save_scope_as = ftr_qingjunce_old_diarch }
+			# 登记当前清君侧战争（供后续表态者直接加入，§5.1）
+			set_variable = {
+				name = ftr_qingjunce_current_war
+				value = scope:ftr_qingjunce_war
+				days = 3650
+			}
+		}
+		scope:attacker = {
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				title = ftr_qingjunce_declared_tt
+				left_icon = scope:attacker
+				right_icon = scope:defender
+			}
+		}
+	}
+
+	########## 胜利：顶替共治者（E1 / E2） ##########
+	on_victory = {
+		scope:war = { save_scope_as = ftr_qingjunce_war }
+		scope:attacker = { save_scope_as = ftr_qingjunce_leader }
+		scope:defender = { save_scope_as = ftr_qingjunce_liege }
+		scope:defender = {
+			diarch ?= { save_scope_as = ftr_qingjunce_old_diarch }
+			remove_variable = ftr_qingjunce_current_war
+		}
+		scope:attacker = { ftr_qingjunce_win_effect = yes }
+	}
+
+	########## 失败：清君侧方永久监禁（E3） ##########
+	on_defeat = {
+		scope:war = { save_scope_as = ftr_qingjunce_war }
+		scope:attacker = { save_scope_as = ftr_qingjunce_leader }
+		scope:defender = { save_scope_as = ftr_qingjunce_liege }
+		scope:defender = {
+			diarch ?= { save_scope_as = ftr_qingjunce_old_diarch }
+			remove_variable = ftr_qingjunce_current_war
+		}
+		scope:attacker = { ftr_qingjunce_defeat_effect = yes }
+	}
+
+	########## 失效：回收，不追究 ##########
+	on_invalidated = {
+		scope:defender ?= { remove_variable = ftr_qingjunce_current_war }
+		scope:attacker ?= {
+			remove_character_flag = ftr_qingjunce_at_war
+		}
+	}
+
+	on_victory_desc = {
+		desc = ftr_qingjunce_victory_desc
+	}
+	on_defeat_desc = {
+		desc = ftr_qingjunce_defeat_desc
+	}
+	on_white_peace_desc = {
+		desc = ftr_qingjunce_defeat_desc
+	}
+	on_invalidated_desc = {
+		desc = ftr_qingjunce_invalidated_desc
+	}
+}

@@ -60,6 +60,8 @@ ftr_court_strife_base_chance_value = 15
 # 强出口轮概率（%）：烈度 ≥90 的每次主时钟，按此概率推进一次强出口检查
 # （0014 站队 / 0015 政变·起兵 / 0018 废黜 + 0003/0005 通知），约每 3-4 轮一次
 ftr_court_strife_exit_chance_value = 25
+# 交互层党争摩擦：指控 / 散布不和「发起方与目标各自都有背书对象」时的小幅抬升（发起即生效，低于手段档）
+ftr_court_interaction_clash_intensity_value = 4
 # 各手段成功推高烈度的增量（§12.3.2：低+5~10 / 中+15~25 / 高+30~50）
 ftr_court_strife_low_intensity_value = 8
 ftr_court_strife_mid_intensity_value = 20
@@ -71,15 +73,19 @@ ftr_court_poison_intrigue_threshold_value = 14  # 下毒成功率参照的密谋
 ftr_court_severe_poison_days_value = 730    # 0055 剧毒：failing_health(-0.5) 持续 2 年
 ftr_court_chronic_poison_days_value = 1095  # 0056 慢性虚毒：旅行食毒(health-0.25/prowess-4) 持续 3 年
 # 年度自然回落（向 0 缓慢回归，防单向锁死不回落）
-ftr_court_intensity_yearly_decay_value = 5
+# 收窄到 2：与「张力 +8」成对——低于 stir(90) 时只有张力在推，衰减过强会把烈度永久压在死区
+ftr_court_intensity_yearly_decay_value = 2
 # 君主失能/弱势时年度正向偏置（推高烈度，承接 ftr_court_monarch_weak 语义）
 ftr_court_intensity_weak_bias_value = 6
 # 君主强势（声望/虔诚充足）时年度负向偏置（压低烈度）
 ftr_court_intensity_strong_bias_value = -4
 # 竞争者张力：前两名评分接近或参与者站队变化时的偏置
-ftr_court_intensity_tension_bias_value = 4
-# 缓和决议（§12.5 / §12.11）：一次下调幅度与冷却
-ftr_court_ease_intensity_drop_value = 80
+ftr_court_intensity_tension_bias_value = 8
+# 缓和决议（§12.5 / §12.11）：一次下调幅度 / 休战窗口 / 决议冷却
+# 下调幅度取 40：从濒危档(140)缓和后仍留在对立档(≥90)，不把内斗循环打进死区
+ftr_court_ease_intensity_drop_value = 40
+# 休战窗口（ftr_court_eased_struggle flag 时长）：与决议冷却分离——休战短、冷却长
+ftr_court_ease_truce_years_value = 3
 ftr_court_ease_cooldown_years_value = 10
 # 双轨成本：行政制君主耗官方影响力，非行政制耗威望（大量）
 ftr_court_ease_influence_cost_value = 200

@@ -391,6 +391,43 @@ ftr_court_on_participant_join_effect = {
 	}
 }
 
+# 在 story 域执行：烈度 +$AMOUNT$（先判上限，越界由年度维护夹回 0-200）。
+# 参数：AMOUNT = 增量（script value 名或数字）。
+ftr_court_intensity_add_effect = {
+	if = {
+		limit = {
+			has_variable = ftr_court_struggle_intensity
+			var:ftr_court_struggle_intensity < ftr_court_intensity_max_value
+		}
+		change_variable = {
+			name = ftr_court_struggle_intensity
+			add = $AMOUNT$
+		}
+	}
+}
+
+# 在任意角色域执行（this = 发起者）：参数 OTHER = 另一方、AMOUNT = 增量。
+# 判据：双方最高领主为同一人，且该领主持有朝堂角逐故事循环 → 该政权烈度 +$AMOUNT$。
+# 用途：交互层的小幅党争摩擦（指控 / 散布不和），与事件层手段加烈度区分。
+ftr_court_realm_intensity_add_effect = {
+	if = {
+		limit = {
+			exists = top_liege
+			$OTHER$ = { exists = top_liege }
+			top_liege ?= { this = $OTHER$.top_liege }
+			top_liege = {
+				any_owned_story = { story_type = ftr_court_struggle }
+			}
+		}
+		top_liege = {
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
+				ftr_court_intensity_add_effect = { AMOUNT = $AMOUNT$ }
+			}
+		}
+	}
+}
+
 # 在 story 域执行：烈度年度维护（自然回落 + 君主状态偏置 + 竞争者张力）。
 # 替代原阶段定档逻辑，是烈度随时间自然演化的主循环（承接 §12.3.2）。
 # 无参与者（candidate_count < min）时向 0 回落，避免长期无人对抗仍高温。
@@ -1429,8 +1466,8 @@ ftr_court_ease_struggle_effect = {
 		add_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_eased_opinion }
 		remove_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_rival_claimant_opinion }
 	}
-	# 4) 休战窗口：期间内斗循环不择强手段（冷却与决议 cooldown 一致）
-	add_character_flag = { flag = ftr_court_eased_struggle  years = ftr_court_ease_cooldown_years_value }
+	# 4) 休战窗口：期间内斗循环整拍停摆（短于决议 cooldown，避免一次缓和长期锁死内斗）
+	add_character_flag = { flag = ftr_court_eased_struggle  years = ftr_court_ease_truce_years_value }
 }
 
 # 内斗出手（§12.4 手段 2.1 诬陷下毒链，首个可用手段族；其余手段族随后接入）：

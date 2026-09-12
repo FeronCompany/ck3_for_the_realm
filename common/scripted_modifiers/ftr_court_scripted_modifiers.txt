@@ -193,6 +193,29 @@ ftr_court_back_monarch_ai_modifier = {
 }
 
 ##############################################################
+### 内斗「收手」分支的烈度修正
+###
+### 口径：烈度越高越难置身事外——各内斗事件的收手 / 隐忍 / 观望分支按档位扣权，
+### 让高烈度期的对抗真正升级（不动进攻分支的 base，便于对比与回滚）。
+### 用法：在收手类选项的 ai_chance 内平级引用（ftr_court_strife_peace_ai_modifier = yes）。
+##############################################################
+
+ftr_court_strife_peace_ai_modifier = {
+	modifier = {
+		add = -15
+		ftr_court_struggle_intensity_of_realm_at_least_trigger = { THRESHOLD = ftr_court_intensity_stir_bound_value }
+	}
+	modifier = {
+		add = -15
+		ftr_court_struggle_intensity_of_realm_at_least_trigger = { THRESHOLD = ftr_court_intensity_high_bound_value }
+	}
+	modifier = {
+		add = -15
+		ftr_court_struggle_intensity_of_realm_at_least_trigger = { THRESHOLD = ftr_court_intensity_critical_bound_value }
+	}
+}
+
+##############################################################
 ### 背书共治者倾向
 ###
 ### 设计口径（按共治类型分流）：

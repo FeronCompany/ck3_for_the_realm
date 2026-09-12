@@ -545,6 +545,7 @@ ftr_court_struggle.0018 = {
 		name = ftr_court_struggle.0018.b
 		ai_chance = {
 			base = 75
+			ftr_court_strife_peace_ai_modifier = yes
 			modifier = { add = 40  has_trait = content }
 			modifier = { add = 30  has_trait = patient }
 			modifier = { add = -30  has_trait = ambitious }
@@ -729,7 +730,7 @@ ftr_court_struggle.0014 = {
 		}
 		ai_chance = {
 			# 基础倾向刻意压低：投资君主不如投资继承人，保皇由立场与情感驱动
-			base = 0
+			base = -10
 			# 忠诚惯性（与 a–e 共用改投摩擦）
 			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_monarch }
 			# 保皇倾向：弱化双向好感，强化忠顺 / 公正 / 联盟 / 好友・挚友・情人，
@@ -776,7 +777,8 @@ ftr_court_struggle.0014 = {
 	option = { # Watch and wait
 		name = ftr_court_struggle.0014.f
 		ai_chance = {
-			base = 15
+			base = 35
+			ftr_court_strife_peace_ai_modifier = yes
 			modifier = { add = 15  has_trait = content }
 			modifier = { add = 20  has_trait = craven }
 			modifier = { add = -25  has_trait = ambitious }
@@ -980,6 +982,7 @@ ftr_court_struggle.0015 = {
 		name = ftr_court_struggle.0015.c
 		ai_chance = {
 			base = 55
+			ftr_court_strife_peace_ai_modifier = yes
 			modifier = { add = 40  has_trait = content }
 			modifier = { add = 30  has_trait = craven }
 			modifier = { add = -30  has_trait = impatient }
@@ -1453,6 +1456,7 @@ ftr_court_struggle.0050 = { # 放谣诋毁（对立区 90+）
 		name = ftr_court_struggle.0050.b
 		ai_chance = {
 			base = 45
+			ftr_court_strife_peace_ai_modifier = yes
 			modifier = { add = 30  has_trait = honest }
 			modifier = { add = 20  has_trait = content }
 			modifier = { add = -25  has_trait = ambitious }
@@ -1517,6 +1521,7 @@ ftr_court_struggle.0051 = { # 伪造贪腐证据（濒危区 140+，intrigue 门
 		name = ftr_court_struggle.0051.b
 		ai_chance = {
 			base = 40
+			ftr_court_strife_peace_ai_modifier = yes
 			modifier = { add = 35  has_trait = just }
 			modifier = { add = 20  has_trait = craven }
 			modifier = { add = -25  has_trait = ambitious }
@@ -1597,6 +1602,7 @@ ftr_court_struggle.0052 = { # 下毒（濒危区 140+，更隐秘，callous/intr
 		name = ftr_court_struggle.0052.c
 		ai_chance = {
 			base = 30
+			ftr_court_strife_peace_ai_modifier = yes
 			modifier = { add = 40  has_trait = just }
 			modifier = { add = 20  has_trait = compassionate }
 			modifier = { add = -25  has_trait = callous }
@@ -2245,6 +2251,7 @@ ftr_court_struggle.0090 = {
 		name = ftr_court_struggle.0090.c
 		ai_chance = {
 			base = 25
+			ftr_court_strife_peace_ai_modifier = yes
 			modifier = { add = 40  has_trait = just }
 			modifier = { add = 20  has_trait = compassionate }
 			modifier = { add = -30  has_trait = callous }
@@ -2412,6 +2419,7 @@ ftr_court_struggle.0080 = { # 绑架（root = 发起竞争者；victim = 目标�
 		name = ftr_court_struggle.0080.c
 		ai_chance = {
 			base = 30
+			ftr_court_strife_peace_ai_modifier = yes
 			modifier = { add = 35  has_trait = just }
 			modifier = { add = 20  has_trait = compassionate }
 			modifier = { add = -25  has_trait = ambitious }

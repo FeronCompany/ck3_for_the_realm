@@ -255,6 +255,30 @@ ftr_court_ease_struggle_valid_trigger = {
 	NOT = { has_character_flag = ftr_court_eased_struggle }
 }
 
+# 求值域：this = 任意角色；参数 THRESHOLD = 烈度门槛（script value 名或数字）。
+# 判定其所在政权的朝堂故事烈度是否 ≥ THRESHOLD：依次尝试自身持有的 story / 最高领主 / 雇主。
+# 供内斗事件选项的 ai_chance 使用（事件 root 未必持有 story，故三路兜底）。
+ftr_court_struggle_intensity_of_realm_at_least_trigger = {
+	OR = {
+		any_owned_story = {
+			story_type = ftr_court_struggle
+			var:ftr_court_struggle_intensity >= $THRESHOLD$
+		}
+		top_liege ?= {
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				var:ftr_court_struggle_intensity >= $THRESHOLD$
+			}
+		}
+		employer ?= {
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				var:ftr_court_struggle_intensity >= $THRESHOLD$
+			}
+		}
+	}
+}
+
 ########## 五、议题2：共治夺权 ##########
 
 # 议题2 是否应当激活：君主不能正常履职，或已处于摄政

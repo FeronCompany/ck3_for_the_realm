@@ -45,6 +45,19 @@ ftr_charge_interaction = {
 		scope:actor.liege = {
 			trigger_event = ftr_pg_interaction_event.0100
 		}
+		# 双方各自都有背书对象（分属党羽）→ 指控本身即党争摩擦；同最高领主且该领主有朝堂故事时抬升其烈度
+		if = {
+			limit = {
+				scope:actor = { has_variable = ftr_court_backer_of }
+				scope:recipient = { has_variable = ftr_court_backer_of }
+			}
+			scope:actor = {
+				ftr_court_realm_intensity_add_effect = {
+					OTHER = scope:recipient
+					AMOUNT = ftr_court_interaction_clash_intensity_value
+				}
+			}
+		}
 	}
 	on_decline = {}
 	auto_accept = yes
@@ -53,8 +66,7 @@ ftr_charge_interaction = {
 		opinion_modifier = {
 			opinion_target = scope:actor
 			who = scope:recipient
-			multiplier = -2
-			desc = AI_OPINION_REASON
+			multiplier = -0.25
 		}
 		# 党羽政治：优先清除其他党羽的政敌
 		modifier = {
@@ -212,6 +224,19 @@ ftr_sow_discord_interaction = {
 				desc = ftr_sow_discord.discovered
 			}
 		}
+		# 双方各自都有背书对象（分属党羽）→ 散布不和本身即党争摩擦；同最高领主且该领主有朝堂故事时抬升其烈度
+		if = {
+			limit = {
+				scope:actor = { has_variable = ftr_court_backer_of }
+				scope:recipient = { has_variable = ftr_court_backer_of }
+			}
+			scope:actor = {
+				ftr_court_realm_intensity_add_effect = {
+					OTHER = scope:recipient
+					AMOUNT = ftr_court_interaction_clash_intensity_value
+				}
+			}
+		}
 	}
 	on_decline = {}
 	auto_accept = yes
@@ -220,12 +245,12 @@ ftr_sow_discord_interaction = {
 		opinion_modifier = {
 			opinion_target = scope:recipient
 			who = scope:actor
-			multiplier = -1.5
+			multiplier = -0.25
 		}
 		opinion_modifier = {
 			opinion_target = scope:secondary_actor
 			who = scope:actor
-			multiplier = -0.5
+			multiplier = -0.15
 		}
 		modifier = {
 			add = -50

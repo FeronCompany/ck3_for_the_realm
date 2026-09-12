@@ -119,6 +119,121 @@ ftr_court_withdraw_backing_interaction = {
 	}
 }
 
+######### 敲打党羽：最高领主施压党羽成员 #########
+# 对背书他人的党羽成员当众施压：顺从性格（懦弱 / 忠信 / 公正 / 安于现状 / 谦卑等）
+# 且对君主好感不差者有小概率宣布退出党羽；被敲打者无论是否屈服都会记恨，其党首亦不满君主插手。
+# 党首是君主的子女 / 继承人时，敲打即「惊君处置」——打上 15 年警告 flag（原 0041 语义承接）。
+ftr_court_discipline_backer_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	desc = ftr_court_discipline_backer_interaction_desc
+	cooldown_against_recipient = { years = 5 }
+	ai_targets = {
+		ai_recipients = vassals
+		ai_recipients = courtiers
+		max = 2
+	}
+	ai_frequency = 24
+	is_shown = {
+		scope:actor = {
+			ftr_court_is_struggle_monarch_trigger = yes
+		}
+		scope:recipient = {
+			is_vassal_of = scope:actor
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= { NOT = { this = scope:actor } }
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+		}
+		scope:recipient = {
+			is_capable_adult = yes
+			NOT = { is_imprisoned = yes }
+		}
+	}
+	on_accept = {
+		# 敲打本身即羞辱：被敲打者对君主心生怨怼（无论是否屈服）
+		scope:recipient = {
+			add_opinion = { target = scope:actor  modifier = ftr_court_disciplined_opinion }
+		}
+		# 党首不满君主插手脚子
+		scope:recipient.var:ftr_court_backer_of ?= {
+			add_opinion = { target = scope:actor  modifier = ftr_political_opponent_opinion }
+		}
+		# 惊君处置：党首是君主的子女 / 继承人 → 敲打即警告（3 年，抑制其继续公开背书）
+		scope:recipient = {
+			if = {
+				limit = {
+					var:ftr_court_backer_of ?= {
+						OR = {
+							is_child_of = scope:actor
+							is_heir_of = scope:actor
+						}
+					}
+				}
+				add_character_flag = {
+					flag = ftr_liege_warn_not_support_heir
+					years = 3
+				}
+			}
+		}
+		# 顺从者小概率退出党羽：先从党首名单除名，再解除背书与拥立账
+		scope:recipient = {
+			random = {
+				chance = ftr_court_discipline_exit_chance_value
+				var:ftr_court_backer_of ?= {
+					ftr_court_remove_backer_effect = { BACKER = scope:recipient }
+				}
+				remove_variable = ftr_court_backer_of
+				ftr_personal_merit_backing_clear_effect = yes
+				scope:actor = {
+					send_interface_message = {
+						title = ftr_court_discipline_success_message
+						left_icon = scope:recipient
+					}
+				}
+			}
+		}
+	}
+	on_decline = {}
+	auto_accept = yes
+	ai_will_do = {
+		base = 0
+		# 朝堂竞逐正酣（烈度 ≥ 酝酿档）时更需敲打立威
+		modifier = {
+			add = 30
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
+			}
+		}
+		# 多疑 / 记仇者爱敲打
+		modifier = {
+			add = 20
+			OR = {
+				has_trait = paranoid
+				has_trait = vengeful
+			}
+		}
+		# 公正 / 安于现状者不爱威压臣下
+		modifier = {
+			add = -25
+			OR = {
+				has_trait = just
+				has_trait = content
+			}
+		}
+		# 与该党羽交恶 → 更想敲打
+		modifier = {
+			add = 20
+			opinion = { target = scope:recipient  value < 0 }
+		}
+	}
+}
+
 ############################################################################
 ### 议题 2：共治夺权
 ############################################################################
@@ -205,7 +320,7 @@ ftr_court_petition_coregency_interaction = {
 		}
 		# 「太子优先」生效时（君主已有可用指定继承人且非本人）→ 请愿多半替他人作嫁衣，意愿大减
 		modifier = {
-			add = ftr_court_petition_heir_priority_disincentive_value
+			add = -40
 			scope:recipient = {
 				ftr_diarchy_can_start_crown_prince_trigger = yes
 				exists = designated_heir

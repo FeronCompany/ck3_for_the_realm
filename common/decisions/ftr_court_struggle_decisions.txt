@@ -304,12 +304,13 @@ ftr_court_declare_backing_decision = {
 			top_liege ?= { has_active_diarchy = yes }
 		}
 		# 君主健康驱动：大位越近越值得提前占队（this = 决策者，经 top_liege / employer 读君主健康）
+		# 加成 = 55 − 10 × 君主 health（官方档 dying≈+55 / poor≈+45 / fine≈+25 / medium≈+15 / good≈+5 / excellent≈−15）
 		modifier = {
 			add = {
-				value = ftr_court_monarch_health_urgency_base_value
+				value = 55
 				subtract = {
 					value = this.top_liege.health
-					multiply = ftr_court_monarch_health_urgency_slope_value
+					multiply = 10
 				}
 			}
 			top_liege ?= {
@@ -325,12 +326,12 @@ ftr_court_declare_backing_decision = {
 		#   reverse_opinion = { target = root } → 决策者对现任的好感
 		# 默认：改投有破坏关系成本，意愿显著下降（常量见 ftr_court_struggle_values.txt）
 		modifier = {
-			add = ftr_court_backing_switch_disincentive_value
+			add = -35
 			has_variable = ftr_court_backer_of
 		}
 		# 刚改投过（安定期内）：更不愿再次变更背书对象
 		modifier = {
-			add = ftr_court_backing_switch_recent_penalty_value
+			add = -40
 			has_character_flag = ftr_court_switched_backing
 		}
 		# 现任支持对象器重此人（现任对决策者好感 ≥ 40）：盟友情分深，轻易不愿背弃

@@ -788,7 +788,7 @@ ftr_court_struggle.0014 = {
 # 0014 站队 / 表态支持选中某人后，不再直接建立背书：先在 root（被支持者）上暂存
 # 支持者身份（var:ftr_court_pending_backer），再触发本事件（延迟 2 天），由被支持者定夺。
 # 接受 → 切回支持者作用域调用公共记账 ftr_court_apply_backing_effect（登记背书 + 双向好感 +
-# 树敌/声望/0041 警觉全套）；拒绝 → 双方交恶（两个专用 opinion modifier）。
+# 树敌/声望/君主通报全套）；拒绝 → 双方交恶（两个专用 opinion modifier）。
 ftr_court_struggle.0022 = {
 	type = character_event
 	title = ftr_court_struggle.0022.t
@@ -831,7 +831,7 @@ ftr_court_struggle.0022 = {
 		var:ftr_court_pending_backer ?= { save_scope_as = ftr_court_offerer }
 		remove_variable = ftr_court_pending_backer
 		# 定位君主 / story：支持者属于该政权（封臣走 top_liege、廷臣走 employer），
-		# 供公共记账 effect 的树敌与 0041 警觉环节使用
+		# 供公共记账 effect 的树敌与君主通报环节使用
 		scope:ftr_court_offerer ?= {
 			if = {
 				limit = { exists = top_liege }
@@ -1373,83 +1373,10 @@ ftr_court_struggle.0040 = {
 	}
 }
 
-######### 0041 君主警觉（root = 最高统治者） #########
-# 由公共记账 effect ftr_court_apply_backing_effect 触发（0014 站队 / 表态支持决议，
-# 小概率；概率按背书者与被支持者的谋略对抗浮动）。
-# 使君主对被支持的权贵心生芥蒂，降低相互关系。
-# 若被支持者是君主的子女 / 继承人，公开背书还触发「惊君处置」：
-# 君主选择怀有芥蒂（a）时，背书者（scope:ftr_court_backer）被打上 15 年警告 flag
-# （原 ftr_support_heir_interaction.0303 语义并入，§7.3）。
-ftr_court_struggle.0041 = {
-	type = character_event
-	title = ftr_court_struggle.0041.t
-	desc = ftr_court_struggle.0041.desc
-	theme = intrigue
-
-	left_portrait = {
-		character = root
-		animation = anger
-	}
-	right_portrait = {
-		character = scope:ftr_court_supported
-		animation = shock
-	}
-
-	immediate = {
-		save_scope_as = ftr_court_monarch
-		# 定位被支持的权贵（由触发方保存）
-		# 若缺失则静默（事件仍有兜底选项）
-	}
-
-	option = { # A subject's loyalty may be bought
-		name = ftr_court_struggle.0041.a
-		ai_chance = {
-			base = 50
-			modifier = { add = 30  has_trait = paranoid }
-		}
-		# 君主与被支持者关系恶化
-		scope:ftr_court_supported ?= {
-			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
-		}
-		# 惊君处置：被支持者是君主的子女 / 继承人 → 敲打公开背书者（警告 15 年，抑制其继续公开背书）
-		if = {
-			limit = {
-				scope:ftr_court_supported ?= {
-					OR = {
-						is_child_of = scope:ftr_court_monarch
-						is_heir_of = scope:ftr_court_monarch
-					}
-				}
-			}
-			scope:ftr_court_backer ?= {
-				add_character_flag = {
-					flag = ftr_liege_warn_not_support_heir
-					years = 15
-				}
-			}
-		}
-		# 若被支持者是共治者，君主警觉还会影响权力天平（官方 swing 向君主侧移动）
-		scope:ftr_court_supported ?= {
-			if = {
-				limit = { is_diarch = yes }
-				scope:ftr_court_monarch = {
-					update_diarchy_swing_with_perspective_effect = {
-						SWING = minor_sop_swing_liege_gain
-						LIEGE = scope:ftr_court_monarch
-					}
-				}
-			}
-		}
-	}
-	option = { # It means little
-		name = ftr_court_struggle.0041.b
-		ai_chance = {
-			base = 50
-			modifier = { add = -30  has_trait = paranoid }
-			modifier = { add = 20  has_trait = trusting }
-		}
-	}
-}
+# 0041 君主警觉事件已废弃移除（§7.1）：
+# 公开背书对最高领主的通报改为 interface_message（见 ftr_court_apply_backing_effect 第 6 步）；
+# 「惊君处置」警告 flag（ftr_liege_warn_not_support_heir）改由新交互
+# ftr_court_discipline_backer_interaction（敲打党羽）承接。
 
 ######### 0050-0052 诬陷下毒链（§12.4.2 手段 2.1，全新） #########
 # root = 发起竞争的竞争者；immediate 从自身变量 ftr_court_strife_victim 读取攻击对象（另一竞争者/君主）。

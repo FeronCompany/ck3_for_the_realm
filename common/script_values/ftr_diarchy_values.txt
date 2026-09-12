@@ -101,8 +101,6 @@ ftr_diarchy_abolish_opinion_mutual_value = -50
 ftr_diarchy_abolish_courtly_opinion_value = -25
 
 ### 二之二、废太子 AI 倾向（§3.2）
-# 双向好感在 ai_will_do 中的权重（负值：越互相厌恶，越倾向换太子）
-ftr_diarchy_abolish_opinion_weight_value = -0.4
 # 党羽压力换算：每名「强力封臣党羽」/「内阁党羽」/「党羽军力」的权重
 ftr_diarchy_abolish_powerful_backer_weight_value = 8
 ftr_diarchy_abolish_councillor_backer_weight_value = 6
@@ -185,14 +183,6 @@ ftr_diarchy_designate_heir_influence_cost_value = 150
 ftr_diarchy_boost_line_influence_cost_value = 100
 
 ### 四、AI 权重（继承人线 / 官职线各写一套，见 §4.7 AI 口径）
-# 替主君立储时偏好「年幼 / 弱能 / 怯懦」
-ftr_diarchy_ai_prefer_incompetent_weight = 40
-# 替主君立储：候选人「弱能 / 怯懦」的通用加分
-ftr_diarchy_ai_incompetent_bonus_value = 20
-# 替主君立储：现有太子对共治者满意时的减分（满意则懒得换人）
-ftr_diarchy_ai_satisfied_prince_penalty_value = -60
-# 替主君立储：「满意」的好感阈值
-ftr_diarchy_ai_satisfied_prince_opinion_value = 50
 # AI 封臣起兵倾向的各因子权重
 ftr_diarchy_ai_revolt_weight_weak_liege_value = 40
 ftr_diarchy_ai_revolt_weight_good_opinion_value = -30
@@ -200,19 +190,13 @@ ftr_diarchy_ai_revolt_weight_legitimacy_value = 25
 ftr_diarchy_ai_revolt_weight_supporter_power_value = 30
 # 起兵倾向阈值（低于此不造反）
 ftr_diarchy_ai_revolt_threshold_value = 50
-# 大动作决议对 AI 的最低意愿
-ftr_diarchy_ai_major_action_min_value = 30
 
 ### 五、党羽相助（§4.4-A）
 ftr_diarchy_supporter_help_chance_value = 30
 ftr_diarchy_supporter_help_effect_value = 10
 
-### 六、拉封臣入战（§4.5）货币成本与同意加权
+### 六、拉封臣入战（§4.5）货币成本（AI 同意加权内联在交互 ai_accept）
 ftr_diarchy_levy_vassal_gold_cost_value = 200
-ftr_diarchy_levy_vassal_accept_weight_gold_value = 20
-ftr_diarchy_levy_vassal_accept_weight_hook_value = 10
-ftr_diarchy_levy_vassal_accept_weight_influence_value = 20
-ftr_diarchy_levy_vassal_base_accept_value = -20
 # 影响力单价（offer influence 选项的实际扣量）
 ftr_diarchy_levy_vassal_influence_cost_value = 100
 # 必拒者过滤：目标对共治者的好感低于此值则不出现在候选列表
@@ -221,11 +205,6 @@ ftr_diarchy_levy_vassal_min_opinion_value = -25
 ftr_diarchy_levy_vassal_per_option_penalty_value = -15
 # 拉人代价：同时动用两项以上代价时的额外递增减分
 ftr_diarchy_levy_vassal_multi_option_penalty_value = -15
-# 拉人意愿：敌我比 ≥ 2（我方被压制 → 需要拉人）的加分
-ftr_diarchy_levy_vassal_outnumbered_bonus_value = 40
-# 拉人意愿：敌我比 ≤ 0.5（我方压倒性优势 → 不必拉人）的减分
-ftr_diarchy_levy_vassal_overwhelming_penalty_value = -50
-
 # 拉封臣入战（§4.5）AI 意愿：send_option 激活越多越不愿出手。
 # 求值域 = 共治者（交互 actor）；send_option 的 flag 在此可见（同项目既有写法）。
 ftr_diarchy_levy_vassal_option_cost_value = {

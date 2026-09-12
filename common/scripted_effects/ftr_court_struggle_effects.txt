@@ -607,7 +607,7 @@ ftr_court_remove_backer_effect = {
 # 依赖：scope:ftr_court_story 已保存（0022 immediate 已保存）。
 # 含：改投清理（曾支持他人则先从旧主账目移除并令旧主/其支持者记恨）→ 新主记账（backer_of /
 # supporters / 双向好感）→ 公开树敌（其余参与者）→ 支持君主子女/继承人的背书声望 →
-# 君主警觉 0041（概率随双方谋略浮动）。
+# 君主通报（interface_message，概率随双方谋略浮动）。
 ftr_court_apply_backing_effect = {
 	# 进入时须处于「支持者」作用域（this = 支持者），登记为 ftr_court_backer 供全函数与警觉事件使用。
 	# 注意：不以 root 指代支持者——0022 接受背书场景在切换作用域后调用，root 未必是支持者。
@@ -709,7 +709,7 @@ ftr_court_apply_backing_effect = {
 			add_prestige = ftr_court_heir_backing_prestige_value
 		}
 	}
-	# ---- 6) 君主警觉：支持君主本人不构成"惊君"；其余对象按谋略对抗概率触发 0041 ----
+	# ---- 6) 君主通报：支持君主本人不构成"惊君"；其余对象按谋略对抗概率以 interface_message 通报 ----
 	if = {
 		limit = {
 			exists = scope:ftr_court_monarch
@@ -721,8 +721,11 @@ ftr_court_apply_backing_effect = {
 			custom_tooltip = {
 				text = ftr_court_apply_backing_effect.liege_notify_text
 				scope:ftr_court_monarch ?= {
-					save_scope_as = ftr_court_monarch
-					trigger_event = { id = ftr_court_struggle.0041  days = 1 }
+					send_interface_message = {
+						title = ftr_court_backing_alert_message
+						left_icon = $CLAIMANT$
+						right_icon = scope:ftr_court_backer
+					}
 				}
 			}
 		}

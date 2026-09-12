@@ -308,7 +308,7 @@
  ftr_sow_discord.discovered.t:0 "阴谋败露"
  ftr_sow_discord.discovered.desc:0 "你破坏[recipient.GetShortUIName]与[secondary_actor.GetShortUIName]之间关系的图谋被发现了。"
 
- # 0300/0301/0303 事件已随 ftr_support_heir_interaction 废弃移除（§7.3），惊君处置并入朝堂 0041
+ # 0300/0301/0303 事件已随 ftr_support_heir_interaction 废弃移除（§7.3），惊君处置由朝堂敲打党羽交互承接
 
  ftr_pg_law_event.0001.t:0 "变法投票"
  ftr_pg_law_event.0001.desc:0 "在朝会讨论中，[actor.GetShortUIName]提出应当在领地内实施$ftr_army_type_0$制度。过度依赖那些拿钱办事的佣兵是无法保卫我们的领地的，[actor.GetShortUIName]强调道。"

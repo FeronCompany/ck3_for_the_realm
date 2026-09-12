@@ -120,12 +120,6 @@
  ftr_court_struggle.0040.a:0 "I will enter the contest for the throne."
  ftr_court_struggle.0040.b:0 "I want no part in this contest."
 
- ###### 0041 君主警觉 ######
- ftr_court_struggle.0041.t:0 "A Whisper of Disloyalty"
- ftr_court_struggle.0041.desc:0 "Word reaches [ftr_court_monarch.GetTitledFirstName] that a subject has openly thrown their weight behind another in the court. Whose loyalty can truly be trusted when the throne is at stake?"
- ftr_court_struggle.0041.a:0 "I will watch [ftr_court_supported.GetFullName] closely."
- ftr_court_struggle.0041.b:0 "It means little enough."
-
 ###### 0050-0056 Slander-and-poison chain (§12.4.2 means 2.1)######
  ftr_court_struggle.0050.t:0 "A Rumour Sharp as a Blade"
  ftr_court_struggle.0050.desc:0 "The struggle over the throne has turned to shadows. [ROOT.Char.GetTitledFirstName] decides to strike first, sending trusted agents to spread tales of embezzlement and disloyalty about [scope:ftr_court_victim.GetFullName] throughout the court."

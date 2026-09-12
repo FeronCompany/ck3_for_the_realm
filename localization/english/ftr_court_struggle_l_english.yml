@@ -28,6 +28,8 @@
  ftr_court_back_claimant_alert_tt:0 "An open declaration has a small chance of stirring the monarch's suspicion"
  ftr_court_withdraw_backing_interaction:0 "<FTR>Withdraw Support"
  ftr_court_withdraw_backing_interaction_desc:0 "Step back into neutrality. Few forgive a withdrawn hand."
+ ftr_court_discipline_backer_interaction:0 "<FTR>Discipline the Faction"
+ ftr_court_discipline_backer_interaction_desc:0 "Publicly lean on this magnate for clinging to another's banner. The timid and the dutiful may quit the faction; the defiant will only brood."
  ftr_court_petition_coregency_interaction:0 "<FTR>Petition for Co-Rule"
  ftr_court_petition_coregency_interaction_desc:0 "Ask that the burdens of the Crown be shared — for now."
  ftr_court_promise_interaction:0 "<FTR>Make a Promise"
@@ -46,6 +48,9 @@
  ftr_court_backer_discouraged_opinion:0 "Shaken in their support"
  ftr_court_backing_refused_opinion:0 "Publicly rebuffed their support"
  ftr_court_backing_presumptuous_opinion:0 "Made bold presumption by backing"
+ ftr_court_disciplined_opinion:0 "Publicly disciplined me"
+ ftr_court_backing_alert_message:0 "A Subject Courts Another"
+ ftr_court_discipline_success_message:0 "The Backer Yields"
 
  ###### Character Modifiers ######
  ftr_court_struggle_ongoing:0 "Succession Struggle"

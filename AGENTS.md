@@ -509,7 +509,7 @@ python tools/validate_scripts.py --no-ref
 | **无意义地重定义整段原版内容** | 只改需要的部分，最小化冲突面 |
 | **用空格缩进新代码** | 项目统一 Tab |
 | **提交 `gui/*.bak` 或空文件** | 仓库卫生 |
-| **硬编码数值** | 抽成 `common/script_values/ftr_values.txt` 里的 script value |
+| **硬编码数值**（AI 权重除外） | 领域常量（成本 / 阈值 / 档位 / 跨文件共用值）抽成 `common/script_values/ftr_*.txt` 的 script value；**例外**：`ai_will_do` / `ai_accept` / 事件选项 `ai_chance`（含其所引用的 scripted_modifiers）内的加减分、乘数与 AI 内部阈值**直接写字面数字**——就地可读、便于调参，不抽常量，替换后也不得残留死常量 |
 
 ### 6.3 高风险操作（需先确认）
 

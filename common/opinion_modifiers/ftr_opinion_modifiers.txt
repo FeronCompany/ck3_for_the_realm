@@ -250,6 +250,14 @@ ftr_court_backing_presumptuous_opinion = {
 	stacking = yes
 }
 
+# 敲打党羽：被最高领主当众敲打却未退出，心怀怨怼（党羽 → 君主）
+ftr_court_disciplined_opinion = {
+	opinion = -25
+	years = 10
+	decaying = yes
+	stacking = yes
+}
+
 # 直接赠金收买（许诺交互「直接现付」选项）
 ftr_court_bribed_opinion = {
 	opinion = 40

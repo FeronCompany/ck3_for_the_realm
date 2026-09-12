@@ -58,14 +58,14 @@ ftr_charge_interaction = {
 		}
 		# 党羽政治：优先清除其他党羽的政敌
 		modifier = {
-			add = ftr_court_charge_rival_camp_bonus_value
+			add = 40
 			scope:actor = { has_variable = ftr_court_backer_of }
 			scope:recipient = { has_variable = ftr_court_backer_of }
 			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
 		}
 		# 同一党羽（含本方党首本人）→ 不对自己人下手
 		modifier = {
-			add = ftr_court_charge_own_camp_penalty_value
+			add = -80
 			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } }
 		}
 	}
@@ -254,25 +254,25 @@ ftr_sow_discord_interaction = {
 		}
 		# 党羽政治：打击其他党羽（目标非我方党羽）→ 加权
 		modifier = {
-			add = ftr_court_sow_discord_rival_camp_bonus_value
+			add = 30
 			scope:actor = { has_variable = ftr_court_backer_of }
 			scope:recipient = { has_variable = ftr_court_backer_of }
 			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
 		}
 		# 在其他党羽之间散谣：被打散的两方同属一个外营 → 再加权
 		modifier = {
-			add = ftr_court_sow_discord_inner_rival_bonus_value
+			add = 30
 			scope:recipient = { ftr_court_same_camp_trigger = { OTHER = scope:secondary_actor } }
 			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
 		}
 		# 党羽内不内斗：目标属我方党羽 → 减权
 		modifier = {
-			add = ftr_court_sow_discord_own_camp_penalty_value
+			add = -50
 			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } }
 		}
 		# 被离间的两方都是我的人（纯内斗）→ 再减权
 		modifier = {
-			add = ftr_court_sow_discord_inner_own_penalty_value
+			add = -70
 			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } }
 			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:secondary_actor } }
 		}

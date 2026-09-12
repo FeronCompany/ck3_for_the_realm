@@ -777,4 +777,4 @@ ftr_pg_interaction_event.0203 = {
 
 # Support Heir 事件（0300/0301/0303）已废弃移除：
 # 语义并入朝堂 ftr_court_back_claimant_interaction（任务设计文档 §7.3）：
-# 公开背书继承人的「惊君处置」由朝堂事件 ftr_court_struggle.0041 警觉链承接。
+# 公开背书继承人的「惊君处置」由朝堂交互 ftr_court_discipline_backer_interaction（敲打党羽）承接。

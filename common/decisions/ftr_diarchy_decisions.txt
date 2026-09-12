@@ -45,12 +45,12 @@ ftr_diarchy_abolish_crown_prince_decision = {
 		# ① 双向好感：越互相厌恶，越想换掉太子
 		opinion_modifier = {
 			opinion_target = diarch
-			multiplier = ftr_diarchy_abolish_opinion_weight_value
+			multiplier = -0.4
 		}
 		opinion_modifier = {
 			opinion_target = root
 			who = diarch
-			multiplier = ftr_diarchy_abolish_opinion_weight_value
+			multiplier = -0.4
 		}
 		# ② 党羽压力：强力的党羽越多、内阁党羽越多、党羽军力越强 → 越有换太子的动力
 		modifier = {

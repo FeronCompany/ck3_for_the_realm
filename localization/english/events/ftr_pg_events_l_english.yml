@@ -308,7 +308,7 @@
  ftr_sow_discord.discovered.t:0 "Sow Discord Discovered"
  ftr_sow_discord.discovered.desc:0 "Your attempt to sabotage relationship between [recipient.GetShortUIName] and [secondary_actor.GetShortUIName] was discovered."
 
- # Events 0300/0301/0303 removed with ftr_support_heir_interaction (§7.3); monarch-alert behavior merged into court 0041
+ # Events 0300/0301/0303 removed with ftr_support_heir_interaction (§7.3); monarch-alert behavior now handled by the court discipline interaction
 
  ftr_pg_law_event.0001.t:0 "Vote for Realm Policy"
  ftr_pg_law_event.0001.desc:0 "During the discussion at the court meeting, [actor.GetShortUIName] proposed that a system of $ftr_army_type_0$ should be implemented within the territory. Over-reliance on mercenaries who take money to do things cannot protect our realm, [actor.GetShortUIName] emphasized."

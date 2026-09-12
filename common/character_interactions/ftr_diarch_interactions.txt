@@ -307,7 +307,7 @@ ftr_diarch_designate_heir_interaction = {
 		# 交互的 ai_will_do / ai_accept 的 base 只接受数值字面量；脚本值须走 modifier.add
 		# （直接写 base = <脚本值> 会被 pdx_persistent_reader 判为 Malformed token 并刷 error.log）
 		modifier = {
-			add = ftr_diarchy_ai_major_action_min_value
+			add = 30
 		}
 		# 与候选人「双向好感」：越亲近越想扶他上位
 		opinion_modifier = {
@@ -321,11 +321,11 @@ ftr_diarch_designate_heir_interaction = {
 			multiplier = 0.5
 		}
 		modifier = {
-			add = ftr_diarchy_ai_prefer_incompetent_weight
+			add = 40
 			scope:recipient = { age < 12 }
 		}
 		modifier = {
-			add = ftr_diarchy_ai_incompetent_bonus_value
+			add = 20
 			scope:recipient = {
 				OR = {
 					diplomacy < 6
@@ -335,7 +335,7 @@ ftr_diarch_designate_heir_interaction = {
 			}
 		}
 		modifier = {
-			add = ftr_diarchy_ai_incompetent_bonus_value
+			add = 20
 			scope:recipient = {
 				OR = {
 					has_trait = shy
@@ -347,21 +347,21 @@ ftr_diarch_designate_heir_interaction = {
 		}
 		# 现有太子对共治者满意 → 江山稳固，无需另立储君
 		modifier = {
-			add = ftr_diarchy_ai_satisfied_prince_penalty_value
+			add = -60
 			scope:actor.liege = {
 				has_active_diarchy = yes
 				has_diarchy_type = ftr_diarchy_crown_prince
 				diarch ?= {
 					opinion = {
 						target = scope:actor
-						value >= ftr_diarchy_ai_satisfied_prince_opinion_value
+						value >= 50
 					}
 				}
 			}
 		}
 		# 现有太子性情温顺、易于摆布 → 同样不必换人
 		modifier = {
-			add = ftr_diarchy_ai_satisfied_prince_penalty_value
+			add = -60
 			scope:actor.liege = {
 				has_diarchy_type = ftr_diarchy_crown_prince
 				diarch ?= {
@@ -444,7 +444,7 @@ ftr_diarch_boost_succession_interaction = {
 
 	ai_will_do = {
 		modifier = {
-			add = ftr_diarchy_ai_major_action_min_value
+			add = 30
 		}
 		modifier = {
 			add = 40
@@ -558,7 +558,7 @@ ftr_diarch_levy_vassal_interaction = {
 
 	ai_accept = {
 		modifier = {
-			add = ftr_diarchy_levy_vassal_base_accept_value
+			add = -20
 		}
 		opinion_modifier = {
 			opinion_target = scope:actor
@@ -571,15 +571,15 @@ ftr_diarch_levy_vassal_interaction = {
 			multiplier = -0.5
 		}
 		modifier = {
-			add = ftr_diarchy_levy_vassal_accept_weight_gold_value
+			add = 20
 			scope:ftr_diarchy_levy_gold = yes
 		}
 		modifier = {
-			add = ftr_diarchy_levy_vassal_accept_weight_hook_value
+			add = 10
 			scope:ftr_diarchy_levy_hook = yes
 		}
 		modifier = {
-			add = ftr_diarchy_levy_vassal_accept_weight_influence_value
+			add = 20
 			scope:ftr_diarchy_levy_influence = yes
 		}
 	}
@@ -597,7 +597,7 @@ ftr_diarch_levy_vassal_interaction = {
 		}
 		# 任意战争「敌我比 ≥ 2」→ 我方被压制，需要拉人
 		modifier = {
-			add = ftr_diarchy_levy_vassal_outnumbered_bonus_value
+			add = 40
 			scope:actor = {
 				any_character_war = {
 					ftr_diarchy_war_outnumbered_trigger = yes
@@ -606,7 +606,7 @@ ftr_diarch_levy_vassal_interaction = {
 		}
 		# 「所有战争」敌我比都 ≤ 0.5（且确实在打仗）→ 处处压倒性优势，不必拉人
 		modifier = {
-			add = ftr_diarchy_levy_vassal_overwhelming_penalty_value
+			add = -50
 			scope:actor = {
 				is_at_war = yes
 				NOT = {

@@ -1296,25 +1296,6 @@ ftr_court_pay_cost_effect = {
 	}
 }
 
-# 恩宠：施予方赠予受益者资源（事件 0001.c 君主示好）。
-# 求值域：施予方。参数：TARGET = 受益者。
-ftr_court_grant_favor_effect = {
-	if = {
-		limit = {
-			government_allows = administrative
-			$TARGET$ = { government_allows = administrative }
-		}
-		$TARGET$ = {
-			change_influence = minor_influence_gain
-		}
-	}
-	else = {
-		$TARGET$ = {
-			add_prestige = ftr_court_favor_prestige_value
-		}
-	}
-}
-
 ######################################################
 ### 八、通报
 ######################################################

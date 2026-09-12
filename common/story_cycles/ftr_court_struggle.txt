@@ -168,25 +168,4 @@ ftr_court_struggle = {
 		}
 	}
 
-	################## 潜伏点缀（0001，静默期氛围） ##################
-
-	# 低烈度（<90）时偶尔以 0001 点缀朝堂氛围；由内斗主时钟的触发校验天然保证
-	# 互殴/强出口只在烈度 ≥90 后出现，此处独立小轮负责安静期（0-90）的点缀。
-	effect_group = {
-		days = { ftr_court_strife_interval_min_value  ftr_court_strife_interval_max_value }
-		random_valid = {
-			triggered_effect = {
-				trigger = {
-					NOT = { ftr_court_is_contested_trigger = yes }
-					story_owner ?= { ftr_court_has_succession_order_trigger = yes }
-				}
-				effect = {
-					random = { chance = 8  story_owner = { trigger_event = { id = ftr_court_struggle.0001 } } }
-				}
-			}
-		}
-		fallback = {
-			ftr_court_end_story_if_owner_deposed_effect = yes
-		}
-	}
 }

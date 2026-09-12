@@ -1,12 +1,5 @@
 ﻿l_english:
 
- ###### 0001 潜伏 ######
- ftr_court_struggle.0001.t:0 "Murmurs in the Hall"
- ftr_court_struggle.0001.desc:0 "Servants whisper that [ftr_court_candidate.GetFullName] has been receiving visitors at all hours — men of consequence, men with purses. Nothing that can be proven. Nothing yet."
- ftr_court_struggle.0001.a:0 "It is beneath my notice."
- ftr_court_struggle.0001.b:0 "Summon them, and make my displeasure plain."
- ftr_court_struggle.0001.c:0 "Let them have their little court. I shall watch."
-
  ###### 0003 对立 ######
  ftr_court_struggle.0003.t:0 "Two Suns in One Sky"
  ftr_court_struggle.0003.desc:0 "The court has begun to divide. Every appointment is now read as a signal, every slight as a declaration. The contenders watch each other — and watch me."

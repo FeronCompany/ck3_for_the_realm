@@ -1,12 +1,5 @@
 ﻿l_simp_chinese:
 
- ###### 0001 潜伏 ######
- ftr_court_struggle.0001.t:0 "殿中低语"
- ftr_court_struggle.0001.desc:0 "下人们私下议论，[ftr_court_candidate.GetFullName]昼夜不停地会见访客——来的都是些有头有脸、腰缠万贯的人物。抓不到把柄。至少眼下还抓不到。"
- ftr_court_struggle.0001.a:0 "这等小事，不值得我过问。"
- ftr_court_struggle.0001.b:0 "传他来见，让他知道我的不满。"
- ftr_court_struggle.0001.c:0 "由他去经营自己的小朝廷，我且看着。"
-
  ###### 0003 对立 ######
  ftr_court_struggle.0003.t:0 "天无二日"
  ftr_court_struggle.0003.desc:0 "朝堂已经分裂。如今每一次任命都被人解读为风向，每一次冷落都被视作宣战。竞争者互相盯着——也在盯着我。"

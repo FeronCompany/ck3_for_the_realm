@@ -406,10 +406,6 @@ ftr_court_petition_regency_initial_swing_value = ftr_swing_tier_strong_high_valu
 # 请愿者补偿：共治主体不是请愿者本人（「太子优先」生效）时的「从龙之功」记账额（02 拥立账）
 ftr_court_petition_consolation_merit_value = 15
 
-# 恩宠（事件 0001.c 君主示好）：双轨受益量
-ftr_court_favor_prestige_value = 100
-# 恩宠的影响力走官方 minor_influence_gain = 30，无需另设常量
-
 # 内战宣战的威望成本
 ftr_court_succession_war_prestige_cost_value = 350
 

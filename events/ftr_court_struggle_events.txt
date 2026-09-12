@@ -729,7 +729,7 @@ ftr_court_struggle.0014 = {
 		}
 		ai_chance = {
 			# 基础倾向刻意压低：投资君主不如投资继承人，保皇由立场与情感驱动
-			base = 5
+			base = 0
 			# 忠诚惯性（与 a–e 共用改投摩擦）
 			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_monarch }
 			# 保皇倾向：弱化双向好感，强化忠顺 / 公正 / 联盟 / 好友・挚友・情人，

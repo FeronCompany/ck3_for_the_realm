@@ -252,7 +252,7 @@ ftr_court_backing_presumptuous_opinion = {
 
 # 敲打党羽：被最高领主当众敲打却未退出，心怀怨怼（党羽 → 君主）
 ftr_court_disciplined_opinion = {
-	opinion = -25
+	opinion = -50
 	years = 10
 	decaying = yes
 	stacking = yes

@@ -58,7 +58,7 @@ ftr_charge_interaction = {
 		}
 		# 党羽政治：优先清除其他党羽的政敌
 		modifier = {
-			add = 40
+			add = 60
 			scope:actor = { has_variable = ftr_court_backer_of }
 			scope:recipient = { has_variable = ftr_court_backer_of }
 			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
@@ -254,14 +254,14 @@ ftr_sow_discord_interaction = {
 		}
 		# 党羽政治：打击其他党羽（目标非我方党羽）→ 加权
 		modifier = {
-			add = 30
+			add = 50
 			scope:actor = { has_variable = ftr_court_backer_of }
 			scope:recipient = { has_variable = ftr_court_backer_of }
 			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
 		}
 		# 在其他党羽之间散谣：被打散的两方同属一个外营 → 再加权
 		modifier = {
-			add = 30
+			add = 50
 			scope:recipient = { ftr_court_same_camp_trigger = { OTHER = scope:secondary_actor } }
 			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
 		}

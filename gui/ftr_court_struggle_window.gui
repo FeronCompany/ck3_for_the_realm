@@ -137,57 +137,24 @@ window = {
 									text_single = {
 										margin = { 10 8 }
 										text = "ftr_court_ui_monarch_backers_label"
+										margin_bottom = 30
 									}
-									hbox = {
-										layoutpolicy_horizontal = expanding
-										scrollbox = {
-											layoutpolicy_horizontal = expanding
-											blockoverride "scrollbox_content"
-											{
-												hbox = {
-													margin = { 10 0 }
-													spacing = 12
-													datamodel = "[GetPlayer.GetTopLiege.MakeScope.GetList('ftr_court_supporters')]"
-													layoutpolicy_horizontal = fixed
-													item = {
-														ftr_court_small_icon = {
-															datacontext = "[CharacterListItem.GetCharacter]"
-														}
-													}
-												}
-											}
-										}
-										expand = {}
+									ftr_court_supporter_grid = {
+										datacontext = "[GetPlayer.GetTopLiege]"
 									}
 								}
 								
-								# 共治者支持者
+								# 共治者支持者（无共治者时整栏隐藏，避免空背景板）
 								vbox = {
+									visible = "[GetPlayer.GetTopLiege.GetDiarchy.GetDiarch.IsValid]"
 									layoutpolicy_horizontal = expanding
 									text_single = {
 										margin = { 10 8 }
 										text = "ftr_court_ui_diarch_backers_label"
+										margin_bottom = 30
 									}
-									hbox = {
-										layoutpolicy_horizontal = expanding
-										scrollbox = {
-											layoutpolicy_horizontal = expanding
-											blockoverride "scrollbox_content"
-											{
-												hbox = {
-													margin = { 10 0 }
-													spacing = 12
-													datamodel = "[GetPlayer.GetTopLiege.GetDiarchy.GetDiarch.MakeScope.GetList('ftr_court_supporters')]"
-													layoutpolicy_horizontal = fixed
-													item = {
-														ftr_court_small_icon = {
-															datacontext = "[CharacterListItem.GetCharacter]"
-														}
-													}
-												}
-											}
-										}
-										expand = {}
+									ftr_court_supporter_grid = {
+										datacontext = "[GetPlayer.GetTopLiege.GetDiarchy.GetDiarch]"
 									}
 								}
 							}
@@ -235,7 +202,37 @@ types Lists
 		}
 	}
 
-	# 继任者（参与角逐者）一行：左侧该继任者头像，右侧其支持者图标。
+	# 支持者名单网格：背景板 + fixedgridbox（每行 6 个 64×64 头像，自动换行）。
+	# 权贵支持者名单的通用呈现：claimant_row 的右半部分；也可单独用于
+	# 君主 / 共治者支持者栏（不显示权贵头像），datacontext 直接传权贵即可。
+	type ftr_court_supporter_grid = hbox {
+		datacontext = "[Scope.GetCharacter]"
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = growing
+		background = {
+			using = Background_Area_Solid
+			margin = { 10 0 }
+			margin_top = 20
+		}
+		fixedgridbox = {
+			addcolumn = 80
+			addrow = 90
+			datamodel = "[Character.MakeScope.GetList('ftr_court_supporters')]"
+			datamodel_wrap = 6
+			flipdirection = yes
+			item = {
+				container = {
+					datacontext = "[Scope.Char]"
+					portrait_head_small = {
+						size = { 64 64 }
+					}
+				}
+			}
+		}
+		expand = {}
+	}
+
+	# 继任者（参与角逐者）一行：左侧该继任者头像，右侧其支持者网格。
 	# 用法：作为「参与者列表」datamodel 的 item（datacontext 由外层列表提供，
 	# 通过 CharacterListItem.GetCharacter 取得当前参与者，再读其 ftr_court_supporters）。
 	type ftr_court_claimant_row = hbox {
@@ -246,30 +243,8 @@ types Lists
 			layoutpolicy_horizontal = fixed
 			datacontext = "[Character]"
 		}
-		hbox = {
-			layoutpolicy_horizontal = expanding
-			layoutpolicy_vertical = expanding
-			background = {
-				using = Background_Area_Solid
-				margin = { 10 0 }
-				margin_top = 20
-			}
-			fixedgridbox = {
-				addcolumn = 80
-				addrow = 90
-				datamodel = "[Character.MakeScope.GetList('ftr_court_supporters')]"
-				datamodel_wrap = 6
-				flipdirection = yes
-				item = {
-					container = {
-						datacontext = "[Scope.Char]"
-						portrait_head_small = {
-							size = { 64 64 }
-						}
-					}
-				}
-			}
-			expand = {}
+		ftr_court_supporter_grid = {
+			datacontext = "[Character]"
 		}
 		
 	}

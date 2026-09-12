@@ -119,15 +119,16 @@ ftr_court_withdraw_backing_interaction = {
 	}
 }
 
-######### 敲打党羽：最高领主施压党羽成员 #########
-# 对背书他人的党羽成员当众施压：顺从性格（懦弱 / 忠信 / 公正 / 安于现状 / 谦卑等）
-# 且对君主好感不差者有小概率宣布退出党羽；被敲打者无论是否屈服都会记恨，其党首亦不满君主插手。
-# 党首是君主的子女 / 继承人时，敲打即「惊君处置」——打上 15 年警告 flag（原 0041 语义承接）。
+######### 敲打党羽：最高领主施压结党权贵 #########
+# 敲打对象 = 党羽的背书对象（结党的权贵本人，非君主）：其党羽成员依性格顺从度
+# （懦弱 / 忠信 / 公正 / 安于现状 / 谦卑等）与对君主的好感，各自小概率宣布退出党羽；
+# 被敲打的权贵本人记恨。党首是君主的子女 / 继承人时，敲打即「惊君处置」——
+# 其党羽全体被打 3 年警告 flag（原 0041 语义承接）。
 ftr_court_discipline_backer_interaction = {
 	category = interaction_category_diplomacy
 	common_interaction = yes
 	desc = ftr_court_discipline_backer_interaction_desc
-	cooldown_against_recipient = { years = 5 }
+	cooldown = { years = 5 }
 	ai_targets = {
 		ai_recipients = vassals
 		ai_recipients = courtiers
@@ -139,9 +140,14 @@ ftr_court_discipline_backer_interaction = {
 			ftr_court_is_struggle_monarch_trigger = yes
 		}
 		scope:recipient = {
-			is_vassal_of = scope:actor
-			has_variable = ftr_court_backer_of
-			var:ftr_court_backer_of ?= { NOT = { this = scope:actor } }
+			top_liege = scope:actor
+			NOT = { this = scope:actor }
+			# 党羽的背书对象 = 持有非空支持者名单的权贵（共治者 / 参与者；名单由记账与 cleanup 维护）
+			has_variable_list = ftr_court_supporters
+			variable_list_size = {
+				name = ftr_court_supporters
+				value >= 1
+			}
 		}
 	}
 	is_valid_showing_failures_only = {
@@ -155,44 +161,73 @@ ftr_court_discipline_backer_interaction = {
 		}
 	}
 	on_accept = {
-		# 敲打本身即羞辱：被敲打者对君主心生怨怼（无论是否屈服）
+		# 敲打本身即羞辱：被敲打的权贵对君主心生怨怼
 		scope:recipient = {
 			add_opinion = { target = scope:actor  modifier = ftr_court_disciplined_opinion }
 		}
-		# 党首不满君主插手脚子
-		scope:recipient.var:ftr_court_backer_of ?= {
-			add_opinion = { target = scope:actor  modifier = ftr_political_opponent_opinion }
-		}
-		# 惊君处置：党首是君主的子女 / 继承人 → 敲打即警告（3 年，抑制其继续公开背书）
+		# 惊君处置：党首是君主的子女 / 继承人 → 其党羽全体被警告（3 年，抑制继续公开背书）
 		scope:recipient = {
 			if = {
 				limit = {
-					var:ftr_court_backer_of ?= {
-						OR = {
-							is_child_of = scope:actor
-							is_heir_of = scope:actor
-						}
+					OR = {
+						is_child_of = scope:actor
+						is_heir_of = scope:actor
 					}
 				}
-				add_character_flag = {
-					flag = ftr_liege_warn_not_support_heir
-					years = 3
+				every_in_list = {
+					variable = ftr_court_supporters
+					add_character_flag = {
+						flag = ftr_liege_warn_not_support_heir
+						years = 3
+					}
 				}
 			}
 		}
-		# 顺从者小概率退出党羽：先从党首名单除名，再解除背书与拥立账
-		scope:recipient = {
-			random = {
-				chance = ftr_court_discipline_exit_chance_value
-				var:ftr_court_backer_of ?= {
-					ftr_court_remove_backer_effect = { BACKER = scope:recipient }
+		# 党羽去留结算：整体包 custom_tooltip，玩家只看到一行文案（内部为标记 + 排干实现）
+		custom_tooltip = {
+			text = ftr_court_discipline_backer_effect_text
+			# 党羽逐一权衡去留：顺从者小概率屈服（只打标记，不在遍历中修改名单）
+			scope:recipient = {
+				every_in_list = {
+					variable = ftr_court_supporters
+					random = {
+						chance = ftr_court_discipline_exit_chance_value
+						add_character_flag = {
+							flag = ftr_court_discipline_yielded
+							days = 2
+						}
+					}
 				}
-				remove_variable = ftr_court_backer_of
-				ftr_personal_merit_backing_clear_effect = yes
-				scope:actor = {
+			}
+			# 屈服者解除背书（清 backer_of 与拥立账），并从党首名单除名
+			# （while 逐个排干：任何遍历中都不修改 ftr_court_supporters 本身）
+			scope:recipient = {
+				while = {
+					count = 100
+					limit = {
+						any_in_list = {
+							variable = ftr_court_supporters
+							has_character_flag = ftr_court_discipline_yielded
+						}
+					}
+					random_in_list = {
+						variable = ftr_court_supporters
+						limit = { has_character_flag = ftr_court_discipline_yielded }
+						remove_variable = ftr_court_backer_of
+						ftr_personal_merit_backing_clear_effect = yes
+						save_scope_as = ftr_court_yielded_backer
+					}
+					ftr_court_remove_backer_effect = { BACKER = scope:ftr_court_yielded_backer }
+				}
+			}
+			# 有人屈服才通报君主
+			scope:actor = {
+				if = {
+					limit = { exists = scope:ftr_court_yielded_backer }
 					send_interface_message = {
 						title = ftr_court_discipline_success_message
 						left_icon = scope:recipient
+						right_icon = scope:ftr_court_yielded_backer
 					}
 				}
 			}
@@ -226,7 +261,7 @@ ftr_court_discipline_backer_interaction = {
 				has_trait = content
 			}
 		}
-		# 与该党羽交恶 → 更想敲打
+		# 与该权贵交恶 → 更想敲打
 		modifier = {
 			add = 20
 			opinion = { target = scope:recipient  value < 0 }

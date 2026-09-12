@@ -191,7 +191,7 @@ ftr_court_monarch_weak_trigger = {
 
 ########## 四、阶段判定 ##########
 
-# 候选人数量达标（数量由参与事件 0040 写入 ftr_court_candidate_count）
+# 候选人数量达标（数量由参与事件 0230 写入 ftr_court_candidate_count）
 ftr_court_has_enough_candidates_trigger = {
 	has_variable = ftr_court_candidate_count
 	var:ftr_court_candidate_count >= ftr_court_min_candidates_value
@@ -226,7 +226,7 @@ ftr_court_has_active_struggle_trigger = {
 	var:ftr_court_candidate_count >= ftr_court_min_candidates_value
 }
 
-# 烈度是否进入「对立」区（>=90）：两派公开倾轧、对立脉冲 / 0014 站队等在此区触发。
+# 烈度是否进入「对立」区（>=90）：两派公开倾轧、对立脉冲 / 0200 站队等在此区触发。
 ftr_court_is_contested_trigger = {
 	ftr_court_has_active_struggle_trigger = yes
 	has_variable = ftr_court_struggle_intensity
@@ -242,7 +242,7 @@ ftr_court_is_crisis_trigger = {
 	var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
 }
 
-# 烈度是否进入「临界」区（>=170）：废黜昏君（0018）等最强手段在此区开放。
+# 烈度是否进入「临界」区（>=170）：废黜昏君（0150）等最强手段在此区开放。
 ftr_court_intensity_critical_trigger = {
 	has_variable = ftr_court_struggle_intensity
 	var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
@@ -253,6 +253,34 @@ ftr_court_ease_struggle_valid_trigger = {
 	has_variable = ftr_court_struggle_intensity
 	var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
 	NOT = { has_character_flag = ftr_court_eased_struggle }
+}
+
+# 立场不同判定（M2 立场辩论选角用）。
+# 求值域：this = 候选人；参数 OTHER = 对照者。成立：两人封臣立场不相同（七种立场逐一比对）。
+ftr_court_has_different_vassal_stance_trigger = {
+	OR = {
+		AND = { $OTHER$ = { has_vassal_stance = courtly }  NOT = { has_vassal_stance = courtly } }
+		AND = { $OTHER$ = { has_vassal_stance = glory_hound }  NOT = { has_vassal_stance = glory_hound } }
+		AND = { $OTHER$ = { has_vassal_stance = parochial }  NOT = { has_vassal_stance = parochial } }
+		AND = { $OTHER$ = { has_vassal_stance = zealot }  NOT = { has_vassal_stance = zealot } }
+		AND = { $OTHER$ = { has_vassal_stance = minority }  NOT = { has_vassal_stance = minority } }
+		AND = { $OTHER$ = { has_vassal_stance = barons_and_minor_landholders }  NOT = { has_vassal_stance = barons_and_minor_landholders } }
+		AND = { $OTHER$ = { has_vassal_stance = belligerent }  NOT = { has_vassal_stance = belligerent } }
+	}
+}
+
+# 求值域：this = 某内阁成员。判定其是否「不够称职」（M1 弹劾内阁的目标筛选）。
+# 口径：按其所任内阁职位对应的属性低于称职线（decent_skill_rating）即算不称职；
+# 五种常规职位（掌玺/军事/财政/间谍/宫廷司铎）逐一对应，其他职位（如游牧）不参与。
+ftr_court_is_incompetent_councillor_trigger = {
+	is_councillor = yes
+	OR = {
+		AND = { has_council_position = councillor_chancellor      diplomacy < decent_skill_rating }
+		AND = { has_council_position = councillor_marshal         martial < decent_skill_rating }
+		AND = { has_council_position = councillor_steward         stewardship < decent_skill_rating }
+		AND = { has_council_position = councillor_spymaster       intrigue < decent_skill_rating }
+		AND = { has_council_position = councillor_court_chaplain  learning < decent_skill_rating }
+	}
 }
 
 # 求值域：this = 任意角色；参数 THRESHOLD = 烈度门槛（script value 名或数字）。
@@ -377,7 +405,7 @@ ftr_court_needs_temp_duchy_trigger = {
 	NOT = { is_imprisoned = yes }
 }
 
-# 2.2 派间谍调查（0060）触发者资格（§9.2，root = 潜在触发者）
+# 2.2 派间谍调查（0400）触发者资格（§9.2，root = 潜在触发者）
 # 三种合法来源，任满足其一：
 #   ① 最高统治者（持有朝堂 story 的独立统治者）
 #   ② 有头衔 / 领地的参与者（is_landed 即持有头衔与领地，且其 top_liege / employer 持有 story）
@@ -471,8 +499,8 @@ ftr_court_has_no_supporters_trigger = {
 	}
 }
 
-# 求值域：无（只读事件 0014 已保存的候选位 scope）。参数 WHO = 待查角色 scope 表达式。
-# 判定 WHO 是否已占 0014 的前五候选位——供「君主 / 共治者亦可作为背书目标」时防重复选项
+# 求值域：无（只读事件 0200 已保存的候选位 scope）。参数 WHO = 待查角色 scope 表达式。
+# 判定 WHO 是否已占 0200 的前五候选位——供「君主 / 共治者亦可作为背书目标」时防重复选项
 # （共治者可能同时是竞争者）。名单不足 5 人时，未保存的候选位不参与判定。
 ftr_court_claimant_slots_contain_trigger = {
 	OR = {
@@ -519,8 +547,8 @@ ftr_court_in_declarable_struggle_trigger = {
 	}
 }
 
-########## 七之二、AI 背书立场偏好（事件 0014 站队用） ##########
-# 供 0014 五个站队选项复用：把"封臣立场 ↔ 候选特质"是否契合做成参数化 trigger，
+########## 七之二、AI 背书立场偏好（事件 0200 站队用） ##########
+# 供 0200 五个站队选项复用：把"封臣立场 ↔ 候选特质"是否契合做成参数化 trigger，
 # 契合加分 / 违背减分，使 AI 不只看名次而按自身立场挑选对象（对齐交互 ai_will_do 的 stance 语义）。
 # 参数：CANDIDATE = 被评估的候选；ACTOR = 朝臣本人（求值域当前 this 即朝臣）。
 ftr_court_backing_stance_fit_trigger = {

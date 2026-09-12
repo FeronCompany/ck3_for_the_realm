@@ -562,7 +562,7 @@ ftr_qingjunce_defeat_effect = {
 
 # 求值域：君主（季度脉冲，playable）。
 # ① 按「背书共治者人数 − 背书君主人数」小幅移动 swing（无任何被动月度修正）；
-# ② 依天平档位概率派发 01 的共治拉锯事件（0083 反共治 / 0084 共治反击）；
+# ② 依天平档位概率派发 01 的共治拉锯事件（0500 反共治 / 0510 共治反击）；
 #    这两个事件已泛化：无朝堂角逐 story 时自动用共治关系补全作用域。
 ftr_diarchy_quarterly_swing_drift_effect = {
 	save_scope_as = ftr_diarchy_drift_liege
@@ -575,7 +575,7 @@ ftr_diarchy_quarterly_swing_drift_effect = {
 		}
 	}
 
-	# ② 共治者强势（≥70）：君主阵营有人暗中削弱共治（0083）
+	# ② 共治者强势（≥70）：君主阵营有人暗中削弱共治（0500）
 	if = {
 		limit = { diarchy_swing >= ftr_swing_tier_strong_low_value }
 		random = {
@@ -593,20 +593,20 @@ ftr_diarchy_quarterly_swing_drift_effect = {
 					}
 				}
 				trigger_event = {
-					id = ftr_court_struggle.0083
+					id = ftr_court_struggle.0500
 					days = { 1 10 }
 				}
 			}
 		}
 	}
-	# ③ 君主强势（≤30）：共治者阵营暗中反击（0084）
+	# ③ 君主强势（≤30）：共治者阵营暗中反击（0510）
 	else_if = {
 		limit = { diarchy_swing <= ftr_swing_tier_loyal_value }
 		diarch ?= {
 			random = {
 				chance = ftr_diarchy_swing_event_chance_value
 				trigger_event = {
-					id = ftr_court_struggle.0084
+					id = ftr_court_struggle.0510
 					days = { 1 10 }
 				}
 			}

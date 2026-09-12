@@ -52,7 +52,7 @@ ftr_diarchy_diarch_change_on_action = {
 
 # 求值域：季度脉冲下的可玩角色（root = 该角色）。
 # 仅由**君主**一侧执行（排除共治者自身），避免同一共治关系被算两次。
-# 注：季度脉冲只覆盖 playable 角色；AI 政权侧的 swing 仍由 0083/0084 故事链与引擎 swing_balance 自然演化。
+# 注：季度脉冲只覆盖 playable 角色；AI 政权侧的 swing 仍由 0500/0510 故事链与引擎 swing_balance 自然演化。
 ftr_diarchy_quarterly_drift_on_action = {
 	trigger = {
 		is_diarch = no

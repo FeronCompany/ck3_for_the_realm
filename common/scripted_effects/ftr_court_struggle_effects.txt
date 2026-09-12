@@ -91,7 +91,7 @@ ftr_court_cleanup_effect = {
 }
 
 # 在 story 域执行：故事落幕通知（须在 cleanup 前调用，因 cleanup 会清空名单）。
-# 向三方各发一则落幕通知（0021）：最高领主（story_owner）、共治者（diarch，若存在）、
+# 向三方各发一则落幕通知（0002）：最高领主（story_owner）、共治者（diarch，若存在）、
 # 全部竞争者（ftr_court_participant_list 中的在世者）。
 ftr_court_notify_struggle_end_effect = {
 	save_scope_as = ftr_court_story
@@ -99,7 +99,7 @@ ftr_court_notify_struggle_end_effect = {
 	story_owner ?= {
 		if = {
 			limit = { is_alive = yes }
-			trigger_event = { id = ftr_court_struggle.0021  days = 2 }
+			trigger_event = { id = ftr_court_struggle.0002  days = 2 }
 		}
 	}
 	# 2) 共治者（若存在且仍在世）
@@ -107,7 +107,7 @@ ftr_court_notify_struggle_end_effect = {
 		diarch ?= {
 			if = {
 				limit = { is_alive = yes }
-				trigger_event = { id = ftr_court_struggle.0021  days = 2 }
+				trigger_event = { id = ftr_court_struggle.0002  days = 2 }
 			}
 		}
 	}
@@ -116,7 +116,7 @@ ftr_court_notify_struggle_end_effect = {
 		variable = ftr_court_participant_list
 		if = {
 			limit = { is_alive = yes }
-			trigger_event = { id = ftr_court_struggle.0021  days = 2 }
+			trigger_event = { id = ftr_court_struggle.0002  days = 2 }
 		}
 	}
 }
@@ -391,17 +391,28 @@ ftr_court_on_participant_join_effect = {
 	}
 }
 
-# 在 story 域执行：烈度 +$AMOUNT$（先判上限，越界由年度维护夹回 0-200）。
+# 在 story 域执行：烈度 +$AMOUNT$（可为负＝降温；加完即夹回 0-200）。
 # 参数：AMOUNT = 增量（script value 名或数字）。
 ftr_court_intensity_add_effect = {
 	if = {
-		limit = {
-			has_variable = ftr_court_struggle_intensity
-			var:ftr_court_struggle_intensity < ftr_court_intensity_max_value
-		}
+		limit = { has_variable = ftr_court_struggle_intensity }
 		change_variable = {
 			name = ftr_court_struggle_intensity
 			add = $AMOUNT$
+		}
+		if = {
+			limit = { var:ftr_court_struggle_intensity > ftr_court_intensity_max_value }
+			set_variable = {
+				name = ftr_court_struggle_intensity
+				value = ftr_court_intensity_max_value
+			}
+		}
+		if = {
+			limit = { var:ftr_court_struggle_intensity < ftr_court_intensity_min_value }
+			set_variable = {
+				name = ftr_court_struggle_intensity
+				value = ftr_court_intensity_min_value
+			}
 		}
 	}
 }
@@ -536,7 +547,7 @@ ftr_court_launch_participation_asks_effect = {
 						scope:ftr_court_potential_claimant = {
 							add_character_flag = { flag = ftr_court_asked_participation }
 							trigger_event = {
-								id = ftr_court_struggle.0040
+								id = ftr_court_struggle.0230
 								days = 2
 							}
 						}
@@ -555,7 +566,7 @@ ftr_court_launch_participation_asks_effect = {
 						scope:ftr_court_potential_claimant = {
 							add_character_flag = { flag = ftr_court_asked_participation }
 							trigger_event = {
-								id = ftr_court_struggle.0040
+								id = ftr_court_struggle.0230
 								days = 2
 							}
 						}
@@ -580,7 +591,7 @@ ftr_court_launch_participation_asks_effect = {
 							scope:ftr_court_potential_claimant = {
 								add_character_flag = { flag = ftr_court_asked_participation }
 								trigger_event = {
-									id = ftr_court_struggle.0040
+									id = ftr_court_struggle.0230
 									days = 2
 								}
 							}
@@ -639,15 +650,15 @@ ftr_court_remove_backer_effect = {
 	}
 }
 
-# 在支持者域执行：公开支持某权贵的完整记账（供 0022「拥立需得首肯」接受分支调用，替代原交互 on_accept）。
+# 在支持者域执行：公开支持某权贵的完整记账（供 0210「拥立需得首肯」接受分支调用，替代原交互 on_accept）。
 # 参数：$CLAIMANT$ = 被支持者（角色 scope 表达式，如 scope:ftr_court_offer_recipient）。
-# 依赖：scope:ftr_court_story 已保存（0022 immediate 已保存）。
+# 依赖：scope:ftr_court_story 已保存（0210 immediate 已保存）。
 # 含：改投清理（曾支持他人则先从旧主账目移除并令旧主/其支持者记恨）→ 新主记账（backer_of /
 # supporters / 双向好感）→ 公开树敌（其余参与者）→ 支持君主子女/继承人的背书声望 →
 # 君主通报（interface_message，概率随双方谋略浮动）。
 ftr_court_apply_backing_effect = {
 	# 进入时须处于「支持者」作用域（this = 支持者），登记为 ftr_court_backer 供全函数与警觉事件使用。
-	# 注意：不以 root 指代支持者——0022 接受背书场景在切换作用域后调用，root 未必是支持者。
+	# 注意：不以 root 指代支持者——0210 接受背书场景在切换作用域后调用，root 未必是支持者。
 	save_scope_as = ftr_court_backer
 	# ---- 1) 改投清理：此前已支持他人且非本目标 ----
 	if = {
@@ -722,7 +733,7 @@ ftr_court_apply_backing_effect = {
 		save_scope_as = ftr_court_debug_backed
 		save_scope_as = ftr_court_supported
 	}
-	# ---- 4) 公开树敌：其余参与者同生芥蒂（对齐 0014 / 交互公开分支）----
+	# ---- 4) 公开树敌：其余参与者同生芥蒂（对齐 0200 / 交互公开分支）----
 	scope:ftr_court_story ?= {
 		every_in_list = {
 			variable = ftr_court_participant_list
@@ -1178,7 +1189,7 @@ ftr_court_usurp_throne_effect = {
 		}
 		# 清算事件：决定老君王与其它竞争者的命运
 		trigger_event = {
-			id = ftr_court_struggle.0010
+			id = ftr_court_struggle.0100
 			days = 3
 		}
 		# 新君进入冷却期，避免刚上位就被连锁推翻
@@ -1228,7 +1239,7 @@ ftr_court_clear_claimant_status_effect = {
 
 
 ######################################################
-### 七之二、名次保存（供 0011 固定选项）
+### 七之二、名次保存（供 0110 固定选项）
 ######################################################
 
 # 在 story 域执行：把名单中的前五名竞争者按顺序存为 scope:ftr_court_claimant_1 ~ 5，
@@ -1453,7 +1464,7 @@ ftr_court_ease_struggle_effect = {
 
 # 内斗出手（§12.4 手段 2.1 诬陷下毒链，首个可用手段族；其余手段族随后接入）：
 # story 域。参与者 >=2 且烈度进入对立(>=90)后，随机一名竞争者向另一名竞争者出手。
-# 手手段随烈度升级：对立区(90-140)→0050 放谣；濒危区(>=140)→0051 伪造 / 0052 下毒。
+# 手手段随烈度升级：对立区(90-140)→0300 放谣；濒危区(>=140)→0310 伪造 / 0320 下毒。
 ftr_court_strife_slander_effect = {
 	save_scope_as = ftr_court_strife_story
 	set_variable = { name = ftr_court_strife_pick  value = 0 }
@@ -1484,21 +1495,21 @@ ftr_court_strife_slander_effect = {
 					limit = {
 						scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
 					}
-					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0052 } }
-					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0090 } }
-					random = { chance = 25  trigger_event = { id = ftr_court_struggle.0080 } }
+					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0320 } }
+					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0430 } }
+					random = { chance = 25  trigger_event = { id = ftr_court_struggle.0420 } }
 				}
 				else_if = {
 					limit = {
 						scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
 					}
-					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0051 } }
-					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0090 } }
-					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0080 } }
+					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0310 } }
+					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0430 } }
+					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0420 } }
 				}
 				else = {
-					random = { chance = 40  trigger_event = { id = ftr_court_struggle.0050 } }
-					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0070 } }
+					random = { chance = 40  trigger_event = { id = ftr_court_struggle.0300 } }
+					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0410 } }
 				}
 			}
 		}
@@ -1508,25 +1519,25 @@ ftr_court_strife_slander_effect = {
 
 # 内斗强出口轮（§4.3 主时钟强出口分支）：
 # story 域，由内斗主时钟在互殴手段派发后调用。按 ftr_court_strife_exit_chance_value 决定本轮是否推进。
-# 烈度档：90-139（对立）→ 0003 通知 + 0014 站队询问；
-#         ≥140（濒危） → 0005 通知 + 0014 + 0015（评分最高者）；
-#         ≥170（临界） 且满足废黜条件 → 0018（朝堂最强势力）。各出口沿用既有 3 年防骚扰 flag。
+# 烈度档：90-139（对立）→ 0003 通知 + 0200 站队询问；
+#         ≥140（濒危） → 0004 通知 + 0200 + 0140（评分最高者）；
+#         ≥170（临界） 且满足废黜条件 → 0150（朝堂最强势力）。各出口沿用既有 3 年防骚扰 flag。
 ftr_court_strife_exit_pulse_effect = {
 	save_scope_as = ftr_court_strife_exit_story
 	# 保存君主命名域，供下方 order_by = ftr_court_claim_strength_value 实时评估使用
 	story_owner = { save_scope_as = ftr_court_monarch }
 	random = {
 		chance = ftr_court_strife_exit_chance_value
-		# 通知事件按烈度区分：濒危以上 0005（一触即发）、对立区 0003（势均力敌）
+		# 通知事件按烈度区分：濒危以上 0004（一触即发）、对立区 0003（势均力敌）
 		if = {
 			limit = { var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value }
-			story_owner = { trigger_event = { id = ftr_court_struggle.0005 } }
+			story_owner = { trigger_event = { id = ftr_court_struggle.0004 } }
 		}
 		else_if = {
 			limit = { var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value }
 			story_owner = { trigger_event = { id = ftr_court_struggle.0003 } }
 		}
-		# 0014 站队：询问一名未站队的封臣（random_courtier 路径覆盖无地廷臣）
+		# 0200 站队：询问一名未站队的封臣（random_courtier 路径覆盖无地廷臣）
 		story_owner = {
 			random_vassal = {
 				limit = {
@@ -1535,7 +1546,7 @@ ftr_court_strife_exit_pulse_effect = {
 					NOT = { has_character_flag = ftr_court_asked_stance }
 				}
 				add_character_flag = { flag = ftr_court_asked_stance  years = ftr_court_ask_throttle_years_value }
-				trigger_event = { id = ftr_court_struggle.0014  days = 2 }
+				trigger_event = { id = ftr_court_struggle.0200  days = 2 }
 			}
 			random_courtier = {
 				limit = {
@@ -1544,10 +1555,10 @@ ftr_court_strife_exit_pulse_effect = {
 					NOT = { has_character_flag = ftr_court_asked_stance }
 				}
 				add_character_flag = { flag = ftr_court_asked_stance  years = ftr_court_ask_throttle_years_value }
-				trigger_event = { id = ftr_court_struggle.0014  days = 2 }
+				trigger_event = { id = ftr_court_struggle.0200  days = 2 }
 			}
 		}
-		# 0015 良机已至：仅濒危（≥140），推给竞争力最高且未询问过者
+		# 0140 良机已至：仅濒危（≥140），推给竞争力最高且未询问过者
 		if = {
 			limit = { var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value }
 			ordered_in_list = {
@@ -1557,12 +1568,12 @@ ftr_court_strife_exit_pulse_effect = {
 				scope:ftr_court_exit_ringleader ?= {
 					if = {
 						limit = { NOT = { has_character_flag = ftr_court_asked_to_rebel } }
-						trigger_event = { id = ftr_court_struggle.0015  days = 4 }
+						trigger_event = { id = ftr_court_struggle.0140  days = 4 }
 					}
 				}
 			}
 		}
-		# 0018 废黜昏君：临界（≥170）且满足废黜条件 → 推给朝堂最强势力
+		# 0150 废黜昏君：临界（≥170）且满足废黜条件 → 推给朝堂最强势力
 		if = {
 			limit = {
 				var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
@@ -1595,7 +1606,7 @@ ftr_court_strife_exit_pulse_effect = {
 							limit = { var:ftr_court_usurp_pick = 0 }
 							scope:ftr_court_exit_usurper ?= {
 								add_character_flag = { flag = ftr_court_asked_usurp  years = ftr_court_ask_throttle_years_value }
-								trigger_event = { id = ftr_court_struggle.0018  days = 2 }
+								trigger_event = { id = ftr_court_struggle.0150  days = 2 }
 							}
 						}
 						change_variable = { name = ftr_court_usurp_pick  add = 1 }
@@ -1608,7 +1619,7 @@ ftr_court_strife_exit_pulse_effect = {
 }
 
 # 议题 2 阵营拉锯：无地参与者的「暗中策动」等价链入口（§9.6）
-# story 域。当权力天平偏向共治者（≥70）且存在共治者时，随机一名无地参与者暗中联络朝臣削弱共治（0083）。
+# story 域。当权力天平偏向共治者（≥70）且存在共治者时，随机一名无地参与者暗中联络朝臣削弱共治（0500）。
 ftr_court_landless_swing_effect = {
 	save_scope_as = ftr_court_strife_story
 	random = {
@@ -1630,14 +1641,14 @@ ftr_court_landless_swing_effect = {
 				save_scope_as = ftr_court_landless_actor
 				scope:ftr_court_landless_actor ?= {
 					add_character_flag = { flag = ftr_court_strife_active  years = 1 }
-					trigger_event = { id = ftr_court_struggle.0083  days = 2 }
+					trigger_event = { id = ftr_court_struggle.0500  days = 2 }
 				}
 			}
 		}
 	}
 }
 
-# 议题 2：共治者反击（§9.6）——swing ≤30（辅政稳固）时，共治者阵营暗中游说拉回（0084）。
+# 议题 2：共治者反击（§9.6）——swing ≤30（辅政稳固）时，共治者阵营暗中游说拉回（0510）。
 ftr_court_diarch_backlash_effect = {
 	save_scope_as = ftr_court_strife_story
 	random = {
@@ -1651,10 +1662,751 @@ ftr_court_diarch_backlash_effect = {
 				}
 			}
 			story_owner = {
-				diarch ?= { trigger_event = { id = ftr_court_struggle.0084  days = 2 } }
+				diarch ?= { trigger_event = { id = ftr_court_struggle.0510  days = 2 } }
 			}
 		}
 	}
+}
+
+######################################################
+### 十二、文明争斗族（M1–M6，低烈度段）
+### 口径：烈度 < 90 时唯一的派发族——此时斗争尚体面（弹劾 / 辩论 / 名分之争 / 决斗裁断 / 清议 / 祥瑞），
+###       处理不当可一次性引爆越过 90，此后由脏手段族接管（高烈度仍可回落本族）。
+### 求值域：story 域（story_owner 为当年君主）。
+######################################################
+
+ftr_court_civil_strife_effect = {
+	save_scope_as = ftr_court_civil_story
+	story_owner = { save_scope_as = ftr_court_civil_monarch }
+	if = {
+		limit = {
+			exists = scope:ftr_court_civil_monarch
+			NOT = {
+				scope:ftr_court_civil_monarch = {
+					has_character_flag = ftr_court_civil_cooldown
+				}
+			}
+		}
+		random_list = {
+			# M1 弹劾内阁
+			25 = {
+				scope:ftr_court_civil_story = { ftr_court_impeach_pulse_effect = yes }
+			}
+			# M2 立场辩论
+			22 = {
+				scope:ftr_court_civil_story = { ftr_court_debate_pulse_effect = yes }
+			}
+			# M3 继承名分之争
+			18 = {
+				scope:ftr_court_civil_story = { ftr_court_claim_debate_pulse_effect = yes }
+			}
+			# M4 司法决斗
+			15 = {
+				scope:ftr_court_civil_story = { ftr_court_duel_pulse_effect = yes }
+			}
+			# M5 清议 / 月旦评（非行政类政体内部回落 M2）
+			12 = {
+				scope:ftr_court_civil_story = { ftr_court_appraisal_pulse_effect = yes }
+			}
+			# M6 谶纬祥瑞
+			8 = {
+				scope:ftr_court_civil_story = { ftr_court_omen_pulse_effect = yes }
+			}
+		}
+	}
+}
+
+# M1 弹劾内阁：选一名「有党羽且有意发难」的封臣 + 一名不称职的内阁成员 → 派发 0600。
+# 派发即给君主打文明冷却 flag（与 M2 / M3 共用）。
+ftr_court_impeach_pulse_effect = {
+	save_scope_as = ftr_court_impeach_story
+	story_owner = { save_scope_as = ftr_court_impeach_monarch }
+	# 1) 锁定一名不称职的内阁成员（无可弹劾对象则不派发）
+	scope:ftr_court_impeach_monarch ?= {
+		random_councillor = {
+			limit = { ftr_court_is_incompetent_councillor_trigger = yes }
+			save_scope_as = ftr_court_impeach_target
+		}
+	}
+	# 2) 在「有党羽的封臣」中抽一名候选，再按其性格掷发难意愿
+	scope:ftr_court_impeach_monarch ?= {
+		random_vassal = {
+			limit = {
+				is_capable_adult = yes
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_impeach_monarch } }
+				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+			}
+			save_scope_as = ftr_court_impeach_candidate
+		}
+	}
+	if = {
+		limit = { exists = scope:ftr_court_impeach_candidate }
+		scope:ftr_court_impeach_candidate = {
+			random = {
+				chance = ftr_court_impeach_urge_chance_value
+				save_scope_as = ftr_court_impeach_actor
+			}
+		}
+	}
+	# 3) 派发：目标写入发起者变量（事件读取），冷却落账
+	if = {
+		limit = {
+			exists = scope:ftr_court_impeach_actor
+			exists = scope:ftr_court_impeach_target
+		}
+		scope:ftr_court_impeach_actor = {
+			set_variable = { name = ftr_court_impeach_target  value = scope:ftr_court_impeach_target }
+			add_character_flag = {
+				flag = ftr_court_civil_actor_cooldown
+				years = ftr_court_civil_strife_cooldown_years_value
+			}
+			trigger_event = { id = ftr_court_struggle.0600  days = 2 }
+		}
+		scope:ftr_court_impeach_monarch ?= {
+			add_character_flag = {
+				flag = ftr_court_civil_cooldown
+				years = ftr_court_civil_strife_cooldown_years_value
+			}
+		}
+	}
+}
+
+# M1 弹劾余波（求值域：君主＝事件 root）：参数 SIDE = 1 支持弹劾者 / 2 维护内阁 / 3 调停。
+# 通用：弹劾者与被弹劾者之间大幅恶化，并有概率滑向仇敌；
+# 站边（1/2）另按阵营重排君主关系；调停（3）使双方各得缓和小恩、但君主要掏威望。
+ftr_court_impeach_aftermath_effect = {
+	# 1) 弹劾者 ↔ 被弹劾者：大幅恶化 + 概率成仇敌
+	scope:ftr_court_impeach_target ?= {
+		add_opinion = {
+			target = scope:ftr_court_impeach_actor
+			modifier = ftr_court_impeachment_opinion
+		}
+	}
+	scope:ftr_court_impeach_actor ?= {
+		add_opinion = {
+			target = scope:ftr_court_impeach_target
+			modifier = ftr_court_impeachment_opinion
+		}
+	}
+	random = {
+		chance = 35
+		scope:ftr_court_impeach_target ?= {
+			progress_towards_rival_effect = {
+				REASON = ftr_court_impeachment_rival
+				CHARACTER = scope:ftr_court_impeach_actor
+				OPINION = -30
+			}
+		}
+	}
+	# 2) 君主站边 → 与两侧党羽关系重排
+	if = {
+		limit = { this = { $SIDE$ = 1 } }
+		scope:ftr_court_impeach_actor ?= {
+			add_opinion = { target = root  modifier = ftr_court_loyalist_opinion }
+		}
+		scope:ftr_court_impeach_target ?= {
+			add_opinion = { target = root  modifier = ftr_court_impeachment_opinion }
+		}
+	}
+	else_if = {
+		limit = { this = { $SIDE$ = 2 } }
+		scope:ftr_court_impeach_actor ?= {
+			add_opinion = { target = root  modifier = ftr_court_impeachment_opinion }
+		}
+		scope:ftr_court_impeach_target ?= {
+			add_opinion = { target = root  modifier = ftr_court_loyalist_opinion }
+		}
+	}
+	else = {
+		scope:ftr_court_impeach_actor ?= {
+			add_opinion = { target = root  modifier = ftr_court_eased_opinion }
+		}
+		scope:ftr_court_impeach_target ?= {
+			add_opinion = { target = root  modifier = ftr_court_eased_opinion }
+		}
+		add_prestige = {
+			value = 0
+			subtract = ftr_court_civil_strife_quell_prestige_value
+		}
+	}
+}
+
+# M2 立场辩论：取一名有党羽的封臣 A，再取另一党羽且立场不同的封臣 B → 派发 0610（topic = 1）。
+ftr_court_debate_pulse_effect = {
+	save_scope_as = ftr_court_debate_story
+	story_owner = { save_scope_as = ftr_court_debate_monarch }
+	scope:ftr_court_debate_monarch ?= {
+		random_vassal = {
+			limit = {
+				is_capable_adult = yes
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
+				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+			}
+			save_scope_as = ftr_court_debate_actor
+		}
+	}
+	scope:ftr_court_debate_monarch ?= {
+		random_vassal = {
+			limit = {
+				is_capable_adult = yes
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
+				NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_debate_actor } }
+				ftr_court_has_different_vassal_stance_trigger = { OTHER = scope:ftr_court_debate_actor }
+				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+			}
+			save_scope_as = ftr_court_debate_rival
+		}
+	}
+	if = {
+		limit = {
+			exists = scope:ftr_court_debate_actor
+			exists = scope:ftr_court_debate_rival
+		}
+		scope:ftr_court_debate_actor = {
+			set_variable = { name = ftr_court_debate_rival  value = scope:ftr_court_debate_rival }
+			set_variable = { name = ftr_court_debate_topic  value = 1 }
+			trigger_event = { id = ftr_court_struggle.0610  days = 2 }
+		}
+		scope:ftr_court_debate_monarch ?= {
+			add_character_flag = {
+				flag = ftr_court_civil_cooldown
+				years = ftr_court_civil_strife_cooldown_years_value
+			}
+		}
+	}
+}
+
+# M3 继承名分之争：A 有党羽，B 属另一党羽；议题 = B 所背书对象的继承名分
+# → 派发 0610（topic = 2，并把被争议的背书对象写入 A 的 ftr_court_debate_subject）。
+ftr_court_claim_debate_pulse_effect = {
+	save_scope_as = ftr_court_debate_story
+	story_owner = { save_scope_as = ftr_court_debate_monarch }
+	scope:ftr_court_debate_monarch ?= {
+		random_vassal = {
+			limit = {
+				is_capable_adult = yes
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
+				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+			}
+			save_scope_as = ftr_court_debate_actor
+		}
+	}
+	scope:ftr_court_debate_monarch ?= {
+		random_vassal = {
+			limit = {
+				is_capable_adult = yes
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
+				NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_debate_actor } }
+				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+			}
+			save_scope_as = ftr_court_debate_rival
+		}
+	}
+	scope:ftr_court_debate_rival ?= {
+		var:ftr_court_backer_of ?= { save_scope_as = ftr_court_debate_subject }
+	}
+	if = {
+		limit = {
+			exists = scope:ftr_court_debate_actor
+			exists = scope:ftr_court_debate_rival
+			exists = scope:ftr_court_debate_subject
+		}
+		scope:ftr_court_debate_actor = {
+			set_variable = { name = ftr_court_debate_rival  value = scope:ftr_court_debate_rival }
+			set_variable = { name = ftr_court_debate_topic  value = 2 }
+			set_variable = {
+				name = ftr_court_debate_subject
+				value = scope:ftr_court_debate_subject
+			}
+			trigger_event = { id = ftr_court_struggle.0610  days = 2 }
+		}
+		scope:ftr_court_debate_monarch ?= {
+			add_character_flag = {
+				flag = ftr_court_civil_cooldown
+				years = ftr_court_civil_strife_cooldown_years_value
+			}
+		}
+	}
+}
+
+# 朝堂辩论结算（求值域：发起辩者，读其 ftr_court_debate_rival / topic 变量）。
+# 口径：双方按 ftr_court_debate_strength_value 比力，胜率夹 15-85；
+# 胜方本人与其拥护对象各得威望（行政制另加影响力），败方承担额外损失，烈度升温。
+# 复杂后果由调用事件以 custom_tooltip 包裹。
+ftr_court_debate_settle_effect = {
+	var:ftr_court_debate_rival ?= { save_scope_as = ftr_court_debate_rival }
+	# 1) 双方辩论力（对手值抄到己方变量，供胜率公式读取）
+	set_variable = { name = ftr_court_debate_strength  value = ftr_court_debate_strength_value }
+	scope:ftr_court_debate_rival ?= {
+		set_variable = { name = ftr_court_debate_strength  value = ftr_court_debate_strength_value }
+	}
+	if = {
+		limit = { scope:ftr_court_debate_rival = { has_variable = ftr_court_debate_strength } }
+		set_variable = {
+			name = ftr_court_debate_foe_strength
+			value = scope:ftr_court_debate_rival.var:ftr_court_debate_strength
+		}
+	}
+	# 2) 掷胜负：权重互补（胜率 / 100-胜率）
+	random_list = {
+		ftr_court_debate_win_chance_value = {
+			# 胜：我与我拥护的人各得威望，行政制另加影响力
+			add_character_flag = { flag = ftr_court_debate_won  days = 2 }
+			add_prestige = ftr_court_debate_prestige_value
+			if = {
+				limit = { government_allows = administrative }
+				change_influence = minor_influence_gain
+			}
+			var:ftr_court_backer_of ?= {
+				add_prestige = ftr_court_debate_prestige_value
+				if = {
+					limit = { government_allows = administrative }
+					change_influence = minor_influence_gain
+				}
+				add_opinion = { target = root  modifier = ftr_court_loyalist_opinion }
+			}
+			scope:ftr_court_debate_rival ?= {
+				add_prestige = {
+					value = 0
+					subtract = ftr_court_debate_prestige_loss_value
+				}
+				add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+			}
+		}
+		ftr_court_debate_lose_chance_value = {
+			# 负：我承担额外损失，对手与其拥护者得势
+			add_character_flag = { flag = ftr_court_debate_lost  days = 2 }
+			add_prestige = {
+				value = 0
+				subtract = ftr_court_debate_prestige_loss_value
+			}
+			var:ftr_court_backer_of ?= {
+				add_prestige = {
+					value = 0
+					subtract = ftr_court_debate_prestige_loss_value
+				}
+				add_opinion = { target = root  modifier = ftr_court_disciplined_opinion }
+			}
+			scope:ftr_court_debate_rival ?= {
+				add_prestige = ftr_court_debate_prestige_value
+				if = {
+					limit = { government_allows = administrative }
+					change_influence = minor_influence_gain
+				}
+				var:ftr_court_backer_of ?= {
+					add_prestige = ftr_court_debate_prestige_value
+				}
+			}
+		}
+	}
+	# 3) 收尾：清变量、双方冷却（防连刷）
+	remove_variable = ftr_court_debate_strength
+	remove_variable = ftr_court_debate_foe_strength
+	remove_variable = ftr_court_debate_topic
+	remove_variable = ftr_court_debate_subject
+	add_character_flag = {
+		flag = ftr_court_civil_actor_cooldown
+		years = ftr_court_civil_strife_cooldown_years_value
+	}
+	var:ftr_court_debate_rival ?= {
+		add_character_flag = {
+			flag = ftr_court_civil_actor_cooldown
+			years = ftr_court_civil_strife_cooldown_years_value
+		}
+	}
+	remove_variable = ftr_court_debate_rival
+}
+
+# M4 司法决斗・比武裁决（灵感 3）：两名分属不同党羽的封臣起管辖权 / 地界纠纷，
+# 求最高领主决断 → 派发 0620（root = 君主；双方以 scope 形式交给事件）。
+ftr_court_duel_pulse_effect = {
+	save_scope_as = ftr_court_duel_story
+	story_owner = { save_scope_as = ftr_court_duel_monarch }
+	scope:ftr_court_duel_monarch ?= {
+		random_vassal = {
+			limit = {
+				is_capable_adult = yes
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_duel_monarch } }
+				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+			}
+			save_scope_as = ftr_court_duel_plaintiff
+		}
+	}
+	scope:ftr_court_duel_monarch ?= {
+		random_vassal = {
+			limit = {
+				is_capable_adult = yes
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_duel_monarch } }
+				NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_duel_plaintiff } }
+				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+			}
+			save_scope_as = ftr_court_duel_defendant
+		}
+	}
+	if = {
+		limit = {
+			exists = scope:ftr_court_duel_plaintiff
+			exists = scope:ftr_court_duel_defendant
+		}
+		scope:ftr_court_duel_plaintiff = {
+			add_character_flag = {
+				flag = ftr_court_civil_actor_cooldown
+				years = ftr_court_civil_strife_cooldown_years_value
+			}
+		}
+		scope:ftr_court_duel_monarch ?= {
+			set_variable = {
+				name = ftr_court_duel_plaintiff
+				value = scope:ftr_court_duel_plaintiff
+			}
+			set_variable = {
+				name = ftr_court_duel_defendant
+				value = scope:ftr_court_duel_defendant
+			}
+			trigger_event = { id = ftr_court_struggle.0620  days = 2 }
+			add_character_flag = {
+				flag = ftr_court_civil_cooldown
+				years = ftr_court_civil_strife_cooldown_years_value
+			}
+		}
+	}
+}
+
+# M4 比武结算（求值域：君主＝root；读 scope:ftr_court_duel_plaintiff / _defendant）。
+# 胜负由双方角力（ftr_court_duel_strength_value）掷定：胜者得望，败者失望且其党羽离心。
+ftr_court_duel_settle_effect = {
+	scope:ftr_court_duel_plaintiff ?= {
+		set_variable = { name = ftr_court_duel_strength  value = ftr_court_duel_strength_value }
+	}
+	scope:ftr_court_duel_defendant ?= {
+		set_variable = { name = ftr_court_duel_strength  value = ftr_court_duel_strength_value }
+	}
+	scope:ftr_court_duel_plaintiff ?= {
+		if = {
+			limit = {
+				scope:ftr_court_duel_defendant = { has_variable = ftr_court_duel_strength }
+			}
+			set_variable = {
+				name = ftr_court_duel_foe_strength
+				value = scope:ftr_court_duel_defendant.var:ftr_court_duel_strength
+			}
+		}
+		random_list = {
+			ftr_court_duel_win_chance_value = {
+				add_character_flag = { flag = ftr_court_duel_won  days = 2 }
+			}
+			ftr_court_duel_lose_chance_value = {
+				add_character_flag = { flag = ftr_court_duel_lost  days = 2 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:ftr_court_duel_plaintiff = { has_character_flag = ftr_court_duel_won }
+		}
+		scope:ftr_court_duel_plaintiff ?= { add_prestige = ftr_court_duel_prestige_value }
+		scope:ftr_court_duel_defendant ?= {
+			add_prestige = {
+				value = 0
+				subtract = ftr_court_duel_prestige_loss_value
+			}
+			add_opinion = {
+				target = scope:ftr_court_duel_plaintiff
+				modifier = ftr_court_targeted_opinion
+			}
+			var:ftr_court_backer_of ?= { ftr_court_discourage_backers_effect = yes }
+		}
+	}
+	else = {
+		scope:ftr_court_duel_defendant ?= { add_prestige = ftr_court_duel_prestige_value }
+		scope:ftr_court_duel_plaintiff ?= {
+			add_prestige = {
+				value = 0
+				subtract = ftr_court_duel_prestige_loss_value
+			}
+			add_opinion = {
+				target = scope:ftr_court_duel_defendant
+				modifier = ftr_court_targeted_opinion
+			}
+			var:ftr_court_backer_of ?= { ftr_court_discourage_backers_effect = yes }
+		}
+	}
+	scope:ftr_court_duel_story ?= {
+		ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value }
+	}
+	scope:ftr_court_duel_plaintiff ?= {
+		remove_variable = ftr_court_duel_strength
+		remove_variable = ftr_court_duel_foe_strength
+		add_character_flag = {
+			flag = ftr_court_civil_actor_cooldown
+			years = ftr_court_civil_strife_cooldown_years_value
+		}
+	}
+	scope:ftr_court_duel_defendant ?= {
+		remove_variable = ftr_court_duel_strength
+		add_character_flag = {
+			flag = ftr_court_civil_actor_cooldown
+			years = ftr_court_civil_strife_cooldown_years_value
+		}
+	}
+}
+
+# M5 清议 / 月旦评（灵感 4）：只对行政类政体（用影响力 / 功绩者）派发，
+# 否则回落 M2 立场辩论（本族权重不空转）；取 A 评议另一党羽的 B → 派发 0630。
+ftr_court_appraisal_pulse_effect = {
+	save_scope_as = ftr_court_appraisal_story
+	story_owner = { save_scope_as = ftr_court_appraisal_monarch }
+	if = {
+		limit = {
+			NOT = {
+				scope:ftr_court_appraisal_monarch = {
+					OR = {
+						government_has_flag = government_has_influence
+						government_has_flag = government_has_merit
+					}
+				}
+			}
+		}
+		ftr_court_debate_pulse_effect = yes
+	}
+	else = {
+		scope:ftr_court_appraisal_monarch ?= {
+			random_vassal = {
+				limit = {
+					is_capable_adult = yes
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_appraisal_monarch } }
+					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+				}
+				save_scope_as = ftr_court_appraisal_actor
+			}
+		}
+		scope:ftr_court_appraisal_monarch ?= {
+			random_vassal = {
+				limit = {
+					is_capable_adult = yes
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_appraisal_monarch } }
+					NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_appraisal_actor } }
+					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+				}
+				save_scope_as = ftr_court_appraisal_target
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:ftr_court_appraisal_actor
+				exists = scope:ftr_court_appraisal_target
+			}
+			scope:ftr_court_appraisal_actor = {
+				set_variable = {
+					name = ftr_court_appraisal_target
+					value = scope:ftr_court_appraisal_target
+				}
+				add_character_flag = {
+					flag = ftr_court_civil_actor_cooldown
+					years = ftr_court_civil_strife_cooldown_years_value
+				}
+				trigger_event = { id = ftr_court_struggle.0630  days = 2 }
+			}
+			scope:ftr_court_appraisal_monarch ?= {
+				add_character_flag = {
+					flag = ftr_court_civil_cooldown
+					years = ftr_court_civil_strife_cooldown_years_value
+				}
+			}
+		}
+	}
+}
+
+# M5 清议结算（求值域：评议者 A＝root；读 var:ftr_court_appraisal_mode 1 褒扬 / 2 贬斥）。
+# 掷成算后：褒扬成 → 被评者（"幸运儿"）按政体得功绩 / 影响力（余者折声望）且双方交好；
+# 贬斥成 → 被评者声望受损、与我结怨；评议失当 → 我方声望反噬。两支均烈度微涨。
+ftr_court_appraisal_settle_effect = {
+	if = {
+		limit = { has_variable = ftr_court_appraisal_target }
+		var:ftr_court_appraisal_target ?= { save_scope_as = ftr_court_appraisal_target }
+	}
+	set_variable = { name = ftr_court_appraisal_skill  value = ftr_court_appraisal_power_value }
+	scope:ftr_court_appraisal_target ?= {
+		set_variable = { name = ftr_court_appraisal_skill  value = ftr_court_appraisal_power_value }
+	}
+	if = {
+		limit = {
+			scope:ftr_court_appraisal_target = { has_variable = ftr_court_appraisal_skill }
+		}
+		set_variable = {
+			name = ftr_court_appraisal_foe_resist
+			value = scope:ftr_court_appraisal_target.var:ftr_court_appraisal_skill
+		}
+	}
+	random_list = {
+		ftr_court_appraisal_success_chance_value = {
+			add_character_flag = { flag = ftr_court_appraisal_success  days = 2 }
+		}
+		ftr_court_appraisal_fail_chance_value = {
+			add_character_flag = { flag = ftr_court_appraisal_failed  days = 2 }
+		}
+	}
+	if = {
+		limit = { has_character_flag = ftr_court_appraisal_success }
+		if = {
+			limit = { var:ftr_court_appraisal_mode = 1 }
+			add_character_flag = { flag = ftr_court_appraisal_praise  days = 2 }
+			scope:ftr_court_appraisal_target ?= {
+				if = {
+					limit = { government_has_flag = government_has_merit }
+					change_merit = medium_merit_gain
+				}
+				else_if = {
+					limit = { government_has_flag = government_has_influence }
+					change_influence = minor_influence_gain
+				}
+				else = { add_prestige = ftr_court_appraisal_prestige_value }
+				add_opinion = { target = root  modifier = ftr_court_loyalist_opinion }
+			}
+			add_prestige = ftr_court_appraisal_prestige_value
+		}
+		else = {
+			add_character_flag = { flag = ftr_court_appraisal_smear  days = 2 }
+			scope:ftr_court_appraisal_target ?= {
+				add_prestige = {
+					value = 0
+					subtract = ftr_court_appraisal_loss_value
+				}
+				add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+			}
+			add_prestige = ftr_court_appraisal_prestige_value
+			scope:ftr_court_appraisal_story ?= {
+				ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value }
+			}
+		}
+	}
+	else = {
+		add_prestige = {
+			value = 0
+			subtract = ftr_court_appraisal_loss_value
+		}
+		scope:ftr_court_appraisal_story ?= {
+			ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value }
+		}
+	}
+	remove_variable = ftr_court_appraisal_skill
+	remove_variable = ftr_court_appraisal_foe_resist
+	remove_variable = ftr_court_appraisal_mode
+	remove_variable = ftr_court_appraisal_target
+	add_character_flag = {
+		flag = ftr_court_civil_actor_cooldown
+		years = ftr_court_civil_strife_cooldown_years_value
+	}
+	scope:ftr_court_appraisal_target ?= {
+		remove_variable = ftr_court_appraisal_skill
+		add_character_flag = {
+			flag = ftr_court_civil_actor_cooldown
+			years = ftr_court_civil_strife_cooldown_years_value
+		}
+	}
+}
+
+# M6 谶纬祥瑞（灵感 5）：取一名有党羽的封臣造祥瑞 → 派发 0640（root = 君主）。
+ftr_court_omen_pulse_effect = {
+	save_scope_as = ftr_court_omen_story
+	story_owner = { save_scope_as = ftr_court_omen_monarch }
+	scope:ftr_court_omen_monarch ?= {
+		random_vassal = {
+			limit = {
+				is_capable_adult = yes
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_omen_monarch } }
+				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+			}
+			save_scope_as = ftr_court_omen_faker
+		}
+	}
+	scope:ftr_court_omen_faker ?= {
+		set_variable = {
+			name = ftr_court_omen_resist_temp
+			value = ftr_court_omen_faker_resist_value
+		}
+	}
+	if = {
+		limit = {
+			exists = scope:ftr_court_omen_faker
+			scope:ftr_court_omen_faker = { has_variable = ftr_court_omen_resist_temp }
+		}
+		scope:ftr_court_omen_monarch ?= {
+			set_variable = {
+				name = ftr_court_omen_faker
+				value = scope:ftr_court_omen_faker
+			}
+			set_variable = {
+				name = ftr_court_omen_faker_resist
+				value = scope:ftr_court_omen_faker.var:ftr_court_omen_resist_temp
+			}
+			trigger_event = { id = ftr_court_struggle.0640  days = 2 }
+			add_character_flag = {
+				flag = ftr_court_civil_cooldown
+				years = ftr_court_civil_strife_cooldown_years_value
+			}
+		}
+		scope:ftr_court_omen_faker ?= {
+			remove_variable = ftr_court_omen_resist_temp
+			add_character_flag = {
+				flag = ftr_court_civil_actor_cooldown
+				years = ftr_court_civil_strife_cooldown_years_value
+			}
+		}
+	}
+}
+
+# M6 天象勘验结算（求值域：君主＝root；读 var:ftr_court_omen_faker / var:ftr_court_omen_faker_resist）。
+# 识破 → 造势者声望大损、朝廷声望小得、烈度微涨；
+# 勘验无果 → 祥瑞反而坐实，造势者声望大涨、烈度按"置之不理"口径上浮。
+ftr_court_omen_inquiry_effect = {
+	if = {
+		limit = { has_variable = ftr_court_omen_faker }
+		var:ftr_court_omen_faker ?= { save_scope_as = ftr_court_omen_faker }
+	}
+	random_list = {
+		ftr_court_omen_inquiry_chance_value = {
+			add_character_flag = { flag = ftr_court_omen_debunked  days = 2 }
+		}
+		ftr_court_omen_inquiry_fail_chance_value = {
+			add_character_flag = { flag = ftr_court_omen_upheld  days = 2 }
+		}
+	}
+	if = {
+		limit = { has_character_flag = ftr_court_omen_debunked }
+		scope:ftr_court_omen_faker ?= {
+			add_prestige = {
+				value = 0
+				subtract = ftr_court_omen_debunked_loss_value
+			}
+		}
+		add_prestige = ftr_court_prestige_minor_value
+		scope:ftr_court_omen_story ?= {
+			ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value }
+		}
+	}
+	else = {
+		scope:ftr_court_omen_faker ?= { add_prestige = ftr_court_omen_prestige_value }
+		add_prestige = {
+			value = 0
+			subtract = ftr_court_prestige_minor_value
+		}
+		scope:ftr_court_omen_story ?= {
+			ftr_court_intensity_add_effect = { AMOUNT = ftr_court_omen_ignored_intensity_value }
+		}
+	}
+	remove_variable = ftr_court_omen_faker
+	remove_variable = ftr_court_omen_faker_resist
 }
 
 ######################################################
@@ -1736,7 +2488,7 @@ ftr_court_backer_force_abdication_effect = {
 }
 
 # 求值域：朝堂 story。党羽逼宫主时钟派发（由族调度 0215 调用）。
-# 条件满足时向最高领主发 0085（请立共治）或 0086（逼宫退位）；跨事件传参走君主身上的临时变量。
+# 条件满足时向最高领主发 0520（请立共治）或 0530（逼宫退位）；跨事件传参走君主身上的临时变量。
 ftr_court_backer_demand_pulse_effect = {
 	save_scope_as = ftr_court_demand_story
 	story_owner = { save_scope_as = ftr_court_demand_monarch }
@@ -1791,7 +2543,7 @@ ftr_court_backer_demand_pulse_effect = {
 					flag = ftr_court_backer_demand_cooldown
 					years = ftr_court_backer_demand_cooldown_years_value
 				}
-				trigger_event = { id = ftr_court_struggle.0086  days = 2 }
+				trigger_event = { id = ftr_court_struggle.0530  days = 2 }
 			}
 		}
 		# 情形一：尚无共治者 → 党羽要求拥立自己支持的竞争者共治
@@ -1845,7 +2597,7 @@ ftr_court_backer_demand_pulse_effect = {
 						flag = ftr_court_backer_demand_cooldown
 						years = ftr_court_backer_demand_cooldown_years_value
 					}
-					trigger_event = { id = ftr_court_struggle.0085  days = 2 }
+					trigger_event = { id = ftr_court_struggle.0520  days = 2 }
 				}
 			}
 		}

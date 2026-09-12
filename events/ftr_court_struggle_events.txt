@@ -1,7 +1,103 @@
 ﻿namespace = ftr_court_struggle
 
+# 事件编号分带（功能聚合，同族相邻、预留空位）：
+#   00xx 阶段与生命周期（0001 开始 / 0002 落幕 / 0003 对立 / 0004 危机）
+#   01xx 继位与内战善后（0100–0150）
+#   02xx 站队 · 背书 · 共治 · 参与（0200–0230）
+#   03xx 暗算链：放谣 → 伪造 → 下毒及后续（0300–0390）
+#   04xx 脏手段其余：调查 / 牵制 / 绑架 / 谋杀（0400–0430）
+#   05xx 强出口与党羽逼宫（0500–0530）
+#   06xx 文明争斗族 M1–M6（0600–0641）
+
+######### 0001 朝堂权力角逐开始（root = 被通知者） #########
+# 由 story 的 on_setup 触发，通知最高统治者、内阁成员、强势臣属、未被剥夺继承权的继任者。
+# 作用域：root = 被通知者；immediate 定位君主存入 scope:ftr_court_monarch。
+ftr_court_struggle.0001 = {
+	type = character_event
+	title = ftr_court_struggle.0001.t
+	desc = ftr_court_struggle.0001.desc
+	theme = diplomacy
+
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+		animation = personality_bold
+	}
+
+	immediate = {
+		# 定位君主：独立统治者即本人；否则走 top_liege / employer（封臣/廷臣）；
+		# 都找不到（无地继任者边界情况）时兜底用 root 自身，避免 scope 缺失。
+		if = {
+			limit = { is_independent_ruler = yes }
+			save_scope_as = ftr_court_monarch
+		}
+		else_if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+		else = {
+			save_scope_as = ftr_court_monarch
+		}
+	}
+
+	option = { # Take note of the struggle
+		name = ftr_court_struggle.0001.a
+	}
+}
+
+######### 0002 朝堂权力角逐落幕（root = 被通知者：最高领主 / 共治者 / 竞争者） #########
+# 由 story 的 on_end（经 ftr_court_notify_struggle_end_effect）触发，通知：
+#   最高领主（story_owner，仍在世时）、共治者（diarch，若存在）、所有竞争者（在世者）。
+# 作用域：root = 被通知者；immediate 定位君主存入 scope:ftr_court_monarch（对齐 0001）。
+ftr_court_struggle.0002 = {
+	type = character_event
+	title = ftr_court_struggle.0002.t
+	desc = ftr_court_struggle.0002.desc
+	theme = diplomacy
+
+	left_portrait = {
+		character = root
+		animation = personality_brave
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+		animation = personality_dignified
+	}
+
+	immediate = {
+		# 定位君主：独立统治者即本人；否则走 top_liege / employer（封臣/廷臣）；
+		# 都找不到时兜底用 root 自身，避免 scope 缺失（对齐 0001）。
+		if = {
+			limit = { is_independent_ruler = yes }
+			save_scope_as = ftr_court_monarch
+		}
+		else_if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+		else = {
+			save_scope_as = ftr_court_monarch
+		}
+	}
+
+	option = { # The dust settles
+		name = ftr_court_struggle.0002.a
+	}
+}
+
 ##############################################################
-### 阶段事件（由 story 的 effect_group 调用，root = 在位君主）
+### 00xx 阶段与生命周期（0003 对立 / 0004 危机：由 story 的 effect_group 调用，root = 在位君主）
 ##############################################################
 
 ######### 0003 对立：势均力敌 #########
@@ -91,11 +187,11 @@ ftr_court_struggle.0003 = {
 	}
 }
 
-######### 0005 危机：一触即发 #########
-ftr_court_struggle.0005 = {
+######### 0004 危机：一触即发 #########
+ftr_court_struggle.0004 = {
 	type = character_event
-	title = ftr_court_struggle.0005.t
-	desc = ftr_court_struggle.0005.desc
+	title = ftr_court_struggle.0004.t
+	desc = ftr_court_struggle.0004.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -112,7 +208,7 @@ ftr_court_struggle.0005 = {
 	}
 
 	option = { # Let the succession take its course
-		name = ftr_court_struggle.0005.a
+		name = ftr_court_struggle.0004.a
 		ai_chance = {
 			base = 35
 			modifier = { add = 35  has_trait = content }
@@ -121,7 +217,7 @@ ftr_court_struggle.0005 = {
 		}
 	}
 	option = { # Act now, before it is too late
-		name = ftr_court_struggle.0005.b
+		name = ftr_court_struggle.0004.b
 		ai_chance = {
 			base = 35
 			modifier = { add = 30  has_trait = brave }
@@ -155,7 +251,7 @@ ftr_court_struggle.0005 = {
 		}
 	}
 	option = { # Crack down on the ringleader
-		name = ftr_court_struggle.0005.c
+		name = ftr_court_struggle.0004.c
 		ai_chance = {
 			base = 30
 			modifier = { add = 25  has_trait = callous }
@@ -197,14 +293,14 @@ ftr_court_struggle.0005 = {
 }
 
 ##############################################################
-### 夺位清算链（0010 -> 0011 -> 0012）
+### 01xx 继位与内战善后（0100 老君王 → 0110 竞争者命运 → 0120 抉择 → 0130 俘者处置 → 0140 危机抉择 → 0150 废黜昏君）
 ##############################################################
 
-######### 0010 老君王的命运（root = 新君） #########
-ftr_court_struggle.0010 = {
+######### 0100 老君王的命运（root = 新君） #########
+ftr_court_struggle.0100 = {
 	type = character_event
-	title = ftr_court_struggle.0010.t
-	desc = ftr_court_struggle.0010.desc
+	title = ftr_court_struggle.0100.t
+	desc = ftr_court_struggle.0100.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -221,7 +317,7 @@ ftr_court_struggle.0010 = {
 	}
 
 	option = { # Keep them under house arrest
-		name = ftr_court_struggle.0010.a
+		name = ftr_court_struggle.0100.a
 		ai_chance = {
 			base = 40
 			modifier = {
@@ -234,20 +330,20 @@ ftr_court_struggle.0010 = {
 			target = scope:ftr_court_old_monarch
 			type = house_arrest
 		}
-		trigger_event = { id = ftr_court_struggle.0011  days = 3 }
+		trigger_event = { id = ftr_court_struggle.0110  days = 3 }
 	}
 	option = { # Throw them into the dungeon
-		name = ftr_court_struggle.0010.b
+		name = ftr_court_struggle.0100.b
 		ai_chance = { base = 25 }
 		imprison = {
 			target = scope:ftr_court_old_monarch
 			type = dungeon
 		}
 		add_dread = ftr_court_dread_medium_value
-		trigger_event = { id = ftr_court_struggle.0011  days = 3 }
+		trigger_event = { id = ftr_court_struggle.0110  days = 3 }
 	}
 	option = { # Remove the threat permanently
-		name = ftr_court_struggle.0010.c
+		name = ftr_court_struggle.0100.c
 		ai_chance = {
 			base = 35
 			modifier = {
@@ -263,15 +359,15 @@ ftr_court_struggle.0010 = {
 			death = { death_reason = death_execution }
 		}
 		add_dread = ftr_court_dread_major_value
-		trigger_event = { id = ftr_court_struggle.0011  days = 3 }
+		trigger_event = { id = ftr_court_struggle.0110  days = 3 }
 	}
 }
 
-######### 0011 其余竞争者的命运（root = 新君） #########
-ftr_court_struggle.0011 = {
+######### 0110 其余竞争者的命运（root = 新君） #########
+ftr_court_struggle.0110 = {
 	type = character_event
-	title = ftr_court_struggle.0011.t
-	desc = ftr_court_struggle.0011.desc
+	title = ftr_court_struggle.0110.t
+	desc = ftr_court_struggle.0110.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -302,7 +398,7 @@ ftr_court_struggle.0011 = {
 	}
 
 	option = { # Pardon the remaining competitors
-		name = ftr_court_struggle.0011.a
+		name = ftr_court_struggle.0110.a
 		ai_chance = {
 			base = 40
 			modifier = {
@@ -313,7 +409,7 @@ ftr_court_struggle.0011 = {
 		add_prestige = ftr_court_prestige_minor_value
 	}
 	option = { # Strike the loudest voice first
-		name = ftr_court_struggle.0011.b
+		name = ftr_court_struggle.0110.b
 		trigger = { exists = scope:ftr_court_dissenter }
 		ai_chance = {
 			base = 40
@@ -355,25 +451,25 @@ ftr_court_struggle.0011 = {
 		remove_variable = ftr_court_arrest_succeeded
 	}
 	option = { # Let them keep their titles, but watch them
-		name = ftr_court_struggle.0011.c
+		name = ftr_court_struggle.0110.c
 		trigger = {
 			exists = scope:ftr_court_dissenter
 		}
 		ai_chance = { base = 25 }
 		scope:ftr_court_dissenter = {
 			trigger_event = {
-				id = ftr_court_struggle.0012
+				id = ftr_court_struggle.0120
 				days = 5
 			}
 		}
 	}
 }
 
-######### 0012 竞争者的抉择：臣服还是再起兵（root = 竞争者） #########
-ftr_court_struggle.0012 = {
+######### 0120 竞争者的抉择：臣服还是再起兵（root = 竞争者） #########
+ftr_court_struggle.0120 = {
 	type = character_event
-	title = ftr_court_struggle.0012.t
-	desc = ftr_court_struggle.0012.desc
+	title = ftr_court_struggle.0120.t
+	desc = ftr_court_struggle.0120.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -386,7 +482,7 @@ ftr_court_struggle.0012 = {
 	}
 
 	option = { # Never. I press my claim by force.
-		name = ftr_court_struggle.0012.a
+		name = ftr_court_struggle.0120.a
 		ai_chance = {
 			base = 30
 			modifier = {
@@ -407,7 +503,7 @@ ftr_court_struggle.0012 = {
 		ftr_court_prepare_rebellion_effect = { TARGET = scope:ftr_court_new_monarch }
 	}
 	option = { # I swallow my pride and bend the knee
-		name = ftr_court_struggle.0012.b
+		name = ftr_court_struggle.0120.b
 		ai_chance = {
 			base = 70
 			modifier = {
@@ -424,14 +520,163 @@ ftr_court_struggle.0012 = {
 	}
 }
 
+######### 0130 处置被俘的叛乱者（root = 君主） #########
+# 由 ftr_succession_war 的 on_defeat 调用。
+# 继承权已在战争结算时剥夺，此处只定生死去留。
+ftr_court_struggle.0130 = {
+	type = character_event
+	title = ftr_court_struggle.0130.t
+	desc = ftr_court_struggle.0130.desc
+	theme = intrigue
 
-######### 0018 废黜昏君（root = 朝堂最强势力） #########
+	left_portrait = {
+		character = root
+		animation = rage
+	}
+	right_portrait = {
+		character = scope:ftr_court_warleader
+		animation = fear
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_monarch
+	}
+
+	option = { # Rot in the dungeon for life
+		name = ftr_court_struggle.0130.a
+		ai_chance = {
+			base = 40
+			modifier = { add = 20  has_trait = just }
+		}
+		# imprison 在囚禁者域执行（root = 君主），target 为叛乱者
+		imprison = {
+			target = scope:ftr_court_warleader
+			type = dungeon
+		}
+		add_dread = ftr_court_dread_medium_value
+	}
+	option = { # Cast them out of the realm
+		name = ftr_court_struggle.0130.b
+		ai_chance = { base = 20 }
+		scope:ftr_court_warleader ?= {
+			banish = yes
+		}
+		add_dread = ftr_court_dread_minor_value
+	}
+	option = { # An example must be made
+		name = ftr_court_struggle.0130.c
+		ai_chance = {
+			base = 30
+			modifier = { add = 40  has_trait = callous }
+			modifier = { add = -60  has_trait = compassionate }
+			modifier = { add = -30  has_trait = forgiving }
+		}
+		scope:ftr_court_warleader ?= {
+			death = { death_reason = death_execution }
+		}
+		add_dread = ftr_court_dread_major_value
+	}
+	option = { # They have lost enough already
+		name = ftr_court_struggle.0130.d
+		ai_chance = {
+			base = 10
+			modifier = { add = 50  has_trait = compassionate }
+			modifier = { add = 60  has_trait = forgiving }
+			modifier = { add = -40  has_trait = callous }
+		}
+		scope:ftr_court_warleader ?= {
+			add_opinion = {
+				target = scope:ftr_court_monarch
+				modifier = ftr_court_loyalist_opinion
+			}
+		}
+		add_prestige = ftr_court_prestige_minor_value
+	}
+}
+
+######### 0140 危机：竞争者抉择（root = 竞争者，可为无地皇子） #########
+# 由 story 的危机脉冲推送，推给竞争力最高且近期未被询问过的竞争者。
+# 起兵选项走 ftr_court_prepare_rebellion_effect：无地者先建临时公国再宣战。
+ftr_court_struggle.0140 = {
+	type = character_event
+	title = ftr_court_struggle.0140.t
+	desc = ftr_court_struggle.0140.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+		animation = shock
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_claimant
+		# 定位君主（封臣走 top_liege，廷臣走 employer）
+		if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+	}
+
+	option = { # Raise the banners
+		name = ftr_court_struggle.0140.a
+		trigger = { ftr_court_landless_rebel_valid_trigger = yes }
+		ai_chance = {
+			base = 20
+			modifier = { add = 45  has_trait = ambitious }
+			modifier = { add = 30  has_trait = brave }
+			modifier = { add = -60  has_trait = content }
+			modifier = { add = -40  has_trait = craven }
+		}
+		add_character_flag = { flag = ftr_court_asked_to_rebel  years = ftr_court_ask_throttle_years_value }
+		ftr_court_prepare_rebellion_effect = { TARGET = scope:ftr_court_monarch }
+	}
+	option = { # Strike from the shadows
+		name = ftr_court_struggle.0140.b
+		# 政变走 ftr 的 coup scheme，不限政体（封建制亦可用；coup 密谋不要求领地）。
+		# 依赖：发起者为君主的朝堂成员（coup valid = courtier/vassal），危机时通常满足。
+		ai_chance = {
+			base = 25
+			modifier = { add = 30  has_trait = ambitious }
+			modifier = { add = 20  intrigue >= 15 }
+			modifier = { add = -40  has_trait = just }
+		}
+		# 竞争者以政变（coup 计谋）夺位，无需领地
+		start_scheme = {
+			type = coup
+			target_character = scope:ftr_court_monarch
+		}
+		add_character_flag = { flag = ftr_court_asked_to_rebel  years = ftr_court_ask_throttle_years_value }
+	}
+	option = { # Bide my time
+		name = ftr_court_struggle.0140.c
+		ai_chance = {
+			base = 55
+			ftr_court_strife_peace_ai_modifier = yes
+			modifier = { add = 40  has_trait = content }
+			modifier = { add = 30  has_trait = craven }
+			modifier = { add = -30  has_trait = impatient }
+		}
+		add_character_flag = { flag = ftr_court_asked_to_rebel  years = ftr_court_ask_throttle_years_value }
+		add_stress = medium_stress_gain
+	}
+}
+
+
+######### 0150 废黜昏君（root = 朝堂最强势力） #########
 # 由 story 的危机脉冲推送：拉锯达到夺位阈值且君主失能时，
 # 权力的真正主人会考虑换一个提线木偶——或者自己坐上去。
-ftr_court_struggle.0018 = {
+ftr_court_struggle.0150 = {
 	type = character_event
-	title = ftr_court_struggle.0018.t
-	desc = ftr_court_struggle.0018.desc
+	title = ftr_court_struggle.0150.t
+	desc = ftr_court_struggle.0150.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -457,7 +702,7 @@ ftr_court_struggle.0018 = {
 	}
 
 	option = { # The puppet strings are mine — why not the throne?
-		name = ftr_court_struggle.0018.a
+		name = ftr_court_struggle.0150.a
 		ai_chance = {
 			base = 25
 			modifier = { add = 50  has_trait = ambitious }
@@ -474,7 +719,7 @@ ftr_court_struggle.0018 = {
 	}
 
 	option = { # The strings are enough — for now
-		name = ftr_court_struggle.0018.b
+		name = ftr_court_struggle.0150.b
 		ai_chance = {
 			base = 75
 			ftr_court_strife_peace_ai_modifier = yes
@@ -488,16 +733,20 @@ ftr_court_struggle.0018 = {
 	}
 }
 
-######### 0014 朝堂站队（root = 被询问/主动表态的朝堂成员，可为无地廷臣） #########
+##############################################################
+### 02xx 站队 · 背书 · 共治 · 参与（0200 站队 / 0210 首肯 / 0220 共治请愿 / 0230 参与角逐）
+##############################################################
+
+######### 0200 朝堂站队（root = 被询问/主动表态的朝堂成员，可为无地廷臣） #########
 # 触发源：
 #   1) story 的对立/危机脉冲推送（随机询问一名未站队封臣/廷臣）；
 #   2) 决策 ftr_court_declare_backing_decision（玩家/AI 主动表态，原支持交互已废除）。
-# 五个支持选项不再直接建立背书：先把支持者身份暂存到被支持者身上并触发 0022，
+# 五个支持选项不再直接建立背书：先把支持者身份暂存到被支持者身上并触发 0210，
 # 由被支持者决定是否接受这份公开拥立（接受才走 ftr_court_apply_backing_effect 全套记账）。
-ftr_court_struggle.0014 = {
+ftr_court_struggle.0200 = {
 	type = character_event
-	title = ftr_court_struggle.0014.t
-	desc = ftr_court_struggle.0014.desc
+	title = ftr_court_struggle.0200.t
+	desc = ftr_court_struggle.0200.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -549,7 +798,7 @@ ftr_court_struggle.0014 = {
 	}
 
 	option = { # Back the strongest
-		name = ftr_court_struggle.0014.a
+		name = ftr_court_struggle.0200.a
 		# 不能支持自己：若 root 本人是参与者（可能进入前五名单），该选项隐藏
 		trigger = {
 			exists = scope:ftr_court_claimant_1
@@ -563,16 +812,16 @@ ftr_court_struggle.0014 = {
 		# 效果对玩家不可见：把全部请求效果包进 custom_tooltip，只显示一句流程说明
 		# （向被支持者提出拥立 → 由其定夺 → 接受才建立公开背书）
 		custom_tooltip = {
-			text = ftr_court_struggle.0014.offer_back_tt
+			text = ftr_court_struggle.0200.offer_back_tt
 			save_scope_as = ftr_court_pending_offerer
 			scope:ftr_court_claimant_1 = {
 				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
-				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+				trigger_event = { id = ftr_court_struggle.0210  days = 2 }
 			}
 		}
 	}
 	option = { # Back the second
-		name = ftr_court_struggle.0014.b
+		name = ftr_court_struggle.0200.b
 		trigger = {
 			exists = scope:ftr_court_claimant_2
 			scope:ftr_court_claimant_2 = { NOT = { this = root } }
@@ -583,16 +832,16 @@ ftr_court_struggle.0014 = {
 			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_2 }
 		}
 		custom_tooltip = {
-			text = ftr_court_struggle.0014.offer_back_tt
+			text = ftr_court_struggle.0200.offer_back_tt
 			save_scope_as = ftr_court_pending_offerer
 			scope:ftr_court_claimant_2 = {
 				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
-				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+				trigger_event = { id = ftr_court_struggle.0210  days = 2 }
 			}
 		}
 	}
 	option = { # Back a dark horse
-		name = ftr_court_struggle.0014.c
+		name = ftr_court_struggle.0200.c
 		trigger = {
 			exists = scope:ftr_court_claimant_3
 			scope:ftr_court_claimant_3 = { NOT = { this = root } }
@@ -603,16 +852,16 @@ ftr_court_struggle.0014 = {
 			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_3 }
 		}
 		custom_tooltip = {
-			text = ftr_court_struggle.0014.offer_back_tt
+			text = ftr_court_struggle.0200.offer_back_tt
 			save_scope_as = ftr_court_pending_offerer
 			scope:ftr_court_claimant_3 = {
 				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
-				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+				trigger_event = { id = ftr_court_struggle.0210  days = 2 }
 			}
 		}
 	}
 	option = { # Back the fourth
-		name = ftr_court_struggle.0014.d
+		name = ftr_court_struggle.0200.d
 		trigger = {
 			exists = scope:ftr_court_claimant_4
 			scope:ftr_court_claimant_4 = { NOT = { this = root } }
@@ -623,16 +872,16 @@ ftr_court_struggle.0014 = {
 			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_4 }
 		}
 		custom_tooltip = {
-			text = ftr_court_struggle.0014.offer_back_tt
+			text = ftr_court_struggle.0200.offer_back_tt
 			save_scope_as = ftr_court_pending_offerer
 			scope:ftr_court_claimant_4 = {
 				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
-				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+				trigger_event = { id = ftr_court_struggle.0210  days = 2 }
 			}
 		}
 	}
 	option = { # Back the fifth
-		name = ftr_court_struggle.0014.e
+		name = ftr_court_struggle.0200.e
 		trigger = {
 			exists = scope:ftr_court_claimant_5
 			scope:ftr_court_claimant_5 = { NOT = { this = root } }
@@ -643,16 +892,16 @@ ftr_court_struggle.0014 = {
 			ftr_court_back_stickiness_ai_modifier = { CLAIMANT = scope:ftr_court_claimant_5 }
 		}
 		custom_tooltip = {
-			text = ftr_court_struggle.0014.offer_back_tt
+			text = ftr_court_struggle.0200.offer_back_tt
 			save_scope_as = ftr_court_pending_offerer
 			scope:ftr_court_claimant_5 = {
 				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
-				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+				trigger_event = { id = ftr_court_struggle.0210  days = 2 }
 			}
 		}
 	}
 	option = { # 支持君主（保皇表态）
-		name = ftr_court_struggle.0014.g
+		name = ftr_court_struggle.0200.g
 		trigger = {
 			exists = scope:ftr_court_monarch
 			# 君主已占候选位（异常情况）则不重复出现
@@ -673,16 +922,16 @@ ftr_court_struggle.0014 = {
 			modifier = { add = -20  has_trait = ambitious }
 		}
 		custom_tooltip = {
-			text = ftr_court_struggle.0014.offer_back_tt
+			text = ftr_court_struggle.0200.offer_back_tt
 			save_scope_as = ftr_court_pending_offerer
 			scope:ftr_court_monarch = {
 				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
-				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+				trigger_event = { id = ftr_court_struggle.0210  days = 2 }
 			}
 		}
 	}
 	option = { # 支持共治者（存在且未占候选位时才出现）
-		name = ftr_court_struggle.0014.h
+		name = ftr_court_struggle.0200.h
 		trigger = {
 			exists = scope:ftr_court_diarch
 			NOT = { scope:ftr_court_diarch = { this = root } }
@@ -698,16 +947,16 @@ ftr_court_struggle.0014 = {
 			ftr_court_back_diarch_ai_modifier = yes
 		}
 		custom_tooltip = {
-			text = ftr_court_struggle.0014.offer_back_tt
+			text = ftr_court_struggle.0200.offer_back_tt
 			save_scope_as = ftr_court_pending_offerer
 			scope:ftr_court_diarch = {
 				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
-				trigger_event = { id = ftr_court_struggle.0022  days = 2 }
+				trigger_event = { id = ftr_court_struggle.0210  days = 2 }
 			}
 		}
 	}
 	option = { # Watch and wait
-		name = ftr_court_struggle.0014.f
+		name = ftr_court_struggle.0200.f
 		ai_chance = {
 			base = 35
 			ftr_court_strife_peace_ai_modifier = yes
@@ -718,29 +967,29 @@ ftr_court_struggle.0014 = {
 	}
 }
 
-######### 0022 拥立需得首肯（root = 被支持的权贵/竞争者） #########
-# 0014 站队 / 表态支持选中某人后，不再直接建立背书：先在 root（被支持者）上暂存
+######### 0210 拥立需得首肯（root = 被支持的权贵/竞争者） #########
+# 0200 站队 / 表态支持选中某人后，不再直接建立背书：先在 root（被支持者）上暂存
 # 支持者身份（var:ftr_court_pending_backer），再触发本事件（延迟 2 天），由被支持者定夺。
 # 接受 → 切回支持者作用域调用公共记账 ftr_court_apply_backing_effect（登记背书 + 双向好感 +
 # 树敌/声望/君主通报全套）；拒绝 → 双方交恶（两个专用 opinion modifier）。
-ftr_court_struggle.0022 = {
+ftr_court_struggle.0210 = {
 	type = character_event
-	title = ftr_court_struggle.0022.t
+	title = ftr_court_struggle.0210.t
 	# 动态描述：被支持者是君主 / 共治者时改用「效忠 / 拥戴」口吻
 	# （原句「登上大位」只适用于竞争者，对在位者不成立）
 	desc = {
 		first_valid = {
 			triggered_desc = {
 				trigger = { ftr_court_is_struggle_monarch_trigger = yes }
-				desc = ftr_court_struggle.0022.desc_monarch
+				desc = ftr_court_struggle.0210.desc_monarch
 			}
 			triggered_desc = {
 				trigger = {
 					liege ?= { diarch ?= { this = root } }
 				}
-				desc = ftr_court_struggle.0022.desc_diarch
+				desc = ftr_court_struggle.0210.desc_diarch
 			}
-			desc = ftr_court_struggle.0022.desc
+			desc = ftr_court_struggle.0210.desc
 		}
 	}
 	theme = diplomacy
@@ -791,7 +1040,7 @@ ftr_court_struggle.0022 = {
 	}
 
 	option = { # Accept their backing
-		name = ftr_court_struggle.0022.a
+		name = ftr_court_struggle.0210.a
 		trigger = { exists = scope:ftr_court_offerer }
 		ai_chance = {
 			base = 65
@@ -815,13 +1064,13 @@ ftr_court_struggle.0022 = {
 			# 接受结果通知支持者（send_interface_message 仅当接收者为当前玩家时显示）
 			send_interface_message = {
 				type = event_generic_good
-				title = ftr_court_struggle.0022.accept_notify
+				title = ftr_court_struggle.0210.accept_notify
 				left_icon = scope:ftr_court_offer_recipient
 			}
 		}
 	}
 	option = { # Refuse their backing
-		name = ftr_court_struggle.0022.b
+		name = ftr_court_struggle.0210.b
 		trigger = { exists = scope:ftr_court_offerer }
 		ai_chance = {
 			base = 35
@@ -842,171 +1091,22 @@ ftr_court_struggle.0022 = {
 			# 拒绝结果通知支持者（send_interface_message 仅当接收者为当前玩家时显示）
 			send_interface_message = {
 				type = event_generic_bad
-				title = ftr_court_struggle.0022.refuse_notify
+				title = ftr_court_struggle.0210.refuse_notify
 				left_icon = scope:ftr_court_offer_recipient
 			}
 		}
 	}
 }
 
-######### 0015 危机：竞争者抉择（root = 竞争者，可为无地皇子） #########
-# 由 story 的危机脉冲推送，推给竞争力最高且近期未被询问过的竞争者。
-# 起兵选项走 ftr_court_prepare_rebellion_effect：无地者先建临时公国再宣战。
-ftr_court_struggle.0015 = {
-	type = character_event
-	title = ftr_court_struggle.0015.t
-	desc = ftr_court_struggle.0015.desc
-	theme = intrigue
-
-	left_portrait = {
-		character = root
-		animation = scheme
-	}
-	right_portrait = {
-		character = scope:ftr_court_monarch
-		animation = shock
-	}
-
-	immediate = {
-		save_scope_as = ftr_court_claimant
-		# 定位君主（封臣走 top_liege，廷臣走 employer）
-		if = {
-			limit = { exists = top_liege }
-			top_liege = { save_scope_as = ftr_court_monarch }
-		}
-		else_if = {
-			limit = { exists = employer }
-			employer = { save_scope_as = ftr_court_monarch }
-		}
-	}
-
-	option = { # Raise the banners
-		name = ftr_court_struggle.0015.a
-		trigger = { ftr_court_landless_rebel_valid_trigger = yes }
-		ai_chance = {
-			base = 20
-			modifier = { add = 45  has_trait = ambitious }
-			modifier = { add = 30  has_trait = brave }
-			modifier = { add = -60  has_trait = content }
-			modifier = { add = -40  has_trait = craven }
-		}
-		add_character_flag = { flag = ftr_court_asked_to_rebel  years = ftr_court_ask_throttle_years_value }
-		ftr_court_prepare_rebellion_effect = { TARGET = scope:ftr_court_monarch }
-	}
-	option = { # Strike from the shadows
-		name = ftr_court_struggle.0015.b
-		# 政变走 ftr 的 coup scheme，不限政体（封建制亦可用；coup 密谋不要求领地）。
-		# 依赖：发起者为君主的朝堂成员（coup valid = courtier/vassal），危机时通常满足。
-		ai_chance = {
-			base = 25
-			modifier = { add = 30  has_trait = ambitious }
-			modifier = { add = 20  intrigue >= 15 }
-			modifier = { add = -40  has_trait = just }
-		}
-		# 竞争者以政变（coup 计谋）夺位，无需领地
-		start_scheme = {
-			type = coup
-			target_character = scope:ftr_court_monarch
-		}
-		add_character_flag = { flag = ftr_court_asked_to_rebel  years = ftr_court_ask_throttle_years_value }
-	}
-	option = { # Bide my time
-		name = ftr_court_struggle.0015.c
-		ai_chance = {
-			base = 55
-			ftr_court_strife_peace_ai_modifier = yes
-			modifier = { add = 40  has_trait = content }
-			modifier = { add = 30  has_trait = craven }
-			modifier = { add = -30  has_trait = impatient }
-		}
-		add_character_flag = { flag = ftr_court_asked_to_rebel  years = ftr_court_ask_throttle_years_value }
-		add_stress = medium_stress_gain
-	}
-}
-
-######### 0013 处置被俘的叛乱者（root = 君主） #########
-# 由 ftr_succession_war 的 on_defeat 调用。
-# 继承权已在战争结算时剥夺，此处只定生死去留。
-ftr_court_struggle.0013 = {
-	type = character_event
-	title = ftr_court_struggle.0013.t
-	desc = ftr_court_struggle.0013.desc
-	theme = intrigue
-
-	left_portrait = {
-		character = root
-		animation = rage
-	}
-	right_portrait = {
-		character = scope:ftr_court_warleader
-		animation = fear
-	}
-
-	immediate = {
-		save_scope_as = ftr_court_monarch
-	}
-
-	option = { # Rot in the dungeon for life
-		name = ftr_court_struggle.0013.a
-		ai_chance = {
-			base = 40
-			modifier = { add = 20  has_trait = just }
-		}
-		# imprison 在囚禁者域执行（root = 君主），target 为叛乱者
-		imprison = {
-			target = scope:ftr_court_warleader
-			type = dungeon
-		}
-		add_dread = ftr_court_dread_medium_value
-	}
-	option = { # Cast them out of the realm
-		name = ftr_court_struggle.0013.b
-		ai_chance = { base = 20 }
-		scope:ftr_court_warleader ?= {
-			banish = yes
-		}
-		add_dread = ftr_court_dread_minor_value
-	}
-	option = { # An example must be made
-		name = ftr_court_struggle.0013.c
-		ai_chance = {
-			base = 30
-			modifier = { add = 40  has_trait = callous }
-			modifier = { add = -60  has_trait = compassionate }
-			modifier = { add = -30  has_trait = forgiving }
-		}
-		scope:ftr_court_warleader ?= {
-			death = { death_reason = death_execution }
-		}
-		add_dread = ftr_court_dread_major_value
-	}
-	option = { # They have lost enough already
-		name = ftr_court_struggle.0013.d
-		ai_chance = {
-			base = 10
-			modifier = { add = 50  has_trait = compassionate }
-			modifier = { add = 60  has_trait = forgiving }
-			modifier = { add = -40  has_trait = callous }
-		}
-		scope:ftr_court_warleader ?= {
-			add_opinion = {
-				target = scope:ftr_court_monarch
-				modifier = ftr_court_loyalist_opinion
-			}
-		}
-		add_prestige = ftr_court_prestige_minor_value
-	}
-}
-
 ##############################################################
-### 共治请愿
+### 0220 共治请愿（02xx 带内：君主裁断是否接纳共治）
 ##############################################################
 
-######### 0020 裁决共治请愿（root = 在位君主） #########
-ftr_court_struggle.0020 = {
+######### 0220 裁决共治请愿（root = 在位君主） #########
+ftr_court_struggle.0220 = {
 	type = character_event
-	title = ftr_court_struggle.0020.t
-	desc = ftr_court_struggle.0020.desc
+	title = ftr_court_struggle.0220.t
+	desc = ftr_court_struggle.0220.desc
 	theme = diplomacy
 
 	left_portrait = {
@@ -1019,7 +1119,7 @@ ftr_court_struggle.0020 = {
 	}
 
 	option = { # Grant them a share of power
-		name = ftr_court_struggle.0020.a
+		name = ftr_court_struggle.0220.a
 		ai_chance = {
 			base = 30
 			modifier = {
@@ -1054,7 +1154,7 @@ ftr_court_struggle.0020 = {
 		}
 	}
 	option = { # Refuse outright
-		name = ftr_court_struggle.0020.b
+		name = ftr_court_struggle.0220.b
 		ai_chance = {
 			base = 70
 			modifier = {
@@ -1068,102 +1168,15 @@ ftr_court_struggle.0020 = {
 	}
 }
 
-######### 0019 朝堂权力角逐开始（root = 被通知者） #########
-# 由 story 的 on_setup 触发，通知最高统治者、内阁成员、强势臣属、未被剥夺继承权的继任者。
-# 作用域：root = 被通知者；immediate 定位君主存入 scope:ftr_court_monarch。
-ftr_court_struggle.0019 = {
-	type = character_event
-	title = ftr_court_struggle.0019.t
-	desc = ftr_court_struggle.0019.desc
-	theme = diplomacy
-
-	left_portrait = {
-		character = root
-		animation = shock
-	}
-	right_portrait = {
-		character = scope:ftr_court_monarch
-		animation = personality_bold
-	}
-
-	immediate = {
-		# 定位君主：独立统治者即本人；否则走 top_liege / employer（封臣/廷臣）；
-		# 都找不到（无地继任者边界情况）时兜底用 root 自身，避免 scope 缺失。
-		if = {
-			limit = { is_independent_ruler = yes }
-			save_scope_as = ftr_court_monarch
-		}
-		else_if = {
-			limit = { exists = top_liege }
-			top_liege = { save_scope_as = ftr_court_monarch }
-		}
-		else_if = {
-			limit = { exists = employer }
-			employer = { save_scope_as = ftr_court_monarch }
-		}
-		else = {
-			save_scope_as = ftr_court_monarch
-		}
-	}
-
-	option = { # Take note of the struggle
-		name = ftr_court_struggle.0019.a
-	}
-}
-
-######### 0021 朝堂权力角逐落幕（root = 被通知者：最高领主 / 共治者 / 竞争者） #########
-# 由 story 的 on_end（经 ftr_court_notify_struggle_end_effect）触发，通知：
-#   最高领主（story_owner，仍在世时）、共治者（diarch，若存在）、所有竞争者（在世者）。
-# 作用域：root = 被通知者；immediate 定位君主存入 scope:ftr_court_monarch（对齐 0019）。
-ftr_court_struggle.0021 = {
-	type = character_event
-	title = ftr_court_struggle.0021.t
-	desc = ftr_court_struggle.0021.desc
-	theme = diplomacy
-
-	left_portrait = {
-		character = root
-		animation = personality_brave
-	}
-	right_portrait = {
-		character = scope:ftr_court_monarch
-		animation = personality_dignified
-	}
-
-	immediate = {
-		# 定位君主：独立统治者即本人；否则走 top_liege / employer（封臣/廷臣）；
-		# 都找不到时兜底用 root 自身，避免 scope 缺失（对齐 0019）。
-		if = {
-			limit = { is_independent_ruler = yes }
-			save_scope_as = ftr_court_monarch
-		}
-		else_if = {
-			limit = { exists = top_liege }
-			top_liege = { save_scope_as = ftr_court_monarch }
-		}
-		else_if = {
-			limit = { exists = employer }
-			employer = { save_scope_as = ftr_court_monarch }
-		}
-		else = {
-			save_scope_as = ftr_court_monarch
-		}
-	}
-
-	option = { # The dust settles
-		name = ftr_court_struggle.0021.a
-	}
-}
-
-######### 0040 是否参与继位角逐（root = 潜在继任者） #########
+######### 0230 是否参与继位角逐（root = 潜在继任者） #########
 # 由 story 的启动 / 定期刷新（ftr_court_launch_participation_asks_effect）推给潜在继任者。
 # 血缘继承：询问君主子女 / 兄弟姐妹；选举继承：按主头衔继承顺位询问。
 # 选项：参与（加入角逐，可被他人支持） / 不参与（终身 flag，防止被他人主动支持）。
 # 参与人数已达上限（5）时不询问；已明确表示不参与者不询问。
-ftr_court_struggle.0040 = {
+ftr_court_struggle.0230 = {
 	type = character_event
-	title = ftr_court_struggle.0040.t
-	desc = ftr_court_struggle.0040.desc
+	title = ftr_court_struggle.0230.t
+	desc = ftr_court_struggle.0230.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -1227,7 +1240,7 @@ ftr_court_struggle.0040 = {
 	}
 
 	option = { # I will enter the contest for the throne
-		name = ftr_court_struggle.0040.a
+		name = ftr_court_struggle.0230.a
 		trigger = {
 			exists = scope:ftr_court_story
 			NOT = { has_character_flag = ftr_court_declined_contest }
@@ -1290,7 +1303,7 @@ ftr_court_struggle.0040 = {
 		}
 	}
 	option = { # I want no part in this contest
-		name = ftr_court_struggle.0040.b
+		name = ftr_court_struggle.0230.b
 		trigger = {
 			# 主头衔第一顺位继承人不得拒绝参与角逐（只能选 a）
 			NOT = { is_primary_heir_of = scope:ftr_court_monarch }
@@ -1308,20 +1321,19 @@ ftr_court_struggle.0040 = {
 	}
 }
 
-# 0041 君主警觉事件已废弃移除（§7.1）：
-# 公开背书对最高领主的通报改为 interface_message（见 ftr_court_apply_backing_effect 第 6 步）；
-# 「惊君处置」警告 flag（ftr_liege_warn_not_support_heir）改由新交互
-# ftr_court_discipline_backer_interaction（敲打党羽）承接。
+##############################################################
+### 03xx 暗算链：放谣 0300 → 伪造 0310 → 下毒 0320，后续 0330–0390（§12.4.2 手段 2.1）
+##############################################################
 
-######### 0050-0052 诬陷下毒链（§12.4.2 手段 2.1，全新） #########
+######### 0300-0320 诬陷下毒链（§12.4.2 手段 2.1，全新） #########
 # root = 发起竞争的竞争者；immediate 从自身变量 ftr_court_strife_victim 读取攻击对象（另一竞争者/君主）。
 # 由 60-120 天内斗主时钟按烈度区间派发（见 story_cycles effect_group）。凡攻击成功后需推高烈度。
 # 定位君主/故事的 helper：actor 走 top_liege/employer。
 
-ftr_court_struggle.0050 = { # 放谣诋毁（对立区 90+）
+ftr_court_struggle.0300 = { # 放谣诋毁（对立区 90+）
 	type = character_event
-	title = ftr_court_struggle.0050.t
-	desc = ftr_court_struggle.0050.desc
+	title = ftr_court_struggle.0300.t
+	desc = ftr_court_struggle.0300.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -1356,7 +1368,7 @@ ftr_court_struggle.0050 = { # 放谣诋毁（对立区 90+）
 	}
 
 	option = { # Spread the calumny
-		name = ftr_court_struggle.0050.a
+		name = ftr_court_struggle.0300.a
 		ai_chance = {
 			base = 55
 			modifier = { add = 25  has_trait = ambitious }
@@ -1364,10 +1376,10 @@ ftr_court_struggle.0050 = { # 放谣诋毁（对立区 90+）
 			modifier = { add = -30  has_trait = honest }
 		}
 		scope:ftr_court_victim ?= {
-			# 记下诋毁者（供 0053 读取）
+			# 记下诋毁者（供 0330 读取）
 			set_variable = { name = ftr_court_strife_actor  value = scope:ftr_court_actor }
 			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
-			trigger_event = { id = ftr_court_struggle.0053  days = 1 } # 受害者得知被诋毁
+			trigger_event = { id = ftr_court_struggle.0330  days = 1 } # 受害者得知被诋毁
 		}
 		# 放谣：victim 声望受损，并推高烈度
 		scope:ftr_court_story ?= {
@@ -1385,7 +1397,7 @@ ftr_court_struggle.0050 = { # 放谣诋毁（对立区 90+）
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
 	}
 	option = { # Hold my tongue
-		name = ftr_court_struggle.0050.b
+		name = ftr_court_struggle.0300.b
 		ai_chance = {
 			base = 45
 			ftr_court_strife_peace_ai_modifier = yes
@@ -1397,10 +1409,10 @@ ftr_court_struggle.0050 = { # 放谣诋毁（对立区 90+）
 	}
 }
 
-ftr_court_struggle.0051 = { # 伪造贪腐证据（濒危区 140+，intrigue 门槛）
+ftr_court_struggle.0310 = { # 伪造贪腐证据（濒危区 140+，intrigue 门槛）
 	type = character_event
-	title = ftr_court_struggle.0051.t
-	desc = ftr_court_struggle.0051.desc
+	title = ftr_court_struggle.0310.t
+	desc = ftr_court_struggle.0310.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -1434,23 +1446,23 @@ ftr_court_struggle.0051 = { # 伪造贪腐证据（濒危区 140+，intrigue 门
 	}
 
 	option = { # Forge the evidence
-		name = ftr_court_struggle.0051.a
+		name = ftr_court_struggle.0310.a
 		ai_chance = {
 			base = 60
 			modifier = { add = 25  has_trait = ambitious }
 			modifier = { add = 20  intrigue >= 12 }
 			modifier = { add = -35  has_trait = just }
 		}
-		# 伪造证据指控 victim——通知 victim（0054），由君主(arbiter)裁决
+		# 伪造证据指控 victim——通知 victim（0340），由君主(arbiter)裁决
 		scope:ftr_court_victim ?= {
 			set_variable = { name = ftr_court_strife_actor  value = scope:ftr_court_actor }
 			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
-			trigger_event = { id = ftr_court_struggle.0054  days = 2 }
+			trigger_event = { id = ftr_court_struggle.0340  days = 2 }
 		}
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
 	}
 	option = { # Not worth the risk
-		name = ftr_court_struggle.0051.b
+		name = ftr_court_struggle.0310.b
 		ai_chance = {
 			base = 40
 			ftr_court_strife_peace_ai_modifier = yes
@@ -1462,10 +1474,10 @@ ftr_court_struggle.0051 = { # 伪造贪腐证据（濒危区 140+，intrigue 门
 	}
 }
 
-ftr_court_struggle.0052 = { # 下毒（濒危区 140+，更隐秘，callous/intrigue 门槛）
+ftr_court_struggle.0320 = { # 下毒（濒危区 140+，更隐秘，callous/intrigue 门槛）
 	type = character_event
-	title = ftr_court_struggle.0052.t
-	desc = ftr_court_struggle.0052.desc
+	title = ftr_court_struggle.0320.t
+	desc = ftr_court_struggle.0320.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -1499,23 +1511,23 @@ ftr_court_struggle.0052 = { # 下毒（濒危区 140+，更隐秘，callous/intr
 	}
 
 	option = { # Slip them poison
-		name = ftr_court_struggle.0052.a
+		name = ftr_court_struggle.0320.a
 		ai_chance = {
 			base = 40
 			modifier = { add = 30  has_trait = callous }
 			modifier = { add = 25  intrigue >= 12 }
 			modifier = { add = -50  has_trait = just }
 		}
-		# 下毒：通知 victim（触发 victim 侧结果事件 0055），成功与否由 0055 判定
+		# 下毒：通知 victim（触发 victim 侧结果事件 0350），成功与否由 0350 判定
 		scope:ftr_court_victim ?= {
 			set_variable = { name = ftr_court_strife_actor  value = scope:ftr_court_actor }
 			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
-			trigger_event = { id = ftr_court_struggle.0055  days = 2 }
+			trigger_event = { id = ftr_court_struggle.0350  days = 2 }
 		}
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
 	}
 	option = { # A poison that sickens, not kills
-		name = ftr_court_struggle.0052.b
+		name = ftr_court_struggle.0320.b
 		ai_chance = {
 			base = 30
 			modifier = { add = 25  has_trait = callous }
@@ -1526,12 +1538,12 @@ ftr_court_struggle.0052 = { # 下毒（濒危区 140+，更隐秘，callous/intr
 		scope:ftr_court_victim ?= {
 			set_variable = { name = ftr_court_strife_actor  value = scope:ftr_court_actor }
 			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
-			trigger_event = { id = ftr_court_struggle.0056  days = 2 }
+			trigger_event = { id = ftr_court_struggle.0360  days = 2 }
 		}
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
 	}
 	option = { # Stay my hand
-		name = ftr_court_struggle.0052.c
+		name = ftr_court_struggle.0320.c
 		ai_chance = {
 			base = 30
 			ftr_court_strife_peace_ai_modifier = yes
@@ -1545,10 +1557,10 @@ ftr_court_struggle.0052 = { # 下毒（濒危区 140+，更隐秘，callous/intr
 
 # ---- 诬陷链的 victim 侧结果事件（root = 被针对的受害者）----
 
-ftr_court_struggle.0053 = { # 受害者得知被放谣诋毁
+ftr_court_struggle.0330 = { # 受害者得知被放谣诋毁
 	type = character_event
-	title = ftr_court_struggle.0053.t
-	desc = ftr_court_struggle.0053.desc
+	title = ftr_court_struggle.0330.t
+	desc = ftr_court_struggle.0330.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -1562,7 +1574,7 @@ ftr_court_struggle.0053 = { # 受害者得知被放谣诋毁
 
 	immediate = {
 		save_scope_as = ftr_court_victim
-		# 从自身变量读取攻击者（0050.a 触发前写入 ftr_court_strife_actor）
+		# 从自身变量读取攻击者（0300.a 触发前写入 ftr_court_strife_actor）
 		if = {
 			limit = { has_variable = ftr_court_strife_actor }
 			var:ftr_court_strife_actor ?= { save_scope_as = ftr_court_actor }
@@ -1579,7 +1591,7 @@ ftr_court_struggle.0053 = { # 受害者得知被放谣诋毁
 	}
 
 	option = { # Bite back with a counter-rumour
-		name = ftr_court_struggle.0053.a
+		name = ftr_court_struggle.0330.a
 		ai_chance = {
 			base = 45
 			modifier = { add = 25  has_trait = ambitious }
@@ -1590,11 +1602,11 @@ ftr_court_struggle.0053 = { # 受害者得知被放谣诋毁
 		scope:ftr_court_actor ?= {
 			add_opinion = { target = scope:ftr_court_victim  modifier = ftr_court_targeted_opinion }
 		}
-		# 链向 0057：victim 决定把舆论战升级还是收手
-		trigger_event = { id = ftr_court_struggle.0057  days = 2 }
+		# 链向 0370：victim 决定把舆论战升级还是收手
+		trigger_event = { id = ftr_court_struggle.0370  days = 2 }
 	}
 	option = { # Weather the storm
-		name = ftr_court_struggle.0053.b
+		name = ftr_court_struggle.0330.b
 		ai_chance = {
 			base = 55
 			modifier = { add = 20  has_trait = patient }
@@ -1606,10 +1618,10 @@ ftr_court_struggle.0053 = { # 受害者得知被放谣诋毁
 	}
 }
 
-ftr_court_struggle.0054 = { # 君主处置贪腐指控（root = 被指控的 victim）
+ftr_court_struggle.0340 = { # 君主处置贪腐指控（root = 被指控的 victim）
 	type = character_event
-	title = ftr_court_struggle.0054.t
-	desc = ftr_court_struggle.0054.desc
+	title = ftr_court_struggle.0340.t
+	desc = ftr_court_struggle.0340.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -1623,7 +1635,7 @@ ftr_court_struggle.0054 = { # 君主处置贪腐指控（root = 被指控的 vic
 
 	immediate = {
 		save_scope_as = ftr_court_accused
-		# 从自身变量读取指控者（0051.a 触发前写入 ftr_court_strife_actor）
+		# 从自身变量读取指控者（0310.a 触发前写入 ftr_court_strife_actor）
 		if = {
 			limit = { has_variable = ftr_court_strife_actor }
 			var:ftr_court_strife_actor ?= { save_scope_as = ftr_court_actor }
@@ -1646,7 +1658,7 @@ ftr_court_struggle.0054 = { # 君主处置贪腐指控（root = 被指控的 vic
 	}
 
 	option = { # I can explain myself
-		name = ftr_court_struggle.0054.a
+		name = ftr_court_struggle.0340.a
 		ai_chance = {
 			base = 70
 			modifier = { add = 20  has_trait = just }
@@ -1657,7 +1669,7 @@ ftr_court_struggle.0054 = { # 君主处置贪腐指控（root = 被指控的 vic
 		scope:ftr_court_arbiter ?= {
 			if = {
 				limit = { OR = { has_trait = just  has_trait = honest } }
-				# 彻查洗清：把伪造者与受害者存到君主身上，交由 0058 处置
+				# 彻查洗清：把伪造者与受害者存到君主身上，交由 0401 处置
 				if = {
 					limit = { scope:ftr_court_accused ?= { has_variable = ftr_court_strife_actor } }
 					set_variable = {
@@ -1666,7 +1678,7 @@ ftr_court_struggle.0054 = { # 君主处置贪腐指控（root = 被指控的 vic
 					}
 				}
 				set_variable = { name = ftr_court_inq_victim  value = scope:ftr_court_accused }
-				trigger_event = { id = ftr_court_struggle.0058  days = 1 }
+				trigger_event = { id = ftr_court_struggle.0401  days = 1 }
 			}
 			else_if = {
 				limit = { NOT = { OR = { has_trait = just  has_trait = honest } } }
@@ -1678,7 +1690,7 @@ ftr_court_struggle.0054 = { # 君主处置贪腐指控（root = 被指控的 vic
 		}
 	}
 	option = { # Say nothing
-		name = ftr_court_struggle.0054.b
+		name = ftr_court_struggle.0340.b
 		ai_chance = {
 			base = 30
 			modifier = { add = 20  has_trait = craven }
@@ -1690,10 +1702,10 @@ ftr_court_struggle.0054 = { # 君主处置贪腐指控（root = 被指控的 vic
 	}
 }
 
-ftr_court_struggle.0055 = { # 下毒结果（root = 中招的 victim）
+ftr_court_struggle.0350 = { # 下毒结果（root = 中招的 victim）
 	type = character_event
-	title = ftr_court_struggle.0055.t
-	desc = ftr_court_struggle.0055.desc
+	title = ftr_court_struggle.0350.t
+	desc = ftr_court_struggle.0350.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -1707,7 +1719,7 @@ ftr_court_struggle.0055 = { # 下毒结果（root = 中招的 victim）
 
 	immediate = {
 		save_scope_as = ftr_court_victim
-		# 从自身变量读取下毒者（0052.a 触发前写入 ftr_court_strife_actor）
+		# 从自身变量读取下毒者（0320.a 触发前写入 ftr_court_strife_actor）
 		if = {
 			limit = { has_variable = ftr_court_strife_actor }
 			var:ftr_court_strife_actor ?= { save_scope_as = ftr_court_actor }
@@ -1723,7 +1735,7 @@ ftr_court_struggle.0055 = { # 下毒结果（root = 中招的 victim）
 	}
 
 	option = { # I have been poisoned!
-		name = ftr_court_struggle.0055.a
+		name = ftr_court_struggle.0350.a
 		# 中招：剧毒重创健康——施加原版 health 减益 modifier（failing_health，health -0.5），并推高烈度
 		add_character_modifier = {
 			modifier = failing_health
@@ -1745,15 +1757,15 @@ ftr_court_struggle.0055 = { # 下毒结果（root = 中招的 victim）
 				}
 			}
 		}
-		# 链向 0059：victim 追凶或息事
-		trigger_event = { id = ftr_court_struggle.0059  days = 3 }
+		# 链向 0390：victim 追凶或息事
+		trigger_event = { id = ftr_court_struggle.0390  days = 3 }
 	}
 }
 
-ftr_court_struggle.0056 = { # 虚弱之毒（root = 中招的 victim）
+ftr_court_struggle.0360 = { # 虚弱之毒（root = 中招的 victim）
 	type = character_event
-	title = ftr_court_struggle.0056.t
-	desc = ftr_court_struggle.0056.desc
+	title = ftr_court_struggle.0360.t
+	desc = ftr_court_struggle.0360.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -1774,7 +1786,7 @@ ftr_court_struggle.0056 = { # 虚弱之毒（root = 中招的 victim）
 	}
 
 	option = { # I feel unwell...
-		name = ftr_court_struggle.0056.a
+		name = ftr_court_struggle.0360.a
 		# 身弱：慢性毒渐次削弱——施加原版 health 减益 modifier（travel_ate_poisonous_plant_modifier，
 		# health -0.25 / prowess -4，长期压低竞争力与健康），并推高烈度
 		add_character_modifier = {
@@ -1796,16 +1808,16 @@ ftr_court_struggle.0056 = { # 虚弱之毒（root = 中招的 victim）
 				}
 			}
 		}
-		# 链向 0059：victim 追凶或息事
-		trigger_event = { id = ftr_court_struggle.0059  days = 3 }
+		# 链向 0390：victim 追凶或息事
+		trigger_event = { id = ftr_court_struggle.0390  days = 3 }
 	}
 }
 
-# ---- 手段 2.1 后续：双向舆论战（0057，root = victim，0053.a 反放谣后链式） ----
-ftr_court_struggle.0057 = {
+# ---- 手段 2.1 后续：双向舆论战（0370，root = victim，0330.a 反放谣后链式） ----
+ftr_court_struggle.0370 = {
 	type = character_event
-	title = ftr_court_struggle.0057.t
-	desc = ftr_court_struggle.0057.desc
+	title = ftr_court_struggle.0370.t
+	desc = ftr_court_struggle.0370.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -1826,7 +1838,7 @@ ftr_court_struggle.0057 = {
 	}
 
 	option = { # Escalate the rumour war
-		name = ftr_court_struggle.0057.a
+		name = ftr_court_struggle.0370.a
 		ai_chance = {
 			base = 50
 			modifier = { add = 25  has_trait = ambitious }
@@ -1855,7 +1867,7 @@ ftr_court_struggle.0057 = {
 		}
 	}
 	option = { # Lower the swords
-		name = ftr_court_struggle.0057.b
+		name = ftr_court_struggle.0370.b
 		ai_chance = {
 			base = 50
 			modifier = { add = 20  has_trait = patient }
@@ -1867,84 +1879,11 @@ ftr_court_struggle.0057 = {
 	}
 }
 
-# ---- 手段 2.1 后续：彻查伪证后追责伪造者（0058，root = 君主，0054 洗清分支链式） ----
-# 依赖：君主身上已存 ftr_court_inq_actor（伪造者）/ ftr_court_inq_victim（受害者）。
-ftr_court_struggle.0058 = {
+# ---- 手段 2.1 后续：中毒后追凶（0390，root = victim，0350/0360 中毒结果后链式） ----
+ftr_court_struggle.0390 = {
 	type = character_event
-	title = ftr_court_struggle.0058.t
-	desc = ftr_court_struggle.0058.desc
-	theme = intrigue
-
-	left_portrait = {
-		character = root
-		animation = personality_rational
-	}
-	right_portrait = {
-		character = scope:ftr_court_inq_actor
-		animation = scheme
-	}
-
-	immediate = {
-		save_scope_as = ftr_court_monarch
-		if = {
-			limit = { has_variable = ftr_court_inq_actor }
-			var:ftr_court_inq_actor ?= { save_scope_as = ftr_court_inq_actor }
-		}
-		if = {
-			limit = { has_variable = ftr_court_inq_victim }
-			var:ftr_court_inq_victim ?= { save_scope_as = ftr_court_inq_victim }
-		}
-	}
-
-	option = { # Imprison the forger
-		name = ftr_court_struggle.0058.a
-		ai_chance = {
-			base = 40
-			modifier = { add = 30  has_trait = just }
-			modifier = { add = 20  has_trait = paranoid }
-			modifier = { add = -25  has_trait = forgiving }
-		}
-		scope:ftr_court_inq_actor ?= {
-			imprison = { type = house_arrest  target = scope:ftr_court_inq_actor }
-			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
-		}
-		add_tyranny = minor_tyranny_value
-	}
-	option = { # Reprimand harshly
-		name = ftr_court_struggle.0058.b
-		ai_chance = {
-			base = 40
-			modifier = { add = 20  has_trait = ambitious }
-			modifier = { add = -20  has_trait = compassionate }
-		}
-		scope:ftr_court_inq_actor ?= {
-			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_rival_claimant_opinion }
-			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
-		}
-		# 受害者沉冤得雪，声望回升
-		scope:ftr_court_inq_victim ?= {
-			add_prestige = ftr_court_prestige_minor_value
-		}
-	}
-	option = { # Let it be
-		name = ftr_court_struggle.0058.c
-		ai_chance = {
-			base = 20
-			modifier = { add = 25  has_trait = forgiving }
-			modifier = { add = 20  has_trait = compassionate }
-			modifier = { add = -20  has_trait = just }
-		}
-		scope:ftr_court_inq_victim ?= {
-			add_prestige = ftr_court_prestige_minor_value
-		}
-	}
-}
-
-# ---- 手段 2.1 后续：中毒后追凶（0059，root = victim，0055/0056 中毒结果后链式） ----
-ftr_court_struggle.0059 = {
-	type = character_event
-	title = ftr_court_struggle.0059.t
-	desc = ftr_court_struggle.0059.desc
+	title = ftr_court_struggle.0390.t
+	desc = ftr_court_struggle.0390.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -1973,7 +1912,7 @@ ftr_court_struggle.0059 = {
 	}
 
 	option = { # Hunt the poisoner
-		name = ftr_court_struggle.0059.a
+		name = ftr_court_struggle.0390.a
 		ai_chance = {
 			base = 55
 			modifier = { add = 25  intrigue >= 10 }
@@ -2004,7 +1943,7 @@ ftr_court_struggle.0059 = {
 		}
 	}
 	option = { # Swallow it
-		name = ftr_court_struggle.0059.b
+		name = ftr_court_struggle.0390.b
 		ai_chance = {
 			base = 45
 			modifier = { add = 20  has_trait = patient }
@@ -2013,7 +1952,11 @@ ftr_court_struggle.0059 = {
 	}
 }
 
-######### 0060 派间谍调查 / 0090 谋杀（§12.4.2 手段 2.2 / 2.5） #########
+##############################################################
+### 04xx 脏手段其余：调查 0400 / 牵制 0410 / 绑架 0420 / 谋杀 0430
+##############################################################
+
+######### 0400 派间谍调查（§12.4.2 手段 2.2） #########
 
 # ---- 2.2 派间谍调查头号竞争者（root = 触发池任一人，§9.2）----
 # root 合法来源：① 最高统治者（story owner）；② 有头衔 / 领地的参与者；
@@ -2021,10 +1964,10 @@ ftr_court_struggle.0059 = {
 # 资格由触发入口用 ftr_court_can_order_investigation_trigger 过滤；事件本身不假设 root = 君主：
 # immediate 按 root 的关系定位所在朝堂的 story 与君主（独立统治者 → 自身 story；封臣 → top_liege；
 # 无地廷臣 → employer），取头号竞争者（评分最高者，排除 root 自身）。非 actor→victim 互殴派发。
-ftr_court_struggle.0060 = {
+ftr_court_struggle.0400 = {
 	type = character_event
-	title = ftr_court_struggle.0060.t
-	desc = ftr_court_struggle.0060.desc
+	title = ftr_court_struggle.0400.t
+	desc = ftr_court_struggle.0400.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -2072,7 +2015,7 @@ ftr_court_struggle.0060 = {
 	}
 
 	option = { # Investigate and expose him
-		name = ftr_court_struggle.0060.a
+		name = ftr_court_struggle.0400.a
 		ai_chance = {
 			base = 55
 			modifier = { add = 30  has_trait = paranoid }
@@ -2098,7 +2041,7 @@ ftr_court_struggle.0060 = {
 		}
 	}
 	option = { # Bide my time
-		name = ftr_court_struggle.0060.b
+		name = ftr_court_struggle.0400.b
 		ai_chance = {
 			base = 45
 			modifier = { add = 20  has_trait = patient }
@@ -2108,96 +2051,85 @@ ftr_court_struggle.0060 = {
 	}
 }
 
-# ---- 2.5 谋杀（root = 发起竞争者；victim = 目标竞争者/君主，由 actor 变量 ftr_court_strife_victim 读入）----
-# 启动官方 murder scheme（type = murder）。若 scheme 不适用则退回"制造牵制"。
-ftr_court_struggle.0090 = {
+# ---- 手段 2.1 后续：彻查伪证后追责伪造者（0401，root = 君主，0340 洗清分支链式） ----
+# 依赖：君主身上已存 ftr_court_inq_actor（伪造者）/ ftr_court_inq_victim（受害者）。
+ftr_court_struggle.0401 = {
 	type = character_event
-	title = ftr_court_struggle.0090.t
-	desc = ftr_court_struggle.0090.desc
+	title = ftr_court_struggle.0401.t
+	desc = ftr_court_struggle.0401.desc
 	theme = intrigue
 
 	left_portrait = {
 		character = root
-		animation = scheme
+		animation = personality_rational
 	}
 	right_portrait = {
-		character = scope:ftr_court_victim
+		character = scope:ftr_court_inq_actor
+		animation = scheme
 	}
 
 	immediate = {
-		save_scope_as = ftr_court_actor
+		save_scope_as = ftr_court_monarch
 		if = {
-			limit = { has_variable = ftr_court_strife_victim }
-			var:ftr_court_strife_victim ?= { save_scope_as = ftr_court_victim }
+			limit = { has_variable = ftr_court_inq_actor }
+			var:ftr_court_inq_actor ?= { save_scope_as = ftr_court_inq_actor }
 		}
 		if = {
-			limit = { exists = top_liege }
-			top_liege = { save_scope_as = ftr_court_monarch }
-		}
-		else_if = {
-			limit = { exists = employer }
-			employer = { save_scope_as = ftr_court_monarch }
+			limit = { has_variable = ftr_court_inq_victim }
+			var:ftr_court_inq_victim ?= { save_scope_as = ftr_court_inq_victim }
 		}
 	}
 
-	option = { # Order the assassin
-		name = ftr_court_struggle.0090.a
-		ai_chance = {
-			base = 35
-			modifier = { add = 30  has_trait = callous }
-			modifier = { add = 25  intrigue >= 12 }
-			modifier = { add = -40  has_trait = just }
-		}
-		# 启动官方谋杀计谋
-		start_scheme = {
-			type = murder
-			target_character = scope:ftr_court_victim
-		}
-		scope:ftr_court_victim ?= {
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
-		}
-		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_strong_active_years_value }
-	}
-	option = { # Compromise with a hook instead
-		name = ftr_court_struggle.0090.b
+	option = { # Imprison the forger
+		name = ftr_court_struggle.0401.a
 		ai_chance = {
 			base = 40
-			modifier = { add = 20  has_trait = deceitful }
-			modifier = { add = 20  intrigue >= 10 }
-			modifier = { add = -20  has_trait = callous }
+			modifier = { add = 30  has_trait = just }
+			modifier = { add = 20  has_trait = paranoid }
+			modifier = { add = -25  has_trait = forgiving }
 		}
-		# 降级为「制造牵制」（手段 2.3）：不打谋杀的主意，改为攫取把柄
-		scope:ftr_court_victim ?= {
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+		scope:ftr_court_inq_actor ?= {
+			imprison = { type = house_arrest  target = scope:ftr_court_inq_actor }
+			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
 		}
-		# 生产把柄：与 0070.a 同一套记账（ftr_court_has_leverage + ftr_court_leverage_target），供 0071 消费
-		add_character_flag = { flag = ftr_court_has_leverage  years = ftr_court_leverage_years_value }
-		if = {
-			limit = { has_variable = ftr_court_leverage_target }
-			remove_variable = ftr_court_leverage_target
-		}
-		set_variable = { name = ftr_court_leverage_target  value = scope:ftr_court_victim }
-		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
+		add_tyranny = minor_tyranny_value
 	}
-	option = { # Stay my hand
-		name = ftr_court_struggle.0090.c
+	option = { # Reprimand harshly
+		name = ftr_court_struggle.0401.b
 		ai_chance = {
-			base = 25
-			ftr_court_strife_peace_ai_modifier = yes
-			modifier = { add = 40  has_trait = just }
-			modifier = { add = 20  has_trait = compassionate }
-			modifier = { add = -30  has_trait = callous }
+			base = 40
+			modifier = { add = 20  has_trait = ambitious }
+			modifier = { add = -20  has_trait = compassionate }
 		}
-		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
+		scope:ftr_court_inq_actor ?= {
+			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_rival_claimant_opinion }
+			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
+		}
+		# 受害者沉冤得雪，声望回升
+		scope:ftr_court_inq_victim ?= {
+			add_prestige = ftr_court_prestige_minor_value
+		}
+	}
+	option = { # Let it be
+		name = ftr_court_struggle.0401.c
+		ai_chance = {
+			base = 20
+			modifier = { add = 25  has_trait = forgiving }
+			modifier = { add = 20  has_trait = compassionate }
+			modifier = { add = -20  has_trait = just }
+		}
+		scope:ftr_court_inq_victim ?= {
+			add_prestige = ftr_court_prestige_minor_value
+		}
 	}
 }
 
-######### 0070 制造牵制 / 0080 绑架（§12.4.2 手段 2.3 / 2.4） #########
+######### 0410 制造牵制（§12.4.2 手段 2.3） #########
 
-ftr_court_struggle.0070 = { # 制造牵制（root = 发起竞争者；victim = 目标竞争者）
+ftr_court_struggle.0410 = { # 制造牵制（root = 发起竞争者；victim = 目标竞争者）
 	type = character_event
-	title = ftr_court_struggle.0070.t
-	desc = ftr_court_struggle.0070.desc
+	title = ftr_court_struggle.0410.t
+	desc = ftr_court_struggle.0410.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -2225,14 +2157,14 @@ ftr_court_struggle.0070 = { # 制造牵制（root = 发起竞争者；victim = �
 	}
 
 	option = { # Take the leverage quietly
-		name = ftr_court_struggle.0070.a
+		name = ftr_court_struggle.0410.a
 		ai_chance = {
 			base = 55
 			modifier = { add = 25  has_trait = deceitful }
 			modifier = { add = 20  intrigue >= 12 }
 			modifier = { add = -20  has_trait = honest }
 		}
-		# 握有把柄：获得对 victim 的要挟筹码（供 0071 逼退/逼和事件用），并记录目标供后续使用
+		# 握有把柄：获得对 victim 的要挟筹码（供 0411 逼退/逼和事件用），并记录目标供后续使用
 		add_character_flag = { flag = ftr_court_has_leverage  years = ftr_court_leverage_years_value }
 		scope:ftr_court_victim ?= { save_scope_as = ftr_court_leverage_holder_victim }
 		# 目标引用存到 actor 身上
@@ -2247,7 +2179,7 @@ ftr_court_struggle.0070 = { # 制造牵制（root = 发起竞争者；victim = �
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
 	}
 	option = { # Expose them openly
-		name = ftr_court_struggle.0070.b
+		name = ftr_court_struggle.0410.b
 		ai_chance = {
 			base = 45
 			modifier = { add = 25  has_trait = ambitious }
@@ -2263,10 +2195,140 @@ ftr_court_struggle.0070 = { # 制造牵制（root = 发起竞争者；victim = �
 	}
 }
 
-ftr_court_struggle.0080 = { # 绑架（root = 发起竞争者；victim = 目标竞争者，濒危区手段）
+# ---- 手段 2.3 后续：用把柄（0411，root = actor；目标由 actor 变量 ftr_court_leverage_target 提供）----
+# 由 ftr_court_use_leverage_decision 触发（§9.3）；选项成功后消耗把柄。
+ftr_court_struggle.0411 = {
 	type = character_event
-	title = ftr_court_struggle.0080.t
-	desc = ftr_court_struggle.0080.desc
+	title = ftr_court_struggle.0411.t
+	desc = ftr_court_struggle.0411.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:ftr_court_leverage_holder_victim
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_leverage_holder_actor
+		if = {
+			limit = { has_variable = ftr_court_leverage_target }
+			var:ftr_court_leverage_target ?= { save_scope_as = ftr_court_leverage_holder_victim }
+		}
+	}
+
+	option = { # Press them into yielding
+		name = ftr_court_struggle.0411.a
+		ai_chance = {
+			base = 45
+			modifier = { add = 25  has_trait = ambitious }
+			modifier = { add = -20  has_trait = just }
+		}
+		# 逼其让利：目标声望受损并交恶；若目标密谋老练可能识破反噬（链 0412）
+		scope:ftr_court_leverage_holder_victim ?= {
+			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_rival_claimant_opinion }
+			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
+		}
+		remove_character_flag = ftr_court_has_leverage
+		if = {
+			limit = { scope:ftr_court_leverage_holder_victim ?= { intrigue >= 12 } }
+			random = {
+				chance = 40
+				trigger_event = { id = ftr_court_struggle.0412  days = 1 }
+			}
+		}
+	}
+	option = { # Expose them publicly
+		name = ftr_court_struggle.0411.b
+		ai_chance = {
+			base = 30
+			modifier = { add = 20  has_trait = brave }
+			modifier = { add = -20  has_trait = deceitful }
+		}
+		# 公开揭穿：目标声望重损，双方反目成仇；烈度略升
+		scope:ftr_court_leverage_holder_victim ?= {
+			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_rival_claimant_opinion }
+			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
+		}
+		remove_character_flag = ftr_court_has_leverage
+		# 推高烈度
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
+			if = {
+				limit = {
+					has_variable = ftr_court_struggle_intensity
+					var:ftr_court_struggle_intensity < ftr_court_intensity_max_value
+				}
+				change_variable = {
+					name = ftr_court_struggle_intensity
+					add = ftr_court_strife_low_intensity_value
+				}
+			}
+		}
+	}
+	option = { # Return the leverage
+		name = ftr_court_struggle.0411.c
+		ai_chance = {
+			base = 25
+			modifier = { add = 25  has_trait = forgiving }
+			modifier = { add = 20  has_trait = compassionate }
+		}
+		# 还其把柄，换取交情
+		scope:ftr_court_leverage_holder_victim ?= {
+			add_opinion = {
+				target = scope:ftr_court_leverage_holder_actor
+				modifier = grateful_opinion
+				opinion = 25
+			}
+		}
+		remove_character_flag = ftr_court_has_leverage
+	}
+}
+
+# ---- 手段 2.3 后续：把柄被识破反噬（0412，root = actor）----
+ftr_court_struggle.0412 = {
+	type = character_event
+	title = ftr_court_struggle.0412.t
+	desc = ftr_court_struggle.0412.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:ftr_court_leverage_holder_victim
+		animation = anger
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_leverage_holder_actor
+		if = {
+			limit = { has_variable = ftr_court_leverage_target }
+			var:ftr_court_leverage_target ?= { save_scope_as = ftr_court_leverage_holder_victim }
+		}
+		# 把柄已用毕，清理目标引用
+		remove_variable = ftr_court_leverage_target
+	}
+
+	option = { # The blowback stings
+		name = ftr_court_struggle.0412.a
+		ai_chance = { base = 100 }
+		# 被对方当众反咬：声望受损，双方仇怨更深
+		add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
+		scope:ftr_court_leverage_holder_victim ?= {
+			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_targeted_opinion }
+		}
+	}
+}
+
+######### 0420 绑架（§12.4.2 手段 2.4） #########
+ftr_court_struggle.0420 = { # 绑架（root = 发起竞争者；victim = 目标竞争者，濒危区手段）
+	type = character_event
+	title = ftr_court_struggle.0420.t
+	desc = ftr_court_struggle.0420.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -2295,7 +2357,7 @@ ftr_court_struggle.0080 = { # 绑架（root = 发起竞争者；victim = 目标�
 	}
 
 	option = { # Seize them in the night
-		name = ftr_court_struggle.0080.a
+		name = ftr_court_struggle.0420.a
 		ai_chance = {
 			base = 40
 			modifier = { add = 30  has_trait = ambitious }
@@ -2304,7 +2366,7 @@ ftr_court_struggle.0080 = { # 绑架（root = 发起竞争者；victim = 目标�
 		}
 		# 掳走 victim 短期关押，逼其退出角逐（清参与 flag）或逼和
 		scope:ftr_court_victim ?= {
-			# 记录掳人者，供 0081 读取
+			# 记录掳人者，供 0421 读取
 			set_variable = { name = ftr_court_strife_actor  value = scope:ftr_court_actor }
 			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
 			# 逼其暂退（模拟短期软禁带来的退意）：打一个"受胁迫"标记
@@ -2327,13 +2389,13 @@ ftr_court_struggle.0080 = { # 绑架（root = 发起竞争者；victim = 目标�
 				}
 			}
 		}
-		# 链向 0081：被掳 victim 抉择（屈服 / 宁死 / 反扑）
+		# 链向 0421：被掳 victim 抉择（屈服 / 宁死 / 反扑）
 		scope:ftr_court_victim ?= {
-			trigger_event = { id = ftr_court_struggle.0081  days = 2 }
+			trigger_event = { id = ftr_court_struggle.0421  days = 2 }
 		}
 	}
 	option = { # Threaten, but release
-		name = ftr_court_struggle.0080.b
+		name = ftr_court_struggle.0420.b
 		ai_chance = {
 			base = 30
 			modifier = { add = 25  has_trait = deceitful }
@@ -2348,7 +2410,7 @@ ftr_court_struggle.0080 = { # 绑架（root = 发起竞争者；victim = 目标�
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
 	}
 	option = { # Let them be
-		name = ftr_court_struggle.0080.c
+		name = ftr_court_struggle.0420.c
 		ai_chance = {
 			base = 30
 			ftr_court_strife_peace_ai_modifier = yes
@@ -2360,140 +2422,11 @@ ftr_court_struggle.0080 = { # 绑架（root = 发起竞争者；victim = 目标�
 	}
 }
 
-# ---- 手段 2.3 后续：用把柄（0071，root = actor；目标由 actor 变量 ftr_court_leverage_target 提供）----
-# 由 ftr_court_use_leverage_decision 触发（§9.3）；选项成功后消耗把柄。
-ftr_court_struggle.0071 = {
+# ---- 手段 2.4 后续：被掳抉择（0421，root = victim，0420.a 掳走后链式）----
+ftr_court_struggle.0421 = {
 	type = character_event
-	title = ftr_court_struggle.0071.t
-	desc = ftr_court_struggle.0071.desc
-	theme = intrigue
-
-	left_portrait = {
-		character = root
-		animation = scheme
-	}
-	right_portrait = {
-		character = scope:ftr_court_leverage_holder_victim
-	}
-
-	immediate = {
-		save_scope_as = ftr_court_leverage_holder_actor
-		if = {
-			limit = { has_variable = ftr_court_leverage_target }
-			var:ftr_court_leverage_target ?= { save_scope_as = ftr_court_leverage_holder_victim }
-		}
-	}
-
-	option = { # Press them into yielding
-		name = ftr_court_struggle.0071.a
-		ai_chance = {
-			base = 45
-			modifier = { add = 25  has_trait = ambitious }
-			modifier = { add = -20  has_trait = just }
-		}
-		# 逼其让利：目标声望受损并交恶；若目标密谋老练可能识破反噬（链 0072）
-		scope:ftr_court_leverage_holder_victim ?= {
-			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_rival_claimant_opinion }
-			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
-		}
-		remove_character_flag = ftr_court_has_leverage
-		if = {
-			limit = { scope:ftr_court_leverage_holder_victim ?= { intrigue >= 12 } }
-			random = {
-				chance = 40
-				trigger_event = { id = ftr_court_struggle.0072  days = 1 }
-			}
-		}
-	}
-	option = { # Expose them publicly
-		name = ftr_court_struggle.0071.b
-		ai_chance = {
-			base = 30
-			modifier = { add = 20  has_trait = brave }
-			modifier = { add = -20  has_trait = deceitful }
-		}
-		# 公开揭穿：目标声望重损，双方反目成仇；烈度略升
-		scope:ftr_court_leverage_holder_victim ?= {
-			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_rival_claimant_opinion }
-			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
-		}
-		remove_character_flag = ftr_court_has_leverage
-		# 推高烈度
-		every_owned_story = {
-			limit = { story_type = ftr_court_struggle }
-			if = {
-				limit = {
-					has_variable = ftr_court_struggle_intensity
-					var:ftr_court_struggle_intensity < ftr_court_intensity_max_value
-				}
-				change_variable = {
-					name = ftr_court_struggle_intensity
-					add = ftr_court_strife_low_intensity_value
-				}
-			}
-		}
-	}
-	option = { # Return the leverage
-		name = ftr_court_struggle.0071.c
-		ai_chance = {
-			base = 25
-			modifier = { add = 25  has_trait = forgiving }
-			modifier = { add = 20  has_trait = compassionate }
-		}
-		# 还其把柄，换取交情
-		scope:ftr_court_leverage_holder_victim ?= {
-			add_opinion = {
-				target = scope:ftr_court_leverage_holder_actor
-				modifier = grateful_opinion
-				opinion = 25
-			}
-		}
-		remove_character_flag = ftr_court_has_leverage
-	}
-}
-
-# ---- 手段 2.3 后续：把柄被识破反噬（0072，root = actor）----
-ftr_court_struggle.0072 = {
-	type = character_event
-	title = ftr_court_struggle.0072.t
-	desc = ftr_court_struggle.0072.desc
-	theme = intrigue
-
-	left_portrait = {
-		character = root
-		animation = shock
-	}
-	right_portrait = {
-		character = scope:ftr_court_leverage_holder_victim
-		animation = anger
-	}
-
-	immediate = {
-		save_scope_as = ftr_court_leverage_holder_actor
-		if = {
-			limit = { has_variable = ftr_court_leverage_target }
-			var:ftr_court_leverage_target ?= { save_scope_as = ftr_court_leverage_holder_victim }
-		}
-		# 把柄已用毕，清理目标引用
-		remove_variable = ftr_court_leverage_target
-	}
-
-	option = { # The blowback stings
-		name = ftr_court_struggle.0072.a
-		ai_chance = { base = 100 }
-		# 被对方当众反咬：声望受损，双方仇怨更深
-		add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
-		scope:ftr_court_leverage_holder_victim ?= {
-			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_targeted_opinion }
-		}
-	}
-}
-
-# ---- 手段 2.4 后续：被掳抉择（0081，root = victim，0080.a 掳走后链式）----
-ftr_court_struggle.0081 = {
-	type = character_event
-	title = ftr_court_struggle.0081.t
-	desc = ftr_court_struggle.0081.desc
+	title = ftr_court_struggle.0421.t
+	desc = ftr_court_struggle.0421.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -2514,7 +2447,7 @@ ftr_court_struggle.0081 = {
 	}
 
 	option = { # Yield and withdraw
-		name = ftr_court_struggle.0081.a
+		name = ftr_court_struggle.0421.a
 		ai_chance = {
 			base = 45
 			modifier = { add = 25  has_trait = craven }
@@ -2529,7 +2462,7 @@ ftr_court_struggle.0081 = {
 		}
 	}
 	option = { # Defy to the death
-		name = ftr_court_struggle.0081.b
+		name = ftr_court_struggle.0421.b
 		ai_chance = {
 			base = 35
 			modifier = { add = 30  has_trait = brave }
@@ -2556,27 +2489,27 @@ ftr_court_struggle.0081 = {
 		}
 	}
 	option = { # Plot revenge in turn
-		name = ftr_court_struggle.0081.c
+		name = ftr_court_struggle.0421.c
 		ai_chance = {
 			base = 20
 			modifier = { add = 25  has_trait = vengeful }
 			modifier = { add = 20  intrigue >= 12 }
 			modifier = { add = -20  has_trait = forgiving }
 		}
-		# 反扑：把矛头对准掳人者（actor 遭反扑，见 0082）
+		# 反扑：把矛头对准掳人者（actor 遭反扑，见 0422）
 		remove_character_flag = ftr_court_coerced
 		scope:ftr_court_actor ?= {
-			trigger_event = { id = ftr_court_struggle.0082  days = 2 }
+			trigger_event = { id = ftr_court_struggle.0422  days = 2 }
 		}
 	}
 }
 
-# ---- 手段 2.4 后续：反扑（0082，root = 掳人 actor，0081.c 链式）----
+# ---- 手段 2.4 后续：反扑（0422，root = 掳人 actor，0421.c 链式）----
 # actor 变量 ftr_court_strife_victim 仍指向被掳者（调度写入）。
-ftr_court_struggle.0082 = {
+ftr_court_struggle.0422 = {
 	type = character_event
-	title = ftr_court_struggle.0082.t
-	desc = ftr_court_struggle.0082.desc
+	title = ftr_court_struggle.0422.t
+	desc = ftr_court_struggle.0422.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -2597,7 +2530,7 @@ ftr_court_struggle.0082 = {
 	}
 
 	option = { # The counterstroke lands
-		name = ftr_court_struggle.0082.a
+		name = ftr_court_struggle.0422.a
 		ai_chance = { base = 100 }
 		# 反扑令 actor 声望受损、与朝堂交恶
 		add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
@@ -2620,13 +2553,103 @@ ftr_court_struggle.0082 = {
 	}
 }
 
-# ---- 手段 2.6 事件链：无地参与者「暗中策动」（0083，root = 无地参与者）----
-# 由 ftr_court_landless_swing_effect 在主时钟派发（§9.6）：天平偏向共治（≥70）时，
-# 无地竞争者无法使用辅政/游说交互，故以事件暗中联络朝臣，push swing 向君主（有曝光风险）。
-ftr_court_struggle.0083 = {
+# ---- 2.5 谋杀（root = 发起竞争者；victim = 目标竞争者/君主，由 actor 变量 ftr_court_strife_victim 读入）----
+# 启动官方 murder scheme（type = murder）。若 scheme 不适用则退回"制造牵制"。
+######### 0430 谋杀（§12.4.2 手段 2.5） #########
+ftr_court_struggle.0430 = {
 	type = character_event
-	title = ftr_court_struggle.0083.t
-	desc = ftr_court_struggle.0083.desc
+	title = ftr_court_struggle.0430.t
+	desc = ftr_court_struggle.0430.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:ftr_court_victim
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_actor
+		if = {
+			limit = { has_variable = ftr_court_strife_victim }
+			var:ftr_court_strife_victim ?= { save_scope_as = ftr_court_victim }
+		}
+		if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+	}
+
+	option = { # Order the assassin
+		name = ftr_court_struggle.0430.a
+		ai_chance = {
+			base = 35
+			modifier = { add = 30  has_trait = callous }
+			modifier = { add = 25  intrigue >= 12 }
+			modifier = { add = -40  has_trait = just }
+		}
+		# 启动官方谋杀计谋
+		start_scheme = {
+			type = murder
+			target_character = scope:ftr_court_victim
+		}
+		scope:ftr_court_victim ?= {
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+		}
+		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_strong_active_years_value }
+	}
+	option = { # Compromise with a hook instead
+		name = ftr_court_struggle.0430.b
+		ai_chance = {
+			base = 40
+			modifier = { add = 20  has_trait = deceitful }
+			modifier = { add = 20  intrigue >= 10 }
+			modifier = { add = -20  has_trait = callous }
+		}
+		# 降级为「制造牵制」（手段 2.3）：不打谋杀的主意，改为攫取把柄
+		scope:ftr_court_victim ?= {
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+		}
+		# 生产把柄：与 0410.a 同一套记账（ftr_court_has_leverage + ftr_court_leverage_target），供 0411 消费
+		add_character_flag = { flag = ftr_court_has_leverage  years = ftr_court_leverage_years_value }
+		if = {
+			limit = { has_variable = ftr_court_leverage_target }
+			remove_variable = ftr_court_leverage_target
+		}
+		set_variable = { name = ftr_court_leverage_target  value = scope:ftr_court_victim }
+		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
+	}
+	option = { # Stay my hand
+		name = ftr_court_struggle.0430.c
+		ai_chance = {
+			base = 25
+			ftr_court_strife_peace_ai_modifier = yes
+			modifier = { add = 40  has_trait = just }
+			modifier = { add = 20  has_trait = compassionate }
+			modifier = { add = -30  has_trait = callous }
+		}
+		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
+	}
+}
+
+# ---- 手段 2.6 事件链：无地参与者「暗中策动」（0500，root = 无地参与者）----
+# 由 ftr_court_landless_swing_effect 在主时钟派发（§9.6）：天平偏向共治（≥70）时，
+##############################################################
+### 05xx 强出口与党羽逼宫（0500 无地拉锯 / 0510 共治反击 / 0520–0530 党羽逼宫）
+##############################################################
+
+# 无地竞争者无法使用辅政/游说交互，故以事件暗中联络朝臣，push swing 向君主（有曝光风险）。
+######### 0500 无地拉锯（§9.6） #########
+ftr_court_struggle.0500 = {
+	type = character_event
+	title = ftr_court_struggle.0500.t
+	desc = ftr_court_struggle.0500.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -2685,7 +2708,7 @@ ftr_court_struggle.0083 = {
 	}
 
 	option = { # Whisper against the co-ruler
-		name = ftr_court_struggle.0083.a
+		name = ftr_court_struggle.0500.a
 		ai_chance = {
 			base = 50
 			modifier = { add = 25  has_trait = deceitful }
@@ -2721,7 +2744,7 @@ ftr_court_struggle.0083 = {
 		remove_variable = ftr_court_sway_succeeded
 	}
 	option = { # Bribe the co-ruler's circle
-		name = ftr_court_struggle.0083.b
+		name = ftr_court_struggle.0500.b
 		trigger = { gold >= 60 }
 		ai_chance = {
 			base = 30
@@ -2744,7 +2767,7 @@ ftr_court_struggle.0083 = {
 		}
 	}
 	option = { # Bide my time
-		name = ftr_court_struggle.0083.c
+		name = ftr_court_struggle.0500.c
 		ai_chance = {
 			base = 20
 			modifier = { add = 20  has_trait = patient }
@@ -2753,12 +2776,13 @@ ftr_court_struggle.0083 = {
 	}
 }
 
-# ---- 手段 2.6 反馈链：共治者反击（0084，root = 共治者 diarch）----
+# ---- 手段 2.6 反馈链：共治者反击（0510，root = 共治者 diarch）----
 # 由 ftr_court_diarch_backlash_effect 在主时钟派发（§9.6）：swing ≤30 时共治者阵营暗中游说拉回。
-ftr_court_struggle.0084 = {
+######### 0510 共治反击（§9.6） #########
+ftr_court_struggle.0510 = {
 	type = character_event
-	title = ftr_court_struggle.0084.t
-	desc = ftr_court_struggle.0084.desc
+	title = ftr_court_struggle.0510.t
+	desc = ftr_court_struggle.0510.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -2817,7 +2841,7 @@ ftr_court_struggle.0084 = {
 	}
 
 	option = { # Rally the loyalists
-		name = ftr_court_struggle.0084.a
+		name = ftr_court_struggle.0510.a
 		ai_chance = {
 			base = 60
 			modifier = { add = 20  has_trait = ambitious }
@@ -2838,7 +2862,7 @@ ftr_court_struggle.0084 = {
 		}
 	}
 	option = { # Endure for now
-		name = ftr_court_struggle.0084.b
+		name = ftr_court_struggle.0510.b
 		ai_chance = {
 			base = 40
 			modifier = { add = 20  has_trait = patient }
@@ -2854,18 +2878,19 @@ ftr_court_struggle.0084 = {
 # =====================================================================
 
 # =====================================================================
-# 党羽逼宫事件（0085 / 0086，§13）：
+# 党羽逼宫事件（0520 / 0530，§13）：
 # 由内斗主时钟「强出口族」→ ftr_court_backer_demand_pulse_effect 派发（root = 最高领主）。
 # 跨事件传参：君主身上临时变量 ftr_court_demand_champion / ftr_court_demand_diarch /
 #            ftr_court_demand_agitator（days = 30）。
 # =====================================================================
 
-###### 0085 党羽逼宫：请立共治（root = 最高领主） ######
+###### 0520 党羽逼宫：请立共治（root = 最高领主） ######
 # 某竞争者的党羽规模已达门槛、且朝中尚无共治者时，党羽集体要求君主接纳其拥立对象共治。
-ftr_court_struggle.0085 = {
+######### 0520-0530 党羽逼宫（§13） #########
+ftr_court_struggle.0520 = {
 	type = character_event
-	title = ftr_court_struggle.0085.t
-	desc = ftr_court_struggle.0085.desc
+	title = ftr_court_struggle.0520.t
+	desc = ftr_court_struggle.0520.desc
 	theme = diplomacy
 
 	left_portrait = {
@@ -2890,7 +2915,7 @@ ftr_court_struggle.0085 = {
 	}
 
 	option = { # 允准分权：接纳其为共治者
-		name = ftr_court_struggle.0085.a
+		name = ftr_court_struggle.0520.a
 		ai_chance = {
 			base = 25
 			modifier = { add = 40  ftr_court_monarch_infirm_trigger = yes }
@@ -2922,7 +2947,7 @@ ftr_court_struggle.0085 = {
 	}
 
 	option = { # 断然拒绝：独揽大权
-		name = ftr_court_struggle.0085.b
+		name = ftr_court_struggle.0520.b
 		ai_chance = {
 			base = 60
 			modifier = { add = 40  has_trait = arrogant }
@@ -2951,13 +2976,13 @@ ftr_court_struggle.0085 = {
 	}
 }
 
-###### 0086 党羽逼宫：胁迫退位（root = 最高领主） ######
+###### 0530 党羽逼宫：胁迫退位（root = 最高领主） ######
 # 君主已有共治者、该共治者正是党羽拥立的对象、天平达强权上沿（≥80）时，
 # 党羽胁迫君主退位，共治者直接登基（复用 03 §4.4 共治者自立结局 + 朝堂故事移交新君）。
-ftr_court_struggle.0086 = {
+ftr_court_struggle.0530 = {
 	type = character_event
-	title = ftr_court_struggle.0086.t
-	desc = ftr_court_struggle.0086.desc
+	title = ftr_court_struggle.0530.t
+	desc = ftr_court_struggle.0530.desc
 	theme = intrigue
 
 	left_portrait = {
@@ -2982,7 +3007,7 @@ ftr_court_struggle.0086 = {
 	}
 
 	option = { # 顺应天命：禅位让贤
-		name = ftr_court_struggle.0086.a
+		name = ftr_court_struggle.0530.a
 		ai_chance = {
 			base = 35
 			modifier = { add = 40  ftr_court_monarch_infirm_trigger = yes }
@@ -2999,7 +3024,7 @@ ftr_court_struggle.0086 = {
 	}
 
 	option = { # 负隅顽抗：仍被逼退
-		name = ftr_court_struggle.0086.b
+		name = ftr_court_struggle.0530.b
 		ai_chance = {
 			base = 55
 			modifier = { add = 40  has_trait = arrogant }
@@ -3013,5 +3038,809 @@ ftr_court_struggle.0086 = {
 		# 对抗流血：新君以恐惧立威，旧君蒙羞
 		scope:ftr_court_demand_diarch ?= { add_dread = ftr_court_dread_medium_value }
 		add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
+	}
+}
+
+# 0041 君主警觉事件已废弃移除（§7.1）：
+# 公开背书对最高领主的通报改为 interface_message（见 ftr_court_apply_backing_effect 第 6 步）；
+# 「惊君处置」警告 flag（ftr_liege_warn_not_support_heir）改由新交互
+# ftr_court_discipline_backer_interaction（敲打党羽）承接。
+
+##############################################################
+### 06xx 文明争斗族 M1–M6（0600–0601 弹劾 / 0610–0612 论战 / 0620–0621 决斗 / 0630–0631 清议 / 0640–0641 祥瑞）
+##############################################################
+
+######### 0600 弹劾内阁・发起（M1，root = 有党羽的封臣） #########
+# 由文明争斗族 ftr_court_impeach_pulse_effect 派发；弹劾目标存于发起者变量 ftr_court_impeach_target。
+ftr_court_struggle.0600 = {
+	type = character_event
+	title = ftr_court_struggle.0600.t
+	desc = ftr_court_struggle.0600.desc
+	theme = council
+
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:ftr_court_impeach_target
+		animation = fear
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_impeach_actor
+		if = {
+			limit = { has_variable = ftr_court_impeach_target }
+			var:ftr_court_impeach_target ?= { save_scope_as = ftr_court_impeach_target }
+		}
+		if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+		scope:ftr_court_monarch ?= {
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
+				save_scope_as = ftr_court_story
+			}
+		}
+	}
+
+	option = { # 具疏弹劾
+		name = ftr_court_struggle.0600.a
+		ai_chance = {
+			base = 55
+			modifier = { add = 20  has_trait = just }
+			modifier = { add = 15  has_trait = arrogant }
+			modifier = { add = -20  has_trait = content }
+		}
+		custom_tooltip = {
+			text = ftr_court_impeach_petition_tt
+			scope:ftr_court_monarch ?= {
+				set_variable = { name = ftr_court_impeach_actor  value = scope:ftr_court_impeach_actor }
+				set_variable = { name = ftr_court_impeach_target  value = scope:ftr_court_impeach_target }
+				trigger_event = { id = ftr_court_struggle.0601  days = 2 }
+			}
+		}
+		remove_variable = ftr_court_impeach_target
+	}
+	option = { # 慑于权势，暂且按下
+		name = ftr_court_struggle.0600.b
+		ai_chance = {
+			base = 45
+			modifier = { add = 25  has_trait = content }
+			modifier = { add = 20  has_trait = craven }
+		}
+		remove_variable = ftr_court_impeach_target
+	}
+}
+
+######### 0601 弹劾内阁・君主裁决（M1，root = 最高领主，letter_event） #########
+ftr_court_struggle.0601 = {
+	type = letter_event
+	title = ftr_court_struggle.0601.t
+	opening = {
+		desc = ftr_court_struggle.0601.opening
+	}
+	sender = {
+		character = scope:ftr_court_impeach_actor
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_monarch
+		if = {
+			limit = { has_variable = ftr_court_impeach_actor }
+			var:ftr_court_impeach_actor ?= { save_scope_as = ftr_court_impeach_actor }
+		}
+		if = {
+			limit = { has_variable = ftr_court_impeach_target }
+			var:ftr_court_impeach_target ?= { save_scope_as = ftr_court_impeach_target }
+		}
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
+			save_scope_as = ftr_court_story
+		}
+	}
+
+	option = { # 准奏：褫夺其内阁之职
+		name = ftr_court_struggle.0601.a
+		ai_chance = {
+			base = 40
+			modifier = { add = 15  has_trait = just }
+			modifier = { add = 15  has_trait = vengeful }
+			modifier = { add = -15  has_trait = content }
+		}
+		custom_tooltip = {
+			text = ftr_court_impeach_grant_tt
+			if = {
+				limit = { exists = scope:ftr_court_impeach_target }
+				fire_councillor = scope:ftr_court_impeach_target
+			}
+			add_prestige = {
+				value = 0
+				subtract = ftr_court_civil_strife_quell_prestige_value
+			}
+			ftr_court_impeach_aftermath_effect = { SIDE = 1 }
+			scope:ftr_court_story ?= {
+				ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_high_value }
+			}
+		}
+		# 裁决回执弹劾者与被弹劾者
+		scope:ftr_court_impeach_actor ?= {
+			send_interface_message = { type = event_diplomacy_good_with_text  title = ftr_court_impeach_notify_grant_actor_title  desc = ftr_court_impeach_notify_grant_actor_desc  left_icon = root }
+		}
+		scope:ftr_court_impeach_target ?= {
+			send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_impeach_notify_grant_target_title  desc = ftr_court_impeach_notify_grant_target_desc  left_icon = root }
+		}
+		remove_variable = ftr_court_impeach_actor
+		remove_variable = ftr_court_impeach_target
+	}
+	option = { # 留中不发：维持内阁体面
+		name = ftr_court_struggle.0601.b
+		ai_chance = {
+			base = 40
+			modifier = { add = 15  has_trait = content }
+			modifier = { add = 15  has_trait = trusting }
+			modifier = { add = -15  has_trait = paranoid }
+		}
+		custom_tooltip = {
+			text = ftr_court_impeach_refuse_tt
+			add_prestige = {
+				value = 0
+				subtract = ftr_court_civil_strife_quell_prestige_value
+			}
+			ftr_court_impeach_aftermath_effect = { SIDE = 2 }
+			scope:ftr_court_story ?= {
+				ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_mid_value }
+			}
+		}
+		# 裁决回执弹劾者与被弹劾者
+		scope:ftr_court_impeach_actor ?= {
+			send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_impeach_notify_refuse_actor_title  desc = ftr_court_impeach_notify_refuse_actor_desc  left_icon = root }
+		}
+		scope:ftr_court_impeach_target ?= {
+			send_interface_message = { type = event_diplomacy_good_with_text  title = ftr_court_impeach_notify_refuse_target_title  desc = ftr_court_impeach_notify_refuse_target_desc  left_icon = root }
+		}
+		remove_variable = ftr_court_impeach_actor
+		remove_variable = ftr_court_impeach_target
+	}
+	option = { # 亲自调停：各打五十大板
+		name = ftr_court_struggle.0601.c
+		trigger = { diplomacy >= high_skill_rating }
+		ai_chance = {
+			base = 45
+			modifier = { add = 20  has_trait = diplomat }
+			modifier = { add = 15  has_trait = compassionate }
+		}
+		custom_tooltip = {
+			text = ftr_court_impeach_quell_tt
+			ftr_court_impeach_aftermath_effect = { SIDE = 3 }
+			scope:ftr_court_story ?= {
+				ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_quell_value }
+			}
+		}
+		# 裁决回执弹劾者与被弹劾者
+		scope:ftr_court_impeach_actor ?= {
+			send_interface_message = { type = event_diplomacy_neutral_with_text  title = ftr_court_impeach_notify_quell_title  desc = ftr_court_impeach_notify_quell_desc  left_icon = root }
+		}
+		scope:ftr_court_impeach_target ?= {
+			send_interface_message = { type = event_diplomacy_neutral_with_text  title = ftr_court_impeach_notify_quell_title  desc = ftr_court_impeach_notify_quell_desc  left_icon = root }
+		}
+		remove_variable = ftr_court_impeach_actor
+		remove_variable = ftr_court_impeach_target
+	}
+	option = { # 含糊其辞，留待后议
+		name = ftr_court_struggle.0601.d
+		ai_chance = {
+			base = 15
+			modifier = { add = 20  has_trait = craven }
+			modifier = { add = 15  has_trait = lazy }
+		}
+		custom_tooltip = {
+			text = ftr_court_impeach_delay_tt
+			scope:ftr_court_impeach_actor ?= {
+				add_opinion = { target = root  modifier = ftr_political_opponent_opinion }
+			}
+			scope:ftr_court_story ?= {
+				ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value }
+			}
+		}
+		# 裁决回执弹劾者与被弹劾者
+		scope:ftr_court_impeach_actor ?= {
+			send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_impeach_notify_delay_title  desc = ftr_court_impeach_notify_delay_desc  left_icon = root }
+		}
+		scope:ftr_court_impeach_target ?= {
+			send_interface_message = { type = event_diplomacy_neutral_with_text  title = ftr_court_impeach_notify_delay_title  desc = ftr_court_impeach_notify_delay_desc  left_icon = root }
+		}
+		remove_variable = ftr_court_impeach_actor
+		remove_variable = ftr_court_impeach_target
+	}
+}
+
+######### 0610 朝堂论战・发起（M2/M3，root = 有党羽的封臣） #########
+# topic = 1 立场之辩（对手的封臣立场）／topic = 2 继承名分之争（对手拥护对象的继承名分）
+ftr_court_struggle.0610 = {
+	type = character_event
+	title = ftr_court_struggle.0610.t
+	desc = {
+		triggered_desc = {
+			trigger = { var:ftr_court_debate_topic = 1 }
+			desc = ftr_court_struggle.0610.desc_stance
+		}
+		triggered_desc = {
+			trigger = { var:ftr_court_debate_topic = 2 }
+			desc = ftr_court_struggle.0610.desc_claim
+		}
+	}
+	theme = diplomacy
+
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:ftr_court_debate_rival
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_debate_actor
+		if = {
+			limit = { has_variable = ftr_court_debate_rival }
+			var:ftr_court_debate_rival ?= { save_scope_as = ftr_court_debate_rival }
+		}
+		if = {
+			limit = { has_variable = ftr_court_debate_subject }
+			var:ftr_court_debate_subject ?= { save_scope_as = ftr_court_debate_subject }
+		}
+		if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+	}
+
+	option = { # 当众发难：请其一辩
+		name = ftr_court_struggle.0610.a
+		ai_chance = {
+			base = 50
+			modifier = { add = 15  has_trait = just }
+			modifier = { add = 15  has_trait = arrogant }
+			modifier = { add = -15  has_trait = content }
+		}
+		custom_tooltip = {
+			text = ftr_court_debate_challenge_tt
+			scope:ftr_court_debate_rival ?= {
+				set_variable = {
+					name = ftr_court_debate_challenger
+					value = scope:ftr_court_debate_actor
+				}
+				set_variable = {
+					name = ftr_court_debate_topic
+					value = root.var:ftr_court_debate_topic
+				}
+				trigger_event = { id = ftr_court_struggle.0611  days = 2 }
+			}
+		}
+	}
+	option = { # 姑且隐忍
+		name = ftr_court_struggle.0610.b
+		ai_chance = {
+			base = 50
+			modifier = { add = 25  has_trait = content }
+			modifier = { add = 20  has_trait = craven }
+			modifier = { add = -15  has_trait = arrogant }
+		}
+		remove_variable = ftr_court_debate_rival
+		remove_variable = ftr_court_debate_topic
+		remove_variable = ftr_court_debate_subject
+	}
+}
+
+######### 0611 朝堂论战・接战抉择（M2/M3，root = 被挑战者 B） #########
+ftr_court_struggle.0611 = {
+	type = character_event
+	title = ftr_court_struggle.0611.t
+	desc = {
+		triggered_desc = {
+			trigger = { var:ftr_court_debate_topic = 1 }
+			desc = ftr_court_struggle.0611.desc_stance
+		}
+		triggered_desc = {
+			trigger = { var:ftr_court_debate_topic = 2 }
+			desc = ftr_court_struggle.0611.desc_claim
+		}
+	}
+	theme = diplomacy
+
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:ftr_court_debate_challenger
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_debate_rival
+		if = {
+			limit = { has_variable = ftr_court_debate_challenger }
+			var:ftr_court_debate_challenger ?= { save_scope_as = ftr_court_debate_challenger }
+		}
+	}
+
+	option = { # 接战：朝会上见
+		name = ftr_court_struggle.0611.a
+		ai_chance = {
+			base = 55
+			modifier = { add = 20  has_trait = arrogant }
+			modifier = { add = 15  has_trait = brave }
+			modifier = { add = -25  has_trait = craven }
+		}
+		custom_tooltip = {
+			text = ftr_court_debate_accept_tt
+			scope:ftr_court_debate_challenger ?= {
+				trigger_event = { id = ftr_court_struggle.0612  days = 2 }
+			}
+		}
+	}
+	option = { # 避战：不与他一般见识
+		name = ftr_court_struggle.0611.b
+		ai_chance = {
+			base = 45
+			modifier = { add = 30  has_trait = craven }
+			modifier = { add = 20  has_trait = content }
+			modifier = { add = -30  has_trait = arrogant }
+		}
+		custom_tooltip = {
+			text = ftr_court_debate_dodge_tt
+			add_prestige = {
+				value = 0
+				subtract = ftr_court_debate_dodge_prestige_value
+			}
+			scope:ftr_court_debate_challenger ?= {
+				add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+				# 避战回执：发起方得知对方不接
+				send_interface_message = {
+					type = event_diplomacy_bad_with_text
+					title = ftr_court_debate_notify_dodge_title
+					desc = ftr_court_debate_notify_dodge_desc
+					left_icon = root
+					right_icon = scope:ftr_court_debate_challenger
+				}
+				remove_variable = ftr_court_debate_rival
+				remove_variable = ftr_court_debate_topic
+				remove_variable = ftr_court_debate_subject
+				top_liege ?= {
+					every_owned_story = {
+						limit = { story_type = ftr_court_struggle }
+						ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value }
+					}
+				}
+			}
+		}
+	}
+}
+
+######### 0612 朝堂论战・当廷结算（M2/M3，root = 发起者 A） #########
+# 结算在 immediate 完成（含胜负 flag），文案按 flag 分支；"成败两边都涨声望/影响力"的细则走 custom_tooltip。
+ftr_court_struggle.0612 = {
+	type = character_event
+	title = ftr_court_struggle.0612.t
+	desc = {
+		triggered_desc = {
+			trigger = { has_character_flag = ftr_court_debate_won }
+			desc = ftr_court_struggle.0612.desc_win
+		}
+		triggered_desc = {
+			trigger = { has_character_flag = ftr_court_debate_lost }
+			desc = ftr_court_struggle.0612.desc_lose
+		}
+	}
+	theme = diplomacy
+
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:ftr_court_debate_rival
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_debate_actor
+		if = {
+			limit = { has_variable = ftr_court_debate_rival }
+			var:ftr_court_debate_rival ?= { save_scope_as = ftr_court_debate_rival }
+		}
+		if = {
+			limit = { has_variable = ftr_court_debate_subject }
+			var:ftr_court_debate_subject ?= { save_scope_as = ftr_court_debate_subject }
+		}
+		if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+		scope:ftr_court_monarch ?= {
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
+				save_scope_as = ftr_court_story
+			}
+		}
+		ftr_court_debate_settle_effect = yes
+		save_scope_as = ftr_court_debate_challenger
+		# 结果回执对手：我胜则彼负，我负则彼胜（interface 消息仅玩家可见）
+		if = {
+			limit = { has_character_flag = ftr_court_debate_won }
+			scope:ftr_court_debate_rival ?= {
+				send_interface_message = {
+					type = event_diplomacy_good_with_text
+					title = ftr_court_debate_notify_win_title
+					desc = ftr_court_debate_notify_win_desc
+					left_icon = root
+					right_icon = scope:ftr_court_debate_rival
+				}
+			}
+		}
+		else = {
+			scope:ftr_court_debate_rival ?= {
+				send_interface_message = {
+					type = event_diplomacy_bad_with_text
+					title = ftr_court_debate_notify_lose_title
+					desc = ftr_court_debate_notify_lose_desc
+					left_icon = root
+					right_icon = scope:ftr_court_debate_rival
+				}
+			}
+		}
+		scope:ftr_court_story ?= {
+			ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_mid_value }
+		}
+	}
+
+	option = {
+		name = ftr_court_struggle.0612.a
+		custom_tooltip = {
+			text = ftr_court_debate_settle_tt
+		}
+	}
+}
+
+######### 0620 管辖纠纷・御前裁决（M4，root = 最高领主） #########
+ftr_court_struggle.0620 = {
+	type = character_event
+	title = ftr_court_struggle.0620.t
+	desc = ftr_court_struggle.0620.desc
+	theme = diplomacy
+
+	left_portrait = { character = scope:ftr_court_duel_plaintiff  animation = personality_rational }
+	right_portrait = { character = scope:ftr_court_duel_defendant }
+
+	immediate = {
+		save_scope_as = ftr_court_duel_monarch
+		if = { limit = { has_variable = ftr_court_duel_plaintiff }  var:ftr_court_duel_plaintiff ?= { save_scope_as = ftr_court_duel_plaintiff } }
+		if = { limit = { has_variable = ftr_court_duel_defendant }  var:ftr_court_duel_defendant ?= { save_scope_as = ftr_court_duel_defendant } }
+		every_owned_story = { limit = { story_type = ftr_court_struggle }  save_scope_as = ftr_court_duel_story }
+	}
+
+	option = { # 命二人当廷比武
+		name = ftr_court_struggle.0620.a
+		ai_chance = { base = 30  modifier = { add = 20  has_trait = brave }  modifier = { add = 15  has_trait = wrathful }  modifier = { add = -15  has_trait = just } }
+		custom_tooltip = { text = ftr_court_duel_combat_tt  trigger_event = { id = ftr_court_struggle.0621  days = 2 } }
+	}
+	option = { # 判原告得直
+		name = ftr_court_struggle.0620.b
+		ai_chance = { base = 25  modifier = { add = 15  scope:ftr_court_duel_plaintiff = { has_trait = honest } } }
+		custom_tooltip = {
+			text = ftr_court_duel_verdict_tt
+			scope:ftr_court_duel_story ?= { ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value } }
+		}
+		scope:ftr_court_duel_plaintiff ?= {
+			add_prestige = ftr_court_prestige_minor_value
+			send_interface_message = { type = event_diplomacy_good_with_text  title = ftr_court_duel_notify_verdict_win_title  desc = ftr_court_duel_notify_verdict_win_desc  left_icon = root }
+		}
+		scope:ftr_court_duel_defendant ?= {
+			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
+			add_opinion = { target = scope:ftr_court_duel_plaintiff  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+			send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_duel_notify_verdict_lose_title  desc = ftr_court_duel_notify_verdict_lose_desc  left_icon = scope:ftr_court_duel_plaintiff  right_icon = root }
+		}
+		remove_variable = ftr_court_duel_plaintiff
+		remove_variable = ftr_court_duel_defendant
+	}
+	option = { # 判被告得直
+		name = ftr_court_struggle.0620.c
+		ai_chance = { base = 25  modifier = { add = 15  scope:ftr_court_duel_defendant = { has_trait = honest } } }
+		custom_tooltip = {
+			text = ftr_court_duel_verdict_tt
+			scope:ftr_court_duel_story ?= { ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value } }
+		}
+		scope:ftr_court_duel_defendant ?= {
+			add_prestige = ftr_court_prestige_minor_value
+			send_interface_message = { type = event_diplomacy_good_with_text  title = ftr_court_duel_notify_verdict_win_title  desc = ftr_court_duel_notify_verdict_win_desc  left_icon = root }
+		}
+		scope:ftr_court_duel_plaintiff ?= {
+			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
+			add_opinion = { target = scope:ftr_court_duel_defendant  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+			send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_duel_notify_verdict_lose_title  desc = ftr_court_duel_notify_verdict_lose_desc  left_icon = scope:ftr_court_duel_defendant  right_icon = root }
+		}
+		remove_variable = ftr_court_duel_plaintiff
+		remove_variable = ftr_court_duel_defendant
+	}
+	option = { # 各打五十大板
+		name = ftr_court_struggle.0620.d
+		ai_chance = { base = 20  modifier = { add = 20  has_trait = lazy }  modifier = { add = 15  has_trait = content } }
+		custom_tooltip = {
+			text = ftr_court_duel_dismiss_tt
+			scope:ftr_court_duel_story ?= { ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value } }
+		}
+		scope:ftr_court_duel_plaintiff ?= {
+			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+			send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_duel_notify_dismissed_title  desc = ftr_court_duel_notify_dismissed_desc  left_icon = root }
+		}
+		scope:ftr_court_duel_defendant ?= {
+			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+			send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_duel_notify_dismissed_title  desc = ftr_court_duel_notify_dismissed_desc  left_icon = root }
+		}
+		remove_variable = ftr_court_duel_plaintiff
+		remove_variable = ftr_court_duel_defendant
+	}
+}
+
+######### 0621 当廷比武・结算（M4，root = 最高领主） #########
+ftr_court_struggle.0621 = {
+	type = character_event
+	title = ftr_court_struggle.0621.t
+	desc = {
+		triggered_desc = {
+			trigger = { scope:ftr_court_duel_plaintiff = { has_character_flag = ftr_court_duel_won } }
+			desc = ftr_court_struggle.0621.desc_plaintiff
+		}
+		triggered_desc = {
+			trigger = { scope:ftr_court_duel_defendant = { has_character_flag = ftr_court_duel_won } }
+			desc = ftr_court_struggle.0621.desc_defendant
+		}
+	}
+	theme = war
+
+	left_portrait = { character = scope:ftr_court_duel_plaintiff  animation = personality_rational }
+	right_portrait = { character = scope:ftr_court_duel_defendant }
+
+	immediate = {
+		save_scope_as = ftr_court_duel_monarch
+		if = { limit = { has_variable = ftr_court_duel_plaintiff }  var:ftr_court_duel_plaintiff ?= { save_scope_as = ftr_court_duel_plaintiff } }
+		if = { limit = { has_variable = ftr_court_duel_defendant }  var:ftr_court_duel_defendant ?= { save_scope_as = ftr_court_duel_defendant } }
+		every_owned_story = { limit = { story_type = ftr_court_struggle }  save_scope_as = ftr_court_duel_story }
+		ftr_court_duel_settle_effect = yes
+		if = {
+			limit = { scope:ftr_court_duel_plaintiff = { has_character_flag = ftr_court_duel_won } }
+			scope:ftr_court_duel_plaintiff ?= {
+				send_interface_message = { type = event_diplomacy_good_with_text  title = ftr_court_duel_notify_win_title  desc = ftr_court_duel_notify_win_desc  left_icon = scope:ftr_court_duel_defendant  right_icon = root }
+			}
+			scope:ftr_court_duel_defendant ?= {
+				send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_duel_notify_lose_title  desc = ftr_court_duel_notify_lose_desc  left_icon = scope:ftr_court_duel_plaintiff  right_icon = root }
+			}
+		}
+		else = {
+			scope:ftr_court_duel_defendant ?= {
+				send_interface_message = { type = event_diplomacy_good_with_text  title = ftr_court_duel_notify_win_title  desc = ftr_court_duel_notify_win_desc  left_icon = scope:ftr_court_duel_plaintiff  right_icon = root }
+			}
+			scope:ftr_court_duel_plaintiff ?= {
+				send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_duel_notify_lose_title  desc = ftr_court_duel_notify_lose_desc  left_icon = scope:ftr_court_duel_defendant  right_icon = root }
+			}
+		}
+		remove_variable = ftr_court_duel_plaintiff
+		remove_variable = ftr_court_duel_defendant
+	}
+
+	option = {
+		name = ftr_court_struggle.0621.a
+		custom_tooltip = { text = ftr_court_duel_settle_tt }
+	}
+}
+
+######### 0630 清议 / 月旦评・发起（M5，root = 评议的封臣） #########
+ftr_court_struggle.0630 = {
+	type = character_event
+	title = ftr_court_struggle.0630.t
+	desc = ftr_court_struggle.0630.desc
+	theme = learning
+
+	left_portrait = { character = root  animation = personality_rational }
+	right_portrait = { character = scope:ftr_court_appraisal_target }
+
+	immediate = {
+		save_scope_as = ftr_court_appraisal_actor
+		if = { limit = { has_variable = ftr_court_appraisal_target }  var:ftr_court_appraisal_target ?= { save_scope_as = ftr_court_appraisal_target } }
+	}
+
+	option = { # 褒而扬之：抬其名位，结其欢心
+		name = ftr_court_struggle.0630.a
+		ai_chance = { base = 35  modifier = { add = 20  has_trait = gregarious }  modifier = { add = 15  has_trait = diplomat }  modifier = { add = -15  has_trait = callous } }
+		custom_tooltip = { text = ftr_court_appraisal_praise_tt }
+		set_variable = { name = ftr_court_appraisal_mode  value = 1 }
+		trigger_event = { id = ftr_court_struggle.0631  days = 2 }
+	}
+	option = { # 清议贬之：评其品行不堪
+		name = ftr_court_struggle.0630.b
+		ai_chance = { base = 40  modifier = { add = 20  has_trait = deceitful }  modifier = { add = 15  has_trait = arrogant }  modifier = { add = -20  has_trait = just } }
+		custom_tooltip = { text = ftr_court_appraisal_smear_tt }
+		set_variable = { name = ftr_court_appraisal_mode  value = 2 }
+		trigger_event = { id = ftr_court_struggle.0631  days = 2 }
+	}
+	option = { # 罢手
+		name = ftr_court_struggle.0630.c
+		ai_chance = { base = 25  modifier = { add = 25  has_trait = content }  modifier = { add = 15  has_trait = calm } }
+		remove_variable = ftr_court_appraisal_target
+	}
+}
+
+######### 0631 清议・当众定评（M5，root = 评议者） #########
+ftr_court_struggle.0631 = {
+	type = character_event
+	title = ftr_court_struggle.0631.t
+	desc = {
+		triggered_desc = {
+			trigger = { has_character_flag = ftr_court_appraisal_praise }
+			desc = ftr_court_struggle.0631.desc_praise
+		}
+		triggered_desc = {
+			trigger = { has_character_flag = ftr_court_appraisal_smear }
+			desc = ftr_court_struggle.0631.desc_smear
+		}
+		triggered_desc = {
+			trigger = { has_character_flag = ftr_court_appraisal_failed }
+			desc = ftr_court_struggle.0631.desc_backfire
+		}
+	}
+	theme = learning
+
+	left_portrait = { character = root  animation = personality_rational }
+	right_portrait = { character = scope:ftr_court_appraisal_target }
+
+	immediate = {
+		save_scope_as = ftr_court_appraisal_actor
+		if = { limit = { has_variable = ftr_court_appraisal_target }  var:ftr_court_appraisal_target ?= { save_scope_as = ftr_court_appraisal_target } }
+		if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_appraisal_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_appraisal_monarch }
+		}
+		scope:ftr_court_appraisal_monarch ?= {
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
+				save_scope_as = ftr_court_appraisal_story
+			}
+		}
+		ftr_court_appraisal_settle_effect = yes
+		# 结果回执被评议者
+		if = {
+			limit = { has_character_flag = ftr_court_appraisal_praise }
+			scope:ftr_court_appraisal_target ?= {
+				send_interface_message = { type = event_diplomacy_good_with_text  title = ftr_court_appraisal_notify_praised_title  desc = ftr_court_appraisal_notify_praised_desc  left_icon = root }
+			}
+		}
+		else_if = {
+			limit = { has_character_flag = ftr_court_appraisal_smear }
+			scope:ftr_court_appraisal_target ?= {
+				send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_appraisal_notify_smeared_title  desc = ftr_court_appraisal_notify_smeared_desc  left_icon = root }
+			}
+		}
+		else = {
+			scope:ftr_court_appraisal_target ?= {
+				send_interface_message = { type = event_diplomacy_good_with_text  title = ftr_court_appraisal_notify_backfire_title  desc = ftr_court_appraisal_notify_backfire_desc  left_icon = root }
+			}
+		}
+	}
+
+	option = {
+		name = ftr_court_struggle.0631.a
+		custom_tooltip = { text = ftr_court_appraisal_settle_tt }
+	}
+}
+
+######### 0640 祥瑞上奏・御前处置（M6，root = 最高领主） #########
+ftr_court_struggle.0640 = {
+	type = character_event
+	title = ftr_court_struggle.0640.t
+	desc = ftr_court_struggle.0640.desc
+	theme = learning
+
+	left_portrait = { character = scope:ftr_court_omen_faker  animation = personality_rational }
+	right_portrait = { character = root }
+
+	immediate = {
+		save_scope_as = ftr_court_omen_monarch
+		if = { limit = { has_variable = ftr_court_omen_faker }  var:ftr_court_omen_faker ?= { save_scope_as = ftr_court_omen_faker } }
+		every_owned_story = { limit = { story_type = ftr_court_struggle }  save_scope_as = ftr_court_omen_story }
+	}
+
+	option = { # 嘉奖其瑞
+		name = ftr_court_struggle.0640.a
+		ai_chance = { base = 30  modifier = { add = 20  has_trait = zealous }  modifier = { add = 15  has_trait = trusting }  modifier = { add = -20  has_trait = paranoid } }
+		custom_tooltip = {
+			text = ftr_court_omen_endorse_tt
+			scope:ftr_court_omen_story ?= { ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value } }
+		}
+		scope:ftr_court_omen_faker ?= {
+			add_prestige = ftr_court_omen_prestige_value
+			send_interface_message = { type = event_diplomacy_good_with_text  title = ftr_court_omen_notify_endorsed_title  desc = ftr_court_omen_notify_endorsed_desc  left_icon = root }
+		}
+		remove_variable = ftr_court_omen_faker
+		remove_variable = ftr_court_omen_faker_resist
+	}
+	option = { # 遣学者勘验
+		name = ftr_court_struggle.0640.b
+		ai_chance = { base = 45  modifier = { add = 20  has_trait = paranoid }  modifier = { add = 15  has_trait = just }  modifier = { add = 15  learning >= 12 } }
+		custom_tooltip = { text = ftr_court_omen_inquiry_tt  trigger_event = { id = ftr_court_struggle.0641  days = 2 } }
+	}
+	option = { # 置之不理
+		name = ftr_court_struggle.0640.c
+		ai_chance = { base = 25  modifier = { add = 20  has_trait = lazy }  modifier = { add = 15  has_trait = content } }
+		custom_tooltip = {
+			text = ftr_court_omen_ignore_tt
+			scope:ftr_court_omen_story ?= { ftr_court_intensity_add_effect = { AMOUNT = ftr_court_omen_ignored_intensity_value } }
+		}
+		scope:ftr_court_omen_faker ?= {
+			send_interface_message = { type = event_diplomacy_neutral_with_text  title = ftr_court_omen_notify_ignored_title  desc = ftr_court_omen_notify_ignored_desc  left_icon = root }
+		}
+		remove_variable = ftr_court_omen_faker
+		remove_variable = ftr_court_omen_faker_resist
+	}
+}
+
+######### 0641 天象勘验・结果（M6，root = 最高领主） #########
+ftr_court_struggle.0641 = {
+	type = character_event
+	title = ftr_court_struggle.0641.t
+	desc = {
+		triggered_desc = {
+			trigger = { has_character_flag = ftr_court_omen_debunked }
+			desc = ftr_court_struggle.0641.desc_debunked
+		}
+		triggered_desc = {
+			trigger = { has_character_flag = ftr_court_omen_upheld }
+			desc = ftr_court_struggle.0641.desc_upheld
+		}
+	}
+	theme = learning
+
+	left_portrait = { character = scope:ftr_court_omen_faker  animation = personality_rational }
+	right_portrait = { character = root }
+
+	immediate = {
+		save_scope_as = ftr_court_omen_monarch
+		if = { limit = { has_variable = ftr_court_omen_faker }  var:ftr_court_omen_faker ?= { save_scope_as = ftr_court_omen_faker } }
+		every_owned_story = { limit = { story_type = ftr_court_struggle }  save_scope_as = ftr_court_omen_story }
+		ftr_court_omen_inquiry_effect = yes
+		if = {
+			limit = { has_character_flag = ftr_court_omen_debunked }
+			scope:ftr_court_omen_faker ?= {
+				send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_omen_notify_debunked_title  desc = ftr_court_omen_notify_debunked_desc  left_icon = root }
+			}
+		}
+		else = {
+			scope:ftr_court_omen_faker ?= {
+				send_interface_message = { type = event_diplomacy_good_with_text  title = ftr_court_omen_notify_survived_title  desc = ftr_court_omen_notify_survived_desc  left_icon = root }
+			}
+		}
+	}
+
+	option = {
+		name = ftr_court_struggle.0641.a
+		custom_tooltip = { text = ftr_court_omen_settle_tt }
 	}
 }

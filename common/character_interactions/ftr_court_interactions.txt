@@ -31,7 +31,7 @@ ftr_court_withdraw_backing_interaction = {
 	ai_frequency = 24
 	is_shown = {
 		scope:actor = {
-			# 无地廷臣无法主动发起交互（站队走事件 0014，撤回暂无事件路径）
+			# 无地廷臣无法主动发起交互（站队走事件 0200，撤回暂无事件路径）
 			is_landed = yes
 			has_variable = ftr_court_backer_of
 			var:ftr_court_backer_of ?= { this = scope:recipient }
@@ -332,7 +332,7 @@ ftr_court_petition_coregency_interaction = {
 				ICON = scope:actor
 			}
 			trigger_event = {
-				id = ftr_court_struggle.0020
+				id = ftr_court_struggle.0220
 				days = 1
 			}
 		}

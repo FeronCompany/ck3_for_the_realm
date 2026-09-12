@@ -50,6 +50,8 @@
  ftr_court_backing_refused_opinion:0 "当众拒了我的拥立"
  ftr_court_backing_presumptuous_opinion:0 "贸然站队令我难堪"
  ftr_court_disciplined_opinion:0 "当众敲打了我"
+ ftr_court_impeachment_opinion:0 "当众弹劾了我"
+ ftr_court_impeachment_rival:0 "朝堂弹劾结怨"
  ftr_court_backing_alert_message:0 "臣属攀附他人"
  ftr_court_discipline_success_message:0 "党羽屈服"
 

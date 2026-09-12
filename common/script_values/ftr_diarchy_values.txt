@@ -40,7 +40,7 @@ ftr_diarchy_swing_drift_per_backer_value = 1
 # 单季度 drift 上限 / 下限（幅度刻意压小）
 ftr_diarchy_swing_drift_cap_value = 3
 ftr_diarchy_swing_drift_cap_min_value = -3
-# 季度派发共治拉锯事件（0083 / 0084）的概率（%）
+# 季度派发共治拉锯事件（0500 / 0510）的概率（%）
 ftr_diarchy_swing_event_chance_value = 25
 
 # —— 背书盘点（求值域 = 君主）——

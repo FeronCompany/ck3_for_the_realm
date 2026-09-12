@@ -188,7 +188,7 @@ ftr_court_backer_opinion = {
 	stacking = yes
 }
 
-# 君恩：获君主宽赦者对君主的感激（事件 0013.d 宽恕分支）
+# 君恩：获君主宽赦者对君主的感激（事件 0130.d 宽恕分支）
 ftr_court_loyalist_opinion = {
 	opinion = 25
 	years = 15
@@ -254,6 +254,14 @@ ftr_court_backing_presumptuous_opinion = {
 ftr_court_disciplined_opinion = {
 	opinion = -50
 	years = 10
+	decaying = yes
+	stacking = yes
+}
+
+# 弹劾之怨（M1）：弹劾者与被弹劾者之间大幅反目；君主站错边时亦对该侧记恨
+ftr_court_impeachment_opinion = {
+	opinion = -60
+	years = 20
 	decaying = yes
 	stacking = yes
 }

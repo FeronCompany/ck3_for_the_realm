@@ -97,25 +97,40 @@ ftr_court_struggle_main_pulse = {
 		}
 		if = {
 			limit = { exists = scope:ftr_court_pulse_story }
-			# 每拍按权重随机选一族，直接调各族既有 effect（原 0211–0215 hidden 调度事件已移除）
-			random_list = {
-				# 互殴手段族（0050–0052 / 0070 / 0080 / 0090）
-				60 = {
-					scope:ftr_court_pulse_story = { ftr_court_strife_slander_effect = yes }
+			# 池内按烈度分流：高烈度 = 脏手段 + 强出口 + 拉锯 + 文明族（高烈度亦可触发文明事件）；
+			# 低烈度 = 仅文明族（此时斗争尚体面，就事论事；脏手段不对低烈度开放）。
+			if = {
+				limit = {
+					scope:ftr_court_pulse_story = {
+						var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
+					}
 				}
-				# 强出口族（0003 / 0005 通知 + 0014 / 0015 / 0018）+ 党羽逼宫（0085 / 0086 并族）
-				35 = {
-					scope:ftr_court_pulse_story = { ftr_court_strife_exit_pulse_effect = yes }
-					scope:ftr_court_pulse_story = { ftr_court_backer_demand_pulse_effect = yes }
+				random_list = {
+					# 互殴手段族（0300–0320 / 0410 / 0420 / 0430）
+					60 = {
+						scope:ftr_court_pulse_story = { ftr_court_strife_slander_effect = yes }
+					}
+					# 强出口族（0003 / 0004 通知 + 0200 / 0140 / 0150）+ 党羽逼宫（0520 / 0530 并族）
+					35 = {
+						scope:ftr_court_pulse_story = { ftr_court_strife_exit_pulse_effect = yes }
+						scope:ftr_court_pulse_story = { ftr_court_backer_demand_pulse_effect = yes }
+					}
+					# 无地拉锯（0500，需天平 ≥70 且有共治者）
+					15 = {
+						scope:ftr_court_pulse_story = { ftr_court_landless_swing_effect = yes }
+					}
+					# 共治反击（0510，需天平 ≤30 且有共治者）
+					12 = {
+						scope:ftr_court_pulse_story = { ftr_court_diarch_backlash_effect = yes }
+					}
+					# 文明争斗族（M1–M3）：烈度高企时"就事论事"的手段依然存在
+					20 = {
+						scope:ftr_court_pulse_story = { ftr_court_civil_strife_effect = yes }
+					}
 				}
-				# 无地拉锯（0083，需天平 ≥70 且有共治者）
-				15 = {
-					scope:ftr_court_pulse_story = { ftr_court_landless_swing_effect = yes }
-				}
-				# 共治反击（0084，需天平 ≤30 且有共治者）
-				12 = {
-					scope:ftr_court_pulse_story = { ftr_court_diarch_backlash_effect = yes }
-				}
+			}
+			else = {
+				scope:ftr_court_pulse_story = { ftr_court_civil_strife_effect = yes }
 			}
 		}
 	}

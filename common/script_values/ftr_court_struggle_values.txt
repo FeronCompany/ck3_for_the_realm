@@ -43,9 +43,9 @@ ftr_court_backing_alert_chance_value = {
 #   0-40  平静/潜伏   40-90 酝酿   90-140 对立   140-170 濒危（政变/内战窗口）  170-200 临界（废黜昏君）
 # 边界命名用直白 bound，triggers 里以 `>= 某 bound` 判定进入某区：
 #   < quiet_bound(=40)           → 平静
-#   >= stir_bound(=90)           → 对立（0014 站队 / 对立脉冲）
+#   >= stir_bound(=90)           → 对立（0200 站队 / 对立脉冲）
 #   >= high_bound(=140)          → 濒危（危机脉冲 / 政变·内战出口，对应旧 crisis）
-#   >= critical_bound(=170)      → 临界（0018 废黜昏君等最强手段）
+#   >= critical_bound(=170)      → 临界（0150 废黜昏君等最强手段）
 ftr_court_intensity_min_value = 0
 ftr_court_intensity_max_value = 200
 ftr_court_intensity_quiet_bound_value = 40
@@ -58,7 +58,7 @@ ftr_court_strife_interval_max_value = 120
 # 出手基线概率（%，随烈度升高，后续手段事件族接入时叠加）
 ftr_court_strife_base_chance_value = 15
 # 强出口轮概率（%）：烈度 ≥90 的每次主时钟，按此概率推进一次强出口检查
-# （0014 站队 / 0015 政变·起兵 / 0018 废黜 + 0003/0005 通知），约每 3-4 轮一次
+# （0200 站队 / 0140 政变·起兵 / 0150 废黜 + 0003/0004 通知），约每 3-4 轮一次
 ftr_court_strife_exit_chance_value = 25
 # 交互层党争摩擦：指控 / 散布不和「发起方与目标各自都有背书对象」时的小幅抬升（发起即生效，低于手段档）
 ftr_court_interaction_clash_intensity_value = 4
@@ -410,9 +410,9 @@ ftr_court_petition_consolation_merit_value = 15
 ftr_court_succession_war_prestige_cost_value = 350
 
 ########## 六之二、奖惩幅度 ##########
-# 君主强力出手（0003.c 禁止内斗 / 0005.b/c 压制）对烈度的单次抑制量
+# 君主强力出手（0003.c 禁止内斗 / 0004.b/c 压制）对烈度的单次抑制量
 ftr_court_monarch_restraint_drop_value = 8
-# 0011.b「擒贼擒王」定向逮捕的成功基础概率（%）
+# 0110.b「擒贼擒王」定向逮捕的成功基础概率（%）
 ftr_court_arrest_success_base_value = 75
 # 威望与恐惧
 ftr_court_prestige_minor_value = 100
@@ -477,6 +477,144 @@ ftr_court_backer_demand_scale_value = {
 			}
 		}
 	}
+}
+
+########## 八之二、文明争斗（M1–M3，低烈度段）##########
+# 统一节流：同一政权两次文明事件的最小间隔（年）——文明阶段节奏比脏手段慢
+ftr_court_civil_strife_cooldown_years_value = 2
+# 分档烈度增量：温和收场 / 对立收场 / 处理不当（高危档允许一次性引爆，直接跨过 90 进入脏手段段）
+ftr_court_civil_strife_intensity_low_value = 4
+ftr_court_civil_strife_intensity_mid_value = 8
+ftr_court_civil_strife_intensity_high_value = 15
+# 君主出面平息 / 站边的威望成本（外交越高越便宜，见事件内公式）
+ftr_court_civil_strife_quell_prestige_value = 150
+# 君主亲自调停的降温幅度（负值＝下调烈度）
+ftr_court_civil_strife_intensity_quell_value = -4
+
+# M2 / M3 朝堂辩论（§8.2.2 新写结算，不涉辩经链）：
+# 胜方所得：本人与被支持者各得此额威望（行政制改走影响力）
+ftr_court_debate_prestige_value = 150
+# 败方额外损失
+ftr_court_debate_prestige_loss_value = 100
+# 避战方的声望损失（怯于论战）
+ftr_court_debate_dodge_prestige_value = 60
+# 求值域：this = 该辩士。辩论力＝外交 + 学识 + 威望底蕴(1%) + 党羽规模×2。
+ftr_court_debate_strength_value = {
+	value = 0
+	add = { value = diplomacy  multiply = 1 }
+	add = { value = learning  multiply = 1 }
+	add = { value = prestige  multiply = 0.01 }
+	add = { value = ftr_court_supporters_count_value  multiply = 2 }
+}
+# 求值域：this = 发起辩者；读己方变量 ftr_court_debate_strength 与对手值 ftr_court_debate_foe_strength。
+# 胜率（%）：基础 50 + 双方辩论力差×3，夹 15-85。
+ftr_court_debate_win_chance_value = {
+	value = 50
+	add = {
+		value = var:ftr_court_debate_strength
+		subtract = var:ftr_court_debate_foe_strength
+		multiply = 3
+	}
+	min = 15
+	max = 85
+}
+# 求值域：this = 发起辩者。负率＝100 − 胜率（辩论结算 random_list 的互补权重）。
+ftr_court_debate_lose_chance_value = {
+	value = 100
+	subtract = ftr_court_debate_win_chance_value
+}
+
+# M4 司法决斗・比武裁决（灵感 3）：
+# 胜者所得 / 败者所失（败者另按"支持者离心"追罚）
+ftr_court_duel_prestige_value = 200
+ftr_court_duel_prestige_loss_value = 120
+# 求值域：this = 决斗者。角力＝勇武 + 军事×0.5。
+ftr_court_duel_strength_value = {
+	value = 0
+	add = { value = prowess  multiply = 1 }
+	add = { value = martial  multiply = 0.5 }
+	add = { value = prestige  multiply = 0.01 }
+}
+# 求值域：this = 甲方；读 var:ftr_court_duel_strength / ftr_court_duel_foe_strength。胜率夹 15-85。
+ftr_court_duel_win_chance_value = {
+	value = 50
+	add = {
+		value = var:ftr_court_duel_strength
+		subtract = var:ftr_court_duel_foe_strength
+		multiply = 4
+	}
+	min = 15
+	max = 85
+}
+ftr_court_duel_lose_chance_value = {
+	value = 100
+	subtract = ftr_court_duel_win_chance_value
+}
+
+# M5 清议 / 月旦评（灵感 4）：
+# 褒扬所奖 / 贬斥所伤
+ftr_court_appraisal_prestige_value = 120
+ftr_court_appraisal_loss_value = 100
+# 求值域：this = 该士人。评议资本＝学识 + 外交×0.5 + 威望底蕴(1%)。
+ftr_court_appraisal_power_value = {
+	value = 0
+	add = { value = learning  multiply = 1 }
+	add = { value = diplomacy  multiply = 0.5 }
+	add = { value = prestige  multiply = 0.01 }
+}
+# 求值域：this = 评议者；读 var:ftr_court_appraisal_skill / ftr_court_appraisal_foe_resist。成算夹 20-85。
+ftr_court_appraisal_success_chance_value = {
+	value = 55
+	add = {
+		value = var:ftr_court_appraisal_skill
+		subtract = var:ftr_court_appraisal_foe_resist
+		multiply = 3
+	}
+	min = 20
+	max = 85
+}
+ftr_court_appraisal_fail_chance_value = {
+	value = 100
+	subtract = ftr_court_appraisal_success_chance_value
+}
+
+# M6 谶纬祥瑞・天象勘验（灵感 5）：
+# 造势成功所得声望
+ftr_court_omen_prestige_value = 150
+# 君主置之不理时烈度上浮
+ftr_court_omen_ignored_intensity_value = 6
+# 被学者识破时的声望损失
+ftr_court_omen_debunked_loss_value = 250
+# 求值域：this = 造祥瑞者。抗查底数＝学识 + 威望底蕴(1%) + 2（善于自圆其说）。
+ftr_court_omen_faker_resist_value = {
+	value = 2
+	add = { value = learning  multiply = 1 }
+	add = { value = prestige  multiply = 0.01 }
+}
+# 求值域：this = 派去勘验的君主（其学识即勘验力）；var:ftr_court_omen_faker_resist = 造势者的抗查底数。
+# 成算＝40 + 学识×2 − 抗查底数，夹 20-85。
+ftr_court_omen_inquiry_chance_value = {
+	value = 40
+	add = { value = learning  multiply = 2 }
+	subtract = var:ftr_court_omen_faker_resist
+	min = 20
+	max = 85
+}
+ftr_court_omen_inquiry_fail_chance_value = {
+	value = 100
+	subtract = ftr_court_omen_inquiry_chance_value
+}
+# 弹劾内阁：候选封臣的"发难意愿"基础值（%），性格项在内联加成（公正/傲慢/愤世/勤勉/野心）
+ftr_court_impeach_urge_base_value = 10
+
+# 求值域：this = 候选封臣（有党羽）。弹劾内阁的发难意愿（%）。
+ftr_court_impeach_urge_chance_value = {
+	value = ftr_court_impeach_urge_base_value
+	if = { limit = { has_trait = just }      add = 15 }
+	if = { limit = { has_trait = arrogant }  add = 15 }
+	if = { limit = { has_trait = cynical }   add = 15 }
+	if = { limit = { has_trait = diligent }  add = 10 }
+	if = { limit = { has_trait = ambitious } add = 15 }
 }
 
 ########## 九、朝堂行为节流（统一常量组）##########

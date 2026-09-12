@@ -50,6 +50,8 @@
  ftr_court_backing_refused_opinion:0 "Publicly rebuffed their support"
  ftr_court_backing_presumptuous_opinion:0 "Made bold presumption by backing"
  ftr_court_disciplined_opinion:0 "Publicly disciplined me"
+ ftr_court_impeachment_opinion:0 "Publicly impeached me"
+ ftr_court_impeachment_rival:0 "Feud born of an impeachment"
  ftr_court_backing_alert_message:0 "A Subject Courts Another"
  ftr_court_discipline_success_message:0 "The Backer Yields"
 

@@ -34,7 +34,7 @@
 
  combat_guide_ongoing.1002.t:1 "深受启发"
  combat_guide_ongoing.1002.desc:3 "当我的训练逐渐陷入瓶颈时，我睿智的导师 [target.GetShortUIName|U] 从容地走过来，详细地指出了我的招式中可以改进的地方。当我按照他的方法再去尝试时，一切的疑惑都豁然开朗。我突破了！"
- combat_guide_ongoing.1002.a:0 "感激不尽", [target.GetShortUIName|U]."
+ combat_guide_ongoing.1002.a:0 "感激不尽，[target.GetShortUIName|U]。"
 
  combat_guide_ongoing.1003.t:1 "体能训练"
  combat_guide_ongoing.1003.desc:3 "导师 [target.GetShortUIName|U] 向我走来，并且语重心长地对我说：据我观察，你的力量还明显不足，这不足以支撑你的格斗训练。那么从今天开始，我们进行体能训练！"

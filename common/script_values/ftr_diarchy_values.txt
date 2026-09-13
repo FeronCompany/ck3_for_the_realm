@@ -33,15 +33,25 @@ ftr_diarchy_levy_vassal_swing_value = ftr_swing_tier_even_high_value
 ftr_diarchy_amnesty_swing_value = ftr_swing_tier_strong_high_value
 # 准备篡位（§4.4-A）支持者数量门槛
 ftr_diarchy_prepare_coup_supporter_threshold_value = 2
+# 太子共治初始天平（§2.2 / §6）：主动立储（指定继承人 / 成年补立）——低起点，太子须靠经营抬升
+ftr_diarchy_crown_prince_voluntary_initial_swing_value = 10
+# 太子共治初始天平：被迫立储（共治请愿 / 党羽逼宫推上台）
+ftr_diarchy_crown_prince_imposed_initial_swing_value = 40
 
 ### 一之二、季度背书博弈（swing 唯一的人工成长源；无任何被动月度修正）
 # 每 1 名「净背书领先」折算的 swing 点
 ftr_diarchy_swing_drift_per_backer_value = 1
-# 单季度 drift 上限 / 下限（幅度刻意压小）
-ftr_diarchy_swing_drift_cap_value = 3
+# 君主党羽折算溢价：共治者天然更易积累党羽（大赦 / 请愿 / 逼宫都把党羽记在共治者名下），
+# 故君主每名党羽按此倍率折算，抵消结构性单向上行
+ftr_diarchy_swing_drift_liege_backer_multiplier_value = 1.5
+# 单季度 drift 上限 / 下限（幅度刻意压小；正向刻意低于负向，抑制「只涨不跌」）
+ftr_diarchy_swing_drift_cap_value = 2
 ftr_diarchy_swing_drift_cap_min_value = -3
 # 季度派发共治拉锯事件（0500 / 0510）的概率（%）
 ftr_diarchy_swing_event_chance_value = 25
+# 君主侧反制（0500）的派发门槛：天平达到中性（50）即开始反制。
+# 原取强权下沿（70），偏高导致「涨得快、回得慢」，是 swing 单向上行的第二根因。
+ftr_diarch_counter_swing_threshold_value = ftr_swing_tier_even_mid_value
 
 # —— 背书盘点（求值域 = 君主）——
 # 背书共治者的人数（封臣 + 内阁）
@@ -85,10 +95,13 @@ ftr_diarchy_liege_backer_count_value = {
 	}
 }
 
-# 季度 swing 漂移量 =（共治者背书 − 君主背书）× 每人折算，且夹在 ±上限内
+# 季度 swing 漂移量 =（共治者背书 − 君主背书 × 折算溢价）× 每人折算，且夹在 ±上限内
 ftr_diarchy_backer_swing_drift_value = {
 	value = ftr_diarchy_diarch_backer_count_value
-	subtract = ftr_diarchy_liege_backer_count_value
+	subtract = {
+		value = ftr_diarchy_liege_backer_count_value
+		multiply = ftr_diarchy_swing_drift_liege_backer_multiplier_value
+	}
 	multiply = ftr_diarchy_swing_drift_per_backer_value
 	max = ftr_diarchy_swing_drift_cap_value
 	min = ftr_diarchy_swing_drift_cap_min_value
@@ -97,8 +110,12 @@ ftr_diarchy_backer_swing_drift_value = {
 ### 二、废太子（§3.2）
 # 双向固定好感惩罚
 ftr_diarchy_abolish_opinion_mutual_value = -50
-# 宫廷派（courtly 立场封臣）对废储之举的不满
-ftr_diarchy_abolish_courtly_opinion_value = -25
+# 太子党羽（ftr_court_supporters 名单）对废储之举的不满
+ftr_diarchy_abolish_backer_opinion_value = -25
+# 可废门槛：太子天平（swing）高于此值则羽翼已丰，不可轻废（决议 is_valid 门槛）
+ftr_diarchy_abolish_prince_swing_cap_value = ftr_swing_tier_even_high_value
+# 废储代价：正统性惩罚（引用原版正统性档位常量）
+ftr_diarchy_abolish_legitimacy_value = medium_legitimacy_loss
 
 ### 二之二、废太子 AI 倾向（§3.2）
 # 党羽压力换算：每名「强力封臣党羽」/「内阁党羽」/「党羽军力」的权重

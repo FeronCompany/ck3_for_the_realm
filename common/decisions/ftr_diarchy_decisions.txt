@@ -30,6 +30,11 @@ ftr_diarchy_abolish_crown_prince_decision = {
 	is_valid = {
 		exists = diarch
 		diarch ?= { is_alive = yes }
+		# 只能在太子天平尚低（≤ 门槛）时动手：羽翼已丰则不可轻废
+		custom_tooltip = {
+			text = ftr_diarchy_abolish_prince_swing_tt
+			diarchy_swing <= ftr_diarchy_abolish_prince_swing_cap_value
+		}
 	}
 
 	effect = {
@@ -65,10 +70,10 @@ ftr_diarchy_abolish_crown_prince_decision = {
 			add = -30
 			diarch ?= { OR = { has_trait = content  has_trait = trusting } }
 		}
-		# ④ 太子已坐大（天平过高）→ 该动手了
+		# ④ 太子羽翼未丰（天平尚低）→ 趁早动手（天平过高时决议已不可点）
 		modifier = {
 			add = 25
-			diarchy_swing >= 60
+			diarchy_swing <= ftr_swing_tier_even_mid_value
 		}
 	}
 }

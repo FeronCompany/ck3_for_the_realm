@@ -379,9 +379,9 @@ ftr_court_ui_claimants_count_value = {
 # 权力天平已迁移至官方 diarchy swing（diarchy_swing，0–100：0 = 君主全权，100 = 共治全权，50 = 中性）。
 # 移动 swing 统一调用官方 update_diarchy_swing_with_perspective_effect；
 # 年度自然回落 / 平衡由官方 diarchy 的 swing_balance 机制维护（已废除自建 ftr_court_regency_swing 及 ±5/±3/±2 移轴常量）。
-# 阈值口径（§3.2，对照官方 swing 数值）：30 辅政稳固判定 | 50 中性 | 70 共治请愿 | 90 废黜昏君（且君主失能）
-# 拉锯进入"共治请愿"的阈值
-ftr_court_swing_regency_threshold_value = ftr_swing_tier_strong_low_value
+# 阈值口径（§3.2，对照官方 swing 数值）：30 辅政稳固判定 | 50 中性（0500 派发门槛，见 03 §7.2）| 90 废黜昏君（且君主失能）
+# 注：原「拉锯进入共治请愿的阈值」（70）随请愿口径放宽（2026-09 移除天平条件）已无消费方，常量删除；
+#     0500 的派发门槛改由 03 的 `ftr_diarch_counter_swing_threshold_value`（中性 50）承担。
 # 拉锯进入"夺位"的阈值（且君主失能）
 ftr_court_swing_usurp_threshold_value = ftr_swing_tier_absolute_value
 # 拉锯进入"辅政稳固"的阈值（偏向君主 ≤30）
@@ -399,6 +399,36 @@ ftr_court_back_claimant_influence_cost_value = 40
 ftr_court_heir_backing_prestige_value = 200
 ftr_court_request_coregency_prestige_cost_value = 240
 ftr_court_request_coregency_influence_cost_value = 80
+
+# ---- 共治请愿：君主权衡「拒绝会不会引发冲突」（2026-09）----
+# 请愿者阵营军力分档：达「强」即有底气硬请；达「压倒」则君主多半只能让步
+ftr_court_petition_camp_strong_value = 4000
+ftr_court_petition_camp_overwhelming_value = 9000
+# 拒绝请愿的烈度代价（大幅：对照文明档 4/8/15 与逼宫族 20）
+ftr_court_petition_refuse_intensity_value = 25
+# 共治请愿的**接收方**冷却年数（2026-09）：同一君主受理一份请愿后 2 年内不再受理新的，
+# 防止「多名权贵排队逼请」刷屏（flag 到期自动失效，无需手动清理）。
+ftr_court_petition_cooldown_years_value = 2
+
+# 求值域：请愿者（事件/交互 actor）。
+# 其「阵营军力」＝ 自身军力 + 背书对象军力 + 背书对象党羽（支持者名单）军力之和。
+# 供 0220 君主裁决时判断"拒绝是否会把对方逼上对抗"。
+ftr_court_petition_camp_strength_value = {
+	value = current_military_strength
+	if = {
+		limit = { has_variable = ftr_court_backer_of }
+		var:ftr_court_backer_of ?= {
+			add = current_military_strength
+			if = {
+				limit = { has_variable_list = ftr_court_supporters }
+				every_in_list = {
+					variable = ftr_court_supporters
+					add = current_military_strength
+				}
+			}
+		}
+	}
+}
 # 请愿回退（请愿者取得 `regency`）的初始天平：取「强权上沿」。
 # 理由（裁定 R2）：请愿以君主失能前提，故给高初值；引擎每月按 0.25 向 regency 的
 # swing_balance = 50 回落，而原版在 swing ≤ 20 时允许免费结束摄政 —— 高初值可延长该窗口。

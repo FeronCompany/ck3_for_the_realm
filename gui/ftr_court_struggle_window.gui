@@ -131,9 +131,14 @@ window = {
 							# ==================== 2. 君主与共治者的支持者 ====================
 							hbox = {
 								layoutpolicy_horizontal = expanding
+								# 两栏等宽：minimumsize 50% 强制均分——否则 expanding 会按内容最小宽分配，
+								# 支持者多的一栏（fixedgridbox 更宽）会挤占另一栏，出现左右不等宽。
+								spacing = 0
 								# 君主支持者
 								vbox = {
 									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+									minimumsize = { 50% 0 }
 									text_single = {
 										margin = { 10 8 }
 										text = "ftr_court_ui_monarch_backers_label"
@@ -142,12 +147,14 @@ window = {
 									ftr_court_supporter_grid = {
 										datacontext = "[GetPlayer.GetTopLiege]"
 									}
+									expand = {}
 								}
 								
-								# 共治者支持者（无共治者时整栏隐藏，避免空背景板）
+								# 共治者支持者（与君主栏等宽；无共治者时支持者列表为空）
 								vbox = {
-									visible = "[GetPlayer.GetTopLiege.GetDiarchy.GetDiarch.IsValid]"
 									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+									minimumsize = { 50% 0 }
 									text_single = {
 										margin = { 10 8 }
 										text = "ftr_court_ui_diarch_backers_label"
@@ -156,6 +163,7 @@ window = {
 									ftr_court_supporter_grid = {
 										datacontext = "[GetPlayer.GetTopLiege.GetDiarchy.GetDiarch]"
 									}
+									expand = {}
 								}
 							}
 
@@ -202,9 +210,13 @@ types Lists
 		}
 	}
 
-	# 支持者名单网格：背景板 + fixedgridbox（每行 6 个 64×64 头像，自动换行）。
+	# 支持者名单网格：背景板 + fixedgridbox（头像 64×64，自动换行）。
 	# 权贵支持者名单的通用呈现：claimant_row 的右半部分；也可单独用于
 	# 君主 / 共治者支持者栏（不显示权贵头像），datacontext 直接传权贵即可。
+	# 每行个数 / 单元格宽走 block "supporter_grid_cells"：
+	#   默认（君主 / 共治者两栏并排）= 4 列 × 72 = 288，必须 ≤ 半栏宽，
+	#   否则 fixedgridbox 的最小内容宽会把该栏撑宽，破坏两栏等宽；
+	#   claimant_row（通栏行）用 blockoverride 还原为 6 列 × 80 = 480（原宽）。
 	type ftr_court_supporter_grid = hbox {
 		datacontext = "[Scope.GetCharacter]"
 		layoutpolicy_horizontal = expanding
@@ -215,11 +227,13 @@ types Lists
 			margin_top = 20
 		}
 		fixedgridbox = {
-			addcolumn = 80
 			addrow = 90
 			datamodel = "[Character.MakeScope.GetList('ftr_court_supporters')]"
-			datamodel_wrap = 6
 			flipdirection = yes
+			block "supporter_grid_cells" {
+				addcolumn = 72
+				datamodel_wrap = 4
+			}
 			item = {
 				container = {
 					datacontext = "[Scope.Char]"
@@ -245,6 +259,11 @@ types Lists
 		}
 		ftr_court_supporter_grid = {
 			datacontext = "[Character]"
+			# 竞争者党羽栏：保持原宽（6 列 × 80 = 480），与上半区的 4 列 × 72 不同
+			blockoverride "supporter_grid_cells" {
+				addcolumn = 80
+				datamodel_wrap = 6
+			}
 		}
 		
 	}

@@ -285,8 +285,10 @@ ftr_sow_discord_interaction = {
 			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
 		}
 		# 在其他党羽之间散谣：被打散的两方同属一个外营 → 再加权
+		# 注：secondary_actor 在 AI 预评估阶段可能未设，直接引用会报 unset scope（原版惯用 exists 守卫）
 		modifier = {
 			add = 50
+			exists = scope:secondary_actor
 			scope:recipient = { ftr_court_same_camp_trigger = { OTHER = scope:secondary_actor } }
 			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
 		}
@@ -298,6 +300,7 @@ ftr_sow_discord_interaction = {
 		# 被离间的两方都是我的人（纯内斗）→ 再减权
 		modifier = {
 			add = -70
+			exists = scope:secondary_actor
 			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } }
 			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:secondary_actor } }
 		}

@@ -53,14 +53,8 @@ ftr_diarchy.0020 = {
 
 	option = { # 向共治者屈服（仅记「不反对」，D5）
 		name = ftr_diarchy.0020.a
-		scope:ftr_diarchy_phase_a_diarch ?= {
-			liege ?= {
-				update_diarchy_swing_with_perspective_effect = {
-					SWING = minor_sop_swing_diarch_gain
-					LIEGE = liege
-				}
-			}
-		}
+		# 设计 §4.4-A：屈服者**仅记「不反对」**——不产生支持者、不移动天平
+		# （原实现对每名屈服者给共治者 +5 swing，与设计矛盾且阶段 A 广播全体封臣，已删除）
 	}
 
 	option = { # 以「清君侧」名义造反
@@ -256,6 +250,12 @@ ftr_diarchy.0200 = {
 ftr_diarchy.0700 = {
 	type = character_event
 	title = ftr_diarchy.0700.t
+	# 事件级过滤：仅当太子共治确已落地时才告知（补立失败即不触发）
+	trigger = {
+		is_alive = yes
+		has_active_diarchy = yes
+		exists = diarch
+	}
 	desc = ftr_diarchy.0700.desc
 	theme = diplomacy
 

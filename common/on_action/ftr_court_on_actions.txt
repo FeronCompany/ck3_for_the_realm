@@ -98,7 +98,7 @@ ftr_court_struggle_main_pulse = {
 		if = {
 			limit = { exists = scope:ftr_court_pulse_story }
 			# 池内按烈度分流：高烈度 = 脏手段 + 强出口 + 拉锯 + 文明族（高烈度亦可触发文明事件）；
-			# 低烈度 = 仅文明族（此时斗争尚体面，就事论事；脏手段不对低烈度开放）。
+			# 低烈度 = 文明族 + 党羽请立共治（脏手段与逼宫退位不对低烈度开放）。
 			if = {
 				limit = {
 					scope:ftr_court_pulse_story = {
@@ -130,7 +130,25 @@ ftr_court_struggle_main_pulse = {
 				}
 			}
 			else = {
-				scope:ftr_court_pulse_story = { ftr_court_civil_strife_effect = yes }
+				# 低烈度（<90）：文明争斗族为主；**党羽请立共治（§13 情形一）不再受烈度封锁**——
+				# 仅在「尚无共治者」时开放，故逼宫退位（情形二：需已有共治 + 天平 ≥ 强权上沿）
+				# 仍属高烈度强出口，不会在低烈度出现。
+				if = {
+					limit = {
+						scope:ftr_court_pulse_story = { NOT = { has_active_diarchy = yes } }
+					}
+					random_list = {
+						85 = {
+							scope:ftr_court_pulse_story = { ftr_court_civil_strife_effect = yes }
+						}
+						15 = {
+							scope:ftr_court_pulse_story = { ftr_court_backer_demand_pulse_effect = yes }
+						}
+					}
+				}
+				else = {
+					scope:ftr_court_pulse_story = { ftr_court_civil_strife_effect = yes }
+				}
 			}
 		}
 	}

@@ -19,6 +19,7 @@
  ftr_diarchy_abolish_crown_prince_decision:0 "<FTR>Abolish the Crown Prince"
  ftr_diarchy_abolish_crown_prince_decision_desc:0 "<FTR>Strip the crown prince of his title and inheritance, end the co-rule, and reduce him to an ordinary vassal. He and the court will not forgive you."
  ftr_diarchy_abolish_crown_prince_decision_tooltip:0 "<FTR>Depose the crown prince and disinherit him"
+ ftr_diarchy_abolish_prince_swing_tt:0 "<FTR>The crown prince's [scales_of_power|E] must not exceed #P 60#! — while his power is still small, he can be set aside"
  ftr_diarchy_depose_liege_decision:0 "<FTR>Depose Your Liege"
  ftr_diarchy_depose_liege_decision_desc:0 "<FTR>Force your liege from the throne: he loses every title and is thrown in chains, his designated heir takes his place, and you take the credit from the shadows."
  ftr_diarchy_depose_liege_decision_tooltip:0 "<FTR>Force your liege to abdicate in favour of his heir"

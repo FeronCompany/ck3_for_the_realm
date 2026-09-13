@@ -37,10 +37,14 @@ ftr_diarchy_crown_prince = {
 	}
 
 	# 权力天平阶梯 swing 0 / 20 / 40 / 60 / 80
+	# 注（§3.1）：**不带** liege_may_voluntarily_cede_authority——它是原版 junior_emperorship 的
+	#     「父皇主动放权」专用参数，全游戏唯一作用是给君主的摆动天平交互解锁「自愿让权」选项，
+	#     选中即给共治者 +20/+30/+40 swing（原版 00_diarch_interactions.txt 的 swing_cede_authority 分支）。
+	#     带 lieges_swing_more_against_diarchs：君主摆动天平拉回幅度加倍（−10 → −20），与共治者侧对称。
 	power_level = {
 		swing = 0
 		parameter = diarch_is_preferred_liege_heir
-		parameter = liege_may_voluntarily_cede_authority
+		parameter = lieges_swing_more_against_diarchs
 	}
 	power_level = {
 		swing = 20

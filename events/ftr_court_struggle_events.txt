@@ -1102,20 +1102,75 @@ ftr_court_struggle.0210 = {
 ### 0220 共治请愿（02xx 带内：君主裁断是否接纳共治）
 ##############################################################
 
-######### 0220 裁决共治请愿（root = 在位君主） #########
+######### 0220 裁决共治请愿（root = 在位君主；letter_event 书信体，2026-09 改造） #########
 ftr_court_struggle.0220 = {
-	type = character_event
+	type = letter_event
 	title = ftr_court_struggle.0220.t
-	desc = ftr_court_struggle.0220.desc
-	theme = diplomacy
-
-	left_portrait = {
-		character = root
-		animation = personality_rational
+	# 事件级过滤：请愿者须在世（书信以 sender 呈现；递交后 1 日内死亡则本次请愿作废）
+	trigger = {
+		scope:actor ?= { is_alive = yes }
 	}
-	right_portrait = {
+	opening = {
+		desc = ftr_court_struggle.0220.opening
+	}
+	# 正文两版（2026-09）：为他人请愿（点名被举荐者）/ 自请
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:actor = {
+						has_variable = ftr_court_backer_of
+						var:ftr_court_backer_of ?= { NOT = { this = root } }
+					}
+				}
+				desc = ftr_court_struggle.0220.desc.backed
+			}
+			desc = ftr_court_struggle.0220.desc.self
+		}
+	}
+	sender = {
 		character = scope:actor
 		animation = beg
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_monarch
+		scope:actor ?= { save_scope_as = ftr_court_petition_sender }
+		# 呈请所荐之人（仅用于书信正文）：背书对象优先（非君主本人），否则请愿者本人。
+		# 注：落地时的授权对象由 ftr_court_establish_coregency_effect 按同一顺位自行判定。
+		scope:actor ?= {
+			if = {
+				limit = {
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { NOT = { this = root } }
+				}
+				var:ftr_court_backer_of ?= { save_scope_as = ftr_court_petition_nominee }
+			}
+			if = {
+				limit = { NOT = { exists = scope:ftr_court_petition_nominee } }
+				save_scope_as = ftr_court_petition_nominee
+			}
+		}
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
+			save_scope_as = ftr_court_story
+		}
+		# 请愿者阵营军力（2026-09）：君主裁决时权衡"拒绝会不会把对方逼上对抗"
+		scope:actor ?= {
+			set_variable = {
+				name = ftr_court_petition_camp_strength
+				value = ftr_court_petition_camp_strength_value
+			}
+		}
+		if = {
+			limit = {
+				scope:actor = { has_variable = ftr_court_petition_camp_strength }
+			}
+			set_variable = {
+				name = ftr_court_petition_camp_strength
+				value = scope:actor.var:ftr_court_petition_camp_strength
+			}
+		}
 	}
 
 	option = { # Grant them a share of power
@@ -1130,6 +1185,17 @@ ftr_court_struggle.0220 = {
 				add = -50
 				has_trait = arrogant
 			}
+			# 对方阵营军力越强，越不宜硬顶（避免引发冲突）→ 倾向让步
+			modifier = {
+				add = 30
+				has_variable = ftr_court_petition_camp_strength
+				var:ftr_court_petition_camp_strength >= ftr_court_petition_camp_strong_value
+			}
+			modifier = {
+				add = 40
+				has_variable = ftr_court_petition_camp_strength
+				var:ftr_court_petition_camp_strength >= ftr_court_petition_camp_overwhelming_value
+			}
 		}
 		save_scope_as = ftr_court_monarch
 		every_owned_story = {
@@ -1143,27 +1209,105 @@ ftr_court_struggle.0220 = {
 			}
 		}
 		# 2) 官方 diarchy swing：允诺共治请愿 → swing 向共治者一侧 +5
+		# 注：① 无共治时调用会报 "no active diarchy"，故先守卫；
+		#     ② 太子立储的初值已按「被迫立储」基线给定（40），不再叠加此 +5。
 		scope:ftr_court_monarch = {
-			update_diarchy_swing_with_perspective_effect = {
-				SWING = minor_sop_swing_diarch_gain
-				LIEGE = scope:ftr_court_monarch
+			if = {
+				limit = {
+					has_active_diarchy = yes
+					NOT = { has_diarchy_type = ftr_diarchy_crown_prince }
+				}
+				update_diarchy_swing_with_perspective_effect = {
+					SWING = minor_sop_swing_diarch_gain
+					LIEGE = scope:ftr_court_monarch
+				}
 			}
 		}
 		scope:actor = {
 			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_alliance_opinion }
+			remove_variable = ftr_court_petition_camp_strength
+		}
+		remove_variable = ftr_court_petition_camp_strength
+		# 结果回执（2026-09）：新共治者本人；若共治者不是请愿者，另给请愿者一条回执
+		if = {
+			limit = { exists = diarch }
+			diarch = {
+				send_interface_message = {
+					type = event_generic_good
+					title = ftr_court_petition_granted_title
+					desc = ftr_court_petition_granted_desc
+					left_icon = scope:ftr_court_monarch
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = diarch
+				NOT = { diarch ?= { this = scope:actor } }
+				scope:actor ?= { is_alive = yes }
+			}
+			scope:actor = {
+				send_interface_message = {
+					type = event_generic_good
+					title = ftr_court_petition_approved_title
+					desc = ftr_court_petition_approved_desc
+					left_icon = scope:ftr_court_monarch
+				}
+			}
+		}
+		# 朝堂通报：共治已立（2026-09）
+		ftr_court_send_court_toast_effect = {
+			TITLE = ftr_court_notice_coregency_granted
+			ICON = scope:actor
 		}
 	}
 	option = { # Refuse outright
 		name = ftr_court_struggle.0220.b
 		ai_chance = {
-			base = 70
+			base = 20
 			modifier = {
 				add = 40
 				has_trait = arrogant
 			}
+			# 对方阵营军力强 → 拒绝风险大，意愿下调（避免引发冲突）
+			modifier = {
+				add = -25
+				has_variable = ftr_court_petition_camp_strength
+				var:ftr_court_petition_camp_strength >= ftr_court_petition_camp_strong_value
+			}
+			modifier = {
+				add = -50
+				has_variable = ftr_court_petition_camp_strength
+				var:ftr_court_petition_camp_strength >= ftr_court_petition_camp_overwhelming_value
+			}
+		}
+		# 拒绝的代价：朝堂烈度大幅上浮（把请愿者推向对抗）
+		custom_tooltip = {
+			text = ftr_court_petition_refuse_tt
+			scope:ftr_court_story ?= {
+				ftr_court_intensity_add_effect = { AMOUNT = ftr_court_petition_refuse_intensity_value }
+			}
 		}
 		scope:actor = {
 			add_opinion = { target = root  modifier = ftr_political_opponent_opinion }
+			remove_variable = ftr_court_petition_camp_strength
+		}
+		remove_variable = ftr_court_petition_camp_strength
+		# 结果通知相关当事人（2026-09）：请愿者收到裁定回执 + 朝堂通报
+		if = {
+			limit = { scope:actor ?= { is_alive = yes } }
+			scope:actor = {
+				send_interface_message = {
+					type = event_generic_bad
+					title = ftr_court_petition_denied_title
+					desc = ftr_court_petition_denied_desc
+					left_icon = root
+				}
+			}
+		}
+		ftr_court_send_court_toast_effect = {
+			TITLE = ftr_court_notice_petition_denied
+			ICON = scope:actor
 		}
 	}
 }
@@ -2890,6 +3034,12 @@ ftr_court_struggle.0510 = {
 ftr_court_struggle.0520 = {
 	type = character_event
 	title = ftr_court_struggle.0520.t
+	# 事件级过滤：被拥立的竞争者须仍在世（派发到触发的 2 天窗口内可能失效）
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_demand_champion
+		var:ftr_court_demand_champion ?= { is_alive = yes }
+	}
 	desc = ftr_court_struggle.0520.desc
 	theme = diplomacy
 
@@ -2982,6 +3132,12 @@ ftr_court_struggle.0520 = {
 ftr_court_struggle.0530 = {
 	type = character_event
 	title = ftr_court_struggle.0530.t
+	# 事件级过滤：拟登基的共治者须仍在世且在位
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_demand_diarch
+		var:ftr_court_demand_diarch ?= { is_alive = yes }
+	}
 	desc = ftr_court_struggle.0530.desc
 	theme = intrigue
 
@@ -3055,6 +3211,12 @@ ftr_court_struggle.0530 = {
 ftr_court_struggle.0600 = {
 	type = character_event
 	title = ftr_court_struggle.0600.t
+	# 事件级过滤：延迟触发时被弹劾对象可能已失效 → 直接不触发，避免空目标
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_impeach_target
+		var:ftr_court_impeach_target ?= { is_alive = yes }
+	}
 	desc = ftr_court_struggle.0600.desc
 	theme = council
 
@@ -3122,6 +3284,14 @@ ftr_court_struggle.0600 = {
 ftr_court_struggle.0601 = {
 	type = letter_event
 	title = ftr_court_struggle.0601.t
+	# 事件级过滤：裁决需弹劾者与被弹劾者均在场
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_impeach_actor
+		var:ftr_court_impeach_actor ?= { is_alive = yes }
+		has_variable = ftr_court_impeach_target
+		var:ftr_court_impeach_target ?= { is_alive = yes }
+	}
 	opening = {
 		desc = ftr_court_struggle.0601.opening
 	}
@@ -3265,6 +3435,13 @@ ftr_court_struggle.0601 = {
 ftr_court_struggle.0610 = {
 	type = character_event
 	title = ftr_court_struggle.0610.t
+	# 事件级过滤：对手与议题变量须齐全且对手在世
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_debate_rival
+		var:ftr_court_debate_rival ?= { is_alive = yes }
+		has_variable = ftr_court_debate_topic
+	}
 	desc = {
 		triggered_desc = {
 			trigger = { var:ftr_court_debate_topic = 1 }
@@ -3346,6 +3523,13 @@ ftr_court_struggle.0610 = {
 ftr_court_struggle.0611 = {
 	type = character_event
 	title = ftr_court_struggle.0611.t
+	# 事件级过滤：挑战者与议题变量须齐全且挑战者在世
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_debate_challenger
+		var:ftr_court_debate_challenger ?= { is_alive = yes }
+		has_variable = ftr_court_debate_topic
+	}
 	desc = {
 		triggered_desc = {
 			trigger = { var:ftr_court_debate_topic = 1 }
@@ -3432,6 +3616,13 @@ ftr_court_struggle.0611 = {
 ftr_court_struggle.0612 = {
 	type = character_event
 	title = ftr_court_struggle.0612.t
+	# 事件级过滤：结算需对手在世且议题仍在
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_debate_rival
+		var:ftr_court_debate_rival ?= { is_alive = yes }
+		has_variable = ftr_court_debate_topic
+	}
 	desc = {
 		triggered_desc = {
 			trigger = { has_character_flag = ftr_court_debate_won }
@@ -3519,6 +3710,14 @@ ftr_court_struggle.0612 = {
 ftr_court_struggle.0620 = {
 	type = character_event
 	title = ftr_court_struggle.0620.t
+	# 事件级过滤：争讼双方须齐全且在世
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_duel_plaintiff
+		var:ftr_court_duel_plaintiff ?= { is_alive = yes }
+		has_variable = ftr_court_duel_defendant
+		var:ftr_court_duel_defendant ?= { is_alive = yes }
+	}
 	desc = ftr_court_struggle.0620.desc
 	theme = diplomacy
 
@@ -3601,6 +3800,14 @@ ftr_court_struggle.0620 = {
 ftr_court_struggle.0621 = {
 	type = character_event
 	title = ftr_court_struggle.0621.t
+	# 事件级过滤：比武结算需双方在世
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_duel_plaintiff
+		var:ftr_court_duel_plaintiff ?= { is_alive = yes }
+		has_variable = ftr_court_duel_defendant
+		var:ftr_court_duel_defendant ?= { is_alive = yes }
+	}
 	desc = {
 		triggered_desc = {
 			trigger = { scope:ftr_court_duel_plaintiff = { has_character_flag = ftr_court_duel_won } }
@@ -3653,6 +3860,12 @@ ftr_court_struggle.0621 = {
 ftr_court_struggle.0630 = {
 	type = character_event
 	title = ftr_court_struggle.0630.t
+	# 事件级过滤：被评议者须在世
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_appraisal_target
+		var:ftr_court_appraisal_target ?= { is_alive = yes }
+	}
 	desc = ftr_court_struggle.0630.desc
 	theme = learning
 
@@ -3689,6 +3902,12 @@ ftr_court_struggle.0630 = {
 ftr_court_struggle.0631 = {
 	type = character_event
 	title = ftr_court_struggle.0631.t
+	# 事件级过滤：定评需被评议者在世
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_appraisal_target
+		var:ftr_court_appraisal_target ?= { is_alive = yes }
+	}
 	desc = {
 		triggered_desc = {
 			trigger = { has_character_flag = ftr_court_appraisal_praise }
@@ -3756,6 +3975,12 @@ ftr_court_struggle.0631 = {
 ftr_court_struggle.0640 = {
 	type = character_event
 	title = ftr_court_struggle.0640.t
+	# 事件级过滤：造势者须在世
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_omen_faker
+		var:ftr_court_omen_faker ?= { is_alive = yes }
+	}
 	desc = ftr_court_struggle.0640.desc
 	theme = learning
 
@@ -3806,6 +4031,13 @@ ftr_court_struggle.0640 = {
 ftr_court_struggle.0641 = {
 	type = character_event
 	title = ftr_court_struggle.0641.t
+	# 事件级过滤：勘验需造势者与抗查底数均在
+	trigger = {
+		is_alive = yes
+		has_variable = ftr_court_omen_faker
+		var:ftr_court_omen_faker ?= { is_alive = yes }
+		has_variable = ftr_court_omen_faker_resist
+	}
 	desc = {
 		triggered_desc = {
 			trigger = { has_character_flag = ftr_court_omen_debunked }

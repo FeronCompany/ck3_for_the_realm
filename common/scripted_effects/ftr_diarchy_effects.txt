@@ -26,6 +26,8 @@ ftr_diarchy_try_start_crown_prince_effect = {
 			scope:ftr_diarchy_liege = {
 				try_start_diarchy = ftr_diarchy_crown_prince
 				set_diarch = scope:ftr_diarchy_prince_candidate
+				# 主动立储：低起点（区别于被逼立储的 40）
+				set_diarchy_swing = ftr_diarchy_crown_prince_voluntary_initial_swing_value
 			}
 		}
 	}
@@ -243,23 +245,31 @@ ftr_diarchy_abolish_crown_prince_effect = {
 				modifier = designated_bad_regent_opinion
 				opinion = ftr_diarchy_abolish_opinion_mutual_value
 			}
-			# 宫廷派不满（复用原版语义：指定了一个糟糕的储君）
-			# 注：vassal_stance 是 every_vassal 的直连过滤器（放进 limit 会报 Unknown trigger）；
-			#     designated_bad_regent_opinion 无静态数值，必须显式给 opinion。
-			every_vassal = {
-				vassal_stance = courtly
-				add_opinion = {
-					target = scope:ftr_diarchy_liege
-					modifier = designated_bad_regent_opinion
-					opinion = ftr_diarchy_abolish_courtly_opinion_value
+			# 太子党羽不满：曾为太子背书者（ftr_court_supporters 名单，01 双记账）记恨废储之举
+			# 注：designated_bad_regent_opinion 无静态数值，必须显式给 opinion。
+			scope:ftr_diarchy_deposed_prince = {
+				if = {
+					limit = { has_variable_list = ftr_court_supporters }
+					every_in_list = {
+						variable = ftr_court_supporters
+						limit = { NOT = { this = scope:ftr_diarchy_liege } }
+						add_opinion = {
+							target = scope:ftr_diarchy_liege
+							modifier = designated_bad_regent_opinion
+							opinion = ftr_diarchy_abolish_backer_opinion_value
+						}
+					}
 				}
 			}
-			# 2) 结束共治
+			# 2) 代价：废储动摇国本，损失正统性
+			add_legitimacy_effect = { LEGITIMACY = ftr_diarchy_abolish_legitimacy_value }
+
+			# 3) 结束共治
 			if = {
 				limit = { has_active_diarchy = yes }
 				depose_diarch = yes
 			}
-			# 3) 清除储位：引擎不支持 set_designated_heir = none，须用原版 clear_designated_heir
+			# 4) 清除储位：引擎不支持 set_designated_heir = none，须用原版 clear_designated_heir
 			clear_designated_heir = yes
 		}
 	}
@@ -589,7 +599,7 @@ ftr_qingjunce_defeat_effect = {
 ######################################################
 
 # 求值域：君主（季度脉冲，playable）。
-# ① 按「背书共治者人数 − 背书君主人数」小幅移动 swing（无任何被动月度修正）；
+# ① 按「背书共治者人数 − 背书君主人数 × 折算溢价」小幅移动 swing（无任何被动月度修正）；
 # ② 依天平档位概率派发 01 的共治拉锯事件（0500 反共治 / 0510 共治反击）；
 #    这两个事件已泛化：无朝堂角逐 story 时自动用共治关系补全作用域。
 ftr_diarchy_quarterly_swing_drift_effect = {
@@ -603,9 +613,9 @@ ftr_diarchy_quarterly_swing_drift_effect = {
 		}
 	}
 
-	# ② 共治者强势（≥70）：君主阵营有人暗中削弱共治（0500）
+	# ② 共治者占优（≥ 中性 50）：君主阵营有人暗中削弱共治（0500）
 	if = {
-		limit = { diarchy_swing >= ftr_swing_tier_strong_low_value }
+		limit = { diarchy_swing >= ftr_diarch_counter_swing_threshold_value }
 		random = {
 			chance = ftr_diarchy_swing_event_chance_value
 			random_vassal = {

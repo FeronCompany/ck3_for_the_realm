@@ -938,41 +938,62 @@ ftr_court_discourage_backers_effect = {
 ######################################################
 
 # 求值域：君主。参数 PETITIONER = 请愿者。
-# 共治请愿获准后的落地（03 §6 接线）：共治主体是指定继承人 → 立太子；否则请愿者取得摄政位。
-# 说明：`ftr_diarchy_crown_prince` 是 03 设计的行政制专属类型（end 含「非行政制即结束」），
-#       非行政政体下无法承载，退化为原版 `regency`（start = always = yes，任何统治者可用）。
+# 共治请愿获准后的落地（03 §6 接线）。**授权对象分类（2026-09 修正顺位，替代原「太子优先」）**：
+#   ① 请愿者若有背书对象（且非君主本人）→ 授其**背书对象**（"为他人请愿"不得自据其位）；
+#   ② 否则 → 授**请愿者本人**（自身即竞争者 / 无背书对象的兜底）。
+# **类型分流**：
+#   A. 授权对象属「合法继承人之一」（ftr_court_is_legitimate_heir_of_trigger）→
+#      按政体走 共治皇帝 / 太子 / 共治君主（复用 03 的 ftr_court_establish_champion_coregency_effect）；
+#   B. 否则 → 原版 regency 摄政（授权对象任摄政，天平取强权上沿 80）。
+# 注：授权对象须为「可当共治者的成年能力者」（ftr_court_champion_eligible_diarch_trigger）——
+#     未成年继承人不会即时共治，待其成年由 03 的补立链路（ftr_diarchy_promote_adult_heir_effect）处理。
 ftr_court_establish_coregency_effect = {
 	save_scope_as = ftr_court_petition_liege
 
-	# 1) 太子优先：已有可用的指定继承人且政体支持太子共治 → 建太子共治
+	# 1) 定授权对象（**背书对象优先**——"为他人请愿"时席位不得被请愿者自己取走）：
+	#    ① 请愿者若有背书对象（且非君主本人）→ 授其**背书对象**；
+	#    ② 否则 → 授**请愿者本人**（自身即竞争者 / 无背书对象的兜底）。
 	if = {
 		limit = {
-			ftr_diarchy_can_start_crown_prince_trigger = yes
-			exists = designated_heir
-			designated_heir ?= {
-				is_alive = yes
-				is_adult = yes
-				is_imprisoned = no
-				is_diarch = no
+			$PETITIONER$ ?= {
+				has_variable = ftr_court_backer_of
+				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_petition_liege } }
 			}
 		}
-		ftr_diarchy_try_start_crown_prince_effect = { PRINCE = designated_heir }
+		$PETITIONER$ = {
+			var:ftr_court_backer_of ?= { save_scope_as = ftr_court_petition_grantee }
+		}
+	}
+	if = {
+		limit = { NOT = { exists = scope:ftr_court_petition_grantee } }
+		$PETITIONER$ ?= { save_scope_as = ftr_court_petition_grantee }
 	}
 
-	# 2) 回退：请愿者取得摄政位。逼宫所得不可虚位：初始天平取「强权上沿」（80）——
-	#    君主失能才谈得上请愿，故给高初值，延长原版「可免费还政」（swing ≤ 20）的抵达时间
-	#    （引擎每月按 0.25 向 regency 的 swing_balance = 50 回落）。
+	# 2) 授权对象属继承人线 → 按政体分流（共治皇帝 / 太子 / 共治君主 / 缺省固化摄政）
 	if = {
-		limit = { NOT = { has_active_diarchy = yes } }
+		limit = {
+			exists = scope:ftr_court_petition_grantee
+			ftr_court_is_legitimate_heir_of_trigger = { HEIR = scope:ftr_court_petition_grantee }
+		}
+		ftr_court_establish_champion_coregency_effect = { CHAMPION = scope:ftr_court_petition_grantee }
+	}
+
+	# 3) 回退：授权对象不属继承人线 → 由其取得原版摄政位。
+	if = {
+		limit = {
+			NOT = { has_active_diarchy = yes }
+			exists = scope:ftr_court_petition_grantee
+			scope:ftr_court_petition_grantee = { ftr_court_champion_eligible_diarch_trigger = yes }
+		}
 		try_start_diarchy = regency
 		if = {
 			limit = { has_active_diarchy = yes }
-			set_diarch = $PETITIONER$
-			set_diarchy_swing = ftr_court_petition_regency_initial_swing_value
+			set_diarch = scope:ftr_court_petition_grantee
+			set_diarchy_swing = 20
 		}
 	}
 
-	# 3) 请愿者补偿：共治主体并非请愿者本人（「太子优先」生效）时——君主好感 + 「从龙之功」
+	# 4) 请愿者补偿：共治主体并非请愿者本人（授权对象 = 其背书对象）时——君主好感 + 「从龙之功」
 	#    注：02 拥立账「目标唯一」，故请愿者已有旧拥立账时只给好感，避免清空其在继位角逐中的记账。
 	if = {
 		limit = {
@@ -1626,10 +1647,10 @@ ftr_court_landless_swing_effect = {
 		chance = 25
 		if = {
 			limit = {
-				# 官方 swing：天平偏共治 ≥70 时才暗中策动削弱
+				# 官方 swing：天平达中性（50）即可暗中策动削弱（门槛见 03 §7.2）
 				story_owner ?= {
 					exists = diarch
-					diarchy_swing >= ftr_court_swing_regency_threshold_value
+					diarchy_swing >= ftr_diarch_counter_swing_threshold_value
 				}
 			}
 			random_in_list = {
@@ -1847,17 +1868,21 @@ ftr_court_debate_pulse_effect = {
 			save_scope_as = ftr_court_debate_actor
 		}
 	}
-	scope:ftr_court_debate_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
-				NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_debate_actor } }
-				ftr_court_has_different_vassal_stance_trigger = { OTHER = scope:ftr_court_debate_actor }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+	# 仅在甲方已选出时才抽乙方：否则 scope:ftr_court_debate_actor 未设，
+	# 被当作参数传入触发器会报 "returned an unset scope" / "doesn't support variables"。
+	scope:ftr_court_debate_actor ?= {
+		scope:ftr_court_debate_monarch ?= {
+			random_vassal = {
+				limit = {
+					is_capable_adult = yes
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
+					NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_debate_actor } }
+					ftr_court_has_different_vassal_stance_trigger = { OTHER = scope:ftr_court_debate_actor }
+					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+				}
+				save_scope_as = ftr_court_debate_rival
 			}
-			save_scope_as = ftr_court_debate_rival
 		}
 	}
 	if = {
@@ -1895,16 +1920,19 @@ ftr_court_claim_debate_pulse_effect = {
 			save_scope_as = ftr_court_debate_actor
 		}
 	}
-	scope:ftr_court_debate_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
-				NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_debate_actor } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+	# 同上：乙方筛选需先有甲方（M3 继承名分之争）
+	scope:ftr_court_debate_actor ?= {
+		scope:ftr_court_debate_monarch ?= {
+			random_vassal = {
+				limit = {
+					is_capable_adult = yes
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
+					NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_debate_actor } }
+					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+				}
+				save_scope_as = ftr_court_debate_rival
 			}
-			save_scope_as = ftr_court_debate_rival
 		}
 	}
 	scope:ftr_court_debate_rival ?= {
@@ -2038,16 +2066,19 @@ ftr_court_duel_pulse_effect = {
 			save_scope_as = ftr_court_duel_plaintiff
 		}
 	}
-	scope:ftr_court_duel_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_duel_monarch } }
-				NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_duel_plaintiff } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+	# 仅在原告已选出时才抽被告（M4 司法决斗）
+	scope:ftr_court_duel_plaintiff ?= {
+		scope:ftr_court_duel_monarch ?= {
+			random_vassal = {
+				limit = {
+					is_capable_adult = yes
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_duel_monarch } }
+					NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_duel_plaintiff } }
+					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+				}
+				save_scope_as = ftr_court_duel_defendant
 			}
-			save_scope_as = ftr_court_duel_defendant
 		}
 	}
 	if = {
@@ -2188,16 +2219,19 @@ ftr_court_appraisal_pulse_effect = {
 				save_scope_as = ftr_court_appraisal_actor
 			}
 		}
-		scope:ftr_court_appraisal_monarch ?= {
-			random_vassal = {
-				limit = {
-					is_capable_adult = yes
-					has_variable = ftr_court_backer_of
-					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_appraisal_monarch } }
-					NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_appraisal_actor } }
-					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+		# 仅在评议者已选出时才抽被评者（M5 清议）
+		scope:ftr_court_appraisal_actor ?= {
+			scope:ftr_court_appraisal_monarch ?= {
+				random_vassal = {
+					limit = {
+						is_capable_adult = yes
+						has_variable = ftr_court_backer_of
+						var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_appraisal_monarch } }
+						NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_appraisal_actor } }
+						NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
+					}
+					save_scope_as = ftr_court_appraisal_target
 				}
-				save_scope_as = ftr_court_appraisal_target
 			}
 		}
 		if = {
@@ -2456,7 +2490,15 @@ ftr_court_establish_champion_coregency_effect = {
 		if = {
 			limit = { has_active_diarchy = yes }
 			set_diarch = scope:ftr_court_coregency_champion
-			set_diarchy_swing = ftr_court_backer_demand_initial_swing_value
+			# 初值按类型分流：太子（被逼立储）= 40 基线；
+			# 其余共治类型（共帝 / 共治君主 / 摄政）= 强权上沿 80（逼宫所得不可虚位）
+			if = {
+				limit = { has_diarchy_type = ftr_diarchy_crown_prince }
+				set_diarchy_swing = ftr_diarchy_crown_prince_imposed_initial_swing_value
+			}
+			else = {
+				set_diarchy_swing = ftr_court_backer_demand_initial_swing_value
+			}
 		}
 	}
 }

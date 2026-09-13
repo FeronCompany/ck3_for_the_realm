@@ -169,13 +169,23 @@ ftr_court_participant_remains_valid_trigger = {
 
 ########## 三、君主状态 ##########
 
-# 君主因年老体衰或精神异常而不能正常履职
+# 君主因年老体衰、骨脆、久病或精神异常而不能正常履职。
+# 口径（2026-09 扩容）：精神 / 感官特质 + **健康类**（infirm 年老体衰 / fragile_bones 骨质脆弱 /
+#   incapable / 健康档 ≤ poor）+ 高龄。原版仅查精神类与年龄，导致"体衰骨脆但未满 60"的君主
+#   既不触发请愿可见性、也拿不到烈度失能偏置，形成死区。
+# 消费者（扩容后一并放宽，语义即"君主确实不行了"）：共治请愿 is_shown、年度烈度失能偏置、
+#   ftr_court_should_activate_regency_trigger（议题 2）、ftr_court_can_attempt_usurp_trigger（废黜窗口）。
 ftr_court_monarch_infirm_trigger = {
 	OR = {
 		has_trait = lunatic
 		has_trait = possessed
 		has_trait = depressed
 		has_trait = blind
+		has_trait = infirm
+		has_trait = fragile_bones
+		has_trait = incapable
+		is_incapable = yes
+		health <= poor_health
 		age >= ftr_court_monarch_elderly_age_value
 	}
 }
@@ -319,14 +329,35 @@ ftr_court_should_activate_regency_trigger = {
 	}
 }
 
-# 拉锯足以发起共治请愿（求值域 = 朝堂 story，story_owner 为君主）。
-# 裁定 R1：请愿仅在「朝中尚无共治者」时开放（`is_shown` 已作独占限制），而天平是 diarchy 的
-# 属性、无共治时恒为 0 ⇒ 唯一门槛 = 「朝堂已入对立区」
-# （复用 ftr_court_is_contested_trigger：参与者达标 + 烈度 ≥ 90）。原 swing ≥ 70 分支已删除。
-ftr_court_can_petition_coregency_trigger = {
-	story_owner ?= { NOT = { has_active_diarchy = yes } }
-	ftr_court_is_contested_trigger = yes
+# 君主是否有合法继承人（求值域：君主）。
+# 口径：主头衔继承顺位上有「非私生且未被剥夺继承权」的继承人。
+# 用途：共治请愿放宽后的两个准入条件之一（另一个是"存在朝堂角逐故事"）。
+ftr_court_has_legitimate_heir_trigger = {
+	primary_title = {
+		any_title_heir = {
+			NOT = { has_trait = bastard }
+			NOT = { has_trait = disinherited }
+		}
+	}
 }
+
+# 指定人物是否为君主的「合法继承人之一」（求值域：君主；参数 HEIR = 拟判定对象）。
+# 口径同 ftr_court_has_legitimate_heir_trigger：主头衔继承顺位上，非私生且未被剥夺继承权。
+# 用途：共治请愿的授权对象分类——属继承人线者按政体分配 太子 / 共治皇帝 / 共治君主。
+ftr_court_is_legitimate_heir_of_trigger = {
+	primary_title = {
+		any_title_heir = {
+			this = $HEIR$
+			NOT = { has_trait = bastard }
+			NOT = { has_trait = disinherited }
+		}
+	}
+}
+
+# 注：原 `ftr_court_can_petition_coregency_trigger`（＝尚无共治 + 参与者达标）已于 2026-09 **退役**——
+#     共治请愿的发动条件改为「存在朝堂角逐故事 + 君主有合法继承人」，
+#     见 `ftr_court_has_legitimate_heir_trigger` 与交互 `ftr_court_petition_coregency_interaction.is_valid`
+#     （口径见 01 §7.1-8；"尚无共治" 仍由该交互 `is_shown` 独占限制承担）。
 
 # 拉锯足以尝试夺位（官方 swing + 君主失能）
 ftr_court_can_attempt_usurp_trigger = {
@@ -492,11 +523,14 @@ ftr_court_same_camp_trigger = {
 
 # 黑马判定：候选目前没有任何支持者（供 AI 站队/背书时"雪中送炭"偏好复用）。
 # 求值域：候选本人（this = 候选人）。
+# 注：必须先确认列表存在再查 size——原写法把两条并列放进 NOT，引擎会照样求值
+# variable_list_size，报 "Could not find list from read name flag ftr_court_supporters"。
 ftr_court_has_no_supporters_trigger = {
-	NOT = {
-		has_variable_list = ftr_court_supporters
-		variable_list_size = { name = ftr_court_supporters  value >= 1 }
+	trigger_if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		NOT = { variable_list_size = { name = ftr_court_supporters  value >= 1 } }
 	}
+	trigger_else = { always = yes }
 }
 
 # 求值域：无（只读事件 0200 已保存的候选位 scope）。参数 WHO = 待查角色 scope 表达式。
@@ -770,6 +804,14 @@ ftr_court_champion_eligible_diarch_trigger = {
 # 求值域：君主。是否处于党羽逼宫冷却期（防同一政权连续逼宫刷屏）。
 ftr_court_backer_demand_in_cooldown_trigger = {
 	has_character_flag = ftr_court_backer_demand_cooldown
+}
+
+# 求值域：君主（共治请愿的**接收方**）。是否处于共治请愿冷却期
+# （2026-09：同一君主受理一份请愿后 2 年内不再受理新的，防「排队逼请」刷屏；
+#   flag 由 ftr_court_petition_coregency_interaction.on_accept 挂上，年限取
+#   ftr_court_petition_cooldown_years_value）。
+ftr_court_petition_in_cooldown_trigger = {
+	has_character_flag = ftr_court_petition_cooldown
 }
 
 ########## 十一、参与询问刷新短路 ##########

@@ -1683,7 +1683,7 @@ ftr_court_diarch_backlash_effect = {
 				# 官方 swing：天平偏君主 ≤30 **且共治者党羽不落后**时才启动共治反击（口径同 03 §7.2）
 				story_owner ?= {
 					exists = diarch
-					diarchy_swing <= ftr_court_swing_loyal_threshold_value
+					diarchy_swing <= ftr_diarchy_lobby_pk_swing_band_value
 					ftr_diarchy_backer_lead_value >= 0
 					# 单政权冷却：与 03 季度 drift 共用同一 flag ⇒ 两侧合计每政权每年至多 1 次
 					NOT = { has_character_flag = ftr_diarch_swing_event_cooldown }

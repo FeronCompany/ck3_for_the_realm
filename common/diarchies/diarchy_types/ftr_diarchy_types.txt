@@ -73,19 +73,7 @@ ftr_diarchy_crown_prince = {
 
 	# 天平趋向值：随太子年龄缓慢抬升（照抄 junior_emperorship 的年龄曲线）
 	swing_balance = {
-		value = 0
-		if = {
-			limit = { child_is_teen_trigger = yes }
-			add = 30
-		}
-		else_if = {
-			limit = { child_old_enough_for_responsibility_trigger = yes }
-			add = 20
-		}
-		else_if = {
-			limit = { child_not_infant_trigger = yes }
-			add = 10
-		}
+		value = 50
 	}
 
 	# 太子即指定继承人：不走 diarchy 继任补选

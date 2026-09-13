@@ -49,10 +49,16 @@ ftr_diarchy_swing_drift_cap_value = 1
 ftr_diarchy_swing_drift_cap_min_value = -3
 # 正值生效门槛：加权领先不足此值时**不**推共治者一侧（否则「共治者党羽略多」= 每季恒定 +1 的上行泵）
 ftr_diarchy_swing_drift_positive_min_value = 2
-# 共治者侧游说反扑的发生概率（%）：低于君主侧的 25%，共治者主动反扑更慢。
-# 2026-09 起该概率不再用于派发 0510 事件，而是作为「党羽游说对垒」(ftr_diarchy_backer_lobby_pk_effect)
-# 的启动概率；对垒本身另有政权 1 年 + 个人 1 年冷却兜底。
-ftr_diarch_backlash_event_chance_value = 15
+# 共治者侧游说反扑的发动概率（%）：在带内每季度尝试发动对垒的概率。
+# 2026-09：不再用于派发 0510 事件，改作「党羽游说对垒」(ftr_diarchy_backer_lobby_pk_effect) 的启动概率。
+# 实际频率由对垒自带的「政权 1 年冷却」（ftr_diarchy_lobby_pk_cooldown_years_value）独立把关，
+# 故此处给 100（带内即尝试）——原 15% 与冷却叠乘后几乎不出现，是"对垒很久不触发"的第一根因。
+ftr_diarch_backlash_event_chance_value = 100
+# 共治者阵营可发动游说对垒的天平上沿（天平 ≤ 此值 = 君主尚未占优）。
+# 默认取「中性」(50)：低于中性即由共治者阵营游说推高，其上方（≥50）由 0500 交君主阵营回拉，
+# 使 31–49 的中性带不再成为无人出手的死区。
+# 若要恢复旧口径（31–49 留空），改回 ftr_swing_tier_loyal_value（30）即可。
+ftr_diarchy_lobby_pk_swing_band_value = ftr_swing_tier_even_mid_value
 # 拉锯事件（0500 / 0510）的单政权冷却（天）：冷却期内同一君主不再被派发，
 # 把两侧事件通道的实际上限钉在「每政权每年各 1 次」，防止任何一条派发路径重复触发时
 # 退化成"每半月 +5"的上行泵（实测日志曾出现单一政权 2.5 年内十余次派发）。
@@ -68,14 +74,27 @@ ftr_diarchy_lobby_pk_skill_weight_value = 2.5
 ftr_diarchy_lobby_pk_chance_min_value = 10
 ftr_diarchy_lobby_pk_chance_max_value = 90
 # 同一政权两次「党羽游说对垒」的冷却（年）——对垒的硬频率闸门。
-# 注：政权间隔必须 ≤ 个人冷却，否则「强手」在每次对垒时冷却都已到期，会被反复抽中（无轮换）。
-ftr_diarchy_lobby_pk_cooldown_years_value = 1
+# 2026-09 由 1 年放宽到 2 年：带内改为 100% 必开之后，对垒成为"每政权每 2 年一次"的稀有事件，
+# 避免被年度仪式化的拉锯消息淹没。
+# 注（必须满足的不变量）：**政权冷却 < 个人冷却**，否则上一场的强手在新一场时冷却刚好到期，
+#     会被反复抽中，阵营内部轮换失效。
+ftr_diarchy_lobby_pk_cooldown_years_value = 2
 # 参与过一次对垒的游说者**个人冷却**（天）：期满前不会再被抽中。
 # 用途：阵营内部轮换——避免「人少但能力强」的阵营每次都派同一人碾压对方弱手，形成一边倒。
-ftr_diarchy_lobby_pk_lobbyist_cooldown_days_value = 365
-# 对垒一次推动天平的幅度（沿用原版档位常量：共治者方胜 +5 / 君主方胜 −5）
-ftr_diarchy_lobby_pk_swing_gain = minor_sop_swing_diarch_gain
-ftr_diarchy_lobby_pk_swing_loss = minor_sop_swing_liege_gain
+# 取 3 年 > 政权冷却 2 年，保证上一场的出战者必然缺席下一场。
+ftr_diarchy_lobby_pk_lobbyist_cooldown_days_value = 1095
+# 天平外部变更审计门槛：每季度把「当前天平」与「上一次本 mod 写入后的值」比对，
+# 差额绝对值 ≥ 此值时才发一条「原因不在本 mod 记账内」的偏移通知——
+# 覆盖原版机制（无地共治者的「摆动天平」交互 / 天命事件）、引擎月度自然回落、对方阵营的原版交互。
+# 调大 → 更安静（±0.25/月的引擎回落被静默吸收）；调小 → 更透明但更啰嗦。
+# 同时用作季度背书 drift 的**播报**门槛：|drift| 低于此值的细微涨落不再单独发消息。
+ftr_diarchy_swing_audit_threshold_value = 2
+
+# 对垒一次推动天平的幅度（沿用原版档位常量：共治者方胜 +5 / 君主方胜 −5）。
+# 注：`minor_sop_swing_liege_gain` 是块状脚本值，必须包一层 { value = ... } 才能被本文件别名引用
+# （直接写 `= minor_sop_swing_liege_gain` 会触发 "referencing a named formula" 并让消费端读值失败）。
+ftr_diarchy_lobby_pk_swing_gain = { value = minor_sop_swing_diarch_gain }
+ftr_diarchy_lobby_pk_swing_loss = { value = minor_sop_swing_liege_gain }
 # 季度派发共治拉锯事件（0500 / 0510）的概率（%）
 ftr_diarchy_swing_event_chance_value = 25
 # 君主侧反制（0500）的派发门槛：天平达到中性（50）即开始反制。
@@ -167,6 +186,13 @@ ftr_diarchy_lobby_pk_diarch_win_chance_value = {
 	min = ftr_diarchy_lobby_pk_chance_min_value
 }
 
+# 求值域：君主。**外部变更审计**用差额 =（当前天平 − 上一次本 mod 写入后的天平）。
+# 依赖变量 ftr_diarchy_swing_seen（由 ftr_diarchy_swing_notice_effect 与审计本身维护）。
+ftr_diarchy_swing_audit_delta_value = {
+	value = diarchy_swing
+	subtract = var:ftr_diarchy_swing_seen
+}
+
 ### 二、废太子（§3.2）
 # 双向固定好感惩罚
 ftr_diarchy_abolish_opinion_mutual_value = -50
@@ -174,8 +200,8 @@ ftr_diarchy_abolish_opinion_mutual_value = -50
 ftr_diarchy_abolish_backer_opinion_value = -25
 # 可废门槛：太子天平（swing）高于此值则羽翼已丰，不可轻废（决议 is_valid 门槛）
 ftr_diarchy_abolish_prince_swing_cap_value = ftr_swing_tier_even_high_value
-# 废储代价：正统性惩罚（引用原版正统性档位常量）
-ftr_diarchy_abolish_legitimacy_value = medium_legitimacy_loss
+# 废储代价：正统性惩罚
+ftr_diarchy_abolish_legitimacy_value = -400
 
 ### 二之二、废太子 AI 倾向（§3.2）
 # 党羽压力换算：每名「强力封臣党羽」/「内阁党羽」/「党羽军力」的权重

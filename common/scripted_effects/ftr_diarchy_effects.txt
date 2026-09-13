@@ -42,6 +42,12 @@ ftr_diarchy_swing_notice_effect = {
 				custom_tooltip = $KEY$
 			}
 		}
+		# 审计基线：把本次写入后的天平记为「本 mod 已知值」，
+		# 供季度外部变更审计（ftr_diarchy_swing_audit_effect）比对出"原因不在记账内"的增量。
+		set_variable = {
+			name = ftr_diarchy_swing_seen
+			value = diarchy_swing
+		}
 	}
 }
 
@@ -309,15 +315,23 @@ ftr_diarchy_abolish_crown_prince_effect = {
 				limit = { has_legitimacy = yes }
 				add_legitimacy = ftr_diarchy_abolish_legitimacy_value
 			}
-		}
-		scope:ftr_diarchy_deposed_prince = {
-			# 3) 结束共治
-			if = {
-				limit = { is_diarch  = yes }
-				depose_diarch = yes
-			}
-			# 4) 清除储位：引擎不支持 set_designated_heir = none，须用原版 clear_designated_heir
+			# 3) 清除储位：`clear_designated_heir` 清的是**求值者自己**的「指定继承人」，
+			#    故必须在主君域调用（写进太子域只会清掉太子本人所指定的继承人，主君的指定仍在）
 			clear_designated_heir = yes
+			# 4) 结束共治：共治型（co_rulership）用 `end_diarchy`，且由**主君**一侧执行——
+			#    这是原版移除共治者的标准姿势：00_diarchy_scripted_effects.txt:1626「Liege maims
+			#    co-emperor」（clear_designated_heir + end_diarchy 同在 actor = 主君域）、
+			#    liege_dismiss_entrenched_regency_interaction 的 on_accept（scope:actor = 主君）
+			#    皆是主君域 end_diarchy = yes。
+			#    注：`depose_diarch` 属行政制「裁撤岗位共治者」那套
+			#    （laws/02_admininistrative_laws.txt 的 on_pass），对共治型不生效——
+			#    这正是此前"点了决议但共治状态不消失"的原因。
+			if = {
+				limit = { has_active_diarchy = yes }
+				debug_log = "FTR_ABOLISH: end crown prince diarchy"
+				debug_log_scopes = yes
+				end_diarchy = yes
+			}
 		}
 	}
 }
@@ -532,13 +546,13 @@ ftr_diarchy_phase_a_settle_effect = {
 #   共治者方胜率 = 基准 50 +（评分差 × 2.5），夹在 10~90；
 #   胜方一次推动天平 ±5（共治者方胜 = 向共治者，君主方胜 = 向君主）。
 # 四重频率闸门：① 仅阶段 A 开局调用一次；② 同政权冷却（ftr_diarchy_lobby_pk_cooldown_years_value）内不再对垒；
-#   ③ 任一方无人可派（名单为空 / 无合格者）时不出手，杜绝单方面白拿 swing；
+#   ③ 某方无合格党羽时由**该方主公亲自出面**（共治者 / 君主本人）——阵营不会因名单为空而停摆；
 #   ④ 参战者个人冷却（ftr_diarchy_lobby_pk_lobbyist_cooldown_days_value）：阵营内部轮换——
 #      避免「人少但能力强」的阵营每次都派同一强手碾压对方弱手，把对垒变成一边倒。
 ftr_diarchy_backer_lobby_pk_effect = {
 	save_scope_as = ftr_diarchy_pk_diarch
 
-	# 抽签①：共治者阵营一人
+	# 抽签①：共治者阵营一人；名单为空 / 无合格者时由共治者本人出面
 	if = {
 		limit = { scope:ftr_diarchy_pk_diarch = { has_variable_list = ftr_court_supporters } }
 		scope:ftr_diarchy_pk_diarch = {
@@ -549,10 +563,16 @@ ftr_diarchy_backer_lobby_pk_effect = {
 			}
 		}
 	}
+	if = {
+		limit = { NOT = { exists = scope:ftr_diarchy_pk_diarch_lobbyist } }
+		debug_log = "FTR_PK: diarch camp has no eligible backer, diarch lobbies in person"
+		debug_log_scopes = yes
+		scope:ftr_diarchy_pk_diarch = { save_scope_as = ftr_diarchy_pk_diarch_lobbyist }
+	}
 
 	liege ?= {
 		save_scope_as = ftr_diarchy_pk_liege
-		# 抽签②：君主阵营一人
+		# 抽签②：君主阵营一人；名单为空 / 无合格者时由君主本人出面
 		if = {
 			limit = { has_variable_list = ftr_court_supporters }
 			random_in_list = {
@@ -560,6 +580,18 @@ ftr_diarchy_backer_lobby_pk_effect = {
 				limit = { ftr_diarchy_lobby_pk_candidate_trigger = yes }
 				save_scope_as = ftr_diarchy_pk_liege_lobbyist
 			}
+		}
+		if = {
+			limit = { NOT = { exists = scope:ftr_diarchy_pk_liege_lobbyist } }
+			debug_log = "FTR_PK: monarch camp has no eligible backer, monarch answers in person"
+			debug_log_scopes = yes
+			save_scope_as = ftr_diarchy_pk_liege_lobbyist
+		}
+		# 诊断：被政权冷却拦下（排完可删）
+		if = {
+			limit = { has_character_flag = ftr_diarchy_lobby_pk_cooldown }
+			debug_log = "FTR_PK: blocked by realm cooldown"
+			debug_log_scopes = yes
 		}
 		# 对垒：双方齐备 + 共治仍在 + 不在冷却，才发生
 		if = {
@@ -570,6 +602,8 @@ ftr_diarchy_backer_lobby_pk_effect = {
 				exists = diarch
 				NOT = { has_character_flag = ftr_diarchy_lobby_pk_cooldown }
 			}
+			debug_log = "FTR_PK: contest runs"
+			debug_log_scopes = yes
 			add_character_flag = {
 				flag = ftr_diarchy_lobby_pk_cooldown
 				years = ftr_diarchy_lobby_pk_cooldown_years_value
@@ -600,14 +634,18 @@ ftr_diarchy_backer_lobby_pk_effect = {
 				remove_character_flag = ftr_diarchy_lobby_pk_diarch_won
 				update_diarchy_swing_with_perspective_effect = {
 					SWING = ftr_diarchy_lobby_pk_swing_gain
-					LIEGE = liege
+					# 必须用**绝对**作用域引用：此处 this 已是君主，写 `LIEGE = liege` 会解析成
+					# 「君主的领主」（天朝/罗马这类嵌套政权里另有其人），引擎报
+					# "Can't modify scales of power swing when there's no active diarchy" 并中断整条效果链。
+					LIEGE = scope:ftr_diarchy_pk_liege
 				}
 				ftr_diarchy_swing_notice_effect = { KEY = ftr_diarchy_swing_notice_lobby_win }
 			}
 			else = {
 				update_diarchy_swing_with_perspective_effect = {
 					SWING = ftr_diarchy_lobby_pk_swing_loss
-					LIEGE = liege
+					# 同上：绝对引用（this 已是君主）
+					LIEGE = scope:ftr_diarchy_pk_liege
 				}
 				ftr_diarchy_swing_notice_effect = { KEY = ftr_diarchy_swing_notice_lobby_lose }
 			}
@@ -665,7 +703,8 @@ ftr_qingjunce_win_effect = {
 			set_diarch = scope:ftr_qingjunce_winner
 			update_diarchy_swing_with_perspective_effect = {
 				SWING = ftr_qingjunce_win_swing_value
-				LIEGE = liege
+				# 绝对引用：此处 this = 主君，`LIEGE = liege` 会指到「主君的领主」而报错
+				LIEGE = scope:ftr_qingjunce_liege
 			}
 			# 天平偏移通知（§7.1）：新共治者以战功上位，说明天平上移的来由
 			ftr_diarchy_swing_notice_effect = { KEY = ftr_diarchy_swing_notice_qingjunce }
@@ -718,6 +757,12 @@ ftr_qingjunce_defeat_effect = {
 ftr_diarchy_quarterly_swing_drift_effect = {
 	save_scope_as = ftr_diarchy_drift_liege
 
+	# ⓪ 外部变更审计（§7.1）：**放在本效果最前**——本 mod 的任何 swing 写入都会即时把写入后的
+	#    天平记进 ftr_diarchy_swing_seen（见通知效果），故这里比对出的差额只可能来自 mod 之外
+	#    （原版 mandate / 朝堂事件、无地共治者的「摆动天平」交互、引擎月度回落）。
+	#    若放在最后：前面任何一处 swing 写入报错都会中断整条效果链，把审计一并吞掉（曾发生）。
+	ftr_diarchy_swing_audit_effect = yes
+
 	# ① 背书差 → swing 漂移（夹在 ±上限内，幅度刻意压小）
 	# 正值设门槛（加权领先 ≥ positive_min 才推共治者），负值不设门槛（君主领先必能拉回）
 	if = {
@@ -735,13 +780,26 @@ ftr_diarchy_quarterly_swing_drift_effect = {
 		hidden_effect = {
 			change_diarchy_swing = ftr_diarchy_backer_swing_drift_value
 		}
-		# 天平偏移通知（§7.1）：按方向给不同原因键（正 = 共治者党羽占优 / 负 = 君主党羽占优）
+		# 天平偏移通知（§7.1）：按方向给不同原因键（正 = 共治者党羽占优 / 负 = 君主党羽占优）。
+		# 播报门槛：|drift| 低于 ftr_diarchy_swing_audit_threshold_value（默认 2）时不发消息——
+		# 每季 ±1 的细微涨落改由季度审计静默吸收，避免消息流被"每季一条"淹没。
 		if = {
-			limit = { ftr_diarchy_backer_swing_drift_value > 0 }
-			ftr_diarchy_swing_notice_effect = { KEY = ftr_diarchy_swing_notice_drift_up }
-		}
-		else = {
-			ftr_diarchy_swing_notice_effect = { KEY = ftr_diarchy_swing_notice_drift_down }
+			limit = {
+				OR = {
+					ftr_diarchy_backer_swing_drift_value >= ftr_diarchy_swing_audit_threshold_value
+					ftr_diarchy_backer_swing_drift_value <= {
+						value = 0
+						subtract = ftr_diarchy_swing_audit_threshold_value
+					}
+				}
+			}
+			if = {
+				limit = { ftr_diarchy_backer_swing_drift_value > 0 }
+				ftr_diarchy_swing_notice_effect = { KEY = ftr_diarchy_swing_notice_drift_up }
+			}
+			else = {
+				ftr_diarchy_swing_notice_effect = { KEY = ftr_diarchy_swing_notice_drift_down }
+			}
 		}
 	}
 
@@ -788,7 +846,7 @@ ftr_diarchy_quarterly_swing_drift_effect = {
 	# 前置：共治者党羽不落后于君主（有党羽撑腰才谈反扑）；频率低于君主侧，避免「只涨不跌」
 	else_if = {
 		limit = {
-			diarchy_swing <= ftr_swing_tier_loyal_value
+			diarchy_swing <= ftr_diarchy_lobby_pk_swing_band_value
 			ftr_diarchy_backer_lead_value >= 0
 			NOT = { has_character_flag = ftr_diarch_swing_event_cooldown }
 		}
@@ -805,6 +863,42 @@ ftr_diarchy_quarterly_swing_drift_effect = {
 				debug_log = "FTR_DISPATCH_LOBBY_PK_DRIFT"
 				debug_log_scopes = yes
 				ftr_diarchy_backer_lobby_pk_effect = yes
+			}
+		}
+	}
+
+	# 注：外部变更审计已移到本效果**最前**（见 ⓪），避免被此后的写入错误吞掉。
+}
+
+# 求值域：君主（季度脉冲调用）。天平**外部变更审计**（§7.1）：
+#   本 mod 每次写入 swing 都会把写入后的值记进 ftr_diarchy_swing_seen（见通知效果）；
+#   本效果把当前 diarchy_swing 与基线比对：
+#     - 差额 ≥ 门槛（ftr_diarchy_swing_audit_threshold_value）→ 发「外部因素」通知，并刷新基线；
+#     - 差额 < 门槛 → 静默吸收（只刷新基线），避免引擎 ±0.25/月的自然回落刷屏。
+ftr_diarchy_swing_audit_effect = {
+	if = {
+		limit = {
+			has_active_diarchy = yes
+			exists = diarch
+			has_variable = ftr_diarchy_swing_seen
+		}
+		if = {
+			limit = {
+				OR = {
+					ftr_diarchy_swing_audit_delta_value >= ftr_diarchy_swing_audit_threshold_value
+					ftr_diarchy_swing_audit_delta_value <= {
+						value = 0
+						subtract = ftr_diarchy_swing_audit_threshold_value
+					}
+				}
+			}
+			ftr_diarchy_swing_notice_effect = { KEY = ftr_diarchy_swing_notice_external }
+		}
+		else = {
+			# 静默吸收：只刷新基线，不发消息
+			set_variable = {
+				name = ftr_diarchy_swing_seen
+				value = diarchy_swing
 			}
 		}
 	}

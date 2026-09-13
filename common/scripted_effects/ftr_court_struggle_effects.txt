@@ -990,6 +990,8 @@ ftr_court_establish_coregency_effect = {
 			limit = { has_active_diarchy = yes }
 			set_diarch = scope:ftr_court_petition_grantee
 			set_diarchy_swing = 20
+			# 天平偏移通知（§7.1）：请愿授权落地的天平初值来由
+			ftr_diarchy_swing_notice_effect = { KEY = ftr_court_swing_notice_petition_granted }
 		}
 	}
 
@@ -1669,21 +1671,32 @@ ftr_court_landless_swing_effect = {
 	}
 }
 
-# 议题 2：共治者反击（§9.6）——swing ≤30（辅政稳固）时，共治者阵营暗中游说拉回（0510）。
+# 议题 2：共治者反扑（§9.6）——swing ≤30（辅政稳固）时，共治者阵营游说拉回。
+# 2026-09 起**不再派发 0510 事件**，改由 03 的「党羽游说对垒」(ftr_diarchy_backer_lobby_pk_effect) 承接：
+# 双方各抽一人按「智谋 + 外交」对垒，胜方一次推动 ±5；另有政权 1 年 + 个人 1 年冷却。
 ftr_court_diarch_backlash_effect = {
 	save_scope_as = ftr_court_strife_story
 	random = {
-		chance = 20
+		chance = ftr_diarch_backlash_event_chance_value
 		if = {
 			limit = {
-				# 官方 swing：天平偏君主 ≤30 时才启动共治反击
+				# 官方 swing：天平偏君主 ≤30 **且共治者党羽不落后**时才启动共治反击（口径同 03 §7.2）
 				story_owner ?= {
 					exists = diarch
 					diarchy_swing <= ftr_court_swing_loyal_threshold_value
+					ftr_diarchy_backer_lead_value >= 0
+					# 单政权冷却：与 03 季度 drift 共用同一 flag ⇒ 两侧合计每政权每年至多 1 次
+					NOT = { has_character_flag = ftr_diarch_swing_event_cooldown }
 				}
 			}
 			story_owner = {
-				diarch ?= { trigger_event = { id = ftr_court_struggle.0510  days = 2 } }
+				add_character_flag = {
+					flag = ftr_diarch_swing_event_cooldown
+					days = ftr_diarch_swing_event_cooldown_days_value
+				}
+				debug_log = "FTR_DISPATCH_LOBBY_PK_MAINCLOCK"
+				debug_log_scopes = yes
+				diarch ?= { ftr_diarchy_backer_lobby_pk_effect = yes }
 			}
 		}
 	}
@@ -2499,6 +2512,8 @@ ftr_court_establish_champion_coregency_effect = {
 			else = {
 				set_diarchy_swing = ftr_court_backer_demand_initial_swing_value
 			}
+			# 天平偏移通知（§7.1）：逼宫所得不可虚位——说明高初值的来由
+			ftr_diarchy_swing_notice_effect = { KEY = ftr_court_swing_notice_imposed }
 		}
 	}
 }

@@ -94,6 +94,18 @@ ftr_diarchy_swing_at_least_amnesty_trigger = {
 	liege = { diarchy_swing >= ftr_diarchy_amnesty_swing_value }
 }
 
+# 求值域：this = 待抽签的游说者（来自君主 / 共治者的 ftr_court_supporters 名单）。
+# 口径：活着的成年可用者、未被囚、非无能——游说须亲自出面（无地廷臣同样算数）。
+# 另设**个人冷却**：刚出过战的说客一年内不再被抽中（阵营内部轮换，防强手反复出战形成一边倒）。
+# 用途：阶段 A 党羽游说对垒抽签（§4.4-A D13）。
+ftr_diarchy_lobby_pk_candidate_trigger = {
+	is_alive = yes
+	is_adult = yes
+	is_imprisoned = no
+	NOT = { has_trait = incapable }
+	NOT = { has_character_flag = ftr_diarchy_lobby_pk_lobbied }
+}
+
 ### 四、无地共治者授土提醒（§4.0，求值域：共治者本人）
 
 ftr_diarchy_landless_reminder_trigger = {

@@ -404,6 +404,10 @@ ftr_court_request_coregency_influence_cost_value = 80
 # 请愿者阵营军力分档：达「强」即有底气硬请；达「压倒」则君主多半只能让步
 ftr_court_petition_camp_strong_value = 4000
 ftr_court_petition_camp_overwhelming_value = 9000
+# 君主自身阵营 / 请愿者阵营 的**比值**分档（2026-09）：君主阵营 = 自身 + 自身支持者军力。
+# 用比值而非绝对值——绝对值在大 Realm 里两侧都会越档、互相抵消而失去区分度。
+ftr_court_petition_camp_ratio_advantage_value = 2
+ftr_court_petition_camp_ratio_outgunned_value = 0.5
 # 拒绝请愿的烈度代价（大幅：对照文明档 4/8/15 与逼宫族 20）
 ftr_court_petition_refuse_intensity_value = 25
 # 共治请愿的**接收方**冷却年数（2026-09）：同一君主受理一份请愿后 2 年内不再受理新的，
@@ -427,6 +431,29 @@ ftr_court_petition_camp_strength_value = {
 				}
 			}
 		}
+	}
+}
+
+# 求值域：君主。其「自身阵营军力」＝ 自身军力 + 自身支持者（ftr_court_supporters 名单）军力之和。
+# 供 0220 君主裁决时与请愿者阵营对比：君主自有强援则不必让步（2026-09）。
+ftr_court_petition_monarch_camp_strength_value = {
+	value = current_military_strength
+	if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		every_in_list = {
+			variable = ftr_court_supporters
+			add = current_military_strength
+		}
+	}
+}
+
+# 求值域：君主。君主自身阵营 ÷ 请愿者阵营（除数下限 1，避免除零）。
+# > 1 = 君主占优；分档见 ftr_court_petition_camp_ratio_*。调用方须先 has_variable 守卫被除变量。
+ftr_court_petition_camp_ratio_value = {
+	value = ftr_court_petition_monarch_camp_strength_value
+	divide = {
+		value = var:ftr_court_petition_camp_strength
+		min = 1
 	}
 }
 # 请愿回退（请愿者取得 `regency`）的初始天平：取「强权上沿」。

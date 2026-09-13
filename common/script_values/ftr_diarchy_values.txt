@@ -45,8 +45,37 @@ ftr_diarchy_swing_drift_per_backer_value = 1
 # 故君主每名党羽按此倍率折算，抵消结构性单向上行
 ftr_diarchy_swing_drift_liege_backer_multiplier_value = 1.5
 # 单季度 drift 上限 / 下限（幅度刻意压小；正向刻意低于负向，抑制「只涨不跌」）
-ftr_diarchy_swing_drift_cap_value = 2
+ftr_diarchy_swing_drift_cap_value = 1
 ftr_diarchy_swing_drift_cap_min_value = -3
+# 正值生效门槛：加权领先不足此值时**不**推共治者一侧（否则「共治者党羽略多」= 每季恒定 +1 的上行泵）
+ftr_diarchy_swing_drift_positive_min_value = 2
+# 共治者侧游说反扑的发生概率（%）：低于君主侧的 25%，共治者主动反扑更慢。
+# 2026-09 起该概率不再用于派发 0510 事件，而是作为「党羽游说对垒」(ftr_diarchy_backer_lobby_pk_effect)
+# 的启动概率；对垒本身另有政权 1 年 + 个人 1 年冷却兜底。
+ftr_diarch_backlash_event_chance_value = 15
+# 拉锯事件（0500 / 0510）的单政权冷却（天）：冷却期内同一君主不再被派发，
+# 把两侧事件通道的实际上限钉在「每政权每年各 1 次」，防止任何一条派发路径重复触发时
+# 退化成"每半月 +5"的上行泵（实测日志曾出现单一政权 2.5 年内十余次派发）。
+ftr_diarch_swing_event_cooldown_days_value = 365
+
+# —— 阶段 A 党羽游说对垒（§4.4-A D13；2026-09 重做：双方各抽一人做能力对垒）——
+# 游说能力评分 = 智谋 + 外交（智谋 / 外交为最重要的两项属性；不再按党羽人数逐名堆 swing）
+# 对垒基准胜率（%）：双方评分持平时的共治者方胜率
+ftr_diarchy_lobby_pk_base_chance_value = 50
+# 每 1 点评分差（共治者方 − 君主方）对胜率的加权（%）
+ftr_diarchy_lobby_pk_skill_weight_value = 2.5
+# 胜率夹取区间（%）：不留 0 / 100 的绝对结果
+ftr_diarchy_lobby_pk_chance_min_value = 10
+ftr_diarchy_lobby_pk_chance_max_value = 90
+# 同一政权两次「党羽游说对垒」的冷却（年）——对垒的硬频率闸门。
+# 注：政权间隔必须 ≤ 个人冷却，否则「强手」在每次对垒时冷却都已到期，会被反复抽中（无轮换）。
+ftr_diarchy_lobby_pk_cooldown_years_value = 1
+# 参与过一次对垒的游说者**个人冷却**（天）：期满前不会再被抽中。
+# 用途：阵营内部轮换——避免「人少但能力强」的阵营每次都派同一人碾压对方弱手，形成一边倒。
+ftr_diarchy_lobby_pk_lobbyist_cooldown_days_value = 365
+# 对垒一次推动天平的幅度（沿用原版档位常量：共治者方胜 +5 / 君主方胜 −5）
+ftr_diarchy_lobby_pk_swing_gain = minor_sop_swing_diarch_gain
+ftr_diarchy_lobby_pk_swing_loss = minor_sop_swing_liege_gain
 # 季度派发共治拉锯事件（0500 / 0510）的概率（%）
 ftr_diarchy_swing_event_chance_value = 25
 # 君主侧反制（0500）的派发门槛：天平达到中性（50）即开始反制。
@@ -95,6 +124,13 @@ ftr_diarchy_liege_backer_count_value = {
 	}
 }
 
+# 求值域：君主。共治者党羽数 − 君主党羽数（未加权）。
+# 供 0510 派发前置：共治者党羽不落后于君主时，其反击才有凭依（否则纯属无党羽的凭空拉轴）。
+ftr_diarchy_backer_lead_value = {
+	value = ftr_diarchy_diarch_backer_count_value
+	subtract = ftr_diarchy_liege_backer_count_value
+}
+
 # 季度 swing 漂移量 =（共治者背书 − 君主背书 × 折算溢价）× 每人折算，且夹在 ±上限内
 ftr_diarchy_backer_swing_drift_value = {
 	value = ftr_diarchy_diarch_backer_count_value
@@ -105,6 +141,30 @@ ftr_diarchy_backer_swing_drift_value = {
 	multiply = ftr_diarchy_swing_drift_per_backer_value
 	max = ftr_diarchy_swing_drift_cap_value
 	min = ftr_diarchy_swing_drift_cap_min_value
+}
+
+# 求值域：this = 游说者（阶段 A 党羽游说对垒的当事人）。
+# 游说能力评分 = 智谋 + 外交（§4.4-A：这两项是游说成败最重要的属性）。
+ftr_diarchy_lobby_pk_skill_score_value = {
+	value = intrigue
+	add = diplomacy
+}
+
+# 求值域：共治者方游说者（scope:ftr_diarchy_pk_diarch_lobbyist）。
+# 对垒胜率（%）= 基准 + (本方评分 − 君主方评分) × 权重，再夹在 min~max。
+# 依赖外层已保存 scope:ftr_diarchy_pk_liege_lobbyist（君主方游说者）。
+ftr_diarchy_lobby_pk_diarch_win_chance_value = {
+	value = ftr_diarchy_lobby_pk_base_chance_value
+	add = {
+		value = ftr_diarchy_lobby_pk_skill_score_value
+		subtract = {
+			value = 0
+			scope:ftr_diarchy_pk_liege_lobbyist = { add = ftr_diarchy_lobby_pk_skill_score_value }
+		}
+		multiply = ftr_diarchy_lobby_pk_skill_weight_value
+	}
+	max = ftr_diarchy_lobby_pk_chance_max_value
+	min = ftr_diarchy_lobby_pk_chance_min_value
 }
 
 ### 二、废太子（§3.2）

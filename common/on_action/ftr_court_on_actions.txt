@@ -119,7 +119,7 @@ ftr_court_struggle_main_pulse = {
 					15 = {
 						scope:ftr_court_pulse_story = { ftr_court_landless_swing_effect = yes }
 					}
-					# 共治反击（0510，需天平 ≤30 且有共治者）
+					# 共治者游说反扑入口（需天平 ≤30 且有共治者）→ 03 党羽游说对垒（不再派发 0510）
 					12 = {
 						scope:ftr_court_pulse_story = { ftr_court_diarch_backlash_effect = yes }
 					}

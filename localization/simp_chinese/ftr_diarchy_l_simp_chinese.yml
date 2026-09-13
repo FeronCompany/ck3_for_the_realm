@@ -91,3 +91,19 @@
  # ===== 立储交互 on_accept 的条件提示（§2.2 1.2 / 1.3） =====
  ftr_diarchy_heir_corule_immediate_tt:0 "<FTR>指定成年继承人：立储即刻依制建立#EMP 太子共治#!（行政类政体 + 独立 + 主头衔 ≥ 王国 + 当前无共治）。"
  ftr_diarchy_minor_heir_promotion_tt:0 "<FTR>指定未成年继承人：立储时#EMP 暂不建立共治#!，继承人仍为储君；待其#EMP 成年#!后，朝廷将依制立其为太子共治（届时由朝议补立并告知）。"
+ # ===== 天平偏移通知（§7.1）：每一处 swing 写入都向君主与共治者各发一条 message，
+ #       正文给出概览，custom_tooltip 详述本次偏移的缘由（点数 / 触发条件 / 来源）=====
+ ftr_diarchy_swing_notice_title:0 "<FTR>[scales_of_power|E]发生偏移"
+ ftr_diarchy_swing_notice_desc:0 "<FTR>朝堂权力天平再度变动。展开下方提示可见本次偏移的缘由。"
+ ftr_diarchy_swing_notice_drift_up:0 "<FTR>季度背书角逐：共治者的党羽多于君主——君主每名党羽按 #P 1.5#! 倍折算溢价后仍落后，天平向#EMP 共治者#!一侧偏移 #P +1#!（单季正向上限）。党羽来自大赦、请愿与逼宫时的表态记账。"
+ ftr_diarchy_swing_notice_drift_down:0 "<FTR>季度背书角逐：君主党羽的加权多数压过共治者，天平向#EMP 君主#!一侧回拉（单季下限 #P -3#!；负方向不设门槛，故君主领先必能拉回）。"
+ ftr_diarchy_swing_notice_lobby_win:0 "<FTR>党羽游说对垒：共治者一方派出的说客 [ftr_diarchy_pk_diarch_lobbyist.GetName] 在朝中占了上风（双方各出一人，以「智谋 + 外交」评高下，评分高者胜算更大），天平向#EMP 共治者#!一侧上推 #P +5#!；同一政权一年内不会再有此类对垒，出战的说客一年内亦不会再被派出（阵营内部轮换）。"
+ ftr_diarchy_swing_notice_lobby_lose:0 "<FTR>党羽游说对垒：君主一方派出的说客 [ftr_diarchy_pk_liege_lobbyist.GetName] 挫败了共治者的游说（双方各出一人，以「智谋 + 外交」评高下，评分高者胜算更大），天平向#EMP 君主#!一侧回拉 #P -5#!；同一政权一年内不会再有此类对垒，出战的说客一年内亦不会再被派出（阵营内部轮换）。"
+ ftr_diarchy_swing_notice_qingjunce:0 "<FTR>清君侧功成：清君侧者顶替原共治者就任，天平依其战功向#EMP 新共治者#!一侧上移 #P +10#!——新共治者开局即握有实权。"
+ ftr_diarchy_swing_notice_initial_voluntary:0 "<FTR>依制立储：太子共治初立，天平按#EMP 主动立储#!基线置于 #P 10#!——储君须自积党羽方能抬升权力。"
+ ftr_court_swing_notice_petition_granted:0 "<FTR>共治请愿获准：请愿所请落地为共治（授权对象不属继承人线时则为固化摄政），天平按#EMP 请愿授权#!基线置于 #P 20#!。"
+ ftr_court_swing_notice_imposed:0 "<FTR>党羽逼宫：共治者以逼宫上台，天平按#EMP 逼宫基线#!置于 #P 40#!（太子）或 #P 80#!（共治皇帝・共治君主・摄政）——逼宫所得不可虚位。"
+ ftr_court_swing_notice_0500_a:0 "<FTR>暗中进言奏效：君主阵营的说客动摇了共治者的班底，天平向#EMP 君主#!一侧回拉 #P -5#!（八五成算；失手则风声走漏、君主威望受损）。"
+ ftr_court_swing_notice_0500_b:0 "<FTR>收买共治者左右：君主以 #P 60#! 金疏通共治者身边之人，天平向#EMP 君主#!一侧回拉 #P -5#!。"
+ ftr_court_swing_notice_0510_a:0 "<FTR>共治者暗中游说：共治者阵营在朝中串联反扑，天平向#EMP 共治者#!一侧上推 #P +5#!。"
+ ftr_court_swing_notice_0220_a:0 "<FTR>君主允诺分权：君主当廷允诺与共治者分享权柄，天平向#EMP 共治者#!一侧偏移 #P +5#!。"

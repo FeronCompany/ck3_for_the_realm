@@ -81,3 +81,12 @@
  ftr_diarchy_crown_prince_diarchy_type:0 "<FTR>太子共治"
  # 共治者头衔：共治者名下显示的身份（对照原版 regency_diarch_title「摄政」/ co_monarchy_diarch_title「共治君主」）
  ftr_diarchy_crown_prince_diarch_title:0 "<FTR>太子"
+ # ===== 0700 成年晋位太子共治（§2.2 补立：未成年立储不建共治，成年后由 01 主时钟补立） =====
+ ftr_diarchy.0700.t:0 "<FTR>太子已长成"
+ ftr_diarchy.0700.desc:0 "<FTR>储君[ftr_diarchy_promoted_prince.GetTitledFirstName]已届成年。礼官奏请依制授其共治之权：自此朝堂之上，储君与朕同坐。"
+ ftr_diarchy.0700.a:0 "<FTR>依制行之。"
+ ftr_diarchy_promotion_notify_title:0 "<FTR>太子共治已立"
+ ftr_diarchy_promotion_notify_desc:0 "<FTR>我既已成年，朝廷依制授我共治之权，自此与君上同坐朝堂。"
+ # ===== 立储交互 on_accept 的条件提示（§2.2 1.2 / 1.3） =====
+ ftr_diarchy_heir_corule_immediate_tt:0 "<FTR>指定成年继承人：立储即刻依制建立#EMP 太子共治#!（行政类政体 + 独立 + 主头衔 ≥ 王国 + 当前无共治）。"
+ ftr_diarchy_minor_heir_promotion_tt:0 "<FTR>指定未成年继承人：立储时#EMP 暂不建立共治#!，继承人仍为储君；待其#EMP 成年#!后，朝廷将依制立其为太子共治（届时由朝议补立并告知）。"

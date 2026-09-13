@@ -146,6 +146,24 @@ ftr_court_struggle = {
 	# 烈度只影响"能选哪些族"（池内分流）：高烈度亦可触发低烈度（文明）族，反之不可。
 	effect_group = {
 		days = { ftr_court_strife_interval_min_value  ftr_court_strife_interval_max_value }
+		# 幼主成年 → 补建太子共治（03 §2.2 接线）：未成年时立储不建共治，
+		# 待指定继承人成年由本拍补立并发 0700 事件告知君主。休战期（eased）不拦此项。
+		triggered_effect = {
+			trigger = {
+				story_owner ?= {
+					ftr_court_struggle_valid_trigger = yes
+					ftr_diarchy_can_start_crown_prince_trigger = yes
+					exists = designated_heir
+					designated_heir ?= {
+						is_adult = yes
+						is_diarch = no
+					}
+				}
+			}
+			effect = {
+				story_owner = { ftr_diarchy_promote_adult_heir_effect = yes }
+			}
+		}
 		triggered_effect = {
 			trigger = {
 				story_owner ?= { ftr_court_struggle_valid_trigger = yes }

@@ -496,6 +496,8 @@ python tools/validate_scripts.py --no-ref
 | 用 `parameters = { P = { type = character } }` 声明块 | CK3 **不存在**；参数是 `$PARAM$` 纯文本宏 |
 | 在 Trigger 里改状态 | Trigger 只读；会报错或静默失败 |
 | 在 Effect 里裸写条件 | 必须包进 `limit = { }` |
+| 在**效果域**的 `custom_tooltip` / `custom_description` 内写 `trigger = { }` | 效果域的 `custom_tooltip` 只接受 effects（原版全库 `common/character_interactions`、`common/decisions`、`common/scripted_effects`、`events` 中 **0 处** `trigger` 子键）；要条件显示须外套 `if = { limit = { … } custom_tooltip = { text = … } }` |
+| 在**判定域**的 `custom_tooltip` 内套 `trigger = { }` | 判定域（`is_valid` / `is_shown` / `limit` / `send_option.is_valid`）直接裸写触发器：`custom_tooltip = { text = X  <条件…> }`（原版统一写法） |
 | 写死循环 `while` | 必须让 `limit` 变假或加 `count` 上限 |
 
 ### 6.2 本项目特有

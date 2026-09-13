@@ -247,3 +247,39 @@ ftr_diarchy.0200 = {
 		add_character_flag = ftr_diarchy_loyal_to_liege
 	}
 }
+
+######################################################
+### 0700 通知主君：指定继承人成年 → 太子共治已立（§2.2 补立）
+### 由 01 故事循环主时钟调用 ftr_diarchy_promote_adult_heir_effect 后触发。
+######################################################
+
+ftr_diarchy.0700 = {
+	type = character_event
+	title = ftr_diarchy.0700.t
+	desc = ftr_diarchy.0700.desc
+	theme = diplomacy
+
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = diarch
+	}
+
+	immediate = {
+		diarch ?= { save_scope_as = ftr_diarchy_promoted_prince }
+	}
+
+	option = { # 依制行之
+		name = ftr_diarchy.0700.a
+		# 结果回执新太子本人（共治已立）
+		scope:ftr_diarchy_promoted_prince ?= {
+			send_interface_message = {
+				type = event_diplomacy_good_with_text
+				title = ftr_diarchy_promotion_notify_title
+				desc = ftr_diarchy_promotion_notify_desc
+				left_icon = root
+			}
+		}
+	}
+}

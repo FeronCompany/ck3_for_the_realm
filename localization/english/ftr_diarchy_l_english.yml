@@ -81,3 +81,12 @@
  ftr_diarchy_crown_prince_diarchy_type:0 "<FTR>Crown Prince Co-Rule"
  # Diarch title: the office shown next to the diarch (cf. vanilla regency_diarch_title / co_monarchy_diarch_title)
  ftr_diarchy_crown_prince_diarch_title:0 "<FTR>Crown Prince"
+ # ===== 0700 Adult Heir Promotion (§2.2: no co-rule for a minor heir; the 01 main clock promotes on coming of age) =====
+ ftr_diarchy.0700.t:0 "<FTR>The Heir Comes of Age"
+ ftr_diarchy.0700.desc:0 "<FTR>Crown Prince [ftr_diarchy_promoted_prince.GetTitledFirstName] has come of age. The masters of ceremony ask that he be granted his rightful share of rule: from this day the heir sits beside me in council."
+ ftr_diarchy.0700.a:0 "<FTR>So be it."
+ ftr_diarchy_promotion_notify_title:0 "<FTR>Crown Prince Co-Rule Established"
+ ftr_diarchy_promotion_notify_desc:0 "<FTR>Now that I am of age, the court has granted me my share of rule, and I sit beside the crown in council."
+ # ===== designate_heir on_accept conditional hints (§2.2 1.2 / 1.3) =====
+ ftr_diarchy_heir_corule_immediate_tt:0 "<FTR>Designating an adult heir: #EMP Crown Prince co-rule#! is established at once (administrative government, independent, kingdom tier or above, and no existing co-rule)."
+ ftr_diarchy_minor_heir_promotion_tt:0 "<FTR>Designating a minor heir: #EMP no co-rule is established#! yet — the heir remains heir until #EMP coming of age#!, when the court will establish Crown Prince co-rule (announced at court)."

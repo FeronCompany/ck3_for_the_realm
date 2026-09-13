@@ -31,6 +31,34 @@ ftr_diarchy_try_start_crown_prince_effect = {
 	}
 }
 
+# 求值域：君主（由 01 故事循环主时钟每拍调用，§2.2 补立）。
+# 口径：未成年指定继承人**不即建**共治（立储接线的 is_adult 守卫保留）；
+#       待其成年后由本效果补建太子共治，并触发 0700 事件告知君主。
+# 注：已有任何共治（含摄政）时 `ftr_diarchy_can_start_crown_prince_trigger` 不成立 →
+#     补立不发生（储位冻结口径，须先结束共治）。
+ftr_diarchy_promote_adult_heir_effect = {
+	if = {
+		limit = {
+			ftr_diarchy_can_start_crown_prince_trigger = yes
+			exists = designated_heir
+			designated_heir ?= {
+				is_alive = yes
+				is_adult = yes
+				is_imprisoned = no
+				is_diarch = no
+			}
+		}
+		ftr_diarchy_try_start_crown_prince_effect = { PRINCE = designated_heir }
+		if = {
+			limit = {
+				has_active_diarchy = yes
+				diarch ?= { this = designated_heir }
+			}
+			trigger_event = { id = ftr_diarchy.0700  days = 2 }
+		}
+	}
+}
+
 ######################################################
 ### 二、无地共治者授土（§4.0）
 ######################################################

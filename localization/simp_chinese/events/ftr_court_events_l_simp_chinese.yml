@@ -136,12 +136,12 @@
 
 ###### 0620 / 0621 管辖纠纷・比武裁决（M4，文明争斗） ######
  ftr_court_struggle.0620.t:0 "御前裁断"
- ftr_court_struggle.0620.desc:0 "[ftr_court_duel_plaintiff.GetTitledFirstName]与[ftr_court_duel_defendant.GetTitledFirstName]为地界与管辖权争执不休，各自递上诉状，请我裁断。"
+ ftr_court_struggle.0620.desc:0 "[ftr_court_duel_plaintiff.GetTitledFirstName]与[ftr_court_duel_defendant.GetTitledFirstName]为几处地界与管辖之权争了整整一季，诉状往复摞成尺厚。如今两造各率党羽立于丹墀之下，满殿文武分列两边，只等我一句裁断。"
  ftr_court_struggle.0620.a:0 "命二人当廷比武，以胜负定曲直。"
  ftr_court_struggle.0620.b:0 "判[ftr_court_duel_plaintiff.GetTitledFirstName]得直。"
  ftr_court_struggle.0620.c:0 "判[ftr_court_duel_defendant.GetTitledFirstName]得直。"
  ftr_court_struggle.0620.d:0 "各打五十大板，暂不理会。"
- ftr_court_duel_combat_tt:0 "双方当廷角力，胜负由勇武与军事定夺；败者失势，其党羽亦随之离心。"
+ ftr_court_duel_combat_tt:0 "命二人当廷比武，以胜负定曲直：勇武与军事见高下，胜者挟胜势得直；败者当众失势，其党羽亦随之离心。"
  ftr_court_duel_verdict_tt:0 "裁定一方得直：胜方声望小涨，败方失面并记恨胜者与君上。"
  ftr_court_duel_dismiss_tt:0 "置之不理：争端不解，双方皆对君上不满，朝堂烈度上浮。"
  ftr_court_duel_notify_verdict_win_title:0 "御前裁断：我得直"
@@ -151,13 +151,14 @@
  ftr_court_duel_notify_dismissed_title:0 "争端未获受理"
  ftr_court_duel_notify_dismissed_desc:0 "君上把我的诉状搁下了，既不裁断，也不安抚。"
  ftr_court_struggle.0621.t:0 "当廷比武"
- ftr_court_struggle.0621.desc_plaintiff:0 "当廷交手，[ftr_court_duel_plaintiff.GetTitledFirstName]将[ftr_court_duel_defendant.GetTitledFirstName]击倒在地，曲直由此分明。"
- ftr_court_struggle.0621.desc_defendant:0 "当廷交手，[ftr_court_duel_defendant.GetTitledFirstName]力挫[ftr_court_duel_plaintiff.GetTitledFirstName]，原告当众受挫。"
+ ftr_court_struggle.0621.desc_plaintiff:0 "[ftr_court_duel_plaintiff.GetTitledFirstName]与[ftr_court_duel_defendant.GetTitledFirstName]按剑立于丹墀之下，满殿文武屏息退开半步。数合之后，[ftr_court_duel_defendant.GetTitledFirstName]脚下一乱，被[ftr_court_duel_plaintiff.GetTitledFirstName]一记重击掀翻在御阶之上，甲片四散、血点溅上阶石。胜者喘息着按住剑柄，低头看着败者；败者撑地欲起，终究只是摇了摇头。曲直自此不问自明。"
+ ftr_court_struggle.0621.desc_defendant:0 "[ftr_court_duel_plaintiff.GetTitledFirstName]与[ftr_court_duel_defendant.GetTitledFirstName]按剑立于丹墀之下，满殿文武屏息退开半步。缠斗数合，[ftr_court_duel_plaintiff.GetTitledFirstName]露出破绽，被[ftr_court_duel_defendant.GetTitledFirstName]一记重手掀下石阶，杖折甲裂，围观者齐齐倒退。原告当众受挫——方才还在替他说话的人，此刻都把眼睛移开了。"
+ ftr_court_struggle.0621.desc_fallback:0 "两造按剑立于丹墀之下，满殿文武屏息以待。一阵金铁交鸣与喝骂之后，两人各自归班：胜负不曾写进案牍，满殿之人的心里却都已各有裁断。"
  ftr_court_struggle.0621.a:0 "退朝。"
  ftr_court_duel_notify_win_title:0 "比武得胜"
- ftr_court_duel_notify_win_desc:0 "当着朝堂，我在角力中胜出，声名更盛。"
+ ftr_court_duel_notify_win_desc:0 "当着满朝文武，我在殿前角力中胜出。甲胄未卸，道贺的人已在门外排成一线；往日沉默的朝臣，也开始在朝会上与我同声。"
  ftr_court_duel_notify_lose_title:0 "比武落败"
- ftr_court_duel_notify_lose_desc:0 "我在当廷比武中输了一场，声望与追随皆有折损。"
+ ftr_court_duel_notify_lose_desc:0 "我在殿前比武中失手倒地，声望与追随一并折损；昨日还附我之人，今夜已悄悄换了他家门前的车马。"
 
 ###### 0630 / 0631 清议 / 月旦评（M5，文明争斗） ######
  ftr_court_struggle.0630.t:0 "月旦评"

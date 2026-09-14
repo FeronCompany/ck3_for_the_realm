@@ -1671,19 +1671,19 @@ ftr_court_landless_swing_effect = {
 	}
 }
 
-# 议题 2：共治者反扑（§9.6）——swing ≤30（辅政稳固）时，共治者阵营游说拉回。
-# 2026-09 起**不再派发 0510 事件**，改由 03 的「党羽游说对垒」(ftr_diarchy_backer_lobby_pk_effect) 承接：
-# 双方各抽一人按「智谋 + 外交」对垒，胜方一次推动 ±5；另有政权 1 年 + 个人 1 年冷却。
+# 议题 2：共治者反扑（§9.6）——**任意天平值**均可发动，共治者阵营游说争夺天平。
+# 2026-09 起**不再派发 0510 事件、也不再限制天平档位**，改由 03 的「党羽游说对垒」
+# (ftr_diarchy_backer_lobby_pk_effect) 承接：双方各抽一人按「智谋 + 外交」对垒，胜方一次推动 ±5；
+# 频率由对垒自带的政权 2 年 + 个人 3 年冷却把关。
 ftr_court_diarch_backlash_effect = {
 	save_scope_as = ftr_court_strife_story
 	random = {
 		chance = ftr_diarch_backlash_event_chance_value
 		if = {
 			limit = {
-				# 官方 swing：天平偏君主 ≤30 **且共治者党羽不落后**时才启动共治反击（口径同 03 §7.2）
+				# 前置：共治者党羽不落后于君主（有党羽撑腰才谈反扑）——**天平值不设门槛**
 				story_owner ?= {
 					exists = diarch
-					diarchy_swing <= ftr_diarchy_lobby_pk_swing_band_value
 					ftr_diarchy_backer_lead_value >= 0
 					# 单政权冷却：与 03 季度 drift 共用同一 flag ⇒ 两侧合计每政权每年至多 1 次
 					NOT = { has_character_flag = ftr_diarch_swing_event_cooldown }

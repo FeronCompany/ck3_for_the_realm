@@ -10,6 +10,7 @@ ftr_personal_merit_reward_gold_interaction = {
 	category = interaction_category_diplomacy
 	common_interaction = yes
 	desc = ftr_personal_merit_reward_gold_interaction_desc
+	notification_text = ftr_personal_merit_reward_gold_interaction_text
 	cooldown_against_recipient = { years = 1 }
 	ai_targets = {
 		ai_recipients = peer_vassals
@@ -123,6 +124,7 @@ ftr_personal_merit_request_gold_interaction = {
 	category = interaction_category_vassal
 	common_interaction = yes
 	desc = ftr_personal_merit_request_gold_interaction_desc
+	notification_text = ftr_personal_merit_request_gold_interaction_text
 	cooldown_against_recipient = { years = 2 }
 	ai_targets = {
 		ai_recipients = liege
@@ -234,6 +236,7 @@ ftr_personal_merit_request_council_interaction = {
 	category = interaction_category_vassal
 	common_interaction = yes
 	desc = ftr_personal_merit_request_council_interaction_desc
+	notification_text = ftr_personal_merit_request_council_interaction_text
 	cooldown_against_recipient = { years = 5 }
 	ai_targets = {
 		ai_recipients = liege

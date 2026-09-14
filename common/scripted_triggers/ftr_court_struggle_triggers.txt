@@ -507,16 +507,32 @@ ftr_court_has_backing_trigger = {
 	}
 }
 
-# 党羽同阵营判定（供手段族 AI 的党羽立场过滤复用，§7.3）。
+# 党羽同阵营判定（供手段族 AI / 交互 AI 的党羽立场过滤复用，§7.3）。
 # 求值域：this = 待判定者；参数 OTHER = 对照者（角色 scope 表达式）。
-# 成立：我已站队，且 OTHER 属我方党羽——① OTHER 在我支持党首的 ftr_court_supporters 名单内，
-# 或 ② OTHER 正是我支持的党首本人（党首亦属本阵营）。未站队者无阵营 → 恒为假。
+# 成立（任一条即可）：
+#   ① 我**是党羽**（身上有背书账 ftr_court_backer_of）：OTHER 在我所支持党首的
+#      ftr_court_supporters 名单内，或 OTHER 正是那位党首本人；
+#   ② 我**是党首**（身上有 ftr_court_supporters 名单）：OTHER 在我的支持者名单内（我的党羽）。
+# 注：② **不可省**——党首不会背书自己，身上没有 ftr_court_backer_of；
+#     只写 ① 时「党首 ↔ 自己的党羽」会被判成不同阵营，charge / sow_discord 的
+#     「不对自己人下手」抑制就失效（AI 会打自己人）。
+# 两账皆无者无阵营 → 恒为假。
 ftr_court_same_camp_trigger = {
-	has_variable = ftr_court_backer_of
-	var:ftr_court_backer_of ?= {
-		OR = {
+	OR = {
+		# ① 我是党羽：以「我所支持党首」的名单对照
+		AND = {
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= {
+				OR = {
+					is_target_in_variable_list = { name = ftr_court_supporters  target = $OTHER$ }
+					this = $OTHER$
+				}
+			}
+		}
+		# ② 我是党首：以「我自己的支持者名单」对照
+		AND = {
+			has_variable_list = ftr_court_supporters
 			is_target_in_variable_list = { name = ftr_court_supporters  target = $OTHER$ }
-			this = $OTHER$
 		}
 	}
 }

@@ -3856,12 +3856,21 @@ ftr_court_struggle.0621 = {
 	}
 	desc = {
 		triggered_desc = {
+			# 原告胜：结算 effect 的随机分支把 ftr_court_duel_won 打在**原告**身上
 			trigger = { scope:ftr_court_duel_plaintiff = { has_character_flag = ftr_court_duel_won } }
 			desc = ftr_court_struggle.0621.desc_plaintiff
 		}
+		# 被告胜：结算为原告打的是 ftr_court_duel_lost。
+		# 原写法判「被告身上有 ftr_court_duel_won」——该 flag 永远不会出现在被告身上，
+		# 于是被告胜时两条 triggered_desc 全不成立 ⇒ **事件正文空白**（本次修复点）。
 		triggered_desc = {
-			trigger = { scope:ftr_court_duel_defendant = { has_character_flag = ftr_court_duel_won } }
+			trigger = { scope:ftr_court_duel_plaintiff = { has_character_flag = ftr_court_duel_lost } }
 			desc = ftr_court_struggle.0621.desc_defendant
+		}
+		# 兜底：两旗皆无（异常情况）也不留空白正文
+		triggered_desc = {
+			trigger = { always = yes }
+			desc = ftr_court_struggle.0621.desc_fallback
 		}
 	}
 	theme = war

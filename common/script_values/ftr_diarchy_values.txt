@@ -54,11 +54,9 @@ ftr_diarchy_swing_drift_positive_min_value = 2
 # 实际频率由对垒自带的「政权 1 年冷却」（ftr_diarchy_lobby_pk_cooldown_years_value）独立把关，
 # 故此处给 100（带内即尝试）——原 15% 与冷却叠乘后几乎不出现，是"对垒很久不触发"的第一根因。
 ftr_diarch_backlash_event_chance_value = 100
-# 共治者阵营可发动游说对垒的天平上沿（天平 ≤ 此值 = 君主尚未占优）。
-# 默认取「中性」(50)：低于中性即由共治者阵营游说推高，其上方（≥50）由 0500 交君主阵营回拉，
-# 使 31–49 的中性带不再成为无人出手的死区。
-# 若要恢复旧口径（31–49 留空），改回 ftr_swing_tier_loyal_value（30）即可。
-ftr_diarchy_lobby_pk_swing_band_value = ftr_swing_tier_even_mid_value
+# （已移除）原「游说对垒天平带」常量：2026-09 起对垒**任意天平值均可发动**（含共治者已占优时），
+# 天平档位不再作为入口门槛；频率改由 ftr_diarchy_lobby_pk_cooldown_years_value（政权）
+# 与 ftr_diarchy_lobby_pk_lobbyist_cooldown_days_value（个人）把关。
 # 拉锯事件（0500 / 0510）的单政权冷却（天）：冷却期内同一君主不再被派发，
 # 把两侧事件通道的实际上限钉在「每政权每年各 1 次」，防止任何一条派发路径重复触发时
 # 退化成"每半月 +5"的上行泵（实测日志曾出现单一政权 2.5 年内十余次派发）。
@@ -280,6 +278,10 @@ ftr_diarchy_abolish_prince_pressure_value = {
 ### 三、授土提醒（§4.0）
 # 无地共治者提醒间隔（年）
 ftr_diarchy_grant_land_reminder_years_value = 3
+# 授土行为的「强弱分界」（求值域：主君，读 diarchy_swing）：
+#   swing <  此值 → 共治者羽翼未丰，只能**委婉奏请**（0200 选项 a2 → 主君事件 ftr_diarchy.0210，由主君裁断）；
+#   swing >= 此值 → 恢复**无条件索取**（0200 选项 a1，共治者直接划走，主君被通知但拦不住）。
+ftr_diarchy_land_request_swing_value = 60
 
 ### 三之二、交互成本（§4.2 / §4.3）
 ftr_diarchy_designate_heir_influence_cost_value = 150

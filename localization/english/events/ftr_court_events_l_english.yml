@@ -136,12 +136,12 @@
 
 ###### 0620 / 0621 Jurisdiction Dispute & Trial by Combat (M4, civil strife) ######
  ftr_court_struggle.0620.t:0 "Judgment at Court"
- ftr_court_struggle.0620.desc:0 "[ftr_court_duel_plaintiff.GetTitledFirstName] and [ftr_court_duel_defendant.GetTitledFirstName] quarrel endlessly over borders and jurisdiction, and both lay their pleas before me."
+ ftr_court_struggle.0620.desc:0 "[ftr_court_duel_plaintiff.GetTitledFirstName] and [ftr_court_duel_defendant.GetTitledFirstName] have argued for a whole season over a few borders and the right to judge them, petitions piling up a hand thick. Now both stand in my hall with their camps arrayed behind them, waiting on a single word from me."
  ftr_court_struggle.0620.a:0 "Let them settle it by combat in my hall."
  ftr_court_struggle.0620.b:0 "Rule in favour of [ftr_court_duel_plaintiff.GetTitledFirstName]."
  ftr_court_struggle.0620.c:0 "Rule in favour of [ftr_court_duel_defendant.GetTitledFirstName]."
  ftr_court_struggle.0620.d:0 "Set the whole matter aside."
- ftr_court_duel_combat_tt:0 "The two will fight before the court, prowess and martial skill deciding. The loser loses standing, and his camp drifts away from him."
+ ftr_court_duel_combat_tt:0 "Let them fight before the court and let the outcome decide the right of it: prowess and martial skill will tell, and the winner's cause goes with his victory. The loser is shamed before all, and his camp drifts away from him."
  ftr_court_duel_verdict_tt:0 "Rule for one side: the winner gains prestige, the loser loses face and resents both the winner and you."
  ftr_court_duel_dismiss_tt:0 "Set it aside: the quarrel festers, both sides resent you, and tension rises."
  ftr_court_duel_notify_verdict_win_title:0 "Judgment: I Prevailed"
@@ -151,13 +151,14 @@
  ftr_court_duel_notify_dismissed_title:0 "Plea Unheard"
  ftr_court_duel_notify_dismissed_desc:0 "My plea was set aside — neither judged nor soothed."
  ftr_court_struggle.0621.t:0 "Trial by Combat"
- ftr_court_struggle.0621.desc_plaintiff:0 "In the hall, [ftr_court_duel_plaintiff.GetTitledFirstName] struck [ftr_court_duel_defendant.GetTitledFirstName] to the ground, and the matter was settled."
- ftr_court_struggle.0621.desc_defendant:0 "In the hall, [ftr_court_duel_defendant.GetTitledFirstName] broke [ftr_court_duel_plaintiff.GetTitledFirstName]'s case by force of arms."
+ ftr_court_struggle.0621.desc_plaintiff:0 "The two took their places with swords at their sides and the whole court stepped back to give them room. After a few exchanges [ftr_court_duel_defendant.GetTitledFirstName]'s footing failed, and [ftr_court_duel_plaintiff.GetTitledFirstName] threw him down upon the steps — scales scattered, blood spotting the stone. The winner stood breathing hard, hand still on the hilt, looking down; the loser pushed himself up once, then only shook his head. The right of the matter needed no further argument."
+ ftr_court_struggle.0621.desc_defendant:0 "The two took their places with swords at their sides and the whole court stepped back to give them room. Locked together for many exchanges, [ftr_court_duel_plaintiff.GetTitledFirstName] left an opening, and [ftr_court_duel_defendant.GetTitledFirstName] drove him off the steps — staves split, harness torn, onlookers stumbling back. The plaintiff was broken before the court, and those who had spoken for him a moment ago now looked elsewhere."
+ ftr_court_struggle.0621.desc_fallback:0 "Both stood armed in my hall while the court held its breath. After a storm of blows and curses they returned to their places: nothing was written into the record, yet every man present had made up his mind."
  ftr_court_struggle.0621.a:0 "The court is dismissed."
  ftr_court_duel_notify_win_title:0 "Victory in Combat"
- ftr_court_duel_notify_win_desc:0 "Before the whole court I won the contest of arms, and my name grows."
+ ftr_court_duel_notify_win_desc:0 "Before the whole court I carried the contest of arms. My harness is still on and the well-wishers are already at my gate; men who once kept silent now speak with me in council."
  ftr_court_duel_notify_lose_title:0 "Defeat in Combat"
- ftr_court_duel_notify_lose_desc:0 "I lost the trial by combat, and with it standing and followers."
+ ftr_court_duel_notify_lose_desc:0 "I was thrown down in the trial by combat. Standing and followers are lost together, and those who waited at my gate last night found another gate tonight."
 
 ###### 0630 / 0631 Public Appraisal (M5, civil strife) ######
  ftr_court_struggle.0630.t:0 "A Month's Verdict"

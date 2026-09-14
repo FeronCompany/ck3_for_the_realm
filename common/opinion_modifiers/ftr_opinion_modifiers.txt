@@ -86,6 +86,20 @@ ftr_diarchy_amnesty_beneficiary_opinion = {
 	decaying = yes
 }
 
+# 共治者机制强化（03）：请地获准——共治者对君上的感激（§4.0 奏请分支）
+ftr_diarchy_land_granted_opinion = {
+	opinion = 30
+	years = 20
+	decaying = yes
+}
+
+# 共治者机制强化（03）：请地被推托不允——共治者对君上的失落（§4.0 奏请分支）
+ftr_diarchy_land_denied_opinion = {
+	opinion = -20
+	years = 10
+	decaying = yes
+}
+
 # Crime opinions
 ftr_attempted_coup_crime = {
 	opinion = -100

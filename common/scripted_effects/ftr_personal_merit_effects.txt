@@ -430,6 +430,9 @@ ftr_personal_merit_grant_random_county_effect = {
 		limit = {
 			holder ?= { this = root }
 			NOT = { this = root.capital_county }
+			# 排除世族（贵族家族）头衔：天朝制下它是伯爵级、行政制下是公爵级，
+			# 与「家主」身份绑定（原版 set_house_head = 头衔持有人），授出即静默易主。
+			is_noble_family_title = no
 		}
 		save_scope_as = ftr_pm_grant_county
 	}

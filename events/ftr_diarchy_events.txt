@@ -177,6 +177,125 @@ ftr_diarchy.0300 = {
 	}
 }
 
+ftr_diarchy.0400 = {
+	type = character_event
+	title = ftr_diarchy.0400.t
+	desc = ftr_diarchy.0400.desc
+	theme = intrigue
+
+	# 派发后 2 天才落地：若党羽在这两日内亡故，事件静默作废（不留 error）
+	trigger = {
+		is_alive = yes
+	}
+
+	left_portrait = {
+		character = var:ftr_diarchy_abolished_prince
+	}
+	right_portrait = {
+		character = var:ftr_diarchy_abolished_liege
+	}
+
+	immediate = {
+		# 变量指针由废储效果写入（days = 60 自过期，此处不再手动清除——
+		# 立绘 datamodel 在 immediate 之后仍会读 var:，提前清变量会让头像空白）
+		var:ftr_diarchy_abolished_prince ?= { save_scope_as = ftr_diarchy_fallen_prince }
+		var:ftr_diarchy_abolished_liege ?= { save_scope_as = ftr_diarchy_abolishing_liege }
+	}
+
+	option = { # 切割：退出太子党
+		name = ftr_diarchy.0400.a
+		custom_tooltip = { text = ftr_diarchy_0400_exit_tt }
+		# 事态严重：AI 退党概率偏高（基准 65），仅在「与太子交情极深 / 天性忠直」时才倾向留守
+		ai_chance = {
+			base = 65
+			modifier = {
+				add = 15
+				has_trait = craven
+			}
+			modifier = {
+				add = 10
+				has_trait = content
+			}
+			modifier = {
+				add = -25
+				has_trait = loyal
+			}
+			modifier = {
+				add = -20
+				has_trait = just
+			}
+			modifier = {
+				add = -20
+				opinion = {
+					target = scope:ftr_diarchy_fallen_prince
+					value >= 60
+				}
+			}
+			modifier = {
+				add = -15
+				has_trait = ambitious
+			}
+		}
+		# ① 与被废太子切割：解除背书（清 backer_of + 结清拥立账 + 从太子名单除名）
+		scope:ftr_diarchy_fallen_prince ?= {
+			ftr_court_remove_backer_effect = { BACKER = root }
+		}
+		remove_variable = ftr_court_backer_of
+		ftr_personal_merit_backing_clear_effect = yes
+		# ② 被废太子记恨这个转身而去的人
+		scope:ftr_diarchy_fallen_prince ?= {
+			add_opinion = {
+				target = root
+				modifier = ftr_court_betrayed_opinion
+			}
+		}
+		# ③ 主君乐见其成：肯与废太子切割者，不在清算之列
+		scope:ftr_diarchy_abolishing_liege ?= {
+			add_opinion = {
+				target = root
+				modifier = ftr_political_alliance_opinion
+			}
+		}
+	}
+
+	option = { # 守着废太子不走
+		name = ftr_diarchy.0400.b
+		custom_tooltip = { text = ftr_diarchy_0400_stay_tt }
+		ai_chance = {
+			base = 35
+			modifier = {
+				add = 30
+				opinion = {
+					target = scope:ftr_diarchy_fallen_prince
+					value >= 60
+				}
+			}
+			modifier = {
+				add = 15
+				has_trait = loyal
+			}
+			modifier = {
+				add = -20
+				has_trait = craven
+			}
+		}
+		# 名分上仍是他的党羽（太子已废，此背书不再推动共治天平）
+		scope:ftr_diarchy_fallen_prince ?= {
+			add_opinion = {
+				target = root
+				modifier = ftr_court_backer_opinion
+			}
+		}
+		# 代价：主君记住了替废太子撑场的人
+		scope:ftr_diarchy_abolishing_liege ?= {
+			add_opinion = {
+				target = root
+				modifier = ftr_political_opponent_opinion
+			}
+		}
+	}
+}
+
 ######################################################
 ### 0002 阶段 A 表态窗口结算（hidden，§4.4-A）
 ### 由 ftr_diarchy_phase_a_start_effect 延时调度（SETTLE_DAYS 天后），
@@ -222,23 +341,205 @@ ftr_diarchy.0200 = {
 		character = liege
 	}
 
-	option = { # 索取土地（无条件获取）
+	option = { # 【swing ≥ 60】开口索要：羽翼已丰，无条件获取
 		name = ftr_diarchy.0200.a
 		trigger = {
 			liege ?= { ftr_diarchy_liege_has_land_to_give_trigger = yes }
+			liege ?= { diarchy_swing >= ftr_diarchy_land_request_swing_value }
 		}
+		# 划地规则透明化（2026-09 补）：明示「世族头衔永不外授」，
+		# 避免玩家把家主之位连带划走却毫无察觉。
+		custom_tooltip = { text = ftr_diarchy_grant_land_rule_tt }
 		liege ?= {
-			ftr_diarchy_grant_land_effect = { RECIPIENT = root }
+			ftr_diarchy_grant_land_effect = {
+				RECIPIENT = root
+				LIEGE_TYPE = event_diplomacy_bad_with_text
+				LIEGE_TITLE = ftr_diarchy_take_land_liege_title
+				LIEGE_DESC = ftr_diarchy_take_land_liege_desc
+			}
+		}
+		ai_chance = {
+			base = 60
+			modifier = {
+				add = 20
+				has_trait = ambitious
+			}
+			modifier = {
+				add = -20
+				has_trait = content
+			}
+		}
+	}
+
+	option = { # 【swing < 60】委婉奏请：请地表递到君上案前，由主君裁断是否赐地
+		name = ftr_diarchy.0200.a2
+		trigger = {
+			liege ?= { ftr_diarchy_liege_has_land_to_give_trigger = yes }
+			liege ?= { diarchy_swing < ftr_diarchy_land_request_swing_value }
+		}
+		custom_tooltip = { text = ftr_diarchy_grant_request_tt }
+		liege ?= {
+			# 请地者以变量传给主君事件（scope 不跨事件）
+			set_variable = {
+				name = ftr_diarchy_land_requester
+				value = root
+				days = 60
+			}
+			trigger_event = { id = ftr_diarchy.0210  days = 2 }
+		}
+		ai_chance = {
+			base = 65
+			modifier = {
+				add = 15
+				has_trait = ambitious
+			}
+			modifier = {
+				add = -20
+				has_trait = content
+			}
 		}
 	}
 
 	option = { # 暂不考虑（后续还会再刷）
 		name = ftr_diarchy.0200.b
+		ai_chance = { base = 30 }
 	}
 
 	option = { # 忠心事主（此后不再刷）
 		name = ftr_diarchy.0200.c
 		add_character_flag = ftr_diarchy_loyal_to_liege
+		# 永久关闭这条通道，AI 只是偶一为之（原先四项均无 ai_chance，等于各 1/3 随机）
+		ai_chance = { base = 5 }
+	}
+}
+
+######################################################
+### 0210 授土奏请・君主裁断（§4.0，root = 主君）
+### 由 0200 的「委婉奏请」分支派发（共治者 swing < 60：羽翼未丰，不能强索）。
+### 请地者以变量 ftr_diarchy_land_requester 传入（days = 60 自过期）。
+######################################################
+
+ftr_diarchy.0210 = {
+	type = character_event
+	title = ftr_diarchy.0210.t
+	desc = ftr_diarchy.0210.desc
+	theme = diplomacy
+
+	# 派发后 2 天落地：请地者亡故/变量过期则静默作废
+	trigger = {
+		is_alive = yes
+		exists = var:ftr_diarchy_land_requester
+		var:ftr_diarchy_land_requester ?= { is_alive = yes }
+	}
+
+	left_portrait = {
+		character = var:ftr_diarchy_land_requester
+	}
+	right_portrait = {
+		character = root
+	}
+
+	immediate = {
+		var:ftr_diarchy_land_requester ?= { save_scope_as = ftr_diarchy_petitioning_diarch }
+	}
+
+	option = { # 允其所请：划出领地
+		name = ftr_diarchy.0210.a
+		trigger = { ftr_diarchy_liege_has_land_to_give_trigger = yes }
+		custom_tooltip = { text = ftr_diarchy_grant_land_rule_tt }
+		ftr_diarchy_grant_land_effect = {
+			RECIPIENT = scope:ftr_diarchy_petitioning_diarch
+			LIEGE_TYPE = event_diplomacy_good_with_text
+			LIEGE_TITLE = ftr_diarchy_grant_land_liege_title
+			LIEGE_DESC = ftr_diarchy_grant_land_liege_desc
+		}
+		# 请地获准：共治者感念这一份体面
+		scope:ftr_diarchy_petitioning_diarch ?= {
+			add_opinion = {
+				target = root
+				modifier = ftr_diarchy_land_granted_opinion
+			}
+		}
+		ai_chance = {
+			base = 35
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = generous
+					has_trait = just
+					has_trait = compassionate
+				}
+			}
+			modifier = {
+				add = 15
+				scope:ftr_diarchy_petitioning_diarch ?= { is_heir_of = root }
+			}
+			modifier = {
+				add = 15
+				opinion = {
+					target = scope:ftr_diarchy_petitioning_diarch
+					value >= 40
+				}
+			}
+			modifier = {
+				add = -20
+				OR = {
+					has_trait = greedy
+					has_trait = paranoid
+					has_trait = arbitrary
+				}
+			}
+			modifier = {
+				add = -15
+				opinion = {
+					target = scope:ftr_diarchy_petitioning_diarch
+					value <= -20
+				}
+			}
+		}
+	}
+
+	option = { # 温言推托：暂无地可划，或不愿分权
+		name = ftr_diarchy.0210.b
+		custom_tooltip = { text = ftr_diarchy_grant_deny_tt }
+		scope:ftr_diarchy_petitioning_diarch ?= {
+			add_opinion = {
+				target = root
+				modifier = ftr_diarchy_land_denied_opinion
+			}
+			send_interface_message = {
+				type = event_diplomacy_bad_with_text
+				title = ftr_diarchy_land_denied_title
+				desc = ftr_diarchy_land_denied_desc
+				left_icon = root
+			}
+		}
+		ai_chance = {
+			base = 65
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = greedy
+					has_trait = paranoid
+				}
+			}
+			modifier = {
+				add = -20
+				scope:ftr_diarchy_petitioning_diarch ?= { is_heir_of = root }
+			}
+			modifier = {
+				add = -10
+				opinion = {
+					target = scope:ftr_diarchy_petitioning_diarch
+					value >= 40
+				}
+			}
+			# 手头无地可划时只能推托
+			modifier = {
+				add = 1000
+				NOT = { ftr_diarchy_liege_has_land_to_give_trigger = yes }
+			}
+		}
 	}
 }
 
@@ -281,5 +582,54 @@ ftr_diarchy.0700 = {
 				left_icon = root
 			}
 		}
+	}
+}
+
+######################################################
+### 0800 / 0801 天平游说对垒通报（§4.4-A D13 / §7.1；2026-09 新增）
+### 由 ftr_diarchy_backer_lobby_pk_effect → ftr_diarchy_pk_notify_effect 触发，
+### 收件人 = 主君 / 共治者 / 参战的两名说客（重复者自动跳过；仅对玩家角色发）。
+### **只有一个确认选项**，不含任何选择或后果。
+### 注：作用域不跨事件（本 mod 既有口径），故正文写成**中立第三人称**，不点名说客；
+###     结果方向由事件编号区分——0800 = 共治者方得手 / 0801 = 君主方得手。
+######################################################
+
+ftr_diarchy.0800 = {
+	type = character_event
+	title = ftr_diarchy.0800.t
+	desc = ftr_diarchy.0800.desc
+	theme = intrigue
+
+	trigger = {
+		is_alive = yes
+	}
+
+	left_portrait = {
+		character = root
+	}
+
+	option = { # 唯一选项：确认
+		name = ftr_diarchy_pk_event_ok
+		custom_tooltip = ftr_diarchy_pk_event_tt
+	}
+}
+
+ftr_diarchy.0801 = {
+	type = character_event
+	title = ftr_diarchy.0801.t
+	desc = ftr_diarchy.0801.desc
+	theme = intrigue
+
+	trigger = {
+		is_alive = yes
+	}
+
+	left_portrait = {
+		character = root
+	}
+
+	option = { # 唯一选项：确认
+		name = ftr_diarchy_pk_event_ok
+		custom_tooltip = ftr_diarchy_pk_event_tt
 	}
 }

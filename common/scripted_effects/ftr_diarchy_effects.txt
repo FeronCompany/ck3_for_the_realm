@@ -114,7 +114,12 @@ ftr_diarchy_promote_adult_heir_effect = {
 ### 二、无地共治者授土（§4.0）
 ######################################################
 
-# 求值域：主君。参数 RECIPIENT = 受地者（共治者）。
+# 求值域：主君。参数：
+#   RECIPIENT   = 受地者（共治者）
+#   LIEGE_TYPE  = 主君侧通报的 interface_message 类型
+#   LIEGE_TITLE / LIEGE_DESC = 主君侧通报文案（**两种语境不同**，必须由调用方给出）：
+#                 ① 允其所请（0210 奏请获准）→ ftr_diarchy_grant_land_liege_*
+#                 ② 被动被索（0200 无条件索取）→ ftr_diarchy_take_land_liege_*
 # 优先划出「非首都伯爵领」；无则转移一个「公爵头衔」，
 # 该公国下属伯爵领与封臣随 type = granted 一并转移（D1b）。
 ftr_diarchy_grant_land_effect = {
@@ -129,15 +134,19 @@ ftr_diarchy_grant_land_effect = {
 			limit = {
 				tier = tier_county
 				NOT = { this = scope:ftr_diarchy_grant_liege.capital_county }
+				is_noble_family_title = no
 			}
 			save_scope_as = ftr_diarchy_grant_title
 		}
 
-		# 2) 无直辖伯爵领则取公爵头衔
+		# 2) 无直辖伯爵领则取公爵头衔（行政制的世族头衔正是公爵级，同样必须排除）
 		if = {
 			limit = { NOT = { exists = scope:ftr_diarchy_grant_title } }
 			random_held_title = {
-				limit = { tier = tier_duchy }
+				limit = {
+					tier = tier_duchy
+					is_noble_family_title = no
+				}
 				save_scope_as = ftr_diarchy_grant_title
 			}
 		}
@@ -160,9 +169,24 @@ ftr_diarchy_grant_land_effect = {
 			}
 			scope:ftr_diarchy_grant_liege = {
 				resolve_title_and_vassal_change = scope:ftr_diarchy_grant_change
+				# 主君侧文案由调用方参数给出：允其所请 / 被动被索两种语境（见效果头注释）
+				send_interface_message = {
+					type = $LIEGE_TYPE$
+					title = $LIEGE_TITLE$
+					desc = $LIEGE_DESC$
+					left_icon = scope:ftr_diarchy_grant_target
+					right_icon = scope:ftr_diarchy_grant_title
+				}
 			}
 			scope:ftr_diarchy_grant_target = {
 				add_character_flag = ftr_diarchy_granted_land
+				send_interface_message = {
+					type = event_diplomacy_good_with_text
+					title = ftr_diarchy_grant_land_target_title
+					desc = ftr_diarchy_grant_land_target_desc
+					left_icon = scope:ftr_diarchy_grant_liege
+					right_icon = scope:ftr_diarchy_grant_title
+				}
 			}
 		}
 	}
@@ -267,6 +291,11 @@ ftr_diarchy_oust_liege_to_self_effect = {
 ######################################################
 
 # 求值域：主君。参数 TARGET = 被废的太子。
+# 行为：① 剥夺继承权（disinherit_effect）+ 双向固定好感惩罚 + 太子党羽记恨主君；
+#      ② 代价 = 正统性 −400——**仅当主君无正当理由**（太子有实罪 / 已在押时可免，见
+#         scripted_triggers/ftr_diarchy_triggers.txt §九），两种情形都出 custom_tooltip；
+#      ③ 清储位 + 结束共治；
+#      ④ 逐名党羽派发 ftr_diarchy.0400，由其自行决定是否退出太子党（AI 退党概率偏高）。
 ftr_diarchy_abolish_crown_prince_effect = {
 	save_scope_as = ftr_diarchy_liege
 	$TARGET$ ?= { save_scope_as = ftr_diarchy_deposed_prince }
@@ -310,10 +339,22 @@ ftr_diarchy_abolish_crown_prince_effect = {
 					}
 				}
 			}
-			# 2) 代价：废储动摇国本，损失正统性
+			# 2) 代价：废储动摇国本，损失正统性——**但主君手握正当理由时不损失**
+			#    （正当理由 = 太子有可拘押 / 可夺爵的实罪，或太子已在押；
+			#      见 scripted_triggers/ftr_diarchy_triggers.txt §九）。
+			#    无论是否正当，都在决议提示框内以 custom_tooltip 明示（玩家可见）。
+			#    注：本块位于 scope:ftr_diarchy_liege 内、且在 end_diarchy 之前求值，
+			#        故触发器可安全读 diarch。
 			if = {
-				limit = { has_legitimacy = yes }
-				add_legitimacy = ftr_diarchy_abolish_legitimacy_value
+				limit = { ftr_diarchy_abolish_prince_just_cause_trigger = yes }
+				custom_tooltip = { text = ftr_diarchy_abolish_prince_justified_tt }
+			}
+			else = {
+				custom_tooltip = { text = ftr_diarchy_abolish_prince_unjustified_tt }
+				if = {
+					limit = { has_legitimacy = yes }
+					add_legitimacy = ftr_diarchy_abolish_legitimacy_value
+				}
 			}
 			# 3) 清除储位：`clear_designated_heir` 清的是**求值者自己**的「指定继承人」，
 			#    故必须在主君域调用（写进太子域只会清掉太子本人所指定的继承人，主君的指定仍在）
@@ -331,6 +372,38 @@ ftr_diarchy_abolish_crown_prince_effect = {
 				debug_log = "FTR_ABOLISH: end crown prince diarchy"
 				debug_log_scopes = yes
 				end_diarchy = yes
+			}
+		}
+
+		# 5) 党羽去留：太子名下的每一名党羽各收一份事件（ftr_diarchy.0400），
+		#    由其**自行决定**是否退出太子党——储君既废，继续站在他身边的代价已经不同了。
+		#    实现要点：
+		#    ① 事件 root = 党羽本人，太子 / 主君以**变量**传入（scope 不跨事件，同 0300 的
+		#       ftr_diarchy_amnesty_patron 口径），变量带 days = 60 自过期，事件 immediate 再存为 scope；
+		#    ② 延迟 2 天派发：任何"遍历中改名单"的风险都被避开了（党羽退党会从本名单除名）；
+		#    ③ 只派给在世党羽，并排除主君本人（理论上主君不会出现在太子的支持者名单里）。
+		custom_tooltip = { text = ftr_diarchy_abolish_backer_ask_tt }
+		scope:ftr_diarchy_deposed_prince ?= {
+			if = {
+				limit = { has_variable_list = ftr_court_supporters }
+				every_in_list = {
+					variable = ftr_court_supporters
+					limit = {
+						is_alive = yes
+						NOT = { this = scope:ftr_diarchy_liege }
+					}
+					set_variable = {
+						name = ftr_diarchy_abolished_prince
+						value = scope:ftr_diarchy_deposed_prince
+						days = 60
+					}
+					set_variable = {
+						name = ftr_diarchy_abolished_liege
+						value = scope:ftr_diarchy_liege
+						days = 60
+					}
+					trigger_event = { id = ftr_diarchy.0400  days = 2 }
+				}
 			}
 		}
 	}
@@ -639,7 +712,8 @@ ftr_diarchy_backer_lobby_pk_effect = {
 					# "Can't modify scales of power swing when there's no active diarchy" 并中断整条效果链。
 					LIEGE = scope:ftr_diarchy_pk_liege
 				}
-				ftr_diarchy_swing_notice_effect = { KEY = ftr_diarchy_swing_notice_lobby_win }
+				# 展示形式（2026-09 重做）：改发**事件通报**（仅一个确认选项）
+				ftr_diarchy_pk_notify_effect = { EVENT = ftr_diarchy.0800 }
 			}
 			else = {
 				update_diarchy_swing_with_perspective_effect = {
@@ -647,9 +721,64 @@ ftr_diarchy_backer_lobby_pk_effect = {
 					# 同上：绝对引用（this 已是君主）
 					LIEGE = scope:ftr_diarchy_pk_liege
 				}
-				ftr_diarchy_swing_notice_effect = { KEY = ftr_diarchy_swing_notice_lobby_lose }
+				ftr_diarchy_pk_notify_effect = { EVENT = ftr_diarchy.0801 }
 			}
 		}
+	}
+}
+
+# 求值域：君主（对垒结算后调用；依赖 PK 效果已保存的 scope:ftr_diarchy_pk_liege /
+#        ftr_diarchy_pk_diarch / ftr_diarchy_pk_diarch_lobbyist / ftr_diarchy_pk_liege_lobbyist）。
+# 参数：EVENT = 通报事件 id（0800 = 共治者方得手 / 0801 = 君主方得手）。
+# 作用：① 把通报事件发给主君、共治者与参战的两名说客（与当事人重复者自动跳过）；
+#       ② **仅对玩家角色**发事件——AI 侧只入账不弹窗，否则每季度会有上千个 AI 事件；
+#       ③ 刷新「本 mod 已知天平」审计基线（对垒不再经过 ftr_diarchy_swing_notice_effect）。
+ftr_diarchy_pk_notify_effect = {
+	save_scope_as = ftr_diarchy_pk_notify_liege
+
+	# ① 主君
+	if = {
+		limit = { is_ai = no }
+		trigger_event = { id = $EVENT$  days = 1 }
+	}
+	# ② 共治者（与主君不同一人时）
+	scope:ftr_diarchy_pk_diarch ?= {
+		if = {
+			limit = {
+				is_ai = no
+				NOT = { this = scope:ftr_diarchy_pk_notify_liege }
+			}
+			trigger_event = { id = $EVENT$  days = 1 }
+		}
+	}
+	# ③ 共治者方说客（排除当事人本人）
+	scope:ftr_diarchy_pk_diarch_lobbyist ?= {
+		if = {
+			limit = {
+				is_ai = no
+				NOT = { this = scope:ftr_diarchy_pk_notify_liege }
+				NOT = { this = scope:ftr_diarchy_pk_diarch }
+			}
+			trigger_event = { id = $EVENT$  days = 1 }
+		}
+	}
+	# ④ 君主方说客（排除当事人与已收到 ③ 者）
+	scope:ftr_diarchy_pk_liege_lobbyist ?= {
+		if = {
+			limit = {
+				is_ai = no
+				NOT = { this = scope:ftr_diarchy_pk_notify_liege }
+				NOT = { this = scope:ftr_diarchy_pk_diarch }
+				NOT = { this = scope:ftr_diarchy_pk_diarch_lobbyist }
+			}
+			trigger_event = { id = $EVENT$  days = 1 }
+		}
+	}
+
+	# 审计基线：与通知效果共用同一变量
+	set_variable = {
+		name = ftr_diarchy_swing_seen
+		value = diarchy_swing
 	}
 }
 
@@ -840,13 +969,14 @@ ftr_diarchy_quarterly_swing_drift_effect = {
 			}
 		}
 	}
-	# ③ 君主强势（≤30）：共治者阵营游说反扑——2026-09 起**不再派发 0510 事件**，
-	#    统一改由 03 的「党羽游说对垒」(ftr_diarchy_backer_lobby_pk_effect) 承接：
-	#    双方各抽一人按「智谋 + 外交」对垒，胜方一次推动 ±5；另有政权 1 年 + 个人 1 年冷却。
-	# 前置：共治者党羽不落后于君主（有党羽撑腰才谈反扑）；频率低于君主侧，避免「只涨不跌」
-	else_if = {
+	# ③ 共治者阵营游说反扑——2026-09 起**不再派发 0510 事件，也不再受天平档位限制**：
+	#    任意天平值（含共治者已占优时）都可发动，由「党羽游说对垒」
+	#    (ftr_diarchy_backer_lobby_pk_effect) 承接：双方各抽一人按「智谋 + 外交」对垒，
+	#    胜方一次推动 ±5；频率由对垒自带的政权 2 年 + 个人 3 年冷却把关。
+	# 注：此处必须是**独立 if**（原先挂在 ② 的 else_if 上）——否则天平 ≥50 时会被 ② 吃掉，永远进不来。
+	# 前置：共治者党羽不落后于君主（有党羽撑腰才谈反扑）。
+	if = {
 		limit = {
-			diarchy_swing <= ftr_diarchy_lobby_pk_swing_band_value
 			ftr_diarchy_backer_lead_value >= 0
 			NOT = { has_character_flag = ftr_diarch_swing_event_cooldown }
 		}

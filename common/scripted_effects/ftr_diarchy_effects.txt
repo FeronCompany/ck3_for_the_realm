@@ -77,6 +77,10 @@ ftr_diarchy_try_start_crown_prince_effect = {
 				set_diarchy_swing = ftr_diarchy_crown_prince_voluntary_initial_swing_value
 				# 天平偏移通知（§7.1）：说明初值来由（主动立储基线）
 				ftr_diarchy_swing_notice_effect = { KEY = ftr_diarchy_swing_notice_initial_voluntary }
+				# 01 角逐接线（2026-09）：太子入局 + 其余竞争者收到「是否退出竞争」询问。
+				# 放在本块内（共治确已建立后）执行——指定继承人与成年补立两条路径都经此处，
+				# 故「指定继承人立太子」与「事件立太子」共用同一接线。
+				ftr_diarchy_sync_crown_prince_contest_effect = { PRINCE = scope:ftr_diarchy_prince_candidate }
 			}
 		}
 	}
@@ -106,6 +110,133 @@ ftr_diarchy_promote_adult_heir_effect = {
 				diarch ?= { this = designated_heir }
 			}
 			trigger_event = { id = ftr_diarchy.0700  days = 2 }
+		}
+	}
+}
+
+######################################################
+### 一之二、01 角逐接线（2026-09：立储入局 / 废储重开）
+######################################################
+
+# 求值域：主君（参数 PRINCE = 新太子）。§2.2 与 01 角逐的接线。
+# 目的：
+#   ① **确保太子进入 01 的竞争者名单**（君主主名单 ftr_court_claimants + story 名单），
+#      并清掉他身上可能残留的「明确不参与」终身 flag——他已是储君，必须被计入角逐，
+#      也必须清掉该 flag 才允许他人公开为他背书（01 口径：该 flag 防的是"被他人主动支持"）；
+#   ② 给**其余每一位竞争者**发 ftr_court_struggle.0700，由其自行决定是否退出竞争。
+# 无朝堂 story（该政权没有角逐在进行）时整段跳过。
+ftr_diarchy_sync_crown_prince_contest_effect = {
+	save_scope_as = ftr_diarchy_contest_liege
+	$PRINCE$ ?= { save_scope_as = ftr_diarchy_contest_prince }
+	every_owned_story = {
+		limit = { story_type = ftr_court_struggle }
+		save_scope_as = ftr_diarchy_contest_story
+	}
+	if = {
+		limit = {
+			exists = scope:ftr_diarchy_contest_story
+			exists = scope:ftr_diarchy_contest_prince
+		}
+		# 01 约定：ftr_court_monarch = story owner（参与者名单主存储挂在他身上）
+		scope:ftr_diarchy_contest_story = { story_owner ?= { save_scope_as = ftr_court_monarch } }
+		# ① 太子入局
+		scope:ftr_diarchy_contest_prince = {
+			remove_character_flag = ftr_court_declined_contest
+			add_character_flag = ftr_court_participating
+			remove_character_flag = ftr_court_asked_participation
+			ftr_court_add_participant_effect = yes
+		}
+		scope:ftr_diarchy_contest_story = {
+			if = {
+				limit = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = ftr_court_participant_list
+							target = scope:ftr_diarchy_contest_prince
+						}
+					}
+				}
+				add_to_variable_list = {
+					name = ftr_court_participant_list
+					target = scope:ftr_diarchy_contest_prince
+				}
+			}
+			set_variable = {
+				name = ftr_court_participant_count
+				value = ftr_court_participant_list_count_value
+			}
+			set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
+			ftr_court_on_participant_join_effect = yes
+		}
+		# ② 其余竞争者：各收一份去留询问
+		#    延迟 2 天派发——名单只在事件里被改动，彻底避开"遍历中改名单"
+		scope:ftr_diarchy_contest_liege = {
+			if = {
+				limit = { has_variable_list = ftr_court_claimants }
+				every_in_list = {
+					variable = ftr_court_claimants
+					limit = {
+						is_alive = yes
+						is_adult = yes
+						NOT = { this = scope:ftr_diarchy_contest_prince }
+					}
+					set_variable = {
+						name = ftr_diarchy_contest_new_prince
+						value = scope:ftr_diarchy_contest_prince
+						days = 60
+					}
+					trigger_event = { id = ftr_court_struggle.0700  days = 2 }
+				}
+			}
+		}
+	}
+}
+
+# 求值域：主君（参数 DEPOSED = 刚被废的太子）。§3.2 与 01 角逐的接线。
+# 目的：废储之后大位重新悬空——君主的**每个成年继承人**重新获得一次入局机会。
+# 本 effect **无视**其此前的「明确不参与」（ftr_court_declined_contest）选择：
+#   第一遍先清掉该终身 flag（不清的话 0230 的候选过滤永远排掉他们），
+#   第二遍再逐人发 ftr_court_struggle.0701 询问是否重新参与竞争。
+# 范围：君主的子女（成年 / 在世 / 可理政 / 未在押 / 非被废者本人 / 性别继承法允许）；
+#       无朝堂 story 时整段跳过。
+ftr_diarchy_reopen_heir_contest_effect = {
+	save_scope_as = ftr_diarchy_reopen_liege
+	$DEPOSED$ ?= { save_scope_as = ftr_diarchy_reopen_deposed }
+	every_owned_story = {
+		limit = { story_type = ftr_court_struggle }
+		save_scope_as = ftr_diarchy_reopen_story
+	}
+	if = {
+		limit = { exists = scope:ftr_diarchy_reopen_story }
+		scope:ftr_diarchy_reopen_story = { story_owner ?= { save_scope_as = ftr_court_monarch } }
+		# 第一遍：清除「明确不参与」的终身 flag（无视此前选择）
+		scope:ftr_diarchy_reopen_liege = {
+			every_child = {
+				limit = {
+					is_alive = yes
+					is_adult = yes
+					NOT = { has_trait = incapable }
+					NOT = { is_imprisoned = yes }
+					NOT = { this = scope:ftr_diarchy_reopen_deposed }
+					ftr_court_gender_succession_allows_trigger = yes
+				}
+				remove_character_flag = ftr_court_declined_contest
+			}
+		}
+		# 第二遍：发询问（此时"未参与且未拒绝"的过滤条件已放行）
+		scope:ftr_diarchy_reopen_liege = {
+			every_child = {
+				limit = {
+					ftr_court_can_be_asked_participate_relative_trigger = yes
+					NOT = { this = scope:ftr_diarchy_reopen_deposed }
+				}
+				set_variable = {
+					name = ftr_diarchy_reopen_deposed
+					value = scope:ftr_diarchy_reopen_deposed
+					days = 60
+				}
+				trigger_event = { id = ftr_court_struggle.0701  days = 2 }
+			}
 		}
 	}
 }
@@ -405,6 +536,14 @@ ftr_diarchy_abolish_crown_prince_effect = {
 					trigger_event = { id = ftr_diarchy.0400  days = 2 }
 				}
 			}
+		}
+
+		# 6) 01 角逐接线（2026-09）：废储之后大位重新悬空——君主的每个成年继承人
+		#    重新获得一次入局机会（本 effect 会**无视并清除**其此前的「明确不参与」选择），
+		#    逐人发 ftr_court_struggle.0701 询问是否重新参与竞争。
+		#    放在党羽去留之后：党羽（可能同时是继承人）先处理完自己的站队，再谈要不要入局。
+		scope:ftr_diarchy_liege ?= {
+			ftr_diarchy_reopen_heir_contest_effect = { DEPOSED = scope:ftr_diarchy_deposed_prince }
 		}
 	}
 }

@@ -4131,3 +4131,273 @@ ftr_court_struggle.0641 = {
 		custom_tooltip = { text = ftr_court_omen_settle_tt }
 	}
 }
+
+##############################################################
+### 0700 / 0701 太子入局与离开（03 接线，2026-09）
+###   0700 太子册立后 → 询问**其余竞争者**是否退出竞争（派发方：03 立储接线）
+###   0701 太子被废后 → 询问君主的**成年继承人**是否重新参与竞争（派发方：03 废储接线）
+### 两事件 root = 被询问者本人；scope / story / monarch 定位口径同 0230。
+##############################################################
+
+######### 0700 太子已立：竞争者去留（root = 竞争者） #########
+
+ftr_court_struggle.0700 = {
+	type = character_event
+	title = ftr_court_struggle.0700.t
+	desc = ftr_court_struggle.0700.desc
+	theme = intrigue
+
+	# 派发后 2 天落地：新太子亡故 / 变量过期则静默作废
+	trigger = {
+		is_alive = yes
+		exists = var:ftr_diarchy_contest_new_prince
+		var:ftr_diarchy_contest_new_prince ?= { is_alive = yes }
+	}
+
+	left_portrait = {
+		character = var:ftr_diarchy_contest_new_prince
+	}
+	right_portrait = {
+		character = root
+	}
+
+	immediate = {
+		var:ftr_diarchy_contest_new_prince ?= { save_scope_as = ftr_court_new_crown_prince }
+		# 定位所在朝堂的 story 与君主（同 0230：story 不在身上时按 top_liege / employer 反查）
+		if = {
+			limit = { is_independent_ruler = yes }
+			save_scope_as = ftr_court_monarch
+		}
+		else_if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+		if = {
+			limit = { exists = scope:ftr_court_monarch }
+			scope:ftr_court_monarch = {
+				random_owned_story = {
+					type = ftr_court_struggle
+					save_scope_as = ftr_court_story
+				}
+			}
+		}
+	}
+
+	option = { # 退出竞争：把位置让给新太子
+		name = ftr_court_struggle.0700.a
+		trigger = {
+			has_character_flag = ftr_court_participating
+			exists = scope:ftr_court_story
+		}
+		custom_tooltip = { text = ftr_court_struggle_0700_exit_tt }
+		ftr_court_leave_contest_effect = yes
+		# 明确不再参与（与 0230.b 同一终身 flag；若该太子日后被废，0701 会无视并清除它）
+		ftr_court_decline_contest_effect = yes
+		ai_chance = {
+			base = 55
+			modifier = {
+				add = 25
+				has_trait = content
+			}
+			modifier = {
+				add = 20
+				has_trait = craven
+			}
+			modifier = {
+				add = 15
+				has_trait = humble
+			}
+			modifier = {
+				add = 15
+				opinion = {
+					target = scope:ftr_court_new_crown_prince
+					value >= 40
+				}
+			}
+			modifier = {
+				add = -45
+				has_trait = ambitious
+			}
+			modifier = {
+				add = -25
+				is_primary_heir_of = scope:ftr_court_monarch
+			}
+		}
+	}
+
+	option = { # 不退：我要争到最后
+		name = ftr_court_struggle.0700.b
+		custom_tooltip = { text = ftr_court_struggle_0700_stay_tt }
+		# 不肯让位：新太子记住了这个竞争者
+		scope:ftr_court_new_crown_prince ?= {
+			add_opinion = {
+				target = root
+				modifier = ftr_political_opponent_opinion
+			}
+		}
+		ai_chance = {
+			base = 45
+			modifier = {
+				add = 40
+				has_trait = ambitious
+			}
+			modifier = {
+				add = 15
+				has_trait = brave
+			}
+			modifier = {
+				add = -25
+				has_trait = content
+			}
+			modifier = {
+				add = -20
+				has_trait = craven
+			}
+		}
+	}
+}
+
+######### 0701 太子被废：继承人是否重回角逐（root = 君主的成年继承人） #########
+
+ftr_court_struggle.0701 = {
+	type = character_event
+	title = ftr_court_struggle.0701.t
+	desc = ftr_court_struggle.0701.desc
+	theme = intrigue
+
+	trigger = { is_alive = yes }
+
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+	}
+
+	immediate = {
+		var:ftr_diarchy_reopen_deposed ?= { save_scope_as = ftr_court_reopen_deposed_prince }
+		# 定位朝堂 story 与君主（同 0230 / 0700）
+		if = {
+			limit = { is_independent_ruler = yes }
+			save_scope_as = ftr_court_monarch
+		}
+		else_if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+		if = {
+			limit = { exists = scope:ftr_court_monarch }
+			scope:ftr_court_monarch = {
+				random_owned_story = {
+					type = ftr_court_struggle
+					save_scope_as = ftr_court_story
+				}
+			}
+		}
+	}
+
+	option = { # 重回角逐
+		name = ftr_court_struggle.0701.a
+		trigger = {
+			exists = scope:ftr_court_story
+			NOT = { has_character_flag = ftr_court_participating }
+			# 与 0230.a 同口径：名额未满可加入；主头衔第一顺位继承人不受上限约束
+			OR = {
+				scope:ftr_court_story = {
+					has_variable = ftr_court_participant_count
+					var:ftr_court_participant_count < ftr_court_max_candidates_value
+				}
+				is_primary_heir_of = scope:ftr_court_monarch
+			}
+		}
+		custom_tooltip = { text = ftr_court_struggle_0701_join_tt }
+		# 入局记账：与 0230.a 完全一致（君主主名单 + story 名单 + 计数 + 烈度）
+		save_scope_as = ftr_court_entering_claimant
+		add_character_flag = ftr_court_participating
+		remove_character_flag = ftr_court_asked_participation
+		remove_character_flag = ftr_court_declined_contest
+		scope:ftr_court_monarch = {
+			add_to_variable_list = {
+				name = ftr_court_claimants
+				target = scope:ftr_court_entering_claimant
+			}
+		}
+		scope:ftr_court_entering_claimant = {
+			set_variable = { name = ftr_court_participant_of  value = scope:ftr_court_monarch }
+		}
+		scope:ftr_court_story ?= {
+			add_to_variable_list = {
+				name = ftr_court_participant_list
+				target = scope:ftr_court_entering_claimant
+			}
+			set_variable = {
+				name = ftr_court_participant_count
+				value = ftr_court_participant_list_count_value
+			}
+			set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
+			ftr_court_on_participant_join_effect = yes
+		}
+		# 通知朝廷：有人重回角逐
+		scope:ftr_court_monarch = {
+			ftr_court_send_court_toast_effect = {
+				TITLE = ftr_court_notice_join_contest
+				ICON = scope:ftr_court_entering_claimant
+			}
+		}
+		ai_chance = {
+			base = 45
+			modifier = {
+				add = 40
+				has_trait = ambitious
+			}
+			modifier = {
+				add = 25
+				has_trait = brave
+			}
+			modifier = {
+				add = 15
+				has_trait = greedy
+			}
+			modifier = {
+				add = -40
+				has_trait = content
+			}
+			modifier = {
+				add = -25
+				has_trait = craven
+			}
+		}
+	}
+
+	option = { # 仍然不参与
+		name = ftr_court_struggle.0701.b
+		ai_chance = {
+			base = 55
+			modifier = {
+				add = 30
+				has_trait = content
+			}
+			modifier = {
+				add = 25
+				has_trait = craven
+			}
+			modifier = {
+				add = 20
+				has_trait = humble
+			}
+			modifier = {
+				add = -35
+				has_trait = ambitious
+			}
+		}
+		ftr_court_decline_contest_effect = yes
+	}
+}

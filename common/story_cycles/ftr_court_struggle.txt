@@ -104,6 +104,9 @@ ftr_court_struggle = {
 				# 议题2 权力天平交由官方 diarchy swing 的 swing_balance 机制自然维护
 				# 烈度年度维护（自然回落 + 君主状态偏置；替代原 phase 定档）
 				ftr_court_refresh_intensity_effect = yes
+				# 名单一致性定期检查（2026-09）：竞争者若曾背书他人且尚未取消 → 撤销该背书。
+				# 竞争者不该同时是被支持者的党羽（会扭曲 swing 的背书差，也占用其站队资格）。
+				ftr_court_clear_claimant_backings_effect = yes
 			}
 		}
 		# 收场收紧：仅当持有者不再是最高领主（失去独立 / 等级跌至王国以下）时才 end_story；

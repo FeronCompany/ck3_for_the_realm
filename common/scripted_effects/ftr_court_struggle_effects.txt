@@ -631,6 +631,94 @@ ftr_court_decline_contest_effect = {
 	remove_character_flag = ftr_court_asked_participation
 }
 
+# 在竞争者域执行：**自愿退出角逐**（root = 退出者；由 0700.a 调用）。
+# 依赖：scope:ftr_court_monarch（君主）与 scope:ftr_court_story（故事）已保存（两者均带 ?= 守卫）。
+# 与「死亡清理」同口径：君主主名单 + story 名单双向除名 → 刷新参与计数 →
+# 释放其名下支持者的背书 → 清个体状态（含临时公国）。
+# 注：调用方（0700.a）随后会给他打 ftr_court_declined_contest——语义 =「我明确不参与」，
+#     与 0230.b 的拒绝同一 flag；废太子后的 0701 会**无视并清除**它。
+ftr_court_leave_contest_effect = {
+	save_scope_as = ftr_court_leaving_claimant
+	# 1) 君主主名单 ftr_court_claimants 除名
+	scope:ftr_court_monarch ?= {
+		if = {
+			limit = {
+				is_target_in_variable_list = {
+					name = ftr_court_claimants
+					target = scope:ftr_court_leaving_claimant
+				}
+			}
+			remove_list_variable = {
+				name = ftr_court_claimants
+				target = scope:ftr_court_leaving_claimant
+			}
+		}
+	}
+	# 2) story 名单除名 + 刷新参与计数
+	scope:ftr_court_story ?= {
+		if = {
+			limit = {
+				is_target_in_variable_list = {
+					name = ftr_court_participant_list
+					target = scope:ftr_court_leaving_claimant
+				}
+			}
+			remove_list_variable = {
+				name = ftr_court_participant_list
+				target = scope:ftr_court_leaving_claimant
+			}
+		}
+		set_variable = {
+			name = ftr_court_participant_count
+			value = ftr_court_participant_list_count_value
+		}
+		set_variable = { name = ftr_court_candidate_count  value = var:ftr_court_participant_count }
+	}
+	# 3) 退场者个体状态清理
+	scope:ftr_court_leaving_claimant = {
+		# 他名下支持者的背书一并解除（支持者不再"已站队"）
+		ftr_court_release_all_backers_effect = yes
+		# 他本人若曾背书他人（竞争者背书他人属名单冲突），一并清掉站队变量
+		remove_variable = ftr_court_backer_of
+		remove_variable = ftr_court_participant_of
+		remove_character_flag = ftr_court_participating
+		remove_character_flag = ftr_court_asked_participation
+		remove_character_flag = ftr_court_pooled
+		ftr_court_revoke_temp_duchy_effect = yes
+	}
+}
+
+# 在 story 域执行（由 story 年度 effect_group 定期调用）：**竞争者不得同时是别人的背书人**。
+# 场景：某竞争者身上仍挂着 ftr_court_backer_of（曾背书他人且从未取消）——既把自己算进了
+#       被支持者的党羽数（扭曲 swing 背书差），又占着"已站队"资格。
+# 处理：撤销该背书——从被支持者的 ftr_court_supporters 名单移除自己、清掉站队变量与拥立账。
+# 注：属名单维护（非背叛语义），故不施加任何好感惩罚、也不发通知。
+ftr_court_clear_claimant_backings_effect = {
+	save_scope_as = ftr_court_story
+	story_owner ?= { save_scope_as = ftr_court_monarch }
+	if = {
+		limit = { exists = scope:ftr_court_monarch }
+		scope:ftr_court_monarch = {
+			if = {
+				limit = { has_variable_list = ftr_court_claimants }
+				every_in_list = {
+					variable = ftr_court_claimants
+					limit = { has_variable = ftr_court_backer_of }
+					save_scope_as = ftr_court_conflicting_claimant
+					# 从被支持者的支持者名单中除名（在被支持者域执行）
+					var:ftr_court_backer_of ?= {
+						ftr_court_remove_backer_effect = { BACKER = scope:ftr_court_conflicting_claimant }
+					}
+					scope:ftr_court_conflicting_claimant = {
+						remove_variable = ftr_court_backer_of
+						ftr_personal_merit_backing_clear_effect = yes
+					}
+				}
+			}
+		}
+	}
+}
+
 ######################################################
 ### 三、支持者记账
 ######################################################

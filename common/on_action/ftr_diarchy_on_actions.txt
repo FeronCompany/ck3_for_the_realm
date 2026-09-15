@@ -75,7 +75,7 @@ random_yearly_everyone_pulse = {
 	}
 }
 
-quarterly_playable_pulse = {
+random_yearly_playable_pulse = {
 	on_actions = {
 		ftr_diarchy_quarterly_drift_on_action
 	}

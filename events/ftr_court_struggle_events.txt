@@ -3607,7 +3607,7 @@ ftr_court_struggle.0611 = {
 	option = { # 接战：朝会上见
 		name = ftr_court_struggle.0611.a
 		ai_chance = {
-			base = 55
+			base = 100
 			modifier = { add = 20  has_trait = arrogant }
 			modifier = { add = 15  has_trait = brave }
 			modifier = { add = -25  has_trait = craven }
@@ -3622,7 +3622,7 @@ ftr_court_struggle.0611 = {
 	option = { # 避战：不与他一般见识
 		name = ftr_court_struggle.0611.b
 		ai_chance = {
-			base = 45
+			base = 0
 			modifier = { add = 30  has_trait = craven }
 			modifier = { add = 20  has_trait = content }
 			modifier = { add = -30  has_trait = arrogant }

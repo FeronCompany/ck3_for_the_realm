@@ -17,8 +17,12 @@
 
  # ===== Decisions (design 3 / 4) =====
  ftr_diarchy_abolish_crown_prince_decision:0 "<FTR>Abolish the Crown Prince"
- ftr_diarchy_abolish_crown_prince_decision_desc:0 "<FTR>Strip the crown prince of his title and inheritance, end the co-rule, and reduce him to an ordinary vassal. He and the court will not forgive you."
+ ftr_diarchy_abolish_crown_prince_decision_desc:0 "<FTR>Strip the crown prince of his title and inheritance, end the co-rule, and reduce him to an ordinary vassal. He and the court will not forgive you.\n\nIf you hold proper grounds — crimes of his that warrant imprisonment or the revocation of his titles, or his person already in your hands — then this is justice done at home, and your legitimacy suffers not at all. Without such grounds it is a father setting aside his heir, and the realm's foundation shakes."
  ftr_diarchy_abolish_crown_prince_decision_tooltip:0 "<FTR>Depose the crown prince and disinherit him"
+ ftr_diarchy_abolish_prince_swing_tt:0 "<FTR>The crown prince's [scales_of_power|E] must not exceed #P 60#! — while his power is still small, he can be set aside"
+ ftr_diarchy_abolish_prince_justified_tt:0 "<FTR>Justice, not favouritism: #P no legitimacy is lost#! — the crown prince stands guilty of crimes warranting imprisonment or the loss of his titles, or is already in your custody"
+ ftr_diarchy_abolish_prince_unjustified_tt:0 "<FTR>No grounds for it: #R 400 legitimacy lost#! — the succession itself is shaken, and the realm takes note"
+ ftr_diarchy_abolish_backer_ask_tt:0 "<FTR>Each of the prince's former backers will be sent word: stand by the deposed prince, or cut themselves loose from him"
  ftr_diarchy_depose_liege_decision:0 "<FTR>Depose Your Liege"
  ftr_diarchy_depose_liege_decision_desc:0 "<FTR>Force your liege from the throne: he loses every title and is thrown in chains, his designated heir takes his place, and you take the credit from the shadows."
  ftr_diarchy_depose_liege_decision_tooltip:0 "<FTR>Force your liege to abdicate in favour of his heir"
@@ -39,6 +43,12 @@
  ftr_diarchy.0300.desc:0 "<FTR>You are free again, thanks to a single proclamation from the co-ruler who holds half the realm in his hand. He makes his expectation plain: in his struggle with your sovereign, he wants you at his side."
  ftr_diarchy.0300.a:0 "<FTR>Back him (and earn the merit)"
  ftr_diarchy.0300.b:0 "<FTR>Politely decline"
+ ftr_diarchy.0400.t:0 "<FTR>After the Deposition: A Backer's Choice"
+ ftr_diarchy.0400.desc:0 "<FTR>[ftr_diarchy_fallen_prince.GetTitledFirstName] has been stripped of the succession and led from the hall, his seat carried out and the warmth gone from it. Those who spoke for him yesterday keep their eyes down today. You were one of his backers — and [ftr_diarchy_abolishing_liege.GetTitledFirstName]'s men are counting the names outside the court chamber."
+ ftr_diarchy.0400.a:0 "<FTR>Cut yourself loose from him"
+ ftr_diarchy.0400.b:0 "<FTR>Stand by him still"
+ ftr_diarchy_0400_exit_tt:0 "<FTR>Release your backing: struck from his list of supporters and your merit in his cause settled. The deposed prince will remember the turning away — but #P your liege will count you among the forgiven#!"
+ ftr_diarchy_0400_stay_tt:0 "<FTR>Remain his backer: the deposed prince is grateful — #R your liege will remember who stood for him#!"
 
  # ===== Events (design 4) =====
  ftr_diarchy.0010.t:0 "<FTR>The Ambitious Co-Ruler"
@@ -54,11 +64,27 @@
  ftr_diarchy.0100.a:0 "<FTR>House arrest for life"
  ftr_diarchy.0100.b:0 "<FTR>Exile him"
  ftr_diarchy.0100.c:0 "<FTR>Execute him"
- ftr_diarchy.0200.t:0 "<FTR>The Co-Ruler Wants Land"
- ftr_diarchy.0200.desc:0 "<FTR>Your co-ruler still holds no land of his own. Once again he hints that a co-ruler ought to have domains — and vassals of his own."
- ftr_diarchy.0200.a:0 "<FTR>Carve out a domain for him"
- ftr_diarchy.0200.b:0 "<FTR>Not now"
- ftr_diarchy.0200.c:0 "<FTR>He swears to serve you faithfully"
+ ftr_diarchy.0200.t:0 "<FTR>Ask Your Liege for Land"
+ ftr_diarchy.0200.desc:0 "<FTR>You are a co-ruler, and yet you hold no land of your own: no seat, no vassals to send, and a voice in the hall that never carries quite as far as the others. Once again you raise it with your liege — a co-ruler ought to have a domain of his own."
+ ftr_diarchy.0200.a:0 "<FTR>Demand a domain of your own (your wings are grown)"
+ ftr_diarchy.0200.a2:0 "<FTR>Petition politely for land"
+ ftr_diarchy.0200.b:0 "<FTR>Not for now"
+ ftr_diarchy.0200.c:0 "<FTR>Swear to serve faithfully, and let it rest"
+ ftr_diarchy_grant_land_rule_tt:0 "<FTR>How the land is chosen: preferably a #EMP county outside your capital#!; if none, a #EMP duchy#! is given instead (its counties and vassals go with it). #P A noble family title is never given away#! — the headship of the house does not travel with land."
+ ftr_diarchy_grant_request_tt:0 "<FTR>Your [scales_of_power|E] is below #P 60#!: you cannot simply take. You may only #EMP petition politely#! — the memorial goes to your liege's desk and he decides. If he grants it you gain land and vassals of your own; if he defers, the matter will be raised again."
+ ftr_diarchy_grant_land_liege_title:0 "<FTR>Granted: The Co-Ruler Has Land"
+ ftr_diarchy_grant_land_liege_desc:0 "<FTR>You granted the petition, and [ftr_diarchy_grant_title.GetName] was carved out for [ftr_diarchy_grant_target.GetTitledFirstName]. He withdraws with thanks — and with vassals and revenues of his own in the hall."
+ ftr_diarchy_take_land_liege_title:0 "<FTR>The Co-Ruler Takes Land"
+ ftr_diarchy_take_land_liege_desc:0 "<FTR>Your co-ruler sent no memorial. He simply had [ftr_diarchy_grant_title.GetName] marked over to himself. His wings are grown; no paper of yours could stop him now."
+ ftr_diarchy_grant_land_target_title:0 "<FTR>A Domain of Your Own"
+ ftr_diarchy_grant_land_target_desc:0 "<FTR>[ftr_diarchy_grant_title.GetName], carved out of [ftr_diarchy_grant_liege.GetTitledFirstName]'s holdings, is yours now — at last you have land and vassals of your own."
+ ftr_diarchy_grant_deny_tt:0 "<FTR>A gentle refusal: he will not turn on you for it, but he will remember the slight"
+ ftr_diarchy_land_denied_title:0 "<FTR>Your Petition Unanswered"
+ ftr_diarchy_land_denied_desc:0 "<FTR>Your gentle petition met a gentle refusal — your liege let the memorial rest on his desk. You remain a co-ruler without a foot of land."
+ ftr_diarchy.0210.t:0 "<FTR>The Co-Ruler's Petition"
+ ftr_diarchy.0210.desc:0 "<FTR>A memorial arrives from [ftr_diarchy_petitioning_diarch.GetTitledFirstName], its wording so humble it is almost guarded: he is a co-ruler with no land of his own — no vassals to send, no seat to lean on — and so he asks that you \"choose him a place within the realm to administer\". He does not presume to press; he only adds that he wishes to share your burdens."
+ ftr_diarchy.0210.a:0 "<FTR>Grant it: choose a place and put him in charge"
+ ftr_diarchy.0210.b:0 "<FTR>Refuse gently: another time"
 
  # ===== Qingjunce CB (design 5) =====
  ftr_qingjunce:0 "<FTR>Cleanse the Sovereign's Side"
@@ -67,3 +93,50 @@
  ftr_qingjunce_victory_desc:0 "<FTR>Your banners have broken the co-ruler's grip. You shall be your sovereign's new regent."
  ftr_qingjunce_defeat_desc:0 "<FTR>Your rebellion has failed. You will spend the rest of your days in a cell."
  ftr_qingjunce_invalidated_desc:0 "<FTR>The situation has changed; this war has lost its meaning."
+
+ # ===== Decision confirm buttons (engine reads <key>_confirm) =====
+ ftr_diarchy_abolish_crown_prince_decision_confirm:0 "<FTR>Abolish the Crown Prince"
+ ftr_diarchy_depose_liege_decision_confirm:0 "<FTR>Depose Your Liege"
+ ftr_diarchy_prepare_coup_decision_confirm:0 "<FTR>Prepare a Coup"
+ ftr_diarchy_coup_landing_decision_confirm:0 "<FTR>Seize the Throne"
+ ftr_diarchy_amnesty_decision_confirm:0 "<FTR>Proclaim the Amnesty"
+
+ # ===== Diarchy type display name (engine reads <type>_diarchy_type / <type>_diarch_title;
+ #       missing either one makes the diarchy window title and swing tooltips show raw keys) =====
+ # Type name: diarchy window title / [liege_loc.GetDiarchyTypeName] in update_diarchy_swing_with_perspective_effect.preamble
+ ftr_diarchy_crown_prince_diarchy_type:0 "<FTR>Crown Prince Co-Rule"
+ # Diarch title: the office shown next to the diarch (cf. vanilla regency_diarch_title / co_monarchy_diarch_title)
+ ftr_diarchy_crown_prince_diarch_title:0 "<FTR>Crown Prince"
+ # ===== 0700 Adult Heir Promotion (§2.2: no co-rule for a minor heir; the 01 main clock promotes on coming of age) =====
+ ftr_diarchy.0700.t:0 "<FTR>The Heir Comes of Age"
+ ftr_diarchy.0700.desc:0 "<FTR>Crown Prince [ftr_diarchy_promoted_prince.GetTitledFirstName] has come of age. The masters of ceremony ask that he be granted his rightful share of rule: from this day the heir sits beside me in council."
+ ftr_diarchy.0700.a:0 "<FTR>So be it."
+ ftr_diarchy_promotion_notify_title:0 "<FTR>Crown Prince Co-Rule Established"
+ ftr_diarchy_promotion_notify_desc:0 "<FTR>Now that I am of age, the court has granted me my share of rule, and I sit beside the crown in council."
+ # ===== designate_heir on_accept conditional hints (§2.2 1.2 / 1.3) =====
+ ftr_diarchy_heir_corule_immediate_tt:0 "<FTR>Designating an adult heir: #EMP Crown Prince co-rule#! is established at once (administrative government, independent, kingdom tier or above, and no existing co-rule)."
+ ftr_diarchy_minor_heir_promotion_tt:0 "<FTR>Designating a minor heir: #EMP no co-rule is established#! yet — the heir remains heir until #EMP coming of age#!, when the court will establish Crown Prince co-rule (announced at court)."
+ # ===== Scales of Power shift notices (§7.1): every swing write sends one message to the
+ #       monarch and one to the co-ruler; the custom_tooltip spells out what moved the scales =====
+ ftr_diarchy_swing_notice_title:0 "<FTR>The [scales_of_power|E] have shifted"
+ ftr_diarchy_swing_notice_desc:0 "<FTR>The balance of power at court has moved once more. Expand the tooltip below to see what drove this shift."
+ ftr_diarchy_swing_notice_drift_up:0 "<FTR>Quarterly backing contest: the co-ruler's backers outnumber the monarch's — even after the monarch's backers are weighted at #P 1.5x#! — so the [scales_of_power|E] shift #P +1#! toward the #EMP co-ruler#! (the quarterly cap on the positive side). Backers are booked when vassals take a stance in amnesties, petitions and forced demands."
+ ftr_diarchy_swing_notice_drift_down:0 "<FTR>Quarterly backing contest: the monarch's weighted backers outnumber the co-ruler's, so the [scales_of_power|E] are pulled back toward the #EMP monarch#! (quarterly floor #P -3#!; the negative side has no threshold, so a monarch's lead always tells)."
+ ftr_diarchy_swing_notice_lobby_win:0 "<FTR>Lobbying contest: the co-ruler's picked lobbyist [ftr_diarchy_pk_diarch_lobbyist.GetName] carries the court (each side fields one voice; Intrigue and Diplomacy are scored together, and the higher score is likelier to win), pushing the [scales_of_power|E] #P +5#! toward the #EMP co-ruler#!. No further contest in this realm for two years, and the lobbyists who took part will not be fielded again for three years (the camps rotate)."
+ ftr_diarchy_swing_notice_lobby_lose:0 "<FTR>Lobbying contest: the monarch's picked lobbyist [ftr_diarchy_pk_liege_lobbyist.GetName] sees off the co-ruler's lobbying (each side fields one voice; Intrigue and Diplomacy are scored together, and the higher score is likelier to win), pulling the [scales_of_power|E] #P -5#! toward the #EMP monarch#!. No further contest in this realm for a year, and the lobbyists who took part will not be fielded again for a year (the camps rotate)."
+ ftr_diarchy_swing_notice_external:0 "<FTR>The [scales_of_power|E] shifted of its own accord, yet no entry in the realm's ledgers accounts for it. The cause likely lies in one of three places: ① a landless co-ruler simply #EMP swung the scales#!, or some turn of mandate or old court custom; ② the slow weight of the years, drawing the scales each month back toward the balance this kind of diarchy keeps (~0.25/month); ③ the rival camp setting the scales by old custom, with no word to the court. Only a shift wide enough to clear the threshold is ever laid before you; the finer drift passes unremarked."
+ # ===== 0800 / 0801 Lobbying contest reports (events with a single confirm option) =====
+ ftr_diarchy.0800.t:0 "<FTR>Lobbying at Court: the Co-Ruler's Side Prevails"
+ ftr_diarchy.0800.desc:0 "<FTR>Both camps sent lobbyists to work the court and the bureaus. This time the #EMP co-ruler's side#! came out ahead, and the [scales_of_power|E] shifted further their way."
+ ftr_diarchy.0801.t:0 "<FTR>Lobbying at Court: the Monarch's Side Prevails"
+ ftr_diarchy.0801.desc:0 "<FTR>Both camps sent lobbyists to work the court and the bureaus. This time the #EMP monarch's side#! saw off the co-ruler's lobbying, and the [scales_of_power|E] were pulled back toward the crown."
+ ftr_diarchy_pk_event_ok:0 "<FTR>Understood."
+ ftr_diarchy_pk_event_tt:0 "<FTR>Contest rules: each side fields one of its own backers, and Intrigue plus Diplomacy are scored together — the higher score is likelier to win (base 50%, ±2.5% per point of difference, clamped to 10–90%); the winner moves the [scales_of_power|E] by #P ±5#!. No further contest in this realm for two years, and the lobbyists who took part will not be fielded again for three years (the camps rotate)."
+ ftr_diarchy_swing_notice_qingjunce:0 "<FTR>Clearing the Sovereign's Side succeeds: the winner displaces the sitting co-ruler, and the [scales_of_power|E] rise #P +10#! toward the #EMP new co-ruler#! — they begin their tenure with real power in hand."
+ ftr_diarchy_swing_notice_initial_voluntary:0 "<FTR>Heir designated by decree: Crown Prince co-rule is established with the [scales_of_power|E] set to the #EMP voluntary designation#! baseline of #P 10#! — the heir must build up backers of their own to gain power."
+ ftr_court_swing_notice_petition_granted:0 "<FTR>Co-rule petition granted: the petition lands as a co-rule (or an entrenched regency, if the grantee is outside the succession line), with the [scales_of_power|E] set to the #EMP petition#! baseline of #P 20#!."
+ ftr_court_swing_notice_imposed:0 "<FTR>Backers' demand: this co-ruler was forced onto the throne, so the [scales_of_power|E] start at the #EMP demand baseline#! of #P 40#! (Crown Prince) or #P 80#! (co-emperor, co-monarch, regent) — what is won by force is not left empty."
+ ftr_court_swing_notice_0500_a:0 "<FTR>Whispers succeed: the monarch's agents shake the co-ruler's household, pulling the [scales_of_power|E] #P -5#! toward the #EMP monarch#! (85% chance; a failure leaks the plot and costs the monarch renown)."
+ ftr_court_swing_notice_0500_b:0 "<FTR>The co-ruler's circle is bribed: the monarch spends #P 60#! gold among the co-ruler's confidants, pulling the [scales_of_power|E] #P -5#! toward the #EMP monarch#!."
+ ftr_court_swing_notice_0510_a:0 "<FTR>The co-ruler lobbies in secret: the co-ruler's camp works the court against the monarch, pushing the [scales_of_power|E] #P +5#! toward the #EMP co-ruler#!."
+ ftr_court_swing_notice_0220_a:0 "<FTR>The monarch promises a share of power: granted at court, it shifts the [scales_of_power|E] #P +5#! toward the #EMP co-ruler#!."

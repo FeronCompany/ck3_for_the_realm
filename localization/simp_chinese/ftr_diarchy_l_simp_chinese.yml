@@ -17,8 +17,12 @@
 
  # ===== 决议（§3 / §4） =====
  ftr_diarchy_abolish_crown_prince_decision:0 "<FTR>废太子"
- ftr_diarchy_abolish_crown_prince_decision_desc:0 "<FTR>废除现任太子：剥夺其继承权、结束太子共治，并将其降为普通封臣。此举将招致太子与宫廷的深切怨恨。"
+ ftr_diarchy_abolish_crown_prince_decision_desc:0 "<FTR>废除现任太子：剥夺其继承权、结束太子共治，并将其降为普通封臣。此举将招致太子与宫廷的深切怨恨。\n\n若你握有处罚他的正当理由——他犯有可拘押 / 可夺爵的实罪，或本人已在你手中——则此举是执行家法，正统性丝毫无损；若无正当理由，便是废长立幼，动摇国本。"
  ftr_diarchy_abolish_crown_prince_decision_tooltip:0 "<FTR>废黜太子，剥夺继承权"
+ ftr_diarchy_abolish_prince_swing_tt:0 "<FTR>太子的[scales_of_power|E]不得超过 #P 60#!——趁其羽翼未丰，方可轻废"
+ ftr_diarchy_abolish_prince_justified_tt:0 "<FTR>执行家法，而非废长立幼：#P 不损失正统性#!——太子犯有可拘押 / 可夺爵的实罪，或本人已在押"
+ ftr_diarchy_abolish_prince_unjustified_tt:0 "<FTR>无正当理由而废储：#R 损失正统性 400#!——继承名分因此动摇，举国侧目"
+ ftr_diarchy_abolish_backer_ask_tt:0 "<FTR>太子旧日的党羽将各得其讯：是继续守着这位废太子，还是与他一刀两断"
  ftr_diarchy_depose_liege_decision:0 "<FTR>废黜君主"
  ftr_diarchy_depose_liege_decision_desc:0 "<FTR>以权臣之势逼迫君主退位：他将失去所有头衔并被囚禁，由指定继承人继位，而你以定策之功隐于幕后。"
  ftr_diarchy_depose_liege_decision_tooltip:0 "<FTR>迫使君主退位，由继承人继位"
@@ -39,6 +43,12 @@
  ftr_diarchy.0300.desc:0 "<FTR>你重获自由，全因那位权倾朝野的共治者一纸大赦。他并不掩饰自己的期待：在他与君主的角力中，他希望站在他这一边。"
  ftr_diarchy.0300.a:0 "<FTR>为他背书（拥立之功）"
  ftr_diarchy.0300.b:0 "<FTR>婉言谢绝"
+ ftr_diarchy.0400.t:0 "<FTR>废储之后：党羽的去路"
+ ftr_diarchy.0400.desc:0 "<FTR>[ftr_diarchy_fallen_prince.GetTitledFirstName]被君上废去储位、夺了继承名分，退朝时那张座席已被撤下，余温散尽。昨日还替他说话的人，今日全都低着眼。你本也是他名下党羽之一——此刻，[ftr_diarchy_abolishing_liege.GetTitledFirstName]的人正在朝房外清点名单。"
+ ftr_diarchy.0400.a:0 "<FTR>与他切割：退出太子党"
+ ftr_diarchy.0400.b:0 "<FTR>守着他不走"
+ ftr_diarchy_0400_exit_tt:0 "<FTR>解除背书：从太子名单除名、结清拥立之功。废太子会记住这一笔，但#P 主君将视你为可留之人#!"
+ ftr_diarchy_0400_stay_tt:0 "<FTR>继续做他的党羽：废太子因此感激你，#R 主君会记住替废太子撑场的人#!"
 
  # ===== 事件（§4） =====
  ftr_diarchy.0010.t:0 "<FTR>权臣的野心"
@@ -54,11 +64,27 @@
  ftr_diarchy.0100.a:0 "<FTR>终身软禁"
  ftr_diarchy.0100.b:0 "<FTR>流放"
  ftr_diarchy.0100.c:0 "<FTR>处死"
- ftr_diarchy.0200.t:0 "<FTR>共治者索求封地"
- ftr_diarchy.0200.desc:0 "<FTR>你的共治者至今名下无地。他再一次暗示：一位共治者理应拥有自己的领地与他自己的封臣。"
- ftr_diarchy.0200.a:0 "<FTR>划出一块领地给他"
- ftr_diarchy.0200.b:0 "<FTR>暂不考虑"
- ftr_diarchy.0200.c:0 "<FTR>他发誓忠心事主"
+ ftr_diarchy.0200.t:0 "<FTR>向君上索要封地"
+ ftr_diarchy.0200.desc:0 "<FTR>你已是共治者，名下却依旧无地：没有自己的座席，没有可差遣的封臣，朝堂上你开口，回响总比旁人浅一分。你再一次向君上提起此事——一位共治者，理应拥有属于自己的领地。"
+ ftr_diarchy.0200.a:0 "<FTR>开口索要一块封地（羽翼已丰，可强索）"
+ ftr_diarchy.0200.a2:0 "<FTR>委婉奏请君上赐地"
+ ftr_diarchy.0200.b:0 "<FTR>暂且不提"
+ ftr_diarchy.0200.c:0 "<FTR>发誓忠心事主，此后再不提"
+ ftr_diarchy_grant_land_rule_tt:0 "<FTR>划地规则：优先一块#EMP 非首都伯爵领#!；若无，则划出一个#EMP 公爵头衔#!（其下属伯爵领与封臣一并随封）。#P 世族头衔永不外授#!——家主之位不随封地转出。"
+ ftr_diarchy_grant_request_tt:0 "<FTR>你羽翼未丰（[scales_of_power|E] 不足 #P 60#!），不能强索，只能#EMP 委婉奏请#!：请地表递到君上案前，由他裁断是否赐地。他若允准，你便有了一处领地与自己的封臣；他若推托，此事仍会再提。"
+ ftr_diarchy_grant_land_liege_title:0 "<FTR>允其所请：共治者得封"
+ ftr_diarchy_grant_land_liege_desc:0 "<FTR>你允了这份奏请，将 [ftr_diarchy_grant_title.GetName] 划与 [ftr_diarchy_grant_target.GetTitledFirstName]。他谢恩而退——此后他在朝堂上也有了自己的封臣与税赋。"
+ ftr_diarchy_take_land_liege_title:0 "<FTR>共治者径直索地"
+ ftr_diarchy_take_land_liege_desc:0 "<FTR>你的共治者没有递表，径直把 [ftr_diarchy_grant_title.GetName] 划到了自己名下。他羽翼已丰，这一纸你拦不住。"
+ ftr_diarchy_grant_land_target_title:0 "<FTR>受封领地"
+ ftr_diarchy_grant_land_target_desc:0 "<FTR>[ftr_diarchy_grant_liege.GetTitledFirstName] 名下的 [ftr_diarchy_grant_title.GetName] 如今归你所有——你终于有了自己的领地与封臣。"
+ ftr_diarchy_grant_deny_tt:0 "<FTR>温言推托：他这一请落空，虽不致反目，却会记下这份失落"
+ ftr_diarchy_land_denied_title:0 "<FTR>请地未允"
+ ftr_diarchy_land_denied_desc:0 "<FTR>你委婉的奏请换来了委婉的推托——君上把请地表留中不发。你依旧是无地之身。"
+ ftr_diarchy.0210.t:0 "<FTR>共治者的请地表"
+ ftr_diarchy.0210.desc:0 "<FTR>[ftr_diarchy_petitioning_diarch.GetTitledFirstName]的奏表递到案前，措辞谦卑得近乎小心：他身为共治者却名下无地，无封臣可差、无座席可倚，故请君上「于域内择一处，付其掌管」。表末不敢催促，只添一句——愿为君上分忧。"
+ ftr_diarchy.0210.a:0 "<FTR>允其所请：择一处划与掌管"
+ ftr_diarchy.0210.b:0 "<FTR>温言推托：此事容后再议"
 
  # ===== 清君侧 CB（§5） =====
  ftr_qingjunce:0 "<FTR>清君侧"
@@ -67,3 +93,50 @@
  ftr_qingjunce_victory_desc:0 "<FTR>你的旗帜压倒了共治者的权柄。你将成为君主的新摄政。"
  ftr_qingjunce_defeat_desc:0 "<FTR>清君侧失败。作为叛逆，你将在牢狱中度过余生。"
  ftr_qingjunce_invalidated_desc:0 "<FTR>局势业已改变，这场战争失去了意义。"
+
+ # ===== 决议确认按钮（引擎按 <key>_confirm 取键，缺省会在 error.log 报 Unrecognized loc key） =====
+ ftr_diarchy_abolish_crown_prince_decision_confirm:0 "<FTR>废黜太子"
+ ftr_diarchy_depose_liege_decision_confirm:0 "<FTR>废黜君主"
+ ftr_diarchy_prepare_coup_decision_confirm:0 "<FTR>准备篡位"
+ ftr_diarchy_coup_landing_decision_confirm:0 "<FTR>夺取大位"
+ ftr_diarchy_amnesty_decision_confirm:0 "<FTR>颁行大赦"
+
+ # ===== 共治类型显示名（引擎按 <type>_diarchy_type / <type>_diarch_title 取键；
+ #       缺任一条则共治窗口标题与 swing 变动提示会显示裸键） =====
+ # 类型名：共治窗口标题 / update_diarchy_swing_with_perspective_effect.preamble 的 [liege_loc.GetDiarchyTypeName]
+ ftr_diarchy_crown_prince_diarchy_type:0 "<FTR>太子共治"
+ # 共治者头衔：共治者名下显示的身份（对照原版 regency_diarch_title「摄政」/ co_monarchy_diarch_title「共治君主」）
+ ftr_diarchy_crown_prince_diarch_title:0 "<FTR>太子"
+ # ===== 0700 成年晋位太子共治（§2.2 补立：未成年立储不建共治，成年后由 01 主时钟补立） =====
+ ftr_diarchy.0700.t:0 "<FTR>太子已长成"
+ ftr_diarchy.0700.desc:0 "<FTR>储君[ftr_diarchy_promoted_prince.GetTitledFirstName]已届成年。礼官奏请依制授其共治之权：自此朝堂之上，储君与朕同坐。"
+ ftr_diarchy.0700.a:0 "<FTR>依制行之。"
+ ftr_diarchy_promotion_notify_title:0 "<FTR>太子共治已立"
+ ftr_diarchy_promotion_notify_desc:0 "<FTR>我既已成年，朝廷依制授我共治之权，自此与君上同坐朝堂。"
+ # ===== 立储交互 on_accept 的条件提示（§2.2 1.2 / 1.3） =====
+ ftr_diarchy_heir_corule_immediate_tt:0 "<FTR>指定成年继承人：立储即刻依制建立#EMP 太子共治#!（行政类政体 + 独立 + 主头衔 ≥ 王国 + 当前无共治）。"
+ ftr_diarchy_minor_heir_promotion_tt:0 "<FTR>指定未成年继承人：立储时#EMP 暂不建立共治#!，继承人仍为储君；待其#EMP 成年#!后，朝廷将依制立其为太子共治（届时由朝议补立并告知）。"
+ # ===== 天平偏移通知（§7.1）：每一处 swing 写入都向君主与共治者各发一条 message，
+ #       正文给出概览，custom_tooltip 详述本次偏移的缘由（点数 / 触发条件 / 来源）=====
+ ftr_diarchy_swing_notice_title:0 "<FTR>[scales_of_power|E]发生偏移"
+ ftr_diarchy_swing_notice_desc:0 "<FTR>朝堂权力天平再度变动。展开下方提示可见本次偏移的缘由。"
+ ftr_diarchy_swing_notice_drift_up:0 "<FTR>季度背书角逐：共治者的党羽多于君主——君主每名党羽按 #P 1.5#! 倍折算溢价后仍落后，天平向#EMP 共治者#!一侧偏移 #P +1#!（单季正向上限）。党羽来自大赦、请愿与逼宫时的表态记账。"
+ ftr_diarchy_swing_notice_drift_down:0 "<FTR>季度背书角逐：君主党羽的加权多数压过共治者，天平向#EMP 君主#!一侧回拉（单季下限 #P -3#!；负方向不设门槛，故君主领先必能拉回）。"
+ ftr_diarchy_swing_notice_lobby_win:0 "<FTR>党羽游说对垒：共治者一方派出的说客 [ftr_diarchy_pk_diarch_lobbyist.GetName] 在朝中占了上风（双方各出一人，以「智谋 + 外交」评高下，评分高者胜算更大），天平向#EMP 共治者#!一侧上推 #P +5#!；同一政权两年内不会再有此类对垒，出战的说客三年内亦不会再被派出（阵营内部轮换）。"
+ ftr_diarchy_swing_notice_lobby_lose:0 "<FTR>党羽游说对垒：君主一方派出的说客 [ftr_diarchy_pk_liege_lobbyist.GetName] 挫败了共治者的游说（双方各出一人，以「智谋 + 外交」评高下，评分高者胜算更大），天平向#EMP 君主#!一侧回拉 #P -5#!；同一政权一年内不会再有此类对垒，出战的说客一年内亦不会再被派出（阵营内部轮换）。"
+ ftr_diarchy_swing_notice_external:0 "<FTR>[scales_of_power|E]竟自行晃了一晃——可朝中记事的簿册上，翻不出这一笔的来由。它多半出自三处：① 无头衔的共治者径直#EMP 摆动天平#!，或是天命、朝堂旧例之类的变故；② 岁月自有分量，天平每月都往这类共治的平衡之处缓缓回落（约 0.25/月）；③ 对方阵营绕开朝议，依旧例直接移轴。此等无据之变，唯有幅度越过门槛才会呈上案头；更细微的漂移，便任它悄无声息地去了。"
+ # ===== 0800 / 0801 天平游说对垒通报（事件体，仅一个确认选项）=====
+ ftr_diarchy.0800.t:0 "<FTR>朝堂游说：共治者一方占了上风"
+ ftr_diarchy.0800.desc:0 "<FTR>两派各遣说客，在朝堂与官署之间串连游说。此番#EMP 共治者一方#!的说客占了上风，[scales_of_power|E] 再向其一侧偏移。"
+ ftr_diarchy.0801.t:0 "<FTR>朝堂游说：君主一方占了上风"
+ ftr_diarchy.0801.desc:0 "<FTR>两派各遣说客，在朝堂与官署之间串连游说。此番#EMP 君主一方#!的说客挫败了共治者的游说，[scales_of_power|E] 向君主一侧回拉。"
+ ftr_diarchy_pk_event_ok:0 "<FTR>明白了。"
+ ftr_diarchy_pk_event_tt:0 "<FTR>对垒规则：双方各自从本方党羽中抽一人出面，以「智谋 + 外交」合计算评分，评分高者胜算更大（基准五成，每 1 点评分差 ±2.5%，夹在 10%~90%）；胜方一次推动天平 #P ±5#!。同一政权两年内不会再有对垒，出战的说客三年内不会再被派出（阵营内部轮换）。"
+ ftr_diarchy_swing_notice_qingjunce:0 "<FTR>清君侧功成：清君侧者顶替原共治者就任，天平依其战功向#EMP 新共治者#!一侧上移 #P +10#!——新共治者开局即握有实权。"
+ ftr_diarchy_swing_notice_initial_voluntary:0 "<FTR>依制立储：太子共治初立，天平按#EMP 主动立储#!基线置于 #P 10#!——储君须自积党羽方能抬升权力。"
+ ftr_court_swing_notice_petition_granted:0 "<FTR>共治请愿获准：请愿所请落地为共治（授权对象不属继承人线时则为固化摄政），天平按#EMP 请愿授权#!基线置于 #P 20#!。"
+ ftr_court_swing_notice_imposed:0 "<FTR>党羽逼宫：共治者以逼宫上台，天平按#EMP 逼宫基线#!置于 #P 40#!（太子）或 #P 80#!（共治皇帝・共治君主・摄政）——逼宫所得不可虚位。"
+ ftr_court_swing_notice_0500_a:0 "<FTR>暗中进言奏效：君主阵营的说客动摇了共治者的班底，天平向#EMP 君主#!一侧回拉 #P -5#!（八五成算；失手则风声走漏、君主威望受损）。"
+ ftr_court_swing_notice_0500_b:0 "<FTR>收买共治者左右：君主以 #P 60#! 金疏通共治者身边之人，天平向#EMP 君主#!一侧回拉 #P -5#!。"
+ ftr_court_swing_notice_0510_a:0 "<FTR>共治者暗中游说：共治者阵营在朝中串联反扑，天平向#EMP 共治者#!一侧上推 #P +5#!。"
+ ftr_court_swing_notice_0220_a:0 "<FTR>君主允诺分权：君主当廷允诺与共治者分享权柄，天平向#EMP 共治者#!一侧偏移 #P +5#!。"

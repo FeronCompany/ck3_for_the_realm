@@ -169,13 +169,23 @@ ftr_court_participant_remains_valid_trigger = {
 
 ########## 三、君主状态 ##########
 
-# 君主因年老体衰或精神异常而不能正常履职
+# 君主因年老体衰、骨脆、久病或精神异常而不能正常履职。
+# 口径（2026-09 扩容）：精神 / 感官特质 + **健康类**（infirm 年老体衰 / fragile_bones 骨质脆弱 /
+#   incapable / 健康档 ≤ poor）+ 高龄。原版仅查精神类与年龄，导致"体衰骨脆但未满 60"的君主
+#   既不触发请愿可见性、也拿不到烈度失能偏置，形成死区。
+# 消费者（扩容后一并放宽，语义即"君主确实不行了"）：共治请愿 is_shown、年度烈度失能偏置、
+#   ftr_court_should_activate_regency_trigger（议题 2）、ftr_court_can_attempt_usurp_trigger（废黜窗口）。
 ftr_court_monarch_infirm_trigger = {
 	OR = {
 		has_trait = lunatic
 		has_trait = possessed
 		has_trait = depressed
 		has_trait = blind
+		has_trait = infirm
+		has_trait = fragile_bones
+		has_trait = incapable
+		is_incapable = yes
+		health <= poor_health
 		age >= ftr_court_monarch_elderly_age_value
 	}
 }
@@ -191,7 +201,7 @@ ftr_court_monarch_weak_trigger = {
 
 ########## 四、阶段判定 ##########
 
-# 候选人数量达标（数量由参与事件 0040 写入 ftr_court_candidate_count）
+# 候选人数量达标（数量由参与事件 0230 写入 ftr_court_candidate_count）
 ftr_court_has_enough_candidates_trigger = {
 	has_variable = ftr_court_candidate_count
 	var:ftr_court_candidate_count >= ftr_court_min_candidates_value
@@ -226,7 +236,7 @@ ftr_court_has_active_struggle_trigger = {
 	var:ftr_court_candidate_count >= ftr_court_min_candidates_value
 }
 
-# 烈度是否进入「对立」区（>=90）：两派公开倾轧、对立脉冲 / 0014 站队等在此区触发。
+# 烈度是否进入「对立」区（>=90）：两派公开倾轧、对立脉冲 / 0200 站队等在此区触发。
 ftr_court_is_contested_trigger = {
 	ftr_court_has_active_struggle_trigger = yes
 	has_variable = ftr_court_struggle_intensity
@@ -242,7 +252,7 @@ ftr_court_is_crisis_trigger = {
 	var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
 }
 
-# 烈度是否进入「临界」区（>=170）：废黜昏君（0018）等最强手段在此区开放。
+# 烈度是否进入「临界」区（>=170）：废黜昏君（0150）等最强手段在此区开放。
 ftr_court_intensity_critical_trigger = {
 	has_variable = ftr_court_struggle_intensity
 	var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
@@ -253,6 +263,58 @@ ftr_court_ease_struggle_valid_trigger = {
 	has_variable = ftr_court_struggle_intensity
 	var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
 	NOT = { has_character_flag = ftr_court_eased_struggle }
+}
+
+# 立场不同判定（M2 立场辩论选角用）。
+# 求值域：this = 候选人；参数 OTHER = 对照者。成立：两人封臣立场不相同（七种立场逐一比对）。
+ftr_court_has_different_vassal_stance_trigger = {
+	OR = {
+		AND = { $OTHER$ = { has_vassal_stance = courtly }  NOT = { has_vassal_stance = courtly } }
+		AND = { $OTHER$ = { has_vassal_stance = glory_hound }  NOT = { has_vassal_stance = glory_hound } }
+		AND = { $OTHER$ = { has_vassal_stance = parochial }  NOT = { has_vassal_stance = parochial } }
+		AND = { $OTHER$ = { has_vassal_stance = zealot }  NOT = { has_vassal_stance = zealot } }
+		AND = { $OTHER$ = { has_vassal_stance = minority }  NOT = { has_vassal_stance = minority } }
+		AND = { $OTHER$ = { has_vassal_stance = barons_and_minor_landholders }  NOT = { has_vassal_stance = barons_and_minor_landholders } }
+		AND = { $OTHER$ = { has_vassal_stance = belligerent }  NOT = { has_vassal_stance = belligerent } }
+	}
+}
+
+# 求值域：this = 某内阁成员。判定其是否「不够称职」（M1 弹劾内阁的目标筛选）。
+# 口径：按其所任内阁职位对应的属性低于称职线（decent_skill_rating）即算不称职；
+# 五种常规职位（掌玺/军事/财政/间谍/宫廷司铎）逐一对应，其他职位（如游牧）不参与。
+ftr_court_is_incompetent_councillor_trigger = {
+	is_councillor = yes
+	OR = {
+		AND = { has_council_position = councillor_chancellor      diplomacy < decent_skill_rating }
+		AND = { has_council_position = councillor_marshal         martial < decent_skill_rating }
+		AND = { has_council_position = councillor_steward         stewardship < decent_skill_rating }
+		AND = { has_council_position = councillor_spymaster       intrigue < decent_skill_rating }
+		AND = { has_council_position = councillor_court_chaplain  learning < decent_skill_rating }
+	}
+}
+
+# 求值域：this = 任意角色；参数 THRESHOLD = 烈度门槛（script value 名或数字）。
+# 判定其所在政权的朝堂故事烈度是否 ≥ THRESHOLD：依次尝试自身持有的 story / 最高领主 / 雇主。
+# 供内斗事件选项的 ai_chance 使用（事件 root 未必持有 story，故三路兜底）。
+ftr_court_struggle_intensity_of_realm_at_least_trigger = {
+	OR = {
+		any_owned_story = {
+			story_type = ftr_court_struggle
+			var:ftr_court_struggle_intensity >= $THRESHOLD$
+		}
+		top_liege ?= {
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				var:ftr_court_struggle_intensity >= $THRESHOLD$
+			}
+		}
+		employer ?= {
+			any_owned_story = {
+				story_type = ftr_court_struggle
+				var:ftr_court_struggle_intensity >= $THRESHOLD$
+			}
+		}
+	}
 }
 
 ########## 五、议题2：共治夺权 ##########
@@ -267,14 +329,35 @@ ftr_court_should_activate_regency_trigger = {
 	}
 }
 
-# 拉锯足以发起共治请愿（求值域 = 朝堂 story，story_owner 为君主）。
-# 裁定 R1：请愿仅在「朝中尚无共治者」时开放（`is_shown` 已作独占限制），而天平是 diarchy 的
-# 属性、无共治时恒为 0 ⇒ 唯一门槛 = 「朝堂已入对立区」
-# （复用 ftr_court_is_contested_trigger：参与者达标 + 烈度 ≥ 90）。原 swing ≥ 70 分支已删除。
-ftr_court_can_petition_coregency_trigger = {
-	story_owner ?= { NOT = { has_active_diarchy = yes } }
-	ftr_court_is_contested_trigger = yes
+# 君主是否有合法继承人（求值域：君主）。
+# 口径：主头衔继承顺位上有「非私生且未被剥夺继承权」的继承人。
+# 用途：共治请愿放宽后的两个准入条件之一（另一个是"存在朝堂角逐故事"）。
+ftr_court_has_legitimate_heir_trigger = {
+	primary_title = {
+		any_title_heir = {
+			NOT = { has_trait = bastard }
+			NOT = { has_trait = disinherited }
+		}
+	}
 }
+
+# 指定人物是否为君主的「合法继承人之一」（求值域：君主；参数 HEIR = 拟判定对象）。
+# 口径同 ftr_court_has_legitimate_heir_trigger：主头衔继承顺位上，非私生且未被剥夺继承权。
+# 用途：共治请愿的授权对象分类——属继承人线者按政体分配 太子 / 共治皇帝 / 共治君主。
+ftr_court_is_legitimate_heir_of_trigger = {
+	primary_title = {
+		any_title_heir = {
+			this = $HEIR$
+			NOT = { has_trait = bastard }
+			NOT = { has_trait = disinherited }
+		}
+	}
+}
+
+# 注：原 `ftr_court_can_petition_coregency_trigger`（＝尚无共治 + 参与者达标）已于 2026-09 **退役**——
+#     共治请愿的发动条件改为「存在朝堂角逐故事 + 君主有合法继承人」，
+#     见 `ftr_court_has_legitimate_heir_trigger` 与交互 `ftr_court_petition_coregency_interaction.is_valid`
+#     （口径见 01 §7.1-8；"尚无共治" 仍由该交互 `is_shown` 独占限制承担）。
 
 # 拉锯足以尝试夺位（官方 swing + 君主失能）
 ftr_court_can_attempt_usurp_trigger = {
@@ -353,7 +436,7 @@ ftr_court_needs_temp_duchy_trigger = {
 	NOT = { is_imprisoned = yes }
 }
 
-# 2.2 派间谍调查（0060）触发者资格（§9.2，root = 潜在触发者）
+# 2.2 派间谍调查（0400）触发者资格（§9.2，root = 潜在触发者）
 # 三种合法来源，任满足其一：
 #   ① 最高统治者（持有朝堂 story 的独立统治者）
 #   ② 有头衔 / 领地的参与者（is_landed 即持有头衔与领地，且其 top_liege / employer 持有 story）
@@ -424,17 +507,50 @@ ftr_court_has_backing_trigger = {
 	}
 }
 
-# 黑马判定：候选目前没有任何支持者（供 AI 站队/背书时"雪中送炭"偏好复用）。
-# 求值域：候选本人（this = 候选人）。
-ftr_court_has_no_supporters_trigger = {
-	NOT = {
-		has_variable_list = ftr_court_supporters
-		variable_list_size = { name = ftr_court_supporters  value >= 1 }
+# 党羽同阵营判定（供手段族 AI / 交互 AI 的党羽立场过滤复用，§7.3）。
+# 求值域：this = 待判定者；参数 OTHER = 对照者（角色 scope 表达式）。
+# 成立（任一条即可）：
+#   ① 我**是党羽**（身上有背书账 ftr_court_backer_of）：OTHER 在我所支持党首的
+#      ftr_court_supporters 名单内，或 OTHER 正是那位党首本人；
+#   ② 我**是党首**（身上有 ftr_court_supporters 名单）：OTHER 在我的支持者名单内（我的党羽）。
+# 注：② **不可省**——党首不会背书自己，身上没有 ftr_court_backer_of；
+#     只写 ① 时「党首 ↔ 自己的党羽」会被判成不同阵营，charge / sow_discord 的
+#     「不对自己人下手」抑制就失效（AI 会打自己人）。
+# 两账皆无者无阵营 → 恒为假。
+ftr_court_same_camp_trigger = {
+	OR = {
+		# ① 我是党羽：以「我所支持党首」的名单对照
+		AND = {
+			has_variable = ftr_court_backer_of
+			var:ftr_court_backer_of ?= {
+				OR = {
+					is_target_in_variable_list = { name = ftr_court_supporters  target = $OTHER$ }
+					this = $OTHER$
+				}
+			}
+		}
+		# ② 我是党首：以「我自己的支持者名单」对照
+		AND = {
+			has_variable_list = ftr_court_supporters
+			is_target_in_variable_list = { name = ftr_court_supporters  target = $OTHER$ }
+		}
 	}
 }
 
-# 求值域：无（只读事件 0014 已保存的候选位 scope）。参数 WHO = 待查角色 scope 表达式。
-# 判定 WHO 是否已占 0014 的前五候选位——供「君主 / 共治者亦可作为背书目标」时防重复选项
+# 黑马判定：候选目前没有任何支持者（供 AI 站队/背书时"雪中送炭"偏好复用）。
+# 求值域：候选本人（this = 候选人）。
+# 注：必须先确认列表存在再查 size——原写法把两条并列放进 NOT，引擎会照样求值
+# variable_list_size，报 "Could not find list from read name flag ftr_court_supporters"。
+ftr_court_has_no_supporters_trigger = {
+	trigger_if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		NOT = { variable_list_size = { name = ftr_court_supporters  value >= 1 } }
+	}
+	trigger_else = { always = yes }
+}
+
+# 求值域：无（只读事件 0200 已保存的候选位 scope）。参数 WHO = 待查角色 scope 表达式。
+# 判定 WHO 是否已占 0200 的前五候选位——供「君主 / 共治者亦可作为背书目标」时防重复选项
 # （共治者可能同时是竞争者）。名单不足 5 人时，未保存的候选位不参与判定。
 ftr_court_claimant_slots_contain_trigger = {
 	OR = {
@@ -481,8 +597,8 @@ ftr_court_in_declarable_struggle_trigger = {
 	}
 }
 
-########## 七之二、AI 背书立场偏好（事件 0014 站队用） ##########
-# 供 0014 五个站队选项复用：把"封臣立场 ↔ 候选特质"是否契合做成参数化 trigger，
+########## 七之二、AI 背书立场偏好（事件 0200 站队用） ##########
+# 供 0200 五个站队选项复用：把"封臣立场 ↔ 候选特质"是否契合做成参数化 trigger，
 # 契合加分 / 违背减分，使 AI 不只看名次而按自身立场挑选对象（对齐交互 ai_will_do 的 stance 语义）。
 # 参数：CANDIDATE = 被评估的候选；ACTOR = 朝臣本人（求值域当前 this 即朝臣）。
 ftr_court_backing_stance_fit_trigger = {
@@ -678,5 +794,62 @@ ftr_court_has_female_heir_trigger = {
 		is_female = yes
 		is_adult = yes
 	}
+}
+
+########## 十、党羽逼宫（Backer Demand） ##########
+
+# 求值域：this = 权贵（竞争者 / 共治者）。其党羽规模是否已达逼宫门槛。
+# 规模 = 支持者人数 + 强力封臣党羽加权（ftr_court_backer_demand_scale_value）。
+ftr_court_backer_demand_scale_reached_trigger = {
+	has_variable_list = ftr_court_supporters
+	variable_list_size = {
+		name = ftr_court_supporters
+		value >= ftr_court_backer_demand_min_count_value
+	}
+	ftr_court_backer_demand_scale_value >= ftr_court_backer_demand_threshold_value
+}
+
+# 求值域：this = 拟被拥立者（竞争者 / 共治者）。是否为合法的共治人选。
+ftr_court_champion_eligible_diarch_trigger = {
+	is_alive = yes
+	is_capable_adult = yes
+	NOT = { is_imprisoned = yes }
+	NOT = { has_trait = incapable }
+}
+
+# 求值域：君主。是否处于党羽逼宫冷却期（防同一政权连续逼宫刷屏）。
+ftr_court_backer_demand_in_cooldown_trigger = {
+	has_character_flag = ftr_court_backer_demand_cooldown
+}
+
+# 求值域：君主（共治请愿的**接收方**）。是否处于共治请愿冷却期
+# （2026-09：同一君主受理一份请愿后 2 年内不再受理新的，防「排队逼请」刷屏；
+#   flag 由 ftr_court_petition_coregency_interaction.on_accept 挂上，年限取
+#   ftr_court_petition_cooldown_years_value）。
+ftr_court_petition_in_cooldown_trigger = {
+	has_character_flag = ftr_court_petition_cooldown
+}
+
+########## 十一、参与询问刷新短路 ##########
+
+# 求值域：最高领主。是否存在「尚未被询问参与」的潜在继任者。
+# 供 story 的参与询问 effect_group（30–60 天）作前置短路：无候选时整轮跳过，避免全量重扫。
+ftr_court_has_unasked_candidate_trigger = {
+	OR = {
+		any_child = { ftr_court_can_be_asked_participate_relative_trigger = yes }
+		any_sibling = { ftr_court_can_be_asked_participate_relative_trigger = yes }
+		primary_title = { any_title_heir = { ftr_court_can_be_asked_participate_relative_trigger = yes } }
+	}
+}
+
+# 求值域：this = 潜在候选。与 ftr_court_can_be_asked_participate_trigger 同口径，
+# 但不依赖 scope:ftr_court_monarch（供君主域短路判定复用）。
+ftr_court_can_be_asked_participate_relative_trigger = {
+	is_alive = yes
+	is_adult = yes
+	NOT = { is_imprisoned = yes }
+	NOT = { has_trait = incapable }
+	NOT = { has_character_flag = ftr_court_declined_contest }
+	NOT = { has_character_flag = ftr_court_participating }
 }
 

@@ -45,16 +45,108 @@ ftr_charge_interaction = {
 		scope:actor.liege = {
 			trigger_event = ftr_pg_interaction_event.0100
 		}
+		# 双方各自都有背书对象（分属党羽）→ 指控本身即党争摩擦；同最高领主且该领主有朝堂故事时抬升其烈度
+		if = {
+			limit = {
+				scope:actor = { has_variable = ftr_court_backer_of }
+				scope:recipient = { has_variable = ftr_court_backer_of }
+			}
+			scope:actor = {
+				ftr_court_realm_intensity_add_effect = {
+					OTHER = scope:recipient
+					AMOUNT = ftr_court_interaction_clash_intensity_value
+				}
+			}
+		}
 	}
 	on_decline = {}
 	auto_accept = yes
 	ai_will_do = {
-		base = -20
+		base = -10
 		opinion_modifier = {
 			opinion_target = scope:actor
 			who = scope:recipient
-			multiplier = -2
-			desc = AI_OPINION_REASON
+			multiplier = -0.25
+		}
+		# 党羽政治：优先清除其他党羽的政敌
+		modifier = {
+			add = 60
+			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
+		}
+		# 同一党羽（含本方党首本人）→ 不对自己人下手
+		modifier = {
+			add = -80
+			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } }
+		}
+		# ===== 性格修正（发起方）=====
+		# 进取型：视指控为纠举 / 手段 / 清扫障碍
+		modifier = {
+			add = 40
+			scope:actor = { has_trait = just }
+		}
+		modifier = {
+			add = 30
+			scope:actor = { has_trait = deceitful }
+		}
+		modifier = {
+			add = 25
+			scope:actor = { has_trait = ambitious }
+		}
+		# 睚眦必报 + 本就与对方交恶 → 借主君之手报仇
+		modifier = {
+			add = 35
+			scope:actor = {
+				has_trait = vengeful
+				opinion = { target = scope:recipient  value < 0 }
+			}
+		}
+		# 冷酷：不在意对方下场
+		modifier = {
+			add = 20
+			scope:actor = { has_trait = callous }
+		}
+		# 回避型：不愿把同僚推进罪案 / 不记旧怨 / 容易相信人
+		modifier = {
+			add = -40
+			scope:actor = { has_trait = compassionate }
+		}
+		modifier = {
+			add = -30
+			scope:actor = { has_trait = forgiving }
+		}
+		modifier = {
+			add = -25
+			scope:actor = { has_trait = trusting }
+		}
+		# 怯懦：怕事后被清算
+		modifier = {
+			add = -25
+			scope:actor = { has_trait = craven }
+		}
+		# 懒惰 / 知足：懒得张罗，也不惦记更多权位
+		modifier = {
+			add = -20
+			scope:actor = { has_trait = lazy }
+		}
+		modifier = {
+			add = -15
+			scope:actor = { has_trait = content }
+		}
+		# ===== 性格修正（目标方：好不好下手）=====
+		# 目标正直 → 指控显得牵强
+		modifier = {
+			add = -20
+			scope:recipient = { has_trait = just }
+		}
+		# 目标懦弱 → 易于拿捏
+		modifier = {
+			add = 20
+			scope:recipient = { has_trait = craven }
+		}
+		# 目标睚眦必报 → 怕其日后反扑
+		modifier = {
+			add = -20
+			scope:recipient = { has_trait = vengeful }
 		}
 	}
 }
@@ -200,6 +292,19 @@ ftr_sow_discord_interaction = {
 				desc = ftr_sow_discord.discovered
 			}
 		}
+		# 双方各自都有背书对象（分属党羽）→ 散布不和本身即党争摩擦；同最高领主且该领主有朝堂故事时抬升其烈度
+		if = {
+			limit = {
+				scope:actor = { has_variable = ftr_court_backer_of }
+				scope:recipient = { has_variable = ftr_court_backer_of }
+			}
+			scope:actor = {
+				ftr_court_realm_intensity_add_effect = {
+					OTHER = scope:recipient
+					AMOUNT = ftr_court_interaction_clash_intensity_value
+				}
+			}
+		}
 	}
 	on_decline = {}
 	auto_accept = yes
@@ -208,12 +313,12 @@ ftr_sow_discord_interaction = {
 		opinion_modifier = {
 			opinion_target = scope:recipient
 			who = scope:actor
-			multiplier = -1.5
+			multiplier = -0.25
 		}
 		opinion_modifier = {
 			opinion_target = scope:secondary_actor
 			who = scope:actor
-			multiplier = -0.5
+			multiplier = -0.15
 		}
 		modifier = {
 			add = -50
@@ -240,9 +345,32 @@ ftr_sow_discord_interaction = {
 				is_vassal_of = scope:secondary_actor
 			}
 		}
+		# 党羽政治：打击其他党羽（目标非我方党羽）→ 加权
+		modifier = {
+			add = 60
+			scope:actor = { has_variable = ftr_court_backer_of }
+			scope:recipient = { has_variable = ftr_court_backer_of }
+			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
+		}
+		# 在其他党羽之间散谣：被打散的两方同属一个外营 → 再加权
+		# 注：secondary_actor 在 AI 预评估阶段可能未设，直接引用会报 unset scope（原版惯用 exists 守卫）
+		modifier = {
+			add = 60
+			exists = scope:secondary_actor
+			scope:recipient = { ftr_court_same_camp_trigger = { OTHER = scope:secondary_actor } }
+			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
+		}
+		# 党羽内不内斗：目标属我方党羽 → 减权
+		modifier = {
+			add = -50
+			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } }
+		}
+		# 被离间的两方都是我的人（纯内斗）→ 再减权
+		modifier = {
+			add = -70
+			exists = scope:secondary_actor
+			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } }
+			scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:secondary_actor } }
+		}
 	}
 }
-
-######### Support Heir（已废弃移除） ##########
-# 已废弃：与朝堂 ftr_court_back_claimant_interaction 功能重叠（任务设计文档 §7.3）。
-# 其「公开/秘密背书、继承人声望加成、惊君处置」语义已并入朝堂交互，本块已删除（保留注释供追溯）。

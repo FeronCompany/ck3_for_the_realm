@@ -40,9 +40,11 @@ ftr_strengthen_diarch_power_decision = { # Debug decision
 	}
 	effect = {
 		liege = {
+			save_scope_as = ftr_debug_swing_liege
+			# 绝对引用：`LIEGE = liege` 会解析成「君主的领主」而报 no active diarchy
 			update_diarchy_swing_with_perspective_effect = {
 				SWING = 10
-				LIEGE = liege
+				LIEGE = scope:ftr_debug_swing_liege
 			}
 		}
 	}

@@ -66,7 +66,7 @@
  ftr_not_change_focus_recently_text:0 "Has not tried to change focus."
  ftr_has_change_focus_recently_text:0 "Has tried to change focus."
  ftr_not_recently_changed_focus_text:0 "No one has tried to change the political focus recently."
- ftr_has_recently_changed_focus_tt:0 "Someone has tried to change the political focus recently."
+ ftr_has_recently_changed_focus_text:0 "Someone has tried to change the political focus recently."
  ftr_have_enough_pi_text:0 "Political influence higher than $VALUE|0$"
  ftr_not_have_enough_pi_text:0 "Political influence lower than $VALUE|0$"
 
@@ -138,7 +138,7 @@
  ftr_pg_liege_proposal_vote_yes_decision_tooltip:0 "Vote Yes In Liege's Realm"
  ftr_pg_liege_proposal_vote_yes_decision_desc:0 "Vote yes to proposal in [liege.GetShortUIName]'s realm."
  ftr_pg_liege_proposal_vote_yes_decision_confirm:0 "Vote Yes"
- ftr_liege_realm_has_valid_proposal_tt:0 "There is a motion under discussion within [liege.GetShortUIName]'s realm."
+ ftr_liege_realm_has_valid_proposal_text:0 "There is a motion under discussion within [liege.GetShortUIName]'s realm."
  ftr_liege_realm_not_vote_yes_text:0 "Has not yet voted in favor of the motion in [liege.GetShortUIName]'s realm"
  ftr_liege_realm_not_change_attitude_text:0 "Haven't adjusted my attitude recently"
  ftr_is_inner_circle_member_of_liege_text:0 "In the inner circle of [liege.GetShortUIName]'s realm"

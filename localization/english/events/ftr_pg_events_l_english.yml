@@ -33,7 +33,7 @@
  ftr_pg_ui_event.0005.desc:0 "The current political focus in liege's realm does not fit us, we can try the following options:"
 
  ftr_pg_ui_event.0100.t:0 "<FTR> Make Proposal"
- ftr_pg_ui_event.0100.desc:0 "Currently, political focus in [liege_c.GetShortUIName]'s realm is:[liege_c.Custom( 'FTR_PlayerPG_Focus' ]\nThe following proposals can be proposed around this political focus:"
+ ftr_pg_ui_event.0100.desc:0 "Currently, political focus in [liege_c.GetShortUIName]'s realm is:[liege_c.Custom( 'FTR_PlayerPG_Focus' )|G]\nThe following proposals can be proposed around this political focus:"
  ftr_flag_recently_made_proposal_text:0 "It will not be possible to submit the bill again in the near future."
  ftr_make_proposal_tt:0 "Make Proposal"
  ftr_expand_authority_proposal_notify_text:0 "[CHARACTER.GetShortUIName] made a proposal about to expand crown authority in [TARGET_CHARACTER.GetShortUIName]'s realm."
@@ -54,7 +54,7 @@
  ftr_pg_ui_event.0100.8:0 "Admonish the Liege"
  ftr_pg_ui_event.0100.9:0 "Mediate Civil War"
  ftr_pg_ui_event.0100.10:0 "Raise Levy Standards"
- ftr_pg_ui_event.0100.10:0 "Lower Levy Standards"
+ ftr_pg_ui_event.0100.11:0 "Lower Levy Standards"
  ftr_pg_ui_event.0100.12:0 "Promote Culture Superiority"
  ftr_pg_ui_event.0100.backup:0 "Nothing to do"
 
@@ -308,7 +308,7 @@
  ftr_sow_discord.discovered.t:0 "Sow Discord Discovered"
  ftr_sow_discord.discovered.desc:0 "Your attempt to sabotage relationship between [recipient.GetShortUIName] and [secondary_actor.GetShortUIName] was discovered."
 
- # Events 0300/0301/0303 removed with ftr_support_heir_interaction (§7.3); monarch-alert behavior merged into court 0041
+ # Events 0300/0301/0303 removed with ftr_support_heir_interaction (§7.3); monarch-alert behavior now handled by the court discipline interaction
 
  ftr_pg_law_event.0001.t:0 "Vote for Realm Policy"
  ftr_pg_law_event.0001.desc:0 "During the discussion at the court meeting, [actor.GetShortUIName] proposed that a system of $ftr_army_type_0$ should be implemented within the territory. Over-reliance on mercenaries who take money to do things cannot protect our realm, [actor.GetShortUIName] emphasized."

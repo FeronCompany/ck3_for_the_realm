@@ -6,17 +6,18 @@
 
 ### 一、政权准入
 
-# 求值域：统治者本人。行政政体 + 独立 + 主头衔 ≥ 王国
+# 求值域：统治者本人。行政类政体 + 独立 + 主头衔 ≥ 王国
 ftr_diarchy_realm_eligible_trigger = {
-	government_has_flag = government_is_administrative
+	government_allows = administrative
 	is_independent_ruler = yes
 	highest_held_title_tier >= tier_kingdom
 }
 
-# 求值域：统治者本人。太子共治准入：行政政体 + 无欢呼法 + 独立 + ≥王国 + 当前无共治
+# 求值域：统治者本人。太子共治准入：行政政体 + 独立 + ≥王国 + 当前无共治。
+# 注：不再排除欢呼法——欢呼法政权若为罗马/文化解锁共帝则走 co_emperorship（分支①，更优），
+#     其余欢呼法行政政权退而用太子共治，避免出现「无类型可用 → 只能固化摄政」的空档。
 ftr_diarchy_can_start_crown_prince_trigger = {
 	ftr_diarchy_realm_eligible_trigger = yes
-	NOT = { has_realm_law = acclamation_succession_law }
 	NOT = { has_active_diarchy = yes }
 	is_alive = yes
 	is_imprisoned = no
@@ -93,6 +94,18 @@ ftr_diarchy_swing_at_least_amnesty_trigger = {
 	liege = { diarchy_swing >= ftr_diarchy_amnesty_swing_value }
 }
 
+# 求值域：this = 待抽签的游说者（来自君主 / 共治者的 ftr_court_supporters 名单）。
+# 口径：活着的成年可用者、未被囚、非无能——游说须亲自出面（无地廷臣同样算数）。
+# 另设**个人冷却**：刚出过战的说客一年内不再被抽中（阵营内部轮换，防强手反复出战形成一边倒）。
+# 用途：阶段 A 党羽游说对垒抽签（§4.4-A D13）。
+ftr_diarchy_lobby_pk_candidate_trigger = {
+	is_alive = yes
+	is_adult = yes
+	is_imprisoned = no
+	NOT = { has_trait = incapable }
+	NOT = { has_character_flag = ftr_diarchy_lobby_pk_lobbied }
+}
+
 ### 四、无地共治者授土提醒（§4.0，求值域：共治者本人）
 
 ftr_diarchy_landless_reminder_trigger = {
@@ -105,13 +118,21 @@ ftr_diarchy_landless_reminder_trigger = {
 }
 
 # 求值域：主君本人。是否有可划出的地产（非首都伯爵领 或 公爵级头衔）
+# 【必须与 ftr_diarchy_grant_land_effect 的筛选条件完全一致】
+# 世族（贵族家族）头衔在天朝制为伯爵级、行政制为公爵级，且与「家主」身份绑定，
+# 划出即等于主君静默失去家主之位，因此两处都必须以 is_noble_family_title = no 排除；
+# 否则会出现「按钮可点、点了却什么也没给」的空转（或反向的静默转移）。
 ftr_diarchy_liege_has_land_to_give_trigger = {
 	OR = {
 		any_held_title = {
 			tier = tier_county
 			NOT = { this = prev.capital_county } 
+			is_noble_family_title = no
 		}
-		any_held_title = { tier = tier_duchy }
+		any_held_title = {
+			tier = tier_duchy
+			is_noble_family_title = no
+		}
 	}
 }
 
@@ -196,5 +217,22 @@ ftr_qingjunce_can_declare_trigger = {
 	# 未与主君处于同一场清君侧战争
 	liege = {
 		NOT = { has_variable = ftr_qingjunce_current_war }
+	}
+}
+
+### 九、废太子（§3.2，求值域：主君本人）
+
+# 主君是否握有「正当理由」处罚太子。有则**废除太子不损正统性**（决议提示框内以 custom_tooltip 明示）。
+# 依据：本 mod 的罪行类 opinion modifier（ftr_attempted_coup_crime / ftr_murderer_crime /
+# ftr_corruption_crime 等）均带 imprisonment_reason / revoke_title_reason，
+# 故原版 has_*_reason 触发器即覆盖「谋逆 / 谋杀 / 贪墨」等实罪；
+# 另把「太子已被主君拿下（在押）」计为充足口实。
+# 求值时机：废除动作**之前**（共治关系尚在），故可安全读 diarch。
+ftr_diarchy_abolish_prince_just_cause_trigger = {
+	exists = diarch
+	OR = {
+		has_imprisonment_reason = diarch
+		has_revoke_title_reason = diarch
+		diarch ?= { is_imprisoned = yes }
 	}
 }

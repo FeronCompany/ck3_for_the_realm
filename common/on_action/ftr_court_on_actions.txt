@@ -82,22 +82,81 @@ on_death = {
 }
 
 ######################################################
-### 三、内斗主时钟随机池（由 story 心跳每 60–120 天调用）
-### 参考原版 pet_dog / tax_rivalry：心跳 effect_group →
-### story_owner = { trigger_event = { on_action = X } } →
-### on_action 以 random_events 加权表随机挑一族 hidden 调度事件。
-### 每拍只随机触发一族入口；各族内部再按既有 effect 选角/派发。
+### 三、内斗主时钟选族（由 story 心跳每 60–120 天调用）
+### story effect_group → story_owner = { trigger_event = { on_action = X } }
+### → on_action 把求值域落到 story，用 random_list **枚举全部入口**：
+###   每行 = 一个族（权重即抽签权重），「烈度 / 是否已有共治」等条件写在该行自己的 trigger 里；
+###   条件不成立的行不参与本轮抽签（候选有效性），本层**不再做高/低烈度分区**。
+###   各族内部再按既有 effect 选角 / 概率派发；新增入口只需在此表加一行（自带 trigger）。
+### 注：同一族在两个烈度档需要不同权重时，**拆成两行**并给互补 trigger（口径无损）。
 ######################################################
 
 ftr_court_struggle_main_pulse = {
-	random_events = {
-		# 互殴手段族（0050–0052 / 0070 / 0080 / 0090）
-		60 = ftr_court_struggle.0211
-		# 强出口族（0003 / 0005 通知 + 0014 / 0015 / 0018）
-		35 = ftr_court_struggle.0212
-		# 无地拉锯（00A1，需天平 ≥70 且有共治者）
-		15 = ftr_court_struggle.0213
-		# 共治反击（00A2，需天平 ≤30 且有共治者）
-		12 = ftr_court_struggle.0214
+	effect = {
+		# root = story_owner：经其 every_owned_story 定位故事（不依赖 scope:story）
+		every_owned_story = {
+			limit = { story_type = ftr_court_struggle }
+			save_scope_as = ftr_court_pulse_story
+		}
+		if = {
+			limit = { exists = scope:ftr_court_pulse_story }
+			# 求值域：story（var:ftr_court_struggle_intensity 与共治状态在此层直接可读）
+			# 权重口径（2026-09 调平）：各族一律 **50**，另设 **100 权重的「无事发生」**空过项。
+			#   · 高烈度（≥90）池 = 6 族各 50 + 空过 100 ⇒ 每族 12.5%、空过 25%
+			#   · 低烈度（<90）池 = 文明族 100（+ 无共治时请立共治 50）+ 空过 100
+			#                     ⇒ 有共治：文明 50% / 空过 50%；无共治：文明 40% / 请立 20% / 空过 40%
+			#   调"平静度"只动空过权重；调某族存在感只动该行权重（各档 trigger 互斥，权重只在同档内竞争）。
+			scope:ftr_court_pulse_story = {
+				random_list = {
+					# ① 互殴手段族（0300–0320 / 0410 / 0420 / 0430）：脏手段只对「已起事」的烈度开放
+					50 = {
+						trigger = { var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value }
+						ftr_court_strife_slander_effect = yes
+					}
+					# ② 强出口族（0003 / 0004 通知 + 0200 / 0140 / 0150）：同上，仅高烈度
+					50 = {
+						trigger = { var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value }
+						ftr_court_strife_exit_pulse_effect = yes
+					}
+					# ③ 党羽逼宫（0520 / 0530 逼宫退位）：高烈度随时可发……
+					50 = {
+						trigger = { var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value }
+						ftr_court_backer_demand_pulse_effect = yes
+					}
+					# ……低烈度则仅「尚无共治者」时开放（§13 情形一：请立共治不受烈度封锁）
+					50 = {
+						trigger = {
+							NOT = { has_active_diarchy = yes }
+						}
+						ftr_court_backer_demand_pulse_effect = yes
+					}
+					# ④ 无地拉锯（0500 暗中策动；effect 内部另要求天平 ≥ 中性且有共治者）
+					50 = {
+						trigger = { var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value }
+						ftr_court_landless_swing_effect = yes
+					}
+					# ⑤ 共治者游说反扑入口（**任意天平值**均可发动；effect 内部要求有共治者 + 冷却允许）
+					50 = {
+						trigger = { var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value }
+						ftr_court_diarch_backlash_effect = yes
+					}
+					# ⑥ 文明争斗族（M1–M6）：高烈度下与其他族等权并列（"就事论事"依然存在）……
+					50 = {
+						trigger = { var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value }
+						ftr_court_civil_strife_effect = yes
+					}
+					# ……低烈度下是本层唯一的常驻入口，故权重取 100（与空过等权，不至于"多数拍无事"）
+					100 = {
+						ftr_court_civil_strife_effect = yes
+					}
+					# ⑦ 无事发生：**保留 100 权重的空过概率**（朝堂风平浪静的一拍）
+					#    调大 = 更平静；调小 = 事端更密。diagnostic 行仅写 debug.log，无任何游戏内提示。
+					100 = {
+						debug_log = "FTR_PULSE: quiet pulse (nothing happens)"
+						debug_log_scopes = yes
+					}
+				}
+			}
+		}
 	}
 }

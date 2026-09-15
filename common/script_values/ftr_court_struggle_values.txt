@@ -43,9 +43,9 @@ ftr_court_backing_alert_chance_value = {
 #   0-40  平静/潜伏   40-90 酝酿   90-140 对立   140-170 濒危（政变/内战窗口）  170-200 临界（废黜昏君）
 # 边界命名用直白 bound，triggers 里以 `>= 某 bound` 判定进入某区：
 #   < quiet_bound(=40)           → 平静
-#   >= stir_bound(=90)           → 对立（0014 站队 / 对立脉冲）
+#   >= stir_bound(=90)           → 对立（0200 站队 / 对立脉冲）
 #   >= high_bound(=140)          → 濒危（危机脉冲 / 政变·内战出口，对应旧 crisis）
-#   >= critical_bound(=170)      → 临界（0018 废黜昏君等最强手段）
+#   >= critical_bound(=170)      → 临界（0150 废黜昏君等最强手段）
 ftr_court_intensity_min_value = 0
 ftr_court_intensity_max_value = 200
 ftr_court_intensity_quiet_bound_value = 40
@@ -58,8 +58,10 @@ ftr_court_strife_interval_max_value = 120
 # 出手基线概率（%，随烈度升高，后续手段事件族接入时叠加）
 ftr_court_strife_base_chance_value = 15
 # 强出口轮概率（%）：烈度 ≥90 的每次主时钟，按此概率推进一次强出口检查
-# （0014 站队 / 0015 政变·起兵 / 0018 废黜 + 0003/0005 通知），约每 3-4 轮一次
+# （0200 站队 / 0140 政变·起兵 / 0150 废黜 + 0003/0004 通知），约每 3-4 轮一次
 ftr_court_strife_exit_chance_value = 25
+# 交互层党争摩擦：指控 / 散布不和「发起方与目标各自都有背书对象」时的小幅抬升（发起即生效，低于手段档）
+ftr_court_interaction_clash_intensity_value = 4
 # 各手段成功推高烈度的增量（§12.3.2：低+5~10 / 中+15~25 / 高+30~50）
 ftr_court_strife_low_intensity_value = 8
 ftr_court_strife_mid_intensity_value = 20
@@ -71,15 +73,19 @@ ftr_court_poison_intrigue_threshold_value = 14  # 下毒成功率参照的密谋
 ftr_court_severe_poison_days_value = 730    # 0055 剧毒：failing_health(-0.5) 持续 2 年
 ftr_court_chronic_poison_days_value = 1095  # 0056 慢性虚毒：旅行食毒(health-0.25/prowess-4) 持续 3 年
 # 年度自然回落（向 0 缓慢回归，防单向锁死不回落）
-ftr_court_intensity_yearly_decay_value = 5
+# 收窄到 2：与「张力 +8」成对——低于 stir(90) 时只有张力在推，衰减过强会把烈度永久压在死区
+ftr_court_intensity_yearly_decay_value = 2
 # 君主失能/弱势时年度正向偏置（推高烈度，承接 ftr_court_monarch_weak 语义）
 ftr_court_intensity_weak_bias_value = 6
 # 君主强势（声望/虔诚充足）时年度负向偏置（压低烈度）
 ftr_court_intensity_strong_bias_value = -4
 # 竞争者张力：前两名评分接近或参与者站队变化时的偏置
-ftr_court_intensity_tension_bias_value = 4
-# 缓和决议（§12.5 / §12.11）：一次下调幅度与冷却
-ftr_court_ease_intensity_drop_value = 80
+ftr_court_intensity_tension_bias_value = 8
+# 缓和决议（§12.5 / §12.11）：一次下调幅度 / 休战窗口 / 决议冷却
+# 下调幅度取 40：从濒危档(140)缓和后仍留在对立档(≥90)，不把内斗循环打进死区
+ftr_court_ease_intensity_drop_value = 40
+# 休战窗口（ftr_court_eased_struggle flag 时长）：与决议冷却分离——休战短、冷却长
+ftr_court_ease_truce_years_value = 3
 ftr_court_ease_cooldown_years_value = 10
 # 双轨成本：行政制君主耗官方影响力，非行政制耗威望（大量）
 ftr_court_ease_influence_cost_value = 200
@@ -90,11 +96,6 @@ ftr_court_ease_opinion_gain_value = 20
 ########## 二、准入门槛 ##########
 # 君主进入"高龄"的年龄
 ftr_court_monarch_elderly_age_value = 60
-# AI 押注/拉票的君主健康线性驱动：加成 = base − slope × 君主health
-# 参考档：excellent=7 / good=5 / medium=4 / fine=3 / poor=1 / dying=0，
-# 按默认值：dying≈+55、poor≈+45、fine≈+25、medium≈+15、good≈+5、excellent≈−15
-ftr_court_monarch_health_urgency_base_value = 55
-ftr_court_monarch_health_urgency_slope_value = 10
 # 前两名评分差距小于此值 -> contested
 ftr_court_contested_gap_value = 20
 # 前两名评分差距小于此值 -> crisis
@@ -105,42 +106,39 @@ ftr_court_min_backers_value = 2
 # ftr_court_backing_crowd_penalty_value 逐名遍历名单累减该步长（第一名豁免），
 # 使支持者越多时"锦上添花"越不值（参考竞争力中 ftr_court_claim_backer_value 的同向逻辑）。
 ftr_court_backing_crowd_penalty_step_value = 18
-# 黑马激励：目标尚无任何支持者时，AI 背书的意愿额外加成。
-# 与拥挤惩罚配合形成"无人支持者更值得押注"的双向机制，防止支持者扎堆第一继承人。
-ftr_court_backing_underdog_bonus_value = 35
 # ---- 改投摩擦（AI 更不愿频繁变更背书对象）----
-# 决策层：已支持某人时，"再表态"本身的意愿惩罚（改投需更强理由）。
-ftr_court_backing_switch_disincentive_value = -35
-# 选项层：0014 权重的忠诚惯性——候选正是本方现任支持对象时的大幅加权。
-ftr_court_backing_stick_bonus_value = 70
 # 改投「安定期」年限：刚改投过的人在此期间更不愿再次变更。
 ftr_court_backing_switch_cooldown_years_value = 5
-# 安定期内的额外决策惩罚（与上一条配合：改投次数越多，越难再改）。
-ftr_court_backing_switch_recent_penalty_value = -40
 
-# ---- 背书君主 / 共治者的 AI 倾向常量 ----
+# 求值域：this = 被敲打的党羽成员，scope:actor = 敲打者（最高领主）。
+# 敲打党羽的退出概率（%）：顺从性格与对君主好感加分，傲慢 / 野心 / 勇敢减分；引擎 clamp 0-100。
+ftr_court_discipline_exit_chance_value = {
+	value = 10
+	if = { limit = { has_trait = craven }   add = 20 }
+	if = { limit = { has_trait = humble }   add = 15 }
+	if = { limit = { has_trait = loyal }    add = 15 }
+	if = { limit = { has_trait = trusting } add = 10 }
+	if = { limit = { has_trait = just }     add = 10 }
+	if = { limit = { has_trait = content }  add = 10 }
+	if = { limit = { has_trait = arrogant }  add = -15 }
+	if = { limit = { has_trait = ambitious } add = -15 }
+	if = { limit = { has_trait = brave }     add = -10 }
+	if = {
+		limit = { opinion = { target = scope:actor  value >= 40 } }
+		add = 15
+	}
+	if = {
+		limit = { opinion = { target = scope:actor  value < 0 } }
+		add = -15
+	}
+	min = 0
+	max = 60
+}
+
 # 关系「交好」分界：双向好感 ≥ 此值算关系较好；< 此值算「一般」（谈不上交好）。
 ftr_court_backing_relation_good_value = 40
 # 「主要继承人党羽太众多」的判定下限（继承人自身支持者数 ≥ 此值）
 ftr_court_backing_heir_crowd_min_value = 3
-# —— 背书君主（保皇）——
-# 基础倾向在事件选项内压低（base = 5）：投资君主不如投资继承人，保皇主要由立场与情感驱动。
-ftr_court_back_monarch_loyal_bonus_value = 25        # 忠顺：loyal 特质
-ftr_court_back_monarch_courtly_bonus_value = 20      # 忠顺：courtly 封臣立场
-ftr_court_back_monarch_just_bonus_value = 20         # 公正：just 特质
-ftr_court_back_monarch_alliance_bonus_value = 30     # 与君主结盟
-ftr_court_back_monarch_friend_bonus_value = 25       # 君主是好友
-ftr_court_back_monarch_best_friend_bonus_value = 35  # 君主是挚友
-ftr_court_back_monarch_lover_bonus_value = 35        # 君主是情人
-ftr_court_back_monarch_threatened_bonus_value = 25   # 君主有共治者且其 swing ≥ 均势（皇权受威胁）
-ftr_court_back_monarch_crowded_heir_bonus_value = 25 # 主要继承人党羽拥挤且与我关系一般
-# —— 背书共治者 ——
-ftr_court_back_diarch_heir_type_bonus_value = 30     # 继承人/共治型共治者 + 关系较好
-ftr_court_back_diarch_officer_type_bonus_value = 25  # 官职线共治者 + 本人与君主关系不好
-ftr_court_back_diarch_alliance_bonus_value = 30      # 与共治者结盟
-ftr_court_back_diarch_friend_bonus_value = 25        # 共治者是好友
-ftr_court_back_diarch_best_friend_bonus_value = 35   # 共治者是挚友
-ftr_court_back_diarch_lover_bonus_value = 35         # 共治者是情人
 # 君主弱势判定：声望低于此值
 ftr_court_monarch_weak_prestige_value = 500
 # 君主弱势判定：虔诚低于此值
@@ -236,7 +234,7 @@ ftr_court_claim_strength_value = {
 
 	### 实时硬实力：头衔等级（无地皇子不拿此档，仍可靠继承/亲缘/支持者得分）
 	if = {
-		limit = { highest_held_title_tier >= tier_emperor }
+		limit = { highest_held_title_tier >= tier_empire }
 		add = ftr_court_claim_emperor_tier_value
 	}
 	else_if = {
@@ -381,9 +379,9 @@ ftr_court_ui_claimants_count_value = {
 # 权力天平已迁移至官方 diarchy swing（diarchy_swing，0–100：0 = 君主全权，100 = 共治全权，50 = 中性）。
 # 移动 swing 统一调用官方 update_diarchy_swing_with_perspective_effect；
 # 年度自然回落 / 平衡由官方 diarchy 的 swing_balance 机制维护（已废除自建 ftr_court_regency_swing 及 ±5/±3/±2 移轴常量）。
-# 阈值口径（§3.2，对照官方 swing 数值）：30 辅政稳固判定 | 50 中性 | 70 共治请愿 | 90 废黜昏君（且君主失能）
-# 拉锯进入"共治请愿"的阈值
-ftr_court_swing_regency_threshold_value = ftr_swing_tier_strong_low_value
+# 阈值口径（§3.2，对照官方 swing 数值）：30 辅政稳固判定 | 50 中性（0500 派发门槛，见 03 §7.2）| 90 废黜昏君（且君主失能）
+# 注：原「拉锯进入共治请愿的阈值」（70）随请愿口径放宽（2026-09 移除天平条件）已无消费方，常量删除；
+#     0500 的派发门槛改由 03 的 `ftr_diarch_counter_swing_threshold_value`（中性 50）承担。
 # 拉锯进入"夺位"的阈值（且君主失能）
 ftr_court_swing_usurp_threshold_value = ftr_swing_tier_absolute_value
 # 拉锯进入"辅政稳固"的阈值（偏向君主 ≤30）
@@ -401,26 +399,77 @@ ftr_court_back_claimant_influence_cost_value = 40
 ftr_court_heir_backing_prestige_value = 200
 ftr_court_request_coregency_prestige_cost_value = 240
 ftr_court_request_coregency_influence_cost_value = 80
+
+# ---- 共治请愿：君主权衡「拒绝会不会引发冲突」（2026-09）----
+# 请愿者阵营军力分档：达「强」即有底气硬请；达「压倒」则君主多半只能让步
+ftr_court_petition_camp_strong_value = 4000
+ftr_court_petition_camp_overwhelming_value = 9000
+# 君主自身阵营 / 请愿者阵营 的**比值**分档（2026-09）：君主阵营 = 自身 + 自身支持者军力。
+# 用比值而非绝对值——绝对值在大 Realm 里两侧都会越档、互相抵消而失去区分度。
+ftr_court_petition_camp_ratio_advantage_value = 2
+ftr_court_petition_camp_ratio_outgunned_value = 0.5
+# 拒绝请愿的烈度代价（大幅：对照文明档 4/8/15 与逼宫族 20）
+ftr_court_petition_refuse_intensity_value = 25
+# 共治请愿的**接收方**冷却年数（2026-09）：同一君主受理一份请愿后 2 年内不再受理新的，
+# 防止「多名权贵排队逼请」刷屏（flag 到期自动失效，无需手动清理）。
+ftr_court_petition_cooldown_years_value = 2
+
+# 求值域：请愿者（事件/交互 actor）。
+# 其「阵营军力」＝ 自身军力 + 背书对象军力 + 背书对象党羽（支持者名单）军力之和。
+# 供 0220 君主裁决时判断"拒绝是否会把对方逼上对抗"。
+ftr_court_petition_camp_strength_value = {
+	value = current_military_strength
+	if = {
+		limit = { has_variable = ftr_court_backer_of }
+		var:ftr_court_backer_of ?= {
+			add = current_military_strength
+			if = {
+				limit = { has_variable_list = ftr_court_supporters }
+				every_in_list = {
+					variable = ftr_court_supporters
+					add = current_military_strength
+				}
+			}
+		}
+	}
+}
+
+# 求值域：君主。其「自身阵营军力」＝ 自身军力 + 自身支持者（ftr_court_supporters 名单）军力之和。
+# 供 0220 君主裁决时与请愿者阵营对比：君主自有强援则不必让步（2026-09）。
+ftr_court_petition_monarch_camp_strength_value = {
+	value = current_military_strength
+	if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		every_in_list = {
+			variable = ftr_court_supporters
+			add = current_military_strength
+		}
+	}
+}
+
+# 求值域：君主。君主自身阵营 ÷ 请愿者阵营（除数下限 1，避免除零）。
+# > 1 = 君主占优；分档见 ftr_court_petition_camp_ratio_*。调用方须先 has_variable 守卫被除变量。
+ftr_court_petition_camp_ratio_value = {
+	value = ftr_court_petition_monarch_camp_strength_value
+	divide = {
+		value = var:ftr_court_petition_camp_strength
+		min = 1
+	}
+}
 # 请愿回退（请愿者取得 `regency`）的初始天平：取「强权上沿」。
 # 理由（裁定 R2）：请愿以君主失能前提，故给高初值；引擎每月按 0.25 向 regency 的
 # swing_balance = 50 回落，而原版在 swing ≤ 20 时允许免费结束摄政 —— 高初值可延长该窗口。
 ftr_court_petition_regency_initial_swing_value = ftr_swing_tier_strong_high_value
 # 请愿者补偿：共治主体不是请愿者本人（「太子优先」生效）时的「从龙之功」记账额（02 拥立账）
 ftr_court_petition_consolation_merit_value = 15
-# 请愿者补偿：君主已有可用指定继承人（且非请愿者本人）时，AI 发起请愿的意愿抑制值
-ftr_court_petition_heir_priority_disincentive_value = -40
-
-# 恩宠（事件 0001.c 君主示好）：双轨受益量
-ftr_court_favor_prestige_value = 100
-# 恩宠的影响力走官方 minor_influence_gain = 30，无需另设常量
 
 # 内战宣战的威望成本
 ftr_court_succession_war_prestige_cost_value = 350
 
 ########## 六之二、奖惩幅度 ##########
-# 君主强力出手（0003.c 禁止内斗 / 0005.b/c 压制）对烈度的单次抑制量
+# 君主强力出手（0003.c 禁止内斗 / 0004.b/c 压制）对烈度的单次抑制量
 ftr_court_monarch_restraint_drop_value = 8
-# 0011.b「擒贼擒王」定向逮捕的成功基础概率（%）
+# 0110.b「擒贼擒王」定向逮捕的成功基础概率（%）
 ftr_court_arrest_success_base_value = 75
 # 威望与恐惧
 ftr_court_prestige_minor_value = 100
@@ -450,5 +499,193 @@ ftr_court_rebellion_truce_days_value = 1825
 ftr_court_temp_duchy_count_value = 1
 # 临时公国被销毁时的补偿金币
 ftr_court_temp_duchy_compensation_value = 150
+
+########## 八、党羽逼宫（Backer Demand）##########
+# 触发口径：资格权贵（竞争者 / 共治者）的党羽（背书者）达到一定「规模」时，其党羽向最高领主发难：
+#   ① 君主尚无共治者 → 党羽要求拥立自己支持的竞争者共治
+#      （类型按政体分流：东罗马/拜占庭 → 共治皇帝；其他行政制 → 太子；其他政体 → 共治君主；缺省 → 固化摄政）；
+#   ② 君主已有共治者且该共治者正是党羽拥立的对象、天平达强权上沿（≥80）→ 逼宫退位，共治者直接登基。
+# 「规模」= 支持者人数 + 每名强力封臣党羽的额外加权（体现分量而非纯人头，见 ftr_court_backer_demand_scale_value）。
+# 触发所需的最少党羽人数（硬下限：防止单人即逼宫）
+ftr_court_backer_demand_min_count_value = 3
+# 触发所需的党羽规模综合门槛（人数 + 强力封臣加权）
+ftr_court_backer_demand_threshold_value = 4
+# 每名强力封臣党羽在规模中的额外权重
+ftr_court_backer_demand_powerful_weight_value = 1
+# 同一政权两次党羽逼宫的冷却年数（防刷屏）
+ftr_court_backer_demand_cooldown_years_value = 3
+# 逼宫拥立共治者时的初始天平（取强权上沿：逼宫所得不可虚位，对齐 01 共治请愿落地）
+ftr_court_backer_demand_initial_swing_value = ftr_swing_tier_strong_high_value
+# 逼宫要求共治者退位所需的天平门槛（取强权上沿）
+ftr_court_backer_demand_abdication_swing_value = ftr_swing_tier_strong_high_value
+# 逼宫（无论允准或拒绝）对朝堂烈度的增量
+ftr_court_backer_demand_intensity_value = 20
+
+# 求值域：this = 权贵（竞争者 / 共治者）。其党羽规模综合值。
+ftr_court_backer_demand_scale_value = {
+	value = ftr_court_supporters_count_value
+	if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		every_in_list = {
+			variable = ftr_court_supporters
+			if = {
+				limit = { is_powerful_vassal = yes }
+				add = ftr_court_backer_demand_powerful_weight_value
+			}
+		}
+	}
+}
+
+########## 八之二、文明争斗（M1–M3，低烈度段）##########
+# 统一节流：同一政权两次文明事件的最小间隔（年）——文明阶段节奏比脏手段慢
+ftr_court_civil_strife_cooldown_years_value = 2
+# 分档烈度增量：温和收场 / 对立收场 / 处理不当（高危档允许一次性引爆，直接跨过 90 进入脏手段段）
+ftr_court_civil_strife_intensity_low_value = 4
+ftr_court_civil_strife_intensity_mid_value = 8
+ftr_court_civil_strife_intensity_high_value = 15
+# 君主出面平息 / 站边的威望成本（外交越高越便宜，见事件内公式）
+ftr_court_civil_strife_quell_prestige_value = 150
+# 君主亲自调停的降温幅度（负值＝下调烈度）
+ftr_court_civil_strife_intensity_quell_value = -4
+
+# M2 / M3 朝堂辩论（§8.2.2 新写结算，不涉辩经链）：
+# 胜方所得：本人与被支持者各得此额威望（行政制改走影响力）
+ftr_court_debate_prestige_value = 150
+# 败方额外损失
+ftr_court_debate_prestige_loss_value = 100
+# 避战方的声望损失（怯于论战）
+ftr_court_debate_dodge_prestige_value = 60
+# 求值域：this = 该辩士。辩论力＝外交 + 学识 + 威望底蕴(1%) + 党羽规模×2。
+ftr_court_debate_strength_value = {
+	value = 0
+	add = { value = diplomacy  multiply = 1 }
+	add = { value = learning  multiply = 1 }
+	add = { value = prestige  multiply = 0.01 }
+	add = { value = ftr_court_supporters_count_value  multiply = 2 }
+}
+# 求值域：this = 发起辩者；读己方变量 ftr_court_debate_strength 与对手值 ftr_court_debate_foe_strength。
+# 胜率（%）：基础 50 + 双方辩论力差×3，夹 15-85。
+ftr_court_debate_win_chance_value = {
+	value = 50
+	add = {
+		value = var:ftr_court_debate_strength
+		subtract = var:ftr_court_debate_foe_strength
+		multiply = 3
+	}
+	min = 15
+	max = 85
+}
+# 求值域：this = 发起辩者。负率＝100 − 胜率（辩论结算 random_list 的互补权重）。
+ftr_court_debate_lose_chance_value = {
+	value = 100
+	subtract = ftr_court_debate_win_chance_value
+}
+
+# M4 司法决斗・比武裁决（灵感 3）：
+# 胜者所得 / 败者所失（败者另按"支持者离心"追罚）
+ftr_court_duel_prestige_value = 200
+ftr_court_duel_prestige_loss_value = 120
+# 求值域：this = 决斗者。角力＝勇武 + 军事×0.5。
+ftr_court_duel_strength_value = {
+	value = 0
+	add = { value = prowess  multiply = 1 }
+	add = { value = martial  multiply = 0.5 }
+	add = { value = prestige  multiply = 0.01 }
+}
+# 求值域：this = 甲方；读 var:ftr_court_duel_strength / ftr_court_duel_foe_strength。胜率夹 15-85。
+ftr_court_duel_win_chance_value = {
+	value = 50
+	add = {
+		value = var:ftr_court_duel_strength
+		subtract = var:ftr_court_duel_foe_strength
+		multiply = 4
+	}
+	min = 15
+	max = 85
+}
+ftr_court_duel_lose_chance_value = {
+	value = 100
+	subtract = ftr_court_duel_win_chance_value
+}
+
+# M5 清议 / 月旦评（灵感 4）：
+# 褒扬所奖 / 贬斥所伤
+ftr_court_appraisal_prestige_value = 120
+ftr_court_appraisal_loss_value = 100
+# 求值域：this = 该士人。评议资本＝学识 + 外交×0.5 + 威望底蕴(1%)。
+ftr_court_appraisal_power_value = {
+	value = 0
+	add = { value = learning  multiply = 1 }
+	add = { value = diplomacy  multiply = 0.5 }
+	add = { value = prestige  multiply = 0.01 }
+}
+# 求值域：this = 评议者；读 var:ftr_court_appraisal_skill / ftr_court_appraisal_foe_resist。成算夹 20-85。
+ftr_court_appraisal_success_chance_value = {
+	value = 55
+	add = {
+		value = var:ftr_court_appraisal_skill
+		subtract = var:ftr_court_appraisal_foe_resist
+		multiply = 3
+	}
+	min = 20
+	max = 85
+}
+ftr_court_appraisal_fail_chance_value = {
+	value = 100
+	subtract = ftr_court_appraisal_success_chance_value
+}
+
+# M6 谶纬祥瑞・天象勘验（灵感 5）：
+# 造势成功所得声望
+ftr_court_omen_prestige_value = 150
+# 君主置之不理时烈度上浮
+ftr_court_omen_ignored_intensity_value = 6
+# 被学者识破时的声望损失
+ftr_court_omen_debunked_loss_value = 250
+# 求值域：this = 造祥瑞者。抗查底数＝学识 + 威望底蕴(1%) + 2（善于自圆其说）。
+ftr_court_omen_faker_resist_value = {
+	value = 2
+	add = { value = learning  multiply = 1 }
+	add = { value = prestige  multiply = 0.01 }
+}
+# 求值域：this = 派去勘验的君主（其学识即勘验力）；var:ftr_court_omen_faker_resist = 造势者的抗查底数。
+# 成算＝40 + 学识×2 − 抗查底数，夹 20-85。
+ftr_court_omen_inquiry_chance_value = {
+	value = 40
+	add = { value = learning  multiply = 2 }
+	subtract = var:ftr_court_omen_faker_resist
+	min = 20
+	max = 85
+}
+ftr_court_omen_inquiry_fail_chance_value = {
+	value = 100
+	subtract = ftr_court_omen_inquiry_chance_value
+}
+# 弹劾内阁：候选封臣的"发难意愿"基础值（%），性格项在内联加成（公正/傲慢/愤世/勤勉/野心）
+ftr_court_impeach_urge_base_value = 10
+
+# 求值域：this = 候选封臣（有党羽）。弹劾内阁的发难意愿（%）。
+ftr_court_impeach_urge_chance_value = {
+	value = ftr_court_impeach_urge_base_value
+	if = { limit = { has_trait = just }      add = 15 }
+	if = { limit = { has_trait = arrogant }  add = 15 }
+	if = { limit = { has_trait = cynical }   add = 15 }
+	if = { limit = { has_trait = diligent }  add = 10 }
+	if = { limit = { has_trait = ambitious } add = 15 }
+}
+
+########## 九、朝堂行为节流（统一常量组）##########
+# 统一管理 01/03 各「防骚扰 / 出手冷却」字符 flag 的时限，禁止各处硬编码年数。
+# 防骚扰类：对同一对象短期内不重复询问（003 组）
+ftr_court_ask_throttle_years_value = 3
+# 出手冷却类：同一手段短期内不重复（strife_active 普通 / 强手段两档）
+ftr_court_strife_active_years_value = 1
+ftr_court_strife_strong_active_years_value = 2
+# 受害者隐忍（strife_lying_low 标准档；另有 1 年短档保留内联）
+ftr_court_lying_low_years_value = 2
+# 持有把柄（has_leverage）
+ftr_court_leverage_years_value = 5
+# 被绑架胁迫（coerced）
+ftr_court_coerced_years_value = 2
 
 

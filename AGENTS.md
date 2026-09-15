@@ -225,9 +225,13 @@ l_simp_chinese:
 
 > 子目录也需对应：`events/`、`interactions/`、`modifiers/`、`cultures/`、`custom_localization/`。
 
-### 3.7 事件内注释约定
+### 3.7 注释约定
 
-选项用行尾注释标注用途（原版风格，本项目沿用）：
+**注释只写在必要处，小幅度修改一律不加注释**。改数值、调条件、增删一行分支、修拼写、改本地化文案、微调 `ai_will_do` 权重等小改动，直接改完即止——不要写"改了什么/为什么改/与某文档对应"之类的说明性注释，那只会制造噪音。
+
+需要注释的仅有三类：① **新增系统 / 机制**的整体职责说明；② **非显然的取舍或已踩过的坑**（如引擎语义陷阱、必须连写的原版起手式）；③ **跨文件接线的落点指引**（谁在哪个文件调用谁）。
+
+事件内选项用行尾注释标注用途（原版风格，本项目沿用）：
 
 ```paradox
 option = { # Add a long term tax
@@ -492,6 +496,8 @@ python tools/validate_scripts.py --no-ref
 | 用 `parameters = { P = { type = character } }` 声明块 | CK3 **不存在**；参数是 `$PARAM$` 纯文本宏 |
 | 在 Trigger 里改状态 | Trigger 只读；会报错或静默失败 |
 | 在 Effect 里裸写条件 | 必须包进 `limit = { }` |
+| 在**效果域**的 `custom_tooltip` / `custom_description` 内写 `trigger = { }` | 效果域的 `custom_tooltip` 只接受 effects（原版全库 `common/character_interactions`、`common/decisions`、`common/scripted_effects`、`events` 中 **0 处** `trigger` 子键）；要条件显示须外套 `if = { limit = { … } custom_tooltip = { text = … } }` |
+| 在**判定域**的 `custom_tooltip` 内套 `trigger = { }` | 判定域（`is_valid` / `is_shown` / `limit` / `send_option.is_valid`）直接裸写触发器：`custom_tooltip = { text = X  <条件…> }`（原版统一写法） |
 | 写死循环 `while` | 必须让 `limit` 变假或加 `count` 上限 |
 
 ### 6.2 本项目特有
@@ -505,7 +511,7 @@ python tools/validate_scripts.py --no-ref
 | **无意义地重定义整段原版内容** | 只改需要的部分，最小化冲突面 |
 | **用空格缩进新代码** | 项目统一 Tab |
 | **提交 `gui/*.bak` 或空文件** | 仓库卫生 |
-| **硬编码数值** | 抽成 `common/script_values/ftr_values.txt` 里的 script value |
+| **硬编码数值**（AI 权重除外） | 领域常量（成本 / 阈值 / 档位 / 跨文件共用值）抽成 `common/script_values/ftr_*.txt` 的 script value；**例外**：`ai_will_do` / `ai_accept` / 事件选项 `ai_chance`（含其所引用的 scripted_modifiers）内的加减分、乘数与 AI 内部阈值**直接写字面数字**——就地可读、便于调参，不抽常量，替换后也不得残留死常量 |
 
 ### 6.3 高风险操作（需先确认）
 

@@ -64,21 +64,3 @@ ftr_personal_merit_backing_folded_trigger = {
 	}
 }
 
-# 求值域：最高领主。scope:ftr_pm_subject = 效劳方。判断这是不是其"现任最高领主"
-# （战斗计入时用于排除领主亲自统军、私兵自战等）。
-ftr_personal_merit_is_lord_of_subject_trigger = {
-	scope:ftr_pm_subject ?= {
-		OR = {
-			AND = {
-				is_landed = yes
-				top_liege ?= { this = prevprev }
-			}
-			AND = {
-				NOT = { is_landed = yes }
-				employer ?= {
-					top_liege ?= { this = prevprev }
-				}
-			}
-		}
-	}
-}

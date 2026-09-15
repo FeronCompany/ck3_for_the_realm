@@ -33,15 +33,71 @@ ftr_diarchy_levy_vassal_swing_value = ftr_swing_tier_even_high_value
 ftr_diarchy_amnesty_swing_value = ftr_swing_tier_strong_high_value
 # 准备篡位（§4.4-A）支持者数量门槛
 ftr_diarchy_prepare_coup_supporter_threshold_value = 2
+# 太子共治初始天平（§2.2 / §6）：主动立储（指定继承人 / 成年补立）——低起点，太子须靠经营抬升
+ftr_diarchy_crown_prince_voluntary_initial_swing_value = 10
+# 太子共治初始天平：被迫立储（共治请愿 / 党羽逼宫推上台）
+ftr_diarchy_crown_prince_imposed_initial_swing_value = 40
 
 ### 一之二、季度背书博弈（swing 唯一的人工成长源；无任何被动月度修正）
 # 每 1 名「净背书领先」折算的 swing 点
 ftr_diarchy_swing_drift_per_backer_value = 1
-# 单季度 drift 上限 / 下限（幅度刻意压小）
-ftr_diarchy_swing_drift_cap_value = 3
+# 君主党羽折算溢价：共治者天然更易积累党羽（大赦 / 请愿 / 逼宫都把党羽记在共治者名下），
+# 故君主每名党羽按此倍率折算，抵消结构性单向上行
+ftr_diarchy_swing_drift_liege_backer_multiplier_value = 1.5
+# 单季度 drift 上限 / 下限（幅度刻意压小；正向刻意低于负向，抑制「只涨不跌」）
+ftr_diarchy_swing_drift_cap_value = 1
 ftr_diarchy_swing_drift_cap_min_value = -3
-# 季度派发共治拉锯事件（00A1 / 00A2）的概率（%）
+# 正值生效门槛：加权领先不足此值时**不**推共治者一侧（否则「共治者党羽略多」= 每季恒定 +1 的上行泵）
+ftr_diarchy_swing_drift_positive_min_value = 2
+# 共治者侧游说反扑的发动概率（%）：在带内每季度尝试发动对垒的概率。
+# 2026-09：不再用于派发 0510 事件，改作「党羽游说对垒」(ftr_diarchy_backer_lobby_pk_effect) 的启动概率。
+# 实际频率由对垒自带的「政权 1 年冷却」（ftr_diarchy_lobby_pk_cooldown_years_value）独立把关，
+# 故此处给 100（带内即尝试）——原 15% 与冷却叠乘后几乎不出现，是"对垒很久不触发"的第一根因。
+ftr_diarch_backlash_event_chance_value = 100
+# （已移除）原「游说对垒天平带」常量：2026-09 起对垒**任意天平值均可发动**（含共治者已占优时），
+# 天平档位不再作为入口门槛；频率改由 ftr_diarchy_lobby_pk_cooldown_years_value（政权）
+# 与 ftr_diarchy_lobby_pk_lobbyist_cooldown_days_value（个人）把关。
+# 拉锯事件（0500 / 0510）的单政权冷却（天）：冷却期内同一君主不再被派发，
+# 把两侧事件通道的实际上限钉在「每政权每年各 1 次」，防止任何一条派发路径重复触发时
+# 退化成"每半月 +5"的上行泵（实测日志曾出现单一政权 2.5 年内十余次派发）。
+ftr_diarch_swing_event_cooldown_days_value = 365
+
+# —— 阶段 A 党羽游说对垒（§4.4-A D13；2026-09 重做：双方各抽一人做能力对垒）——
+# 游说能力评分 = 智谋 + 外交（智谋 / 外交为最重要的两项属性；不再按党羽人数逐名堆 swing）
+# 对垒基准胜率（%）：双方评分持平时的共治者方胜率
+ftr_diarchy_lobby_pk_base_chance_value = 50
+# 每 1 点评分差（共治者方 − 君主方）对胜率的加权（%）
+ftr_diarchy_lobby_pk_skill_weight_value = 2.5
+# 胜率夹取区间（%）：不留 0 / 100 的绝对结果
+ftr_diarchy_lobby_pk_chance_min_value = 10
+ftr_diarchy_lobby_pk_chance_max_value = 90
+# 同一政权两次「党羽游说对垒」的冷却（年）——对垒的硬频率闸门。
+# 2026-09 由 1 年放宽到 2 年：带内改为 100% 必开之后，对垒成为"每政权每 2 年一次"的稀有事件，
+# 避免被年度仪式化的拉锯消息淹没。
+# 注（必须满足的不变量）：**政权冷却 < 个人冷却**，否则上一场的强手在新一场时冷却刚好到期，
+#     会被反复抽中，阵营内部轮换失效。
+ftr_diarchy_lobby_pk_cooldown_years_value = 2
+# 参与过一次对垒的游说者**个人冷却**（天）：期满前不会再被抽中。
+# 用途：阵营内部轮换——避免「人少但能力强」的阵营每次都派同一人碾压对方弱手，形成一边倒。
+# 取 3 年 > 政权冷却 2 年，保证上一场的出战者必然缺席下一场。
+ftr_diarchy_lobby_pk_lobbyist_cooldown_days_value = 1095
+# 天平外部变更审计门槛：每季度把「当前天平」与「上一次本 mod 写入后的值」比对，
+# 差额绝对值 ≥ 此值时才发一条「原因不在本 mod 记账内」的偏移通知——
+# 覆盖原版机制（无地共治者的「摆动天平」交互 / 天命事件）、引擎月度自然回落、对方阵营的原版交互。
+# 调大 → 更安静（±0.25/月的引擎回落被静默吸收）；调小 → 更透明但更啰嗦。
+# 同时用作季度背书 drift 的**播报**门槛：|drift| 低于此值的细微涨落不再单独发消息。
+ftr_diarchy_swing_audit_threshold_value = 2
+
+# 对垒一次推动天平的幅度（沿用原版档位常量：共治者方胜 +5 / 君主方胜 −5）。
+# 注：`minor_sop_swing_liege_gain` 是块状脚本值，必须包一层 { value = ... } 才能被本文件别名引用
+# （直接写 `= minor_sop_swing_liege_gain` 会触发 "referencing a named formula" 并让消费端读值失败）。
+ftr_diarchy_lobby_pk_swing_gain = { value = minor_sop_swing_diarch_gain }
+ftr_diarchy_lobby_pk_swing_loss = { value = minor_sop_swing_liege_gain }
+# 季度派发共治拉锯事件（0500 / 0510）的概率（%）
 ftr_diarchy_swing_event_chance_value = 25
+# 君主侧反制（0500）的派发门槛：天平达到中性（50）即开始反制。
+# 原取强权下沿（70），偏高导致「涨得快、回得慢」，是 swing 单向上行的第二根因。
+ftr_diarch_counter_swing_threshold_value = ftr_swing_tier_even_mid_value
 
 # —— 背书盘点（求值域 = 君主）——
 # 背书共治者的人数（封臣 + 内阁）
@@ -85,22 +141,67 @@ ftr_diarchy_liege_backer_count_value = {
 	}
 }
 
-# 季度 swing 漂移量 =（共治者背书 − 君主背书）× 每人折算，且夹在 ±上限内
-ftr_diarchy_backer_swing_drift_value = {
+# 求值域：君主。共治者党羽数 − 君主党羽数（未加权）。
+# 供 0510 派发前置：共治者党羽不落后于君主时，其反击才有凭依（否则纯属无党羽的凭空拉轴）。
+ftr_diarchy_backer_lead_value = {
 	value = ftr_diarchy_diarch_backer_count_value
 	subtract = ftr_diarchy_liege_backer_count_value
+}
+
+# 季度 swing 漂移量 =（共治者背书 − 君主背书 × 折算溢价）× 每人折算，且夹在 ±上限内
+ftr_diarchy_backer_swing_drift_value = {
+	value = ftr_diarchy_diarch_backer_count_value
+	subtract = {
+		value = ftr_diarchy_liege_backer_count_value
+		multiply = ftr_diarchy_swing_drift_liege_backer_multiplier_value
+	}
 	multiply = ftr_diarchy_swing_drift_per_backer_value
 	max = ftr_diarchy_swing_drift_cap_value
 	min = ftr_diarchy_swing_drift_cap_min_value
 }
 
+# 求值域：this = 游说者（阶段 A 党羽游说对垒的当事人）。
+# 游说能力评分 = 智谋 + 外交（§4.4-A：这两项是游说成败最重要的属性）。
+ftr_diarchy_lobby_pk_skill_score_value = {
+	value = intrigue
+	add = diplomacy
+}
+
+# 求值域：共治者方游说者（scope:ftr_diarchy_pk_diarch_lobbyist）。
+# 对垒胜率（%）= 基准 + (本方评分 − 君主方评分) × 权重，再夹在 min~max。
+# 依赖外层已保存 scope:ftr_diarchy_pk_liege_lobbyist（君主方游说者）。
+ftr_diarchy_lobby_pk_diarch_win_chance_value = {
+	value = ftr_diarchy_lobby_pk_base_chance_value
+	add = {
+		value = ftr_diarchy_lobby_pk_skill_score_value
+		subtract = {
+			value = 0
+			scope:ftr_diarchy_pk_liege_lobbyist = { add = ftr_diarchy_lobby_pk_skill_score_value }
+		}
+		multiply = ftr_diarchy_lobby_pk_skill_weight_value
+	}
+	max = ftr_diarchy_lobby_pk_chance_max_value
+	min = ftr_diarchy_lobby_pk_chance_min_value
+}
+
+# 求值域：君主。**外部变更审计**用差额 =（当前天平 − 上一次本 mod 写入后的天平）。
+# 依赖变量 ftr_diarchy_swing_seen（由 ftr_diarchy_swing_notice_effect 与审计本身维护）。
+ftr_diarchy_swing_audit_delta_value = {
+	value = diarchy_swing
+	subtract = var:ftr_diarchy_swing_seen
+}
+
 ### 二、废太子（§3.2）
 # 双向固定好感惩罚
 ftr_diarchy_abolish_opinion_mutual_value = -50
+# 太子党羽（ftr_court_supporters 名单）对废储之举的不满
+ftr_diarchy_abolish_backer_opinion_value = -25
+# 可废门槛：太子天平（swing）高于此值则羽翼已丰，不可轻废（决议 is_valid 门槛）
+ftr_diarchy_abolish_prince_swing_cap_value = ftr_swing_tier_even_high_value
+# 废储代价：正统性惩罚
+ftr_diarchy_abolish_legitimacy_value = -400
 
 ### 二之二、废太子 AI 倾向（§3.2）
-# 双向好感在 ai_will_do 中的权重（负值：越互相厌恶，越倾向换太子）
-ftr_diarchy_abolish_opinion_weight_value = -0.4
 # 党羽压力换算：每名「强力封臣党羽」/「内阁党羽」/「党羽军力」的权重
 ftr_diarchy_abolish_powerful_backer_weight_value = 8
 ftr_diarchy_abolish_councillor_backer_weight_value = 6
@@ -177,20 +278,16 @@ ftr_diarchy_abolish_prince_pressure_value = {
 ### 三、授土提醒（§4.0）
 # 无地共治者提醒间隔（年）
 ftr_diarchy_grant_land_reminder_years_value = 3
+# 授土行为的「强弱分界」（求值域：主君，读 diarchy_swing）：
+#   swing <  此值 → 共治者羽翼未丰，只能**委婉奏请**（0200 选项 a2 → 主君事件 ftr_diarchy.0210，由主君裁断）；
+#   swing >= 此值 → 恢复**无条件索取**（0200 选项 a1，共治者直接划走，主君被通知但拦不住）。
+ftr_diarchy_land_request_swing_value = 60
 
 ### 三之二、交互成本（§4.2 / §4.3）
 ftr_diarchy_designate_heir_influence_cost_value = 150
 ftr_diarchy_boost_line_influence_cost_value = 100
 
 ### 四、AI 权重（继承人线 / 官职线各写一套，见 §4.7 AI 口径）
-# 替主君立储时偏好「年幼 / 弱能 / 怯懦」
-ftr_diarchy_ai_prefer_incompetent_weight = 40
-# 替主君立储：候选人「弱能 / 怯懦」的通用加分
-ftr_diarchy_ai_incompetent_bonus_value = 20
-# 替主君立储：现有太子对共治者满意时的减分（满意则懒得换人）
-ftr_diarchy_ai_satisfied_prince_penalty_value = -60
-# 替主君立储：「满意」的好感阈值
-ftr_diarchy_ai_satisfied_prince_opinion_value = 50
 # AI 封臣起兵倾向的各因子权重
 ftr_diarchy_ai_revolt_weight_weak_liege_value = 40
 ftr_diarchy_ai_revolt_weight_good_opinion_value = -30
@@ -198,19 +295,13 @@ ftr_diarchy_ai_revolt_weight_legitimacy_value = 25
 ftr_diarchy_ai_revolt_weight_supporter_power_value = 30
 # 起兵倾向阈值（低于此不造反）
 ftr_diarchy_ai_revolt_threshold_value = 50
-# 大动作决议对 AI 的最低意愿
-ftr_diarchy_ai_major_action_min_value = 30
 
 ### 五、党羽相助（§4.4-A）
 ftr_diarchy_supporter_help_chance_value = 30
 ftr_diarchy_supporter_help_effect_value = 10
 
-### 六、拉封臣入战（§4.5）货币成本与同意加权
+### 六、拉封臣入战（§4.5）货币成本（AI 同意加权内联在交互 ai_accept）
 ftr_diarchy_levy_vassal_gold_cost_value = 200
-ftr_diarchy_levy_vassal_accept_weight_gold_value = 20
-ftr_diarchy_levy_vassal_accept_weight_hook_value = 10
-ftr_diarchy_levy_vassal_accept_weight_influence_value = 20
-ftr_diarchy_levy_vassal_base_accept_value = -20
 # 影响力单价（offer influence 选项的实际扣量）
 ftr_diarchy_levy_vassal_influence_cost_value = 100
 # 必拒者过滤：目标对共治者的好感低于此值则不出现在候选列表
@@ -219,11 +310,6 @@ ftr_diarchy_levy_vassal_min_opinion_value = -25
 ftr_diarchy_levy_vassal_per_option_penalty_value = -15
 # 拉人代价：同时动用两项以上代价时的额外递增减分
 ftr_diarchy_levy_vassal_multi_option_penalty_value = -15
-# 拉人意愿：敌我比 ≥ 2（我方被压制 → 需要拉人）的加分
-ftr_diarchy_levy_vassal_outnumbered_bonus_value = 40
-# 拉人意愿：敌我比 ≤ 0.5（我方压倒性优势 → 不必拉人）的减分
-ftr_diarchy_levy_vassal_overwhelming_penalty_value = -50
-
 # 拉封臣入战（§4.5）AI 意愿：send_option 激活越多越不愿出手。
 # 求值域 = 共治者（交互 actor）；send_option 的 flag 在此可见（同项目既有写法）。
 ftr_diarchy_levy_vassal_option_cost_value = {
@@ -332,5 +418,10 @@ ftr_qingjunce_merit_value = 40
 ### 九、准备篡位（§4.4-A）
 # 表态阶段：封臣屈服时对共治者阵营的「不反对」记账量
 ftr_diarchy_phase_a_neutral_weight_value = 1
-# 阶段 A 超时自动解锁天数（D6 双通道）
+# 阶段 A 表态窗口（天）：窗口结束结算（置 ftr_diarchy_phase_a_done），
+# 解锁「无人反对」路径；期间若有封臣造反（ftr_diarchy_phase_a_opposed）则锁定。
+ftr_diarchy_phase_a_settle_days_value = 30
+# 阶段 A 结算 / 超时标记的存续天数（驱动落地解锁窗口）
+ftr_diarchy_phase_a_done_days_value = 1825
+# 阶段 A 真·超时自动解锁天数（D6 双通道；有清君侧战争久拖不决时到期解锁）
 ftr_diarchy_phase_a_timeout_days_value = 365

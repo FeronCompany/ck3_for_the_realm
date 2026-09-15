@@ -5,3 +5,6 @@
  REPEL_BARBARIAN_DUCHY_CB_SPECIFIC_NAME: "拓土攘夷-[TITLE.GetBaseName]"
  REPEL_BARBARIAN_KINGDOM_CB_NAME: "拓土攘夷-王国"
  REPEL_BARBARIAN_KINGDOM_CB_SPECIFIC_NAME: "拓土攘夷-[TITLE.GetBaseName]"
+ # ===== 本 mod 战争名（CB 的 war_name 字段；缺省会报 "has no war_name scripted"） =====
+ FTR_QINGJUNCE_WAR_NAME: "清君侧"
+ FTR_SUCCESSION_WAR_NAME: "继位之战"

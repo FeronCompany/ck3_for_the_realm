@@ -114,7 +114,7 @@ ftr_decision_events.0003 = {
 
 	option = { # Custome Guy
 		name = ftr_decision_events.0003.c
-		custom_tooltip = ftr_call_traverser_custom_tt
+		custom_tooltip = ftr_call_traverser_custom_ttext
 		trigger_event = {
 			id = ftr_decision_events.0014 # Custom Guy on call
 		}

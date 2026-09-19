@@ -527,9 +527,12 @@ ftr_court_has_backing_trigger = {
 ftr_court_same_camp_trigger = {
 	OR = {
 		# ① 我是党羽：以「我所支持党首」的名单对照
+		#    注：`var:… ?= { }` 拿到的是 weak scope，**不能在其中做变量操作**
+		#    （is_target_in_variable_list 会报 "This scope doesn't support variables"）。
+		#    此处已由 has_variable 守卫，故改用**强引用** `var:X = { }`（原版通用写法）。
 		AND = {
 			has_variable = ftr_court_backer_of
-			var:ftr_court_backer_of ?= {
+			var:ftr_court_backer_of = {
 				OR = {
 					is_target_in_variable_list = { name = ftr_court_supporters  target = $OTHER$ }
 					this = $OTHER$

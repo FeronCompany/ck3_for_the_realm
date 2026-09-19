@@ -2947,7 +2947,7 @@ ftr_court_struggle.0430 = {
 # ---- 手段 2.6 事件链：无地参与者「暗中策动」（0500，root = 无地参与者）----
 # 由 ftr_court_landless_swing_effect 在主时钟派发（§9.6）：天平偏向共治（≥70）时，
 ##############################################################
-### 05xx 强出口与党羽逼宫（0500 无地拉锯 / 0510 共治反击 / 0520–0530 党羽逼宫）
+### 05xx 强出口与党羽逼宫（0500 无地拉锯 / 0520–0530 党羽逼宫）
 ##############################################################
 
 # 无地竞争者无法使用辅政/游说交互，故以事件暗中联络朝臣，push swing 向君主（有曝光风险）。
@@ -3022,7 +3022,7 @@ ftr_court_struggle.0500 = {
 			modifier = { add = -25  has_trait = honest }
 		}
 		# 暗中进言削弱共治：85% 成功（把天平向君主拉回，不留痕迹）；否则风声走漏、声望受损（互斥）
-		# 注：成功率刻意高于早期 55%——共治者侧的 0510 是必然生效的 +5，君主侧若还打折则长期只涨不跌。
+		# 注：成功率刻意高于早期 55%——共治者侧的「党羽游说对垒」是必然发动的 ±5，君主侧若还打折则长期只涨不跌。
 		random = {
 			chance = 85
 			scope:ftr_court_story_owner ?= {
@@ -3087,109 +3087,6 @@ ftr_court_struggle.0500 = {
 	}
 }
 
-# ---- 手段 2.6 反馈链：共治者反击（0510，root = 共治者 diarch）----
-# 【已停用自动派发｜2026-09】共治者侧的天平反扑统一改由 03 的「党羽游说对垒」承接
-# （ftr_diarchy_backer_lobby_pk_effect：双方各抽一人按「智谋 + 外交」对垒，胜方一次推动 ±5，
-#  另有政权 1 年 + 个人 1 年冷却）。原两个派发入口（03 季度 drift ③ / 01
-#  ftr_court_diarch_backlash_effect）均已改调该效果；本事件不再有任何自动入口，仅供手动调试。
-######### 0510 共治反击（§9.6，已停用派发） #########
-ftr_court_struggle.0510 = {
-	type = character_event
-	title = ftr_court_struggle.0510.t
-	desc = ftr_court_struggle.0510.desc
-	theme = intrigue
-
-	left_portrait = {
-		character = root
-		animation = anger
-	}
-	right_portrait = {
-		character = scope:ftr_court_story_owner
-		animation = personality_rational
-	}
-
-	immediate = {
-		save_scope_as = ftr_court_diarch
-		# 定位所在朝堂 story 与君主（共治者走 top_liege / employer 兜底）
-		if = {
-			limit = { any_owned_story = { type = ftr_court_struggle } }
-			every_owned_story = {
-				limit = { story_type = ftr_court_struggle }
-				save_scope_as = ftr_court_story
-			}
-		}
-		else_if = {
-			limit = { exists = top_liege }
-			top_liege = {
-				every_owned_story = {
-					limit = { story_type = ftr_court_struggle }
-					save_scope_as = ftr_court_story
-				}
-			}
-		}
-		else_if = {
-			limit = { exists = employer }
-			employer = {
-				every_owned_story = {
-					limit = { story_type = ftr_court_struggle }
-					save_scope_as = ftr_court_story
-				}
-			}
-		}
-		scope:ftr_court_story ?= {
-			story_owner = { save_scope_as = ftr_court_story_owner }
-		}
-		# 泛化（03 §7.1）：无朝堂角逐 story 但存在共治关系时，用共治君主补全作用域
-		# （root = 共治者本人，liege 即其君主），使本事件成为共治期的共治者反击入口。
-		if = {
-			limit = { NOT = { exists = scope:ftr_court_story_owner } }
-			if = {
-				limit = { exists = liege }
-				liege = { save_scope_as = ftr_court_story_owner }
-			}
-			else_if = {
-				limit = { exists = top_liege }
-				top_liege = { save_scope_as = ftr_court_story_owner }
-			}
-		}
-	}
-
-	option = { # Rally the loyalists
-		name = ftr_court_struggle.0510.a
-		ai_chance = {
-			base = 60
-			modifier = { add = 20  has_trait = ambitious }
-			modifier = { add = -20  has_trait = content }
-		}
-		# 密令亲信游说，把天平向自己（共治者）拉回（官方 swing 向 diarch 侧）
-		scope:ftr_court_story_owner ?= {
-			if = {
-				limit = {
-					has_active_diarchy = yes
-					exists = diarch
-				}
-				# 诊断（临时，排完可删）
-				debug_log = "FTR_SWING_0510: diarch backlash +5 toward diarch"
-				debug_log_scopes = yes
-				update_diarchy_swing_with_perspective_effect = {
-					SWING = minor_sop_swing_diarch_gain
-					LIEGE = scope:ftr_court_story_owner
-				}
-				# 天平偏移通知（§7.1）：共治者暗中游说 → 向共治者一侧上推
-				ftr_diarchy_swing_notice_effect = { KEY = ftr_court_swing_notice_0510_a }
-			}
-		}
-	}
-	option = { # Endure for now
-		name = ftr_court_struggle.0510.b
-		ai_chance = {
-			base = 40
-			modifier = { add = 20  has_trait = patient }
-			modifier = { add = -20  has_trait = ambitious }
-		}
-	}
-}
-
 # =====================================================================
 # 内斗主时钟选族：已由 on_action `ftr_court_struggle_main_pulse`
 #   以 effect + random_list 直接调度各族 effect（原 0211–0215 hidden
@@ -3214,6 +3111,7 @@ ftr_court_struggle.0520 = {
 		is_alive = yes
 		has_variable = ftr_court_demand_champion
 		var:ftr_court_demand_champion ?= { is_alive = yes }
+		NOT = { has_active_diarchy = yes }
 	}
 	desc = ftr_court_struggle.0520.desc
 	theme = diplomacy
@@ -3225,12 +3123,6 @@ ftr_court_struggle.0520 = {
 	right_portrait = {
 		character = var:ftr_court_demand_champion
 		animation = personality_bold
-	}
-
-	trigger = {
-		exists = var:ftr_court_demand_champion
-		var:ftr_court_demand_champion ?= { is_alive = yes }
-		NOT = { has_active_diarchy = yes }
 	}
 
 	immediate = {
@@ -3312,6 +3204,7 @@ ftr_court_struggle.0530 = {
 		is_alive = yes
 		has_variable = ftr_court_demand_diarch
 		var:ftr_court_demand_diarch ?= { is_alive = yes }
+		exists = diarch
 	}
 	desc = ftr_court_struggle.0530.desc
 	theme = intrigue
@@ -3323,12 +3216,6 @@ ftr_court_struggle.0530 = {
 	right_portrait = {
 		character = var:ftr_court_demand_diarch
 		animation = personality_bold
-	}
-
-	trigger = {
-		exists = var:ftr_court_demand_diarch
-		var:ftr_court_demand_diarch ?= { is_alive = yes }
-		exists = diarch
 	}
 
 	immediate = {
@@ -3459,6 +3346,7 @@ ftr_court_struggle.0600 = {
 ftr_court_struggle.0601 = {
 	type = letter_event
 	title = ftr_court_struggle.0601.t
+	desc = ftr_court_struggle.0601.desc
 	# 事件级过滤：裁决需弹劾者与被弹劾者均在场
 	trigger = {
 		is_alive = yes

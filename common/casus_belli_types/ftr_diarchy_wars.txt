@@ -94,9 +94,6 @@ ftr_qingjunce = {
 	########## 失效：回收，不追究 ##########
 	on_invalidated = {
 		scope:defender ?= { remove_variable = ftr_qingjunce_current_war }
-		scope:attacker ?= {
-			remove_character_flag = ftr_qingjunce_at_war
-		}
 	}
 
 	on_victory_desc = {

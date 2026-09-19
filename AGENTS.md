@@ -379,7 +379,7 @@ python tools/validate_scripts.py
 python tools/validate_scripts.py --no-ref
 ```
 
-**校验项**（1-9 为硬性 Error，10-14 为 Warning）：
+**校验项**（1-7 / 12 为硬性 Error；8-11 / 13-14 为 Warning）：
 
 | # | 校验项 | 级别 |
 |---|---|---|
@@ -394,10 +394,14 @@ python tools/validate_scripts.py --no-ref
 | 9 | 缩进规范：common 用 Tab、localization 用空格 | Warning |
 | 10 | 新增顶层对象须带 `ftr_` 前缀（覆盖原版需 `###### OVERRIDE ######`） | Warning |
 | 11 | 双语本地化键名一致性（english 与 simp_chinese 成对） | Warning |
+| 12 | **引擎语义陷阱**（error.log 实证）：`random_list` 权重非数值字面量；事件块多份 `trigger`；非 hidden 事件缺 `desc`；on_action 块多份 `trigger`/`effect`；`custom_tooltip`/`custom_description` 内写 `trigger = { }` | Error |
+| 13 | **weak scope**：`var:X ?= { }` 内做变量操作（应改强引用 `var:X = { }`） | Warning |
+| 14 | **孤儿事件**：事件定义了但全 mod 无人触发（预留/调试入口可在 `ORPHAN_EVENT_ALLOW` 登记） | Warning |
 
 > ⚠ **引用一致性检查能抓"语法过但 error.log 报错"的语义错误**（如引用了不存在的 trait/law/effect/trigger/value）。已实际抓到过：`has_trait = genius`（应 `intellect_good_3`）、`melancholic`（应 `depressed`）、`monastic`（不存在）、性别法 `male_preferred_law`（应 `has_title_law = male_only_law/female_only_law`）。
 > **注意事项**：脚本会同时加载 mod 自身定义的 trait/law/effect/trigger/value 进白名单，避免 mod 新增对象误报；未提供 `--game-path` 时引用检查自动跳过。
 > **新增 on_action 挂载点**时，须把挂载点名登记进脚本的 `VANILLA_ON_ACTION_HOOKS` 白名单（`tools/validate_scripts.py`），否则会误报；mod 自定义的 `ftr_*` 对象由脚本自动纳入，无需手工登记。
+> **12–14 是 2026-09 一次 error.log 排错（4.6 万条报错）归纳出的引擎语义陷阱**，写法与替代方案见 [文档 03 §13](document/03-触发器与效果.md) 与 [文档 08 §3](document/08-角色交互与决议.md)。
 
 **退出码**：`0` = 全通过；`1` = 有 Error（**必须修复**，会引发加载失败）；`2` = 仅有 Warning（规范提示，建议处理）。
 

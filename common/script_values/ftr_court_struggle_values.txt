@@ -449,7 +449,8 @@ ftr_court_petition_camp_strength_value = {
 	value = current_military_strength
 	if = {
 		limit = { has_variable = ftr_court_backer_of }
-		var:ftr_court_backer_of ?= {
+		# 已由 has_variable 守卫 → 强引用（`?=` 是 weak scope，做不了变量操作）
+		var:ftr_court_backer_of = {
 			add = current_military_strength
 			if = {
 				limit = { has_variable_list = ftr_court_supporters }

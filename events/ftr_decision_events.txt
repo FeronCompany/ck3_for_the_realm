@@ -3,36 +3,6 @@
 namespace = ftr_decision_events
 
 # Restore Byzantium Empire
-ftr_decision_events.0001 = {
-	type = character_event
-	title = ftr_decision_events.0001.t
-	desc = ftr_decision_events.0001.desc
-	theme = realm
-	left_portrait = {
-		character = root
-		animation = personality_honorable
-	}
-
-	immediate = {}
-
-	option = {
-		name = ftr_decision_events.0001.a
-		root = {
-			save_scope_as = emperor
-		}
-		give_nickname = nick_the_glorious
-		every_player = {
-			limit = {
-				NOT = { this = root }
-				is_within_diplo_range = { CHARACTER = root }
-			}
-			trigger_event = ftr_decision_events.0002
-		}
-	}
-
-	after = {}
-}
-
 # Restore Byzantium Empire Notify
 ftr_decision_events.0002 = {
 	type = character_event

@@ -1027,7 +1027,7 @@ ftr_qingjunce_defeat_effect = {
 
 # 求值域：君主（季度脉冲，playable）。
 # ① 按「背书共治者人数 − 背书君主人数 × 折算溢价」小幅移动 swing（无任何被动月度修正）；
-# ② 依天平档位概率派发 01 的共治拉锯事件（0500 反共治 / 0510 共治反击）；
+# ② 依天平档位概率派发 01 的共治拉锯事件（0500 反共治）；
 #    这两个事件已泛化：无朝堂角逐 story 时自动用共治关系补全作用域。
 ftr_diarchy_quarterly_swing_drift_effect = {
 	save_scope_as = ftr_diarchy_drift_liege
@@ -1115,7 +1115,7 @@ ftr_diarchy_quarterly_swing_drift_effect = {
 			}
 		}
 	}
-	# ③ 共治者阵营游说反扑——2026-09 起**不再派发 0510 事件，也不再受天平档位限制**：
+	# ③ 共治者阵营游说反扑——0510 事件已于 2026-09 删除，且不受天平档位限制：
 	#    任意天平值（含共治者已占优时）都可发动，由「党羽游说对垒」
 	#    (ftr_diarchy_backer_lobby_pk_effect) 承接：双方各抽一人按「智谋 + 外交」对垒，
 	#    胜方一次推动 ±5；频率由对垒自带的政权 2 年 + 个人 3 年冷却把关。

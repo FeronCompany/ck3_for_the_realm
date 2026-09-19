@@ -138,5 +138,4 @@
  ftr_court_swing_notice_imposed:0 "<FTR>Backers' demand: this co-ruler was forced onto the throne, so the [scales_of_power|E] start at the #EMP demand baseline#! of #P 40#! (Crown Prince) or #P 80#! (co-emperor, co-monarch, regent) — what is won by force is not left empty."
  ftr_court_swing_notice_0500_a:0 "<FTR>Whispers succeed: the monarch's agents shake the co-ruler's household, pulling the [scales_of_power|E] #P -5#! toward the #EMP monarch#! (85% chance; a failure leaks the plot and costs the monarch renown)."
  ftr_court_swing_notice_0500_b:0 "<FTR>The co-ruler's circle is bribed: the monarch spends #P 60#! gold among the co-ruler's confidants, pulling the [scales_of_power|E] #P -5#! toward the #EMP monarch#!."
- ftr_court_swing_notice_0510_a:0 "<FTR>The co-ruler lobbies in secret: the co-ruler's camp works the court against the monarch, pushing the [scales_of_power|E] #P +5#! toward the #EMP co-ruler#!."
  ftr_court_swing_notice_0220_a:0 "<FTR>The monarch promises a share of power: granted at court, it shifts the [scales_of_power|E] #P +5#! toward the #EMP co-ruler#!."

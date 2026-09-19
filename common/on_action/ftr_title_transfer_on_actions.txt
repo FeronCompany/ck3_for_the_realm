@@ -195,6 +195,8 @@ ftr_auto_assign_baronies_quarterly_effects = {
 		every_held_title = {
 			limit = {
 				tier = tier_barony
+				# 首府男爵领不能单独易主（引擎要求改伯爵领），跳过以免刷 error.log
+				is_capital_barony = no
 			}
 			save_scope_as = current_barony
 			create_character = {

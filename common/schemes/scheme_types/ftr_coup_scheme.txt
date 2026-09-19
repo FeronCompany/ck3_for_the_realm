@@ -219,7 +219,9 @@
 		add = countermeasure_apply_secrecy_maluses_value
 	}
 
-	agent_leave_threshold = -25
+	# ftr 口径（退出机制调整）：政变党羽由事件强制锁入（force_add_to_agent_slot + 锁定期），
+	# 退出阈值压到极低，确保党羽不会中途因意愿下降而自动脱队。
+	agent_leave_threshold = -1000
 
 	on_start = {
 		set_variable = {

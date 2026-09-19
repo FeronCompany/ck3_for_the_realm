@@ -198,7 +198,7 @@ request_combat_guidance_interaction = {
 			age >= 12
 			OR = {
 				has_trait = education_martial
-				culture = { has_cultural_parameter = can_duel_rivals }
+				culture ?= { has_cultural_parameter = can_duel_rivals }
 				has_focus = martial_chivalry_focus
 				has_focus = martial_authority_focus
 				has_focus = martial_strategy_focus

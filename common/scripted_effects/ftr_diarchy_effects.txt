@@ -369,6 +369,7 @@ ftr_diarchy_oust_liege_impl_effect = {
 				target = scope:ftr_diarchy_ouser
 				modifier = ftr_diarchy_ousted_liege_opinion
 			}
+			ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_diarchy_ouser }
 		}
 	}
 
@@ -443,6 +444,7 @@ ftr_diarchy_abolish_crown_prince_effect = {
 				modifier = passed_me_over_for_regent_opinion
 				opinion = ftr_diarchy_abolish_opinion_mutual_value
 			}
+			ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_diarchy_liege }
 			# 复位入口标记：coup 计谋据此放行「前共治者」
 			add_character_flag = ftr_diarchy_deposed_prince
 		}
@@ -454,6 +456,7 @@ ftr_diarchy_abolish_crown_prince_effect = {
 				modifier = designated_bad_regent_opinion
 				opinion = ftr_diarchy_abolish_opinion_mutual_value
 			}
+			ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_diarchy_deposed_prince }
 			# 太子党羽不满：曾为太子背书者（ftr_court_supporters 名单，01 双记账）记恨废储之举
 			# 注：designated_bad_regent_opinion 无静态数值，必须显式给 opinion。
 			scope:ftr_diarchy_deposed_prince = {
@@ -467,6 +470,7 @@ ftr_diarchy_abolish_crown_prince_effect = {
 							modifier = designated_bad_regent_opinion
 							opinion = ftr_diarchy_abolish_backer_opinion_value
 						}
+						ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_diarchy_liege }
 					}
 				}
 			}
@@ -570,6 +574,7 @@ ftr_diarchy_amnesty_effect = {
 			target = scope:ftr_diarchy_amnestying_diarch
 			modifier = ftr_diarchy_amnesty_liege_opinion
 		}
+		ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_diarchy_amnestying_diarch }
 
 		# ② 赦免：主君所有直属封臣的罪行一律记为「已处罚」
 		# （原版效果内部自带 has_*_reason 判空，对无罪行者也安全）
@@ -987,6 +992,7 @@ ftr_qingjunce_win_effect = {
 			target = scope:ftr_qingjunce_winner
 			modifier = ftr_diarchy_ousted_liege_opinion
 		}
+		ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_qingjunce_winner }
 	}
 }
 
@@ -998,6 +1004,7 @@ ftr_qingjunce_defeat_effect = {
 			target = scope:ftr_qingjunce_loser
 			modifier = ftr_diarchy_deposed_prince_opinion
 		}
+		ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_qingjunce_loser }
 		if = {
 			limit = { scope:ftr_qingjunce_loser = { is_imprisoned = no } }
 			imprison = {
@@ -1020,7 +1027,7 @@ ftr_qingjunce_defeat_effect = {
 
 # 求值域：君主（季度脉冲，playable）。
 # ① 按「背书共治者人数 − 背书君主人数 × 折算溢价」小幅移动 swing（无任何被动月度修正）；
-# ② 依天平档位概率派发 01 的共治拉锯事件（0500 反共治 / 0510 共治反击）；
+# ② 依天平档位概率派发 01 的共治拉锯事件（0500 反共治）；
 #    这两个事件已泛化：无朝堂角逐 story 时自动用共治关系补全作用域。
 ftr_diarchy_quarterly_swing_drift_effect = {
 	save_scope_as = ftr_diarchy_drift_liege
@@ -1108,7 +1115,7 @@ ftr_diarchy_quarterly_swing_drift_effect = {
 			}
 		}
 	}
-	# ③ 共治者阵营游说反扑——2026-09 起**不再派发 0510 事件，也不再受天平档位限制**：
+	# ③ 共治者阵营游说反扑——0510 事件已于 2026-09 删除，且不受天平档位限制：
 	#    任意天平值（含共治者已占优时）都可发动，由「党羽游说对垒」
 	#    (ftr_diarchy_backer_lobby_pk_effect) 承接：双方各抽一人按「智谋 + 外交」对垒，
 	#    胜方一次推动 ±5；频率由对垒自带的政权 2 年 + 个人 3 年冷却把关。

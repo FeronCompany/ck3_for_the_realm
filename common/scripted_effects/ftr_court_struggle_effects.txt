@@ -54,7 +54,6 @@ ftr_court_cleanup_effect = {
 		remove_variable = ftr_court_participant_of
 		# 候选人也可能被他人支持：解除支持者背书并清空支持者名单
 		ftr_court_release_all_backers_effect = yes
-		remove_character_flag = ftr_court_pooled
 		remove_character_flag = ftr_court_notified
 	}
 	# 清理参与角逐者（参与 / 拒绝标记在角色上，此处一并清除）
@@ -79,8 +78,6 @@ ftr_court_cleanup_effect = {
 		diarch ?= { ftr_court_release_all_backers_effect = yes }
 	}
 
-	remove_variable = ftr_court_candidate_pool
-	remove_variable = ftr_court_claimant_list
 	remove_variable = ftr_court_candidate_count
 	remove_variable = ftr_court_top_score
 	remove_variable = ftr_court_second_score
@@ -225,7 +222,6 @@ ftr_court_transfer_story_effect = {
 			remove_character_flag = ftr_court_asked_participation
 			remove_variable = ftr_court_backer_of
 			remove_variable = ftr_court_participant_of
-			remove_character_flag = ftr_court_pooled
 			ftr_court_revoke_temp_duchy_effect = yes
 		}
 
@@ -281,7 +277,8 @@ ftr_court_death_cleanup_effect = {
 	# 2) 竞争者除名：经 backlink 找到所属政权，同步清君主主名单与 story 名单
 	if = {
 		limit = { has_variable = ftr_court_participant_of }
-		var:ftr_court_participant_of ?= {
+		# 已由 has_variable 守卫 → 强引用（`?=` 是 weak scope，做不了变量操作）
+		var:ftr_court_participant_of = {
 			save_scope_as = ftr_court_dead_owner
 			# 从最高统治者个人参与者名单移除（GUI 主存储）
 			if = {
@@ -324,7 +321,6 @@ ftr_court_death_cleanup_effect = {
 		# 清除死者的竞争者个体状态（含 backlink 与临时公国）
 		remove_variable = ftr_court_participant_of
 		remove_character_flag = ftr_court_participating
-		remove_character_flag = ftr_court_pooled
 		remove_character_flag = ftr_court_asked_participation
 		ftr_court_revoke_temp_duchy_effect = yes
 	}
@@ -683,7 +679,6 @@ ftr_court_leave_contest_effect = {
 		remove_variable = ftr_court_participant_of
 		remove_character_flag = ftr_court_participating
 		remove_character_flag = ftr_court_asked_participation
-		remove_character_flag = ftr_court_pooled
 		ftr_court_revoke_temp_duchy_effect = yes
 	}
 }
@@ -767,6 +762,7 @@ ftr_court_apply_backing_effect = {
 		# 旧主记恨
 		scope:ftr_court_old_backed = {
 			add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_betrayed_opinion }
+			ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_backer }
 			# 旧主的支持者们（有地与廷臣，除自己外）同仇敌忾
 			every_vassal = {
 				limit = {
@@ -775,6 +771,7 @@ ftr_court_apply_backing_effect = {
 					NOT = { this = scope:ftr_court_backer }
 				}
 				add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_rival_claimant_opinion }
+				ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_backer }
 			}
 			every_courtier = {
 				limit = {
@@ -783,6 +780,7 @@ ftr_court_apply_backing_effect = {
 					NOT = { this = scope:ftr_court_backer }
 				}
 				add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_rival_claimant_opinion }
+				ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_backer }
 			}
 		}
 	}
@@ -790,10 +788,18 @@ ftr_court_apply_backing_effect = {
 	set_variable = { name = ftr_court_backer_of  value = $CLAIMANT$ }
 	add_opinion = { target = $CLAIMANT$  modifier = ftr_court_backer_opinion }
 	# ---- 2.1) 功勋：背书"非现任君主"的合格权贵 → 拥立账 +10（支持现任君主不产功勋） ----
+	# 资格口径统一到 02 的 ftr_personal_merit_backing_eligible_trigger（入参域：scope:ftr_pm_claimant / scope:ftr_court_story）。
+	# 该触发器要求"同殿"（故事域存在），而本效果的个别调用方（如游说交互 on_accept）没有故事域，
+	# 故用 OR 兜底：缺故事域时跳过触发器、只走下方内联判定，行为与旧版一致。
+	$CLAIMANT$ ?= { save_scope_as = ftr_pm_claimant }
 	if = {
 		limit = {
 			exists = scope:ftr_court_monarch
 			NOT = { $CLAIMANT$ = scope:ftr_court_monarch }
+			OR = {
+				NOT = { exists = scope:ftr_court_story }
+				ftr_personal_merit_backing_eligible_trigger = yes
+			}
 			$CLAIMANT$ = { NOT = { ftr_court_is_struggle_monarch_trigger = yes } }
 		}
 		ftr_personal_merit_backing_add_effect = {
@@ -830,6 +836,7 @@ ftr_court_apply_backing_effect = {
 				NOT = { this = scope:ftr_court_backer }
 			}
 			add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_rival_claimant_opinion }
+			ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_backer }
 		}
 	}
 	# ---- 5) 背书声望：支持对象是君主的子女 / 继承人 ----
@@ -996,6 +1003,7 @@ ftr_court_discourage_backers_effect = {
 			scope:ftr_court_defecting_backer = {
 				remove_variable = ftr_court_backer_of
 				add_opinion = { target = scope:ftr_court_patron_holder  modifier = ftr_court_backer_discouraged_opinion }
+				ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_patron_holder }
 			}
 		}
 		# 2) 把退出者移出被支持者的支持者名单
@@ -1011,6 +1019,7 @@ ftr_court_discourage_backers_effect = {
 				variable = ftr_court_supporters
 				limit = { NOT = { this = scope:ftr_court_defecting_backer } }
 				add_opinion = { target = scope:ftr_court_patron_holder  modifier = ftr_court_backer_discouraged_opinion }
+				ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_patron_holder }
 			}
 		}
 	}
@@ -1113,9 +1122,9 @@ ftr_court_establish_coregency_effect = {
 ### 五、临时公国（无地竞争者起兵用）
 ######################################################
 
-# 在无地竞争者域执行：创建纯虚拟的临时公国。
+# 在无地竞争者域执行：创建纯虚拟的**临时独立公国**。
 # 依赖：scope:ftr_court_monarch（在位君主）。
-# 该头衔在战争结束时必定销毁，不论胜负。
+# 该头衔为独立头衔（持有者脱离对君主的臣属），战争结束时必定销毁，不论胜负。
 ftr_court_create_temp_duchy_effect = {
 	save_scope_as = ftr_court_claimant
 
@@ -1154,12 +1163,115 @@ ftr_court_create_temp_duchy_effect = {
 		}
 		resolve_title_and_vassal_change = scope:ftr_court_title_change
 
+		# 独立：临时公国为**独立头衔**——脱离对君主的臣属，
+		# 起兵者以独立统治者身份宣战（参考原版民粹起义领袖的形态）。
+		create_title_and_vassal_change = {
+			type = independency
+			save_scope_as = ftr_court_independence_change
+			add_claim_on_loss = no
+		}
+		scope:ftr_court_claimant = {
+			becomes_independent = { change = scope:ftr_court_independence_change }
+		}
+		resolve_title_and_vassal_change = scope:ftr_court_independence_change
+
 		# 记录以便战后回收
 		set_variable = {
 			name = ftr_court_temp_duchy
 			value = scope:new_title
 		}
 	}
+}
+
+# 在起兵者域执行：生成起兵**精锐部队**（参考原版民粹起义 spawn_popular_revolt_troops：
+# 先有兵再宣战；此处只给精锐 MAA，不给征召兵）。
+# 出兵地优先临时公国首都，其次君主首都。队数常量见 ftr_court_struggle_values.txt。
+ftr_court_spawn_rebel_troops_effect = {
+	save_scope_as = ftr_court_rebel_army_owner
+	capital_province ?= { save_scope_as = ftr_court_rebel_spawn_location }
+	if = {
+		limit = { NOT = { exists = scope:ftr_court_rebel_spawn_location } }
+		scope:ftr_court_monarch ?= {
+			capital_province ?= { save_scope_as = ftr_court_rebel_spawn_location }
+		}
+	}
+	if = {
+		limit = { exists = scope:ftr_court_rebel_spawn_location }
+		# 派发标记：供 on_declaration 兜底路径去重，避免重复生成
+		add_character_flag = ftr_court_rebel_troops_spawned
+		# 精锐重装步兵
+		spawn_army = {
+			men_at_arms = {
+				type = armored_footmen
+				stacks = { value = ftr_court_rebel_maa_stacks_value }
+			}
+			location = scope:ftr_court_rebel_spawn_location
+			name = ftr_court_rebel_army_name
+			inheritable = no
+		}
+		# 精锐重装骑兵
+		spawn_army = {
+			men_at_arms = {
+				type = armored_horsemen
+				stacks = { value = ftr_court_rebel_maa_stacks_value }
+			}
+			location = scope:ftr_court_rebel_spawn_location
+			name = ftr_court_rebel_army_name
+			inheritable = no
+		}
+		# 攻城器械：按已发现革新取最强一档
+		if = {
+			limit = { culture ?= { has_innovation = innovation_trebuchet } }
+			spawn_army = {
+				men_at_arms = {
+					type = trebuchet
+					stacks = { value = ftr_court_rebel_siege_stacks_value }
+				}
+				location = scope:ftr_court_rebel_spawn_location
+				name = ftr_court_rebel_army_name
+				inheritable = no
+			}
+		}
+		else_if = {
+			limit = { culture ?= { has_innovation = innovation_mangonel } }
+			spawn_army = {
+				men_at_arms = {
+					type = mangonel
+					stacks = { value = ftr_court_rebel_siege_stacks_value }
+				}
+				location = scope:ftr_court_rebel_spawn_location
+				name = ftr_court_rebel_army_name
+				inheritable = no
+			}
+		}
+		else = {
+			spawn_army = {
+				men_at_arms = {
+					type = onager
+					stacks = { value = ftr_court_rebel_siege_stacks_value }
+				}
+				location = scope:ftr_court_rebel_spawn_location
+				name = ftr_court_rebel_army_name
+				inheritable = no
+			}
+		}
+	}
+}
+
+# 在起兵者域执行：解除「独立起兵」身份（清记录 / 清 flag / 无地者回到目标君主宫廷）。
+# 由临时公国销毁效果统一调用，覆盖战争结算与 story 清理两条路径。
+ftr_court_return_from_rebellion_effect = {
+	remove_character_flag = ftr_court_rebel_troops_spawned
+	var:ftr_court_rebel_target ?= { save_scope_as = ftr_court_rebel_home_monarch }
+	if = {
+		limit = {
+			is_alive = yes
+			is_landed = no
+			exists = scope:ftr_court_rebel_home_monarch
+		}
+		set_employer = scope:ftr_court_rebel_home_monarch
+	}
+	remove_variable = ftr_court_rebel_target
 }
 
 # 在角色域执行：销毁临时公国（纯虚拟头衔，战后一律移除）
@@ -1172,6 +1284,8 @@ ftr_court_destroy_temp_duchy_effect = {
 		add_gold = ftr_court_temp_duchy_compensation_value
 		remove_variable = ftr_court_temp_duchy
 	}
+	# 同步解除独立起兵身份
+	ftr_court_return_from_rebellion_effect = yes
 }
 
 # 在角色域执行：不论胜负，无条件回收临时公国（用于战争结算）
@@ -1183,22 +1297,32 @@ ftr_court_revoke_temp_duchy_effect = {
 		}
 		remove_variable = ftr_court_temp_duchy
 	}
+	# 同步解除独立起兵身份（回到目标君主宫廷，避免遗留无地独立统治者）
+	ftr_court_return_from_rebellion_effect = yes
 }
 
 ######################################################
 ### 五之二、起兵准备（无地者必须先有头衔才能宣战）
 ######################################################
 
-# 在起兵者域执行：起兵前准备。
-# 关键点：无地皇子/王子无法宣战，必须先创建临时公国赋予其宣战资格，
-# 然后立即发动继位战争。有地者直接宣战。
+# 在起兵者域执行：起兵前准备（顺序对齐原版民粹起义：先有头衔与兵，再宣战）。
+#   1) 无地者先建「临时独立公国」（提供出兵地与宣战资格）；
+#   2) 生成起兵精锐部队；
+#   3) 发动继位战争。
 # 参数：TARGET = 宣战对象（现任君主）。
 ftr_court_prepare_rebellion_effect = {
 	save_scope_as = ftr_court_warleader
 	# 供 create_temp_duchy_effect 选定临时首都（宣战对象即现任君主）
 	$TARGET$ ?= { save_scope_as = ftr_court_monarch }
 
-	# 无地者先备虚拟头衔（已备则跳过）
+	# 记录目标君主：起兵者独立后失去 top_liege/employer，
+	# 由 ftr_court_own_struggle_in_crisis_trigger 经此变量回溯朝堂故事。
+	if = {
+		limit = { exists = scope:ftr_court_monarch }
+		set_variable = { name = ftr_court_rebel_target  value = scope:ftr_court_monarch }
+	}
+
+	# 1) 无地者先备「临时独立公国」（已备则跳过）
 	if = {
 		limit = {
 			is_landed = no
@@ -1207,6 +1331,10 @@ ftr_court_prepare_rebellion_effect = {
 		ftr_court_create_temp_duchy_effect = yes
 	}
 
+	# 2) 起兵精锐部队（先有兵，再宣战）
+	ftr_court_spawn_rebel_troops_effect = yes
+
+	# 3) 宣战
 	start_war = {
 		casus_belli = ftr_succession_war
 		target = $TARGET$
@@ -1342,7 +1470,6 @@ ftr_court_clear_claimant_status_effect = {
 	remove_variable = ftr_court_participant_of
 	# 解除自身支持者们的背书并清空支持者名单
 	ftr_court_release_all_backers_effect = yes
-	remove_character_flag = ftr_court_pooled
 	remove_character_flag = ftr_court_participating
 	remove_character_flag = ftr_court_asked_participation
 	ftr_court_revoke_temp_duchy_effect = yes
@@ -1526,24 +1653,17 @@ ftr_court_debug_backing_notice_effect = {
 }
 
 # 缓和内部矛盾（§12.5 / §12.11）：root = 君主（story owner）。
-# 作用：支付双轨成本、大幅降烈度、缓和与各竞争者的关系、设休战窗口 flag。
+# 作用：按外交技能调节幅度降烈度、缓和与各竞争者的关系、设休战窗口 flag。
+# 注：双轨成本已移至 ftr_court_ease_struggle_decision 的 cost 块，本效果不再扣除。
 ftr_court_ease_struggle_effect = {
 	save_scope_as = ftr_court_ease_monarch
-	# 1) 双轨成本：行政制君主耗官方影响力，非行政制耗大量威望
-	if = {
-		limit = { government_allows = administrative }
-		change_influence = {
-			value = 0
-			subtract = ftr_court_ease_influence_cost_value
-		}
+	# 0) 缓和幅度乘数：受君主外交技能影响（外交 10 = 基准，≥30 封顶，上下限 0.75~2.5，即降幅 30~100）。
+	#    必须在君主域先行求值并保存为域值——后续进入 story 域（this = story）便读不到君主技能。
+	save_scope_value_as = {
+		name = ftr_court_ease_diplomacy_multiplier
+		value = ftr_court_ease_diplomacy_multiplier_value
 	}
-	else = {
-		add_prestige = {
-			value = 0
-			subtract = ftr_court_ease_prestige_cost_value
-		}
-	}
-	# 2) 定位朝堂故事并大幅降烈度
+	# 1) 定位朝堂故事，按外交调节后的幅度大幅降烈度
 	every_owned_story = {
 		limit = { story_type = ftr_court_struggle }
 		save_scope_as = ftr_court_ease_story
@@ -1554,7 +1674,10 @@ ftr_court_ease_struggle_effect = {
 			}
 			change_variable = {
 				name = ftr_court_struggle_intensity
-				subtract = ftr_court_ease_intensity_drop_value
+				subtract = {
+					value = ftr_court_ease_intensity_drop_value
+					multiply = scope:ftr_court_ease_diplomacy_multiplier
+				}
 			}
 			if = {
 				limit = { var:ftr_court_struggle_intensity < ftr_court_intensity_min_value }
@@ -1562,14 +1685,14 @@ ftr_court_ease_struggle_effect = {
 			}
 		}
 	}
-	# 3) 缓和与各竞争者的关系（君主个人参与者列表 ftr_court_claimants）：竞争者念君主恩情
+	# 2) 缓和与各竞争者的关系（君主个人参与者列表 ftr_court_claimants）：竞争者念君主恩情
 	every_in_list = {
 		variable = ftr_court_claimants
 		save_scope_as = ftr_court_eased_claimant
 		add_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_eased_opinion }
 		remove_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_rival_claimant_opinion }
 	}
-	# 4) 休战窗口：期间内斗循环整拍停摆（短于决议 cooldown，避免一次缓和长期锁死内斗）
+	# 3) 休战窗口：期间内斗循环整拍停摆（短于决议 cooldown，避免一次缓和长期锁死内斗）
 	add_character_flag = { flag = ftr_court_eased_struggle  years = ftr_court_ease_truce_years_value }
 }
 
@@ -1587,9 +1710,9 @@ ftr_court_strife_slander_effect = {
 		}
 		save_scope_as = ftr_court_strife_actor
 		if = {
-			limit = { var:ftr_court_strife_pick = 0 }
+			limit = { scope:ftr_court_strife_story.var:ftr_court_strife_pick = 0 }
 			# 目标：另一名竞争者（参与者 >=2 时才成立）
-			set_variable = { name = ftr_court_strife_pick  value = 1 }
+			scope:ftr_court_strife_story = { set_variable = { name = ftr_court_strife_pick  value = 1 } }
 			random_in_list = {
 				variable = ftr_court_participant_list
 				limit = {
@@ -1760,7 +1883,7 @@ ftr_court_landless_swing_effect = {
 }
 
 # 议题 2：共治者反扑（§9.6）——**任意天平值**均可发动，共治者阵营游说争夺天平。
-# 2026-09 起**不再派发 0510 事件、也不再限制天平档位**，改由 03 的「党羽游说对垒」
+# 0510 事件已于 2026-09 删除、也不再限制天平档位，改由 03 的「党羽游说对垒」
 # (ftr_diarchy_backer_lobby_pk_effect) 承接：双方各抽一人按「智谋 + 外交」对垒，胜方一次推动 ±5；
 # 频率由对垒自带的政权 2 年 + 个人 3 年冷却把关。
 ftr_court_diarch_backlash_effect = {
@@ -1785,6 +1908,90 @@ ftr_court_diarch_backlash_effect = {
 				debug_log = "FTR_DISPATCH_LOBBY_PK_MAINCLOCK"
 				debug_log_scopes = yes
 				diarch ?= { ftr_diarchy_backer_lobby_pk_effect = yes }
+			}
+		}
+	}
+}
+
+# 求值域：朝堂 story。**临界区专属**：烈度 ≥ 临界(170) 时，随机征询一名 AI 竞争者是否发起政变（§12）。
+# 由 story effect_group（每约一季度）调用；同意 → 起 coup 阴谋，拒绝 → 烈度回落且此人 2 年内不再被征询。
+ftr_court_coup_ask_effect = {
+	save_scope_as = ftr_court_coup_ask_story
+	story_owner ?= { save_scope_as = ftr_court_coup_ask_monarch }
+	if = {
+		limit = { exists = scope:ftr_court_coup_ask_monarch }
+		random_in_list = {
+			variable = ftr_court_participant_list
+			limit = {
+				is_ai = yes
+				is_capable_adult = yes
+				is_imprisoned = no
+				NOT = { has_character_flag = ftr_court_coup_ask_cooldown }
+				# coup 的 valid 要求发起者为主君的廷臣 / 封臣
+				OR = {
+					is_courtier_of = scope:ftr_court_coup_ask_monarch
+					is_vassal_of = scope:ftr_court_coup_ask_monarch
+				}
+			}
+			save_scope_as = ftr_court_coup_ask_target
+		}
+		scope:ftr_court_coup_ask_target ?= {
+			trigger_event = { id = ftr_court_struggle.0160  days = 2 }
+		}
+	}
+}
+
+# 求值域：政变发起者（竞争者本人）。把其党羽按 **agent 能力**（谋略由高到低）拉入政变阴谋，
+# 并以 force_add_to_agent_slot 锁定 ftr_court_coup_agent_lock_years_value 年（期间不可自愿退出）。
+# 依赖：scope:ftr_court_monarch（事件 immediate 已保存）；槽位由 is_valid_as_agent_in_slot 校验能力。
+ftr_court_coup_pull_backers_effect = {
+	save_scope_as = ftr_court_coup_pull_owner
+	random_scheme = {
+		limit = {
+			scheme_type = coup
+			scheme_target_character = scope:ftr_court_monarch
+		}
+		save_scope_as = ftr_court_coup_pull_scheme
+	}
+	if = {
+		limit = {
+			exists = scope:ftr_court_coup_pull_scheme
+			has_variable_list = ftr_court_supporters
+		}
+		# 按谋略（coup 的技能）降序尝试：能力高的党羽优先占槽，槽满后其余自动跳过
+		ordered_in_list = {
+			variable = ftr_court_supporters
+			order_by = intrigue
+			limit = {
+				is_alive = yes
+				is_imprisoned = no
+			}
+			save_temporary_scope_as = ftr_court_coup_pull_backer
+			try_to_force_assign_character_to_random_agent_slot_effect = {
+				SCHEME = scope:ftr_court_coup_pull_scheme
+				CHAR = scope:ftr_court_coup_pull_backer
+				YEARS = ftr_court_coup_agent_lock_years_value
+			}
+		}
+	}
+}
+
+# 双边积怨（E）：内斗 / 共治相关事件中，凡损害双边关系处按概率追加「结仇推进」。
+# 求值域：this = 受损方（生怨的一方）。参数：CHARACTER = 施加方。
+# 概率与好感幅度见 ftr_court_rival_grudge_chance_value / ftr_court_rival_grudge_opinion_value。
+ftr_court_rival_grudge_effect = {
+	if = {
+		limit = {
+			is_alive = yes
+			$CHARACTER$ = { is_alive = yes }
+			NOT = { has_relation_rival = $CHARACTER$ }
+		}
+		random = {
+			chance = ftr_court_rival_grudge_chance_value
+			progress_towards_rival_effect = {
+				REASON = ftr_court_rival_grudge
+				CHARACTER = $CHARACTER$
+				OPINION = ftr_court_rival_grudge_opinion_value
 			}
 		}
 	}
@@ -1910,6 +2117,7 @@ ftr_court_impeach_aftermath_effect = {
 			target = scope:ftr_court_impeach_target
 			modifier = ftr_court_impeachment_opinion
 		}
+		ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_impeach_target }
 	}
 	random = {
 		chance = 35
@@ -1929,12 +2137,14 @@ ftr_court_impeach_aftermath_effect = {
 		}
 		scope:ftr_court_impeach_target ?= {
 			add_opinion = { target = root  modifier = ftr_court_impeachment_opinion }
+			ftr_court_rival_grudge_effect = { CHARACTER = root }
 		}
 	}
 	else_if = {
 		limit = { this = { $SIDE$ = 2 } }
 		scope:ftr_court_impeach_actor ?= {
 			add_opinion = { target = root  modifier = ftr_court_impeachment_opinion }
+			ftr_court_rival_grudge_effect = { CHARACTER = root }
 		}
 		scope:ftr_court_impeach_target ?= {
 			add_opinion = { target = root  modifier = ftr_court_loyalist_opinion }
@@ -2081,9 +2291,12 @@ ftr_court_debate_settle_effect = {
 			value = scope:ftr_court_debate_rival.var:ftr_court_debate_strength
 		}
 	}
-	# 2) 掷胜负：权重互补（胜率 / 100-胜率）
-	random_list = {
-		ftr_court_debate_win_chance_value = {
+	# 2) 掷胜负：random_list 的权重槽只接受字面量（用脚本值会让 PostValidate 失败、列表被判为空），
+	#    故改用 random = { chance = … } + 互补 guard。两个判定标记先清空，避免 2 天内的旧标记干扰。
+	remove_character_flag = ftr_court_debate_won
+	remove_character_flag = ftr_court_debate_lost
+	random = {
+		chance = ftr_court_debate_win_chance_value
 			# 胜：我与我拥护的人各得威望，行政制另加影响力
 			add_character_flag = { flag = ftr_court_debate_won  days = 2 }
 			add_prestige = ftr_court_debate_prestige_value
@@ -2105,9 +2318,12 @@ ftr_court_debate_settle_effect = {
 					subtract = ftr_court_debate_prestige_loss_value
 				}
 				add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+				ftr_court_rival_grudge_effect = { CHARACTER = root }
 			}
-		}
-		ftr_court_debate_lose_chance_value = {
+	}
+	# 胜标记未落即视为败（random 无 else）
+	if = {
+		limit = { NOT = { has_character_flag = ftr_court_debate_won } }
 			# 负：我承担额外损失，对手与其拥护者得势
 			add_character_flag = { flag = ftr_court_debate_lost  days = 2 }
 			add_prestige = {
@@ -2120,6 +2336,7 @@ ftr_court_debate_settle_effect = {
 					subtract = ftr_court_debate_prestige_loss_value
 				}
 				add_opinion = { target = root  modifier = ftr_court_disciplined_opinion }
+				ftr_court_rival_grudge_effect = { CHARACTER = root }
 			}
 			scope:ftr_court_debate_rival ?= {
 				add_prestige = ftr_court_debate_prestige_value
@@ -2131,7 +2348,6 @@ ftr_court_debate_settle_effect = {
 					add_prestige = ftr_court_debate_prestige_value
 				}
 			}
-		}
 	}
 	# 3) 收尾：清变量、双方冷却（防连刷）
 	remove_variable = ftr_court_debate_strength
@@ -2230,13 +2446,15 @@ ftr_court_duel_settle_effect = {
 				value = scope:ftr_court_duel_defendant.var:ftr_court_duel_strength
 			}
 		}
-		random_list = {
-			ftr_court_duel_win_chance_value = {
-				add_character_flag = { flag = ftr_court_duel_won  days = 2 }
-			}
-			ftr_court_duel_lose_chance_value = {
-				add_character_flag = { flag = ftr_court_duel_lost  days = 2 }
-			}
+		remove_character_flag = ftr_court_duel_won
+		remove_character_flag = ftr_court_duel_lost
+		random = {
+			chance = ftr_court_duel_win_chance_value
+			add_character_flag = { flag = ftr_court_duel_won  days = 2 }
+		}
+		if = {
+			limit = { NOT = { has_character_flag = ftr_court_duel_won } }
+			add_character_flag = { flag = ftr_court_duel_lost  days = 2 }
 		}
 	}
 	if = {
@@ -2253,6 +2471,7 @@ ftr_court_duel_settle_effect = {
 				target = scope:ftr_court_duel_plaintiff
 				modifier = ftr_court_targeted_opinion
 			}
+			ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_duel_plaintiff }
 			var:ftr_court_backer_of ?= { ftr_court_discourage_backers_effect = yes }
 		}
 	}
@@ -2267,6 +2486,7 @@ ftr_court_duel_settle_effect = {
 				target = scope:ftr_court_duel_defendant
 				modifier = ftr_court_targeted_opinion
 			}
+			ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_duel_defendant }
 			var:ftr_court_backer_of ?= { ftr_court_discourage_backers_effect = yes }
 		}
 	}
@@ -2382,13 +2602,15 @@ ftr_court_appraisal_settle_effect = {
 			value = scope:ftr_court_appraisal_target.var:ftr_court_appraisal_skill
 		}
 	}
-	random_list = {
-		ftr_court_appraisal_success_chance_value = {
-			add_character_flag = { flag = ftr_court_appraisal_success  days = 2 }
-		}
-		ftr_court_appraisal_fail_chance_value = {
-			add_character_flag = { flag = ftr_court_appraisal_failed  days = 2 }
-		}
+	remove_character_flag = ftr_court_appraisal_success
+	remove_character_flag = ftr_court_appraisal_failed
+	random = {
+		chance = ftr_court_appraisal_success_chance_value
+		add_character_flag = { flag = ftr_court_appraisal_success  days = 2 }
+	}
+	if = {
+		limit = { NOT = { has_character_flag = ftr_court_appraisal_success } }
+		add_character_flag = { flag = ftr_court_appraisal_failed  days = 2 }
 	}
 	if = {
 		limit = { has_character_flag = ftr_court_appraisal_success }
@@ -2417,6 +2639,7 @@ ftr_court_appraisal_settle_effect = {
 					subtract = ftr_court_appraisal_loss_value
 				}
 				add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+				ftr_court_rival_grudge_effect = { CHARACTER = root }
 			}
 			add_prestige = ftr_court_appraisal_prestige_value
 			scope:ftr_court_appraisal_story ?= {
@@ -2509,13 +2732,15 @@ ftr_court_omen_inquiry_effect = {
 		limit = { has_variable = ftr_court_omen_faker }
 		var:ftr_court_omen_faker ?= { save_scope_as = ftr_court_omen_faker }
 	}
-	random_list = {
-		ftr_court_omen_inquiry_chance_value = {
-			add_character_flag = { flag = ftr_court_omen_debunked  days = 2 }
-		}
-		ftr_court_omen_inquiry_fail_chance_value = {
-			add_character_flag = { flag = ftr_court_omen_upheld  days = 2 }
-		}
+	remove_character_flag = ftr_court_omen_debunked
+	remove_character_flag = ftr_court_omen_upheld
+	random = {
+		chance = ftr_court_omen_inquiry_chance_value
+		add_character_flag = { flag = ftr_court_omen_debunked  days = 2 }
+	}
+	if = {
+		limit = { NOT = { has_character_flag = ftr_court_omen_debunked } }
+		add_character_flag = { flag = ftr_court_omen_upheld  days = 2 }
 	}
 	if = {
 		limit = { has_character_flag = ftr_court_omen_debunked }

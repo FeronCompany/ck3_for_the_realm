@@ -17,7 +17,8 @@ ftr_realm_event.0001 = {
 		any_sub_realm_county = {
 			holder = root
 			NOT = { culture = root.culture }
-			culture = {
+			# 弱比较：无文化地块 / 无文化角色时跳过，避免 cultural_acceptance 的 target 为空报错
+			culture ?= {
 				cultural_acceptance = { target = root.culture value >= 80 } 
 			}
 			NOT = { has_county_modifier = cultural_diversity_county_modifier }
@@ -384,15 +385,6 @@ ftr_realm_event.1004 = {
 }
 
 # Clear title law for other government types
-ftr_realm_event.1009 = {
-	hidden = yes
-	immediate = {
-		scope:title = {
-			clear_title_laws = yes
-		}
-	}
-}
-
 # vassal notified that liege usurped
 ftr_realm_event.1010 = {
 	type = character_event

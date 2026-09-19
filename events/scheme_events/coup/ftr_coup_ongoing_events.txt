@@ -1064,19 +1064,6 @@ ftr_coup_ongoing.2003 = {
 }
 
 # Coup auto progress
-ftr_coup_ongoing.2004 = {
-	hidden = yes
-
-	immediate = {
-		random = {
-			chance = 50
-			scope:scheme = {
-				add_scheme_progress = 1
-			}
-		}
-	}
-}
-
 # Coup sensed by target
 ftr_coup_ongoing.2005 = {
 	type = character_event

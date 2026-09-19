@@ -22,10 +22,17 @@ For The Realm (朝野纷争) —— P 语言语法快速校验脚本
         原版 birth_events.txt 等有先例 —— 不是只能放在 common/scripted_effects/）
       * save_scope_value_as 的动态作用域值名不算 script value，读取豁免误报
       * 引擎预置触发豁免：is_valid_agent_standard_trigger（原版无定义文件）
-  11. 非法写法启发式（本次排错新增）：
+  11. 非法写法启发式：
       * scop:（应写 scope:，曾致死亡杀手/好感作用域丢失）
       * change_gold 非有效效果（应为 add_gold / transfer_gold）
       * scripted_effect / trigger 定义顶格检查
+  12. 引擎语义陷阱（error.log 实证，见 9D / 9E）：
+      * random_list 权重必须是数值字面量（用脚本值 → 加载期 PostValidate 失败、列表静默失效）
+      * 事件块 trigger 只能一份；非 hidden 事件必须有 desc
+      * on_action 块 trigger / effect 各只能一份
+      * custom_tooltip / custom_description 内不得写 trigger = { }
+      * var:X ?= { }（weak scope）内不得做变量操作（is_target_in_variable_list 等）
+      * 孤儿事件（定义了但全 mod 无人触发）→ 警告；预留/调试入口可在 ORPHAN_EVENT_ALLOW 登记
 
 用法：
     python tools/validate_scripts.py --game-path "…/game"   # 全量 + 引用白名单
@@ -651,6 +658,202 @@ def check_bad_patterns(path, text):
             warn(path, i, "scripted_effect/trigger 定义应顶格写在文件顶层（缩进内定义会被引擎忽略）")
 
 
+# ---------- 9D. 引擎语义陷阱（error.log 实证，9C 之前先跑） ----------
+# 以下写法都能过括号/命名检查，但引擎会报错或功能静默失效，故在此专项拦截。
+# 依据：2026-09 一次完整 error.log 排错（4.6 万条 ftr_ 相关报错）的根因归纳。
+
+EVENT_DEF_RE = re.compile(r"^(?P<name>[\w]+\.[\d]+)\s*=\s*\{\s*$")
+RL_WEIGHT_RE = re.compile(r"^(?P<key>[^\s{}=]+)\s*=\s*\{")
+NUMERIC_RE = re.compile(r"^\d+(?:\.\d+)?$")
+
+# 允许保留的孤儿事件（预留 / 手动调试入口，需在源码注释里写明用途）。
+# 现为空集：原先登记的手动调试入口 ftr_court_struggle.0510（共治反击）已于 2026-09 彻底移除，
+# 其职能由 03 的 ftr_diarchy_backer_lobby_pk_effect（党羽游说对垒）承接。
+ORPHAN_EVENT_ALLOW = set()
+
+# weak scope（var:X ?= { }）内不被支持的变量操作
+WEAK_SCOPE_VAR_OPS = (
+    "is_target_in_variable_list",
+    "add_to_variable_list",
+    "remove_from_variable_list",
+    "variable_list_size",
+    "has_variable_list",
+)
+
+
+def _code(line):
+    """去掉行注释与字符串内容，只留可解析的花括号/关键字骨架。"""
+    out = []
+    in_str = False
+    for ch in line:
+        if ch == '"':
+            in_str = not in_str
+            continue
+        if ch == "#" and not in_str:
+            break
+        if not in_str:
+            out.append(ch)
+    return "".join(out)
+
+
+def _block_span(lines, start):
+    """从 start 行（含 '{'）起找到配对 '}' 所在行号（0-based）。"""
+    depth = 0
+    opened = False
+    for i in range(start, len(lines)):
+        for ch in _code(lines[i]):
+            if ch == "{":
+                depth += 1
+                opened = True
+            elif ch == "}":
+                depth -= 1
+        if opened and depth <= 0:
+            return i
+    return len(lines) - 1
+
+
+def check_engine_traps(path, text):
+    """引擎语义陷阱：random_list 动态权重 / 事件块结构 / 域规则 / weak scope。"""
+    p = path.replace("\\", "/")
+    lines = text.splitlines()
+
+    # 1) random_list 的权重槽必须是数值字面量
+    for i, raw in enumerate(lines):
+        if not re.search(r"\brandom_list\s*=\s*\{", _code(raw)):
+            continue
+        end = _block_span(lines, i)
+        depth = 0
+        for j in range(i, end + 1):
+            if j > i and depth == 1:
+                m = RL_WEIGHT_RE.match(lines[j].lstrip())
+                if m and not NUMERIC_RE.match(m.group("key")):
+                    err(path, j + 1,
+                        f"random_list 权重 '{m.group('key')}' 不是数值字面量 —— 引擎会在加载期 "
+                        "PostValidate 失败并判该列表无有效选项，整个分支静默失效；"
+                        "动态概率请改 random = { chance = … } + if 互补 guard（见 03 §13.3）")
+            depth += _code(lines[j]).count("{") - _code(lines[j]).count("}")
+
+    # 2) 事件块：trigger 只能一份；非 hidden 事件必须有 desc
+    if p.endswith("_events.txt"):
+        for i, raw in enumerate(lines):
+            m = EVENT_DEF_RE.match(raw)
+            if not m:
+                continue
+            end = _block_span(lines, i)
+            depth = 0
+            trigger_count = 0
+            has_desc = False
+            is_hidden = False
+            for j in range(i, end + 1):
+                code = _code(lines[j]).strip()
+                if j > i and depth == 1:
+                    if re.match(r"^trigger\s*=\s*\{", code):
+                        trigger_count += 1
+                    if re.match(r"^desc\s*=", code):
+                        has_desc = True
+                    if re.match(r"^hidden\s*=\s*yes", code):
+                        is_hidden = True
+                depth += _code(lines[j]).count("{") - _code(lines[j]).count("}")
+            if trigger_count > 1:
+                err(path, i + 1,
+                    f"事件 '{m.group('name')}' 定义了 {trigger_count} 份 trigger 块 —— 引擎只认第一份并报 "
+                    "\"There is more than one '_Trigger' defined\"，第二份的条件会被静默丢弃")
+            if not has_desc and not is_hidden:
+                err(path, i + 1,
+                    f"事件 '{m.group('name')}' 缺少 desc（引擎报 \"is missing a desc\"；hidden = yes 的事件除外）")
+
+    # 3) on_action 块：trigger / effect 各只能一份
+    if "/on_action/" in p:
+        for i, raw in enumerate(lines):
+            m = TOP_OBJ_RE.match(raw)
+            if not m or m.group("indent") != "":
+                continue
+            end = _block_span(lines, i)
+            depth = 0
+            counts = {"trigger": 0, "effect": 0}
+            for j in range(i, end + 1):
+                code = _code(lines[j]).strip()
+                if j > i and depth == 1:
+                    for key in counts:
+                        if re.match(r"^" + key + r"\s*=\s*\{", code):
+                            counts[key] += 1
+                depth += _code(lines[j]).count("{") - _code(lines[j]).count("}")
+            for key, n in counts.items():
+                if n > 1:
+                    err(path, i + 1,
+                        f"on_action '{m.group('name')}' 定义了 {n} 份 {key} 块 —— 引擎报 "
+                        f"\"There is more than one '{key}' defined\"；追加回调请用 on_actions = {{ 子钩子 }}")
+
+    # 4) custom_tooltip / custom_description 内不能写 trigger = { }
+    for i, raw in enumerate(lines):
+        m = re.search(r"\b(custom_tooltip|custom_description)\s*=\s*\{", _code(raw))
+        if not m:
+            continue
+        end = _block_span(lines, i)
+        body = "".join(_code(lines[j]) for j in range(i, end + 1))
+        if re.search(r"\btrigger\s*=\s*\{", body):
+            err(path, i + 1,
+                f"{m.group(1)} 内不能写 trigger = {{ }}：效果域须外套 if = {{ limit = {{ }} }}；"
+                "判定域（is_valid / is_shown / limit / send_option.is_valid）直接裸写触发器（见 03 §7.1）")
+
+    # 5) weak scope（var:X ?= { }）内不能做变量操作
+    for i, raw in enumerate(lines):
+        if not re.search(r"var:[\w.]+\s*\?=\s*\{", _code(raw)):
+            continue
+        end = _block_span(lines, i)
+        body = "".join(_code(lines[j]) for j in range(i, end + 1))
+        for op in WEAK_SCOPE_VAR_OPS:
+            if re.search(r"\b" + op + r"\b", body):
+                warn(path, i + 1,
+                     f"var:… ?= {{ }} 拿到的是 weak scope，不能做变量操作（{op}，引擎报 "
+                     "\"This scope doesn't support variables\"）；已用 has_variable 守卫时改用强引用 "
+                     "var:X = { }（原版通用写法），否则先 ?= { save_scope_as = tmp } 固化再操作")
+                break
+
+
+# ---------- 9E. 孤儿事件（全局，仅在校验整个 mod 时跑） ----------
+def check_orphan_events(root):
+    """事件定义了但全 mod 无人引用 → 警告（引擎亦会在加载期报 orphaned）。"""
+    files = []
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [d for d in dirnames
+                       if d not in (".git", "document", "localization", "tools", "node_modules")]
+        for fn in filenames:
+            if fn.endswith((".txt", ".gui")):
+                files.append(os.path.join(dirpath, fn))
+
+    texts = {}
+    for f in files:
+        try:
+            with open(f, encoding="utf-8-sig", errors="replace") as fh:
+                texts[f] = fh.read()
+        except OSError:
+            continue
+
+    defs = {}
+    for f, t in texts.items():
+        for i, line in enumerate(t.splitlines(), start=1):
+            m = EVENT_DEF_RE.match(line)
+            if m:
+                defs[m.group("name")] = (f, i)
+
+    refs = set()
+    for t in texts.values():
+        for line in t.splitlines():
+            if EVENT_DEF_RE.match(line):
+                continue          # 定义行不算引用
+            code = _code(line)
+            for m in re.finditer(r"\b([\w]+\.[\d]+)\b", code):
+                refs.add(m.group(1))
+
+    for eid, (f, ln) in sorted(defs.items()):
+        if eid in refs or eid in ORPHAN_EVENT_ALLOW:
+            continue
+        warn(f, ln,
+             f"事件 '{eid}' 无人触发（孤儿事件）：全 mod 无 trigger_event / on_action / random_events 引用。"
+             "确认无用请删除（含其本地化键）；属预留或手动调试入口请加入 ORPHAN_EVENT_ALLOW 并注释说明")
+
+
 # ---------- 9C. GUI 语义检查 ----------
 # 检查 .gui 文件中的常见错误（data function 不存在、非法类型/属性）。
 # CK3 GUI 常见坑（历史踩坑记录）：
@@ -847,6 +1050,7 @@ def main():
             check_namespace(path, text)
             check_decision(path, text)
             check_bad_patterns(path, text)
+            check_engine_traps(path, text)
             if not args.no_naming:
                 check_naming_and_override(path, text)
             if GAME_PATH and not args.no_ref:
@@ -860,6 +1064,7 @@ def main():
     # 双语校验（全局，只在校验整个 mod 时跑）
     if not args.targets:
         check_bilingual(ROOT)
+        check_orphan_events(ROOT)
 
     # 输出
     print("=" * 60)

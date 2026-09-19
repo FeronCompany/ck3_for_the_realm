@@ -248,6 +248,7 @@ ftr_diarchy.0400 = {
 				target = root
 				modifier = ftr_court_betrayed_opinion
 			}
+			ftr_court_rival_grudge_effect = { CHARACTER = root }
 		}
 		# ③ 主君乐见其成：肯与废太子切割者，不在清算之列
 		scope:ftr_diarchy_abolishing_liege ?= {
@@ -292,6 +293,7 @@ ftr_diarchy.0400 = {
 				target = root
 				modifier = ftr_political_opponent_opinion
 			}
+			ftr_court_rival_grudge_effect = { CHARACTER = root }
 		}
 	}
 }
@@ -507,6 +509,7 @@ ftr_diarchy.0210 = {
 				target = root
 				modifier = ftr_diarchy_land_denied_opinion
 			}
+			ftr_court_rival_grudge_effect = { CHARACTER = root }
 			send_interface_message = {
 				type = event_diplomacy_bad_with_text
 				title = ftr_diarchy_land_denied_title

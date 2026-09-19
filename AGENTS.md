@@ -2,6 +2,7 @@
 
 > 本文件供 AI 编码助手（CodeBuddy / Copilot / Cursor 等）阅读。
 > **动手改代码前请先读完本文件**，尤其是「核心约定」与「禁忌」两节。
+> 本文件只写**判断规则与项目约定**；P 语言的语法、骨架、陷阱清单统一放在 `document/` 知识库（查阅入口见 §3.8 与 §8）。
 
 ---
 
@@ -111,13 +112,9 @@ for_the_realm/
 
 ### 3.1 文件编码：UTF-8 with BOM
 
-**所有 `.txt` 与 `.yml` 文件必须带 BOM**。不带 BOM 中文会全部乱码、整个本地化文件不加载。
+**所有 `.txt` 与 `.yml` 文件必须带 BOM**（文件头 `EF BB BF`）。不带 BOM 中文会全部乱码、整个本地化文件不加载。
 
-```
-EF BB BF  ← 文件头三个字节
-```
-
-> 项目现有文件**全部**带 BOM（已实测确认）。新建文件务必保持一致。
+> 项目现有文件**全部**带 BOM（已实测确认）。新建文件务必保持一致；编码细节见 [文档 01 §1](document/01-词法、数据类型与值系统.md)，漏 BOM 可用 `python tools/validate_scripts.py --fix-bom` 补齐（见 §5.5）。
 
 ### 3.2 缩进：Tab，宽度 4
 
@@ -151,8 +148,13 @@ VS Code 已配置（`.vscode/settings.json`）：
 | **新增**文件名 | `ftr_*.txt` | `ftr_realm_decisions.txt`、`ftr_vassal_interactions.txt` |
 | **覆盖**原版对象 | **不加前缀，沿用原名** | `murderer`、`war_tax_decision`、`solitude_time_decision` |
 | **宏参数** | 全大写 + 下划线 | `$CHARACTER$`、`$SCALE$`、`$VALUE$` |
+| **新增**事件 ID | **纯数字**（含字母如 `00A1` 判非法）；按功能**分带**编号、同族相邻、预留空位 | `ftr_court_struggle.0160` |
+| **新增**事件选项名 | `<命名空间>.<编号>.<字母>` 三段式 | `ftr_war_tax.0001.a` |
+| **新增**交互本地化键 | `<key>` / `<key>_desc` / `<key>_text`（双语成对） | `ftr_gift_interaction_desc` |
+| **新增**事件的立绘 | `left_portrait` / `right_portrait` 均带匹配的 `animation` | `animation = scheme` |
 
 > 注意：本地化键**不强制** `ftr_` 前缀，但**新增内容建议加**以便区分。
+> 事件分带的具体区间随各系统设计文档维护（如朝堂：`00xx` 生命周期 / `01xx` 继位善后 / `02xx` 站队参与 / `03xx` 暗算链 / `04xx` 调查谋杀 / `05xx` 强出口 / `06xx` 文明争斗）。
 
 ### 3.4 `###### OVERRIDE ######` 标记（本项目特色）
 
@@ -244,146 +246,64 @@ option = { # Ask vassals for donation
 }
 ```
 
+### 3.8 语法查哪里（本文件的边界）
+
+**本文件不复制语法**。写脚本前按这张表找归属，不要凭记忆写码：
+
+| 想查什么 | 去哪 |
+|---|---|
+| 文件骨架、词法、字面量、块与列表、`@` 常量、`$PARAM$` | [文档 01](document/01-词法、数据类型与值系统.md) §12 / §13 |
+| Trigger 与 Effect 的分界、控制流、`while` 上限、`random_list` | [文档 03](document/03-触发器与效果.md) §1 / §4 / §5 |
+| 带条件的提示（`custom_tooltip` / `custom_description` 的域规则） | [文档 03](document/03-触发器与效果.md) §7.1 |
+| 作用域链（`this` / `root` / `prev` / `scope:` / `save_scope_as`） | [文档 02](document/02-作用域Scope体系.md) |
+| CK3 里**不存在**的语法（`XOR` / `repeat` / `inline_script` …） | [文档 03](document/03-触发器与效果.md) §1、[文档 05](document/05-脚本复用机制.md) §1 |
+| 跨系统陷阱、默认值、调试手法 | [文档 16](document/16-多系统选型指南与开发实践.md) §5 / §9 / §10 |
+| 某个目录是干什么的、速查 | [文档 15](document/15-common目录清单与速查表.md) |
+
+> **原则**：语法知识写进 `document/`，`AGENTS.md` 只留判断规则与项目约定。日后在文档里补齐新语法后，本文件最多加一行指向，不再展开。
+
+### 3.9 任务设计文档写作规范（`document/task_design/`）
+
+`document/task_design/*.md` 是各系统的**唯一设计出处**，写作与维护遵守：
+
+- **只保留最终结论** —— 不记录变更历史，不使用「已落地 / 待落地」之类状态标注。
+- **不留占位描述** —— 不写「或 / 待权衡 / 预留 / 待接线」这类悬而未决的表述；定不下来先问清楚，不要写进文档。
+- **单一职责** —— 语法知识写进 `document/` 语法文档（见 §3.8），项目约定写进本文件；设计文档只写机制、数值、字段清单与验收标准，不复述语言规则。
+- **改代码前先读、改完代码同步更新**对应设计文档（每篇开头写明其为唯一出处）。
+
 ---
 
 ## 4. 常见任务 SOP
 
+> 各对象的标准骨架一律照 `document/` 抄（下方给出落点），本文件只列**步骤与易错约束**。
+
 ### 4.1 新增一个决议
 
 1. 在 `common/decisions/` 选文件（按主题：`ftr_realm_decisions.txt` / `ftr_major_decisions.txt` / `ftr_charactor_decisions.txt`）
-2. 定义对象（参考 [文档 08 §2](document/08-角色交互与决议.md)）：
-
-```paradox
-ftr_my_decision = {
-	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
-	decision_group_type = realm
-	desc = ftr_my_decision_desc
-	selection_tooltip = ftr_my_decision_tooltip
-	cooldown = { days = 3650 }
-
-	is_shown = { is_landed = yes }
-	is_valid = { }
-	cost = { prestige = { value = 250 } }
-
-	effect = {
-		trigger_event = ftr_my_event.0001
-	}
-
-	ai_check_interval = 365          # ← 必填！否则报错
-	ai_potential = { always = yes }
-	ai_will_do = {
-		base = -50
-		modifier = { add = 30  has_trait = greedy }
-	}
-}
-```
-
-3. **双语本地化**（4 个键：`_desc` `_tooltip` `_confirm` + 键本身）：
-
-```yaml
-# localization/simp_chinese/ftr_decisions_l_simp_chinese.yml
-l_simp_chinese:
- ftr_my_decision:0 "<FTR>我的决议"
- ftr_my_decision_tooltip:0 "简短提示"
- ftr_my_decision_desc:0 "详细描述。"
- ftr_my_decision_confirm:0 "确认按钮"
-```
-
-4. 同步 `localization/english/` 同名文件。
-
-> ⚠ `ai_check_interval` 与 `ai_goal` 必须二选一，否则报错。
+2. **骨架照 [文档 08](document/08-角色交互与决议.md) 抄**（`desc` / `selection_tooltip` / `cooldown` / `is_shown` / `is_valid` / `cost` / `effect` / `ai_*`）
+3. `ai_check_interval` 与 `ai_goal` **必须二选一**，否则报错（语义差异见 [文档 08](document/08-角色交互与决议.md)）
+4. **双语本地化 4 个键**：`_desc` / `_tooltip` / `_confirm` + 键本身（写法见 §3.5、§3.6）
 
 ### 4.2 新增一个事件
 
-1. `events/` 下建 `ftr_<模块>_events.txt`，**先声明 `namespace`**：
-
-```paradox
-namespace = ftr_my_event
-
-ftr_my_event.0001 = {
-	type = character_event
-	title = ftr_my_event.0001.t
-	desc = ftr_my_event.0001.desc
-	theme = diplomacy
-
-	left_portrait = {
-		character = root
-	}
-
-	immediate = {
-		root = { save_scope_as = my_liege }
-	}
-
-	option = { # 选项说明
-		name = ftr_my_event.0001.a
-		trigger_event = { id = ftr_my_event.0002 }
-		ai_chance = { base = 40 }
-	}
-}
-```
-
-2. 双语本地化：`localization/{english,simp_chinese}/events/ftr_events_l_<lang>.yml`
-
-> 需要跨事件传递数据时用 `save_scope_as`，**不要用局部变量**（on_action 的 effect 与事件是两条独立域链）。
+1. `events/` 下建 `ftr_<模块>_events.txt`，**先声明 `namespace`**（结构与调度见 [文档 06](document/06-事件系统与on_action.md)）
+2. 双语本地化放 `localization/{english,simp_chinese}/events/ftr_events_l_<lang>.yml`
+3. 需要跨事件传递数据时用 `save_scope_as`，**不要用局部变量**（on_action 的 effect 与事件是两条独立域链）
 
 ### 4.3 覆盖一个原版对象
 
 1. 在 `game/common/<目录>/` 找到原版定义，**复制其原有内容**
 2. 在 Mod 的 `ftr_*.txt` 里重定义同名对象，**保留原版原有条目，只改/加需要的部分**
-3. 用 `###### OVERRIDE ######` 包裹改动
+3. 用 `###### OVERRIDE ######` 包裹改动（标记写法、示例与当前分布见 §3.4）
 4. 若只需改其中一处，优先用 scripted_trigger 间接覆盖，减少冲突面
 
 > ⚠ 例外：**on_action 挂载点不是"覆盖"**。原版 on_action 挂载点的重复定义是**追加回调的合并语义**，只需沿用原名声明新回调，**不要加 override 标记**（见 §3.4）。
 
-示例（覆盖特质 `murderer`）：
-
-```paradox
-murderer = {
-	###### OVERRIDE ######
-	triggered_opinion = {
-		opinion_modifier = ftr_murderer_crime
-	}
-	###### OVERRIDE ######
-	category = fame
-	ruler_designer_cost = -10
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = { NOT = { exists = this } }   # ← 动态描述必须有此兜底
-				desc = trait_murderer_desc
-			}
-			desc = trait_murderer_character_desc
-		}
-	}
-}
-```
-
 ### 4.4 新增一个特质
 
-参考 [文档 13 §2](document/13-政体、特质与共治.md)：
-
-```paradox
-ftr_my_trait = {
-	category = lifestyle
-	icon = ftr_my_trait.dds          # 图标放 gfx/interface/icons/traits/
-	health = 1
-	same_opinion = 50
-
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = { NOT = { exists = this } }   # ← 必须有
-				desc = trait_ftr_my_trait_desc
-			}
-			desc = trait_ftr_my_trait_character_desc
-		}
-	}
-}
-```
-
-配套：
-- `gfx/interface/icons/traits/ftr_my_trait.dds`（若用自定义 `icon`）
-- 双语本地化 `ftr_traits_l_english.yml` / `ftr_traits_l_simp_chinese.yml`（键：`trait_<key>` 与 `trait_<key>_desc`）
+1. 字段与骨架见 [文档 13](document/13-政体、特质与共治.md)（`category` / `icon` / `health` / `same_opinion` / `desc` …）
+2. 动态描述（`desc` / `name` / `icon`）**第一条必须是兜底 `NOT = { exists = this }`**，否则无根域时报错（见 [文档 13](document/13-政体、特质与共治.md)）
+3. 配套：`gfx/interface/icons/traits/` 下的 `.dds` 图标（若用自定义 `icon`）＋ 双语本地化 `ftr_traits_l_english.yml` / `ftr_traits_l_simp_chinese.yml`（键：`trait_<key>` 与 `trait_<key>_desc`）
 
 ### 4.5 新增一个计谋
 
@@ -459,7 +379,7 @@ python tools/validate_scripts.py
 python tools/validate_scripts.py --no-ref
 ```
 
-**校验项**（1-9 为硬性 Error，10-14 为 Warning）：
+**校验项**（1-7 / 12 为硬性 Error；8-11 / 13-14 为 Warning）：
 
 | # | 校验项 | 级别 |
 |---|---|---|
@@ -474,9 +394,14 @@ python tools/validate_scripts.py --no-ref
 | 9 | 缩进规范：common 用 Tab、localization 用空格 | Warning |
 | 10 | 新增顶层对象须带 `ftr_` 前缀（覆盖原版需 `###### OVERRIDE ######`） | Warning |
 | 11 | 双语本地化键名一致性（english 与 simp_chinese 成对） | Warning |
+| 12 | **引擎语义陷阱**（error.log 实证）：`random_list` 权重非数值字面量；事件块多份 `trigger`；非 hidden 事件缺 `desc`；on_action 块多份 `trigger`/`effect`；`custom_tooltip`/`custom_description` 内写 `trigger = { }` | Error |
+| 13 | **weak scope**：`var:X ?= { }` 内做变量操作（应改强引用 `var:X = { }`） | Warning |
+| 14 | **孤儿事件**：事件定义了但全 mod 无人触发（预留/调试入口可在 `ORPHAN_EVENT_ALLOW` 登记） | Warning |
 
 > ⚠ **引用一致性检查能抓"语法过但 error.log 报错"的语义错误**（如引用了不存在的 trait/law/effect/trigger/value）。已实际抓到过：`has_trait = genius`（应 `intellect_good_3`）、`melancholic`（应 `depressed`）、`monastic`（不存在）、性别法 `male_preferred_law`（应 `has_title_law = male_only_law/female_only_law`）。
 > **注意事项**：脚本会同时加载 mod 自身定义的 trait/law/effect/trigger/value 进白名单，避免 mod 新增对象误报；未提供 `--game-path` 时引用检查自动跳过。
+> **新增 on_action 挂载点**时，须把挂载点名登记进脚本的 `VANILLA_ON_ACTION_HOOKS` 白名单（`tools/validate_scripts.py`），否则会误报；mod 自定义的 `ftr_*` 对象由脚本自动纳入，无需手工登记。
+> **12–14 是 2026-09 一次 error.log 排错（4.6 万条报错）归纳出的引擎语义陷阱**，写法与替代方案见 [文档 03 §13](document/03-触发器与效果.md) 与 [文档 08 §3](document/08-角色交互与决议.md)。
 
 **退出码**：`0` = 全通过；`1` = 有 Error（**必须修复**，会引发加载失败）；`2` = 仅有 Warning（规范提示，建议处理）。
 
@@ -486,19 +411,11 @@ python tools/validate_scripts.py --no-ref
 
 ## 6. 禁忌
 
-### 6.1 语法层
+### 6.1 语言层（语法清单在文档里，此处只记判断规则）
 
-| 禁忌 | 原因 |
-|---|---|
-| 用 `XOR` | CK3 **不存在**（全目录检索 0 命中） |
-| 用 `repeat` / `break` / `continue` | CK3 **不存在**；循环只有 `while` |
-| 用 `inline_script` | CK3 **不存在** |
-| 用 `parameters = { P = { type = character } }` 声明块 | CK3 **不存在**；参数是 `$PARAM$` 纯文本宏 |
-| 在 Trigger 里改状态 | Trigger 只读；会报错或静默失败 |
-| 在 Effect 里裸写条件 | 必须包进 `limit = { }` |
-| 在**效果域**的 `custom_tooltip` / `custom_description` 内写 `trigger = { }` | 效果域的 `custom_tooltip` 只接受 effects（原版全库 `common/character_interactions`、`common/decisions`、`common/scripted_effects`、`events` 中 **0 处** `trigger` 子键）；要条件显示须外套 `if = { limit = { … } custom_tooltip = { text = … } }` |
-| 在**判定域**的 `custom_tooltip` 内套 `trigger = { }` | 判定域（`is_valid` / `is_shown` / `limit` / `send_option.is_valid`）直接裸写触发器：`custom_tooltip = { text = X  <条件…> }`（原版统一写法） |
-| 写死循环 `while` | 必须让 `limit` 变假或加 `count` 上限 |
+- **不存在的东西别用** —— `XOR`、`repeat` / `break` / `continue`、`inline_script`、`parameters = { P = { type = … } }` 声明块在 CK3 中**都不存在**（原版全目录 0 命中）。清单与检索证据见 [文档 03 §1](document/03-触发器与效果.md)、[文档 05 §1](document/05-脚本复用机制.md)。
+- **Trigger 只读、Effect 只写** —— Trigger 里改状态会报错或静默失败；Effect 里写条件必须包进 `limit = { }`；`while` 必须能让 `limit` 最终变假，或写 `count` 上限。见 [文档 03](document/03-触发器与效果.md) §1 / §4。
+- **提示要分域** —— **效果域**的 `custom_tooltip` / `custom_description` 只接受 effects（要条件显示须外套 `if = { limit = { … } custom_tooltip = { text = … } }`）；**判定域**（`is_valid` / `is_shown` / `limit` / `send_option.is_valid`）则直接裸写触发器。见 [文档 03 §7.1](document/03-触发器与效果.md)。
 
 ### 6.2 本项目特有
 
@@ -512,6 +429,8 @@ python tools/validate_scripts.py --no-ref
 | **用空格缩进新代码** | 项目统一 Tab |
 | **提交 `gui/*.bak` 或空文件** | 仓库卫生 |
 | **硬编码数值**（AI 权重除外） | 领域常量（成本 / 阈值 / 档位 / 跨文件共用值）抽成 `common/script_values/ftr_*.txt` 的 script value；**例外**：`ai_will_do` / `ai_accept` / 事件选项 `ai_chance`（含其所引用的 scripted_modifiers）内的加减分、乘数与 AI 内部阈值**直接写字面数字**——就地可读、便于调参，不抽常量，替换后也不得残留死常量 |
+| **判断「行政类政体」用错 API** | 一律用 `government_allows = administrative`；`government_has_flag = government_is_administrative` 只指行政制本体，会漏掉天朝 / 日本行政 / 官僚制 / 草原行政（见 [文档 13 §4.1](document/13-政体、特质与共治.md)） |
+| **业务处散写底层写操作** | 记账 / 状态变更只经唯一的封装 effect（如功勋系统的记账封装），不要在调用点散写 `change_variable` / `add_opinion` |
 
 ### 6.3 高风险操作（需先确认）
 
@@ -522,23 +441,7 @@ python tools/validate_scripts.py --no-ref
 
 ---
 
-## 7. 已知问题（待清理）
-
-改动到这些文件时请顺手修正：
-
-| 问题 | 位置 |
-|---|---|
-| 文件名拼写错误 | `events/ftr_interation_events.txt`（应为 `interaction`）<br/>`common/decisions/ftr_charactor_decisions.txt`（应为 `character`）<br/>`common/character_interactions/ftr_councillor_intercation.txt`（应为 `interaction`）<br/>`common/succession_election/ftr_bureacreatic_elective.txt`（应为 `bureaucratic`） |
-| 空文件 | `common/flavorization/ftr_titles.txt`（0 行） |
-| 备份文件残留 | `gui/window_my_realm.gui.bak` |
-| 缩进混用 | `events/ftr_war_tax_events.txt` 等（空格与 Tab 混用） |
-| 命名前缀不统一 | 早期决议未加 `ftr_` 前缀（`war_tax_decision`、`solitude_time_decision`、`restore_byzantine_decision`） |
-
-> 重命名文件是安全操作（CK3 按目录加载而非文件名），但需确认没有跨文件引用路径。
-
----
-
-## 8. 环境信息
+## 7. 环境信息
 
 | 项 | 路径 |
 |---|---|
@@ -550,7 +453,7 @@ python tools/validate_scripts.py --no-ref
 
 以上路径已配置在 `for_the_realm.code-workspace`（多根工作区），**原版脚本可直接检索**，作为语法文档的补充核对（先查 `document/`，文档没写清再查原版）。
 
-### 8.1 查阅原版的正确姿势
+### 7.1 查阅原版的正确姿势
 
 > 适用时机：仅当 `document/` 语法文档没写清或不完整时，才进原版核对（见 §5.1）。
 
@@ -565,72 +468,26 @@ python tools/validate_scripts.py --no-ref
 
 ---
 
-## 9. 快速参考
+## 8. 查阅指引（语法与陷阱不在本文件）
 
-### 9.1 文件骨架
+本文件不再复制语法速查与陷阱清单，统一在 `document/` 维护：
 
-```paradox
-# 注释
-@CONSTANT = 100                 # 文件级常量（引用时不带 @）
-
-ftr_my_object = {               # 新增 → ftr_ 前缀
-	key = scalar
-	nested_block = { key = yes }
-	bare_list = { 1 2 3 }
-	range = { 1 5 }
-	color = { 255 0 0 }
-
-	trigger = {
-		is_adult = yes         # 块内多条件默认 AND
-		OR = { a = yes  b = yes }
-		NOT = { c = yes }
-	}
-	effect = {
-		if = {
-			limit = { has_trait = brave }
-			add_gold = 100
-		}
-	}
-}
-```
-
-### 9.2 最高频陷阱（本项目已踩过）
-
-| 陷阱 | 真相 |
+| 要查什么 | 去哪 |
 |---|---|
-| `add_gold = gold` | 数字位置先查 script value 表再查域链 —— 这是"把自己金币加给自己"，**翻倍** |
-| `on_pass` 一定执行 | 法律在 **default 初始化 / 继承他人** 时都不执行 |
-| 局部变量传到事件 | on_action 的 `effect` 与事件是**两条独立域链**，必须 `save_scope_as` |
-| 延迟事件一定触发 | 延迟到期**二次校验** trigger |
-| `sort_order` 越大越前 | 多数系统如此，但**派系相反**（小者在前） |
-| `can_fire = { }` 空块 | 内阁职位中空 trigger 的含义**因属性而异**（`can_fire` = yes，`auto_fill` = no） |
-| `|U` 显示在界面 | 用了中文竖线 `｜`，必须是英文 `\|` |
+| 文件骨架、词法速记卡 | [文档 01](document/01-词法、数据类型与值系统.md) §13（完整结构图见 §12） |
+| 高频陷阱：语言 / 作用域 / 系统三层 | [文档 16](document/16-多系统选型指南与开发实践.md) §9 |
+| 默认值陷阱（空 trigger、排序方向、恒真恒假） | [文档 16](document/16-多系统选型指南与开发实践.md) §5 |
+| 调试手法（二分、控制台、`send_interface_toast`、`custom_description` 自证） | [文档 16](document/16-多系统选型指南与开发实践.md) §10 |
+| 带条件的提示怎么写 | [文档 03](document/03-触发器与效果.md) §7.1 |
+| 目录清单与速查 | [文档 15](document/15-common目录清单与速查表.md) |
+| 官方 `.info` 索引 | [文档 16](document/16-多系统选型指南与开发实践.md) §11 |
 
-完整清单见 [文档 16 §5 跨系统默认值陷阱](document/16-多系统选型指南与开发实践.md)。
-
-### 9.3 调试利器
-
-```paradox
-# 把中间值打到界面上，比翻 log 直观
-send_interface_toast = {
-	type = msg_generic
-	title = "DEBUG: 当前值"
-	left_icon = root
-}
-
-# 用 custom_description 让玩家看到"为什么条件不满足"
-custom_description = {
-	text = ftr_my_reason
-	<trigger>
-}
-```
-
-调试用交互已集中在 `common/character_interactions/ftr_debug_interaction.txt` 与
-`common/decisions/ftr_debug_decisions.txt`，可直接扩展。
+> 调试用交互已集中在 `common/character_interactions/ftr_debug_interaction.txt` 与 `common/decisions/ftr_debug_decisions.txt`，可直接扩展。
+> **原则：新增语法知识写进对应 `document/` 文档，不要堆回本文件。**
 
 ---
 
-## 10. 行为准则
+## 9. 行为准则
 
 1. **语法文档优先** —— 任何语法/机制不确定时，先查 `document/` 知识库（自建文档为主）；语法文档没写清或不完整时，再查 `game/` 原版文件（`common/<目录>/*.info`、`00_*.txt`、`events/`、`game/localization/english/`）核对；最后才考虑网络检索；不要凭记忆写码
 2. **最小化改动** —— 能抽 scripted_effect 就不复制粘贴；能间接覆盖就不整体重定义

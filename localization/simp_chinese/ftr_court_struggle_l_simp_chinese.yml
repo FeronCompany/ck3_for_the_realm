@@ -11,6 +11,7 @@
  FTR_COURT_SWING_LOYAL:0 "君权稳固"
  FTR_COURT_SWING_DIARCH:0 "共治得势"
  FTR_COURT_TEMP_DUCHY_NAME:0 "勤王之师"
+ ftr_court_rebel_army_name:0 "起兵义军"
 
  ###### 战争理由 ######
  ftr_civil_war:0 "<FTR>继位之争"
@@ -52,6 +53,7 @@
  ftr_court_disciplined_opinion:0 "当众敲打了我"
  ftr_court_impeachment_opinion:0 "当众弹劾了我"
  ftr_court_impeachment_rival:0 "朝堂弹劾结怨"
+ftr_court_rival_grudge:0 "朝堂倾轧结怨"
  ftr_court_backing_alert_message:0 "臣属攀附他人"
  ftr_court_discipline_success_message:0 "党羽屈服"
 
@@ -146,7 +148,7 @@
 ###### 缓和内部矛盾决议（§12.5 / §12.11） ######
  ftr_court_ease_struggle_decision:0 "<FTR>缓和内部矛盾"
  ftr_court_ease_struggle_decision_desc:0 "朝堂烈度过高，继位之争眼看就要演变成刀兵相见。你愿意付出可观的代价，向主要竞争者示好、缓和彼此剑拔弩张的关系，为朝局争取一段喘息之机。"
- ftr_court_ease_struggle_decision_tooltip:0 "大幅降低朝堂烈度，缓和与各竞争者的关系，并获得一段休战期。"
+ ftr_court_ease_struggle_decision_tooltip:0 "大幅降低朝堂烈度（降幅受你#EMP 外交#!能力影响），缓和与各竞争者的关系，并获得一段休战期。"
  ftr_court_ease_struggle_decision_confirm:0 "尽力安抚各方。"
  ftr_court_ease_struggle_decision_crisis_tt:0 "朝堂权力角逐已进入濒危阶段（烈度 ≥ 濒危阈值）"
  ftr_court_investigate_decision:0 "<FTR>派间谍彻查"

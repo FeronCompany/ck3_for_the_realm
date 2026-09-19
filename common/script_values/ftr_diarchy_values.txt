@@ -50,14 +50,14 @@ ftr_diarchy_swing_drift_cap_min_value = -3
 # 正值生效门槛：加权领先不足此值时**不**推共治者一侧（否则「共治者党羽略多」= 每季恒定 +1 的上行泵）
 ftr_diarchy_swing_drift_positive_min_value = 2
 # 共治者侧游说反扑的发动概率（%）：在带内每季度尝试发动对垒的概率。
-# 2026-09：不再用于派发 0510 事件，改作「党羽游说对垒」(ftr_diarchy_backer_lobby_pk_effect) 的启动概率。
+# 2026-09：0510 事件已删除，本值改作「党羽游说对垒」(ftr_diarchy_backer_lobby_pk_effect) 的启动概率。
 # 实际频率由对垒自带的「政权 1 年冷却」（ftr_diarchy_lobby_pk_cooldown_years_value）独立把关，
 # 故此处给 100（带内即尝试）——原 15% 与冷却叠乘后几乎不出现，是"对垒很久不触发"的第一根因。
 ftr_diarch_backlash_event_chance_value = 100
 # （已移除）原「游说对垒天平带」常量：2026-09 起对垒**任意天平值均可发动**（含共治者已占优时），
 # 天平档位不再作为入口门槛；频率改由 ftr_diarchy_lobby_pk_cooldown_years_value（政权）
 # 与 ftr_diarchy_lobby_pk_lobbyist_cooldown_days_value（个人）把关。
-# 拉锯事件（0500 / 0510）的单政权冷却（天）：冷却期内同一君主不再被派发，
+# 拉锯通道（0500 与党羽游说对垒）的单政权冷却（天）：冷却期内同一君主不再被派发，
 # 把两侧事件通道的实际上限钉在「每政权每年各 1 次」，防止任何一条派发路径重复触发时
 # 退化成"每半月 +5"的上行泵（实测日志曾出现单一政权 2.5 年内十余次派发）。
 ftr_diarch_swing_event_cooldown_days_value = 365
@@ -93,7 +93,7 @@ ftr_diarchy_swing_audit_threshold_value = 2
 # （直接写 `= minor_sop_swing_liege_gain` 会触发 "referencing a named formula" 并让消费端读值失败）。
 ftr_diarchy_lobby_pk_swing_gain = { value = minor_sop_swing_diarch_gain }
 ftr_diarchy_lobby_pk_swing_loss = { value = minor_sop_swing_liege_gain }
-# 季度派发共治拉锯事件（0500 / 0510）的概率（%）
+# 季度派发共治拉锯事件（0500）的概率（%）
 ftr_diarchy_swing_event_chance_value = 25
 # 君主侧反制（0500）的派发门槛：天平达到中性（50）即开始反制。
 # 原取强权下沿（70），偏高导致「涨得快、回得慢」，是 swing 单向上行的第二根因。
@@ -142,7 +142,7 @@ ftr_diarchy_liege_backer_count_value = {
 }
 
 # 求值域：君主。共治者党羽数 − 君主党羽数（未加权）。
-# 供 0510 派发前置：共治者党羽不落后于君主时，其反击才有凭依（否则纯属无党羽的凭空拉轴）。
+# 供「党羽游说对垒」发动前置：共治者党羽不落后于君主时，其反击才有凭依（否则纯属无党羽的凭空拉轴）。
 ftr_diarchy_backer_lead_value = {
 	value = ftr_diarchy_diarch_backer_count_value
 	subtract = ftr_diarchy_liege_backer_count_value

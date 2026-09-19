@@ -250,9 +250,12 @@ ftr_settle_the_steppe_decision = { # for unindependent Nomad
 	cost = {
 		gold = {
 			value = {
+				# 目标政体由第二步 item 选择决定，但 cost 在首步与 AI 评估时即被求值，
+				# 此时第二步的选项 scope 不存在（曾致 3 万次 Undefined event target）。
+				# 改按「领主政体」等价推断：领主为部落制 → 转部落分支，否则为封建 / 氏族 / 行政分支。
 				if = {
 					limit = {
-						scope:become_tribal_decision = yes
+						liege ?= { government_has_flag = government_is_tribal }
 					}
 					every_sub_realm_county = {
 						limit = {
@@ -266,14 +269,7 @@ ftr_settle_the_steppe_decision = { # for unindependent Nomad
 						add = 5
 					}
 				}
-				else_if = {
-					limit = {
-						OR = {
-							scope:become_feudal_decision = yes
-							scope:become_clan_decision = yes
-							scope:become_admin_decision = yes
-						}
-					}
+				else = {
 					every_sub_realm_county = {
 						limit = {
 							title_province = {

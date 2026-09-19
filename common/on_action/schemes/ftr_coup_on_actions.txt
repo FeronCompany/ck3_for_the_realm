@@ -46,6 +46,5 @@ ftr_coup_ongoing = {
 		10 = ftr_coup_ongoing.1009 # Action early because of misunderstanding
 	}
 	events = {
-		#ftr_coup_ongoing.2004 # Auto progress
 	}
 }

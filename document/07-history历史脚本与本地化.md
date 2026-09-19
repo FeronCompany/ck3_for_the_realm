@@ -1059,3 +1059,15 @@ l_simp_chinese:
 | 动态取值不生效 | 域链在当前上下文不存在 |
 | 事件里 `[ROOT.Char...]` 为空 | 该事件无 root（如 `yearly_global_pulse`） |
 | 引号截断 | 字符串内引号未转义 |
+
+---
+
+## 11. 实测约束（踩坑记录）
+
+| 约束 | 说明 |
+|---|---|
+| loc 里**不能写 `[scope:x.GetName]`** | 报 `Failed to find type 'scope:x'`。作用域一律用 `save_scope_as` 的**裸名**（`[x.GetName]`）；作为 `Custom2('…', …)` 参数时写 `SCOPE.sC('x')` |
+| 事件上下文里的 **`sender` 在 loc 中取不到** | 报 `Failed to find type 'sender'`；书信抬头之类要先在 `immediate` 里 `save_scope_as` 再引用 |
+| diarchy 类型需**两条键** | `<type>_diarchy_type`（类型名）与 `<type>_diarch_title`（副手头衔），缺任一条 UI 显示裸键（详见 [18](18-共治系统详解.md) 附二） |
+| 裁决类决议需 `<key>_confirm` | 确认按钮文案，缺则显示裸键 |
+| 宣战理由（CB）需 `war_name` | 缺则宣战界面显示裸键（详见 [12](12-活动与战争.md)） |

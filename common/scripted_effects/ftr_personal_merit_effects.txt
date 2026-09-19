@@ -10,11 +10,14 @@
 # 定位效劳方所属"现任最高领主"，存为 scope:ftr_pm_lord。
 # 封臣走 top_liege；廷臣走 employer 链顶端；独立者（无主）不保存。
 ftr_personal_merit_locate_lord_effect = {
+	# 当前域即效劳方；**不要用 root**：本效果会被 on_combat_end_* 链调用，那时 root = 战斗方（combat_side），
+	# 与角色比较会报类型不符、拿它当好感目标则为空。故显式固化为 scope。
+	save_scope_as = ftr_pm_subject
 	if = {
 		limit = {
 			is_landed = yes
 			top_liege ?= { exists = this }
-			NOT = { top_liege ?= { this = root } }
+			NOT = { top_liege ?= { this = scope:ftr_pm_subject } }
 		}
 		top_liege = { save_scope_as = ftr_pm_lord }
 	}
@@ -27,7 +30,7 @@ ftr_personal_merit_locate_lord_effect = {
 			if = {
 				limit = {
 					top_liege ?= { exists = this }
-					NOT = { top_liege ?= { this = root } }
+					NOT = { top_liege ?= { this = scope:ftr_pm_subject } }
 				}
 				top_liege = { save_scope_as = ftr_pm_lord }
 			}
@@ -43,7 +46,7 @@ ftr_personal_merit_locate_lord_effect = {
 ftr_personal_merit_remove_instance_effect = {
 	scope:ftr_pm_holder ?= {
 		remove_opinion = {
-			target = root
+			target = scope:ftr_pm_subject
 			modifier = ftr_personal_merit_opinion
 		}
 	}
@@ -147,7 +150,7 @@ ftr_personal_merit_crown_add_effect = {
 			}
 			scope:ftr_pm_holder = {
 				add_opinion = {
-					target = root
+					target = scope:ftr_pm_subject
 					modifier = ftr_personal_merit_opinion
 					opinion = ftr_personal_merit_crown_amount_value
 				}
@@ -160,6 +163,9 @@ ftr_personal_merit_crown_add_effect = {
 # 规则：同刻至多一条拥立账（目标唯一）；调用方负责先清旧账/主动结清。
 ftr_personal_merit_backing_add_effect = {
 	save_scope_as = ftr_pm_subject
+	# 把被背书对象固化为 scope:ftr_pm_claimant —— 这是 ftr_personal_merit_backing_eligible_trigger 的入参域，
+	# 在此（被使用的效果内）统一落一次，避免该 scope 全 mod 只有读取、没有写入。
+	$CLAIMANT$ ?= { save_scope_as = ftr_pm_claimant }
 	ftr_personal_merit_validate_effect = yes
 	if = {
 		limit = { $CLAIMANT$ ?= { exists = this } }
@@ -222,7 +228,7 @@ ftr_personal_merit_backing_add_effect = {
 					}
 					scope:ftr_pm_holder = {
 						add_opinion = {
-							target = root
+							target = scope:ftr_pm_subject
 							modifier = ftr_personal_merit_opinion
 							opinion = ftr_personal_merit_crown_amount_value
 						}

@@ -419,6 +419,13 @@ ftr_court_own_struggle_in_crisis_trigger = {
 				ftr_court_is_crisis_trigger = yes
 			}
 		}
+		# 已独立起兵者：失去 top_liege / employer，经存档的目标君主回溯其朝堂故事
+		var:ftr_court_rebel_target ?= {
+			any_owned_story = {
+				type = ftr_court_struggle
+				ftr_court_is_crisis_trigger = yes
+			}
+		}
 	}
 }
 

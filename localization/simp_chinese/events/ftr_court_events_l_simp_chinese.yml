@@ -60,6 +60,13 @@
  ftr_court_struggle.0150.a:0 "提线在手，何不连龙椅一起拿过来？"
  ftr_court_struggle.0150.b:0 "提线已经够了——暂时。"
 
+###### 0160 临界征询：政变（季度循环，临界区专属） ######
+ftr_court_struggle.0160.t:0 "临界之议"
+ftr_court_struggle.0160.desc:0 "朝堂已乱到快压不住了，众人的目光都落到我身上。[ftr_court_monarch.GetTitledFirstName]仍坐在位上，可真正的话事人是谁，谁都看得出来。此刻若不动手，等局面冷下去，便再没有这样的机会。"
+ftr_court_struggle.0160.a:0 "动手，就在今夜。"
+ftr_court_struggle.0160.b:0 "还不是时候，先按兵不动。"
+ftr_court_struggle.0160.c:0 "提兵起事，讨伐无道。"
+
  ###### 0001 朝堂权力角逐开始 ######
  ftr_court_struggle.0001.t:0 "继位之争，就此拉开帷幕"
  ftr_court_struggle.0001.desc:0 "继承问题已经有了答案——不，不是答案，而是被重新抛向风口浪尖。在[ftr_court_monarch.GetTitledFirstName]周围，竞争者虎视眈眈，内阁成员各自选边。朝堂上的权力角逐已经开始，每一个有权势的人都必须决定自己的立场归于何处。"

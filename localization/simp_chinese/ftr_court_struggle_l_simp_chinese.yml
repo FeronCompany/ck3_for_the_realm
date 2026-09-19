@@ -11,6 +11,7 @@
  FTR_COURT_SWING_LOYAL:0 "君权稳固"
  FTR_COURT_SWING_DIARCH:0 "共治得势"
  FTR_COURT_TEMP_DUCHY_NAME:0 "勤王之师"
+ ftr_court_rebel_army_name:0 "起兵义军"
 
  ###### 战争理由 ######
  ftr_civil_war:0 "<FTR>继位之争"
@@ -52,6 +53,7 @@
  ftr_court_disciplined_opinion:0 "当众敲打了我"
  ftr_court_impeachment_opinion:0 "当众弹劾了我"
  ftr_court_impeachment_rival:0 "朝堂弹劾结怨"
+ftr_court_rival_grudge:0 "朝堂倾轧结怨"
  ftr_court_backing_alert_message:0 "臣属攀附他人"
  ftr_court_discipline_success_message:0 "党羽屈服"
 

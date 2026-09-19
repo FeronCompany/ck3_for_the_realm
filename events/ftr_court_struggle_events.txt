@@ -145,7 +145,7 @@ ftr_court_struggle.0003 = {
 			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_alliance_opinion }
 		}
 		scope:ftr_court_claimant_2 ?= {
-			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
+			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_monarch }
 		}
 	}
 	option = { # Forbid the infighting
@@ -158,10 +158,10 @@ ftr_court_struggle.0003 = {
 			modifier = { add = -20  has_trait = content }
 		}
 		scope:ftr_court_claimant_1 ?= {
-			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
+			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_monarch }
 		}
 		scope:ftr_court_claimant_2 ?= {
-			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
+			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_monarch }
 		}
 		add_prestige = ftr_court_prestige_minor_value
 		# 明令禁止内斗：压制当前烈度（君主强力出手的代价/收益）
@@ -229,7 +229,7 @@ ftr_court_struggle.0004 = {
 			every_in_list = {
 				variable = ftr_court_participant_list
 				limit = { NOT = { this = scope:ftr_court_monarch } }
-				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
+				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_monarch }
 			}
 			if = {
 				limit = {
@@ -269,7 +269,7 @@ ftr_court_struggle.0004 = {
 			}
 			scope:ftr_court_ringleader ?= {
 				ftr_court_discourage_backers_effect = yes
-				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_rival_claimant_opinion }
+				add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_rival_claimant_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_monarch }
 			}
 			if = {
 				limit = {
@@ -444,7 +444,7 @@ ftr_court_struggle.0110 = {
 				every_in_list = {
 					variable = ftr_court_participant_list
 					limit = { NOT = { this = scope:ftr_court_dissenter } }
-					add_opinion = { target = scope:ftr_court_new_monarch  modifier = ftr_political_opponent_opinion }
+					add_opinion = { target = scope:ftr_court_new_monarch  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_new_monarch }
 				}
 			}
 		}
@@ -729,7 +729,136 @@ ftr_court_struggle.0150 = {
 		}
 		# 继续垂帘，另待时机
 		add_character_flag = { flag = ftr_court_asked_usurp  years = ftr_court_ask_throttle_years_value }
-		add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }
+		add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_monarch }
+	}
+}
+
+######### 0160 临界征询：政变（root = 竞争者；story 季度循环推送，§12） #########
+# 临界限（≥170）专属：朝堂已濒临火并，有人被推上前台——是否就此动手？
+# 同意 → 直接起 coup 阴谋夺位；拒绝 → 烈度回落 ftr_court_coup_refuse_intensity_drop_value，
+# 且 2 年内不再征询此人（ftr_court_coup_ask_cooldown）。AI 依性格定夺。
+ftr_court_struggle.0160 = {
+	type = character_event
+	title = ftr_court_struggle.0160.t
+	desc = ftr_court_struggle.0160.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+		animation = fear
+	}
+
+	immediate = {
+		save_scope_as = ftr_court_coup_asker
+		# 定位君主（封臣走 top_liege，廷臣走 employer）
+		if = {
+			limit = { exists = top_liege }
+			top_liege = { save_scope_as = ftr_court_monarch }
+		}
+		else_if = {
+			limit = { exists = employer }
+			employer = { save_scope_as = ftr_court_monarch }
+		}
+		# 定位朝堂故事（拒绝分支回落烈度用）
+		scope:ftr_court_monarch ?= {
+			every_owned_story = {
+				limit = { story_type = ftr_court_struggle }
+				save_scope_as = ftr_court_coup_story
+			}
+		}
+	}
+
+	option = { # 就是现在
+		name = ftr_court_struggle.0160.a
+		ai_chance = {
+			base = 25
+			modifier = { add = 45  has_trait = ambitious }
+			modifier = { add = 30  has_trait = brave }
+			modifier = { add = 25  has_trait = callous }
+			modifier = { add = 20  is_powerful_vassal = yes }
+			modifier = { add = 20  intrigue >= 15 }
+			modifier = { add = -60  has_trait = content }
+			modifier = { add = -50  has_trait = loyal }
+			modifier = { add = -40  has_trait = craven }
+			modifier = { add = -30  has_trait = just }
+		}
+		# 宫廷政变：起 coup 阴谋（无需领地；valid 要求发起者为主君廷臣 / 封臣，入口已过滤）
+		start_scheme = {
+			type = coup
+			target_character = scope:ftr_court_monarch
+		}
+		# 党羽按 agent 能力强制拉入阴谋并锁定（中途不可自愿退出）
+		ftr_court_coup_pull_backers_effect = yes
+		add_character_flag = {
+			flag = ftr_court_coup_ask_cooldown
+			years = ftr_court_coup_ask_cooldown_years_value
+		}
+	}
+
+	option = { # 时机未到
+		name = ftr_court_struggle.0160.b
+		ai_chance = {
+			base = 60
+			modifier = { add = 40  has_trait = content }
+			modifier = { add = 30  has_trait = craven }
+			modifier = { add = 25  has_trait = loyal }
+			modifier = { add = 20  has_trait = patient }
+			modifier = { add = -35  has_trait = ambitious }
+			modifier = { add = -25  has_trait = brave }
+		}
+		# 拒绝：朝堂烈度回落（有下限保护）
+		scope:ftr_court_coup_story ?= {
+			if = {
+				limit = { has_variable = ftr_court_struggle_intensity }
+				change_variable = {
+					name = ftr_court_struggle_intensity
+					subtract = ftr_court_coup_refuse_intensity_drop_value
+				}
+				if = {
+					limit = { var:ftr_court_struggle_intensity < ftr_court_intensity_min_value }
+					set_variable = { name = ftr_court_struggle_intensity  value = ftr_court_intensity_min_value }
+				}
+			}
+		}
+		add_character_flag = {
+			flag = ftr_court_coup_ask_cooldown
+			years = ftr_court_coup_ask_cooldown_years_value
+		}
+	}
+
+	option = { # 起兵造反
+		name = ftr_court_struggle.0160.c
+		trigger = {
+			ftr_court_can_declare_succession_war_trigger = yes
+			NOT = { is_imprisoned = yes }
+		}
+		ai_chance = {
+			base = 20
+			modifier = { add = 45  has_trait = ambitious }
+			modifier = { add = 30  has_trait = brave }
+			modifier = { add = -60  has_trait = content }
+			modifier = { add = -40  has_trait = craven }
+			# 党羽兵力对比君主越高，越倾向起兵（比值 >1 才给正加成）
+			modifier = {
+				exists = scope:ftr_court_monarch
+				ftr_court_coup_strength_ratio_value > 1
+				add = {
+					value = ftr_court_coup_strength_ratio_value
+					subtract = 1
+					multiply = ftr_court_coup_rebel_strength_bonus_value
+				}
+			}
+		}
+		add_character_flag = {
+			flag = ftr_court_coup_ask_cooldown
+			years = ftr_court_coup_ask_cooldown_years_value
+		}
+		# 举兵讨伐：无地者由效果内部先建临时公国再宣战
+		ftr_court_prepare_rebellion_effect = { TARGET = scope:ftr_court_monarch }
 	}
 }
 
@@ -1083,9 +1212,9 @@ ftr_court_struggle.0210 = {
 			}
 		}
 		# 双边交恶：被支持者嫌贸然公开站队；支持者遭拒而蒙羞
-		add_opinion = { target = scope:ftr_court_offerer  modifier = ftr_court_backing_presumptuous_opinion }
+		add_opinion = { target = scope:ftr_court_offerer  modifier = ftr_court_backing_presumptuous_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_offerer }
 		scope:ftr_court_offerer = {
-			add_opinion = { target = scope:ftr_court_offer_recipient  modifier = ftr_court_backing_refused_opinion }
+			add_opinion = { target = scope:ftr_court_offer_recipient  modifier = ftr_court_backing_refused_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_offer_recipient }
 			# 被拒后不落入原表态冷却：允许其另择明主，避免被单个竞争者「卡死」表态权
 			remove_character_flag = ftr_court_asked_stance
 			# 拒绝结果通知支持者（send_interface_message 仅当接收者为当前玩家时显示）
@@ -1321,7 +1450,7 @@ ftr_court_struggle.0220 = {
 			}
 		}
 		scope:actor = {
-			add_opinion = { target = root  modifier = ftr_political_opponent_opinion }
+			add_opinion = { target = root  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = root }
 			remove_variable = ftr_court_petition_camp_strength
 		}
 		remove_variable = ftr_court_petition_camp_strength
@@ -1555,7 +1684,7 @@ ftr_court_struggle.0300 = { # 放谣诋毁（对立区 90+）
 		scope:ftr_court_victim ?= {
 			# 记下诋毁者（供 0330 读取）
 			set_variable = { name = ftr_court_strife_actor  value = scope:ftr_court_actor }
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 			trigger_event = { id = ftr_court_struggle.0330  days = 1 } # 受害者得知被诋毁
 		}
 		# 放谣：victim 声望受损，并推高烈度
@@ -1633,7 +1762,7 @@ ftr_court_struggle.0310 = { # 伪造贪腐证据（濒危区 140+，intrigue 门
 		# 伪造证据指控 victim——通知 victim（0340），由君主(arbiter)裁决
 		scope:ftr_court_victim ?= {
 			set_variable = { name = ftr_court_strife_actor  value = scope:ftr_court_actor }
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 			trigger_event = { id = ftr_court_struggle.0340  days = 2 }
 		}
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
@@ -1698,7 +1827,7 @@ ftr_court_struggle.0320 = { # 下毒（濒危区 140+，更隐秘，callous/intr
 		# 下毒：通知 victim（触发 victim 侧结果事件 0350），成功与否由 0350 判定
 		scope:ftr_court_victim ?= {
 			set_variable = { name = ftr_court_strife_actor  value = scope:ftr_court_actor }
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 			trigger_event = { id = ftr_court_struggle.0350  days = 2 }
 		}
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
@@ -1714,7 +1843,7 @@ ftr_court_struggle.0320 = { # 下毒（濒危区 140+，更隐秘，callous/intr
 		# 只下虚弱之毒，压低 victim 竞争力而非夺命
 		scope:ftr_court_victim ?= {
 			set_variable = { name = ftr_court_strife_actor  value = scope:ftr_court_actor }
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 			trigger_event = { id = ftr_court_struggle.0360  days = 2 }
 		}
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
@@ -1777,7 +1906,7 @@ ftr_court_struggle.0330 = { # 受害者得知被放谣诋毁
 		}
 		# 反诋毁 actor：双向拉扯，烈度继续升温（交由 actor 侧知悉）
 		scope:ftr_court_actor ?= {
-			add_opinion = { target = scope:ftr_court_victim  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_victim  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_victim }
 		}
 		# 链向 0370：victim 决定把舆论战升级还是收手
 		trigger_event = { id = ftr_court_struggle.0370  days = 2 }
@@ -2024,7 +2153,7 @@ ftr_court_struggle.0370 = {
 		}
 		# 双方声望受损、互相敌意加深、烈度微升
 		scope:ftr_court_actor ?= {
-			add_opinion = { target = scope:ftr_court_victim  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_victim  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_victim }
 			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
 		}
 		add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
@@ -2098,7 +2227,7 @@ ftr_court_struggle.0390 = {
 		}
 		# 追凶：君主（朝堂）对下毒者心生芥蒂、下毒者声望受损（受害者侧目已是既定记恨）
 		scope:ftr_court_monarch ?= {
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_rival_claimant_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_rival_claimant_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 		}
 		scope:ftr_court_actor ?= {
 			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
@@ -2201,7 +2330,7 @@ ftr_court_struggle.0400 = {
 		}
 		# 查实头号竞争者：声望受损，并对调查发起者（root）交恶
 		scope:ftr_court_ringleader ?= {
-			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = root }
 			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
 		}
 		scope:ftr_court_story ?= {
@@ -2279,7 +2408,7 @@ ftr_court_struggle.0401 = {
 			modifier = { add = -20  has_trait = compassionate }
 		}
 		scope:ftr_court_inq_actor ?= {
-			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_rival_claimant_opinion }
+			add_opinion = { target = scope:ftr_court_monarch  modifier = ftr_court_rival_claimant_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_monarch }
 			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
 		}
 		# 受害者沉冤得雪，声望回升
@@ -2351,7 +2480,7 @@ ftr_court_struggle.0410 = { # 制造牵制（root = 发起竞争者；victim = �
 		}
 		set_variable = { name = ftr_court_leverage_target  value = scope:ftr_court_leverage_holder_victim }
 		scope:ftr_court_victim ?= {
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 		}
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
 	}
@@ -2365,7 +2494,7 @@ ftr_court_struggle.0410 = { # 制造牵制（root = 发起竞争者；victim = �
 		}
 		# 公开敲打：victim 声望受损
 		scope:ftr_court_victim ?= {
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
 		}
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
@@ -2405,7 +2534,7 @@ ftr_court_struggle.0411 = {
 		}
 		# 逼其让利：目标声望受损并交恶；若目标密谋老练可能识破反噬（链 0412）
 		scope:ftr_court_leverage_holder_victim ?= {
-			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_rival_claimant_opinion }
+			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_rival_claimant_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_leverage_holder_actor }
 			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
 		}
 		remove_character_flag = ftr_court_has_leverage
@@ -2426,7 +2555,7 @@ ftr_court_struggle.0411 = {
 		}
 		# 公开揭穿：目标声望重损，双方反目成仇；烈度略升
 		scope:ftr_court_leverage_holder_victim ?= {
-			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_rival_claimant_opinion }
+			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_rival_claimant_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_leverage_holder_actor }
 			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
 		}
 		remove_character_flag = ftr_court_has_leverage
@@ -2496,7 +2625,7 @@ ftr_court_struggle.0412 = {
 		# 被对方当众反咬：声望受损，双方仇怨更深
 		add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
 		scope:ftr_court_leverage_holder_victim ?= {
-			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_leverage_holder_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_leverage_holder_actor }
 		}
 	}
 }
@@ -2545,7 +2674,7 @@ ftr_court_struggle.0420 = { # 绑架（root = 发起竞争者；victim = 目标�
 		scope:ftr_court_victim ?= {
 			# 记录掳人者，供 0421 读取
 			set_variable = { name = ftr_court_strife_actor  value = scope:ftr_court_actor }
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 			# 逼其暂退（模拟短期软禁带来的退意）：打一个"受胁迫"标记
 			add_character_flag = { flag = ftr_court_coerced  years = ftr_court_coerced_years_value }
 		}
@@ -2581,7 +2710,7 @@ ftr_court_struggle.0420 = { # 绑架（root = 发起竞争者；victim = 目标�
 		}
 		# 恐吓一番即放：victim 声望受损
 		scope:ftr_court_victim ?= {
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
 		}
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_active_years_value }
@@ -2648,7 +2777,7 @@ ftr_court_struggle.0421 = {
 		# 宁死不从：掳人者声望受损、烈度微升
 		scope:ftr_court_actor ?= {
 			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
-			add_opinion = { target = scope:ftr_court_victim  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_victim  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_victim }
 		}
 		remove_character_flag = ftr_court_coerced
 		every_owned_story = {
@@ -2712,7 +2841,7 @@ ftr_court_struggle.0422 = {
 		# 反扑令 actor 声望受损、与朝堂交恶
 		add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
 		scope:ftr_court_victim ?= {
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_rival_claimant_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_rival_claimant_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 		}
 		every_owned_story = {
 			limit = { story_type = ftr_court_struggle }
@@ -2777,7 +2906,7 @@ ftr_court_struggle.0430 = {
 			target_character = scope:ftr_court_victim
 		}
 		scope:ftr_court_victim ?= {
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 		}
 		add_character_flag = { flag = ftr_court_strife_active  years = ftr_court_strife_strong_active_years_value }
 	}
@@ -2791,7 +2920,7 @@ ftr_court_struggle.0430 = {
 		}
 		# 降级为「制造牵制」（手段 2.3）：不打谋杀的主意，改为攫取把柄
 		scope:ftr_court_victim ?= {
-			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_actor }
 		}
 		# 生产把柄：与 0410.a 同一套记账（ftr_court_has_leverage + ftr_court_leverage_target），供 0411 消费
 		add_character_flag = { flag = ftr_court_has_leverage  years = ftr_court_leverage_years_value }
@@ -2918,7 +3047,7 @@ ftr_court_struggle.0500 = {
 			limit = { NOT = { has_variable = ftr_court_sway_succeeded } }
 			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
 			scope:ftr_court_story_owner ?= {
-				add_opinion = { target = scope:ftr_court_landless_actor  modifier = ftr_court_targeted_opinion }
+				add_opinion = { target = scope:ftr_court_landless_actor  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_landless_actor }
 			}
 		}
 		remove_variable = ftr_court_sway_succeeded
@@ -3153,9 +3282,9 @@ ftr_court_struggle.0520 = {
 		scope:ftr_court_demand_champion ?= {
 			every_in_list = {
 				variable = ftr_court_supporters
-				add_opinion = { target = scope:ftr_court_demand_monarch  modifier = ftr_political_opponent_opinion }
+				add_opinion = { target = scope:ftr_court_demand_monarch  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_demand_monarch }
 			}
-			add_opinion = { target = scope:ftr_court_demand_monarch  modifier = ftr_political_opponent_opinion }
+			add_opinion = { target = scope:ftr_court_demand_monarch  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_demand_monarch }
 		}
 		# 拒绝激化对立：烈度上升（夹紧上限）
 		every_owned_story = {
@@ -3458,7 +3587,7 @@ ftr_court_struggle.0601 = {
 		custom_tooltip = {
 			text = ftr_court_impeach_delay_tt
 			scope:ftr_court_impeach_actor ?= {
-				add_opinion = { target = root  modifier = ftr_political_opponent_opinion }
+				add_opinion = { target = root  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = root }
 			}
 			scope:ftr_court_story ?= {
 				ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value }
@@ -3634,7 +3763,7 @@ ftr_court_struggle.0611 = {
 				subtract = ftr_court_debate_dodge_prestige_value
 			}
 			scope:ftr_court_debate_challenger ?= {
-				add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+				add_opinion = { target = root  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = root }
 				# 避战回执：发起方得知对方不接
 				send_interface_message = {
 					type = event_diplomacy_bad_with_text
@@ -3795,8 +3924,8 @@ ftr_court_struggle.0620 = {
 		}
 		scope:ftr_court_duel_defendant ?= {
 			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
-			add_opinion = { target = scope:ftr_court_duel_plaintiff  modifier = ftr_court_targeted_opinion }
-			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_duel_plaintiff  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_duel_plaintiff }
+			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = root }
 			send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_duel_notify_verdict_lose_title  desc = ftr_court_duel_notify_verdict_lose_desc  left_icon = scope:ftr_court_duel_plaintiff  right_icon = root }
 		}
 		remove_variable = ftr_court_duel_plaintiff
@@ -3815,8 +3944,8 @@ ftr_court_struggle.0620 = {
 		}
 		scope:ftr_court_duel_plaintiff ?= {
 			add_prestige = { value = 0  subtract = ftr_court_prestige_minor_value }
-			add_opinion = { target = scope:ftr_court_duel_defendant  modifier = ftr_court_targeted_opinion }
-			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = scope:ftr_court_duel_defendant  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_duel_defendant }
+			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = root }
 			send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_duel_notify_verdict_lose_title  desc = ftr_court_duel_notify_verdict_lose_desc  left_icon = scope:ftr_court_duel_defendant  right_icon = root }
 		}
 		remove_variable = ftr_court_duel_plaintiff
@@ -3830,11 +3959,11 @@ ftr_court_struggle.0620 = {
 			scope:ftr_court_duel_story ?= { ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value } }
 		}
 		scope:ftr_court_duel_plaintiff ?= {
-			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = root }
 			send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_duel_notify_dismissed_title  desc = ftr_court_duel_notify_dismissed_desc  left_icon = root }
 		}
 		scope:ftr_court_duel_defendant ?= {
-			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }
+			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = root }
 			send_interface_message = { type = event_diplomacy_bad_with_text  title = ftr_court_duel_notify_dismissed_title  desc = ftr_court_duel_notify_dismissed_desc  left_icon = root }
 		}
 		remove_variable = ftr_court_duel_plaintiff
@@ -4238,6 +4367,7 @@ ftr_court_struggle.0700 = {
 				target = root
 				modifier = ftr_political_opponent_opinion
 			}
+			ftr_court_rival_grudge_effect = { CHARACTER = root }
 		}
 		ai_chance = {
 			base = 45

@@ -60,6 +60,13 @@
  ftr_court_struggle.0150.a:0 "Why should the strings not come with a throne?"
  ftr_court_struggle.0150.b:0 "The strings are enough — for now."
 
+###### 0160 Critical consultation: coup (quarterly loop, critical band only) ######
+ftr_court_struggle.0160.t:0 "A Word at the Brink"
+ftr_court_struggle.0160.desc:0 "The court has grown too heated to contain, and every eye turns to me. [ftr_court_monarch.GetTitledFirstName] still sits the throne, yet all can see who truly holds the reins. Move now, or watch the moment cool — and it will not come again."
+ftr_court_struggle.0160.a:0 "Then let it be tonight."
+ftr_court_struggle.0160.b:0 "Not yet. I stay my hand."
+ftr_court_struggle.0160.c:0 "Raise the banners and make war on him."
+
  ###### 0001 朝堂权力角逐开始 ######
  ftr_court_struggle.0001.t:0 "The Contest for the Throne Begins"
  ftr_court_struggle.0001.desc:0 "The question of succession has been answered — no, not answered, but thrown open. Around [ftr_court_monarch.GetTitledFirstName], claimants circle and councillors choose sides. The struggle for the Crown has begun, and every man and woman of power must now decide where their allegiance lies."

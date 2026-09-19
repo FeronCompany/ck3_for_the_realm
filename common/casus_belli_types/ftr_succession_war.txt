@@ -4,7 +4,8 @@
 ### 继任竞争者以武力争夺大位。
 ### 与派系内战的区别：
 ###   1) 由朝堂角逐（ftr_court_struggle）驱动，可脱离派系单独发动
-###   2) 无地的廷臣皇子/王子也会起兵——CB 会为其创建【纯虚拟临时公国】，
+###   2) 参考原版民粹起义：起兵者**先建临时独立公国 + 生成精锐部队，再宣战**。
+###      无地皇子/王子凭该公国取得出兵地与宣战资格（脱离臣属、独立头衔）；
 ###      战争结束时无条件销毁，不论胜负
 ###   3) 支持者会依此前的站队自动参战，避免孤军奋战
 ###   4) 造反不能白和平：white_peace_possible = no，叛乱只有胜、败、失效三种结局
@@ -50,9 +51,9 @@ ftr_succession_war = {
 			scope:attacker = {
 				top_liege = scope:defender
 			}
-			# 无地皇子/王子：凭预先创建的临时公国对君主开战（非封臣关系）
+			# 起兵路径：持「临时独立公国」的起兵者——已脱离臣属，以独立身份对君主开战
 			scope:attacker = {
-				is_landed = no
+				is_independent_ruler = yes
 				has_variable = ftr_court_temp_duchy
 				dynasty = scope:defender.dynasty
 			}
@@ -97,6 +98,11 @@ ftr_succession_war = {
 				}
 				ftr_court_create_temp_duchy_effect = yes
 			}
+			# 兜底：万一有路径未预生成精锐部队，在此补齐（flag 去重）
+			if = {
+				limit = { NOT = { has_character_flag = ftr_court_rebel_troops_spawned } }
+				ftr_court_spawn_rebel_troops_effect = yes
+			}
 		}
 
 		# 2) 支持者响应：双方各自拉人，避免孤军奋战
@@ -125,6 +131,7 @@ ftr_succession_war = {
 		}
 
 		# 临时公国是纯虚拟头衔，不论胜负一律销毁
+		# （效果内部同步清掉「起兵目标君主」记录与部队 flag）
 		scope:attacker ?= { ftr_court_revoke_temp_duchy_effect = yes }
 		scope:defender ?= { ftr_court_revoke_temp_duchy_effect = yes }
 
@@ -140,6 +147,7 @@ ftr_succession_war = {
 
 		scope:attacker ?= {
 			# 临时公国是纯虚拟头衔，不论胜负一律销毁
+			# （效果内部同步解除独立起兵身份，无地者回到君主宫廷）
 			ftr_court_revoke_temp_duchy_effect = yes
 
 			# 剥夺继承权：造过反的人不配再排队
@@ -190,6 +198,7 @@ ftr_succession_war = {
 	# 也绝不让造反者全身而退——按与失败同等的代价处理。
 	on_white_peace = {
 		scope:attacker ?= {
+			# 回收临时公国（内部同步解除独立起兵身份）
 			ftr_court_revoke_temp_duchy_effect = yes
 			if = {
 				limit = { NOT = { has_character_flag = ftr_court_disinherited } }
@@ -212,7 +221,10 @@ ftr_succession_war = {
 	# 失效多为意外情况，不追究叛乱者责任，但必须回收临时公国，
 	# 否则会留下永远无法处理的虚拟头衔。
 	on_invalidated = {
-		scope:attacker ?= { ftr_court_revoke_temp_duchy_effect = yes }
+		scope:attacker ?= {
+			# 回收临时公国（内部同步解除独立起兵身份）
+			ftr_court_revoke_temp_duchy_effect = yes
+		}
 		scope:defender ?= { ftr_court_revoke_temp_duchy_effect = yes }
 	}
 

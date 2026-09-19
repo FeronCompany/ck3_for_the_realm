@@ -716,4 +716,47 @@ ftr_court_leverage_years_value = 5
 # 被绑架胁迫（coerced）
 ftr_court_coerced_years_value = 2
 
+########## 十、临界区政变征询（季度循环，§12）##########
+# 烈度进入临界（≥170）后，story 每约一季度随机征询一名 AI 竞争者是否发起政变。
+# 同意 → 直接起 coup 阴谋；拒绝 → 烈度回落 ftr_court_coup_refuse_intensity_drop_value，
+# 且该竞争者进入 ftr_court_coup_ask_cooldown_years_value 年的「不再征询」冷却。
+ftr_court_coup_ask_interval_months_value = 3
+ftr_court_coup_ask_cooldown_years_value = 2
+ftr_court_coup_refuse_intensity_drop_value = 20
+# 0160 起兵造反分支：党羽总兵力 / 君主兵力 的比值每高出 1.0，AI 起兵权重附加量
+ftr_court_coup_rebel_strength_bonus_value = 60
+# 政变分支：党羽被强制锁入阴谋的年数（期间不可自愿退出；另见 coup 的 agent_leave_threshold）
+ftr_court_coup_agent_lock_years_value = 10
+
+# 求值域：起兵发起者（竞争者本人）。党羽总兵力 ÷ 君主兵力（分母保底 1，避免除零）。
+# 依赖：scope:ftr_court_monarch（事件 immediate 已保存）。
+ftr_court_coup_strength_ratio_value = {
+	value = 0
+	if = {
+		limit = { has_variable_list = ftr_court_supporters }
+		every_in_list = {
+			variable = ftr_court_supporters
+			limit = { is_alive = yes }
+			add = max_military_strength
+		}
+	}
+	divide = ftr_court_coup_monarch_strength_value
+}
+
+# 求值域：任意（读 scope:ftr_court_monarch 的兵力）。君主兵力保底 1，供上比值作分母。
+ftr_court_coup_monarch_strength_value = {
+	value = scope:ftr_court_monarch.max_military_strength
+	min = 1
+}
+
+########## 十一、双边积怨（E：损害关系处按概率结仇）##########
+# 内斗 / 共治相关事件中，凡双边关系受损处按此概率追加「结仇推进」（progress_towards_rival）。
+ftr_court_rival_grudge_chance_value = 35
+ftr_court_rival_grudge_opinion_value = -50
+
+########## 十二、起兵部队（参考原版民粹起义 spawn_popular_revolt_troops）##########
+# 起兵顺序：临时独立公国 → 精锐部队 → 宣战。无地者由公国提供出兵地与宣战资格。
+ftr_court_rebel_maa_stacks_value = 3      # 每个精锐兵种（重装步/骑）的队数
+ftr_court_rebel_siege_stacks_value = 1    # 攻城器械队数
+
 

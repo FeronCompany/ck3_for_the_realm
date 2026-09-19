@@ -146,7 +146,7 @@
 ###### Ease internal strife decision (§12.5 / §12.11) ######
  ftr_court_ease_struggle_decision:0 "<FTR>Ease Internal Strife"
  ftr_court_ease_struggle_decision_desc:0 "The court has grown so heated over the succession that it threatens to spill into open bloodshed. You are willing to pay a heavy price to extend goodwill to the leading claimants and calm their hostility, buying the realm a breathing space."
- ftr_court_ease_struggle_decision_tooltip:0 "Sharply lower court intensity, ease relations with all claimants, and gain a period of truce."
+ ftr_court_ease_struggle_decision_tooltip:0 "Sharply lower court intensity (the amount scales with your #EMP Diplomacy#!), ease relations with all claimants, and gain a period of truce."
  ftr_court_ease_struggle_decision_confirm:0 "Do all you can to appease every faction."
  ftr_court_ease_struggle_decision_crisis_tt:0 "The court struggle has reached the critical stage (intensity at or above the critical threshold)"
  ftr_court_investigate_decision:0 "<FTR>Dispatch Spies"

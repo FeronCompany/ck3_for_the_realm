@@ -9,6 +9,26 @@ ftr_court_ease_struggle_decision = {
 	selection_tooltip = ftr_court_ease_struggle_decision_tooltip
 	cooldown = { years = ftr_court_ease_cooldown_years_value }
 
+	# 双轨成本：行政制君主耗官方影响力，非行政制耗大量威望。
+	# 定义在此由引擎自动收取并渲染消耗提示（资源不足时决议自动灰显），
+	# 故效果内不再重复扣除。
+	cost = {
+		influence = {
+			value = 0
+			if = {
+				limit = { government_allows = administrative }
+				add = ftr_court_ease_influence_cost_value
+			}
+		}
+		prestige = {
+			value = 0
+			if = {
+				limit = { NOT = { government_allows = administrative } }
+				add = ftr_court_ease_prestige_cost_value
+			}
+		}
+	}
+
 	is_shown = {
 		is_ruler = yes
 		# 拥有朝堂权力角逐故事
@@ -16,25 +36,15 @@ ftr_court_ease_struggle_decision = {
 	}
 
 	is_valid = {
-		# 1) 有朝堂故事且烈度 ≥ 濒危阈值（对立已过，濒危才值得烧资源缓和）。
-		#    any_owned_story 内嵌变量比较无法被引擎自动渲染成 Requirements 文本，必须包 custom_description。
+		# 有朝堂故事且烈度 ≥ 濒危阈值（对立已过，濒危才值得烧资源缓和）。
+		# any_owned_story 内嵌变量比较无法被引擎自动渲染成 Requirements 文本，必须包 custom_description。
+		# 资源门槛由上方 cost 块承担（不足时引擎自动灰显并给出消耗提示），此处不再重复判定。
 		custom_description = {
 			text = ftr_court_ease_struggle_decision_crisis_tt
 			any_owned_story = {
 				story_type = ftr_court_struggle
 				has_variable = ftr_court_struggle_intensity
 				var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
-			}
-		}
-		# 2) 双轨资源足够
-		OR = {
-			AND = {
-				government_allows = administrative
-				influence >= ftr_court_ease_influence_cost_value
-			}
-			AND = {
-				NOT = { government_allows = administrative }
-				prestige >= ftr_court_ease_prestige_cost_value
 			}
 		}
 	}

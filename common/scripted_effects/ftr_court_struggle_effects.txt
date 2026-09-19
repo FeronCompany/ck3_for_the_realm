@@ -1526,24 +1526,17 @@ ftr_court_debug_backing_notice_effect = {
 }
 
 # 缓和内部矛盾（§12.5 / §12.11）：root = 君主（story owner）。
-# 作用：支付双轨成本、大幅降烈度、缓和与各竞争者的关系、设休战窗口 flag。
+# 作用：按外交技能调节幅度降烈度、缓和与各竞争者的关系、设休战窗口 flag。
+# 注：双轨成本已移至 ftr_court_ease_struggle_decision 的 cost 块，本效果不再扣除。
 ftr_court_ease_struggle_effect = {
 	save_scope_as = ftr_court_ease_monarch
-	# 1) 双轨成本：行政制君主耗官方影响力，非行政制耗大量威望
-	if = {
-		limit = { government_allows = administrative }
-		change_influence = {
-			value = 0
-			subtract = ftr_court_ease_influence_cost_value
-		}
+	# 0) 缓和幅度乘数：受君主外交技能影响（外交 10 = 基准，≥30 封顶，上下限 0.75~2.5，即降幅 30~100）。
+	#    必须在君主域先行求值并保存为域值——后续进入 story 域（this = story）便读不到君主技能。
+	save_scope_value_as = {
+		name = ftr_court_ease_diplomacy_multiplier
+		value = ftr_court_ease_diplomacy_multiplier_value
 	}
-	else = {
-		add_prestige = {
-			value = 0
-			subtract = ftr_court_ease_prestige_cost_value
-		}
-	}
-	# 2) 定位朝堂故事并大幅降烈度
+	# 1) 定位朝堂故事，按外交调节后的幅度大幅降烈度
 	every_owned_story = {
 		limit = { story_type = ftr_court_struggle }
 		save_scope_as = ftr_court_ease_story
@@ -1554,7 +1547,10 @@ ftr_court_ease_struggle_effect = {
 			}
 			change_variable = {
 				name = ftr_court_struggle_intensity
-				subtract = ftr_court_ease_intensity_drop_value
+				subtract = {
+					value = ftr_court_ease_intensity_drop_value
+					multiply = scope:ftr_court_ease_diplomacy_multiplier
+				}
 			}
 			if = {
 				limit = { var:ftr_court_struggle_intensity < ftr_court_intensity_min_value }
@@ -1562,14 +1558,14 @@ ftr_court_ease_struggle_effect = {
 			}
 		}
 	}
-	# 3) 缓和与各竞争者的关系（君主个人参与者列表 ftr_court_claimants）：竞争者念君主恩情
+	# 2) 缓和与各竞争者的关系（君主个人参与者列表 ftr_court_claimants）：竞争者念君主恩情
 	every_in_list = {
 		variable = ftr_court_claimants
 		save_scope_as = ftr_court_eased_claimant
 		add_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_eased_opinion }
 		remove_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_rival_claimant_opinion }
 	}
-	# 4) 休战窗口：期间内斗循环整拍停摆（短于决议 cooldown，避免一次缓和长期锁死内斗）
+	# 3) 休战窗口：期间内斗循环整拍停摆（短于决议 cooldown，避免一次缓和长期锁死内斗）
 	add_character_flag = { flag = ftr_court_eased_struggle  years = ftr_court_ease_truce_years_value }
 }
 

@@ -82,14 +82,42 @@ ftr_court_intensity_strong_bias_value = -4
 # 竞争者张力：前两名评分接近或参与者站队变化时的偏置
 ftr_court_intensity_tension_bias_value = 8
 # 缓和决议（§12.5 / §12.11）：一次下调幅度 / 休战窗口 / 决议冷却
-# 下调幅度取 40：从濒危档(140)缓和后仍留在对立档(≥90)，不把内斗循环打进死区
+# 下调幅度基准 40（实际降幅 = 本值 × ftr_court_ease_diplomacy_multiplier_value，随君主外交浮动）
 ftr_court_ease_intensity_drop_value = 40
 # 休战窗口（ftr_court_eased_struggle flag 时长）：与决议冷却分离——休战短、冷却长
 ftr_court_ease_truce_years_value = 3
 ftr_court_ease_cooldown_years_value = 10
-# 双轨成本：行政制君主耗官方影响力，非行政制耗威望（大量）
+# 双轨成本：行政制君主耗官方影响力，非行政制耗威望（大量）。
+# 成本不再由效果扣除，而是定义在 ftr_court_ease_struggle_decision 的 cost 块中（不足时引擎自动灰显）。
 ftr_court_ease_influence_cost_value = 200
 ftr_court_ease_prestige_cost_value = 400
+# 缓和幅度受君主外交技能调节：以外交 10 为基准（=1.0），外交 ≥30 视为 30（封顶），结果夹在上下限内。
+#   外交 < 10：每点 −0.025，外交 0 → 0.75（效果 −25%，下限）。
+#   外交 > 10：每点 +0.075，外交 30 → 2.5（效果 +150%，上限）——即降幅最高 40×2.5 = 100。
+# 求值域：君主（this = story owner）。
+ftr_court_ease_diplomacy_multiplier_value = {
+	value = 1
+	if = {
+		limit = { diplomacy >= 10 }
+		add = {
+			value = {
+				value = diplomacy
+				max = 30
+			}
+			subtract = 10
+			multiply = 0.075
+		}
+	}
+	else = {
+		add = {
+			value = diplomacy
+			subtract = 10
+			multiply = 0.025
+		}
+	}
+	min = 0.75
+	max = 2.5
+}
 # 缓和决议对竞争者的好感缓和幅度
 ftr_court_ease_opinion_gain_value = 20
 

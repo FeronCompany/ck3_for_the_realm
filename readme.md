@@ -7,7 +7,7 @@ A mod about **realm management and personal life**.
 - **Three roads to the throne** — a palace coup, the **coup scheme**, or the *Succession War*: a landless prince may raise a **temporary independent duchy and an elite host**. Rebels cannot white-peace.
 - **Co-rulers** — Naming an heir creates a **Crown Prince co-rule**; abolishing it costs legitimacy, and usurpation ends in the **"Clear the Sovereign's Side"** casus belli, all decided on the **scales of power**.
 - **Government & law** — administrative rebalance (vassal-limit bonus removed, bankruptcy, auto barony assignment), **Army Laws**, celestial contracts, three new succession laws, and a **Political Game** of influence, votes and realm focus.
-- **Interactions, schemes & decisions** — buy land, a vassal or a favor, fine a criminal, debate religion, mediate a private war, or send an **envoy** abroad; the **Coup** and **Combat Guidance** schemes; decisions from the war tax to a **custom hegemony** or restoring Rome; murder as a crime, and the **Battle Commander** trait.
+- **Interactions, schemes & decisions** — buy land, a vassal or a favor, fine a criminal, debate religion, mediate a private war, or send an **envoy** abroad; the **Coup** and **Combat Guidance** schemes; decisions from the war tax to a **custom hegemony** or restoring Rome; murder as a crime, the **Battle Commander** trait (XP scaled by the enemy's battle size), and **post-battle supply** gained from enemy losses.
 
 github.com/FeronCompany/ck3_for_the_realm
 
@@ -24,6 +24,6 @@ Mod 版本 A.M.0 · 支持游戏版本 1.19.*
 - **个人功勋** —— 忠诚以好感记账，可兑现金钱、土地或受五年保护的阁职。
 - **派系与内战** —— 政权级头衔易主时，封臣须**承认新君或宣布独立**；忠诚者可以**勤王**，私斗可被领主调停。
 - **政体与法律** —— 行政制再平衡（移除封臣上限加成、可宣布破产、可自动分配男爵领）、**兵制法律**、天朝省份契约、三种新继承法，以及由影响力、投票与**政治焦点**构成的**政治博弈**。
-- **交互 · 计谋 · 决议 · 琐碎** —— 购买土地与封臣、购买人情、罚款赎罪、宗教辩论、调停私斗、勤王，或派遣**特使**出访；**政变**与**拜师习武**计谋；从战争税到宣告**新霸权**、结束僭主政治、重建罗马的诸多决议；谋杀重罪与**战场指挥官**特质。
+- **交互 · 计谋 · 决议 · 琐碎** —— 购买土地与封臣、购买人情、罚款赎罪、宗教辩论、调停私斗、勤王，或派遣**特使**出访；**政变**与**拜师习武**计谋；从战争税到宣告**新霸权**、结束僭主政治、重建罗马的诸多决议；谋杀重罪、**战场指挥官**特质（经验随敌方参战规模缩放）与按敌军损失折算的**战后补给**。
 
 源码：https://github.com/FeronCompany/ck3_for_the_realm

@@ -255,7 +255,13 @@ ftr_diarchy_reopen_heir_contest_effect = {
 # 该公国下属伯爵领与封臣随 type = granted 一并转移（D1b）。
 ftr_diarchy_grant_land_effect = {
 	save_scope_as = ftr_diarchy_grant_liege
-	$RECIPIENT$ ?= { save_scope_as = ftr_diarchy_grant_target }
+	# 受地者须是**名下无任何头衔**者（与 ftr_diarchy_landless_reminder_trigger 同口径）：
+	# 持有无地头衔者（如天朝宰相的帝国级虚衔）即使划地也会被收回，此处直接不落 scope，
+	# 由下方 exists 判定安全跳过，避免「按钮可点、点了却空转」。
+	if = {
+		limit = { NOT = { $RECIPIENT$ ?= { any_held_title = { always = yes } } } }
+		$RECIPIENT$ ?= { save_scope_as = ftr_diarchy_grant_target }
+	}
 
 	if = {
 		limit = { exists = scope:ftr_diarchy_grant_target }

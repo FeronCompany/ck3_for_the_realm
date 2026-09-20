@@ -33,6 +33,7 @@
  ftr_convert_bureacrat_to_feudal_interaction_desc:0 "Grant hereditary privilege to your vassal."
  ftr_convert_bureacrat_to_feudal_interaction_notification:0 "Liege Grant Hereditary Privilege"
  ftr_cannot_convert_noble_family_owner_to_feudal_tt:0 "Cannot convert noble family head to feudal government"
+ ftr_noble_manor_liquidated_tt:0 "[ftr_manor_holder.GetShortUINamePossessive|U] manor is liquidated together with the noble family title, refunding gold based on how much has been built."
 
  ftr_depose_bureacrat_interaction:0 "<FTR> Depose Bureacrat"
  ftr_depose_bureacrat_interaction_desc:0 "Depose bureacrat."

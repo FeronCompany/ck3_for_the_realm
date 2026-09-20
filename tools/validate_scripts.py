@@ -90,6 +90,8 @@ VANILLA_ON_ACTION_HOOKS = {
     "on_creation", "on_landed", "on_unlanded", "on_title_gain",
     "on_title_lost", "on_vassal_accept", "on_vassal_decline",
     "on_faith_convert", "on_culture_convert",
+    # 共治 / 头衔变动（追加式挂载点）
+    "on_diarch_change",
     # 战争 / 战斗
     "on_war_declared", "on_war_ended", "on_war_won", "on_war_lost",
     "on_combat_start", "on_combat_end_winner", "on_combat_end_loser",

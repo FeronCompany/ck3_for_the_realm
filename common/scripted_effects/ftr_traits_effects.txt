@@ -1,4 +1,5 @@
 ﻿
+# 参数 XP = 本场战斗应得经验，由调用方（战斗方域）先按敌方参战规模算好传入
 ftr_battle_commander_rank_up_effect = {
 	if = {
 		limit = {
@@ -15,7 +16,7 @@ ftr_battle_commander_rank_up_effect = {
 		}
 		add_trait_xp = {
 			trait = ftr_battle_commander
-			value = 5
+			value = $XP$
 		}
 	}
 }

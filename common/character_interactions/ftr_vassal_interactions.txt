@@ -38,6 +38,8 @@ ftr_convert_bureacrat_to_feudal_interaction = {
 			save_scope_as = liege
 		}
 		scope:recipient = {
+			# 若持有世族头衔，先销毁其庄园并按庄园建设情况折算金币返还（须在切换政体前结算）
+			ftr_liquidate_noble_family_manor_effect = yes
 			if = {
 				limit = { religion = religion:islam_religion }
 				change_government = clan_government

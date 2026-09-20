@@ -1,0 +1,42 @@
+﻿# 战场相关脚本值（各条求值域见注释）
+
+# 战场成长：敌方参战规模阈值（人数），低于此值不计经验
+ftr_battle_commander_min_enemy_size_value = 500
+
+# 战场成长：单场战斗经验，求值域 = 战斗方（combat_side），读敌方参战规模，上下限 [1, 15]
+ftr_battle_commander_xp_value = {
+	value = enemy_side.side_max_army_size
+	divide = 1000
+	min = 1
+	max = 15
+}
+
+# 战后补给：敌军损失人数（参战峰值 − 战后余部），求值域 = 获胜战斗方
+ftr_battle_supply_enemy_losses_value = {
+	value = enemy_side.side_max_army_size
+	subtract = enemy_side.side_army_size
+	min = 0
+}
+
+# 战后补给：统兵大将持有「食人」特质时的额外补给倍率
+ftr_battle_supply_cannibal_multiplier_value = 1.5
+
+# 战后补给：单军补给点（补给为 0–100 制），求值域 = 获胜战斗方
+# 敌军每损失 100 人折算 1 点，再乘我军剩余兵力比例；基准上下限 [1, 30]，食人再乘倍率
+ftr_battle_supply_gain_value = {
+	value = ftr_battle_supply_enemy_losses_value
+	divide = 100
+	multiply = {
+		value = side_army_size
+		divide = side_max_army_size
+		max = 1
+	}
+	min = 1
+	max = 30
+	if = {
+		limit = {
+			side_commander ?= { has_trait = cannibal }
+		}
+		multiply = ftr_battle_supply_cannibal_multiplier_value
+	}
+}

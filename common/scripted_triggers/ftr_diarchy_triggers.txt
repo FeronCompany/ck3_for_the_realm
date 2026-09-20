@@ -113,6 +113,10 @@ ftr_diarchy_landless_reminder_trigger = {
 	is_alive = yes
 	is_adult = yes
 	is_landed = no
+	# **已持有任何头衔者一律排除**：`is_landed = no` 判不出「无地头衔」——
+	# 天朝制的宰相（首相府共治）持有无地的帝国级头衔，划地给他也会被制度收回，
+	# 提醒与授土全部空转。故要求其名下**一个头衔都没有**。
+	NOT = { any_held_title = { always = yes } }
 	# 「忠心事主」后不再提醒
 	NOT = { has_character_flag = ftr_diarchy_loyal_to_liege }
 }

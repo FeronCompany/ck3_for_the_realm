@@ -68,3 +68,31 @@ ftr_buy_land_effect = {
 		resolve_title_and_vassal_change = scope:change
 	}
 }
+
+# 求值域：被授予世袭罔替、由行政制转封建/氏族的封臣（scope:recipient）。
+# 若其持有世族头衔（is_noble_family_title），则销毁其庄园并按已建设施数量折算金币返还。
+# 折算口径参考原版 nomad_domicile_refund_effect（游牧定居时按 domicile 建筑数返还金币）。
+# 说明：庄园（estate domicile）依附于「持有世族头衔」这一条件（见 estate 的 allowed_for_character），
+# 销毁世族头衔即销毁庄园，故本效果须先结算返还（此时 domicile 仍有效）、后销毁头衔。
+ftr_liquidate_noble_family_manor_effect = {
+	if = {
+		limit = {
+			any_held_title = { is_noble_family_title = yes }
+		}
+		save_scope_as = ftr_manor_holder
+		# 1) 先按庄园建设情况折算金币返还
+		if = {
+			limit = { has_domicile = yes }
+			custom_tooltip = ftr_noble_manor_liquidated_tt
+			hidden_effect = {
+				add_gold = ftr_noble_manor_refund_value
+			}
+		}
+		# 2) 销毁庄园：世族头衔为行政制专属，随政体转换一并销毁，其庄园随之消失
+		every_held_title = {
+			limit = { is_noble_family_title = yes }
+			save_temporary_scope_as = ftr_noble_family_title
+			prev = { destroy_title = scope:ftr_noble_family_title }
+		}
+	}
+}

@@ -427,11 +427,15 @@ ftr_diarchy.0210 = {
 	desc = ftr_diarchy.0210.desc
 	theme = diplomacy
 
-	# 派发后 2 天落地：请地者亡故/变量过期则静默作废
+	# 派发后 2 天落地：请地者亡故 / 变量过期 / 已无可划之地 / 请地者已持有头衔 → 整件事静默作废
 	trigger = {
 		is_alive = yes
 		exists = var:ftr_diarchy_land_requester
 		var:ftr_diarchy_land_requester ?= { is_alive = yes }
+		# 此二者即「允其所请」的成立条件（与 ftr_diarchy_landless_reminder_trigger / 授土效果同口径）：
+		# 主君无地可划、或请地者已持有头衔（含无地虚衔，划了也会被收回）→ 连「推托」都不必出现。
+		ftr_diarchy_liege_has_land_to_give_trigger = yes
+		var:ftr_diarchy_land_requester ?= { NOT = { any_held_title = { always = yes } } }
 	}
 
 	left_portrait = {
@@ -445,9 +449,8 @@ ftr_diarchy.0210 = {
 		var:ftr_diarchy_land_requester ?= { save_scope_as = ftr_diarchy_petitioning_diarch }
 	}
 
-	option = { # 允其所请：划出领地
+	option = { # 允其所请：划出领地（成立条件已在事件级 trigger，此处不再重复判定）
 		name = ftr_diarchy.0210.a
-		trigger = { ftr_diarchy_liege_has_land_to_give_trigger = yes }
 		custom_tooltip = { text = ftr_diarchy_grant_land_rule_tt }
 		ftr_diarchy_grant_land_effect = {
 			RECIPIENT = scope:ftr_diarchy_petitioning_diarch
@@ -536,11 +539,6 @@ ftr_diarchy.0210 = {
 					target = scope:ftr_diarchy_petitioning_diarch
 					value >= 40
 				}
-			}
-			# 手头无地可划时只能推托
-			modifier = {
-				add = 1000
-				NOT = { ftr_diarchy_liege_has_land_to_give_trigger = yes }
 			}
 		}
 	}

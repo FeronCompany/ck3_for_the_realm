@@ -1,0 +1,23 @@
+﻿##############################################################
+### 战场 WAR — 效果层
+### 求值域均为「获胜战斗方」（combat_side），由 on_combat_end_winner 追加回调调用
+##############################################################
+
+# 战后补给：按敌军损失与我军剩余兵力按比例给我方参战各军补充补给；
+# 统兵大将（side_commander）持有「食人」特质时按倍率增补（倍率见 ftr_battle_supply_cannibal_multiplier_value）。
+ftr_combat_end_supply_effect = {
+	if = {
+		limit = {
+			side_max_army_size > 0
+		}
+		save_scope_value_as = {
+			name = ftr_battle_supply
+			value = ftr_battle_supply_gain_value
+		}
+		every_side_commander = {
+			commanding_army ?= {
+				add_supply = scope:ftr_battle_supply
+			}
+		}
+	}
+}

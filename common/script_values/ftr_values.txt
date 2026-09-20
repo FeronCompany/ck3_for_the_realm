@@ -365,3 +365,20 @@ get_debate_learning_damage = {
 	add = 1
 	multiply = -1
 }
+
+# 世族庄园（estate domicile）清算返还：
+# 按庄园已建设施数量折算金币（口径参考原版 nomad_domicile_refund_effect —— 游牧定居时
+# 按 domicile 建筑数返还金币）。单栋以 medium_gold_value（约半年收入，随对象财力量级缩放）
+# 为基准，随建筑数线性放大，最多 7 栋（estate 的 domicile_building_slots 上限）。
+ftr_noble_manor_refund_value = {
+	value = medium_gold_value
+	switch = {
+		trigger = domicile.num_domicile_buildings
+		7 = { multiply = 7 }
+		6 = { multiply = 6 }
+		5 = { multiply = 5 }
+		4 = { multiply = 4 }
+		3 = { multiply = 3 }
+		2 = { multiply = 2 }
+	}
+}

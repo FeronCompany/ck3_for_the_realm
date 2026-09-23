@@ -68,6 +68,12 @@ ftr_diarchy_try_start_crown_prince_effect = {
 					is_alive = yes
 					is_adult = yes
 					is_imprisoned = no
+					# 与「太子共治自动失效」条件镜像：储君须与主君同处一政权、且级别低于主君，
+					# 否则不建太子共治（避免「建立 → 立刻取消」的往复）。
+					top_liege ?= scope:ftr_diarchy_liege
+					NOT = {
+						highest_held_title_tier >= scope:ftr_diarchy_liege.highest_held_title_tier
+					}
 				}
 			}
 			scope:ftr_diarchy_liege = {

@@ -40,6 +40,7 @@
  ftr_court_promise_contract_option:0 "许以宽免义务"
  ftr_court_promise_gold_option:0 "以重金相赠，当即到手"
  ftr_court_promise_favor_option:0 "耗费威望或影响力示好"
+ ftr_court_backer_force_join_option:0 "<FTR>征召党羽：身为继位角逐的竞争者，你可强制自己的党羽加入派系"
 
  ###### 好感修正 ######
  ftr_court_backer_opinion:0 "曾拥戴我继位"

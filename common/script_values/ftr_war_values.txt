@@ -3,10 +3,34 @@
 # 战场成长：敌方参战规模阈值（人数），低于此值不计经验
 ftr_battle_commander_min_enemy_size_value = 500
 
+# 战场成长：单场战斗经验除数，时代越靠后越大（敌军规模随时代膨胀，除数同步上调以抑制经验膨胀）
+ftr_battle_commander_xp_divisor_value = {
+	value = 1000
+	if = {
+		limit = { current_date <= 1000.1.1 }
+		add = 0
+	}
+	else_if = {
+		limit = { current_date <= 1100.1.1 }
+		add = 300
+	}
+	else_if = {
+		limit = { current_date <= 1200.1.1 }
+		add = 600
+	}
+	else_if = {
+		limit = { current_date <= 1300.1.1 }
+		add = 900
+	}
+	else = {
+		add = 1200
+	}
+}
+
 # 战场成长：单场战斗经验，求值域 = 战斗方（combat_side），读敌方参战规模，上下限 [1, 15]
 ftr_battle_commander_xp_value = {
 	value = enemy_side.side_max_army_size
-	divide = 1000
+	divide = ftr_battle_commander_xp_divisor_value
 	min = 1
 	max = 15
 }

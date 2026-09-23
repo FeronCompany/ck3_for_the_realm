@@ -143,8 +143,12 @@ designate_heir_interaction = {
 				}
 				house ?= scope:actor.house
 				###### OVERRIDE ######
-				# MOD：候选人本人不得已处于共治关系中。
-				has_active_diarchy = no
+				# MOD：候选人本人不得已处于「共治型」共治中（共治皇帝 / 共治君主 / 太子 / 幼年君主）；
+				#      官职线共治者（摄政 / 宰相府 / 大秘书处等）不影响其被立为储君。
+				trigger_if = {
+					limit = { is_diarch = yes }
+					NOT = { liege = { ftr_diarchy_is_heir_co_rule_type_trigger = yes } }
+				}
 				###### OVERRIDE ######
 			}
 		}
@@ -191,10 +195,12 @@ designate_heir_interaction = {
 				piety >= designate_heir_cost
 			}
 			###### OVERRIDE ######
-			# MOD：独占与锁定（§2.2）——已有任何共治者时不可再指定，改储须先废立
+			# MOD：仅「共治型」共治（共治皇帝 / 共治君主 / 太子 / 幼年君主）期间禁止立储；
+			#      摄政 / 宰相府 / 大秘书处等官职线共治不再拦截——立储照常，但不建立太子共治
+			#      （建储侧 ftr_diarchy_can_start_crown_prince_trigger 仍要求当前无任何共治）。
 			custom_tooltip = {
 				text = ftr_diarchy_designate_heir_no_diarchy_tt
-				NOT = { has_active_diarchy = yes }
+				NOT = { ftr_diarchy_is_heir_co_rule_type_trigger = yes }
 			}
 			###### OVERRIDE ######
 		}

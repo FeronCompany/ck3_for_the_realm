@@ -1,6 +1,6 @@
 ﻿l_english:
  # ===== Interactions (design 2 / 4) =====
- ftr_diarchy_designate_heir_no_diarchy_tt:0 "<FTR>You cannot designate an heir while a co-ruler (regent / co-emperor / crown prince) sits beside you — depose them first"
+ ftr_diarchy_designate_heir_no_diarchy_tt:0 "<FTR>You cannot designate an heir while a true co-ruler (co-emperor / co-monarch / crown prince / junior emperor) sits beside you — depose them first. A regent or minister does not bar it"
  ftr_diarch_designate_heir_interaction:0 "<FTR>Designate Heir for Your Liege"
  ftr_diarch_designate_heir_interaction_desc:0 "<FTR>Reach past your liege and name his heir yourself. The crown prince you choose will answer to you."
  ftr_diarch_designate_heir_interaction_notification:0 "<FTR>You have designated your liege's heir"

@@ -1,6 +1,6 @@
 ﻿l_simp_chinese:
  # ===== 交互（§2 / §4） =====
- ftr_diarchy_designate_heir_no_diarchy_tt:0 "<FTR>已有共治者（摄政 / 共治皇帝 / 太子）时不可再指定继承人——改立储君须先废太子"
+ ftr_diarchy_designate_heir_no_diarchy_tt:0 "<FTR>身旁坐着「共治型」共治者（共治皇帝 / 共治君主 / 太子 / 幼年君主）时不可立储——改立储君须先废立；摄政、宰相一类的官职线共治不拦立储"
  ftr_diarch_designate_heir_interaction:0 "<FTR>代君立储"
  ftr_diarch_designate_heir_interaction_desc:0 "<FTR>越过君主，直接为他指定继承人。你选中的储君将听命于你。"
  ftr_diarch_designate_heir_interaction_notification:0 "<FTR>已代君主立储"

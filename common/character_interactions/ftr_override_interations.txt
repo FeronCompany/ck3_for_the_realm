@@ -41,6 +41,14 @@
 							house = scope:recipient.house
 							is_house_head = yes
 						}
+						# 政斗竞争者：可直接强征自己的党羽入伙（无需人情 / 影响力）
+						AND = {
+							ftr_court_is_active_claimant_trigger = yes
+							scope:recipient ?= {
+								has_variable = ftr_court_backer_of
+								var:ftr_court_backer_of ?= { this = scope:actor }
+							}
+						}
 						############### OVERRIDE ###############
 					}
 				}
@@ -52,6 +60,14 @@
 					AND = {
 						house = scope:recipient.house
 						is_house_head = yes
+					}
+					# 政斗竞争者：可直接强征自己的党羽入伙（无需人情 / 影响力）
+					AND = {
+						ftr_court_is_active_claimant_trigger = yes
+						scope:recipient ?= {
+							has_variable = ftr_court_backer_of
+							var:ftr_court_backer_of ?= { this = scope:actor }
+						}
 					}
 				}
 				############### OVERRIDE ###############
@@ -142,6 +158,7 @@
 	}
 
 	#House head request
+	############### OVERRIDE ###############
 	send_option = {
 		is_valid = {
 			exists = scope:recipient
@@ -153,6 +170,24 @@
 		flag = house_head	
 		localization = IS_HOUSE_HEAD
 	}
+	############### OVERRIDE ###############
+
+	############### OVERRIDE ###############
+	# 政斗党羽：角逐中的竞争者强制征召自己的党羽入伙
+	send_option = {
+		is_valid = {
+			scope:actor = {
+				ftr_court_is_active_claimant_trigger = yes
+				scope:recipient ?= {
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { this = scope:actor }
+				}
+			}
+		}
+		flag = ftr_court_backer
+		localization = ftr_court_backer_force_join_option
+	}
+	############### OVERRIDE ###############
 
 	send_options_exclusive = yes
 	

@@ -58,63 +58,45 @@ ftr_court_withdraw_backing_interaction = {
 		}
 	}
 	on_decline = {}
+	# 撤回支持是单方行为，被支持者无从拒绝——直接受理，不再走 ai_accept
+	auto_accept = yes
 	ai_will_do = {
 		base = -30
 		modifier = {
 			add = 40
-			opinion = { target = scope:recipient  value < 0 }
+			opinion = { target = scope:recipient  value < 20 }
 		}
-		# 多疑者风声不对先抽身自保，不愿与人捆绑过深
+		# 与所支持者交情深厚者，不忍抽身而去（朋友 / 挚友 / 姻亲 → 更不易撤销）
 		modifier = {
-			add = 15
-			scope:actor = { has_trait = paranoid }
+			add = -30
+			has_relation_friend = scope:recipient
 		}
-	}
-
-	ai_accept = {
-		# 强留一个离心的人弊大于利：总体放行，仅在惜才/急需实力时挽留
-		base = 50
-		# 被支持者越器重此人越惜才，越不愿放人（好感高 → 接受度降）
-		opinion_modifier = {
-			who = scope:recipient
-			opinion_target = scope:actor
-			multiplier = -0.5
-		}
-		# 竞逐正酣、局面胶着，缺不得爪牙
 		modifier = {
-			desc = ftr_court_accept_withdraw_struggle
-			add = -25
-			scope:recipient = {
-				any_owned_story = {
-					story_type = ftr_court_struggle
-					has_variable = ftr_court_struggle_intensity
-					var:ftr_court_struggle_intensity >= ftr_court_intensity_stir_bound_value
+			add = -50
+			has_relation_best_friend = scope:recipient
+		}
+		# 姻亲：配偶与对方是近亲，或本人近亲与对方结为配偶
+		modifier = {
+			add = -20
+			OR = {
+				any_spouse = { is_close_family_of = scope:recipient }
+				any_close_family_member = {
+					any_spouse = { this = scope:recipient }
 				}
 			}
 		}
-		# 野心勃勃者绝不轻易让麾下力量流失
+		# 已成仇雠者，乐见其势衰（敌人 / 死敌 / 怨恨者 → 更容易撤销）
 		modifier = {
-			desc = ftr_court_accept_withdraw_ambitious
-			add = -20
-			scope:recipient = { has_trait = ambitious }
+			add = 30
+			has_relation_rival = scope:recipient
 		}
-		# 刚愎自用者拉不下脸，宁可挽留也不愿见人转投
 		modifier = {
-			desc = ftr_court_accept_withdraw_arrogant
-			add = -15
-			scope:recipient = { has_trait = arrogant }
+			add = 50
+			has_relation_nemesis = scope:recipient
 		}
-		# 多疑者怕强留之人怀恨反噬，宁愿好聚好散
 		modifier = {
-			desc = ftr_court_accept_withdraw_paranoid
-			add = 15
-			scope:recipient = { has_trait = paranoid }
-		}
-		# 随遇而安者不强留人
-		modifier = {
-			desc = ftr_court_accept_withdraw_content
-			add = 10
-			scope:recipient = { has_trait = content }
+			add = 25
+			has_relation_grudge = scope:recipient
 		}
 	}
 }

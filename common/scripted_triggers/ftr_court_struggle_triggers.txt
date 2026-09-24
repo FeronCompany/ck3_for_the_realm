@@ -111,35 +111,87 @@ ftr_court_hereditary_claimant_candidate_trigger = {
 	}
 }
 
-# 求值域：this = 潜在继任者。性别继承法是否允许其角逐（仅男性 / 仅女性 / 默认男性优先）。
-ftr_court_gender_succession_allows_trigger = {
+# ---- 性别规范：三源合一（头衔继承法 + 信仰教义 + 文化参数）----
+# 求值域：this = 潜在继任者（依赖 scope:ftr_court_monarch）。判据（任一源偏向某性别即视为该倾向；
+# 多源冲突时两性同受抑）：
+#   · 头衔继承法（君主主头衔）：male_only_law / male_preference_law ↦ 偏男；female_* ↦ 偏女
+#   · 信仰教义：doctrine_gender_male_dominated ↦ 偏男；doctrine_gender_female_dominated ↦ 偏女
+#   · 文化参数：male_only_inheritance / male_preference_inheritance ↦ 偏男；female_* ↦ 偏女
+
+# 本政权性别规范是否偏向男性
+ftr_court_realm_gender_favors_male_trigger = {
+	exists = scope:ftr_court_monarch
 	OR = {
-		# 仅男性继承：仅男性
-		AND = {
-			primary_title ?= { has_title_law = male_only_law }
-			is_male = yes
-		}
-		# 仅女性继承：仅女性
-		AND = {
-			primary_title ?= { has_title_law = female_only_law }
-			is_female = yes
-		}
-		# 其余（male_preference / equal）：男性优先——已有成年男性子女时不询问女性，否则男女皆可
-		AND = {
-			NOT = { primary_title ?= { has_title_law = male_only_law } }
-			NOT = { primary_title ?= { has_title_law = female_only_law } }
-			OR = {
-				is_male = yes
-				AND = {
-					is_female = yes
-					NOT = {
-						scope:ftr_court_monarch = {
-							any_child = { is_adult = yes  is_male = yes }
-						}
-					}
+		scope:ftr_court_monarch = { primary_title ?= { has_title_law = male_only_law } }
+		scope:ftr_court_monarch = { primary_title ?= { has_title_law = male_preference_law } }
+		scope:ftr_court_monarch = { faith = { has_doctrine = doctrine_gender_male_dominated } }
+		scope:ftr_court_monarch = {
+			culture = {
+				OR = {
+					has_cultural_parameter = male_only_inheritance
+					has_cultural_parameter = male_preference_inheritance
 				}
 			}
 		}
+	}
+}
+
+# 本政权性别规范是否偏向女性
+ftr_court_realm_gender_favors_female_trigger = {
+	exists = scope:ftr_court_monarch
+	OR = {
+		scope:ftr_court_monarch = { primary_title ?= { has_title_law = female_only_law } }
+		scope:ftr_court_monarch = { primary_title ?= { has_title_law = female_preference_law } }
+		scope:ftr_court_monarch = { faith = { has_doctrine = doctrine_gender_female_dominated } }
+		scope:ftr_court_monarch = {
+			culture = {
+				OR = {
+					has_cultural_parameter = female_only_inheritance
+					has_cultural_parameter = female_preference_inheritance
+				}
+			}
+		}
+	}
+}
+
+# 严格「仅某性别」（头衔法 only / 文化 only）——对立性别**硬性出局**
+ftr_court_realm_gender_only_allows_male_trigger = {
+	exists = scope:ftr_court_monarch
+	OR = {
+		scope:ftr_court_monarch = { primary_title ?= { has_title_law = male_only_law } }
+		scope:ftr_court_monarch = { culture = { has_cultural_parameter = male_only_inheritance } }
+	}
+}
+ftr_court_realm_gender_only_allows_female_trigger = {
+	exists = scope:ftr_court_monarch
+	OR = {
+		scope:ftr_court_monarch = { primary_title ?= { has_title_law = female_only_law } }
+		scope:ftr_court_monarch = { culture = { has_cultural_parameter = female_only_inheritance } }
+	}
+}
+
+# 求值域：this = 潜在继任者。**性别规范是否允许其角逐**（硬性）：
+# 仅当政权严格限定某性别（头衔法 only / 文化 only）时才硬性排除对立性别；
+# 一切「优先 / 偏向」（law・culture 的 preference、faith 的 dominated）不再硬排除，
+# 改由软性抑制承担（见 ftr_court_gender_norms_oppose_trigger 与 0230.a / 0701.a 的 ai_chance）。
+ftr_court_gender_succession_allows_trigger = {
+	trigger_if = {
+		limit = { ftr_court_realm_gender_only_allows_male_trigger = yes }
+		is_male = yes
+	}
+	trigger_else_if = {
+		limit = { ftr_court_realm_gender_only_allows_female_trigger = yes }
+		is_female = yes
+	}
+	trigger_else = { always = yes }
+}
+
+# 求值域：this = 潜在继任者。**性别规范是否偏向与本角色相反的性别**——
+# 仅用于 AI 参与角逐意愿的**软性抑制**（只降概率、不硬排除）。供 0230.a / 0701.a 的 ai_chance 复用。
+ftr_court_gender_norms_oppose_trigger = {
+	OR = {
+		AND = { is_female = yes  ftr_court_realm_gender_favors_male_trigger = yes }
+		AND = { is_male = yes  ftr_court_realm_gender_favors_female_trigger = yes }
 	}
 }
 

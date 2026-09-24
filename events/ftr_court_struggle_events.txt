@@ -1566,6 +1566,8 @@ ftr_court_struggle.0230 = {
 			modifier = { add = 25  has_trait = greedy }
 			modifier = { add = -50  has_trait = content }
 			modifier = { add = -30  has_trait = craven }
+			# 性别规范（头衔法 + 教义 + 文化）偏向对立性别 → 更不可能入局（软性抑制，硬性排除见 ftr_court_gender_succession_allows_trigger）
+			modifier = { add = -35  ftr_court_gender_norms_oppose_trigger = yes }
 		}
 		# 参与角逐：加 flag + 加入最高统治者个人维护的参与者列表 ftr_court_claimants。
 		# 新方案：参与者列表主存储放在最高统治者（scope:ftr_court_monarch）的个人变量列表上，
@@ -4391,6 +4393,11 @@ ftr_court_struggle.0701 = {
 			modifier = {
 				add = -25
 				has_trait = craven
+			}
+			# 性别规范（头衔法 + 教义 + 文化）偏向对立性别 → 更不可能重回角逐（软性抑制）
+			modifier = {
+				add = -35
+				ftr_court_gender_norms_oppose_trigger = yes
 			}
 		}
 	}

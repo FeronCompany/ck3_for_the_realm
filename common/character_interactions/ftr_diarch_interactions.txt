@@ -142,14 +142,6 @@ designate_heir_interaction = {
 					has_trait = bastard
 				}
 				house ?= scope:actor.house
-				###### OVERRIDE ######
-				# MOD：候选人本人不得已处于「共治型」共治中（共治皇帝 / 共治君主 / 太子 / 幼年君主）；
-				#      官职线共治者（摄政 / 宰相府 / 大秘书处等）不影响其被立为储君。
-				trigger_if = {
-					limit = { is_diarch = yes }
-					NOT = { liege = { ftr_diarchy_is_heir_co_rule_type_trigger = yes } }
-				}
-				###### OVERRIDE ######
 			}
 		}
 		scope:actor = {
@@ -195,9 +187,8 @@ designate_heir_interaction = {
 				piety >= designate_heir_cost
 			}
 			###### OVERRIDE ######
-			# MOD：仅「共治型」共治（共治皇帝 / 共治君主 / 太子 / 幼年君主）期间禁止立储；
-			#      摄政 / 宰相府 / 大秘书处等官职线共治不再拦截——立储照常，但不建立太子共治
-			#      （建储侧 ftr_diarchy_can_start_crown_prince_trigger 仍要求当前无任何共治）。
+			# MOD：判断是否存在「共治型」共治者（含**太子共治**）——存在则不得立储 / 改储；
+			#      官职线（摄政 / 宰相府 / 大秘书处）不拦截：立储照常，只写继位、不建太子共治。
 			custom_tooltip = {
 				text = ftr_diarchy_designate_heir_no_diarchy_tt
 				NOT = { ftr_diarchy_is_heir_co_rule_type_trigger = yes }
@@ -214,6 +205,10 @@ designate_heir_interaction = {
 
 	on_accept = {
 		scope:actor = {
+			###### OVERRIDE ######
+			# MOD（2026-09）：改储前先记下旧储，稍后解除其「任命封锁」
+			designated_heir ?= { save_scope_as = ftr_diarchy_previous_heir }
+			###### OVERRIDE ######
 			send_interface_toast = {
 				type = event_toast_effect_neutral
 				title = designate_heir_interaction_notification
@@ -224,23 +219,28 @@ designate_heir_interaction = {
 				set_designated_heir = scope:recipient
 			}
 			###### OVERRIDE ######
-			# MOD：立储接线——四条件成立时启动太子共治（§2.2 1.2）；
-			# 未成年继承人立储时**不建共治**，待其成年由 01 主时钟补立（§2.2 1.3）——
-			if = {
-				limit = {
-					scope:actor = { ftr_diarchy_can_start_crown_prince_trigger = yes }
-					scope:recipient = { is_adult = yes }
-				}
-				custom_tooltip = { text = ftr_diarchy_heir_corule_immediate_tt }
+			remove_variable = ftr_diarchy_corule_ask_declined
+			# 改储：解除旧储的任命封锁（若曾被约束），避免其被永久封锁
+			scope:ftr_diarchy_previous_heir ?= {
+				ftr_diarchy_release_appointment_block_effect = yes
 			}
 			if = {
-				limit = {
-					scope:actor = { ftr_diarchy_can_start_crown_prince_trigger = yes }
-					scope:recipient = { is_adult = no }
-				}
-				custom_tooltip = { text = ftr_diarchy_minor_heir_promotion_tt }
+				limit = { scope:actor = { ftr_diarchy_realm_eligible_trigger = yes } }
+				custom_tooltip = { text = ftr_diarchy_heir_corule_async_tt }
 			}
-			ftr_diarchy_try_start_crown_prince_effect = { PRINCE = scope:recipient }
+			# 留守宫廷约束**前移到立储当下**即时执行（辞官 + 封锁后续任命）：
+			#   不依赖异步共治事件（0710）链路，避免事件条件不满足 / 未走到时约束不生效。
+			#   与共治建立处（ftr_diarchy_try_start_crown_prince_effect）内的调用互为冗余，可安全重复。
+			if = {
+				limit = {
+					scope:actor = { ftr_diarchy_realm_eligible_trigger = yes }
+					scope:recipient = {
+						is_alive = yes
+						top_liege = scope:actor
+					}
+				}
+				scope:recipient = { ftr_diarchy_enforce_crown_prince_unlanded_effect = yes }
+			}
 			###### OVERRIDE ######
 		}
 	}

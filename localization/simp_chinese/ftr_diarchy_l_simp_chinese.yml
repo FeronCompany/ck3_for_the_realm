@@ -139,3 +139,11 @@
  ftr_court_swing_notice_0500_a:0 "<FTR>暗中进言奏效：君主阵营的说客动摇了共治者的班底，天平向#EMP 君主#!一侧回拉 #P -5#!（八五成算；失手则风声走漏、君主威望受损）。"
  ftr_court_swing_notice_0500_b:0 "<FTR>收买共治者左右：君主以 #P 60#! 金疏通共治者身边之人，天平向#EMP 君主#!一侧回拉 #P -5#!。"
  ftr_court_swing_notice_0220_a:0 "<FTR>君主允诺分权：君主当廷允诺与共治者分享权柄，天平向#EMP 共治者#!一侧偏移 #P +5#!。"
+ ftr_diarchy_appointment_timeout_desc:0 "<FTR>[CHARACTER.GetShortUIName]以储君之身留守宫廷，无法接受[appointments|E]任命"
+ # ===== 0710 异步询问是否册立太子共治（§2.2 2026-09 重构） =====
+ ftr_diarchy.0710.t:0 "<FTR>是否册立继承人为太子？"
+ ftr_diarchy.0710.desc:0 "<FTR>储位虽已定下名分，储君却尚未与你同坐朝堂。你是当即册其为太子、与之共治，还是暂且不予这份尊荣？"
+ ftr_diarchy.0710.a:0 "<FTR>册立继承人为太子共治。"
+ ftr_diarchy.0710.b:0 "<FTR>暂且不予册立。"
+ ftr_diarchy_corule_refused_opinion:0 "<FTR>未获册立东宫之席"
+ ftr_diarchy_heir_corule_async_tt:0 "<FTR>立储：是否册立为 #EMP 太子共治#!由宫廷 #EMP 日后再议#!（须行政类政体、独立政权、主头衔 ≥ 王国，且当前无其他共治）。"

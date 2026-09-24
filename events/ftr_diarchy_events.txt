@@ -587,6 +587,80 @@ ftr_diarchy.0700 = {
 }
 
 ######################################################
+### 0710 询问主君：是否为指定继承人册立太子共治（§2.2 2026-09 重构）
+### 由 ftr_diarchy_promote_adult_heir_effect（异步：01 故事主时钟 / 年度 on_action）触发，root = 主君。
+### 同意 → 建立太子共治（并触发 0700 回执）；拒绝 → 被指定继承人对主君不满 + 打记账（不再重问）。
+######################################################
+
+ftr_diarchy.0710 = {
+	type = character_event
+	title = ftr_diarchy.0710.t
+	desc = ftr_diarchy.0710.desc
+	theme = diplomacy
+
+	# 事件级过滤：确有待册立的指定继承人
+	trigger = {
+		is_alive = yes
+		exists = designated_heir
+	}
+
+	left_portrait = { character = root }
+	right_portrait = { character = designated_heir }
+
+	immediate = {
+		designated_heir ?= { save_scope_as = ftr_diarchy_corule_ask_heir }
+	}
+
+	option = { # 册立为太子共治
+		name = ftr_diarchy.0710.a
+		trigger = { exists = scope:ftr_diarchy_corule_ask_heir }
+		remove_character_flag = ftr_diarchy_corule_ask_pending
+		remove_variable = ftr_diarchy_corule_ask_declined
+		ftr_diarchy_try_start_crown_prince_effect = { PRINCE = scope:ftr_diarchy_corule_ask_heir }
+		# 回执：0700（告知主君 + 消息回执新太子）
+		if = {
+			limit = {
+				has_active_diarchy = yes
+				exists = diarch
+			}
+			trigger_event = { id = ftr_diarchy.0700  days = 1 }
+		}
+		ai_chance = {
+			base = 70
+			modifier = { add = 20  has_trait = ambitious }
+			modifier = { add = -30  has_trait = content }
+		}
+	}
+
+	option = { # 暂不册立
+		name = ftr_diarchy.0710.b
+		remove_character_flag = ftr_diarchy_corule_ask_pending
+		# 被指定继承人感到被冷落（对主君不满）
+		scope:ftr_diarchy_corule_ask_heir ?= {
+			add_opinion = {
+				target = root
+				modifier = ftr_diarchy_corule_refused_opinion
+			}
+			# 君主拒绝册立 → 解除该继承人的任命封锁，允许其重新出仕（找工作）
+			ftr_diarchy_release_appointment_block_effect = yes
+		}
+		# 记账：同一继承人不再重问（改储时由交互侧清除该记账）
+		if = {
+			limit = { exists = scope:ftr_diarchy_corule_ask_heir }
+			set_variable = {
+				name = ftr_diarchy_corule_ask_declined
+				value = scope:ftr_diarchy_corule_ask_heir
+			}
+		}
+		ai_chance = {
+			base = 30
+			modifier = { add = 30  has_trait = content }
+			modifier = { add = 20  has_trait = paranoid }
+		}
+	}
+}
+
+######################################################
 ### 0800 / 0801 天平游说对垒通报（§4.4-A D13 / §7.1；2026-09 新增）
 ### 由 ftr_diarchy_backer_lobby_pk_effect → ftr_diarchy_pk_notify_effect 触发，
 ### 收件人 = 主君 / 共治者 / 参战的两名说客（重复者自动跳过；仅对玩家角色发）。

@@ -442,6 +442,21 @@ ftr_court_can_declare_succession_war_trigger = {
 	NOT = { is_at_war = yes }
 	ftr_court_supporters_adequate_trigger = yes
 	# 无地者也能起兵：CB 会为其创建临时公国
+	# 【2026-09 修复】储君**不走 01 继位内战**：已被（其领主 / 雇主）指定为继承人的角色
+	#   另有 03 的篡位链作夺位出口（§3.1「太子只能走篡位线」），不应在受立后立刻起兵。
+	#   实测：立储时把有地封臣「辞官回宫」→ 变成无地者 → 恰好满足 01 的无地起兵条件
+	#   （`ftr_court_landless_rebel_valid_trigger` 要求 is_landed = no）→ 危机档事件 0140 立刻推给他 → 直接宣战。
+	NOT = { ftr_court_is_designated_heir_of_realm_trigger = yes }
+}
+
+# 求值域：this = 任意角色。是否为「其所属政权最高领主（或雇主）的被指定继承人（储君）」。
+# 用途：把储君从 01 的「起兵夺位」入口中排除（其夺位走 03 篡位链）。
+ftr_court_is_designated_heir_of_realm_trigger = {
+	save_temporary_scope_as = ftr_court_heir_check
+	OR = {
+		top_liege ?= { designated_heir ?= { this = scope:ftr_court_heir_check } }
+		employer ?= { designated_heir ?= { this = scope:ftr_court_heir_check } }
+	}
 }
 
 # 求值域：候选人自身。判断其 ftr_court_supporters 支持者列表是否达到起事下限。

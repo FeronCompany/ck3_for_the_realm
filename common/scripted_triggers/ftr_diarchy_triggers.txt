@@ -49,9 +49,15 @@ ftr_diarchy_is_officer_line_diarch_trigger = {
 }
 
 # 求值域：共治者本人。是否为「太子共治」类型
+# 注（2026-09 修复）：共治者可能是主君的**封臣**（有 `liege`），也可能是被「留守宫廷」拉进宫的
+#     **廷臣**（只有 `employer`、没有领主链）。原先只查 `liege = {...}`（硬 scope），
+#     太子一旦成为廷臣即判定失败 ⇒ 留守约束 / 解除封锁全部静默失效。两路并查，`?=` 防报错。
 ftr_diarchy_is_crown_prince_trigger = {
 	is_diarch = yes
-	liege = { has_diarchy_type = ftr_diarchy_crown_prince }
+	OR = {
+		liege ?= { has_diarchy_type = ftr_diarchy_crown_prince }
+		employer ?= { has_diarchy_type = ftr_diarchy_crown_prince }
+	}
 }
 
 # 求值域：君主本人。当前共治是否为「继承人 / 共治型」——太子 / 共治皇帝 / 共治君主 / 幼主共治。

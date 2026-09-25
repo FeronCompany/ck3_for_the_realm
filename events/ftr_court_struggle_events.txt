@@ -4158,6 +4158,36 @@ ftr_court_struggle.0641 = {
 ### 两事件 root = 被询问者本人；scope / story / monarch 定位口径同 0230。
 ##############################################################
 
+######### 0240 离开政权：自动退出角逐（root = 竞争者） #########
+# 由 story effect_group → ftr_court_expel_out_of_realm_claimants_effect 触发。
+# 君主 / 故事经**变量**传入（作用域不跨事件）。退场记账复用 ftr_court_leave_contest_effect。
+ftr_court_struggle.0240 = {
+	type = character_event
+	title = ftr_court_struggle.0240.t
+	desc = ftr_court_struggle.0240.desc
+	theme = intrigue
+
+	trigger = {
+		has_variable = ftr_court_exit_monarch
+		has_variable = ftr_court_exit_story
+	}
+
+	left_portrait = { character = root }
+
+	immediate = {
+		var:ftr_court_exit_monarch ?= { save_scope_as = ftr_court_monarch }
+		var:ftr_court_exit_story ?= { save_scope_as = ftr_court_story }
+		remove_variable = ftr_court_exit_monarch
+		remove_variable = ftr_court_exit_story
+		# 已不在本政权 ⇒ 自动退场：双名单除名 / 释放背书 / 清临时公国
+		ftr_court_leave_contest_effect = yes
+	}
+
+	option = { # 唯一确认
+		name = ftr_court_struggle_0240_ok
+	}
+}
+
 ######### 0700 太子已立：竞争者去留（root = 竞争者） #########
 
 ftr_court_struggle.0700 = {

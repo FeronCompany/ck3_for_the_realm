@@ -68,8 +68,8 @@ ftr_diarchy_quarterly_drift_on_action = {
 
 # 求值域：君主（年度 everyone 脉冲）。立储只写继位，是否另立太子共治改由本异步询问决定：
 #   触发 ftr_diarchy.0710（root = 君主）询问是否册立；同意即建、拒绝给被指定继承人好感惩罚且不再重问。
-# 注：01 故事主时钟也会调用同一效果（ftr_diarchy_promote_adult_heir_effect），两路互为兜底；
-#     效果自带 30 天冷却 flag 与「已拒」变量，避免重复派发 / 重复询问。
+# 注：本处是**唯一**的触发源（原 01 故事主时钟的同类 triggered_effect 已移除，避免重复派发同一询问）；
+#     效果自带 30 天冷却 flag 与「已拒」变量，进一步防止重复询问。
 ftr_diarchy_crown_prince_ask_on_action = {
 	trigger = {
 		ftr_diarchy_can_start_crown_prince_trigger = yes
@@ -93,13 +93,28 @@ ftr_diarchy_crown_prince_invalidate_on_action = {
 		has_diarchy_type = ftr_diarchy_crown_prince
 		exists = diarch
 		OR = {
-			# ① 不在同一政权（顶层领主已非主君）
-			NOT = { diarch.top_liege = root }
+			# ① 不在本政权：共治者**既非主君封臣**（top_liege / liege）**也非主君廷臣**（employer）。
+			#    【2026-09 修复】原判据只查 `top_liege`，而**廷臣没有领主链**（其归属字段是 employer）——
+			#    太子被「留守宫廷」拉进宫成为廷臣后，`diarch.top_liege` 恒不成立 → 每季度脉冲误判并解除共治。
+			diarch = {
+				NOR = {
+					top_liege ?= root
+					liege ?= root
+					employer ?= root
+				}
+			}
 			# ② 共治者级别 ≥ 君主
 			diarch = { highest_held_title_tier >= root.highest_held_title_tier }
-			NOT = { is_sibling_of = diarch }
-			NOT = { is_parent_of = diarch }
-			NOT = { is_grandparent_of = diarch }
+			# ③ 血缘侧（**必须整组取反**）：共治者既非君主兄弟、亦非子女、亦非孙辈 ⇒ 太子位名不副实。
+			#    【2026-09 修复】原先把三条 NOT 平铺进 OR，只要共治者是「子女」就会命中
+			#    `NOT = { is_sibling_of = diarch }` ⇒ 每季度误判并解除共治（"还是会被自动取消"的根因）。
+			diarch = {
+				NOR = {
+					is_sibling_of = root
+					is_child_of = root
+					is_grandchild_of = root
+				}
+			}
 		}
 	}
 	effect = {

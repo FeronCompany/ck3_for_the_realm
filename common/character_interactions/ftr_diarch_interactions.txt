@@ -208,6 +208,19 @@ designate_heir_interaction = {
 			###### OVERRIDE ######
 			# MOD（2026-09）：改储前先记下旧储，稍后解除其「任命封锁」
 			designated_heir ?= { save_scope_as = ftr_diarchy_previous_heir }
+			# 留守宫廷约束**须先于「写入储位」执行**：先把受爵者移入本宫廷 / 解除地方任职，
+			#   再写 set_designated_heir——否则「指定」会因受爵者当时尚非本宫廷的适格继承人
+			#   而被引擎静默拒绝（表现为「人来了宫廷，但储位没生效」，且仍能在 is_shown 中被再次选中）。
+			if = {
+				limit = {
+					scope:actor = { ftr_diarchy_realm_eligible_trigger = yes }
+					scope:recipient = {
+						is_alive = yes
+						top_liege = scope:actor
+					}
+				}
+				scope:recipient = { ftr_diarchy_enforce_crown_prince_unlanded_effect = yes }
+			}
 			###### OVERRIDE ######
 			send_interface_toast = {
 				type = event_toast_effect_neutral
@@ -220,26 +233,16 @@ designate_heir_interaction = {
 			}
 			###### OVERRIDE ######
 			remove_variable = ftr_diarchy_corule_ask_declined
-			# 改储：解除旧储的任命封锁（若曾被约束），避免其被永久封锁
+			# 改储：解除旧储的任命封锁（若曾被约束）；**旧储即新储时不解除**，否则会清掉刚施加的封锁。
 			scope:ftr_diarchy_previous_heir ?= {
-				ftr_diarchy_release_appointment_block_effect = yes
+				if = {
+					limit = { NOT = { this = scope:recipient } }
+					ftr_diarchy_release_appointment_block_effect = yes
+				}
 			}
 			if = {
 				limit = { scope:actor = { ftr_diarchy_realm_eligible_trigger = yes } }
 				custom_tooltip = { text = ftr_diarchy_heir_corule_async_tt }
-			}
-			# 留守宫廷约束**前移到立储当下**即时执行（辞官 + 封锁后续任命）：
-			#   不依赖异步共治事件（0710）链路，避免事件条件不满足 / 未走到时约束不生效。
-			#   与共治建立处（ftr_diarchy_try_start_crown_prince_effect）内的调用互为冗余，可安全重复。
-			if = {
-				limit = {
-					scope:actor = { ftr_diarchy_realm_eligible_trigger = yes }
-					scope:recipient = {
-						is_alive = yes
-						top_liege = scope:actor
-					}
-				}
-				scope:recipient = { ftr_diarchy_enforce_crown_prince_unlanded_effect = yes }
 			}
 			###### OVERRIDE ######
 		}

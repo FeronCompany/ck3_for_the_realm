@@ -314,13 +314,15 @@ ftr_court_declare_backing_decision = {
 			top_liege ?= { has_active_diarchy = yes }
 		}
 		# 君主健康驱动：大位越近越值得提前占队（this = 决策者，经 top_liege / employer 读君主健康）
-		# 加成 = 55 − 10 × 君主 health（官方档 dying≈+55 / poor≈+45 / fine≈+25 / medium≈+15 / good≈+5 / excellent≈−15）
+		# 加成 = 38.5 − 7 × 君主 health（官方档 dying≈+38.5 / poor≈+31.5 / fine≈+17.5 / medium≈+10.5 / good≈+3.5 / excellent≈−10.5）
+		# 2026-09 平衡：整体权重较初版（55 / 10）下调 30%——避免老君主一次性把全朝拉下场；
+		#   「支持对象健康」另在 0200 选项权重中体现（见 ftr_court_scripted_modifiers.txt）。
 		modifier = {
 			add = {
-				value = 55
+				value = 38.5
 				subtract = {
 					value = this.top_liege.health
-					multiply = 10
+					multiply = 7
 				}
 			}
 			top_liege ?= {

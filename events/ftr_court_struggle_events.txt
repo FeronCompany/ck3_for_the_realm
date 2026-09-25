@@ -1087,8 +1087,11 @@ ftr_court_struggle.0200 = {
 	option = { # Watch and wait
 		name = ftr_court_struggle.0200.f
 		ai_chance = {
-			base = 35
+			# 基础：整体抬高「不站队任何人」的权重（2026-09 平衡：35 → 45），让中立成为常见选择
+			base = 45
 			ftr_court_strife_peace_ai_modifier = yes
+			# 关键人物（军力 ≥ 领主 10% 的封臣 / 内阁成员 / 强力封臣）不得轻易置身事外
+			ftr_court_wait_key_figure_ai_modifier = yes
 			modifier = { add = 15  has_trait = content }
 			modifier = { add = 20  has_trait = craven }
 			modifier = { add = -25  has_trait = ambitious }

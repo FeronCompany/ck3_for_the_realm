@@ -195,6 +195,43 @@ ftr_court_gender_norms_oppose_trigger = {
 	}
 }
 
+# 求值域：this = 被询问站队的朝堂成员（依赖 scope:ftr_court_monarch，0200 immediate 已保存）。
+# **关键人物**：其立场对政权 / 朝局举足轻重，不应轻易「静观其变」——
+#   ① 军力 ≥ 最高领主 10% 的封臣（ftr_court_wait_key_vassal_strength_ratio_value）
+#   ② 内阁成员（is_councillor_of 对无地廷臣的 employer 内阁同样成立）
+#   ③ 在君主宫廷担任**宫廷职位**的廷臣 / 封臣（any_court_position_employer 取「谁的宫廷职位」
+#      的雇主集合，比 has_any_court_position 更精确——不会把「在别家领薪」误判为本朝要员）
+#   ④ 君主配偶（is_spouse_of，含 consort / 后宫）
+#   ⑤ 君主继承人——主头衔顺位第一（is_heir_of）或已被指定的储君（designated_heir）
+#   ⑥ 强力封臣（is_powerful_vassal）
+# 用途：0200.f「静观其变」的 AI 权重抑制（ftr_court_wait_key_figure_ai_modifier）。
+ftr_court_wait_key_figure_trigger = {
+	exists = scope:ftr_court_monarch
+	OR = {
+		# ① 军力占比达标的封臣
+		AND = {
+			is_vassal_of = scope:ftr_court_monarch
+			scope:ftr_court_monarch = { max_military_strength > 0 }
+			max_military_strength >= {
+				value = scope:ftr_court_monarch.max_military_strength
+				multiply = ftr_court_wait_key_vassal_strength_ratio_value
+			}
+		}
+		# ② 内阁成员
+		is_councillor_of = scope:ftr_court_monarch
+		# ③ 君主宫廷的宫廷职位持有者（廷臣或封臣皆可）
+		any_court_position_employer = { this = scope:ftr_court_monarch }
+		# ④ 君主配偶 / 后宫（is_spouse_of 覆盖婚配，is_consort_of 兜底 consort / 后宫制）
+		is_spouse_of = scope:ftr_court_monarch
+		is_consort_of = scope:ftr_court_monarch
+		# ⑤ 君主继承人：主头衔顺位第一 或 已被指定的储君
+		is_heir_of = scope:ftr_court_monarch
+		ftr_court_is_designated_heir_of_realm_trigger = yes
+		# ⑥ 强力封臣
+		is_powerful_vassal = yes
+	}
+}
+
 # 求值域：this = 潜在继任者（title heir 之一）。选举继承顺位资格（主头衔的 title heir）。
 # 注意：本 trigger 仅在调用方对主头衔 every_title_heir 遍历的 limit 中使用，this 已确属
 # title heir，因此无需在此重复进入主头衔嵌套比较（原写法以 this = prev 比较角色与领地

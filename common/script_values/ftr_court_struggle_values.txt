@@ -137,9 +137,13 @@ ftr_court_backing_crowd_penalty_step_value = 18
 # ---- 改投摩擦（AI 更不愿频繁变更背书对象）----
 # 改投「安定期」年限：刚改投过的人在此期间更不愿再次变更。
 ftr_court_backing_switch_cooldown_years_value = 5
+# 「静观其变」关键人物判定：军力 ≥ 最高领主此比例的封臣算关键人物
+# （ftr_court_wait_key_figure_trigger → ftr_court_wait_key_figure_ai_modifier）
+ftr_court_wait_key_vassal_strength_ratio_value = 0.1
 
 # 求值域：this = 被敲打的党羽成员，scope:actor = 敲打者（最高领主）。
-# 敲打党羽的退出概率（%）：顺从性格与对君主好感加分，傲慢 / 野心 / 勇敢减分；引擎 clamp 0-100。
+# 敲打党羽的退出概率（%）：顺从性格与对君主好感加分，傲慢 / 野心 / 勇敢减分。
+# 2026-09 平衡：整体概率 +10%（先求和再整体放大），上限同步 60 → 66；引擎 clamp 0-100。
 ftr_court_discipline_exit_chance_value = {
 	value = 10
 	if = { limit = { has_trait = craven }   add = 20 }
@@ -159,9 +163,15 @@ ftr_court_discipline_exit_chance_value = {
 		limit = { opinion = { target = scope:actor  value < 0 } }
 		add = -15
 	}
+	multiply = 1.1
 	min = 0
-	max = 60
+	max = 66
 }
+
+# 敲打党羽「硬顶不退」的代价（求值域：this = 未退出的党羽，scope:actor = 敲打者）：
+#   ① 与最高领主关系恶化更重（见 opinion_modifiers 的 ftr_court_disciplined_defiance_opinion，-70，重于被敲打权贵本人的 -50）
+#   ② 走上「结为仇敌」的概率比默认结怨（ftr_court_rival_grudge_chance_value = 35）再高约 10%
+ftr_court_discipline_defy_rival_chance_value = 39
 
 # 关系「交好」分界：双向好感 ≥ 此值算关系较好；< 此值算「一般」（谈不上交好）。
 ftr_court_backing_relation_good_value = 40

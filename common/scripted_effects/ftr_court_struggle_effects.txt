@@ -683,6 +683,51 @@ ftr_court_leave_contest_effect = {
 	}
 }
 
+# 在 story 域执行（由 effect_group 定期调用，2026-09 新增）：
+# **已不在故事拥有者政权内的竞争者自动退场**（事件 0240）。
+# 口径：竞争者**既非君主的封臣**（top_liege / liege）**也非其廷臣**（employer）⇒ 视为已离开政权。
+# 排除：① 正在起兵的独立叛军（持临时公国 / ftr_court_rebel_target——理当不在政权内，战后自有链路）；
+#       ② 在押者（临时状态，等其获释再看）。
+# 实现：**不在遍历中直接改名单**——以变量把君主 / 故事传给被踢者并延迟 1 天派事件 0240，由事件退场。
+ftr_court_expel_out_of_realm_claimants_effect = {
+	save_scope_as = ftr_court_story
+	story_owner ?= { save_scope_as = ftr_court_monarch }
+	if = {
+		limit = { exists = scope:ftr_court_monarch }
+		scope:ftr_court_monarch = {
+			if = {
+				limit = { has_variable_list = ftr_court_claimants }
+				every_in_list = {
+					variable = ftr_court_claimants
+					limit = {
+						is_alive = yes
+						NOT = { is_imprisoned = yes }
+						NOR = {
+							top_liege ?= scope:ftr_court_monarch
+							liege ?= scope:ftr_court_monarch
+							employer ?= scope:ftr_court_monarch
+							this = scope:ftr_court_monarch
+						}
+						NOT = { has_variable = ftr_court_temp_duchy }
+						NOT = { has_variable = ftr_court_rebel_target }
+					}
+					set_variable = {
+						name = ftr_court_exit_monarch
+						value = scope:ftr_court_monarch
+						days = 30
+					}
+					set_variable = {
+						name = ftr_court_exit_story
+						value = scope:ftr_court_story
+						days = 30
+					}
+					trigger_event = { id = ftr_court_struggle.0240  days = 1 }
+				}
+			}
+		}
+	}
+}
+
 # 在 story 域执行（由 story 年度 effect_group 定期调用）：**竞争者不得同时是别人的背书人**。
 # 场景：某竞争者身上仍挂着 ftr_court_backer_of（曾背书他人且从未取消）——既把自己算进了
 #       被支持者的党羽数（扭曲 swing 背书差），又占着"已站队"资格。
@@ -1174,6 +1219,14 @@ ftr_court_create_temp_duchy_effect = {
 			becomes_independent = { change = scope:ftr_court_independence_change }
 		}
 		resolve_title_and_vassal_change = scope:ftr_court_independence_change
+
+		# 盾徽：`create_dynamic_title` 生成的头衔**默认无 CoA**（表现为空盾）。
+		# 原版惯例（casus_belli_types/01_fp1_wars.txt:709-712 注释）：
+		#   `generate_coa` 必须**另起一块**、且**在头衔已有持有者之后**调用，否则报错。
+		# 民粹 / 游牧起兵同款写法见 scripted_effects/00_faction_effects.txt（`generate_coa = factions`）。
+		scope:new_title = {
+			generate_coa = yes
+		}
 
 		# 记录以便战后回收
 		set_variable = {

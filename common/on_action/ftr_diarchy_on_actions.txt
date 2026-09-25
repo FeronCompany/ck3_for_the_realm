@@ -64,6 +64,22 @@ ftr_diarchy_quarterly_drift_on_action = {
 	}
 }
 
+########## 四、立储后异步询问（§2.2 2026-09 重构） ##########
+
+# 求值域：君主（年度 everyone 脉冲）。立储只写继位，是否另立太子共治改由本异步询问决定：
+#   触发 ftr_diarchy.0710（root = 君主）询问是否册立；同意即建、拒绝给被指定继承人好感惩罚且不再重问。
+# 注：本处是**唯一**的触发源（原 01 故事主时钟的同类 triggered_effect 已移除，避免重复派发同一询问）；
+#     效果自带 30 天冷却 flag 与「已拒」变量，进一步防止重复询问。
+ftr_diarchy_crown_prince_ask_on_action = {
+	trigger = {
+		ftr_diarchy_can_start_crown_prince_trigger = yes
+		exists = designated_heir
+	}
+	effect = {
+		ftr_diarchy_promote_adult_heir_effect = yes
+	}
+}
+
 ########## 五、太子共治自动失效（§3.1 补） ##########
 
 # 求值域：君主（root = 主君，年度 playable 脉冲）。
@@ -77,10 +93,28 @@ ftr_diarchy_crown_prince_invalidate_on_action = {
 		has_diarchy_type = ftr_diarchy_crown_prince
 		exists = diarch
 		OR = {
-			# ① 不在同一政权（顶层领主已非主君）
-			NOT = { diarch = { top_liege = root } }
+			# ① 不在本政权：共治者**既非主君封臣**（top_liege / liege）**也非主君廷臣**（employer）。
+			#    【2026-09 修复】原判据只查 `top_liege`，而**廷臣没有领主链**（其归属字段是 employer）——
+			#    太子被「留守宫廷」拉进宫成为廷臣后，`diarch.top_liege` 恒不成立 → 每季度脉冲误判并解除共治。
+			diarch = {
+				NOR = {
+					top_liege ?= root
+					liege ?= root
+					employer ?= root
+				}
+			}
 			# ② 共治者级别 ≥ 君主
 			diarch = { highest_held_title_tier >= root.highest_held_title_tier }
+			# ③ 血缘侧（**必须整组取反**）：共治者既非君主兄弟、亦非子女、亦非孙辈 ⇒ 太子位名不副实。
+			#    【2026-09 修复】原先把三条 NOT 平铺进 OR，只要共治者是「子女」就会命中
+			#    `NOT = { is_sibling_of = diarch }` ⇒ 每季度误判并解除共治（"还是会被自动取消"的根因）。
+			diarch = {
+				NOR = {
+					is_sibling_of = root
+					is_child_of = root
+					is_grandchild_of = root
+				}
+			}
 		}
 	}
 	effect = {
@@ -88,14 +122,38 @@ ftr_diarchy_crown_prince_invalidate_on_action = {
 	}
 }
 
-########## 六、挂载到原版 on_action ##########
+########## 六、太子留守宫廷（§3.1 补，2026-09） ##########
 
-# 注：**不设幼帝摄政兜底**——太子共治结束 + 新君登基时，原版会自行建立摄政
-# （`temporary_regency` 是代码默认类型且 `succession = yes`），无需 mod 主动补建。
+# 求值域：太子共治者本人（年度 everyone 脉冲）。
+# 行政制下共治者一旦被外放为地方官，就不再是主君直属封臣、共治随之解除。
+# 本 on_action 定期把跑偏的太子拉回宫廷：交出 landed 头衔 + 封锁后续任命。
+# 注：立储（ftr_diarchy_try_start_crown_prince_effect）时就已即时执行一次，
+#     本脉冲只是兜底——覆盖「立储之后才被任命」的情况。
+ftr_diarchy_crown_prince_keep_in_court_on_action = {
+	trigger = {
+		ftr_diarchy_is_crown_prince_trigger = yes
+	}
+	effect = {
+		ftr_diarchy_enforce_crown_prince_unlanded_effect = yes
+	}
+}
+
+# 求值域：君主（on_left_diarchy：root = 君主，scope:old_diarch = 原共治者）。
+# 共治结束（含君主驾崩、废储、篡位等）即解除对原太子的任命封锁，
+# 避免其日后无法受任 / 无法被任命继位。
+ftr_diarchy_crown_prince_release_on_left_on_action = {
+	effect = {
+		scope:old_diarch ?= { ftr_diarchy_release_appointment_block_effect = yes }
+	}
+}
+
+########## 七、挂载到原版 on_action ##########
 
 random_yearly_everyone_pulse = {
 	on_actions = {
 		ftr_diarchy_landless_reminder_on_action
+		ftr_diarchy_crown_prince_keep_in_court_on_action
+		ftr_diarchy_crown_prince_ask_on_action
 	}
 }
 
@@ -114,5 +172,11 @@ quarterly_playable_pulse = {
 on_diarch_change = {
 	on_actions = {
 		ftr_diarchy_diarch_change_on_action
+	}
+}
+
+on_left_diarchy = {
+	on_actions = {
+		ftr_diarchy_crown_prince_release_on_left_on_action
 	}
 }

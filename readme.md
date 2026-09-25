@@ -1,5 +1,5 @@
 # For The Realm
-Mod version A.M.3 · for Crusader Kings III 1.19.*
+Mod version A.M.4 · for Crusader Kings III 1.19.*
 
 A mod about **realm management and personal life**.
 
@@ -14,7 +14,7 @@ github.com/FeronCompany/ck3_for_the_realm
 ---
 
 # For The Realm 朝野纷争
-Mod 版本 A.M.3 · 支持游戏版本 1.19.*
+Mod 版本 A.M.4 · 支持游戏版本 1.19.*
 
 专注于**领地管理与个人生活**的 Mod。
 

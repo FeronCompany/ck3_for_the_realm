@@ -122,6 +122,11 @@ ftr_court_struggle.0160.c:0 "提兵起事，讨伐无道。"
  ftr_court_struggle.0230.a:0 "我要角逐这大位。"
  ftr_court_struggle.0230.b:0 "这场角逐，我无意参与。"
 
+###### 0240 离开政权：自动退出角逐（2026-09） ######
+ftr_court_struggle.0240.t:0 "身不在朝：已退出角逐"
+ftr_court_struggle.0240.desc:0 "朝中传讯：你已不在本国境内，你的名字也就此从继位角逐中除去。大位之争，将在你缺席之下继续。"
+ftr_court_struggle_0240_ok:0 "也罢。"
+
 ###### 0601 弹劾裁决回执（M1） ######
  ftr_court_impeach_notify_grant_actor_title:0 "弹劾获准"
  ftr_court_impeach_notify_grant_actor_desc:0 "君上准了我的弹章，[ftr_court_impeach_target.GetTitledFirstName]已失内阁之职。"

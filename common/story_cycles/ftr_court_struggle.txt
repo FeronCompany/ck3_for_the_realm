@@ -149,24 +149,9 @@ ftr_court_struggle = {
 	# 烈度只影响"能选哪些族"（池内分流）：高烈度亦可触发低烈度（文明）族，反之不可。
 	effect_group = {
 		days = { ftr_court_strife_interval_min_value  ftr_court_strife_interval_max_value }
-		# 幼主成年 → 补建太子共治（03 §2.2 接线）：未成年时立储不建共治，
-		# 待指定继承人成年由本拍补立并发 0700 事件告知君主。休战期（eased）不拦此项。
-		triggered_effect = {
-			trigger = {
-				story_owner ?= {
-					ftr_court_struggle_valid_trigger = yes
-					ftr_diarchy_can_start_crown_prince_trigger = yes
-					exists = designated_heir
-					designated_heir ?= {
-						is_adult = yes
-						is_diarch = no
-					}
-				}
-			}
-			effect = {
-				story_owner = { ftr_diarchy_promote_adult_heir_effect = yes }
-			}
-		}
+		# 注（2026-09）：原「幼主成年 → 补建太子共治」的 triggered_effect 已**移除**——
+		#   立储后的异步询问改由 03 的 on_action `ftr_diarchy_crown_prince_ask_on_action`
+		#   （挂 `random_yearly_everyone_pulse`）**单路**负责，避免与本处重复触发同一询问事件（ftr_diarchy.0710）。
 		triggered_effect = {
 			trigger = {
 				story_owner ?= { ftr_court_struggle_valid_trigger = yes }
@@ -182,6 +167,15 @@ ftr_court_struggle = {
 				story_owner = {
 					trigger_event = { on_action = ftr_court_struggle_main_pulse }
 				}
+			}
+		}
+		triggered_effect = {
+			# 定期清理（2026-09 新增）：已不在故事拥有者政权内的竞争者自动退场（事件 0240）
+			trigger = {
+				ftr_court_has_active_struggle_trigger = yes
+			}
+			effect = {
+				ftr_court_expel_out_of_realm_claimants_effect = yes
 			}
 		}
 		fallback = {

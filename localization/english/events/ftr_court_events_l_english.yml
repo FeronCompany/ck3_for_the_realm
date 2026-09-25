@@ -122,6 +122,11 @@ ftr_court_struggle.0160.c:0 "Raise the banners and make war on him."
  ftr_court_struggle.0230.a:0 "I will enter the contest for the throne."
  ftr_court_struggle.0230.b:0 "I want no part in this contest."
 
+###### 0240 Leaving the realm: auto-withdrawal (2026-09) ######
+ftr_court_struggle.0240.t:0 "Departing the Realm: Withdrawn from the Contest"
+ftr_court_struggle.0240.desc:0 "Word reaches the court that you no longer dwell within the realm, and your name has accordingly been struck from the succession contest. The struggle for the throne goes on without you."
+ftr_court_struggle_0240_ok:0 "So be it."
+
 ###### 0601 Impeachment Verdict Receipts (M1) ######
  ftr_court_impeach_notify_grant_actor_title:0 "Impeachment Upheld"
  ftr_court_impeach_notify_grant_actor_desc:0 "My petition was granted, and [ftr_court_impeach_target.GetTitledFirstName] has lost his council seat."

@@ -757,7 +757,24 @@ ftr_court_rival_grudge_opinion_value = -50
 
 ########## 十二、起兵部队（参考原版民粹起义 spawn_popular_revolt_troops）##########
 # 起兵顺序：临时独立公国 → 精锐部队 → 宣战。无地者由公国提供出兵地与宣战资格。
-ftr_court_rebel_maa_stacks_value = 3      # 每个精锐兵种（重装步/骑）的队数
+# 每个精锐兵种（重装步 / 重装骑）的队数：**随时代递增**（时代越靠后，起兵兵力越多）。
+# 基础 3（部族 / 867），之后每个中世纪时代 +1：早期 4 / 高级 5 / 晚期 6。
+# 求值域：起兵者本人（生成部队时读其文化时代）；时代判定用原版 has_cultural_era_or_later。
+ftr_court_rebel_maa_stacks_value = {
+	value = 6
+	if = {
+		limit = { culture ?= { has_cultural_era_or_later = culture_era_early_medieval } }
+		add = 2
+	}
+	if = {
+		limit = { culture ?= { has_cultural_era_or_later = culture_era_high_medieval } }
+		add = 2
+	}
+	if = {
+		limit = { culture ?= { has_cultural_era_or_later = culture_era_late_medieval } }
+		add = 2
+	}
+}
 ftr_court_rebel_siege_stacks_value = 1    # 攻城器械队数
 
 

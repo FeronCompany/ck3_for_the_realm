@@ -79,6 +79,11 @@ ftr_diarchy_try_start_crown_prince_effect = {
 			scope:ftr_diarchy_liege = {
 				try_start_diarchy = ftr_diarchy_crown_prince
 				set_diarch = scope:ftr_diarchy_prince_candidate
+				# 太子留守宫廷（2026-09）：立即解除其地方任职 + 封锁后续任命，
+				# 防止其因「到地方做官」而不再是主君直属封臣（原版会据此自动解除共治）。
+				scope:ftr_diarchy_prince_candidate = {
+					ftr_diarchy_enforce_crown_prince_unlanded_effect = yes
+				}
 				# 主动立储：低起点（区别于被逼立储的 40）
 				set_diarchy_swing = ftr_diarchy_crown_prince_voluntary_initial_swing_value
 				# 天平偏移通知（§7.1）：说明初值来由（主动立储基线）
@@ -92,31 +97,115 @@ ftr_diarchy_try_start_crown_prince_effect = {
 	}
 }
 
-# 求值域：君主（由 01 故事循环主时钟每拍调用，§2.2 补立）。
-# 口径：未成年指定继承人**不即建**共治（立储接线的 is_adult 守卫保留）；
-#       待其成年后由本效果补建太子共治，并触发 0700 事件告知君主。
-# 注：已有任何共治（含摄政）时 `ftr_diarchy_can_start_crown_prince_trigger` 不成立 →
-#     补立不发生（储位冻结口径，须先结束共治）。
+######################################################
+### 一之三、太子「留守宫廷」约束（2026-09）
+######################################################
+
+# 求值域：太子共治者本人。
+# 目的：行政制下共治者一旦「到地方任职」（被任命为总督等 landed 头衔）便不再是主君直属封臣，
+#       原版会随之解除共治；且 admin_governor 的 candidate_score 甚至专门给「君主的共治者」加分
+#       （game/common/succession_appointment/admin_governor.txt:388-395），使太子极易被外放。
+#       故对太子施加两道约束，使其始终留守主君宫廷：
+#         ① 已持有任何 landed 头衔 → force_step_down_landed_titles 全部交出（回宫廷当无地廷臣）；
+#         ② set_appointment_timeout 伪永久封锁后续任命——这是原版「拒绝任命」决议同款机制
+#            （game/common/decisions/dlc_decisions/tgp/tgp_china_decisions.txt:338-383，
+#             `set_appointment_timeout = { years = 150 desc = ... }`）。
+# 注（重要假设）：封锁期间太子同样无法被「任命」为下一任皇帝——皇位继承亦为 appointment 制
+#       （acclamation_succession_law → appointment_type = admin_emperor）。因此本 mod 依赖
+#       `designated_heir` 让太子继位；且共治结束（含君主驾崩导致共治终止）时由
+#       ftr_diarchy_release_appointment_block_effect 立刻解除封锁，避免影响其日后仕途/继位。
+ftr_diarchy_enforce_crown_prince_unlanded_effect = {
+	save_scope_as = ftr_diarchy_court_prince
+	# 先捕获主君（本政权为独立最高领主）——**必须在剥夺头衔之前**：
+	# 辞官会改变角色自身的领主链，之后再取就取不到了。
+	top_liege ?= { save_scope_as = ftr_diarchy_court_liege }
+	# ① 解除地方任职：交出全部 landed 头衔
+	if = {
+		limit = { is_landed = yes }
+		force_step_down_landed_titles = yes
+	}
+	# ①-b 归入主君宫廷：`force_step_down_landed_titles` 只剥夺头衔、**不会**把角色送回宫廷，
+	#     须显式 `add_courtier`（原版效果：目标成为该统治者宫廷的廷臣）。
+	#     否则太子辞官后会滞留在原地 / 归入别处，而非最高领主宫廷。
+	scope:ftr_diarchy_court_liege ?= {
+		if = {
+			limit = {
+				NOT = { this = scope:ftr_diarchy_court_prince }
+				scope:ftr_diarchy_court_prince = {
+					is_alive = yes
+					is_landed = no
+					NOT = { is_courtier_of = scope:ftr_diarchy_court_liege }
+				}
+			}
+			add_courtier = scope:ftr_diarchy_court_prince
+		}
+	}
+	# ①-c 位置归位：把所在地移到默认处（主君首都），使其真正「在宫里」
+	scope:ftr_diarchy_court_prince ?= {
+		if = {
+			limit = {
+				is_imprisoned = no
+				is_travelling = no
+				is_commanding_army = no
+			}
+			set_location_to_default = yes
+		}
+	}
+	# ② 封锁后续任命（伪永久，已封锁则不重复施加）
+	if = {
+		limit = { NOT = { appointment_timeout_days >= 36500 } }
+		set_appointment_timeout = {
+			years = 150
+			desc = ftr_diarchy_appointment_timeout_desc
+		}
+	}
+	add_character_flag = ftr_diarchy_appointment_blocked
+}
+
+# 求值域：原太子本人（共治结束时的 scope:old_diarch）。
+# 解除任命封锁（仅当本 mod 确实施加过封锁，避免误清角色自设的 timeout），使其日后可正常受任/继位。
+ftr_diarchy_release_appointment_block_effect = {
+	if = {
+		limit = { has_character_flag = ftr_diarchy_appointment_blocked }
+		remove_character_flag = ftr_diarchy_appointment_blocked
+		clear_appointment_timeout = yes
+	}
+}
+
+# 求值域：君主（由 01 故事循环主时钟 + 年度 on_action 每拍调用；§2.2 2026-09 重构）。
+# 口径（重构）：立储时**不再即时建立**太子共治——本效果只负责「异步询问」：
+#   当「可立太子共治（行政类政体 + 独立 + ≥王国 + 当前无任何共治）」且指定继承人**成年可用**，
+#   且**尚未就同一继承人被拒过**时，触发 ftr_diarchy.0710 询问君主是否册立（root = 君主）。
+#   同意 → 建立共治并发 0700 回执；拒绝 → 被指定继承人对君主不满 + 打「已拒」记账（不再重问）。
+# 注：未成年继承人不询问（共治者须成年），待其成年后由本效果（年度 on_action 单路）自然询问；
+#     改储（指定继承人变更）时由交互侧清除「已拒」记账，从而对新继承人重新询问。
 ftr_diarchy_promote_adult_heir_effect = {
+	save_scope_as = ftr_diarchy_ask_liege
+	designated_heir ?= { save_scope_as = ftr_diarchy_ask_heir }
 	if = {
 		limit = {
 			ftr_diarchy_can_start_crown_prince_trigger = yes
-			exists = designated_heir
-			designated_heir ?= {
+			exists = scope:ftr_diarchy_ask_heir
+			scope:ftr_diarchy_ask_heir = {
 				is_alive = yes
 				is_adult = yes
 				is_imprisoned = no
 				is_diarch = no
 			}
-		}
-		ftr_diarchy_try_start_crown_prince_effect = { PRINCE = designated_heir }
-		if = {
-			limit = {
-				has_active_diarchy = yes
-				diarch ?= { this = designated_heir }
+			# 同一继承人已被拒过 → 不再重问（改储后交互侧会清掉该记账）
+			NOT = {
+				var:ftr_diarchy_corule_ask_declined ?= {
+					this = scope:ftr_diarchy_ask_heir
+				}
 			}
-			trigger_event = { id = ftr_diarchy.0700  days = 2 }
+			# 冷却：事件未结算前不被脉冲重复派发
+			NOT = { has_character_flag = ftr_diarchy_corule_ask_pending }
 		}
+		add_character_flag = {
+			flag = ftr_diarchy_corule_ask_pending
+			days = 30
+		}
+		trigger_event = { id = ftr_diarchy.0710  days = 1 }
 	}
 }
 

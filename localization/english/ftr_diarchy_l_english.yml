@@ -139,3 +139,11 @@
  ftr_court_swing_notice_0500_a:0 "<FTR>Whispers succeed: the monarch's agents shake the co-ruler's household, pulling the [scales_of_power|E] #P -5#! toward the #EMP monarch#! (85% chance; a failure leaks the plot and costs the monarch renown)."
  ftr_court_swing_notice_0500_b:0 "<FTR>The co-ruler's circle is bribed: the monarch spends #P 60#! gold among the co-ruler's confidants, pulling the [scales_of_power|E] #P -5#! toward the #EMP monarch#!."
  ftr_court_swing_notice_0220_a:0 "<FTR>The monarch promises a share of power: granted at court, it shifts the [scales_of_power|E] #P +5#! toward the #EMP co-ruler#!."
+ ftr_diarchy_appointment_timeout_desc:0 "<FTR>[CHARACTER.GetShortUIName|U] stays at court as the designated heir and cannot receive [appointments|E]"
+ # ===== 0710 Asynchronous offer to invest the heir as Crown Prince (§2.2, 2026-09 rework) =====
+ ftr_diarchy.0710.t:0 "<FTR>Invest the Heir as Crown Prince?"
+ ftr_diarchy.0710.desc:0 "<FTR>The succession is settled in name, yet your heir does not sit at your side. Will you invest the designated heir as Crown Prince and share the rule, or withhold the honour for now?"
+ ftr_diarchy.0710.a:0 "<FTR>Invest the heir as Crown Prince."
+ ftr_diarchy.0710.b:0 "<FTR>Not yet — withhold the co-rule."
+ ftr_diarchy_corule_refused_opinion:0 "<FTR>Denied the crown prince's seat"
+ ftr_diarchy_heir_corule_async_tt:0 "<FTR>Designating an heir: whether to invest the heir as #EMP Crown Prince co-rule#! will be decided by the court #EMP later#! (administrative government, independent, kingdom tier or above, and no existing co-rule)."

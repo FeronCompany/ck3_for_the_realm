@@ -100,6 +100,13 @@ ftr_diarchy_land_denied_opinion = {
 	decaying = yes
 }
 
+# 共治者机制强化（03）：立储后君主未即册立太子共治——被指定继承人感到被冷落（太子 → 君主，§2.2 2026-09 重构）
+ftr_diarchy_corule_refused_opinion = {
+	opinion = -30
+	years = 20
+	decaying = yes
+}
+
 # Crime opinions
 ftr_attempted_coup_crime = {
 	opinion = -100

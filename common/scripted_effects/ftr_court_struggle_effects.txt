@@ -1774,29 +1774,37 @@ ftr_court_strife_slander_effect = {
 				}
 				save_scope_as = ftr_court_strife_victim
 			}
-			# 把 victim 存到 actor 身上，供手段事件读取
-			scope:ftr_court_strife_actor ?= {
-				set_variable = { name = ftr_court_strife_victim  value = scope:ftr_court_strife_victim }
-				# 手段随烈度升级（诬陷链 / 牵制 / 绑架 / 谋杀），按概率触发，保留"不触发"
-				if = {
-					limit = {
-						scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
+			# 只有真正抽到 victim 才落地并掷手段概率（2026-09 修正）：
+			# 参与者不足 2 人时上面的内层 random_in_list 会落空、scope:ftr_court_strife_victim 未设置；
+			# 若照旧往下掷骰，只会派发出「无目标」的空转事件（选项体全被 scope:ftr_court_victim ?= {} 跳过，
+			# 0430.a 的 start_scheme 更会因裸用 unset scope 报错），白吃掉外层 random_list 分给互殴族的
+			# 权重 ⇒ 表现为事件概率下降。故此处先判 victim 存在，一并杜绝 unset scope 写入。
+			if = {
+				limit = { exists = scope:ftr_court_strife_victim }
+				# 把 victim 存到 actor 身上，供手段事件读取
+				scope:ftr_court_strife_actor ?= {
+					set_variable = { name = ftr_court_strife_victim  value = scope:ftr_court_strife_victim }
+					# 手段随烈度升级（诬陷链 / 牵制 / 绑架 / 谋杀），按概率触发，保留"不触发"
+					if = {
+						limit = {
+							scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
+						}
+						random = { chance = 35  trigger_event = { id = ftr_court_struggle.0320 } }
+						random = { chance = 35  trigger_event = { id = ftr_court_struggle.0430 } }
+						random = { chance = 25  trigger_event = { id = ftr_court_struggle.0420 } }
 					}
-					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0320 } }
-					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0430 } }
-					random = { chance = 25  trigger_event = { id = ftr_court_struggle.0420 } }
-				}
-				else_if = {
-					limit = {
-						scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+					else_if = {
+						limit = {
+							scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+						}
+						random = { chance = 30  trigger_event = { id = ftr_court_struggle.0310 } }
+						random = { chance = 30  trigger_event = { id = ftr_court_struggle.0430 } }
+						random = { chance = 30  trigger_event = { id = ftr_court_struggle.0420 } }
 					}
-					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0310 } }
-					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0430 } }
-					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0420 } }
-				}
-				else = {
-					random = { chance = 40  trigger_event = { id = ftr_court_struggle.0300 } }
-					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0410 } }
+					else = {
+						random = { chance = 40  trigger_event = { id = ftr_court_struggle.0300 } }
+						random = { chance = 35  trigger_event = { id = ftr_court_struggle.0410 } }
+					}
 				}
 			}
 		}
@@ -2057,6 +2065,36 @@ ftr_court_rival_grudge_effect = {
 ### 求值域：story 域（story_owner 为当年君主）。
 ######################################################
 
+# 在权贵（最高君主）域执行：把「本朝已入营党羽」并入 local list $LIST$（供随机抽人）。
+# 2026-09 选角口径修正（对齐 §7.3「阵营判定」）：
+#   ① 候选 = **任何已登记背书的党羽**（ftr_court_has_backing_trigger ⇒ 支持对象须仍是权贵，
+#      即**拥护最高君主 / 共治者 / 角逐竞争者**三类皆计）。此前写死
+#      「has_variable = ftr_court_backer_of ∧ 背书对象 ≠ 君主」，把**君主阵营与共治者阵营
+#      整块排除**——只剩 1 名竞争者时全场同属一营，M2/M3/M4/M5 的双人机制永远凑不出
+#      「两个不同阵营」，于是抽签权重被白白吃掉、表现为事件概率下降。
+#   ② 候选覆盖**有地封臣 + 无地廷臣**（设计 §11：参与者 / 党羽可为无地者），
+#      不再只用 random_vassal（旧写法把无地廷臣整个漏掉）。
+# 参数：LIST = local list 名；COOLDOWN = 冷却 flag（在身者不入池）。
+# 注：local list 属「作用域内临时 list」（add_to_list 攒 → random_in_list/list = 取），随脚本链存活，无需手动清空。
+ftr_court_collect_camp_backers_effect = {
+	every_vassal = {
+		limit = {
+			is_capable_adult = yes
+			ftr_court_has_backing_trigger = yes
+			NOT = { has_character_flag = $COOLDOWN$ }
+		}
+		add_to_list = $LIST$
+	}
+	every_courtier = {
+		limit = {
+			is_capable_adult = yes
+			ftr_court_has_backing_trigger = yes
+			NOT = { has_character_flag = $COOLDOWN$ }
+		}
+		add_to_list = $LIST$
+	}
+}
+
 ftr_court_civil_strife_effect = {
 	save_scope_as = ftr_court_civil_story
 	story_owner = { save_scope_as = ftr_court_civil_monarch }
@@ -2110,15 +2148,15 @@ ftr_court_impeach_pulse_effect = {
 			save_scope_as = ftr_court_impeach_target
 		}
 	}
-	# 2) 在「有党羽的封臣」中抽一名候选，再按其性格掷发难意愿
+	# 2) 在「本朝已入营党羽」中抽一名候选（含拥护君主 / 共治者的党羽；封臣 + 廷臣），再按其性格掷发难意愿
 	scope:ftr_court_impeach_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_impeach_monarch } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-			}
+		ftr_court_collect_camp_backers_effect = {
+			LIST = ftr_court_impeach_candidates
+			COOLDOWN = ftr_court_civil_actor_cooldown
+		}
+		random_in_list = {
+			list = ftr_court_impeach_candidates
+			limit = { NOT = { this = scope:ftr_court_impeach_monarch } }
 			save_scope_as = ftr_court_impeach_candidate
 		}
 	}
@@ -2222,28 +2260,28 @@ ftr_court_debate_pulse_effect = {
 	save_scope_as = ftr_court_debate_story
 	story_owner = { save_scope_as = ftr_court_debate_monarch }
 	scope:ftr_court_debate_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-			}
+		ftr_court_collect_camp_backers_effect = {
+			LIST = ftr_court_debate_candidates
+			COOLDOWN = ftr_court_civil_actor_cooldown
+		}
+		random_in_list = {
+			list = ftr_court_debate_candidates
+			limit = { NOT = { this = scope:ftr_court_debate_monarch } }
 			save_scope_as = ftr_court_debate_actor
 		}
 	}
 	# 仅在甲方已选出时才抽乙方：否则 scope:ftr_court_debate_actor 未设，
 	# 被当作参数传入触发器会报 "returned an unset scope" / "doesn't support variables"。
+	# 乙方须与甲方**不同阵营**（same_camp 双向判定，君主 / 共治者阵营亦参与对照）。
 	scope:ftr_court_debate_actor ?= {
 		scope:ftr_court_debate_monarch ?= {
-			random_vassal = {
+			random_in_list = {
+				list = ftr_court_debate_candidates
 				limit = {
-					is_capable_adult = yes
-					has_variable = ftr_court_backer_of
-					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
+					NOT = { this = scope:ftr_court_debate_monarch }
+					NOT = { this = scope:ftr_court_debate_actor }
 					NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_debate_actor } }
 					ftr_court_has_different_vassal_stance_trigger = { OTHER = scope:ftr_court_debate_actor }
-					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
 				}
 				save_scope_as = ftr_court_debate_rival
 			}
@@ -2274,26 +2312,25 @@ ftr_court_claim_debate_pulse_effect = {
 	save_scope_as = ftr_court_debate_story
 	story_owner = { save_scope_as = ftr_court_debate_monarch }
 	scope:ftr_court_debate_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-			}
+		ftr_court_collect_camp_backers_effect = {
+			LIST = ftr_court_claim_candidates
+			COOLDOWN = ftr_court_civil_actor_cooldown
+		}
+		random_in_list = {
+			list = ftr_court_claim_candidates
+			limit = { NOT = { this = scope:ftr_court_debate_monarch } }
 			save_scope_as = ftr_court_debate_actor
 		}
 	}
-	# 同上：乙方筛选需先有甲方（M3 继承名分之争）
+	# 同上：乙方筛选需先有甲方（M3 继承名分之争），且须与甲方**不同阵营**。
 	scope:ftr_court_debate_actor ?= {
 		scope:ftr_court_debate_monarch ?= {
-			random_vassal = {
+			random_in_list = {
+				list = ftr_court_claim_candidates
 				limit = {
-					is_capable_adult = yes
-					has_variable = ftr_court_backer_of
-					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
+					NOT = { this = scope:ftr_court_debate_monarch }
+					NOT = { this = scope:ftr_court_debate_actor }
 					NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_debate_actor } }
-					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
 				}
 				save_scope_as = ftr_court_debate_rival
 			}
@@ -2426,26 +2463,25 @@ ftr_court_duel_pulse_effect = {
 	save_scope_as = ftr_court_duel_story
 	story_owner = { save_scope_as = ftr_court_duel_monarch }
 	scope:ftr_court_duel_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_duel_monarch } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-			}
+		ftr_court_collect_camp_backers_effect = {
+			LIST = ftr_court_duel_candidates
+			COOLDOWN = ftr_court_civil_actor_cooldown
+		}
+		random_in_list = {
+			list = ftr_court_duel_candidates
+			limit = { NOT = { this = scope:ftr_court_duel_monarch } }
 			save_scope_as = ftr_court_duel_plaintiff
 		}
 	}
-	# 仅在原告已选出时才抽被告（M4 司法决斗）
+	# 仅在原告已选出时才抽被告（M4 司法决斗），且须与原告**不同阵营**。
 	scope:ftr_court_duel_plaintiff ?= {
 		scope:ftr_court_duel_monarch ?= {
-			random_vassal = {
+			random_in_list = {
+				list = ftr_court_duel_candidates
 				limit = {
-					is_capable_adult = yes
-					has_variable = ftr_court_backer_of
-					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_duel_monarch } }
+					NOT = { this = scope:ftr_court_duel_monarch }
+					NOT = { this = scope:ftr_court_duel_plaintiff }
 					NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_duel_plaintiff } }
-					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
 				}
 				save_scope_as = ftr_court_duel_defendant
 			}
@@ -2583,26 +2619,25 @@ ftr_court_appraisal_pulse_effect = {
 	}
 	else = {
 		scope:ftr_court_appraisal_monarch ?= {
-			random_vassal = {
-				limit = {
-					is_capable_adult = yes
-					has_variable = ftr_court_backer_of
-					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_appraisal_monarch } }
-					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-				}
+			ftr_court_collect_camp_backers_effect = {
+				LIST = ftr_court_appraisal_candidates
+				COOLDOWN = ftr_court_civil_actor_cooldown
+			}
+			random_in_list = {
+				list = ftr_court_appraisal_candidates
+				limit = { NOT = { this = scope:ftr_court_appraisal_monarch } }
 				save_scope_as = ftr_court_appraisal_actor
 			}
 		}
-		# 仅在评议者已选出时才抽被评者（M5 清议）
+		# 仅在评议者已选出时才抽被评者（M5 清议），且须与评议者**不同阵营**。
 		scope:ftr_court_appraisal_actor ?= {
 			scope:ftr_court_appraisal_monarch ?= {
-				random_vassal = {
+				random_in_list = {
+					list = ftr_court_appraisal_candidates
 					limit = {
-						is_capable_adult = yes
-						has_variable = ftr_court_backer_of
-						var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_appraisal_monarch } }
+						NOT = { this = scope:ftr_court_appraisal_monarch }
+						NOT = { this = scope:ftr_court_appraisal_actor }
 						NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_appraisal_actor } }
-						NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
 					}
 					save_scope_as = ftr_court_appraisal_target
 				}
@@ -2731,13 +2766,13 @@ ftr_court_omen_pulse_effect = {
 	save_scope_as = ftr_court_omen_story
 	story_owner = { save_scope_as = ftr_court_omen_monarch }
 	scope:ftr_court_omen_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_omen_monarch } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-			}
+		ftr_court_collect_camp_backers_effect = {
+			LIST = ftr_court_omen_candidates
+			COOLDOWN = ftr_court_civil_actor_cooldown
+		}
+		random_in_list = {
+			list = ftr_court_omen_candidates
+			limit = { NOT = { this = scope:ftr_court_omen_monarch } }
 			save_scope_as = ftr_court_omen_faker
 		}
 	}

@@ -138,8 +138,9 @@ ftr_court_struggle_main_pulse = {
 							var:ftr_court_struggle_intensity < ftr_court_intensity_high_bound_value
 						}
 						random_list = {
-							# 互殴手段族（0300 / 0410 档）
+							# 互殴手段族（0300 / 0410 档）：需 ≥2 名参与者才有对手可打，否则剔除、权重让给其余族
 							55 = {
+								trigger = { ftr_court_has_two_participants_trigger = yes }
 								ftr_court_strife_slander_effect = yes
 							}
 							# 强出口族（0003 通知 + 0200 站队）
@@ -158,8 +159,9 @@ ftr_court_struggle_main_pulse = {
 							50 = {
 								ftr_court_diarch_backlash_effect = yes
 							}
-							# 文明争斗族（M1–M6，仍保留"就事论事"的出口）
+							# 文明争斗族（M1–M6，仍保留"就事论事"的出口）：朝中需至少一名已入营党羽
 							50 = {
+								trigger = { ftr_court_realm_has_camp_backer_trigger = yes }
 								ftr_court_civil_strife_effect = yes
 							}
 							# 无事发生
@@ -176,8 +178,9 @@ ftr_court_struggle_main_pulse = {
 							var:ftr_court_struggle_intensity < ftr_court_intensity_critical_bound_value
 						}
 						random_list = {
-							# 互殴手段族（0310 / 0430 / 0420 档）
+							# 互殴手段族（0310 / 0430 / 0420 档）：需 ≥2 名参与者
 							85 = {
+								trigger = { ftr_court_has_two_participants_trigger = yes }
 								ftr_court_strife_slander_effect = yes
 							}
 							# 强出口族（0004 通知 + 0200 + 0140）
@@ -194,6 +197,7 @@ ftr_court_struggle_main_pulse = {
 								ftr_court_diarch_backlash_effect = yes
 							}
 							30 = {
+								trigger = { ftr_court_realm_has_camp_backer_trigger = yes }
 								ftr_court_civil_strife_effect = yes
 							}
 							55 = {
@@ -206,8 +210,9 @@ ftr_court_struggle_main_pulse = {
 					1 = {
 						trigger = { var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value }
 						random_list = {
-							# 互殴手段族（0320 下毒 / 0430 谋杀 / 0420 绑架档）
+							# 互殴手段族（0320 下毒 / 0430 谋杀 / 0420 绑架档）：需 ≥2 名参与者
 							120 = {
+								trigger = { ftr_court_has_two_participants_trigger = yes }
 								ftr_court_strife_slander_effect = yes
 							}
 							# 强出口族（0004 + 0200 + 0140 + 0150 废黜）
@@ -224,6 +229,7 @@ ftr_court_struggle_main_pulse = {
 								ftr_court_diarch_backlash_effect = yes
 							}
 							20 = {
+								trigger = { ftr_court_realm_has_camp_backer_trigger = yes }
 								ftr_court_civil_strife_effect = yes
 							}
 							25 = {

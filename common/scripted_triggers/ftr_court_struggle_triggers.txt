@@ -325,6 +325,30 @@ ftr_court_has_active_struggle_trigger = {
 	var:ftr_court_candidate_count >= ftr_court_min_candidates_value
 }
 
+# 求值域：story（root = 故事本体）。判定是否已有 **≥2 名参与者**。
+# 用途（2026-09）：主时钟 random_list 的「互殴族」条目做可执行性过滤——
+# 互殴族要选「actor + 另一名 victim」，只有 1 名参与者时内层选角必然落空，
+# 选中该族只会白吃权重。用**实时列表**判定（不读缓存变量 ftr_court_candidate_count，
+# 避免计数虚高时误判为可执行）。
+ftr_court_has_two_participants_trigger = {
+	has_variable_list = ftr_court_participant_list
+	variable_list_size = { name = ftr_court_participant_list  value >= 2 }
+}
+
+# 求值域：story（root = 故事本体）。判定本朝是否至少有一名「已入营党羽」。
+# 用途（2026-09）：主时钟 random_list 的「文明争斗族」条目做可执行性过滤——
+# M1–M6 全部以「有党羽者」为候选，朝中一个党羽都没有时该族必然空转。
+# 口径与选角一致：支持君主 / 共治者 / 竞争者的党羽皆计（ftr_court_has_backing_trigger），
+# 覆盖有地封臣与无地廷臣。
+ftr_court_realm_has_camp_backer_trigger = {
+	story_owner ?= {
+		OR = {
+			any_vassal = { ftr_court_has_backing_trigger = yes }
+			any_courtier = { ftr_court_has_backing_trigger = yes }
+		}
+	}
+}
+
 # 烈度是否进入「对立」区（>=90）：两派公开倾轧、对立脉冲 / 0200 站队等在此区触发。
 ftr_court_is_contested_trigger = {
 	ftr_court_has_active_struggle_trigger = yes

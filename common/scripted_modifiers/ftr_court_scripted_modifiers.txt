@@ -308,12 +308,45 @@ ftr_court_back_diarch_ai_modifier = {
 ###   ① 军力 ≥ 最高领主 10% 的封臣、② 内阁成员、③ 君主宫廷职位持有者、
 ###   ④ 君主配偶、⑤ 君主继承人（顺位第一 / 已指定储君）、⑥ 强力封臣——
 ###   他们置身事外对政权风险最大，故压低其观望意愿，逼其下场表态。
+###   但**不贪恋权位 / 胆小谨慎**者仅**下调压迫强度**（不做完全豁免），并分两档：
+###   强档 content / craven / humble → +25（净 −10）；常规档 paranoid / patient / shy / lazy / trusting → +18（净 −17）。
 ### 用法：在 0200.f 的 ai_chance 内平级引用（ftr_court_wait_key_figure_ai_modifier = yes）。
 ##############################################################
 
 ftr_court_wait_key_figure_ai_modifier = {
+	# ① 核心压迫：关键人物不得轻易置身事外
 	modifier = {
 		add = -35
 		ftr_court_wait_key_figure_trigger = yes
+	}
+	# ② 性格抑制（强档）：最强烈的「不恋权 / 不敢争」信号——压迫大幅减轻（净 −10）
+	modifier = {
+		add = 25
+		ftr_court_wait_key_figure_trigger = yes
+		OR = {
+			has_trait = content     # 安于现状：无心权位
+			has_trait = craven      # 怯懦：不敢卷入
+			has_trait = humble      # 谦卑：不争
+		}
+	}
+	# ③ 性格抑制（常规档）：谨慎 / 疏懒 / 怕生 / 轻信——压迫小幅减轻（净 −17）
+	modifier = {
+		add = 18
+		ftr_court_wait_key_figure_trigger = yes
+		# 与 ② 互斥：已属强档者不再叠加
+		NOT = {
+			OR = {
+				has_trait = content
+				has_trait = craven
+				has_trait = humble
+			}
+		}
+		OR = {
+			has_trait = paranoid    # 多疑：不愿成为众矢之的
+			has_trait = patient     # 持重：静观其变
+			has_trait = shy         # 怕生：不愿公开表态
+			has_trait = lazy        # 疏懒：不愿操心
+			has_trait = trusting    # 轻信：不疑有他，宁可静候
+		}
 	}
 }

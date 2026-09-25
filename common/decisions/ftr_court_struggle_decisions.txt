@@ -285,7 +285,7 @@ ftr_court_declare_backing_decision = {
 	}
 	ai_will_do = {
 		# 无目标决议只决定"是否现在表态"；具体支持谁由 0200 事件选项的权重完成。
-		base = 15
+		base = 0
 		# 人格：野心者更愿占队，安于现状者保持沉默
 		modifier = {
 			add = 25

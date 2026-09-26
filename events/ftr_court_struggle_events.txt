@@ -3315,7 +3315,7 @@ ftr_court_struggle.0600 = {
 		var:ftr_court_impeach_target ?= { is_alive = yes }
 	}
 	desc = ftr_court_struggle.0600.desc
-	theme = council
+	theme = vassal
 
 	left_portrait = {
 		character = root

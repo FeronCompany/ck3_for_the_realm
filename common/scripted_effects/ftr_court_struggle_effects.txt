@@ -213,8 +213,11 @@ ftr_court_transfer_story_effect = {
 			# 若新君曾站队支持某权贵（旧朝参与者），登基后解除该关系：
 			# 从被支持者的支持者列表移除自己，再清掉自己的站队变量。
 			if = {
-				limit = { has_variable = ftr_court_backer_of }
-				var:ftr_court_backer_of ?= {
+				limit = {
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { is_alive = yes }
+				}
+				var:ftr_court_backer_of = {
 					ftr_court_remove_backer_effect = { BACKER = prev }
 				}
 			}
@@ -265,16 +268,9 @@ ftr_court_owner_death_effect = {
 # 场景1：死者是某竞争者的支持者 → 从被支持者的支持者名单移除；
 # 场景2：死者本人是竞争者 → 从所属政权名单（君主主名单 + story 名单）移除并刷新计数。
 ftr_court_death_cleanup_effect = {
-	# 1) 支持者除名：死者曾站队某权贵 → 从该权贵的 ftr_court_supporters 移除
-	if = {
-		limit = { has_variable = ftr_court_backer_of }
-		var:ftr_court_backer_of ?= {
-			ftr_court_remove_backer_effect = { BACKER = root }
-		}
-		remove_variable = ftr_court_backer_of
-	}
-
-	# 2) 竞争者除名：经 backlink 找到所属政权，同步清君主主名单与 story 名单
+	# 1) 竞争者除名：经 backlink 找到所属政权，同步清君主主名单与 story 名单
+	#    顺序必须在支持者除名之前——支持者除名一旦在弱作用域报错，会中断本效果，
+	#    导致竞争者永远留在名单里（2026-09 实测 error.log 实证）。
 	if = {
 		limit = { has_variable = ftr_court_participant_of }
 		# 已由 has_variable 守卫 → 强引用（`?=` 是 weak scope，做不了变量操作）
@@ -323,6 +319,20 @@ ftr_court_death_cleanup_effect = {
 		remove_character_flag = ftr_court_participating
 		remove_character_flag = ftr_court_asked_participation
 		ftr_court_revoke_temp_duchy_effect = yes
+	}
+
+	# 2) 支持者除名：死者曾站队某权贵 → 从该权贵的 ftr_court_supporters 移除
+	if = {
+		limit = {
+			has_variable = ftr_court_backer_of
+			# 被支持者须仍在世：否则变量指向失效角色，取到弱作用域后变量操作会报错
+			var:ftr_court_backer_of ?= { is_alive = yes }
+		}
+		# 已由 has_variable 守卫 → 强引用（`?=` 是 weak scope，做不了变量操作）
+		var:ftr_court_backer_of = {
+			ftr_court_remove_backer_effect = { BACKER = root }
+		}
+		remove_variable = ftr_court_backer_of
 	}
 }
 
@@ -786,8 +796,8 @@ ftr_court_clear_claimant_backings_effect = {
 					variable = ftr_court_claimants
 					limit = { has_variable = ftr_court_backer_of }
 					save_scope_as = ftr_court_conflicting_claimant
-					# 从被支持者的支持者名单中除名（在被支持者域执行）
-					var:ftr_court_backer_of ?= {
+					# 从被支持者的支持者名单中除名（在被支持者域执行；强引用，弱作用域做不了变量操作）
+					var:ftr_court_backer_of = {
 						ftr_court_remove_backer_effect = { BACKER = scope:ftr_court_conflicting_claimant }
 					}
 					scope:ftr_court_conflicting_claimant = {
@@ -841,14 +851,17 @@ ftr_court_apply_backing_effect = {
 			flag = ftr_court_switched_backing
 			years = ftr_court_backing_switch_cooldown_years_value
 		}
-		# 旧主从自己的支持者名单移除本支持者
-		var:ftr_court_backer_of ?= {
+		# 旧主从自己的支持者名单移除本支持者（强引用，弱作用域做不了变量操作）
+		var:ftr_court_backer_of = {
 			ftr_court_remove_backer_effect = { BACKER = scope:ftr_court_backer }
 		}
-		# 旧主记恨
+		# 旧主记恨（旧主即本人时不写自加好感）
 		scope:ftr_court_old_backed = {
-			add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_betrayed_opinion }
-			ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_backer }
+			if = {
+				limit = { NOT = { this = scope:ftr_court_backer } }
+				add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_betrayed_opinion }
+				ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_backer }
+			}
 			# 旧主的支持者们（有地与廷臣，除自己外）同仇敌忾
 			every_vassal = {
 				limit = {
@@ -918,6 +931,7 @@ ftr_court_apply_backing_effect = {
 		every_in_list = {
 			variable = ftr_court_participant_list
 			limit = {
+				is_alive = yes
 				NOT = { this = $CLAIMANT$ }
 				NOT = { this = scope:ftr_court_backer }
 			}
@@ -1760,6 +1774,7 @@ ftr_court_ease_struggle_effect = {
 	# 2) 缓和与各竞争者的关系（君主个人参与者列表 ftr_court_claimants）：竞争者念君主恩情
 	every_in_list = {
 		variable = ftr_court_claimants
+		limit = { is_alive = yes }
 		save_scope_as = ftr_court_eased_claimant
 		add_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_eased_opinion }
 		remove_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_rival_claimant_opinion }

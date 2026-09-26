@@ -121,7 +121,6 @@ ftr_succession_war = {
 
 	########## 胜利：夺位 ##########
 	on_victory = {
-		scope:war = { save_scope_as = ftr_court_war }
 		scope:attacker = { save_scope_as = ftr_court_warleader }
 		scope:defender = { save_scope_as = ftr_court_old_monarch }
 
@@ -141,7 +140,6 @@ ftr_succession_war = {
 	########## 失败：叛乱者付出代价 ##########
 	# 造反不是儿戏。失败者被剥夺继承权、声名扫地，并被押上君主的审判台。
 	on_defeat = {
-		scope:war = { save_scope_as = ftr_court_war }
 		scope:attacker = { save_scope_as = ftr_court_warleader }
 		scope:defender = { save_scope_as = ftr_court_old_monarch }
 
@@ -178,7 +176,8 @@ ftr_succession_war = {
 			add_truce_both_ways = {
 				character = scope:defender
 				days = ftr_court_rebellion_truce_days_value
-				war = scope:ftr_court_war
+				# CB 内无 scope:war，取攻击方（root）的战争——原版 add_truce_both_ways 同款写法
+				war = root.war
 				result = defeat
 			}
 		}

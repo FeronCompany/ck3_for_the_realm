@@ -89,7 +89,7 @@ types Lists
 			onclick = "[GetScriptedGui('ftr_personal_merit_sync_ui').Execute( GuiScope.SetRoot( GetPlayer.GetTopLiege.MakeScope ).End )]"
 			text_single = {
 				text = "ftr_court_merit_reward_button"
-				fontsize = 11
+				fontsize = 10
 			}
 		}
 		expand = {}

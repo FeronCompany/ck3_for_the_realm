@@ -53,6 +53,8 @@
  ftr_court_backing_presumptuous_opinion:0 "Made bold presumption by backing"
  ftr_court_disciplined_opinion:0 "Publicly disciplined me"
  ftr_court_disciplined_defiance_opinion:0 "Publicly disciplined me — and I stood my ground"
+ ftr_court_petition_heir_granted_opinion:0 "Heeded our petition to settle the succession"
+ ftr_court_petition_heir_refused_opinion:0 "Rejected our petition to settle the succession"
  ftr_court_impeachment_opinion:0 "Publicly impeached me"
  ftr_court_impeachment_rival:0 "Feud born of an impeachment"
 ftr_court_rival_grudge:0 "Feud born of court infighting"

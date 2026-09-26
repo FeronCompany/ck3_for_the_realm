@@ -53,6 +53,8 @@
  ftr_court_backing_presumptuous_opinion:0 "贸然站队令我难堪"
  ftr_court_disciplined_opinion:0 "当众敲打了我"
  ftr_court_disciplined_defiance_opinion:0 "当众敲打，硬顶不退"
+ ftr_court_petition_heir_granted_opinion:0 "纳谏立储，感念君恩"
+ ftr_court_petition_heir_refused_opinion:0 "上疏请立储遭驳回"
  ftr_court_impeachment_opinion:0 "当众弹劾了我"
  ftr_court_impeachment_rival:0 "朝堂弹劾结怨"
 ftr_court_rival_grudge:0 "朝堂倾轧结怨"

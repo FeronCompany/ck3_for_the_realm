@@ -1,7 +1,7 @@
 ﻿##############################################################
 ### 共治者机制强化 —— 数值常量
 ### 设计出处：document/task_design/03-共治者机制强化设计.md §7
-### 全部 AI 阈值与权重集中于此，禁止在脚本里硬编码（AGENTS §6）
+### 本文件收纳「跨文件复用 / 复杂公式」类数值；简单数值允许就地内联（AGENTS §6.2）
 ##############################################################
 
 ### 〇、swing 统一档位（全 mod 共用；01 朝堂角逐与本系统都引用这一组，见设计 §7.1）
@@ -35,8 +35,8 @@ ftr_diarchy_amnesty_swing_value = ftr_swing_tier_strong_high_value
 ftr_diarchy_prepare_coup_supporter_threshold_value = 2
 # 太子共治初始天平（§2.2 / §6）：主动立储（指定继承人 / 成年补立）——低起点，太子须靠经营抬升
 ftr_diarchy_crown_prince_voluntary_initial_swing_value = 10
-# 太子共治初始天平：被迫立储（共治请愿 / 党羽逼宫推上台）
-ftr_diarchy_crown_prince_imposed_initial_swing_value = 40
+# 注：被迫立储（共治请愿 / 党羽逼宫）的初始天平已统一为 40，就地内联于
+#     ftr_court_establish_champion_coregency_effect（04 §2.1），不再设常量。
 
 ### 一之二、季度背书博弈（swing 唯一的人工成长源；无任何被动月度修正）
 # 每 1 名「净背书领先」折算的 swing 点

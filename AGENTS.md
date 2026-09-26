@@ -428,7 +428,7 @@ python tools/validate_scripts.py --no-ref
 | **无意义地重定义整段原版内容** | 只改需要的部分，最小化冲突面 |
 | **用空格缩进新代码** | 项目统一 Tab |
 | **提交 `gui/*.bak` 或空文件** | 仓库卫生 |
-| **硬编码数值**（AI 权重除外） | 领域常量（成本 / 阈值 / 档位 / 跨文件共用值）抽成 `common/script_values/ftr_*.txt` 的 script value；**例外**：`ai_will_do` / `ai_accept` / 事件选项 `ai_chance`（含其所引用的 scripted_modifiers）内的加减分、乘数与 AI 内部阈值**直接写字面数字**——就地可读、便于调参，不抽常量，替换后也不得残留死常量 |
+| **常量堆砌**（散落多处、层层引用、改一处漏一处） | 数值**优先就地内联字面量**——直观、便于阅读与调参；**仅在**需要跨文件复用、或表达复杂可复用公式（如竞争力评分）时才抽成 `common/script_values/ftr_*.txt` 的 script value。常量一旦失去复用价值，应及时内联并删除，不留死常量 |
 | **判断「行政类政体」用错 API** | 一律用 `government_allows = administrative`；`government_has_flag = government_is_administrative` 只指行政制本体，会漏掉天朝 / 日本行政 / 官僚制 / 草原行政（见 [文档 13 §4.1](document/13-政体、特质与共治.md)） |
 | **业务处散写底层写操作** | 记账 / 状态变更只经唯一的封装 effect（如功勋系统的记账封装），不要在调用点散写 `change_variable` / `add_opinion` |
 

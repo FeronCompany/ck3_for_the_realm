@@ -119,9 +119,9 @@ ftr_court_struggle_main_pulse = {
 							100 = {
 								ftr_court_civil_strife_effect = yes
 							}
-							# 尚无共治者时开放请立共治（不受烈度封锁）
+							# 尚无储位时开放党羽上疏请立储（不受烈度封锁）
 							50 = {
-								trigger = { NOT = { story_owner ?= { has_active_diarchy = yes } } }
+								trigger = { NOT = { story_owner ?= { ftr_court_realm_has_crown_prince_trigger = yes } } }
 								ftr_court_backer_demand_pulse_effect = yes
 							}
 							# 无事发生（朝堂风平浪静的一拍；仅写 debug.log）

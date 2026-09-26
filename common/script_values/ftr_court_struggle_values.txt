@@ -1,7 +1,8 @@
 ﻿##############################################################
 ### 朝堂权力角逐 COURT STRUGGLE — 数值层
 ### 议题1 继任之争 / 议题2 共治夺权
-### 所有权重与阈值集中于此，禁止在别处硬编码
+### 本文件收纳「跨文件复用 / 复杂公式」类数值；
+### 就地可用、无需复用的简单数值允许直接内联写字面量（AGENTS §6.2）
 ##############################################################
 
 ########## 一、频率控制 ##########
@@ -137,9 +138,13 @@ ftr_court_backing_crowd_penalty_step_value = 18
 # ---- 改投摩擦（AI 更不愿频繁变更背书对象）----
 # 改投「安定期」年限：刚改投过的人在此期间更不愿再次变更。
 ftr_court_backing_switch_cooldown_years_value = 5
+# 「静观其变」关键人物判定：军力 ≥ 最高领主此比例的封臣算关键人物
+# （ftr_court_wait_key_figure_trigger → ftr_court_wait_key_figure_ai_modifier）
+ftr_court_wait_key_vassal_strength_ratio_value = 0.1
 
 # 求值域：this = 被敲打的党羽成员，scope:actor = 敲打者（最高领主）。
-# 敲打党羽的退出概率（%）：顺从性格与对君主好感加分，傲慢 / 野心 / 勇敢减分；引擎 clamp 0-100。
+# 敲打党羽的退出概率（%）：顺从性格与对君主好感加分，傲慢 / 野心 / 勇敢减分。
+# 2026-09 平衡：整体概率 +10%（先求和再整体放大），上限同步 60 → 66；引擎 clamp 0-100。
 ftr_court_discipline_exit_chance_value = {
 	value = 10
 	if = { limit = { has_trait = craven }   add = 20 }
@@ -159,9 +164,15 @@ ftr_court_discipline_exit_chance_value = {
 		limit = { opinion = { target = scope:actor  value < 0 } }
 		add = -15
 	}
+	multiply = 1.1
 	min = 0
-	max = 60
+	max = 66
 }
+
+# 敲打党羽「硬顶不退」的代价（求值域：this = 未退出的党羽，scope:actor = 敲打者）：
+#   ① 与最高领主关系恶化更重（见 opinion_modifiers 的 ftr_court_disciplined_defiance_opinion，-70，重于被敲打权贵本人的 -50）
+#   ② 走上「结为仇敌」的概率比默认结怨（ftr_court_rival_grudge_chance_value = 35）再高约 10%
+ftr_court_discipline_defy_rival_chance_value = 39
 
 # 关系「交好」分界：双向好感 ≥ 此值算关系较好；< 此值算「一般」（谈不上交好）。
 ftr_court_backing_relation_good_value = 40
@@ -485,10 +496,6 @@ ftr_court_petition_camp_ratio_value = {
 		min = 1
 	}
 }
-# 请愿回退（请愿者取得 `regency`）的初始天平：取「强权上沿」。
-# 理由（裁定 R2）：请愿以君主失能前提，故给高初值；引擎每月按 0.25 向 regency 的
-# swing_balance = 50 回落，而原版在 swing ≤ 20 时允许免费结束摄政 —— 高初值可延长该窗口。
-ftr_court_petition_regency_initial_swing_value = ftr_swing_tier_strong_high_value
 # 请愿者补偿：共治主体不是请愿者本人（「太子优先」生效）时的「从龙之功」记账额（02 拥立账）
 ftr_court_petition_consolation_merit_value = 15
 
@@ -531,8 +538,8 @@ ftr_court_temp_duchy_compensation_value = 150
 
 ########## 八、党羽逼宫（Backer Demand）##########
 # 触发口径：资格权贵（竞争者 / 共治者）的党羽（背书者）达到一定「规模」时，其党羽向最高领主发难：
-#   ① 君主尚无共治者 → 党羽要求拥立自己支持的竞争者共治
-#      （类型按政体分流：东罗马/拜占庭 → 共治皇帝；其他行政制 → 太子；其他政体 → 共治君主；缺省 → 固化摄政）；
+#   ① 君主尚无储位 → 党羽上疏请立储（04 §2.3）；落地走统一关节：合法继承人立储 + 视条件建共治，
+#      非继承人取得官职 / 摄政型共治（摄政 / 维齐尔 / 草原摄政）。被逼立共治者初始天平一律 40。
 #   ② 君主已有共治者且该共治者正是党羽拥立的对象、天平达强权上沿（≥80）→ 逼宫退位，共治者直接登基。
 # 「规模」= 支持者人数 + 每名强力封臣党羽的额外加权（体现分量而非纯人头，见 ftr_court_backer_demand_scale_value）。
 # 触发所需的最少党羽人数（硬下限：防止单人即逼宫）
@@ -543,12 +550,8 @@ ftr_court_backer_demand_threshold_value = 4
 ftr_court_backer_demand_powerful_weight_value = 1
 # 同一政权两次党羽逼宫的冷却年数（防刷屏）
 ftr_court_backer_demand_cooldown_years_value = 3
-# 逼宫拥立共治者时的初始天平（取强权上沿：逼宫所得不可虚位，对齐 01 共治请愿落地）
-ftr_court_backer_demand_initial_swing_value = ftr_swing_tier_strong_high_value
 # 逼宫要求共治者退位所需的天平门槛（取强权上沿）
 ftr_court_backer_demand_abdication_swing_value = ftr_swing_tier_strong_high_value
-# 逼宫（无论允准或拒绝）对朝堂烈度的增量
-ftr_court_backer_demand_intensity_value = 20
 
 # 求值域：this = 权贵（竞争者 / 共治者）。其党羽规模综合值。
 ftr_court_backer_demand_scale_value = {
@@ -704,7 +707,7 @@ ftr_court_impeach_urge_chance_value = {
 }
 
 ########## 九、朝堂行为节流（统一常量组）##########
-# 统一管理 01/03 各「防骚扰 / 出手冷却」字符 flag 的时限，禁止各处硬编码年数。
+# 统一管理 01/03 各「防骚扰 / 出手冷却」字符 flag 的时限。
 # 防骚扰类：对同一对象短期内不重复询问（003 组）
 ftr_court_ask_throttle_years_value = 3
 # 出手冷却类：同一手段短期内不重复（strife_active 普通 / 强手段两档）

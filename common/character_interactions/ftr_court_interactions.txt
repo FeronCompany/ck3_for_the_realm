@@ -202,6 +202,29 @@ ftr_court_discipline_backer_interaction = {
 					ftr_court_remove_backer_effect = { BACKER = scope:ftr_court_yielded_backer }
 				}
 			}
+			# 硬顶不退者：与最高领主关系进一步恶化，并更易就此结为仇敌（2026-09 平衡）
+			#   此名单此刻只剩未屈服者（屈服者已被上面的 while 排干），故直接遍历即可。
+			scope:recipient = {
+				every_in_list = {
+					variable = ftr_court_supporters
+					limit = {
+						is_alive = yes
+						NOT = { this = scope:actor }
+					}
+					add_opinion = {
+						target = scope:actor
+						modifier = ftr_court_disciplined_defiance_opinion
+					}
+					random = {
+						chance = ftr_court_discipline_defy_rival_chance_value
+						progress_towards_rival_effect = {
+							REASON = ftr_court_rival_grudge
+							CHARACTER = scope:actor
+							OPINION = ftr_court_rival_grudge_opinion_value
+						}
+					}
+				}
+			}
 			# 有人屈服才通报君主
 			scope:actor = {
 				if = {

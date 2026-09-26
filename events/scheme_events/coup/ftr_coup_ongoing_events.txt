@@ -1010,6 +1010,8 @@ ftr_coup_ongoing.2002 = {
 
 	immediate = {
 		scope:scheme = {
+			# 先公开计谋本身，再逐个点名特工（否则报 "hasn't been exposed yet"）
+			expose_scheme = yes
 			expose_scheme_agent = scheme_owner
 			scheme_owner = {
 				save_scope_as = owner

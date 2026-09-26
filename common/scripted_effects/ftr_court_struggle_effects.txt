@@ -213,8 +213,11 @@ ftr_court_transfer_story_effect = {
 			# 若新君曾站队支持某权贵（旧朝参与者），登基后解除该关系：
 			# 从被支持者的支持者列表移除自己，再清掉自己的站队变量。
 			if = {
-				limit = { has_variable = ftr_court_backer_of }
-				var:ftr_court_backer_of ?= {
+				limit = {
+					has_variable = ftr_court_backer_of
+					var:ftr_court_backer_of ?= { is_alive = yes }
+				}
+				var:ftr_court_backer_of = {
 					ftr_court_remove_backer_effect = { BACKER = prev }
 				}
 			}
@@ -265,16 +268,9 @@ ftr_court_owner_death_effect = {
 # 场景1：死者是某竞争者的支持者 → 从被支持者的支持者名单移除；
 # 场景2：死者本人是竞争者 → 从所属政权名单（君主主名单 + story 名单）移除并刷新计数。
 ftr_court_death_cleanup_effect = {
-	# 1) 支持者除名：死者曾站队某权贵 → 从该权贵的 ftr_court_supporters 移除
-	if = {
-		limit = { has_variable = ftr_court_backer_of }
-		var:ftr_court_backer_of ?= {
-			ftr_court_remove_backer_effect = { BACKER = root }
-		}
-		remove_variable = ftr_court_backer_of
-	}
-
-	# 2) 竞争者除名：经 backlink 找到所属政权，同步清君主主名单与 story 名单
+	# 1) 竞争者除名：经 backlink 找到所属政权，同步清君主主名单与 story 名单
+	#    顺序必须在支持者除名之前——支持者除名一旦在弱作用域报错，会中断本效果，
+	#    导致竞争者永远留在名单里（2026-09 实测 error.log 实证）。
 	if = {
 		limit = { has_variable = ftr_court_participant_of }
 		# 已由 has_variable 守卫 → 强引用（`?=` 是 weak scope，做不了变量操作）
@@ -323,6 +319,20 @@ ftr_court_death_cleanup_effect = {
 		remove_character_flag = ftr_court_participating
 		remove_character_flag = ftr_court_asked_participation
 		ftr_court_revoke_temp_duchy_effect = yes
+	}
+
+	# 2) 支持者除名：死者曾站队某权贵 → 从该权贵的 ftr_court_supporters 移除
+	if = {
+		limit = {
+			has_variable = ftr_court_backer_of
+			# 被支持者须仍在世：否则变量指向失效角色，取到弱作用域后变量操作会报错
+			var:ftr_court_backer_of ?= { is_alive = yes }
+		}
+		# 已由 has_variable 守卫 → 强引用（`?=` 是 weak scope，做不了变量操作）
+		var:ftr_court_backer_of = {
+			ftr_court_remove_backer_effect = { BACKER = root }
+		}
+		remove_variable = ftr_court_backer_of
 	}
 }
 
@@ -627,6 +637,47 @@ ftr_court_decline_contest_effect = {
 	remove_character_flag = ftr_court_asked_participation
 }
 
+# 在 story 域执行（04 §5.3）：君主已有 ≥2 名有继承权子女时，劝退其仍在角逐中的手足。
+# 节流：君主获 ftr_court_sibling_withdraw_checked flag，防止重复派发。
+# 名单改动一律放事件内——此处只以变量传参 + 延迟派发 0700，杜绝遍历中改名单。
+ftr_court_ask_siblings_withdraw_effect = {
+	save_scope_as = ftr_court_story
+	story_owner ?= { save_scope_as = ftr_court_monarch }
+	if = {
+		limit = {
+			exists = scope:ftr_court_monarch
+			scope:ftr_court_monarch = {
+				ftr_court_has_two_eligible_children_trigger = yes
+				NOT = { has_character_flag = ftr_court_sibling_withdraw_checked }
+			}
+		}
+		scope:ftr_court_monarch = {
+			add_character_flag = {
+				flag = ftr_court_sibling_withdraw_checked
+				years = ftr_court_ask_throttle_years_value
+			}
+			if = {
+				limit = { has_variable_list = ftr_court_claimants }
+				every_in_list = {
+					variable = ftr_court_claimants
+					limit = {
+						is_alive = yes
+						is_adult = yes
+						has_character_flag = ftr_court_participating
+						is_sibling_of = scope:ftr_court_monarch
+					}
+					set_variable = {
+						name = ftr_court_sibling_withdraw_cause
+						value = scope:ftr_court_monarch
+						days = 60
+					}
+					trigger_event = { id = ftr_court_struggle.0700  days = 2 }
+				}
+			}
+		}
+	}
+}
+
 # 在竞争者域执行：**自愿退出角逐**（root = 退出者；由 0700.a 调用）。
 # 依赖：scope:ftr_court_monarch（君主）与 scope:ftr_court_story（故事）已保存（两者均带 ?= 守卫）。
 # 与「死亡清理」同口径：君主主名单 + story 名单双向除名 → 刷新参与计数 →
@@ -745,8 +796,8 @@ ftr_court_clear_claimant_backings_effect = {
 					variable = ftr_court_claimants
 					limit = { has_variable = ftr_court_backer_of }
 					save_scope_as = ftr_court_conflicting_claimant
-					# 从被支持者的支持者名单中除名（在被支持者域执行）
-					var:ftr_court_backer_of ?= {
+					# 从被支持者的支持者名单中除名（在被支持者域执行；强引用，弱作用域做不了变量操作）
+					var:ftr_court_backer_of = {
 						ftr_court_remove_backer_effect = { BACKER = scope:ftr_court_conflicting_claimant }
 					}
 					scope:ftr_court_conflicting_claimant = {
@@ -800,14 +851,17 @@ ftr_court_apply_backing_effect = {
 			flag = ftr_court_switched_backing
 			years = ftr_court_backing_switch_cooldown_years_value
 		}
-		# 旧主从自己的支持者名单移除本支持者
-		var:ftr_court_backer_of ?= {
+		# 旧主从自己的支持者名单移除本支持者（强引用，弱作用域做不了变量操作）
+		var:ftr_court_backer_of = {
 			ftr_court_remove_backer_effect = { BACKER = scope:ftr_court_backer }
 		}
-		# 旧主记恨
+		# 旧主记恨（旧主即本人时不写自加好感）
 		scope:ftr_court_old_backed = {
-			add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_betrayed_opinion }
-			ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_backer }
+			if = {
+				limit = { NOT = { this = scope:ftr_court_backer } }
+				add_opinion = { target = scope:ftr_court_backer  modifier = ftr_court_betrayed_opinion }
+				ftr_court_rival_grudge_effect = { CHARACTER = scope:ftr_court_backer }
+			}
 			# 旧主的支持者们（有地与廷臣，除自己外）同仇敌忾
 			every_vassal = {
 				limit = {
@@ -877,6 +931,7 @@ ftr_court_apply_backing_effect = {
 		every_in_list = {
 			variable = ftr_court_participant_list
 			limit = {
+				is_alive = yes
 				NOT = { this = $CLAIMANT$ }
 				NOT = { this = scope:ftr_court_backer }
 			}
@@ -1080,13 +1135,11 @@ ftr_court_discourage_backers_effect = {
 ######################################################
 
 # 求值域：君主。参数 PETITIONER = 请愿者。
-# 共治请愿获准后的落地（03 §6 接线）。**授权对象分类（2026-09 修正顺位，替代原「太子优先」）**：
+# 共治请愿获准后的落地（03 §6 接线）。**授权对象分类**：
 #   ① 请愿者若有背书对象（且非君主本人）→ 授其**背书对象**（"为他人请愿"不得自据其位）；
 #   ② 否则 → 授**请愿者本人**（自身即竞争者 / 无背书对象的兜底）。
-# **类型分流**：
-#   A. 授权对象属「合法继承人之一」（ftr_court_is_legitimate_heir_of_trigger）→
-#      按政体走 共治皇帝 / 太子 / 共治君主（复用 03 的 ftr_court_establish_champion_coregency_effect）；
-#   B. 否则 → 原版 regency 摄政（授权对象任摄政，天平取强权上沿 80）。
+# 落地统一走 ftr_court_establish_champion_coregency_effect（04 §2.1）：继承人线立储 + 视条件建共治；
+# 非继承人线取得官职 / 摄政型共治（摄政 / 维齐尔 / 草原摄政）。被逼立共治者的初始天平一律 40。
 # 注：授权对象须为「可当共治者的成年能力者」（ftr_court_champion_eligible_diarch_trigger）——
 #     未成年继承人不会即时共治，待其成年由 03 的补立链路（ftr_diarchy_promote_adult_heir_effect）处理。
 ftr_court_establish_coregency_effect = {
@@ -1111,33 +1164,13 @@ ftr_court_establish_coregency_effect = {
 		$PETITIONER$ ?= { save_scope_as = ftr_court_petition_grantee }
 	}
 
-	# 2) 授权对象属继承人线 → 按政体分流（共治皇帝 / 太子 / 共治君主 / 缺省固化摄政）
+	# 2) 授权对象落地：走统一关节（04 §2.1）
 	if = {
-		limit = {
-			exists = scope:ftr_court_petition_grantee
-			ftr_court_is_legitimate_heir_of_trigger = { HEIR = scope:ftr_court_petition_grantee }
-		}
+		limit = { exists = scope:ftr_court_petition_grantee }
 		ftr_court_establish_champion_coregency_effect = { CHAMPION = scope:ftr_court_petition_grantee }
 	}
 
-	# 3) 回退：授权对象不属继承人线 → 由其取得原版摄政位。
-	if = {
-		limit = {
-			NOT = { has_active_diarchy = yes }
-			exists = scope:ftr_court_petition_grantee
-			scope:ftr_court_petition_grantee = { ftr_court_champion_eligible_diarch_trigger = yes }
-		}
-		try_start_diarchy = regency
-		if = {
-			limit = { has_active_diarchy = yes }
-			set_diarch = scope:ftr_court_petition_grantee
-			set_diarchy_swing = 20
-			# 天平偏移通知（§7.1）：请愿授权落地的天平初值来由
-			ftr_diarchy_swing_notice_effect = { KEY = ftr_court_swing_notice_petition_granted }
-		}
-	}
-
-	# 4) 请愿者补偿：共治主体并非请愿者本人（授权对象 = 其背书对象）时——君主好感 + 「从龙之功」
+	# 3) 请愿者补偿：共治主体并非请愿者本人（授权对象 = 其背书对象）时——君主好感 + 「从龙之功」
 	#    注：02 拥立账「目标唯一」，故请愿者已有旧拥立账时只给好感，避免清空其在继位角逐中的记账。
 	if = {
 		limit = {
@@ -1741,6 +1774,7 @@ ftr_court_ease_struggle_effect = {
 	# 2) 缓和与各竞争者的关系（君主个人参与者列表 ftr_court_claimants）：竞争者念君主恩情
 	every_in_list = {
 		variable = ftr_court_claimants
+		limit = { is_alive = yes }
 		save_scope_as = ftr_court_eased_claimant
 		add_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_eased_opinion }
 		remove_opinion = { target = scope:ftr_court_ease_monarch  modifier = ftr_court_rival_claimant_opinion }
@@ -1766,37 +1800,84 @@ ftr_court_strife_slander_effect = {
 			limit = { scope:ftr_court_strife_story.var:ftr_court_strife_pick = 0 }
 			# 目标：另一名竞争者（参与者 >=2 时才成立）
 			scope:ftr_court_strife_story = { set_variable = { name = ftr_court_strife_pick  value = 1 } }
-			random_in_list = {
-				variable = ftr_court_participant_list
-				limit = {
-					NOT = { this = scope:ftr_court_strife_actor }
-					NOT = { this = scope:ftr_court_strife_story.story_owner }
+			# 04 §4：已立储时按概率定向储君为 victim（偏置不高，避免储君过于高危）
+			if = {
+				limit = { scope:ftr_court_strife_story.story_owner = { ftr_court_realm_has_crown_prince_trigger = yes } }
+				scope:ftr_court_strife_story.story_owner = {
+					if = { limit = { exists = designated_heir } designated_heir ?= { save_scope_as = ftr_court_strife_prince } }
+					else_if = {
+						limit = { has_active_diarchy = yes  exists = diarch }
+						diarch ?= { save_scope_as = ftr_court_strife_prince }
+					}
 				}
-				save_scope_as = ftr_court_strife_victim
 			}
-			# 把 victim 存到 actor 身上，供手段事件读取
-			scope:ftr_court_strife_actor ?= {
-				set_variable = { name = ftr_court_strife_victim  value = scope:ftr_court_strife_victim }
-				# 手段随烈度升级（诬陷链 / 牵制 / 绑架 / 谋杀），按概率触发，保留"不触发"
-				if = {
-					limit = {
-						scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
+			if = {
+				limit = {
+					exists = scope:ftr_court_strife_prince
+					scope:ftr_court_strife_prince = { NOT = { this = scope:ftr_court_strife_actor } }
+					scope:ftr_court_strife_story = {
+						is_target_in_variable_list = {
+							name = ftr_court_participant_list
+							target = scope:ftr_court_strife_prince
+						}
 					}
-					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0320 } }
-					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0430 } }
-					random = { chance = 25  trigger_event = { id = ftr_court_struggle.0420 } }
 				}
-				else_if = {
+				random = {
+					chance = 30
+					scope:ftr_court_strife_prince = { save_scope_as = ftr_court_strife_victim }
+				}
+			}
+			# 未定向到储君 → 原随机抽取
+			if = {
+				limit = { NOT = { exists = scope:ftr_court_strife_victim } }
+				random_in_list = {
+					variable = ftr_court_participant_list
 					limit = {
-						scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+						NOT = { this = scope:ftr_court_strife_actor }
+						NOT = { this = scope:ftr_court_strife_story.story_owner }
 					}
-					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0310 } }
-					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0430 } }
-					random = { chance = 30  trigger_event = { id = ftr_court_struggle.0420 } }
+					save_scope_as = ftr_court_strife_victim
 				}
-				else = {
-					random = { chance = 40  trigger_event = { id = ftr_court_struggle.0300 } }
-					random = { chance = 35  trigger_event = { id = ftr_court_struggle.0410 } }
+			}
+			# 只有真正抽到 victim 才落地并掷手段概率（2026-09 修正）：
+			# 参与者不足 2 人时上面的内层 random_in_list 会落空、scope:ftr_court_strife_victim 未设置；
+			# 若照旧往下掷骰，只会派发出「无目标」的空转事件（选项体全被 scope:ftr_court_victim ?= {} 跳过，
+			# 0430.a 的 start_scheme 更会因裸用 unset scope 报错），白吃掉外层 random_list 分给互殴族的
+			# 权重 ⇒ 表现为事件概率下降。故此处先判 victim 存在，一并杜绝 unset scope 写入。
+			if = {
+				limit = { exists = scope:ftr_court_strife_victim }
+				# 把 victim 存到 actor 身上，供手段事件读取
+				scope:ftr_court_strife_actor ?= {
+					set_variable = { name = ftr_court_strife_victim  value = scope:ftr_court_strife_victim }
+					# 手段随烈度升级（诬陷链 / 牵制 / 绑架 / 谋杀），按概率触发，保留"不触发"
+					if = {
+						limit = {
+							scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_critical_bound_value
+						}
+						random = { chance = 35  trigger_event = { id = ftr_court_struggle.0320 } }
+						random = { chance = 35  trigger_event = { id = ftr_court_struggle.0430 } }
+						random = { chance = 25  trigger_event = { id = ftr_court_struggle.0420 } }
+					}
+					else_if = {
+						limit = {
+							scope:ftr_court_strife_story.var:ftr_court_struggle_intensity >= ftr_court_intensity_high_bound_value
+						}
+						random = { chance = 30  trigger_event = { id = ftr_court_struggle.0310 } }
+						random = { chance = 30  trigger_event = { id = ftr_court_struggle.0430 } }
+						random = { chance = 30  trigger_event = { id = ftr_court_struggle.0420 } }
+					}
+					else = {
+						random = { chance = 40  trigger_event = { id = ftr_court_struggle.0300 } }
+						random = { chance = 35  trigger_event = { id = ftr_court_struggle.0410 } }
+					}
+					# 04 §4：victim 为储君 → 重手段（下毒 / 谋杀）额外掷骰，抬高针对储君的致命倾向
+					if = {
+						limit = {
+							scope:ftr_court_strife_victim = { ftr_court_strife_victim_is_crown_prince_trigger = yes }
+						}
+						random = { chance = 15  trigger_event = { id = ftr_court_struggle.0320 } }
+						random = { chance = 15  trigger_event = { id = ftr_court_struggle.0430 } }
+					}
 				}
 			}
 		}
@@ -2057,6 +2138,36 @@ ftr_court_rival_grudge_effect = {
 ### 求值域：story 域（story_owner 为当年君主）。
 ######################################################
 
+# 在权贵（最高君主）域执行：把「本朝已入营党羽」并入 local list $LIST$（供随机抽人）。
+# 2026-09 选角口径修正（对齐 §7.3「阵营判定」）：
+#   ① 候选 = **任何已登记背书的党羽**（ftr_court_has_backing_trigger ⇒ 支持对象须仍是权贵，
+#      即**拥护最高君主 / 共治者 / 角逐竞争者**三类皆计）。此前写死
+#      「has_variable = ftr_court_backer_of ∧ 背书对象 ≠ 君主」，把**君主阵营与共治者阵营
+#      整块排除**——只剩 1 名竞争者时全场同属一营，M2/M3/M4/M5 的双人机制永远凑不出
+#      「两个不同阵营」，于是抽签权重被白白吃掉、表现为事件概率下降。
+#   ② 候选覆盖**有地封臣 + 无地廷臣**（设计 §11：参与者 / 党羽可为无地者），
+#      不再只用 random_vassal（旧写法把无地廷臣整个漏掉）。
+# 参数：LIST = local list 名；COOLDOWN = 冷却 flag（在身者不入池）。
+# 注：local list 属「作用域内临时 list」（add_to_list 攒 → random_in_list/list = 取），随脚本链存活，无需手动清空。
+ftr_court_collect_camp_backers_effect = {
+	every_vassal = {
+		limit = {
+			is_capable_adult = yes
+			ftr_court_has_backing_trigger = yes
+			NOT = { has_character_flag = $COOLDOWN$ }
+		}
+		add_to_list = $LIST$
+	}
+	every_courtier = {
+		limit = {
+			is_capable_adult = yes
+			ftr_court_has_backing_trigger = yes
+			NOT = { has_character_flag = $COOLDOWN$ }
+		}
+		add_to_list = $LIST$
+	}
+}
+
 ftr_court_civil_strife_effect = {
 	save_scope_as = ftr_court_civil_story
 	story_owner = { save_scope_as = ftr_court_civil_monarch }
@@ -2110,15 +2221,15 @@ ftr_court_impeach_pulse_effect = {
 			save_scope_as = ftr_court_impeach_target
 		}
 	}
-	# 2) 在「有党羽的封臣」中抽一名候选，再按其性格掷发难意愿
+	# 2) 在「本朝已入营党羽」中抽一名候选（含拥护君主 / 共治者的党羽；封臣 + 廷臣），再按其性格掷发难意愿
 	scope:ftr_court_impeach_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_impeach_monarch } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-			}
+		ftr_court_collect_camp_backers_effect = {
+			LIST = ftr_court_impeach_candidates
+			COOLDOWN = ftr_court_civil_actor_cooldown
+		}
+		random_in_list = {
+			list = ftr_court_impeach_candidates
+			limit = { NOT = { this = scope:ftr_court_impeach_monarch } }
 			save_scope_as = ftr_court_impeach_candidate
 		}
 	}
@@ -2222,28 +2333,28 @@ ftr_court_debate_pulse_effect = {
 	save_scope_as = ftr_court_debate_story
 	story_owner = { save_scope_as = ftr_court_debate_monarch }
 	scope:ftr_court_debate_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-			}
+		ftr_court_collect_camp_backers_effect = {
+			LIST = ftr_court_debate_candidates
+			COOLDOWN = ftr_court_civil_actor_cooldown
+		}
+		random_in_list = {
+			list = ftr_court_debate_candidates
+			limit = { NOT = { this = scope:ftr_court_debate_monarch } }
 			save_scope_as = ftr_court_debate_actor
 		}
 	}
 	# 仅在甲方已选出时才抽乙方：否则 scope:ftr_court_debate_actor 未设，
 	# 被当作参数传入触发器会报 "returned an unset scope" / "doesn't support variables"。
+	# 乙方须与甲方**不同阵营**（same_camp 双向判定，君主 / 共治者阵营亦参与对照）。
 	scope:ftr_court_debate_actor ?= {
 		scope:ftr_court_debate_monarch ?= {
-			random_vassal = {
+			random_in_list = {
+				list = ftr_court_debate_candidates
 				limit = {
-					is_capable_adult = yes
-					has_variable = ftr_court_backer_of
-					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
+					NOT = { this = scope:ftr_court_debate_monarch }
+					NOT = { this = scope:ftr_court_debate_actor }
 					NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_debate_actor } }
 					ftr_court_has_different_vassal_stance_trigger = { OTHER = scope:ftr_court_debate_actor }
-					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
 				}
 				save_scope_as = ftr_court_debate_rival
 			}
@@ -2274,26 +2385,25 @@ ftr_court_claim_debate_pulse_effect = {
 	save_scope_as = ftr_court_debate_story
 	story_owner = { save_scope_as = ftr_court_debate_monarch }
 	scope:ftr_court_debate_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-			}
+		ftr_court_collect_camp_backers_effect = {
+			LIST = ftr_court_claim_candidates
+			COOLDOWN = ftr_court_civil_actor_cooldown
+		}
+		random_in_list = {
+			list = ftr_court_claim_candidates
+			limit = { NOT = { this = scope:ftr_court_debate_monarch } }
 			save_scope_as = ftr_court_debate_actor
 		}
 	}
-	# 同上：乙方筛选需先有甲方（M3 继承名分之争）
+	# 同上：乙方筛选需先有甲方（M3 继承名分之争），且须与甲方**不同阵营**。
 	scope:ftr_court_debate_actor ?= {
 		scope:ftr_court_debate_monarch ?= {
-			random_vassal = {
+			random_in_list = {
+				list = ftr_court_claim_candidates
 				limit = {
-					is_capable_adult = yes
-					has_variable = ftr_court_backer_of
-					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_debate_monarch } }
+					NOT = { this = scope:ftr_court_debate_monarch }
+					NOT = { this = scope:ftr_court_debate_actor }
 					NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_debate_actor } }
-					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
 				}
 				save_scope_as = ftr_court_debate_rival
 			}
@@ -2426,26 +2536,25 @@ ftr_court_duel_pulse_effect = {
 	save_scope_as = ftr_court_duel_story
 	story_owner = { save_scope_as = ftr_court_duel_monarch }
 	scope:ftr_court_duel_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_duel_monarch } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-			}
+		ftr_court_collect_camp_backers_effect = {
+			LIST = ftr_court_duel_candidates
+			COOLDOWN = ftr_court_civil_actor_cooldown
+		}
+		random_in_list = {
+			list = ftr_court_duel_candidates
+			limit = { NOT = { this = scope:ftr_court_duel_monarch } }
 			save_scope_as = ftr_court_duel_plaintiff
 		}
 	}
-	# 仅在原告已选出时才抽被告（M4 司法决斗）
+	# 仅在原告已选出时才抽被告（M4 司法决斗），且须与原告**不同阵营**。
 	scope:ftr_court_duel_plaintiff ?= {
 		scope:ftr_court_duel_monarch ?= {
-			random_vassal = {
+			random_in_list = {
+				list = ftr_court_duel_candidates
 				limit = {
-					is_capable_adult = yes
-					has_variable = ftr_court_backer_of
-					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_duel_monarch } }
+					NOT = { this = scope:ftr_court_duel_monarch }
+					NOT = { this = scope:ftr_court_duel_plaintiff }
 					NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_duel_plaintiff } }
-					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
 				}
 				save_scope_as = ftr_court_duel_defendant
 			}
@@ -2583,26 +2692,25 @@ ftr_court_appraisal_pulse_effect = {
 	}
 	else = {
 		scope:ftr_court_appraisal_monarch ?= {
-			random_vassal = {
-				limit = {
-					is_capable_adult = yes
-					has_variable = ftr_court_backer_of
-					var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_appraisal_monarch } }
-					NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-				}
+			ftr_court_collect_camp_backers_effect = {
+				LIST = ftr_court_appraisal_candidates
+				COOLDOWN = ftr_court_civil_actor_cooldown
+			}
+			random_in_list = {
+				list = ftr_court_appraisal_candidates
+				limit = { NOT = { this = scope:ftr_court_appraisal_monarch } }
 				save_scope_as = ftr_court_appraisal_actor
 			}
 		}
-		# 仅在评议者已选出时才抽被评者（M5 清议）
+		# 仅在评议者已选出时才抽被评者（M5 清议），且须与评议者**不同阵营**。
 		scope:ftr_court_appraisal_actor ?= {
 			scope:ftr_court_appraisal_monarch ?= {
-				random_vassal = {
+				random_in_list = {
+					list = ftr_court_appraisal_candidates
 					limit = {
-						is_capable_adult = yes
-						has_variable = ftr_court_backer_of
-						var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_appraisal_monarch } }
+						NOT = { this = scope:ftr_court_appraisal_monarch }
+						NOT = { this = scope:ftr_court_appraisal_actor }
 						NOT = { ftr_court_same_camp_trigger = { OTHER = scope:ftr_court_appraisal_actor } }
-						NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
 					}
 					save_scope_as = ftr_court_appraisal_target
 				}
@@ -2731,13 +2839,13 @@ ftr_court_omen_pulse_effect = {
 	save_scope_as = ftr_court_omen_story
 	story_owner = { save_scope_as = ftr_court_omen_monarch }
 	scope:ftr_court_omen_monarch ?= {
-		random_vassal = {
-			limit = {
-				is_capable_adult = yes
-				has_variable = ftr_court_backer_of
-				var:ftr_court_backer_of ?= { NOT = { this = scope:ftr_court_omen_monarch } }
-				NOT = { has_character_flag = ftr_court_civil_actor_cooldown }
-			}
+		ftr_court_collect_camp_backers_effect = {
+			LIST = ftr_court_omen_candidates
+			COOLDOWN = ftr_court_civil_actor_cooldown
+		}
+		random_in_list = {
+			list = ftr_court_omen_candidates
+			limit = { NOT = { this = scope:ftr_court_omen_monarch } }
 			save_scope_as = ftr_court_omen_faker
 		}
 	}
@@ -2829,12 +2937,17 @@ ftr_court_omen_inquiry_effect = {
 ###       其党羽向最高领主发难（请立共治 / 逼宫退位）。
 ######################################################
 
-# 求值域：君主。参数 CHAMPION = 被党羽拥立的竞争者。
-# 按政体分流启动共治并置初始天平：
-#   ① 东罗马 / 拜占庭（罗马皇帝 + 欢呼法）→ 共治皇帝 co_emperorship；
-#   ② 其他行政制（未采用欢呼法）→ 太子共治 ftr_diarchy_crown_prince；
-#   ③ 其他政体（可任命共治君主）→ 共治君主 co_monarchy；
-#   ④ 缺省 → 固化摄政 regency。
+# 求值域：君主。参数 CHAMPION = 被党羽 / 请愿者拥立的角色。
+# 逼立储 / 共治的**唯一落地关节**（04 §2.1）：
+#   ① 立储：仅合法继承人线（ftr_court_is_legitimate_heir_of_trigger）；**不受有无现役共治影响**
+#      ——已有官职线共治时仍可立储，只是不建共治。写储位前若将走太子线，先辞官回宫
+#      （否则引擎重算继承会清掉刚写入的指定，见 03 §2.2 顺序修复）。
+#   ② 建共治：需无现役共治。
+#       继承人线（共治型）：共帝 → 太子 → 共治君主；均不满足则只留储位。
+#       非继承人线（官职 / 摄政型）：草原摄政 → 维齐尔 → 摄政。
+#   注：中华霸主（tier_hegemony）的 grand_secretariat 宰相共治常驻，② 恒被拦下 ⇒ 该情形只落地为
+#       「指定继承人」。此为原版硬限制，不另设分支。
+# 被逼立共治者的初始天平一律 40（共治型与官职 / 摄政型统一）。
 ftr_court_establish_champion_coregency_effect = {
 	save_scope_as = ftr_court_coregency_liege
 	$CHAMPION$ ?= { save_scope_as = ftr_court_coregency_champion }
@@ -2842,44 +2955,66 @@ ftr_court_establish_champion_coregency_effect = {
 	if = {
 		limit = {
 			exists = scope:ftr_court_coregency_champion
-			NOT = { has_active_diarchy = yes }
 			scope:ftr_court_coregency_champion = { ftr_court_champion_eligible_diarch_trigger = yes }
 		}
 
-		# ① 共治皇帝（欢呼法政权：罗马皇帝头衔，或文化解锁共帝）
+		# ① 立储：仅合法继承人线；与有无现役共治无关
 		if = {
-			limit = { may_appoint_co_emperors_trigger = yes }
-			try_start_diarchy = co_emperorship
-		}
-		# ② 太子共治（其他行政制：独立 + ≥王国）
-		else_if = {
-			limit = { ftr_diarchy_can_start_crown_prince_trigger = yes }
-			try_start_diarchy = ftr_diarchy_crown_prince
-		}
-		# ③ 共治君主（其他政体）
-		else_if = {
-			limit = { may_appoint_co_monarchs_trigger = yes }
-			try_start_diarchy = co_monarchy
-		}
-		# ④ 缺省：固化摄政
-		else = {
-			try_start_diarchy = regency
+			limit = { ftr_court_is_legitimate_heir_of_trigger = { HEIR = scope:ftr_court_coregency_champion } }
+			if = {
+				limit = { ftr_diarchy_can_start_crown_prince_trigger = yes }
+				scope:ftr_court_coregency_champion = { ftr_diarchy_enforce_crown_prince_unlanded_effect = yes }
+			}
+			set_designated_heir = scope:ftr_court_coregency_champion
 		}
 
+		# ② 建共治：需无现役共治
 		if = {
-			limit = { has_active_diarchy = yes }
-			set_diarch = scope:ftr_court_coregency_champion
-			# 初值按类型分流：太子（被逼立储）= 40 基线；
-			# 其余共治类型（共帝 / 共治君主 / 摄政）= 强权上沿 80（逼宫所得不可虚位）
+			limit = { NOT = { has_active_diarchy = yes } }
+
 			if = {
-				limit = { has_diarchy_type = ftr_diarchy_crown_prince }
-				set_diarchy_swing = ftr_diarchy_crown_prince_imposed_initial_swing_value
+				limit = { ftr_court_is_legitimate_heir_of_trigger = { HEIR = scope:ftr_court_coregency_champion } }
+				# 继承人线 → 共治型三选一
+				if = {
+					limit = { may_appoint_co_emperors_trigger = yes }
+					try_start_diarchy = co_emperorship
+				}
+				else_if = {
+					limit = { ftr_diarchy_can_start_crown_prince_trigger = yes }
+					try_start_diarchy = ftr_diarchy_crown_prince
+				}
+				else_if = {
+					limit = { may_appoint_co_monarchs_trigger = yes }
+					try_start_diarchy = co_monarchy
+				}
 			}
 			else = {
-				set_diarchy_swing = ftr_court_backer_demand_initial_swing_value
+				# 非继承人线 → 官职 / 摄政型三选一
+				if = {
+					limit = { government_has_flag = government_is_nomadic }
+					try_start_diarchy = nomad_regency
+				}
+				else_if = {
+					limit = { government_has_flag = may_appoint_viziers }
+					try_start_diarchy = vizierate
+				}
+				else = {
+					try_start_diarchy = regency
+				}
 			}
-			# 天平偏移通知（§7.1）：逼宫所得不可虚位——说明高初值的来由
-			ftr_diarchy_swing_notice_effect = { KEY = ftr_court_swing_notice_imposed }
+
+			if = {
+				limit = { has_active_diarchy = yes }
+				set_diarch = scope:ftr_court_coregency_champion
+				set_diarchy_swing = 40
+				ftr_diarchy_swing_notice_effect = { KEY = ftr_court_swing_notice_imposed }
+				# 太子共治：补 01 角逐接线（储君入局 + 其余竞争者收 0700）
+				if = {
+					limit = { has_diarchy_type = ftr_diarchy_crown_prince }
+					scope:ftr_court_coregency_champion = { ftr_diarchy_enforce_crown_prince_unlanded_effect = yes }
+					ftr_diarchy_sync_crown_prince_contest_effect = { PRINCE = scope:ftr_court_coregency_champion }
+				}
+			}
 		}
 	}
 }
@@ -2911,7 +3046,7 @@ ftr_court_backer_force_abdication_effect = {
 }
 
 # 求值域：朝堂 story。党羽逼宫主时钟派发（由族调度 0215 调用）。
-# 条件满足时向最高领主发 0520（请立共治）或 0530（逼宫退位）；跨事件传参走君主身上的临时变量。
+# 条件满足时向最高领主发 0520（上疏请立储）或 0530（逼宫退位）；跨事件传参走君主身上的临时变量。
 ftr_court_backer_demand_pulse_effect = {
 	save_scope_as = ftr_court_demand_story
 	story_owner = { save_scope_as = ftr_court_demand_monarch }
@@ -2969,9 +3104,13 @@ ftr_court_backer_demand_pulse_effect = {
 				trigger_event = { id = ftr_court_struggle.0530  days = 2 }
 			}
 		}
-		# 情形一：尚无共治者 → 党羽要求拥立自己支持的竞争者共治
+		# 情形一：尚无储位 → 党羽上疏请立储（可建共治则顺带分权；中华霸主等只立储）
 		else_if = {
-			limit = { scope:ftr_court_demand_monarch = { NOT = { has_active_diarchy = yes } } }
+			limit = {
+				scope:ftr_court_demand_monarch = {
+					NOT = { ftr_court_realm_has_crown_prince_trigger = yes }
+				}
+			}
 			# 选出党羽规模最大的合格竞争者（按规模降序取首个达标者）
 			set_variable = { name = ftr_court_demand_pick  value = 0 }
 			ordered_in_list = {

@@ -45,11 +45,12 @@ ftr_charge_interaction = {
 		scope:actor.liege = {
 			trigger_event = ftr_pg_interaction_event.0100
 		}
-		# 双方各自都有背书对象（分属党羽）→ 指控本身即党争摩擦；同最高领主且该领主有朝堂故事时抬升其烈度
+		# 双方各自都已入营（分属党羽）→ 指控本身即党争摩擦；同最高领主且该领主有朝堂故事时抬升其烈度。
+		# 入营口径含「拥护最高君主 / 共治者」者（ftr_court_has_backing_trigger），不再只认拥护非君主的党羽。
 		if = {
 			limit = {
-				scope:actor = { has_variable = ftr_court_backer_of }
-				scope:recipient = { has_variable = ftr_court_backer_of }
+				scope:actor = { ftr_court_has_backing_trigger = yes }
+				scope:recipient = { ftr_court_has_backing_trigger = yes }
 			}
 			scope:actor = {
 				ftr_court_realm_intensity_add_effect = {
@@ -68,9 +69,12 @@ ftr_charge_interaction = {
 			who = scope:recipient
 			multiplier = -0.25
 		}
-		# 党羽政治：优先清除其他党羽的政敌
+		# 党羽政治：优先清除其他党羽的政敌（双方须均已入营；无阵营者不加成也不抑制，§7.3）
+		# 入营口径含「拥护最高君主 / 共治者」者（ftr_court_has_backing_trigger）
 		modifier = {
 			add = 60
+			scope:actor = { ftr_court_has_backing_trigger = yes }
+			scope:recipient = { ftr_court_has_backing_trigger = yes }
 			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
 		}
 		# 同一党羽（含本方党首本人）→ 不对自己人下手
@@ -345,11 +349,12 @@ ftr_sow_discord_interaction = {
 				is_vassal_of = scope:secondary_actor
 			}
 		}
-		# 党羽政治：打击其他党羽（目标非我方党羽）→ 加权
+		# 党羽政治：打击其他党羽（目标非我方党羽）→ 加权。
+		# 入营口径含「拥护最高君主 / 共治者」者（ftr_court_has_backing_trigger）
 		modifier = {
 			add = 60
-			scope:actor = { has_variable = ftr_court_backer_of }
-			scope:recipient = { has_variable = ftr_court_backer_of }
+			scope:actor = { ftr_court_has_backing_trigger = yes }
+			scope:recipient = { ftr_court_has_backing_trigger = yes }
 			NOT = { scope:actor = { ftr_court_same_camp_trigger = { OTHER = scope:recipient } } }
 		}
 		# 在其他党羽之间散谣：被打散的两方同属一个外营 → 再加权

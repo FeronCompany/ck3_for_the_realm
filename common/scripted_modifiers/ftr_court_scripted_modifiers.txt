@@ -29,6 +29,7 @@ ftr_court_back_support_ai_modifier = {
 	modifier = {
 		add = 35
 		$CLAIMANT$ = {
+			is_alive = yes
 			ftr_court_has_no_supporters_trigger = yes
 		}
 	}
@@ -62,6 +63,7 @@ ftr_court_back_support_ai_modifier = {
 	modifier = {
 		add = -15
 		$CLAIMANT$ = {
+			is_alive = yes
 			has_variable_list = ftr_court_supporters
 			variable_list_size = { name = ftr_court_supporters  value >= 2 }
 		}
@@ -69,6 +71,7 @@ ftr_court_back_support_ai_modifier = {
 	modifier = {
 		add = -15
 		$CLAIMANT$ = {
+			is_alive = yes
 			has_variable_list = ftr_court_supporters
 			variable_list_size = { name = ftr_court_supporters  value >= 3 }
 		}
@@ -76,6 +79,7 @@ ftr_court_back_support_ai_modifier = {
 	modifier = {
 		add = -15
 		$CLAIMANT$ = {
+			is_alive = yes
 			has_variable_list = ftr_court_supporters
 			variable_list_size = { name = ftr_court_supporters  value >= 4 }
 		}
@@ -83,8 +87,19 @@ ftr_court_back_support_ai_modifier = {
 	modifier = {
 		add = -15
 		$CLAIMANT$ = {
+			is_alive = yes
 			has_variable_list = ftr_court_supporters
 			variable_list_size = { name = ftr_court_supporters  value >= 5 }
+		}
+	}
+	# 目标健康：投资一个行将就木的人不划算——健康档越低，押注意愿越低。
+	# 官方健康档 dying=0 / poor=1 / fine=3 / medium=4 / good=5 / excellent=7，以 fine=3 为中性：
+	#   dying≈−24 / poor≈−16 / fine≈0 / good≈+16 / excellent≈+32。
+	modifier = {
+		add = {
+			value = $CLAIMANT$.health
+			multiply = 8
+			subtract = 24
 		}
 	}
 }
@@ -129,9 +144,10 @@ ftr_court_back_monarch_ai_modifier = {
 		add = 25
 		has_trait = loyal
 	}
-	# 忠顺：courtly 封臣立场（尊奉君权）
+	# 忠顺：courtly 封臣立场（尊奉君权；has_vassal_stance 仅对统治者有效）
 	modifier = {
 		add = 20
+		is_ruler = yes
 		has_vassal_stance = courtly
 	}
 	# 公正：just 特质（重法统与名分）
@@ -188,6 +204,16 @@ ftr_court_back_monarch_ai_modifier = {
 					}
 				}
 			}
+		}
+	}
+	# 目标健康：君主本人行将就木时，「投资现任」的价值骤降。
+	# 与 a–e 同一口径（以 fine=3 为中性，dying≈−24 / fine≈0 / excellent≈+32）——
+	# 这是纠正「大家坚定站队不健康君主」的关键一项。
+	modifier = {
+		add = {
+			value = scope:ftr_court_monarch.health
+			multiply = 8
+			subtract = 24
 		}
 	}
 }
@@ -270,5 +296,63 @@ ftr_court_back_diarch_ai_modifier = {
 	modifier = {
 		add = 35
 		has_relation_lover = scope:ftr_court_diarch
+	}
+	# 目标健康：共治者本人垂危同样不值得押注（口径同 a–e / 君主，以 fine=3 为中性）
+	modifier = {
+		add = {
+			value = scope:ftr_court_diarch.health
+			multiply = 8
+			subtract = 24
+		}
+	}
+}
+
+##############################################################
+### 「静观其变」的关键人物抑制（01 事件 0200.f）
+###
+### 设计口径：总体抬高观望权重（不轻易站队），但对**举足轻重者**——
+###   ① 军力 ≥ 最高领主 10% 的封臣、② 内阁成员、③ 君主宫廷职位持有者、
+###   ④ 君主配偶、⑤ 君主继承人（顺位第一 / 已指定储君）、⑥ 强力封臣——
+###   他们置身事外对政权风险最大，故压低其观望意愿，逼其下场表态。
+###   但**不贪恋权位 / 胆小谨慎**者仅**下调压迫强度**（不做完全豁免），并分两档：
+###   强档 content / craven / humble → +25（净 −10）；常规档 paranoid / patient / shy / lazy / trusting → +18（净 −17）。
+### 用法：在 0200.f 的 ai_chance 内平级引用（ftr_court_wait_key_figure_ai_modifier = yes）。
+##############################################################
+
+ftr_court_wait_key_figure_ai_modifier = {
+	# ① 核心压迫：关键人物不得轻易置身事外
+	modifier = {
+		add = -35
+		ftr_court_wait_key_figure_trigger = yes
+	}
+	# ② 性格抑制（强档）：最强烈的「不恋权 / 不敢争」信号——压迫大幅减轻（净 −10）
+	modifier = {
+		add = 25
+		ftr_court_wait_key_figure_trigger = yes
+		OR = {
+			has_trait = content     # 安于现状：无心权位
+			has_trait = craven      # 怯懦：不敢卷入
+			has_trait = humble      # 谦卑：不争
+		}
+	}
+	# ③ 性格抑制（常规档）：谨慎 / 疏懒 / 怕生 / 轻信——压迫小幅减轻（净 −17）
+	modifier = {
+		add = 18
+		ftr_court_wait_key_figure_trigger = yes
+		# 与 ② 互斥：已属强档者不再叠加
+		NOT = {
+			OR = {
+				has_trait = content
+				has_trait = craven
+				has_trait = humble
+			}
+		}
+		OR = {
+			has_trait = paranoid    # 多疑：不愿成为众矢之的
+			has_trait = patient     # 持重：静观其变
+			has_trait = shy         # 怕生：不愿公开表态
+			has_trait = lazy        # 疏懒：不愿操心
+			has_trait = trusting    # 轻信：不疑有他，宁可静候
+		}
 	}
 }

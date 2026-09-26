@@ -666,10 +666,7 @@ ftr_personal_merit_quick_reward_gold_effect = {
 			ftr_personal_merit_redeemable_value >= ftr_personal_merit_reward_small_cost_value
 		}
 		scope:ftr_pm_lord = {
-			add_gold = {
-				value = 0
-				subtract = ftr_personal_merit_reward_small_gold_value
-			}
+			remove_short_term_gold = ftr_personal_merit_reward_small_gold_value
 			ftr_personal_merit_build_ui_list_effect = yes
 		}
 		add_gold = ftr_personal_merit_reward_small_gold_value

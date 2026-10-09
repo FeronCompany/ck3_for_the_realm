@@ -13,7 +13,7 @@ random_yearly_playable_pulse = {
 
 ftr_auto_remove_title_law_for_administrative_effect = {
 	trigger = {
-		government_allows = administrative
+		government_has_mechanic = administrative
 	}
 	effect = {
 		every_held_title = {

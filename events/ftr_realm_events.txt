@@ -70,6 +70,7 @@ ftr_realm_event.0001 = {
 				location = root.location
 				culture = scope:different_culture_county.culture
 				faith = root.faith
+				rite = root.rite
 				#dynasty = none
 				save_scope_as = different_culture_elite	
 			}

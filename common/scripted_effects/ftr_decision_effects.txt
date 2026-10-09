@@ -11,6 +11,7 @@ found_new_dynasty_effect = {
 			location = scope:new_head.location
 			culture = scope:new_head.culture
 			faith = scope:new_head.faith
+			rite = scope:new_head.rite
 			save_scope_as = hidden_founder
 		}
 		create_character = {
@@ -18,6 +19,7 @@ found_new_dynasty_effect = {
 			location = scope:new_head.location
 			culture = scope:new_head.culture
 			faith = scope:new_head.faith
+			rite = scope:new_head.rite
 			save_scope_as = hidden_receiver
 		}
 		scope:hidden_founder = {

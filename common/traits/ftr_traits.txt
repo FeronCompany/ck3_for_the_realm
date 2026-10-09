@@ -1,25 +1,4 @@
 ﻿
-murderer = {
-	###### OVERRIDE ######
-	triggered_opinion = {
-		opinion_modifier = ftr_murderer_crime
-	}
-	###### OVERRIDE ######
-	category = fame
-	ruler_designer_cost = -10
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					NOT = { exists = this }
-				}
-				desc = trait_murderer_desc
-			}
-			desc = trait_murderer_character_desc
-		}
-	}
-}
-
 ftr_traverser = {
 	category = fame
 	ruler_designer_cost = 0

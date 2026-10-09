@@ -1,192 +1,206 @@
 ﻿
+# ════════════════════════════════════════════════════════════════════════════
+# 行政军制法（admin_army_law）—— 本 Mod 原创法律
+#
+# 【1.20 格式迁移】
+#   法律组定义移至 common/law_groups/ftr_law_groups.txt；
+#   法律本体改为扁平顶层条目，携带强制字段
+#     · law_group_type = admin_army_law
+#     · index
+#
+# 【1.20 触发器迁移】
+#   government_allows = administrative 已失效（该值已从 government_rules 枚举移除），
+#   改用 government_has_mechanic = administrative。
+#   同时以 should_synchronize_liege_law 取代旧写法 top_liege != this / top_liege = this。
+#
+# 【待定（D4）】
+#   本组暂不设 required_government_flag（法律组级快速过滤），
+#   准入仍由各档 can_keep 的 government_has_mechanic = administrative 把关。
+#   若后续希望与官方行政法组保持一致，可改为
+#   required_government_flag = { government_uses_imperial_bureaucracy }。
+# ════════════════════════════════════════════════════════════════════════════
+
 @admin_army_law_cooldown_value = 5
 
-# ADMINISTRATIVE ARMY LAW
-admin_army_law = {
-	default = admin_army_law_0
-	cumulative = no
-	flag = admin_law
 
-	admin_army_law_0 = {
-		modifier = {
-			levy_size = 0.1
+admin_army_law_0 = {
+	law_group_type = admin_army_law
+	index = 0
+
+	modifier = {
+		levy_size = 0.1
+	}
+
+	can_keep = {
+		government_has_mechanic = administrative
+		trigger_if = {
+			limit = { should_synchronize_liege_law = yes }
+			liege = { has_realm_law = admin_army_law_0 }
 		}
+	}
 
-		can_keep = {
-			government_allows = administrative
-			trigger_if = {
-				limit = {
-					top_liege != this
-				}
+	can_pass = {
+		trigger_if = {
+			limit = { should_synchronize_liege_law = no }
+			custom_tooltip = {
+				text = admin_law_cooldown_desc
+				NOT = { has_variable = admin_law_cooldown }
+			}
+			is_at_war = no
+		}
+		trigger_if = {
+			limit = {
+				should_synchronize_liege_law = yes
 				liege = { has_realm_law = admin_army_law_0 }
 			}
-		}
-
-		can_pass = {
-			trigger_if = {
-				limit = {
-					top_liege = this
-				}
-				custom_tooltip = {
-					text = admin_law_cooldown_desc
-					NOT = { has_variable = admin_law_cooldown }
-				}
-				is_at_war = no
+			custom_tooltip = {
+				text = imperial_bureaucracy_pending_law_change
+				always = no
 			}
-			trigger_if = {
-				limit = {
-					top_liege != this
-					liege = { has_realm_law = admin_army_law_0 }
-				}
-				custom_tooltip = {
-					text = imperial_bureaucracy_pending_law_change
-					always = no
-				}
-			}
-		}
-
-		on_pass = {
-			## Set cooldown
-			set_variable = {
-				name = admin_law_cooldown
-				years = @admin_army_law_cooldown_value
-			}
-		}
-
-		ai_will_do = {
-			value = 0
 		}
 	}
 
-	admin_army_law_1 = {
-		modifier = {
-			levy_size = -0.1
-			men_at_arms_title_limit = 5
-			tax_mult = 0.1
+	on_pass = {
+		## Set cooldown
+		set_variable = {
+			name = admin_law_cooldown
+			years = @admin_army_law_cooldown_value
 		}
+	}
 
-		can_keep = {
-			government_allows = administrative
-			trigger_if = {
-				limit = {
-					top_liege != this
-				}
+	ai_will_do = {
+		value = 0
+	}
+}
+
+
+admin_army_law_1 = {
+	law_group_type = admin_army_law
+	index = 1
+
+	modifier = {
+		levy_size = -0.1
+		men_at_arms_title_limit = 5
+		tax_mult = 0.1
+	}
+
+	can_keep = {
+		government_has_mechanic = administrative
+		trigger_if = {
+			limit = { should_synchronize_liege_law = yes }
+			liege = { has_realm_law = admin_army_law_1 }
+		}
+	}
+
+	can_pass = {
+		trigger_if = {
+			limit = { should_synchronize_liege_law = no }
+			custom_tooltip = {
+				text = admin_law_cooldown_desc
+				NOT = { has_variable = admin_law_cooldown }
+			}
+			is_at_war = no
+		}
+		trigger_if = {
+			limit = {
+				should_synchronize_liege_law = yes
 				liege = { has_realm_law = admin_army_law_1 }
 			}
-		}
-
-		can_pass = {
-			trigger_if = {
-				limit = {
-					top_liege = this
-				}
-				custom_tooltip = {
-					text = admin_law_cooldown_desc
-					NOT = { has_variable = admin_law_cooldown }
-				}
-				is_at_war = no
-			}
-			trigger_if = {
-				limit = {
-					top_liege != this
-					liege = { has_realm_law = admin_army_law_1 }
-				}
-				custom_tooltip = {
-					text = imperial_bureaucracy_pending_law_change
-					always = no
-				}
-			}
-		}
-
-		pass_cost = {
-			prestige = {
-				add = admin_law_prestige_cost
-			}
-		}
-
-		on_pass = {
-			## Set cooldown
-			set_variable = {
-				name = admin_law_cooldown
-				years = @admin_army_law_cooldown_value
-			}
-		}
-
-		ai_will_do = {
-			value = 0
-			if = {
-				limit = {
-					has_realm_law = admin_army_law_0
-					max_military_strength >= 20000
-				}
-				add = 2
+			custom_tooltip = {
+				text = imperial_bureaucracy_pending_law_change
+				always = no
 			}
 		}
 	}
 
-	admin_army_law_2 = {
-		modifier = {
-			levy_size = -0.3
-			men_at_arms_title_limit = 10
-			tax_mult = 0.2
+	pass_cost = {
+		prestige = {
+			add = admin_law_prestige_cost
 		}
+	}
 
-		can_keep = {
-			government_allows = administrative
-			trigger_if = {
-				limit = {
-					top_liege != this
-				}
+	on_pass = {
+		## Set cooldown
+		set_variable = {
+			name = admin_law_cooldown
+			years = @admin_army_law_cooldown_value
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				has_realm_law = admin_army_law_0
+				max_military_strength >= 20000
+			}
+			add = 2
+		}
+	}
+}
+
+
+admin_army_law_2 = {
+	law_group_type = admin_army_law
+	index = 2
+
+	modifier = {
+		levy_size = -0.3
+		men_at_arms_title_limit = 10
+		tax_mult = 0.2
+	}
+
+	can_keep = {
+		government_has_mechanic = administrative
+		trigger_if = {
+			limit = { should_synchronize_liege_law = yes }
+			liege = { has_realm_law = admin_army_law_2 }
+		}
+	}
+
+	can_pass = {
+		trigger_if = {
+			limit = { should_synchronize_liege_law = no }
+			custom_tooltip = {
+				text = admin_law_cooldown_desc
+				NOT = { has_variable = admin_law_cooldown }
+			}
+			is_at_war = no
+		}
+		trigger_if = {
+			limit = {
+				should_synchronize_liege_law = yes
 				liege = { has_realm_law = admin_army_law_2 }
 			}
-		}
-
-		can_pass = {
-			trigger_if = {
-				limit = {
-					top_liege = this
-				}
-				custom_tooltip = {
-					text = admin_law_cooldown_desc
-					NOT = { has_variable = admin_law_cooldown }
-				}
-				is_at_war = no
-			}
-			trigger_if = {
-				limit = {
-					top_liege != this
-					liege = { has_realm_law = admin_army_law_2 }
-				}
-				custom_tooltip = {
-					text = imperial_bureaucracy_pending_law_change
-					always = no
-				}
+			custom_tooltip = {
+				text = imperial_bureaucracy_pending_law_change
+				always = no
 			}
 		}
+	}
 
-		pass_cost = {
-			prestige = {
-				add = admin_law_prestige_cost
-			}
+	pass_cost = {
+		prestige = {
+			add = admin_law_prestige_cost
 		}
+	}
 
-		on_pass = {
-			## Set cooldown
-			set_variable = {
-				name = admin_law_cooldown
-				years = @admin_army_law_cooldown_value
-			}
+	on_pass = {
+		## Set cooldown
+		set_variable = {
+			name = admin_law_cooldown
+			years = @admin_army_law_cooldown_value
 		}
+	}
 
-		ai_will_do = {
-			value = 0
-			if = {
-				limit = {
-					has_realm_law = admin_army_law_1
-					max_military_strength >= 30000
-				}
-				add = 3
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				has_realm_law = admin_army_law_1
+				max_military_strength >= 30000
 			}
+			add = 3
 		}
 	}
 }

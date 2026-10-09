@@ -303,7 +303,7 @@ ftr_court_claim_strength_value = {
 
 	### 实时硬实力：影响力（仅行政制角色具备）
 	if = {
-		limit = { government_allows = administrative }
+		limit = { government_has_mechanic = administrative }
 		add = {
 			value = influence
 			multiply = ftr_court_claim_influence_factor_value

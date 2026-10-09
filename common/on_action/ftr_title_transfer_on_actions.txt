@@ -100,7 +100,7 @@ ftr_ursurp_discontent_effects = {
 ftr_ursurp_tyrant_succession_effects = {
 	trigger = {
 		is_independent_ruler = yes
-		government_allows = administrative
+		government_has_mechanic = administrative
 		can_have_acclamation_succession_law_trigger = yes
 		OR = {
 			has_realm_law = single_heir_succession_law
@@ -145,7 +145,7 @@ ftr_auto_assign_baronies_effects = {
 		scope:title.tier = tier_barony
 		is_ai = no
 		is_independent_ruler = yes
-		government_allows = administrative
+		government_has_mechanic = administrative
 		has_character_flag = ftr_auto_assign_baronies_flag
 	}
 	effect = {
@@ -154,6 +154,7 @@ ftr_auto_assign_baronies_effects = {
 			location = root.location
 			culture = root.culture
 			faith = root.faith
+			rite = root.rite
 			save_scope_as = barony_manager
 		}
 		create_title_and_vassal_change = {
@@ -188,7 +189,7 @@ ftr_auto_assign_baronies_quarterly_effects = {
 	trigger = {
 		is_ai = no
 		is_independent_ruler = yes
-		government_allows = administrative
+		government_has_mechanic = administrative
 		has_character_flag = ftr_auto_assign_baronies_flag
 	}
 	effect = {
@@ -204,6 +205,7 @@ ftr_auto_assign_baronies_quarterly_effects = {
 				location = root.location
 				culture = root.culture
 				faith = root.faith
+				rite = root.rite
 				save_scope_as = barony_manager
 			}
 			create_title_and_vassal_change = {

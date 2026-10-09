@@ -16,14 +16,14 @@ ftr_court_ease_struggle_decision = {
 		influence = {
 			value = 0
 			if = {
-				limit = { government_allows = administrative }
+				limit = { government_has_mechanic = administrative }
 				add = ftr_court_ease_influence_cost_value
 			}
 		}
 		prestige = {
 			value = 0
 			if = {
-				limit = { NOT = { government_allows = administrative } }
+				limit = { NOT = { government_has_mechanic = administrative } }
 				add = ftr_court_ease_prestige_cost_value
 			}
 		}
@@ -79,11 +79,11 @@ ftr_court_ease_struggle_decision = {
 			add = -50
 			OR = {
 				AND = {
-					government_allows = administrative
+					government_has_mechanic = administrative
 					influence < ftr_court_ease_influence_cost_value
 				}
 				AND = {
-					NOT = { government_allows = administrative }
+					NOT = { government_has_mechanic = administrative }
 					prestige < ftr_court_ease_prestige_cost_value
 				}
 			}
@@ -319,7 +319,7 @@ ftr_court_declare_backing_decision = {
 		#   「支持对象健康」另在 0200 选项权重中体现（见 ftr_court_scripted_modifiers.txt）。
 		modifier = {
 			add = {
-				value = 38.5
+				value = 50
 				subtract = {
 					value = this.top_liege.health
 					multiply = 7

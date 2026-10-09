@@ -1263,6 +1263,7 @@ ftr_councillor_event.0017 = {
 				custom_tooltip = ftr_envoy_convinced_result_1_content_tt
 				scope:recipient = {
 					set_character_faith = scope:actor.faith
+					set_character_rite = scope:actor.rite
 				}
 				
 			}
@@ -1276,6 +1277,7 @@ ftr_councillor_event.0017 = {
 				show_as_tooltip = {
 					scope:recipient = {
 						set_character_faith = scope:actor.faith
+						set_character_rite = scope:actor.rite
 					}
 				}
 			}

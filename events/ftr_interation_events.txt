@@ -532,10 +532,11 @@ ftr_interaction_event.0007 = {
 	option = { #Convert
 		name = ftr_interaction_event.0007.b
 		trigger = {
-			NOT = { root = faith.religious_head }
+			NOT = { ftr_is_religious_authority_trigger = yes }
 		}
 		scope:actor = {
 			set_character_faith_with_conversion = scope:recipient.faith
+			set_character_rite = scope:recipient.rite
 		}
 		ai_chance = {
 			base = 90
@@ -575,10 +576,11 @@ ftr_interaction_event.0008 = {
 	option = { #Convert
 		name = ftr_interaction_event.0008.b
 		trigger = {
-			NOT = { root = faith.religious_head }
+			NOT = { ftr_is_religious_authority_trigger = yes }
 		}
 		scope:recipient = {
 			set_character_faith_with_conversion = scope:actor.faith
+			set_character_rite = scope:actor.rite
 		}
 		ai_chance = {
 			base = 90
@@ -1110,10 +1112,11 @@ ftr_interaction_event.0015 = {
 	option = { #Convert
 		name = ftr_interaction_event.0015.b
 		trigger = {
-			NOT = { root = faith.religious_head }
+			NOT = { ftr_is_religious_authority_trigger = yes }
 		}
 		scope:debate_loser = {
 			set_character_faith_with_conversion = scope:debate_winner.faith
+			set_character_rite = scope:debate_winner.rite
 		}
 		ai_chance = {
 			base = 20

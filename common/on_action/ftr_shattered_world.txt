@@ -33,6 +33,7 @@ shattered_world_effects = {
 					location = prev.location
 					culture = this.culture
 					faith = this.faith
+					rite = this.rite
 					save_scope_as = successor
 				}
 				create_title_and_vassal_change = {

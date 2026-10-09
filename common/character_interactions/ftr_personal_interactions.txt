@@ -347,9 +347,7 @@ religious_debate_interaction = {
 		NOT = { scope:actor.faith = scope:recipient.faith }
 		scope:actor = { is_imprisoned = no }
 		scope:recipient = { is_imprisoned = no }
-		NOT = {
-			scope:recipient = scope:recipient.faith.religious_head
-		}
+		scope:recipient = { NOT = { ftr_is_religious_authority_trigger = yes } }
 		scope:actor = {
 			OR = {
 				has_perk = faithful_perk

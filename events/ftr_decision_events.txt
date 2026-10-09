@@ -128,6 +128,7 @@ ftr_decision_events.0004 = {
 				template = accolade_manipulator_character
 				culture = culture:han
 				faith = root.faith
+				rite = root.rite
 				name = Meng_of_Wang
 				dynasty = generate
 				#dynasty_house = house:house_ftr_wang
@@ -190,6 +191,7 @@ ftr_decision_events.0005 = {
 				template = new_warrior_character
 				culture = culture:han
 				faith = root.faith
+				rite = root.rite
 				name = Rong_of_Fu
 				dynasty_house = root.house
 				gender = male
@@ -233,6 +235,7 @@ ftr_decision_events.0006 = {
 				template = new_warrior_character
 				culture = culture:han
 				faith = root.faith
+				rite = root.rite
 				name = Guang_of_Lv
 				dynasty = generate
 				#dynasty_house = house:house_ftr_lv
@@ -283,6 +286,7 @@ ftr_decision_events.0007 = {
 				template = new_warrior_character
 				culture = culture:han
 				faith = root.faith
+				rite = root.rite
 				name = Qiang_of_Deng
 				dynasty = generate
 				#dynasty_house = house:house_ftr_deng
@@ -333,6 +337,7 @@ ftr_decision_events.0008 = {
 				template = new_warrior_character
 				culture = culture:han
 				faith = root.faith
+				rite = root.rite
 				name = Chang_of_Yao
 				dynasty = generate
 				#dynasty_house = house:house_ftr_yao
@@ -395,6 +400,7 @@ ftr_decision_events.0009 = {
 				template = new_warrior_character
 				culture = culture:han
 				faith = root.faith
+				rite = root.rite
 				name = Chui_of_Murong
 				dynasty = generate
 				#dynasty_house = house:house_ftr_murong
@@ -442,6 +448,7 @@ scripted_effect ftr_hong_chengchou_on_call_effect = {
 			location = root.location
 			culture = culture:han
 			faith = root.faith
+			rite = root.rite
 			name = Chengchou_of_Hong
 			dynasty = generate
 			gender = male
@@ -479,6 +486,7 @@ scripted_effect ftr_wu_sangui_on_call_effect = {
 			location = root.location
 			culture = culture:han
 			faith = root.faith
+			rite = root.rite
 			name = Sangui_of_Wu
 			dynasty = generate
 			gender = male
@@ -516,6 +524,7 @@ scripted_effect ftr_zu_dashou_on_call_effect = {
 			location = root.location
 			culture = culture:han
 			faith = root.faith
+			rite = root.rite
 			name = Dashou_of_Zu
 			dynasty = generate
 			gender = male
@@ -553,6 +562,7 @@ scripted_effect ftr_sun_chuanting_on_call_effect = {
 			location = root.location
 			culture = culture:han
 			faith = root.faith
+			rite = root.rite
 			name = Chuanting_of_Sun
 			dynasty = generate
 			gender = male
@@ -590,6 +600,7 @@ scripted_effect ftr_tian_xiuying_on_call_effect = {
 			location = root.location
 			culture = culture:han
 			faith = root.faith
+			rite = root.rite
 			name = Xiuying_of_Tian
 			dynasty = generate
 			gender = female
@@ -662,6 +673,7 @@ scripted_effect ftr_constantine_ming_on_call_effect = {
 			location = root.location
 			culture = culture:greek
 			faith = root.faith
+			rite = root.rite
 			name = Constantine
 			dynasty = generate
 			gender = male
@@ -744,6 +756,7 @@ ftr_decision_events.0012 = {
 					}
 				}
 				faith = root.faith
+				rite = root.rite
 				dynasty = generate
 				gender = female
 				age = { 16 20 }
@@ -768,6 +781,7 @@ ftr_decision_events.0012 = {
 					}
 				}
 				faith = root.faith
+				rite = root.rite
 				dynasty = generate
 				gender = female
 				age = { 16 20 }
@@ -792,6 +806,7 @@ ftr_decision_events.0012 = {
 					}
 				}
 				faith = root.faith
+				rite = root.rite
 				dynasty = generate
 				gender = female
 				age = { 16 20 }
@@ -908,6 +923,7 @@ ftr_decision_events.0013 = {
 					}
 				}
 				faith = root.faith
+				rite = root.rite
 				dynasty = generate
 				gender = male
 				age = { 16 20 }
@@ -932,6 +948,7 @@ ftr_decision_events.0013 = {
 					}
 				}
 				faith = root.faith
+				rite = root.rite
 				dynasty = generate
 				gender = male
 				age = { 16 20 }
@@ -956,6 +973,7 @@ ftr_decision_events.0013 = {
 					}
 				}
 				faith = root.faith
+				rite = root.rite
 				dynasty = generate
 				gender = male
 				age = { 16 20 }
@@ -1065,6 +1083,7 @@ ftr_decision_events.0014 = {
 			location = root.location
 			culture = root.culture
 			faith = root.faith
+			rite = root.rite
 			dynasty = generate
 			gender = female
 			age = 16
@@ -1107,14 +1126,13 @@ ftr_decision_events.0100 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					exists = faith.religious_head
-					faith.religious_head = root
+					ftr_is_religious_authority_trigger = yes
 				}
 				desc = major_decisions.1103.i_am_religious_head
 			}
 			triggered_desc = {
 				trigger = {
-					exists = faith.religious_head
+					ftr_has_religious_authority_trigger = yes
 				}
 				desc = major_decisions.1103.blessed_by_religious_head
 			}
@@ -1168,10 +1186,15 @@ ftr_decision_events.0100 = {
 				}
 			}
 		}
+		# 宗教权威可能挂在仪轨（rite.head_of_rite）或信仰（faith.religious_head）上，仪轨优先
 		if = {
-			limit = {
-				exists = faith.religious_head
+			limit = { exists = rite.head_of_rite }
+			rite.head_of_rite = {
+				save_scope_as = religious_figure
 			}
+		}
+		else_if = {
+			limit = { exists = faith.religious_head }
 			faith.religious_head = {
 				save_scope_as = religious_figure
 			}

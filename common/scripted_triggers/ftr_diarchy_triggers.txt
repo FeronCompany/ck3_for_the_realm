@@ -8,7 +8,7 @@
 
 # 求值域：统治者本人。行政类政体 + 独立 + 主头衔 ≥ 王国
 ftr_diarchy_realm_eligible_trigger = {
-	government_allows = administrative
+	government_has_mechanic = administrative
 	is_independent_ruler = yes
 	highest_held_title_tier >= tier_kingdom
 }

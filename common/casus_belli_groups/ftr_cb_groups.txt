@@ -3,10 +3,13 @@
 de_jure = {
 	allowed_for_character = {
 		herders_and_tributary_constraints = yes
-		#### OVERRIDE ####
+		pam_personal_pacifism_offensive_war_ban_trigger = yes
+		###### OVERRIDE ######
+		# MOD：刻意不放行「王朝周期」进攻战禁令，保留本 Mod 原有的法理战争自由度
 		#tgp_dynastic_cycle_offensive_wars_ban_trigger = yes
-		#### OVERRIDE ####
+		###### OVERRIDE ######
 		tgp_war_ban_all_ministers_trigger = yes
+		NOT = { government_has_flag = government_is_theocracy }
 	}
 }
 

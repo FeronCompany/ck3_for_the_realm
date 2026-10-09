@@ -13,7 +13,7 @@ can_keep_single_heir_succession_law_trigger = {
 			###### OVERRIDE ######
 			AND = {
 				is_independent_ruler = yes
-				government_allows = administrative ### OVERRIDE
+				government_has_mechanic = administrative ### OVERRIDE
 			}
 			###### OVERRIDE ######
 		}

@@ -19,7 +19,7 @@ ftr_renounce_dynasty_decision = {
 			has_government = holy_order_government
 			has_government = theocracy_government
 			AND = {
-				faith = { has_doctrine = doctrine_theocracy_temporal }
+				rite = { rite_has_doctrine = doctrine_theocracy_temporal }
 				has_council_position = councillor_court_chaplain
 			}
 		}
@@ -158,7 +158,7 @@ ftr_found_hegemony_decision = {
 		OR = {
 			government_has_flag = government_is_feudal
 			government_has_flag = government_is_clan
-			government_allows = administrative
+			government_has_mechanic = administrative
 		}
 	}
 	is_valid = {

@@ -4,7 +4,6 @@ administrative_government = {
 		create_cadet_branches = yes
 		rulers_should_have_dynasty = yes
 		dynasty_named_realms = no
-		administrative = yes
 		landless_playable = yes
 		legitimacy = yes
 		state_faith = yes
@@ -17,6 +16,7 @@ administrative_government = {
 		noble_families = yes
 		admin_allows_holding_multiple_primary_tier_titles = yes
 		treasury = yes
+		treasury_vassal_development = yes
 		replace_gold_cost_by_treasury = yes
 		allow_accolades = yes
 	}
@@ -36,6 +36,19 @@ administrative_government = {
 	required_county_holdings = { castle_holding city_holding church_holding }
 
 	vassal_contract_group = admin_vassal
+
+	can_get_government = {
+		#The LAAMP Construct Holding decision
+		trigger_if = {
+			limit = {
+				has_variable = {
+					name = city_construction_is_temple_citadel
+					name = city_construction_is_castle
+				}
+			}
+			always = no
+		}
+	}
 
 	character_modifier = {
 		levy_size = -0.5
@@ -95,20 +108,30 @@ administrative_government = {
 	# Use flags instead of has_government for moddability if possible (i.e., wherever not visible to the player).
 	flags = {
 		government_is_administrative
-
-		# These flags only exist for loc and in-game descriptions
 		government_has_influence
 		government_has_treasury
-		government_has_title_men_at_arms
 		government_has_powerful_families
+		government_uses_administrative_house_aspirations
+		# These flags only exist for loc and in-game descriptions
+		government_has_estate
+		government_has_title_men_at_arms
 		government_is_settled
 		government_uses_domicile_but_not_adventurer
 		government_uses_domain_limit
 		government_uses_admin_province_obligations
+		government_uses_imperial_bureaucracy
+		government_uses_salary_budget
+		government_uses_military_budget
+	}
+
+	ai = {
+		use_legends = yes
 	}
 
 	mechanic_type = administrative
 	is_mechanic_type_default = yes
+
+	possible_grant_vassal_governments = { theocracy_government ecclesiastical_government }
 
 	color = { 72 6 92 }
 	realm_mask_offset = { 0.0 0.01 }
@@ -150,6 +173,10 @@ nomad_government = {
 	valid_holdings = {}
 	###### OVERRIDE ######
 	required_county_holdings = { nomad_holding }
+
+	can_get_government = {
+		has_mpo_dlc_trigger = yes
+	}
 
 	generated_character_template = nomadic_chieftain_character
 	
@@ -209,6 +236,9 @@ nomad_government = {
 	flags = {
 		government_is_nomadic
 		government_has_herd
+		government_is_in_steppe
+		government_has_obedience
+		government_has_yurt
 		government_can_raid_rule
 		government_can_use_tributary_men_at_arms
 		can_start_war_with_raised_troops
@@ -218,10 +248,18 @@ nomad_government = {
 		land_raiding_movement_speed_from_government
 		can_raze_holdings
 		government_uses_domicile_but_not_adventurer
+		government_uses_nomadic_authority
+	}
+
+	ai = {
+		use_legends = yes
 	}
 
 	mechanic_type = nomad
 	is_mechanic_type_default = yes
+
+	# Lets nomads offload settled holdings under settled vassals
+	possible_grant_vassal_governments = { feudal_government clan_government tribal_government }
 
 	# These flags only exist for loc and in-game descriptions
 	color = { 255 127 80 }
@@ -278,11 +316,14 @@ herder_government = {
 	flags = {
 		government_is_herder
 		government_has_herd
+		government_is_in_steppe
 		ignores_faith_marriage_penalties
 	}
 
 	mechanic_type = herder
 	is_mechanic_type_default = yes
+
+	possible_grant_vassal_governments = { feudal_government clan_government tribal_government }
 
 	color = { 235 213 52 }
 	realm_mask_offset = { 0.0 0.12 }

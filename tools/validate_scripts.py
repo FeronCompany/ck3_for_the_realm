@@ -33,6 +33,15 @@ For The Realm (朝野纷争) —— P 语言语法快速校验脚本
       * custom_tooltip / custom_description 内不得写 trigger = { }
       * var:X ?= { }（weak scope）内不得做变量操作（is_target_in_variable_list 等）
       * 孤儿事件（定义了但全 mod 无人触发）→ 警告；预留/调试入口可在 ORPHAN_EVENT_ALLOW 登记
+  13. 1.20 写法约束（见 9C-bis）：
+     * government_allows = administrative → Error（该枚举值已被移除，判定恒为假；
+       应改用 government_has_mechanic = administrative）
+     * faith = { has_doctrine = ... } → 警告（1.20 教义改由 rite 承载，
+       应改用 rite = { rite_has_doctrine = ... }）
+     * faith = { trait_is_sin = ... } → 警告（应改用 rite = { trait_is_sin_rite = ... }）
+     * common/laws/*.txt 每条法律须为扁平顶层条目且带 law_group_type（1.20 强制字段；
+       旧式「组内嵌套」写法已失效）
+     * common/law_groups/*.txt 法律组须提供 default = <law>
 
 用法：
     python tools/validate_scripts.py --game-path "…/game"   # 全量 + 引用白名单
@@ -714,6 +723,62 @@ def _block_span(lines, start):
     return len(lines) - 1
 
 
+# ---------- 9C-bis. 1.20 生效的写法约束 ----------
+# 1.20 移除了若干枚举值、把教义承载体由 faith 改为 rite、并给法律引入强制字段。
+# 这些旧写法能过括号与命名检查，但会被引擎忽略或行为异常，故专项拦截。
+
+_LAW_TOP_RE = re.compile(r"^([a-zA-Z_][\w]*)\s*=\s*\{\s*$")
+
+_FAITH_DOCTRINE_MIGRATION = (
+    (r"\bfaith\s*=\s*\{[^{}]*\bhas_doctrine\s*=",
+     "faith = { has_doctrine = ... }", "rite = { rite_has_doctrine = ... }"),
+    (r"\bfaith\s*=\s*\{[^{}]*\btrait_is_sin\s*=",
+     "faith = { trait_is_sin = ... }", "rite = { trait_is_sin_rite = ... }"),
+)
+
+
+def check_120_rules(path, text):
+    """1.20 起生效的写法约束（旧写法已失效）。"""
+    rp = rel(path).replace("\\", "/")
+    lines = text.splitlines()
+
+    # 1) government_allows = administrative：该枚举值已被移除，判定恒为假
+    for i, raw in enumerate(lines, start=1):
+        if re.search(r"government_allows\s*=\s*administrative\b", raw.split("#", 1)[0]):
+            err(path, i,
+                "government_allows = administrative 已失效"
+                "（1.20 已从 government_rules 枚举移除），"
+                "应改用 government_has_mechanic = administrative")
+
+    # 2) faith 作用域读教义：1.20 起教义由 rite 承载
+    for pat, old, new in _FAITH_DOCTRINE_MIGRATION:
+        for m in re.finditer(pat, text, re.S):
+            ln = text.count("\n", 0, m.start()) + 1
+            warn(path, ln, f"{old} 已不推荐（1.20 教义改由 rite 承载），应改用 {new}")
+
+    # 3) 法律：扁平顶层条目 + 强制 law_group_type
+    if rp.startswith("common/laws/") and not rp.endswith(".info"):
+        for i, raw in enumerate(lines, start=1):
+            m = _LAW_TOP_RE.match(raw)
+            if not m:
+                continue
+            body = "\n".join(lines[i - 1:_block_span(lines, i - 1) + 1])
+            if not re.search(r"^\s*law_group_type\s*=", body, re.M):
+                warn(path, i,
+                      f"法律 '{m.group(1)}' 缺 law_group_type（1.20 强制字段；"
+                      f"旧式「组内嵌套」写法已失效，应改为扁平定义并补 index）")
+
+    # 4) 法律组：common/law_groups/，组定义应提供 default
+    if rp.startswith("common/law_groups/") and not rp.endswith(".info"):
+        for i, raw in enumerate(lines, start=1):
+            m = _LAW_TOP_RE.match(raw)
+            if not m:
+                continue
+            body = "\n".join(lines[i - 1:_block_span(lines, i - 1) + 1])
+            if not re.search(r"^\s*default\s*=", body, re.M):
+                warn(path, i, f"法律组 '{m.group(1)}' 未提供 default = <law>")
+
+
 def check_engine_traps(path, text):
     """引擎语义陷阱：random_list 动态权重 / 事件块结构 / 域规则 / weak scope。"""
     p = path.replace("\\", "/")
@@ -1053,6 +1118,7 @@ def main():
             check_decision(path, text)
             check_bad_patterns(path, text)
             check_engine_traps(path, text)
+            check_120_rules(path, text)
             if not args.no_naming:
                 check_naming_and_override(path, text)
             if GAME_PATH and not args.no_ref:

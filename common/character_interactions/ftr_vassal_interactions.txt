@@ -9,7 +9,7 @@ ftr_convert_bureacrat_to_feudal_interaction = {
 		scope:recipient = {
 			is_vassal_of = scope:actor
 			is_landed = yes
-			government_allows = administrative
+			government_has_mechanic = administrative
 		}
 		scope:actor = {
 			is_independent_ruler = yes
@@ -976,7 +976,7 @@ ftr_coup_interaction = {
 				is_independent_ruler = yes
 				AND = {
 					is_independent_ruler = no
-					NOT = { government_allows = administrative }
+					NOT = { government_has_mechanic = administrative }
 				}
 			}
 		}
@@ -1527,7 +1527,7 @@ ftr_merge_jurisdiction_interaction = {
 	is_shown = {
 		scope:recipient = {
 			is_vassal_of = scope:actor
-			government_allows = administrative
+			government_has_mechanic = administrative
 			primary_title.tier >= tier_duchy
 			is_landed = yes
 		}
@@ -1546,7 +1546,7 @@ ftr_merge_jurisdiction_interaction = {
 			every_vassal = {
 				limit = {
 					primary_title.tier = scope:recipient.primary_title.tier
-					government_allows = administrative
+					government_has_mechanic = administrative
 					is_landed = yes
 				}
 				add_to_list = characters

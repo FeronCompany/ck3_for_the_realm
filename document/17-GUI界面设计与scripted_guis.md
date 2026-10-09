@@ -139,7 +139,7 @@ hbox = {
 | `icon` | 图标（单帧/帧动画） | `texture`、`size`、`framesize`、`frame` |
 | `highlight_icon` | 高亮图标 | `texture`、`size` |
 | `proportional_icon` | 按比例裁剪的图 | `texture`、`size = { % % }` |
-| `portrait_head` | 角色大头像 | `datacontext`、`size`、`tooltip_enabled` |
+| `portrait_head` | 角色大头像 | `datacontext`、`size`、`tooltip` |
 | `portrait_head_small` | 角色小头像 | `datacontext`、`size` |
 | `coa_*` | 纹章（王朝/头衔等） | `datacontext`、`size` |
 | `progressbar` | 进度条 | `value`、`direction`、`size`、`alwaystransparent` |
@@ -184,7 +184,6 @@ button_tab = {
 | `datacontext` | 设置数据上下文（供子控件取值） | `datacontext = "[GetPlayer]"` |
 | `datamodel` | 绑定列表数据（配合 `item`） | `datamodel = "[DecisionsView.GetDecisionGroupItems]"` |
 | `tooltip` | 悬停提示文本/表达式 | `tooltip = "ftr_court_ui_title"` |
-| `tooltip_enabled` | 是否启用提示 | `tooltip_enabled = "[Character.IsValid]"` |
 | `enabled` | 是否可交互 | `enabled = "[CharacterInteractionConfirmationWindow.CanSend]"` |
 | `margin = { l t }` | 外边距（**仅 2 值**：水平 l、垂直 t，左右/上下对称；**不支持 4 值** `{ l t r b }`，4 值会报 `Cannot read this many items into array: margin`） | `margin = { 10 26 }` |
 | `margin_left` / `margin_top` / `margin_right` / `margin_bottom` | 单边距（需要不对称边距时用） | `margin_top = 30` |
@@ -244,8 +243,8 @@ state = {
 | `oncreate` | 控件创建时 |
 | `onclose` | 关闭时 |
 | `on_start`（state 内） | 进入某状态时 |
-| `on_mouse_enter` / `on_mouse_hover` | 鼠标悬停 |
-| `on_mouse_leave` | 鼠标离开 |
+| `onmouseenter` / `onmousehierarchyenter` | 鼠标悬停 / 进入层级 |
+| `onmouseleave` / `onmousehierarchyleave` | 鼠标离开 / 离开层级 |
 
 ```paradox
 onclick = "[GetScriptedGui('ftr_court_sync_ui_data').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
@@ -676,9 +675,9 @@ widget = {
 
 ---
 
-## 11. 常见坑与排查
+## 11. GUI 编写约定
 
-| 坑 | 说明 |
+| 项 | 约定 / 排查 |
 |---|---|
 | GUI 表达式**忘加方括号** | 所有取值必须 `[...]`，否则被当字符串字面量 |
 | 变量读不到 | GUI 无法直接访问 story 变量 —— 必须经 scripted_gui 镜像到玩家域 |

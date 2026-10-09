@@ -1023,7 +1023,7 @@ ftr_court_reward_ascended_claimant_backers_effect = {
 				left_icon = scope:ftr_court_ascended_monarch
 				# 威望 / 影响力：行政制支持者获官方影响力，其余获威望
 				if = {
-					limit = { government_allows = administrative }
+					limit = { government_has_mechanic = administrative }
 					change_influence = medium_influence_gain
 				}
 				else = {
@@ -1615,8 +1615,8 @@ ftr_court_save_ranked_claimants_effect = {
 ftr_court_pay_cost_effect = {
 	if = {
 		limit = {
-			government_allows = administrative
-			$OTHER$ = { government_allows = administrative }
+			government_has_mechanic = administrative
+			$OTHER$ = { government_has_mechanic = administrative }
 		}
 		change_influence = {
 			value = 0
@@ -2464,13 +2464,13 @@ ftr_court_debate_settle_effect = {
 			add_character_flag = { flag = ftr_court_debate_won  days = 2 }
 			add_prestige = ftr_court_debate_prestige_value
 			if = {
-				limit = { government_allows = administrative }
+				limit = { government_has_mechanic = administrative }
 				change_influence = minor_influence_gain
 			}
 			var:ftr_court_backer_of ?= {
 				add_prestige = ftr_court_debate_prestige_value
 				if = {
-					limit = { government_allows = administrative }
+					limit = { government_has_mechanic = administrative }
 					change_influence = minor_influence_gain
 				}
 				add_opinion = { target = root  modifier = ftr_court_loyalist_opinion }
@@ -2504,7 +2504,7 @@ ftr_court_debate_settle_effect = {
 			scope:ftr_court_debate_rival ?= {
 				add_prestige = ftr_court_debate_prestige_value
 				if = {
-					limit = { government_allows = administrative }
+					limit = { government_has_mechanic = administrative }
 					change_influence = minor_influence_gain
 				}
 				var:ftr_court_backer_of ?= {

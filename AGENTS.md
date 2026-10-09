@@ -2,7 +2,7 @@
 
 > 本文件供 AI 编码助手（CodeBuddy / Copilot / Cursor 等）阅读。
 > **动手改代码前请先读完本文件**，尤其是「核心约定」与「禁忌」两节。
-> 本文件只写**判断规则与项目约定**；P 语言的语法、骨架、陷阱清单统一放在 `document/` 知识库（查阅入口见 §3.8 与 §8）。
+> 本文件只写**判断规则与项目约定**；P 语言的语法、骨架、陷阱清单统一放在 `document/` 知识库（查阅入口见 §8）。
 
 ---
 
@@ -11,32 +11,25 @@
 | 项 | 值 |
 |---|---|
 | Mod 名 | For The Realm（中文名：**朝野纷争**） |
-| 版本 | `A.L.0` |
-| 支持游戏版本 | **CK3 1.19.***（`descriptor.mod` 的 `supported_version`） |
+| 版本 | `A.M.5`（见 `descriptor.mod`） |
+| 支持游戏版本 | **CK3 1.20.\***，脚本已按 1.20 全面适配 |
 | 定位 | 领地管理 + 个人生活（行政制优化 / 派系内战 / 交互 / 计谋 / 决议 / 特质） |
 | 仓库 | https://github.com/FeronCompany/ck3_for_the_realm |
 | Steam | `remote_file_id = 2891075410` |
 | 脚本语言 | **P 语言**（Paradox Script / Clausewitz Script），非通用编程语言 |
 
+> ⚠ **待办**：`descriptor.mod` 的 `supported_version` 目前仍是 `1.19.*`，需改为 `1.20.*` 才能在 1.20 中加载（属高风险操作，默认需先确认，见 §6.3）。
+
 ### 1.1 本项目是「覆盖式 Mod」
 
-这是**最重要**的特征：本项目不仅新增内容，还**大量重定义原版对象**（特质 `murderer`、决议、法律、政体、契约…）。
+本项目不仅新增内容，还**大量重定义原版对象**（特质 `murderer`、决议、法律、政体、契约…）。每处改动都必须先分清是**新增**还是**覆盖**：
 
-因此开发时必须始终分清两类操作：
-
-```mermaid
-graph TD
-    OP["一次改动"] --> Q{"是新增还是覆盖?"}
-
-    Q -->|新增| NEW["命名加 ftr_ 前缀<br/>文件加 ftr_ 前缀<br/>本地化键可加 &lt;FTR&gt; 标记"]
-    Q -->|覆盖| OVR["**沿用原版原名，不加前缀**<br/>必须加 ###### OVERRIDE ###### 注释<br/>同文件内集中放置"]
-
-    NEW --> N1["例: ftr_battle_commander<br/>例: ftr_war_tax.0001"]
-    OVR --> O1["例: murderer = { ... }<br/>例: war_tax_decision = { ... }"]
-
-    style NEW fill:#3c4a3c,stroke:#6b8f6b,color:#fff
-    style OVR fill:#4a3c3c,stroke:#a6705b,color:#fff
-```
+| | 新增 | 覆盖 |
+|---|---|---|
+| **命名** | 对象 / 文件 / 变量 / 事件命名空间一律加 `ftr_` 前缀 | **沿用原版原名，不加前缀** |
+| **标记** | 无 | 改动处包 `###### OVERRIDE ######`（见 §3.4） |
+| **放置** | 各自的 `ftr_*.txt` | 同文件内集中放置 |
+| **例** | `ftr_battle_commander`、`ftr_war_tax.0001` | `murderer = { ... }`、`war_tax_decision = { ... }` |
 
 > **判断方法**：查 `game/common/<对应目录>/` 里是否已存在同名对象。存在 → 覆盖；不存在 → 新增。
 
@@ -51,11 +44,11 @@ for_the_realm/
 ├── readme.md                   # 双语说明（中英各一份，改动功能需同步）
 ├── AGENTS.md                   # 本文件
 │
-├── common/                     # 游戏对象定义 + 脚本库（29 个子目录）
-│   ├── character_interactions/ # 角色交互（980 行的 ftr_diplomacy_interaction.txt 等）
+├── common/                     # 游戏对象定义 + 脚本库（32 个子目录）
+│   ├── character_interactions/ # 角色交互
 │   ├── decisions/              # 决议
 │   ├── schemes/scheme_types/   # 计谋（combat_guide / coup）
-│   ├── laws/                   # 法律
+│   ├── laws/   law_groups/     # 法律本体 / 法律组（1.20 起拆成两个目录）
 │   ├── governments/            # 政体
 │   ├── traits/                 # 特质
 │   ├── subject_contracts/contracts/
@@ -69,19 +62,19 @@ for_the_realm/
 │   └── scheme_events/{combat_guide,coup}/
 │
 ├── localization/               # 本地化，**english/ 与 simp_chinese/ 严格一一对应**
-│   ├── english/      24 个 .yml（含 events/ interactions/ modifiers/ cultures/ custom_localization/ 子目录）
-│   └── simp_chinese/ 24 个 .yml（目录结构与 english/ 完全一致）
+│   ├── english/      28 个 .yml（含 events/ interactions/ modifiers/ cultures/ custom_localization/ 子目录）
+│   └── simp_chinese/ 28 个 .yml（目录结构与 english/ 完全一致）
 │
 ├── gfx/interface/icons/        # 图标（.dds）
 ├── gui/                        # 界面（.gui + scripted_widgets/）
 ├── tools/                      # 开发工具（validate_scripts.py 语法校验，见 §5.5）
 │
-└── document/                   # **P 语言知识库（18 篇，约 15000 行）**
+└── document/                   # **P 语言知识库（26 篇 + task_design 4 篇，约 17000 行）**
 ```
 
 ### 2.1 `document/` 知识库（重要）
 
-`document/` 下有 18 篇 P 语言完整文档，是**本项目的自建知识库**，遇到语法/系统问题**优先查阅**：
+`document/` 下有 **26 篇** P 语言完整文档（按单一范畴拆分，`task_design/` 另有 4 篇设计稿），是**本项目的自建知识库**，遇到语法/系统问题**优先查阅**：
 
 | 编号 | 文档 | 何时查阅 |
 |---|---|---|
@@ -92,17 +85,25 @@ for_the_realm/
 | 04 | 修饰符与数值计算 | modifier / script value / 权重 |
 | 05 | 脚本复用机制 | scripted_* 、`$PARAM$` |
 | 06 | 事件系统与 on_action | 事件结构、调度、延迟 |
-| 07 | history 与本地化 | yml 语法、方括号取值 |
+| 07 | history 历史脚本 | 时间轴范式、四类历史文件 |
 | 08 | 角色交互与决议 | 改 `character_interactions/` `decisions/` 时 |
 | 09 | 故事循环与局势 | 改长线系统时 |
-| 10 | 法律与继承 | 改 `laws/` `succession_election/` 时 |
+| 10 | 法律与继承 | 改 `laws/` `law_groups/` `succession_election/` 时 |
 | 11 | 阴谋与派系 | 改 `schemes/` 时 |
-| 12 | 活动与战争 | 改 `casus_belli_types/` 时 |
-| 13 | 政体、特质与共治 | 改 `governments/` `traits/` 时 |
-| 14 | 内阁职位、臣属契约与臣属立场 | 改 `subject_contracts/` 时 |
-| 15 | common 目录清单与速查表 | **速查语法、查某个目录是干什么的** |
-| 16 | 多系统选型指南与开发实践 | **选型、默认值陷阱、调试、`ftr_` 命名规范** |
+| 12 | 活动 | 改 `activities/` 时 |
+| 13 | 政体与特质 | 改 `governments/` `traits/` 时；行政类政体判定见 §1.5 |
+| 14 | 内阁职位 | 改 `council_positions/` `council_tasks/` 时 |
+| 15 | common 目录清单 | **查某个目录是干什么的、`.info` 在哪** |
+| 16 | 多系统选型指南 | **不确定用哪个系统时；选型决策树、Mod 落点总表** |
 | 17 | GUI 界面设计与 scripted_guis | 改 `gui/` `scripted_guis/` 时；GUI 语法、数据同步 |
+| 18 | 共治系统详解 | 改 `diarchies/` 时；共治类型、权限、篡位链、类型编写硬规则 |
+| 19 | 宗教、灵性满足与压力 | 改宗教 / 信仰 / 仪轨，或用 `stress` 时 |
+| 20 | 本地化与 yml | 改 `localization/` 时；yml 语法、方括号取值 |
+| 21 | 战争与宣战理由 | 改 `casus_belli_types/` 时 |
+| 22 | 臣属契约与臣属立场 | 改 `subject_contracts/` `vassal_stances/` 时 |
+| 23 | 速查手册 | **速查语法、事件 / on_action / history / 本地化；命名与编码规范** |
+| 24 | 排错与调试 | **出错、或没报错但行为异常时；各系统默认值约定** |
+| 25 | 傀儡系统 | 用 `common/puppets/`、`set_puppet`、`puppet_or_actor` 时 |
 
 > 用法：先用 `search_content` 在 `document/` 里搜关键字，再精读对应章节。
 
@@ -123,17 +124,7 @@ common/  统一用 Tab，一层 = 一个 Tab
 localization/  .yml 用 1 个空格缩进（YAML 语法要求）
 ```
 
-VS Code 已配置（`.vscode/settings.json`）：
-
-```json
-{
-  "editor.tabSize": 4,
-  "editor.insertSpaces": false,
-  "editor.wordWrapColumn": 180
-}
-```
-
-> ⚠ 已知部分旧文件混用了空格与 Tab（如 `events/ftr_war_tax_events.txt`）。**新写的代码一律用 Tab**；改动旧文件时顺手统一。
+> 编辑器已配置（`.vscode/settings.json`：`tabSize 4` / `insertSpaces false`）。⚠ 部分旧文件混用了空格与 Tab（如 `events/ftr_war_tax_events.txt`）——**新写的代码一律用 Tab**，改动旧文件时顺手统一。
 
 ### 3.3 命名规则
 
@@ -162,34 +153,26 @@ VS Code 已配置（`.vscode/settings.json`）：
 
 ```paradox
 can_keep_single_heir_succession_law_trigger = {
-	# The 'can_keep' triggers are dependent on actually having the law...
-	trigger_if = {
-		limit = {
-			has_realm_law = single_heir_succession_law
+	# ... 原版原有内容 ...
+	OR = {
+		can_have_single_heir_succession_law_trigger = yes
+		###### OVERRIDE ######
+		AND = {
+			is_independent_ruler = yes
+			government_has_mechanic = administrative ### OVERRIDE
 		}
-		OR = {
-			can_have_single_heir_succession_law_trigger = yes
-			historical_succession_access_single_heir_succession_law_trigger = yes
-			has_variable = purge_oath_previous_law
-			###### OVERRIDE ######
-			AND = {
-				is_independent_ruler = yes
-				government_allows = administrative ### OVERRIDE
-			}
-			###### OVERRIDE ######
-		}
+		###### OVERRIDE ######
 	}
 }
 ```
 
 **规则**：
-- 块级改动 → 上下各一行 `###### OVERRIDE ######`
-- 单行改动 → 行尾追加 `### OVERRIDE`
-- 纯新增（原版没有的分支）也可用此标记，便于日后合并上游更新
+
+- 块级改动 → 上下各一行 `###### OVERRIDE ######`；单行改动 → 行尾追加 `### OVERRIDE`
+- 纯新增分支（原版没有的）也可用此标记，便于日后合并上游更新
+- **被刻意注释掉的原版条目同样要包标记**（如 `#tgp_dynastic_cycle_offensive_wars_ban_trigger = yes`）——它是「本 Mod 有意不放行官方某项」的显式记录，同步原版更新时必须保留（见 §5.6）
 
 **例外：on_action 挂载点不适用 override 标记**。`common/on_action/` 下对原版挂载点（如 `random_yearly_everyone_pulse`、`on_birth_child`、`on_death`）**重复定义同名 on_action 只是向 `on_actions` 列表追加回调，是合并式语义**（后定义不覆盖前定义），并非"覆盖重定义原版对象"。因此只需**沿用原名、声明新的 on_action 回调**，无需加 `###### OVERRIDE ######`，加了反而误导（误导为覆盖）。
-
-**当前分布**（共 44 处）：`ftr_governments.txt`(14)、`ftr_realm_laws.txt`(6)、`ftr_override_interations.txt`(6)、`ftr_celestial.txt`(6)、`ftr_override_effects.txt`(4)、`ftr_scripted_triggers.txt`(3)、`ftr_cb_groups.txt`(2)、`ftr_traits.txt`(2)、`ftr_defines.txt`(1)。
 
 ### 3.5 本地化 `<FTR>` 前缀标记
 
@@ -206,7 +189,7 @@ l_simp_chinese:
 
 ### 3.6 双语本地化必须同步
 
-`localization/english/` 与 `localization/simp_chinese/` 的**目录结构与文件名严格一一对应**（各 24 个文件）。
+`localization/english/` 与 `localization/simp_chinese/` 的**目录结构与文件名严格一一对应**（各 28 个文件）。
 
 **新增或修改任何文本，必须同时改两份，且键名完全一致。**
 
@@ -248,17 +231,7 @@ option = { # Ask vassals for donation
 
 ### 3.8 语法查哪里（本文件的边界）
 
-**本文件不复制语法**。写脚本前按这张表找归属，不要凭记忆写码：
-
-| 想查什么 | 去哪 |
-|---|---|
-| 文件骨架、词法、字面量、块与列表、`@` 常量、`$PARAM$` | [文档 01](document/01-词法、数据类型与值系统.md) §12 / §13 |
-| Trigger 与 Effect 的分界、控制流、`while` 上限、`random_list` | [文档 03](document/03-触发器与效果.md) §1 / §4 / §5 |
-| 带条件的提示（`custom_tooltip` / `custom_description` 的域规则） | [文档 03](document/03-触发器与效果.md) §7.1 |
-| 作用域链（`this` / `root` / `prev` / `scope:` / `save_scope_as`） | [文档 02](document/02-作用域Scope体系.md) |
-| CK3 里**不存在**的语法（`XOR` / `repeat` / `inline_script` …） | [文档 03](document/03-触发器与效果.md) §1、[文档 05](document/05-脚本复用机制.md) §1 |
-| 跨系统陷阱、默认值、调试手法 | [文档 16](document/16-多系统选型指南与开发实践.md) §5 / §9 / §10 |
-| 某个目录是干什么的、速查 | [文档 15](document/15-common目录清单与速查表.md) |
+**本文件不复制语法**。写脚本前先按 **§8 查阅指引**定位到对应 `document/` 文档并精读，**不要凭记忆写码**。
 
 > **原则**：语法知识写进 `document/`，`AGENTS.md` 只留判断规则与项目约定。日后在文档里补齐新语法后，本文件最多加一行指向，不再展开。
 
@@ -297,12 +270,12 @@ option = { # Ask vassals for donation
 3. 用 `###### OVERRIDE ######` 包裹改动（标记写法、示例与当前分布见 §3.4）
 4. 若只需改其中一处，优先用 scripted_trigger 间接覆盖，减少冲突面
 
-> ⚠ 例外：**on_action 挂载点不是"覆盖"**。原版 on_action 挂载点的重复定义是**追加回调的合并语义**，只需沿用原名声明新回调，**不要加 override 标记**（见 §3.4）。
+> ⚠ on_action 挂载点不是"覆盖"（合并语义），只需沿用原名声明新回调，**不要加 override 标记**——见 §3.4 的例外说明。
 
 ### 4.4 新增一个特质
 
-1. 字段与骨架见 [文档 13](document/13-政体、特质与共治.md)（`category` / `icon` / `health` / `same_opinion` / `desc` …）
-2. 动态描述（`desc` / `name` / `icon`）**第一条必须是兜底 `NOT = { exists = this }`**，否则无根域时报错（见 [文档 13](document/13-政体、特质与共治.md)）
+1. 字段与骨架见 [文档 13](document/13-政体与特质.md)（`category` / `icon` / `health` / `same_opinion` / `desc` …）
+2. 动态描述（`desc` / `name` / `icon`）**第一条必须是兜底 `NOT = { exists = this }`**，否则无根域时报错（见 [文档 13](document/13-政体与特质.md)）
 3. 配套：`gfx/interface/icons/traits/` 下的 `.dds` 图标（若用自定义 `icon`）＋ 双语本地化 `ftr_traits_l_english.yml` / `ftr_traits_l_simp_chinese.yml`（键：`trait_<key>` 与 `trait_<key>_desc`）
 
 ### 4.5 新增一个计谋
@@ -328,21 +301,21 @@ option = { # Ask vassals for donation
 ### 5.2 改动中
 
 ```
-4. 写脚本（Tab 缩进、ftr_ 前缀、OVERRIDE 标记）
-5. 写双语本地化（键名完全一致、新增内容加 <FTR>）
-6. 确认文件带 BOM
-7. 运行校验脚本（见 §5.5）确认无 Error
+1. 写脚本（Tab 缩进、ftr_ 前缀、OVERRIDE 标记）
+2. 写双语本地化（键名完全一致、新增内容加 <FTR>）
+3. 确认文件带 BOM
+4. 运行校验脚本（见 §5.5）确认无 Error
 ```
 
 ### 5.3 改动后（人工确认）
 
 ```
-7. 启动游戏 → 检查 error.log 有无本 Mod 报错，如果error.log有报错而检验脚本没有发现，提醒开发者是否更新脚本
-8. 控制台验证对象已加载
-9. 用 effect 命令直接触发脚本片段
-10. 观察 UI：名称、描述、custom_description 是否正常
-11. 快进观察 AI 是否会用到（ai_will_do / ai_accept 是否合理）
-12. 若新增/改动了玩家可见功能 → 同步更新 readme.md（中英双语）
+1. 启动游戏 → 检查 error.log 有无本 Mod 报错；若 error.log 报了而校验脚本没抓到，提示开发者补校验规则
+2. 控制台验证对象已加载
+3. 用 effect 命令直接触发脚本片段
+4. 观察 UI：名称、描述、custom_description 是否正常
+5. 快进观察 AI 是否会用到（ai_will_do / ai_accept 是否合理）
+6. 若新增/改动了玩家可见功能 → 同步更新 readme.md（中英双语）
 ```
 
 ### 5.4 提交前检查清单
@@ -379,43 +352,45 @@ python tools/validate_scripts.py
 python tools/validate_scripts.py --no-ref
 ```
 
-**校验项**（1-7 / 12 为硬性 Error；8-11 / 13-14 为 Warning）：
-
-| # | 校验项 | 级别 |
-|---|---|---|
-| 1 | `.txt`/`.yml` 必须为 **UTF-8 with BOM**（缺 BOM 中文乱码、本地化不加载） | Error |
-| 2 | 花括号 `{}` 配对（跳过字符串与注释内的括号） | Error |
-| 3 | `.yml` 语言头（`l_english:`/`l_simp_chinese:`）+ 键值 `key:0 "text"` 格式 | Error |
-| 4 | 事件文件须声明 `namespace` | Error |
-| 5 | **引用一致性**（需 `--game-path`）：`has_trait`/`has_realm_law`/`has_title_law`/`X_effect`/`X_trigger`/`X_value` 引用的对象名须在游戏/本 mod 白名单中 | Error |
-| 6 | **已知非法模式**：`starts_enabled = yes`、`send_interface_message type = msg_generic`、`start_scheme target`（应 `target_character`）、`has_army`、`start_story` 等历史踩坑写法 | Error |
-| 7 | **GUI 语义**：`Custom()`/`CustomDescription()` data function 不存在、`text = {}` 文本块、`ScriptValue('x')` 引用的非 script value、`gridbox` 放 datamodel | Error/Warning |
-| 8 | 决议须写 `ai_check_interval` 或 `ai_goal`（二选一） | Warning |
-| 9 | 缩进规范：common 用 Tab、localization 用空格 | Warning |
-| 10 | 新增顶层对象须带 `ftr_` 前缀（覆盖原版需 `###### OVERRIDE ######`） | Warning |
-| 11 | 双语本地化键名一致性（english 与 simp_chinese 成对） | Warning |
-| 12 | **引擎语义陷阱**（error.log 实证）：`random_list` 权重非数值字面量；事件块多份 `trigger`；非 hidden 事件缺 `desc`；on_action 块多份 `trigger`/`effect`；`custom_tooltip`/`custom_description` 内写 `trigger = { }` | Error |
-| 13 | **weak scope**：`var:X ?= { }` 内做变量操作（应改强引用 `var:X = { }`） | Warning |
-| 14 | **孤儿事件**：事件定义了但全 mod 无人触发（预留/调试入口可在 `ORPHAN_EVENT_ALLOW` 登记） | Warning |
-
-> ⚠ **引用一致性检查能抓"语法过但 error.log 报错"的语义错误**（如引用了不存在的 trait/law/effect/trigger/value）。已实际抓到过：`has_trait = genius`（应 `intellect_good_3`）、`melancholic`（应 `depressed`）、`monastic`（不存在）、性别法 `male_preferred_law`（应 `has_title_law = male_only_law/female_only_law`）。
-> **注意事项**：脚本会同时加载 mod 自身定义的 trait/law/effect/trigger/value 进白名单，避免 mod 新增对象误报；未提供 `--game-path` 时引用检查自动跳过。
-> **新增 on_action 挂载点**时，须把挂载点名登记进脚本的 `VANILLA_ON_ACTION_HOOKS` 白名单（`tools/validate_scripts.py`），否则会误报；mod 自定义的 `ftr_*` 对象由脚本自动纳入，无需手工登记。
-> **12–14 是 2026-09 一次 error.log 排错（4.6 万条报错）归纳出的引擎语义陷阱**，写法与替代方案见 [文档 03 §13](document/03-触发器与效果.md) 与 [文档 08 §3](document/08-角色交互与决议.md)。
-
 **退出码**：`0` = 全通过；`1` = 有 Error（**必须修复**，会引发加载失败）；`2` = 仅有 Warning（规范提示，建议处理）。
 
-> 该脚本是启发式检查，无法替代实际启动游戏看 `error.log`。遇到脚本未覆盖的语法问题仍以 [文档 01](document/01-词法、数据类型与值系统.md) 与游戏 `error.log` 为准。
+> **校验项清单维护在脚本头部的 docstring 里**（`tools/validate_scripts.py`），本文件不复述——避免两处不同步。三条使用要点：
+>
+> ① **引用一致性检查**（需 `--game-path`）能抓「语法能过、但 `error.log` 报错」的名字错误（不存在的 trait / law / effect / trigger / value）；脚本会把 Mod 自身的新增对象一并纳入白名单，未提供 `--game-path` 时自动跳过。
+> ② **新增 on_action 挂载点**须登记进脚本的 `VANILLA_ON_ACTION_HOOKS` 白名单，否则误报（Mod 自定义的 `ftr_*` 对象由脚本自动纳入，无需登记）。
+> ③ 脚本是**启发式检查**，不能替代实机 `error.log`；未覆盖的问题以对应 `document/` 文档与实机日志为准。
+
+---
+
+### 5.6 同步原版更新（改前先审「覆写点」）
+
+官方版本更新后做适配时，**务必先审出本 Mod 的有意覆写点，改完再逐条回核**——否则极易在同步中把 Mod 自己的设计改回官方默认。本项目已实际踩过两次：一度放行了被刻意注释掉的原版禁令（`tgp_dynastic_cycle_offensive_wars_ban_trigger`），并把自建的 `ftr_murderer_crime` 换成了官方 `murderer_crime`。
+
+```
+0. 确认 Mod 是 git 仓库、工作区状态干净
+   ⚠ 改动若已被 git add，git diff 将看不到差异，必须改用 git diff HEAD
+1. 先列出全部覆写点（三类，缺一不可）：
+   · 非 ftr_ 前缀的顶层对象名 —— 即覆盖原版的对象
+   · 全部 ###### OVERRIDE ###### / ### OVERRIDE 标记处
+   · 被刻意注释掉的原版条目（形如 #official_thing = yes，通常带 OVERRIDE 标记）
+2. 逐个对象做三方比对：原版旧版 ／ Mod 副本 ／ 原版新版
+3. 同步时只补官方的新增与变更；凡与 Mod 改动冲突处，一律保留 Mod 原意
+   （Mod 的数值、额外分支、注释掉的原版项、自建的 ftr_* 引用，都不得改回官方默认）
+4. 改完用 git diff HEAD -- <文件> 逐行复核：确认被删除的每一行都属于
+   「废弃语法」或「官方已改」，而不是 Mod 的有意改动
+```
+
+> **冲突项一律以 Mod 原意为准**（除非需求方明确要求改用官方口径）；只有「官方新增、Mod 原先没有」的内容可以直接照搬。
 
 ---
 
 ## 6. 禁忌
 
-### 6.1 语言层（语法清单在文档里，此处只记判断规则）
+### 6.1 语言层（只记判断规则，语法清单见 §8）
 
-- **不存在的东西别用** —— `XOR`、`repeat` / `break` / `continue`、`inline_script`、`parameters = { P = { type = … } }` 声明块在 CK3 中**都不存在**（原版全目录 0 命中）。清单与检索证据见 [文档 03 §1](document/03-触发器与效果.md)、[文档 05 §1](document/05-脚本复用机制.md)。
-- **Trigger 只读、Effect 只写** —— Trigger 里改状态会报错或静默失败；Effect 里写条件必须包进 `limit = { }`；`while` 必须能让 `limit` 最终变假，或写 `count` 上限。见 [文档 03](document/03-触发器与效果.md) §1 / §4。
-- **提示要分域** —— **效果域**的 `custom_tooltip` / `custom_description` 只接受 effects（要条件显示须外套 `if = { limit = { … } custom_tooltip = { text = … } }`）；**判定域**（`is_valid` / `is_shown` / `limit` / `send_option.is_valid`）则直接裸写触发器。见 [文档 03 §7.1](document/03-触发器与效果.md)。
+- **Trigger 只读、Effect 只写** —— Trigger 里改状态会报错或静默失败；Effect 里写条件必须包进 `limit = { }`；`while` 必须能让 `limit` 最终变假，或写 `count` 上限。见 [文档 03](document/03-触发器与效果.md)。
+- **提示要分域** —— **效果域**的 `custom_tooltip` / `custom_description` 只接受 effects（要条件显示须外套 `if = { limit = { … } … }`）；**判定域**（`is_valid` / `is_shown` / `limit` / `send_option.is_valid`）直接裸写触发器。见 [文档 03 §7.1](document/03-触发器与效果.md)。
+- **不存在的东西别用** —— 完整清单与检索证据见 [文档 00 §10.2](document/00-总览与文档地图.md) 与 [文档 03](document/03-触发器与效果.md)。
 
 ### 6.2 本项目特有
 
@@ -429,7 +404,7 @@ python tools/validate_scripts.py --no-ref
 | **用空格缩进新代码** | 项目统一 Tab |
 | **提交 `gui/*.bak` 或空文件** | 仓库卫生 |
 | **常量堆砌**（散落多处、层层引用、改一处漏一处） | 数值**优先就地内联字面量**——直观、便于阅读与调参；**仅在**需要跨文件复用、或表达复杂可复用公式（如竞争力评分）时才抽成 `common/script_values/ftr_*.txt` 的 script value。常量一旦失去复用价值，应及时内联并删除，不留死常量 |
-| **判断「行政类政体」用错 API** | 一律用 `government_allows = administrative`；`government_has_flag = government_is_administrative` 只指行政制本体，会漏掉天朝 / 日本行政 / 官僚制 / 草原行政（见 [文档 13 §4.1](document/13-政体、特质与共治.md)） |
+| **判断「行政类政体」用错 API** | 一律用 `government_has_mechanic = administrative`（**1.20 起旧写法 `government_allows = administrative` 已失效**——`administrative` 已从 `government_rules` 枚举移除）；`government_has_flag = government_is_administrative` 只指行政制本体，会漏掉天朝 / 日本行政 / 官僚制 / 草原行政（见 [文档 13 §4.1](document/13-政体与特质.md)） |
 | **业务处散写底层写操作** | 记账 / 状态变更只经唯一的封装 effect（如功勋系统的记账封装），不要在调用点散写 `change_variable` / `add_opinion` |
 
 ### 6.3 高风险操作（需先确认）
@@ -464,23 +439,26 @@ python tools/validate_scripts.py --no-ref
 4. 在 game/localization/english/ 里搜同名键，理解语义
 ```
 
-> `game/common/` 下共 **138 个 `.info`** 文件，是 Paradox 官方自带的语法文档。
+> 1.20 的 `game/common/` 下共 **152 个 `.info`** 文件，是 Paradox 官方自带的语法文档（数量随版本变化，以实际目录为准）。
 
 ---
 
 ## 8. 查阅指引（语法与陷阱不在本文件）
 
-本文件不再复制语法速查与陷阱清单，统一在 `document/` 维护：
+本文件不复制语法速查与陷阱清单，统一在 `document/` 维护。**写脚本前先在这里定位，再精读对应章节**：
 
 | 要查什么 | 去哪 |
 |---|---|
-| 文件骨架、词法速记卡 | [文档 01](document/01-词法、数据类型与值系统.md) §13（完整结构图见 §12） |
-| 高频陷阱：语言 / 作用域 / 系统三层 | [文档 16](document/16-多系统选型指南与开发实践.md) §9 |
-| 默认值陷阱（空 trigger、排序方向、恒真恒假） | [文档 16](document/16-多系统选型指南与开发实践.md) §5 |
-| 调试手法（二分、控制台、`send_interface_toast`、`custom_description` 自证） | [文档 16](document/16-多系统选型指南与开发实践.md) §10 |
-| 带条件的提示怎么写 | [文档 03](document/03-触发器与效果.md) §7.1 |
-| 目录清单与速查 | [文档 15](document/15-common目录清单与速查表.md) |
-| 官方 `.info` 索引 | [文档 16](document/16-多系统选型指南与开发实践.md) §11 |
+| 文件骨架、词法、字面量、块与列表、`@` 常量、`$PARAM$` | [文档 01](document/01-词法、数据类型与值系统.md) §12 / §13 |
+| 作用域链（`this` / `root` / `prev` / `scope:` / `save_scope_as`）、迭代器 | [文档 02](document/02-作用域Scope体系.md) |
+| Trigger / Effect 分界、控制流、`while` 上限、`random_list` | [文档 03](document/03-触发器与效果.md) §1 / §4 / §5 |
+| 带条件的提示（`custom_tooltip` / `custom_description` 的域规则） | [文档 03](document/03-触发器与效果.md) §7.1 |
+| CK3 里**不存在**的语法（`XOR` / `repeat` / `inline_script` …） | [文档 00 §10.2](document/00-总览与文档地图.md)、[文档 03 §1](document/03-触发器与效果.md) |
+| 各系统骨架（事件 / 交互与决议 / 法律 / 政体 / 计谋…） | [文档 06](document/06-事件系统与on_action.md)、[08](document/08-角色交互与决议.md)、[10](document/10-法律与继承.md)、[11](document/11-阴谋与派系.md)、[13](document/13-政体与特质.md) |
+| 语法速查卡、事件 / on_action / history / 本地化速查、命名与编码规范 | [文档 23](document/23-速查手册.md) |
+| 高频陷阱（语言 / 作用域 / 系统三层）、默认值陷阱、调试手法、报错对照 | [文档 24](document/24-排错与调试.md) |
+| 某个目录是干什么的、官方 `.info` 在哪 | [文档 15](document/15-common目录清单.md)、[文档 23 §8](document/23-速查手册.md) |
+| GUI 与 scripted_guis | [文档 17](document/17-GUI界面设计与scripted_guis.md) |
 
 > 调试用交互已集中在 `common/character_interactions/ftr_debug_interaction.txt` 与 `common/decisions/ftr_debug_decisions.txt`，可直接扩展。
 > **原则：新增语法知识写进对应 `document/` 文档，不要堆回本文件。**
@@ -499,4 +477,4 @@ python tools/validate_scripts.py --no-ref
 
 ---
 
-*最后更新：基于 CK3 1.19.* 与 For The Realm A.L.0*
+*最后更新：基于 CK3 1.20.0.4 与 For The Realm A.M.5*

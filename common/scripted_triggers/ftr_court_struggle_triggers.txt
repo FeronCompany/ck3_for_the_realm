@@ -115,7 +115,7 @@ ftr_court_hereditary_claimant_candidate_trigger = {
 # 求值域：this = 潜在继任者（依赖 scope:ftr_court_monarch）。判据（任一源偏向某性别即视为该倾向；
 # 多源冲突时两性同受抑）：
 #   · 头衔继承法（君主主头衔）：male_only_law / male_preference_law ↦ 偏男；female_* ↦ 偏女
-#   · 信仰教义：doctrine_gender_male_dominated ↦ 偏男；doctrine_gender_female_dominated ↦ 偏女
+#   · 仪轨教义（1.20 起教义挂在 rite 上）：doctrine_gender_male_dominated ↦ 偏男；doctrine_gender_female_dominated ↦ 偏女
 #   · 文化参数：male_only_inheritance / male_preference_inheritance ↦ 偏男；female_* ↦ 偏女
 
 # 本政权性别规范是否偏向男性
@@ -124,7 +124,7 @@ ftr_court_realm_gender_favors_male_trigger = {
 	OR = {
 		scope:ftr_court_monarch = { primary_title ?= { has_title_law = male_only_law } }
 		scope:ftr_court_monarch = { primary_title ?= { has_title_law = male_preference_law } }
-		scope:ftr_court_monarch = { faith = { has_doctrine = doctrine_gender_male_dominated } }
+		scope:ftr_court_monarch = { rite = { rite_has_doctrine = doctrine_gender_male_dominated } }
 		scope:ftr_court_monarch = {
 			culture = {
 				OR = {
@@ -142,7 +142,7 @@ ftr_court_realm_gender_favors_female_trigger = {
 	OR = {
 		scope:ftr_court_monarch = { primary_title ?= { has_title_law = female_only_law } }
 		scope:ftr_court_monarch = { primary_title ?= { has_title_law = female_preference_law } }
-		scope:ftr_court_monarch = { faith = { has_doctrine = doctrine_gender_female_dominated } }
+		scope:ftr_court_monarch = { rite = { rite_has_doctrine = doctrine_gender_female_dominated } }
 		scope:ftr_court_monarch = {
 			culture = {
 				OR = {
@@ -867,14 +867,14 @@ ftr_court_backing_stance_misfit_trigger = {
 ftr_court_can_pay_cost_trigger = {
 	OR = {
 		AND = {
-			government_allows = administrative
-			$OTHER$ = { government_allows = administrative }
+			government_has_mechanic = administrative
+			$OTHER$ = { government_has_mechanic = administrative }
 			influence >= $INFLUENCE$
 		}
 		AND = {
 			OR = {
-				NOT = { government_allows = administrative }
-				$OTHER$ = { NOT = { government_allows = administrative } }
+				NOT = { government_has_mechanic = administrative }
+				$OTHER$ = { NOT = { government_has_mechanic = administrative } }
 			}
 			prestige >= $PRESTIGE$
 		}

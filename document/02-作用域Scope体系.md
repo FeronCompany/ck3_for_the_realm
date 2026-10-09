@@ -19,7 +19,7 @@ P 语言没有传统编程语言的变量作用域，取而代之的是引擎维
 
 - **前置**：[01 词法、数据类型与值系统](01-词法、数据类型与值系统.md)
 - **直接应用**：[03 触发器与效果](03-触发器与效果.md) —— 所有条件与动作都依托 Scope
-- **系统落地**：[08 角色交互与决议](08-角色交互与决议.md)（五域模型）、[12 活动与战争](12-活动与战争.md)（活动专属域）
+- **系统落地**：[08 角色交互与决议](08-角色交互与决议.md)（五域模型）、[12 活动](12-活动.md)（活动专属域）
 
 ---
 
@@ -579,60 +579,5 @@ sequenceDiagram
 | `courtier` / `every_courtier` | 廷臣 |
 | `knight` / `every_knight` | 骑士 |
 | `in_de_jure_hierarchy` | 法理层级内所有 |
-| `in_list` / `in_global_list` | 变量列表内 |
+| `is_in_list` / `is_target_in_variable_list` | 活动名单 / 变量列表内 |
 
----
-
-## 10. Scope 调试技巧
-
-| 技巧 | 做法 |
-|---|---|
-| 打印当前域 | `log_scope = yes`（如果有）或用控制台 |
-| 检查域有效性 | 先 `exists = scope:xxx` 再使用 |
-| 防报错 | 用 `?=` 代替 `=` |
-| 排查类型不匹配 | 报错信息会指出期望类型 vs 实际类型 |
-| 临时域污染 | 局部用途一律用 `save_temporary_scope_as` |
-
----
-
-## 11. 思维导图总结
-
-```mermaid
-graph LR
-    ROOT["Scope 体系"]
-
-    ROOT --> K["关键字"]
-    K --> K1["this 当前域"]
-    K --> K2["root 根域"]
-    K --> K3["prev 上一层"]
-    K --> K4["prev.prev 上两层"]
-    K --> K5["具名域 scope:name"]
-
-    ROOT --> S["保存"]
-    S --> S1["save_scope_as<br/>脚本链内有效"]
-    S --> S2["save_temporary_scope_as<br/>当前块有效"]
-    S --> S3["save_scope_value_as<br/>保存数值"]
-    S --> S4["clear_saved_scope"]
-
-    ROOT --> SW["切换"]
-    SW --> W1["链接块 father = ..."]
-    SW --> W2["域链 father.father"]
-    SW --> W3["迭代器 every_ / any_ / random_ / ordered_"]
-
-    ROOT --> J["判定"]
-    J --> J1["exists 检查"]
-    J --> J2["?= 弱比较"]
-    J --> J3["类型匹配"]
-
-    ROOT --> T["类型"]
-    T --> T1["character"]
-    T --> T2["landed_title"]
-    T --> T3["province"]
-    T --> T4["culture / faith / dynasty"]
-    T --> T5["artifact / activity / scheme / secret"]
-    T --> T6["none"]
-
-    style ROOT fill:#2d3f52,stroke:#5b7fa6,color:#fff
-    style S1 fill:#3c4a3c,stroke:#6b8f6b,color:#fff
-    style J2 fill:#4a3c3c,stroke:#a6705b,color:#fff
-```

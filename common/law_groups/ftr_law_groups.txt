@@ -1,0 +1,20 @@
+﻿
+# ════════════════════════════════════════════════════════════════════════════
+# 法律组定义（本 Mod 原创）
+#
+# 【1.20 新目录】common/law_groups/ 为 1.20 新增目录：
+#   1.19 及以前，法律组与法律本体一起内联写在 common/laws/ 里（组内嵌套法律）；
+#   1.20 起拆分——
+#     · 法律组           → common/law_groups/*.txt（本文件）
+#     · 法律本体（扁平） → common/laws/*.txt，须带 law_group_type + index
+#
+# 参考：common/law_groups/00_realm_law_groups.txt、
+#       02_admininistrative_law_groups.txt
+# ════════════════════════════════════════════════════════════════════════════
+
+# 行政军制法（法律本体见 common/laws/ftr_admin_laws.txt）
+admin_army_law = {
+	default = admin_army_law_0
+	cumulative = no
+	flag = admin_law
+}

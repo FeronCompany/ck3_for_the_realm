@@ -1,0 +1,27 @@
+﻿##############################################################
+### 宗教判定工具（1.20 faith / rite 双轨）
+###
+### 1.20 起宗教拆为两层：faith（信仰）与 rite（仪轨）——
+###   · 教义 / 信条挂载在 rite 上；
+###   · 仪轨领袖 rite.head_of_rite 与 信仰领袖 faith.religious_head 可以并存
+###     （同一信仰下不同仪轨各有领袖，官方写法见
+###      scripted_triggers/pam_scripted_triggers.txt 的
+###      pam_pope_is_head_of_faith_or_rite_trigger）。
+### 凡「谁是宗教权威」的判定一律经本文件，避免各处裸写从而只认 faith。
+##############################################################
+
+# 以 this 为轴：本角色是否是其宗教权威（仪轨领袖优先，信仰领袖兜底）
+ftr_is_religious_authority_trigger = {
+	OR = {
+		rite.head_of_rite ?= this
+		faith.religious_head ?= this
+	}
+}
+
+# 以 this 为轴：本角色的宗教权威是否存在（用于「有没有领袖可互动」）
+ftr_has_religious_authority_trigger = {
+	OR = {
+		exists = rite.head_of_rite
+		exists = faith.religious_head
+	}
+}

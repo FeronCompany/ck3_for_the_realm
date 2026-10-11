@@ -945,8 +945,11 @@ ftr_coup_ongoing.2000 = {
 			value = yes
 			days = 365
 		}
-		scope:scheme = {
-			change_opportunities = 2
+		if = {
+			limit = { scope:scheme ?= { scheme_owner ?= { is_alive = yes } } }
+			scope:scheme = {
+				change_opportunities = 2
+			}
 		}
 	}
 }

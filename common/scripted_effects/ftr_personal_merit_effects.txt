@@ -147,6 +147,8 @@ ftr_personal_merit_crown_add_effect = {
 			limit = {
 				has_variable = ftr_personal_merit_crown
 				NOT = { var:ftr_personal_merit_crown = 0 }
+				# 记录者与领主可能是同一人，自我加好感会被引擎拒绝
+				NOT = { scope:ftr_pm_holder = scope:ftr_pm_subject }
 			}
 			scope:ftr_pm_holder = {
 				add_opinion = {
@@ -197,7 +199,11 @@ ftr_personal_merit_backing_add_effect = {
 		# 摘旧挂新（若对象恰为现任最高领主，validate 会折叠后由从征实例承载）
 		if = {
 			limit = {
-				NOT = { $CLAIMANT$ ?= { this = scope:ftr_pm_lord } }
+				# 领主作用域可能未设置（非同一人），此时不应做比较
+				OR = {
+					NOT = { exists = scope:ftr_pm_lord }
+					NOT = { $CLAIMANT$ ?= { this = scope:ftr_pm_lord } }
+				}
 			}
 			$CLAIMANT$ ?= { save_scope_as = ftr_pm_holder }
 			ftr_personal_merit_remove_instance_effect = yes
@@ -482,7 +488,10 @@ ftr_personal_merit_grant_council_position_effect = {
 				diplomacy >= intrigue
 			}
 			scope:ftr_pm_council_owner = {
-				assign_councillor_type = { type = councillor_chancellor  target = scope:ftr_pm_councillor }
+				if = {
+					limit = { NOT = { exists = cp:councillor_chancellor } }
+					assign_councillor_type = { type = councillor_chancellor  target = scope:ftr_pm_councillor }
+				}
 			}
 		}
 		else_if = {
@@ -492,7 +501,10 @@ ftr_personal_merit_grant_council_position_effect = {
 				stewardship >= intrigue
 			}
 			scope:ftr_pm_council_owner = {
-				assign_councillor_type = { type = councillor_steward  target = scope:ftr_pm_councillor }
+				if = {
+					limit = { NOT = { exists = cp:councillor_steward } }
+					assign_councillor_type = { type = councillor_steward  target = scope:ftr_pm_councillor }
+				}
 			}
 		}
 		else_if = {
@@ -502,12 +514,18 @@ ftr_personal_merit_grant_council_position_effect = {
 				martial >= intrigue
 			}
 			scope:ftr_pm_council_owner = {
-				assign_councillor_type = { type = councillor_marshal  target = scope:ftr_pm_councillor }
+				if = {
+					limit = { NOT = { exists = cp:councillor_marshal } }
+					assign_councillor_type = { type = councillor_marshal  target = scope:ftr_pm_councillor }
+				}
 			}
 		}
 		else = {
 			scope:ftr_pm_council_owner = {
-				assign_councillor_type = { type = councillor_spymaster  target = scope:ftr_pm_councillor }
+				if = {
+					limit = { NOT = { exists = cp:councillor_spymaster } }
+					assign_councillor_type = { type = councillor_spymaster  target = scope:ftr_pm_councillor }
+				}
 			}
 		}
 	}

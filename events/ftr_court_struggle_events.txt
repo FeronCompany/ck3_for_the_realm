@@ -1003,9 +1003,13 @@ ftr_court_struggle.0200 = {
 		custom_tooltip = {
 			text = ftr_court_struggle.0200.offer_back_tt
 			save_scope_as = ftr_court_pending_offerer
-			scope:ftr_court_claimant_4 = {
-				set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
-				trigger_event = { id = ftr_court_struggle.0210  days = 2 }
+			scope:ftr_court_claimant_4 ?= {
+				# 候选者可能已死亡 / 被剪枝（不支持变量）→ 此时不写变量也不派发后续事件
+				if = {
+					limit = { is_alive = yes }
+					set_variable = { name = ftr_court_pending_backer  value = scope:ftr_court_pending_offerer }
+					trigger_event = { id = ftr_court_struggle.0210  days = 2 }
+				}
 			}
 		}
 	}

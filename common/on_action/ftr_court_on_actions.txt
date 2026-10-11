@@ -69,6 +69,12 @@ ftr_court_death_cleanup_on_action = {
 			has_variable = ftr_court_backer_of
 			has_variable = ftr_court_participant_of
 		}
+		# 前置检查：所属政权须仍是有效政权 —— 动态生成 / 已被剪枝的角色在此挡下，
+		# 避免进入 effect 后对其做变量操作（会报「作用域不支持变量」）
+		OR = {
+			NOT = { has_variable = ftr_court_participant_of }
+			var:ftr_court_participant_of ?= { is_ruler = yes }
+		}
 	}
 	effect = {
 		ftr_court_death_cleanup_effect = yes
@@ -126,7 +132,7 @@ ftr_court_struggle_main_pulse = {
 							}
 							# 无事发生（朝堂风平浪静的一拍；仅写 debug.log）
 							100 = {
-								debug_log = "FTR_PULSE[low]: quiet pulse (nothing happens)"
+								debug_log = "FTR_PULSE low: quiet pulse (nothing happens)"
 								debug_log_scopes = yes
 							}
 						}
@@ -166,7 +172,7 @@ ftr_court_struggle_main_pulse = {
 							}
 							# 无事发生
 							90 = {
-								debug_log = "FTR_PULSE[mid]: quiet pulse (nothing happens)"
+								debug_log = "FTR_PULSE mid: quiet pulse (nothing happens)"
 								debug_log_scopes = yes
 							}
 						}
@@ -201,7 +207,7 @@ ftr_court_struggle_main_pulse = {
 								ftr_court_civil_strife_effect = yes
 							}
 							55 = {
-								debug_log = "FTR_PULSE[high]: quiet pulse (nothing happens)"
+								debug_log = "FTR_PULSE high: quiet pulse (nothing happens)"
 								debug_log_scopes = yes
 							}
 						}
@@ -233,7 +239,7 @@ ftr_court_struggle_main_pulse = {
 								ftr_court_civil_strife_effect = yes
 							}
 							25 = {
-								debug_log = "FTR_PULSE[crit]: quiet pulse (nothing happens)"
+								debug_log = "FTR_PULSE crit: quiet pulse (nothing happens)"
 								debug_log_scopes = yes
 							}
 						}

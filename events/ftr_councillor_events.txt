@@ -939,10 +939,13 @@ ftr_councillor_event.0009 = {
 				right_icon = scope:recipient
 				custom_tooltip = ftr_envoy_vain_result_content_tt
 			}
-			add_opinion = {
-				modifier = frustrated_opinion
-				opinion = -20
-				target = scope:secondary_actor
+			if = {
+				limit = { scope:secondary_actor = { is_alive = yes } }
+				add_opinion = {
+					modifier = frustrated_opinion
+					opinion = -20
+					target = scope:secondary_actor
+				}
 			}
 		}
 	}

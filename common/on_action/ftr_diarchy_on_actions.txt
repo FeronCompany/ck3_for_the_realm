@@ -43,7 +43,11 @@ ftr_diarchy_diarch_change_on_action = {
 	}
 	effect = {
 		var:ftr_diarchy_boosted_candidate ?= { save_scope_as = ftr_diarchy_boost_target }
-		set_diarch = scope:ftr_diarchy_boost_target
+		# 变量指向的角色可能已失效（?= 会静默跳过），此时不得直接使用该作用域
+		if = {
+			limit = { exists = scope:ftr_diarchy_boost_target }
+			set_diarch = scope:ftr_diarchy_boost_target
+		}
 		remove_variable = ftr_diarchy_boosted_candidate
 	}
 }

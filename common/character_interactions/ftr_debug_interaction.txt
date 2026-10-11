@@ -26,10 +26,6 @@ ftr_debug_change_government_interaction = {
 		flag = to_clan
 		localization = ftr_debug_to_clan_loc
 	}
-	send_option = {
-		flag = to_burea
-		localization = ftr_debug_to_burea_loc
-	}
 	on_accept = {
 		scope:recipient = {
 			switch = {

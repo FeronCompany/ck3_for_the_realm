@@ -63,7 +63,6 @@
  ftr_debug_to_admin_loc:0 "Administrative"
  ftr_debug_to_tribal_loc:0 "Tribal"
  ftr_debug_to_clan_loc:0 "Clan"
- ftr_debug_to_burea_loc:0 "Centralism"
 
  ftr_huangdi_ask_for_vassalation_interaction:0 "<FTR> Ask For Vassalation"
  ftr_huangdi_ask_for_vassalation_interaction_desc:0 "Make the tributary state a vassal"

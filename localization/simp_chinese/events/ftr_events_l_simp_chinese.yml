@@ -229,9 +229,6 @@
  ftr_realm_event.0006.a:0 "再想想别的办法吧"
  auto_convert_culture_elite_run_text:0 "被委托人带着家人消失在无人的夜色中……"
 
- ftr_realm_event.1001.t:0 "<FTR>变革的时代"
- ftr_realm_event.1001.desc:0 "您的君主[liege.GetName]已经完成了集权制的改革准备，国家将在[liege.GetHisHer]的带领下步入新的阶段。过去长期运行良好的封建制度似乎正在走向终结，而您作为附庸又该何去何从呢？"
- ftr_realm_event.1001.a:0 "保证我的利益就好"
 
  ftr_realm_event.1002.t:0 "<FTR>变革的时代"
  ftr_realm_event.1002.desc:0 "作为至高无上的君主，我，[liege.GetName]将在全国推行集权制改革，一切权力归于中央。尽管如此，我的封建制封臣们仍然享受着历史遗留的特权。如何平衡与他们的关系将是对我的考验。"

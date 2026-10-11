@@ -215,7 +215,6 @@ ftr_buy_land_interaction = {
 				domain_size < domain_limit
 			}
 		}
-		# 中央集权政体（centralism_government）已废弃：原 -100 抑制项的条件恒为假，故摘除
 		modifier = {
 			add = 20
 			scope:target = {

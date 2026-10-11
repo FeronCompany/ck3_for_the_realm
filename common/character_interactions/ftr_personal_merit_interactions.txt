@@ -71,14 +71,22 @@ ftr_personal_merit_reward_gold_interaction = {
 		# 领主付金、臣属得金
 		if = {
 			limit = { scope:ftr_pm_reward_small = yes }
-			scope:actor = { add_gold = { value = 0  subtract = ftr_personal_merit_reward_small_gold_value } }
-			scope:recipient = { add_gold = ftr_personal_merit_reward_small_gold_value }
+			scope:actor = {
+				pay_short_term_gold = {
+					target = scope:recipient
+					gold = ftr_personal_merit_reward_small_gold_value
+				}
+			}
 			scope:recipient = { ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_reward_small_cost_value } }
 		}
 		if = {
 			limit = { scope:ftr_pm_reward_large = yes }
-			scope:actor = { add_gold = { value = 0  subtract = ftr_personal_merit_reward_large_gold_value } }
-			scope:recipient = { add_gold = ftr_personal_merit_reward_large_gold_value }
+			scope:actor = {
+				pay_short_term_gold = {
+					target = scope:recipient
+					gold = ftr_personal_merit_reward_large_gold_value
+				}
+			}
 			scope:recipient = { ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_reward_large_cost_value } }
 		}
 		scope:recipient = {
@@ -174,14 +182,22 @@ ftr_personal_merit_request_gold_interaction = {
 	on_accept = {
 		if = {
 			limit = { scope:ftr_pm_request_small = yes }
-			scope:recipient = { add_gold = { value = 0  subtract = ftr_personal_merit_reward_small_gold_value } }
-			scope:actor = { add_gold = ftr_personal_merit_reward_small_gold_value }
+			scope:recipient = {
+				pay_short_term_gold = {
+					target = scope:actor
+					gold = ftr_personal_merit_reward_small_gold_value
+				}
+			}
 			scope:actor = { ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_reward_small_cost_value } }
 		}
 		if = {
 			limit = { scope:ftr_pm_request_large = yes }
-			scope:recipient = { add_gold = { value = 0  subtract = ftr_personal_merit_reward_large_gold_value } }
-			scope:actor = { add_gold = ftr_personal_merit_reward_large_gold_value }
+			scope:recipient = {
+				pay_short_term_gold = {
+					target = scope:actor
+					gold = ftr_personal_merit_reward_large_gold_value
+				}
+			}
 			scope:actor = { ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_reward_large_cost_value } }
 		}
 	}

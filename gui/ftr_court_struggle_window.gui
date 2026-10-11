@@ -62,7 +62,7 @@ window = {
 								onclick = "[GetScriptedGui('ftr_personal_merit_sync_ui').Execute( GuiScope.SetRoot( GetPlayer.GetTopLiege.MakeScope ).End )]"
 								text_single = {
 									text = "ftr_court_merit_list_button"
-									fontsize = 12
+									fontsize = 13
 								}
 							}
 							expand = {}
@@ -78,7 +78,7 @@ window = {
 				}
 
 				# ==================== 1. 君主 + 共治者 + 平衡条（居中） ====================
-				widget = {
+				margin_widget = {
 					margin = { 0 12 }
 					layoutpolicy_horizontal = expanding
 					size = { 100% 120 }

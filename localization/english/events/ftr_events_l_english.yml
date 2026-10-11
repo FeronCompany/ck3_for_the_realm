@@ -201,9 +201,6 @@
  ftr_realm_event.0006.a:0 "Maybe there is other solution..."
  auto_convert_culture_elite_run_text:0 "Your agent disappear with family at night..."
 
- ftr_realm_event.1001.t:0 "<FTR> Age of Reform"
- ftr_realm_event.1001.desc:0 "Your monarch [liege.GetName] has completed the reform of the centralism system, and the country will enter a new stage under [liege.GetHisHer] leadership. The feudal system that has worked well for a long time in the past seems to be coming to an end, and what should you do as a vassal?"
- ftr_realm_event.1001.a:0 "Just keep my interests safe."
 
  ftr_realm_event.1002.t:0 "<FTR> Age of Reform"
  ftr_realm_event.1002.desc:0 "As sovereign monarch, I, [liege.GetName], will carry out centralized reforms across the country, with all power going to the court. Despite this, the feudal lords of the past still enjoy privileges. How to balance the relationship with them will become a new test."

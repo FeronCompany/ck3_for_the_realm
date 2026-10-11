@@ -949,6 +949,8 @@ ftr_court_has_female_heir_trigger = {
 # 求值域：this = 权贵（竞争者 / 共治者）。其党羽规模是否已达逼宫门槛。
 # 规模 = 支持者人数 + 强力封臣党羽加权（ftr_court_backer_demand_scale_value）。
 ftr_court_backer_demand_scale_reached_trigger = {
+	# 调用方可能传入手已死亡/被剪枝的权贵（不支持变量），故先排除
+	is_alive = yes
 	has_variable_list = ftr_court_supporters
 	variable_list_size = {
 		name = ftr_court_supporters

@@ -529,11 +529,19 @@ ftr_pg_interaction_event.0200 = {
 	}
 
 	immediate = {
-		scope:secondary_actor = {
-			progress_towards_rival_effect = {
-				REASON = ftr_suspicion_rival
-				CHARACTER = scope:recipient
-				OPINION = -20
+		# 双方可能为同一人、或其中一方已死亡 —— 两种情况都会被引擎拒绝
+		if = {
+			limit = {
+				scope:secondary_actor = { is_alive = yes }
+				scope:recipient = { is_alive = yes }
+				NOT = { scope:secondary_actor = scope:recipient }
+			}
+			scope:secondary_actor = {
+				progress_towards_rival_effect = {
+					REASON = ftr_suspicion_rival
+					CHARACTER = scope:recipient
+					OPINION = -20
+				}
 			}
 		}
 	}

@@ -277,15 +277,17 @@
 
 	
 	on_invalidated = {
-		scheme_target_character = {
+		# 计谋失效时 owner / target 可能已不存在 → 弱访问 + 逐处守卫
+		scheme_target_character ?= {
 			save_scope_as = target
 		}
-		scheme_owner = {
+		scheme_owner ?= {
 			remove_variable = ftr_coup_method
 			save_scope_as = owner
 		}
 		if = { #Did the character die in another way?
 			limit = {
+				exists = scope:owner
 				scope:target = {
 					is_alive = no
 					NOT = { killer = scope:owner }
@@ -302,6 +304,7 @@
 		}
 		if = {
 			limit = {
+				exists = scope:owner
 				scope:owner = {
 					NOT = { is_vassal_of = scope:target }
 					NOT = { is_courtier_of = scope:target }

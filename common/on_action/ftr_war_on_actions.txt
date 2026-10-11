@@ -7,13 +7,14 @@ ftr_combat_end_commander_rank_up_on_action = {
 		# 无需自定义 trigger：仅在敌方规模达阈值时计经验，规模越大经验越多（上下限见 script_values）。
 		if = {
 			limit = {
-				enemy_side.side_max_army_size >= ftr_battle_commander_min_enemy_size_value
+				# enemy_side / side_commander 可能未设置（无对手方 / 无指挥官）
+				enemy_side ?= { side_max_army_size >= ftr_battle_commander_min_enemy_size_value }
 			}
 			save_scope_value_as = {
 				name = ftr_battle_commander_xp
 				value = ftr_battle_commander_xp_value
 			}
-			side_commander = {
+			side_commander ?= {
 				ftr_battle_commander_rank_up_effect = { XP = scope:ftr_battle_commander_xp }
 			}
 		}

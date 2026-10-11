@@ -294,11 +294,18 @@ ftr_trade_income_value = {
 			multiply = 0.80
 			add = 15
 		}
-		multiply = {
-			value = "scope:recipient.capital_province.squared_distance(scope:actor.capital_province)"
-			divide = squared_distance_large
-			multiply = 0.6
-			add = 0.4
+		# 任一方无首都省份（无地角色）时跳过距离系数；否则 squared_distance 会报空作用域
+		if = {
+			limit = {
+				exists = scope:recipient.capital_province
+				exists = scope:actor.capital_province
+			}
+			multiply = {
+				value = "scope:recipient.capital_province.squared_distance(scope:actor.capital_province)"
+				divide = squared_distance_large
+				multiply = 0.6
+				add = 0.4
+			}
 		}
 	}
 	multiply = scope:secondary_actor.ftr_get_luck_point
@@ -317,11 +324,18 @@ ftr_trade_income_expected_value = {
 			multiply = 0.80
 			add = 15
 		}
-		multiply = {
-			value = "scope:recipient.capital_province.squared_distance(scope:actor.capital_province)"
-			divide = squared_distance_large
-			multiply = 0.6
-			add = 0.4
+		# 任一方无首都省份（无地角色）时跳过距离系数；否则 squared_distance 会报空作用域
+		if = {
+			limit = {
+				exists = scope:recipient.capital_province
+				exists = scope:actor.capital_province
+			}
+			multiply = {
+				value = "scope:recipient.capital_province.squared_distance(scope:actor.capital_province)"
+				divide = squared_distance_large
+				multiply = 0.6
+				add = 0.4
+			}
 		}
 	}
 	multiply = 0.6

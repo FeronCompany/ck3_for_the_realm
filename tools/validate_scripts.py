@@ -34,14 +34,16 @@ For The Realm (朝野纷争) —— P 语言语法快速校验脚本
       * var:X ?= { }（weak scope）内不得做变量操作（is_target_in_variable_list 等）
       * 孤儿事件（定义了但全 mod 无人触发）→ 警告；预留/调试入口可在 ORPHAN_EVENT_ALLOW 登记
   13. 1.20 写法约束（见 9C-bis）：
-     * government_allows = administrative → Error（该枚举值已被移除，判定恒为假；
-       应改用 government_has_mechanic = administrative）
-     * faith = { has_doctrine = ... } → 警告（1.20 教义改由 rite 承载，
-       应改用 rite = { rite_has_doctrine = ... }）
-     * faith = { trait_is_sin = ... } → 警告（应改用 rite = { trait_is_sin_rite = ... }）
-     * common/laws/*.txt 每条法律须为扁平顶层条目且带 law_group_type（1.20 强制字段；
-       旧式「组内嵌套」写法已失效）
-     * common/law_groups/*.txt 法律组须提供 default = <law>
+     * government_allows = administrative → Error（枚举已移除，改用 government_has_mechanic）
+     * faith 读教义（has_doctrine / trait_is_sin）→ 警告（改用 rite 的 rite_has_doctrine /
+       trait_is_sin_rite）
+     * 法律与法律组须为扁平条目：laws 带 law_group_type、law_groups 带 default → 警告
+     * succession_election 的 electors / candidates 须包 character_sets → Error
+     * destroy_title 须在角色域执行（不得 destroy_title = this）→ 警告
+     * 扣金用 remove_gold，不用 add_gold 的 subtract / 负值 → 警告
+     * 金钱转移用 pay_short_term_gold / pay_long_term_gold（付款者作用域 + target），
+       不用「扣一方 + 加另一方」的手写配对 → 警告
+     * add_opinion 的 target 不得为 this → 警告
 
 用法：
     python tools/validate_scripts.py --game-path "…/game"   # 全量 + 引用白名单
@@ -777,6 +779,55 @@ def check_120_rules(path, text):
             body = "\n".join(lines[i - 1:_block_span(lines, i - 1) + 1])
             if not re.search(r"^\s*default\s*=", body, re.M):
                 warn(path, i, f"法律组 '{m.group(1)}' 未提供 default = <law>")
+
+    # 5) 选举：electors / candidates 须包 character_sets
+    #    旧的 add = { } 会被引擎判为 Unknown token，整段静默失效（无选民 / 无候选人）
+    if rp.startswith("common/succession_election/") and not rp.endswith(".info"):
+        for i, raw in enumerate(lines, start=1):
+            m = re.match(r"^\s*(electors|candidates)\s*=\s*\{\s*$", raw)
+            if not m:
+                continue
+            body = "\n".join(lines[i - 1:_block_span(lines, i - 1) + 1])
+            if "character_sets" not in body:
+                err(path, i,
+                    f"{m.group(1)} 缺 character_sets —— 1.20 起须写 "
+                    f"{m.group(1)} = {{ character_sets = {{ <具名键> = {{ type = ... }} }} }}")
+
+    # 6) destroy_title 须在角色域执行，标题作参数
+    for i, raw in enumerate(lines, start=1):
+        if re.search(r"\bdestroy_title\s*=\s*this\b", _code(raw)):
+            warn(path, i, "destroy_title = this 在标题域无效（须在角色域执行），"
+                          "应改为 <角色> = { destroy_title = <标题> }")
+
+    # 7) add_gold 以 subtract / 负值扣金 → 引擎报错，应改用 remove_gold
+    for i, raw in enumerate(lines, start=1):
+        c = _code(raw)
+        if not re.search(r"\badd_gold\s*=", c):
+            continue
+        body = ("\n".join(lines[i - 1:_block_span(lines, i - 1) + 1])
+                if c.rstrip().endswith("{") else c)
+        if re.search(r"\bsubtract\s*=", body) or re.search(r"add_gold\s*=\s*-\s*\d", body):
+            warn(path, i, "add_gold 以 subtract / 负值扣金会触发引擎报错："
+                          "纯扣减改用 remove_gold，转给他人改用 pay_short_term_gold / pay_long_term_gold")
+
+    # 8) add_opinion 的 target 不能是自己
+    for i, raw in enumerate(lines, start=1):
+        if not re.search(r"\badd_opinion\s*=\s*\{", _code(raw)):
+            continue
+        body = "\n".join(lines[i - 1:_block_span(lines, i - 1) + 1])
+        if re.search(r"^\s*target\s*=\s*this\b", body, re.M):
+            warn(path, i, "add_opinion 的 target = this 是自我加好感，会被引擎拒绝")
+
+    # 9) 手写的「扣一方 + 加另一方」配对 → 应改用原版转账接口
+    for i, raw in enumerate(lines):
+        m = re.search(r"\bremove_gold\s*=\s*([A-Za-z_][\w.]*|\d+(?:\.\d+)?)\s*\}?\s*$", _code(raw))
+        if not m:
+            continue
+        window = "\n".join(_code(x) for x in lines[i + 1:i + 4])
+        if re.search(r"\badd_gold\s*=\s*" + re.escape(m.group(1)) + r"\s*\}?\s*$", window, re.M):
+            warn(path, i + 1,
+                 "手写「扣金 + 付金」配对应改用 pay_short_term_gold / pay_long_term_gold"
+                 "（在付款者作用域执行，target 为收款者）")
 
 
 def check_engine_traps(path, text):

@@ -1,4 +1,4 @@
-# 个人功勋名单窗口（独立文件）。
+﻿# 个人功勋名单窗口（独立文件）。
 # 数据源：GetPlayer.GetTopLiege 身上的 ftr_personal_merit_ui_subjects（由 ftr_personal_merit_sync_ui 按功勋降序构建）。
 # 打开：朝堂窗口左下"功勋录"按钮 → onclick① 置 ftr_personal_merit_window_open（弹窗），onclick② 重建名单。
 # 呈现：右侧并排面板（贴屏幕右缘、垂直居中），与居中的朝堂局势窗口不重叠、清晰可见。
@@ -89,7 +89,7 @@ types Lists
 			onclick = "[GetScriptedGui('ftr_personal_merit_sync_ui').Execute( GuiScope.SetRoot( GetPlayer.GetTopLiege.MakeScope ).End )]"
 			text_single = {
 				text = "ftr_court_merit_reward_button"
-				fontsize = 10
+				fontsize = 13
 			}
 		}
 		expand = {}

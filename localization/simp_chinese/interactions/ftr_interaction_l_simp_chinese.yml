@@ -63,7 +63,6 @@
  ftr_debug_to_admin_loc:0 "行政制"
  ftr_debug_to_tribal_loc:0 "部落制"
  ftr_debug_to_clan_loc:0 "氏族制"
- ftr_debug_to_burea_loc:0 "集权制"
 
  ftr_huangdi_ask_for_vassalation_interaction:0 "<FTR>要求内附"
  ftr_huangdi_ask_for_vassalation_interaction_desc:0 "将朝贡国收为附庸"

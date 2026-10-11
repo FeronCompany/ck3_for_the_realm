@@ -18,6 +18,13 @@ ftr_personal_merit.0001 = {
 		animation = personality_rational
 	}
 
+	# 被赏赐的廷臣（immediate 中保存；无合适人选时该立绘自动隐藏）
+	right_portrait = {
+		trigger = { exists = scope:ftr_pm_subject }
+		character = scope:ftr_pm_subject
+		animation = happiness
+	}
+
 	immediate = {
 		save_scope_as = ftr_personal_merit_monarch
 		# 随机挑一名对 root 持有可兑功勋(≥10)的直属廷臣
@@ -53,12 +60,12 @@ ftr_personal_merit.0001 = {
 			}
 		}
 		# 中档赏钱（400 金 / 耗 30 功勋）
-		add_gold = {
-			value = 0
-			subtract = ftr_personal_merit_annual_gold_value
+		# 年度例行赏赐 → 长期支出记账
+		pay_long_term_gold = {
+			target = scope:ftr_pm_subject
+			gold = ftr_personal_merit_annual_gold_value
 		}
 		scope:ftr_pm_subject = {
-			add_gold = ftr_personal_merit_annual_gold_value
 			ftr_personal_merit_consume_effect = { AMOUNT = ftr_personal_merit_annual_gold_cost_value }
 			add_opinion = { target = scope:ftr_personal_merit_monarch  modifier = grateful_opinion  opinion = 20 }
 		}

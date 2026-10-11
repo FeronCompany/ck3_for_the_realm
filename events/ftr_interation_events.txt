@@ -1113,6 +1113,7 @@ ftr_interaction_event.0015 = {
 		name = ftr_interaction_event.0015.b
 		trigger = {
 			NOT = { ftr_is_religious_authority_trigger = yes }
+			scope:debate_loser = { is_alive = yes }
 		}
 		scope:debate_loser = {
 			set_character_faith_with_conversion = scope:debate_winner.faith

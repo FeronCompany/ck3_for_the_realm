@@ -11,14 +11,12 @@
 | 项 | 值 |
 |---|---|
 | Mod 名 | For The Realm（中文名：**朝野纷争**） |
-| 版本 | `A.M.5`（见 `descriptor.mod`） |
+| 版本 | `A.M.6`（见 `descriptor.mod`） |
 | 支持游戏版本 | **CK3 1.20.\***，脚本已按 1.20 全面适配 |
 | 定位 | 领地管理 + 个人生活（行政制优化 / 派系内战 / 交互 / 计谋 / 决议 / 特质） |
 | 仓库 | https://github.com/FeronCompany/ck3_for_the_realm |
 | Steam | `remote_file_id = 2891075410` |
 | 脚本语言 | **P 语言**（Paradox Script / Clausewitz Script），非通用编程语言 |
-
-> ⚠ **待办**：`descriptor.mod` 的 `supported_version` 目前仍是 `1.19.*`，需改为 `1.20.*` 才能在 1.20 中加载（属高风险操作，默认需先确认，见 §6.3）。
 
 ### 1.1 本项目是「覆盖式 Mod」
 
@@ -477,4 +475,4 @@ python tools/validate_scripts.py --no-ref
 
 ---
 
-*最后更新：基于 CK3 1.20.0.4 与 For The Realm A.M.5*
+*最后更新：基于 CK3 1.20.0.4 与 For The Realm A.M.6*

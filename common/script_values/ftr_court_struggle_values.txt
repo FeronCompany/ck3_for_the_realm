@@ -352,7 +352,11 @@ ftr_court_claim_strength_value = {
 ftr_court_supporters_count_value = {
 	value = 0
 	if = {
-		limit = { has_variable_list = ftr_court_supporters }
+		limit = {
+			# 求值域可能是已死亡 / 被剪枝的角色（不支持变量）
+			is_alive = yes
+			has_variable_list = ftr_court_supporters
+		}
 		every_in_list = {
 			variable = ftr_court_supporters
 			add = 1
@@ -367,7 +371,11 @@ ftr_court_backing_crowd_penalty_value = {
 	value = 0
 	scope:recipient = {
 		if = {
-			limit = { has_variable_list = ftr_court_supporters }
+			limit = {
+			# 求值域可能是已死亡 / 被剪枝的角色（不支持变量）
+			is_alive = yes
+			has_variable_list = ftr_court_supporters
+		}
 			every_in_list = {
 				variable = ftr_court_supporters
 				subtract = ftr_court_backing_crowd_penalty_step_value
@@ -464,7 +472,11 @@ ftr_court_petition_camp_strength_value = {
 		var:ftr_court_backer_of = {
 			add = current_military_strength
 			if = {
-				limit = { has_variable_list = ftr_court_supporters }
+				limit = {
+			# 求值域可能是已死亡 / 被剪枝的角色（不支持变量）
+			is_alive = yes
+			has_variable_list = ftr_court_supporters
+		}
 				every_in_list = {
 					variable = ftr_court_supporters
 					add = current_military_strength
@@ -479,7 +491,11 @@ ftr_court_petition_camp_strength_value = {
 ftr_court_petition_monarch_camp_strength_value = {
 	value = current_military_strength
 	if = {
-		limit = { has_variable_list = ftr_court_supporters }
+		limit = {
+			# 求值域可能是已死亡 / 被剪枝的角色（不支持变量）
+			is_alive = yes
+			has_variable_list = ftr_court_supporters
+		}
 		every_in_list = {
 			variable = ftr_court_supporters
 			add = current_military_strength
@@ -557,7 +573,11 @@ ftr_court_backer_demand_abdication_swing_value = ftr_swing_tier_strong_high_valu
 ftr_court_backer_demand_scale_value = {
 	value = ftr_court_supporters_count_value
 	if = {
-		limit = { has_variable_list = ftr_court_supporters }
+		limit = {
+			# 求值域可能是已死亡 / 被剪枝的角色（不支持变量）
+			is_alive = yes
+			has_variable_list = ftr_court_supporters
+		}
 		every_in_list = {
 			variable = ftr_court_supporters
 			if = {
@@ -600,8 +620,15 @@ ftr_court_debate_strength_value = {
 ftr_court_debate_win_chance_value = {
 	value = 50
 	add = {
-		value = var:ftr_court_debate_strength
-		subtract = var:ftr_court_debate_foe_strength
+		# 同决斗：未记录时按 0 计，避免未设置变量报错
+		if = {
+			limit = { exists = var:ftr_court_debate_strength }
+			value = var:ftr_court_debate_strength
+		}
+		if = {
+			limit = { exists = var:ftr_court_debate_foe_strength }
+			subtract = var:ftr_court_debate_foe_strength
+		}
 		multiply = 3
 	}
 	min = 15
@@ -628,8 +655,15 @@ ftr_court_duel_strength_value = {
 ftr_court_duel_win_chance_value = {
 	value = 50
 	add = {
-		value = var:ftr_court_duel_strength
-		subtract = var:ftr_court_duel_foe_strength
+		# 双方角力值可能未设置（如决斗中途终止）——未设置时按 0 计
+		if = {
+			limit = { exists = var:ftr_court_duel_strength }
+			value = var:ftr_court_duel_strength
+		}
+		if = {
+			limit = { exists = var:ftr_court_duel_foe_strength }
+			subtract = var:ftr_court_duel_foe_strength
+		}
 		multiply = 4
 	}
 	min = 15
@@ -737,7 +771,11 @@ ftr_court_coup_agent_lock_years_value = 10
 ftr_court_coup_strength_ratio_value = {
 	value = 0
 	if = {
-		limit = { has_variable_list = ftr_court_supporters }
+		limit = {
+			# 求值域可能是已死亡 / 被剪枝的角色（不支持变量）
+			is_alive = yes
+			has_variable_list = ftr_court_supporters
+		}
 		every_in_list = {
 			variable = ftr_court_supporters
 			limit = { is_alive = yes }

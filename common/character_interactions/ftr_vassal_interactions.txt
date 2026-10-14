@@ -370,13 +370,13 @@ ftr_coup_interaction = {
 					TARGET_TYPE = target_character
 					TARGET_SCOPE = scope:recipient
 					# Success.
-					AGENT_1 = agent_thug
-					AGENT_2 = agent_ambusher
-					AGENT_3 = agent_muscle
+					AGENT_1 = ftr_coup_agent_blade
+					AGENT_2 = ftr_coup_agent_ambusher
+					AGENT_3 = ftr_coup_agent_muscle
 					# Speed.
-					AGENT_4 = agent_footpad
+					AGENT_4 = ftr_coup_agent_runner
 					# Secrecy.
-					AGENT_5 = agent_lookout
+					AGENT_5 = ftr_coup_agent_lookout
 				}
 				stress_impact = {
 					compassionate = medium_stress_impact_gain

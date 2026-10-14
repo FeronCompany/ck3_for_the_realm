@@ -482,6 +482,204 @@ ftr_coup_outcoming.3005 = {
 	}
 }
 
+######### 3010 君主在外得知政变（目标侧通知，05 §3.5） #########
+ftr_coup_outcoming.3010 = {
+	type = character_event
+	title = ftr_coup_outcoming.3010.t
+	desc = ftr_coup_outcoming.3010.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # I will return
+		name = ftr_coup_outcoming.3010.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+######### 1010-1012 矫诏废君（君主在外·成功，05 §3.4） #########
+ftr_coup_outcoming.1010 = {
+	type = character_event
+	title = ftr_coup_outcoming.1010.t
+	desc = ftr_coup_outcoming.1010.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = shock
+	}
+
+	trigger = {
+		OR = {
+			NOT = { exists = var:ftr_coup_method }
+			var:ftr_coup_method = 0
+		}
+	}
+
+	immediate = {
+		scope:target = {
+			trigger_event = ftr_coup_outcoming.3010
+		}
+		ftr_coup_away_success_effect = {
+			SCHEME = scope:scheme
+		}
+		scope:scheme = {
+			end_scheme = yes
+		}
+	}
+
+	option = { # Let them live out their days in exile
+		name = ftr_coup_outcoming.1010.a
+		ai_chance = {
+			base = 30
+			modifier = { add = 30  has_trait = forgiving }
+			modifier = { add = 20  has_trait = compassionate }
+			modifier = { add = -30  has_trait = callous }
+			modifier = { add = -20  has_trait = vengeful }
+		}
+	}
+	option = { # Make them disappear
+		name = ftr_coup_outcoming.1010.b
+		unknown_murder_effect = {
+			VICTIM = scope:target
+			MURDERER = root
+			REASON = death_disappearance
+		}
+		ai_chance = {
+			base = 10
+			modifier = { add = 50  has_trait = vengeful }
+			modifier = { add = 40  has_trait = callous }
+			modifier = { add = -40  has_trait = just }
+		}
+	}
+}
+
+ftr_coup_outcoming.1011 = {
+	type = character_event
+	title = ftr_coup_outcoming.1011.t
+	desc = ftr_coup_outcoming.1011.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = shock
+	}
+
+	trigger = {
+		exists = var:ftr_coup_method
+		var:ftr_coup_method = 1
+	}
+
+	immediate = {
+		scope:target = {
+			trigger_event = ftr_coup_outcoming.3010
+		}
+		ftr_coup_away_success_effect = {
+			SCHEME = scope:scheme
+		}
+		scope:scheme = {
+			end_scheme = yes
+		}
+	}
+
+	option = { # Let them live out their days in exile
+		name = ftr_coup_outcoming.1011.a
+		ai_chance = {
+			base = 30
+			modifier = { add = 30  has_trait = forgiving }
+			modifier = { add = 20  has_trait = compassionate }
+			modifier = { add = -30  has_trait = callous }
+			modifier = { add = -20  has_trait = vengeful }
+		}
+	}
+	option = { # Make them disappear
+		name = ftr_coup_outcoming.1011.b
+		unknown_murder_effect = {
+			VICTIM = scope:target
+			MURDERER = root
+			REASON = death_disappearance
+		}
+		ai_chance = {
+			base = 10
+			modifier = { add = 50  has_trait = vengeful }
+			modifier = { add = 40  has_trait = callous }
+			modifier = { add = -40  has_trait = just }
+		}
+	}
+}
+
+ftr_coup_outcoming.1012 = {
+	type = character_event
+	title = ftr_coup_outcoming.1012.t
+	desc = ftr_coup_outcoming.1012.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = shock
+	}
+
+	trigger = {
+		exists = var:ftr_coup_method
+		var:ftr_coup_method = 2
+	}
+
+	immediate = {
+		scope:target = {
+			trigger_event = ftr_coup_outcoming.3010
+		}
+		ftr_coup_away_success_effect = {
+			SCHEME = scope:scheme
+		}
+		scope:scheme = {
+			end_scheme = yes
+		}
+	}
+
+	option = { # Let them live out their days in exile
+		name = ftr_coup_outcoming.1012.a
+		ai_chance = {
+			base = 30
+			modifier = { add = 30  has_trait = forgiving }
+			modifier = { add = 20  has_trait = compassionate }
+			modifier = { add = -30  has_trait = callous }
+			modifier = { add = -20  has_trait = vengeful }
+		}
+	}
+	option = { # Make them disappear
+		name = ftr_coup_outcoming.1012.b
+		unknown_murder_effect = {
+			VICTIM = scope:target
+			MURDERER = root
+			REASON = death_disappearance
+		}
+		ai_chance = {
+			base = 10
+			modifier = { add = 50  has_trait = vengeful }
+			modifier = { add = 40  has_trait = callous }
+			modifier = { add = -40  has_trait = just }
+		}
+	}
+}
+
 #	Setup our rolls.
 ftr_coup_outcoming.4000 = {
 	hidden = yes
@@ -502,8 +700,19 @@ ftr_coup_outcoming.4000 = {
 						NOT = { exists = var:ftr_coup_sensed }
 					}
 				}
-				trigger_event = {
-					on_action = ftr_coup_success
+				# 君主不在中枢 → 矫诏遥控废君（05 §3.2）；在都 → 擒获篡位
+				if = {
+					limit = {
+						scope:target = { ftr_coup_monarch_away_trigger = yes }
+					}
+					trigger_event = {
+						on_action = ftr_coup_success_away
+					}
+				}
+				else = {
+					trigger_event = {
+						on_action = ftr_coup_success
+					}
 				}
 			}
 			else = {

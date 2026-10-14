@@ -128,11 +128,14 @@ ftr_court_notify_struggle_end_effect = {
 # 注意：death 交接（有继承 → transfer；无继承 → end_story）由 on_owner_death 独立处理，
 # 不经此 effect。
 ftr_court_end_story_if_owner_deposed_effect = {
-	# 持有者已不再是最高领主 → 结束故事（触发 on_end → 落幕通知 + cleanup）
+	# 持有者已不再是最高领主，或已转为神权制 → 结束故事（触发 on_end → 落幕通知 + cleanup）
 	if = {
 		limit = {
 			story_owner ?= {
-				NOT = { ftr_court_story_owner_is_supreme_liege_trigger = yes }
+				OR = {
+					NOT = { ftr_court_story_owner_is_supreme_liege_trigger = yes }
+					government_has_flag = government_is_theocracy
+				}
 			}
 		}
 		end_story = yes
@@ -2127,6 +2130,187 @@ ftr_court_coup_pull_backers_effect = {
 				CHAR = scope:ftr_court_coup_pull_backer
 				YEARS = ftr_court_coup_agent_lock_years_value
 			}
+		}
+	}
+}
+
+######################################################
+### 十三、政变时机窗口（05 §2）
+######################################################
+
+# 求值域：朝堂 story。为主君续期四类状态型窗口标记（即位型由 on_title_gain 钩子设置）。
+ftr_coup_window_refresh_effect = {
+	story_owner ?= {
+		if = {
+			limit = { ftr_coup_monarch_away_trigger = yes }
+			add_character_flag = {
+				flag = ftr_coup_window_travel
+				days = ftr_coup_window_travel_days_value
+			}
+		}
+		if = {
+			limit = { is_incapable = yes }
+			add_character_flag = {
+				flag = ftr_coup_window_infirm
+				days = ftr_coup_window_infirm_days_value
+			}
+		}
+		if = {
+			limit = { is_imprisoned = yes }
+			add_character_flag = {
+				flag = ftr_coup_window_imprisoned
+				days = ftr_coup_window_imprisoned_days_value
+			}
+		}
+		if = {
+			limit = { is_excommunicated = yes }
+			add_character_flag = {
+				flag = ftr_coup_window_excommunicated
+				years = ftr_coup_window_excommunicated_years_value
+			}
+		}
+	}
+}
+
+# 求值域：朝堂 story。按当前窗口类型分别概率派发征询。
+ftr_coup_window_dispatch_effect = {
+	story_owner ?= { save_scope_as = ftr_coup_window_monarch }
+	ftr_coup_window_dispatch_one_effect = {
+		FLAG = ftr_coup_window_travel
+		CHANCE = ftr_coup_window_chance_travel_value
+		EVENT = ftr_court_struggle.0170
+	}
+	ftr_coup_window_dispatch_one_effect = {
+		FLAG = ftr_coup_window_newreign
+		CHANCE = ftr_coup_window_chance_newreign_value
+		EVENT = ftr_court_struggle.0171
+	}
+	ftr_coup_window_dispatch_one_effect = {
+		FLAG = ftr_coup_window_infirm
+		CHANCE = ftr_coup_window_chance_infirm_value
+		EVENT = ftr_court_struggle.0172
+	}
+	ftr_coup_window_dispatch_one_effect = {
+		FLAG = ftr_coup_window_imprisoned
+		CHANCE = ftr_coup_window_chance_imprisoned_value
+		EVENT = ftr_court_struggle.0173
+	}
+	ftr_coup_window_dispatch_one_effect = {
+		FLAG = ftr_coup_window_excommunicated
+		CHANCE = ftr_coup_window_chance_excommunicated_value
+		EVENT = ftr_court_struggle.0174
+	}
+	remove_variable = ftr_coup_window_monarch
+}
+
+# 求值域：朝堂 story。参数：FLAG = 窗口标记名；CHANCE = 单次概率（%）；EVENT = 征询事件 id。
+ftr_coup_window_dispatch_one_effect = {
+	if = {
+		limit = {
+			exists = scope:ftr_coup_window_monarch
+			scope:ftr_coup_window_monarch = { has_character_flag = $FLAG$ }
+		}
+		random = {
+			chance = $CHANCE$
+			random_in_list = {
+				variable = ftr_court_participant_list
+				limit = { ftr_coup_window_candidate_valid_trigger = yes }
+				save_scope_as = ftr_coup_window_candidate
+			}
+			scope:ftr_coup_window_candidate ?= {
+				trigger_event = { id = $EVENT$  days = 2 }
+			}
+		}
+	}
+}
+
+# 求值域：新君（on_title_gain 的 root）。设置即位窗口标记（05 §2.1）。
+ftr_coup_window_set_newreign_effect = {
+	trigger = {
+		scope:title ?= { tier >= tier_kingdom }
+		is_independent_ruler = yes
+		primary_title ?= scope:title
+	}
+	effect = {
+		add_character_flag = {
+			flag = ftr_coup_window_newreign
+			years = ftr_coup_window_newreign_years_value
+		}
+	}
+}
+
+# 求值域：候选发起者。参数：MONARCH = 目标君主；BONUS = 本时机发动加成。
+# 起 coup 阴谋 + 强制拉入党羽 + 记发动加成（叠加已存的「隐忍」奖励）+ 记冷却。
+ftr_coup_window_launch_effect = {
+	start_scheme = {
+		type = coup
+		target_character = $MONARCH$
+	}
+	ftr_court_coup_pull_backers_effect = yes
+	set_variable = {
+		name = ftr_coup_opening_bonus
+		value = $BONUS$
+		days = 365
+	}
+	if = {
+		limit = { has_character_flag = ftr_coup_lie_low }
+		change_variable = {
+			name = ftr_coup_opening_bonus
+			add = ftr_coup_lie_low_bonus_value
+		}
+		remove_character_flag = ftr_coup_lie_low
+	}
+	add_character_flag = {
+		flag = ftr_coup_window_ask_cooldown
+		years = ftr_coup_window_ask_cooldown_years_value
+	}
+}
+
+# 求值域：候选发起者。选择「隐忍待机」：记潜伏奖励并进入征询冷却。
+ftr_coup_window_lie_low_effect = {
+	add_character_flag = {
+		flag = ftr_coup_lie_low
+		days = 730
+	}
+	add_character_flag = {
+		flag = ftr_coup_window_ask_cooldown
+		years = ftr_coup_window_ask_cooldown_years_value
+	}
+}
+
+# 求值域：政变发起者。把发动加成累加到 var:ftr_coup_opening_bonus（不存在则创建）。
+ftr_coup_add_opening_bonus_effect = {
+	if = {
+		limit = { has_variable = ftr_coup_opening_bonus }
+		change_variable = {
+			name = ftr_coup_opening_bonus
+			add = $AMOUNT$
+		}
+	}
+	else = {
+		set_variable = {
+			name = ftr_coup_opening_bonus
+			value = $AMOUNT$
+			days = 365
+		}
+	}
+}
+
+# 求值域：候选参与者。窗口征询事件的公共 immediate：定位君主与朝堂 story。
+ftr_coup_window_ask_immediate_effect = {
+	save_scope_as = ftr_court_claimant
+	if = {
+		limit = { exists = top_liege }
+		top_liege = { save_scope_as = ftr_court_monarch }
+	}
+	else_if = {
+		limit = { exists = employer }
+		employer = { save_scope_as = ftr_court_monarch }
+	}
+	scope:ftr_court_monarch ?= {
+		random_owned_story = {
+			type = ftr_court_struggle
+			save_scope_as = ftr_court_story
 		}
 	}
 }

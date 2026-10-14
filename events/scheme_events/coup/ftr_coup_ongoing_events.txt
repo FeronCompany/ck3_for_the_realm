@@ -1099,3 +1099,196 @@ ftr_coup_ongoing.2005 = {
 		}
 	}
 }
+
+##############################################################
+### 101x 夺中枢事件族（05 §4）：root = 政变发起者
+### 与 1000-1009（准备强攻）互补：面向「控制中枢」，君主在外时收益最大。
+##############################################################
+
+######### 1010 封锁驿道 #########
+ftr_coup_ongoing.1010 = {
+	type = character_event
+	title = ftr_coup_ongoing.1010.t
+	desc = ftr_coup_ongoing.1010.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # Seal the post roads
+		name = ftr_coup_ongoing.1010.a
+		ai_chance = { base = 60 }
+		ftr_coup_add_opening_bonus_effect = { AMOUNT = 8 }
+	}
+	option = { # Leave the roads be
+		name = ftr_coup_ongoing.1010.b
+		ai_chance = { base = 40 }
+	}
+}
+
+######### 1011 挟持摄政 #########
+ftr_coup_ongoing.1011 = {
+	type = character_event
+	title = ftr_coup_ongoing.1011.t
+	desc = ftr_coup_ongoing.1011.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # Win the regent over
+		name = ftr_coup_ongoing.1011.a
+		ai_chance = { base = 55 }
+		ftr_coup_add_opening_bonus_effect = { AMOUNT = 12 }
+	}
+	option = { # Force the regent
+		name = ftr_coup_ongoing.1011.b
+		ai_chance = {
+			base = 30
+			modifier = { add = 30  has_trait = callous }
+			modifier = { add = -30  has_trait = just }
+		}
+		random_list = {
+			60 = { ftr_coup_add_opening_bonus_effect = { AMOUNT = 18 } }
+			40 = { add_stress = medium_stress_gain }
+		}
+	}
+	option = { # Let the regent be
+		name = ftr_coup_ongoing.1011.c
+		ai_chance = { base = 15 }
+	}
+}
+
+######### 1012 矫诏 #########
+ftr_coup_ongoing.1012 = {
+	type = character_event
+	title = ftr_coup_ongoing.1012.t
+	desc = ftr_coup_ongoing.1012.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # Forge the decree
+		name = ftr_coup_ongoing.1012.a
+		ai_chance = { base = 60 }
+		ftr_coup_add_opening_bonus_effect = { AMOUNT = 10 }
+	}
+	option = { # Do not stoop to forgery
+		name = ftr_coup_ongoing.1012.b
+		ai_chance = {
+			base = 40
+			modifier = { add = 40  has_trait = honest }
+			modifier = { add = 25  has_trait = just }
+		}
+	}
+}
+
+######### 1013 夺武库、控宫门 #########
+ftr_coup_ongoing.1013 = {
+	type = character_event
+	title = ftr_coup_ongoing.1013.t
+	desc = ftr_coup_ongoing.1013.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # Take the armoury and the gates
+		name = ftr_coup_ongoing.1013.a
+		ai_chance = {
+			base = 55
+			modifier = { add = 25  has_trait = brave }
+			modifier = { add = -25  has_trait = craven }
+		}
+		ftr_coup_add_opening_bonus_effect = { AMOUNT = 15 }
+	}
+	option = { # Hold back
+		name = ftr_coup_ongoing.1013.b
+		ai_chance = { base = 45 }
+	}
+}
+
+######### 1014 百官劝进 #########
+ftr_coup_ongoing.1014 = {
+	type = character_event
+	title = ftr_coup_ongoing.1014.t
+	desc = ftr_coup_ongoing.1014.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # Work the court
+		name = ftr_coup_ongoing.1014.a
+		ai_chance = {
+			base = 55
+			modifier = { add = 25  diplomacy >= 12 }
+		}
+		ftr_coup_add_opening_bonus_effect = { AMOUNT = 10 }
+	}
+	option = { # Wait for them to come around
+		name = ftr_coup_ongoing.1014.b
+		ai_chance = { base = 45 }
+	}
+}
+
+######### 1015 称病待机 #########
+ftr_coup_ongoing.1015 = {
+	type = character_event
+	title = ftr_coup_ongoing.1015.t
+	desc = ftr_coup_ongoing.1015.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+
+	trigger = {}
+
+	immediate = {}
+
+	option = { # Feign illness
+		name = ftr_coup_ongoing.1015.a
+		ai_chance = {
+			base = 40
+			modifier = { add = 30  has_trait = patient }
+			modifier = { add = 20  has_trait = deceitful }
+		}
+		add_stress = minor_stress_loss
+	}
+	option = { # Press on
+		name = ftr_coup_ongoing.1015.b
+		ai_chance = {
+			base = 60
+			modifier = { add = 30  has_trait = impatient }
+		}
+		ftr_coup_add_opening_bonus_effect = { AMOUNT = 5 }
+		add_stress = minor_stress_gain
+	}
+}

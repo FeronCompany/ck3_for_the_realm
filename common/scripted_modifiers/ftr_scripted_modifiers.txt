@@ -222,7 +222,6 @@ hostile_coup_agent_base_join_chance_modifier = {
 	# How much does the Agent like the Target? Modified by AI honor
 	# Positive honor multiplier: Ranges -1 to -5
 	# Negative honor multiplier: Ranges -1 to -0.2
-	# Then multiplied by 1.5
 	opinion_modifier = {
 		trigger = {
 			NOT = { this = scope:target }
@@ -248,7 +247,7 @@ hostile_coup_agent_base_join_chance_modifier = {
 					multiply = 0.008
 				}
 			}
-			multiply = 1.5
+			multiply = 0.5
 		}
 		desc = SCHEME_I_LIKE_TARGET
 	}
@@ -265,7 +264,7 @@ hostile_coup_agent_base_join_chance_modifier = {
 		who = this
 		opinion_target = scope:target
 		multiplier = {
-			value = -0.5
+			value = -0.25
 			if = {
 				limit = { ai_honor <= 0 }
 				add = {
@@ -293,6 +292,21 @@ hostile_coup_agent_base_join_chance_modifier = {
 		multiplier = 0.25
 		#step = 5
 		desc = SCHEME_MY_OPINION_OF_YOU
+	}
+
+	# 发起者的党羽更积极参与（root = agent，判定其在发起者 ftr_court_supporters 名单内）
+	modifier = {
+		add = 40
+		trigger = {
+			scope:owner = {
+				has_variable_list = ftr_court_supporters
+				is_target_in_variable_list = {
+					name = ftr_court_supporters
+					target = root
+				}
+			}
+		}
+		desc = FTR_COUP_AGENT_OWNER_BACKER
 	}
 
 	#Rivals are more keen on seeing their enemy dead

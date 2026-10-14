@@ -5,7 +5,7 @@
 	icon = icon_scheme_hostile
 	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
 	success_chance_growth_per_skill_point = t3_scgpsp_value
-	base_progress_goal = 30
+	base_progress_goal = 20
 	minimum_success = 0
 	maximum_secrecy = 95
 	base_maximum_success = 95
@@ -15,8 +15,9 @@
 	is_secret = yes
 	maximum_breaches = 5
 	phases_per_agent_charge = 1
-	speed_per_skill_point = t3_spsp_owner_value
-	speed_per_target_skill_point = t3_spsp_target_value
+	speed_per_skill_point = -0.8
+	speed_per_target_skill_point = 0.15
+	tier_speed = 0.6
 	target_type = character
 	
 	allow = {
@@ -193,6 +194,21 @@
 			}
 		}
 
+		# 时机窗口发动加成（05 §2.4）
+		modifier = {
+			add = {
+				value = 0
+				if = {
+					limit = {
+						scope:owner = { has_variable = ftr_coup_opening_bonus }
+					}
+					add = scope:owner.var:ftr_coup_opening_bonus
+				}
+			}
+			desc = FTR_COUP_OPENING
+			scope:owner = { has_variable = ftr_coup_opening_bonus }
+		}
+
 		modifier = {
 			add = -100
 			scope:target = {				
@@ -236,11 +252,11 @@
 					NOT = { has_variable = agents_added }
 				}
 			}
-			add_agent_slot = agent_thug
-			add_agent_slot = agent_ambusher
-			add_agent_slot = agent_muscle
-			add_agent_slot = agent_footpad
-			add_agent_slot = agent_lookout
+			add_agent_slot = ftr_coup_agent_blade
+			add_agent_slot = ftr_coup_agent_ambusher
+			add_agent_slot = ftr_coup_agent_muscle
+			add_agent_slot = ftr_coup_agent_runner
+			add_agent_slot = ftr_coup_agent_lookout
 		}
 	}
 
@@ -248,10 +264,35 @@
 		suppress_scheme_follow_up_event_till_input_given_effect = yes
 		ftr_coup_scheme_prep_effect = yes
 		cap_schemes_and_fire_reminders_effect = yes
+		# AI 收口：原版 follow-up 不是引擎自动触发的，而是由 scheme_critical_moments 选项
+		# 内的效果显式发出；而该事件各选项均要求 scheme_agent_charges 达线——政变这种
+		# 短链条攒不到门槛，AI 永远选不出可用项，于是永不结算。
+		# 故 AI 在相位完成且成功率达标时，直接触发结算事件（prep 已存好 scheme/owner/target）。
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+				scheme_success_chance >= 50
+			}
+			scheme_owner = { trigger_event = ftr_coup_outcoming.4000 }
+		}
 	}
 
 	on_hud_click  = { 
 		ftr_coup_scheme_prep_effect = yes
+	}
+
+	# 兜底：AI 政变若相位久未走完，半年度 tick 同样直接结算。
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+				scheme_success_chance >= 50
+			}
+			save_scope_as = scheme
+			scheme_owner = { save_scope_as = owner }
+			scheme_target_character = { save_scope_as = target }
+			scheme_owner = { trigger_event = ftr_coup_outcoming.4000 }
+		}
 	}
 
 	on_monthly = {

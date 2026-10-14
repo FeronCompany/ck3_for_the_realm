@@ -765,6 +765,68 @@ ftr_court_coup_refuse_intensity_drop_value = 20
 ftr_court_coup_rebel_strength_bonus_value = 60
 # 政变分支：党羽被强制锁入阴谋的年数（期间不可自愿退出；另见 coup 的 agent_leave_threshold）
 ftr_court_coup_agent_lock_years_value = 10
+# 政变特工身份档：特工越接近权力核心贡献越大，供 ftr_coup_agent_* 槽复用（求值域 = agent）
+ftr_coup_agent_role_contribution_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = scope:target
+			is_councillor_of = scope:target
+		}
+		add = { value = 12  desc = FTR_COUP_AGENT_ROLE_CORE_COUNCILLOR }
+	}
+	else_if = {
+		limit = {
+			exists = scope:owner
+			is_councillor_of = scope:owner
+		}
+		add = { value = 9  desc = FTR_COUP_AGENT_ROLE_OWNER_COUNCILLOR }
+	}
+	else_if = {
+		limit = {
+			exists = scope:target
+			is_courtier_of = scope:target
+		}
+		add = { value = 6  desc = FTR_COUP_AGENT_ROLE_CORE_COURTIER }
+	}
+	else_if = {
+		limit = {
+			exists = scope:owner
+			is_courtier_of = scope:owner
+		}
+		add = { value = 4  desc = FTR_COUP_AGENT_ROLE_OWNER_COURTIER }
+	}
+	else_if = {
+		limit = {
+			exists = scope:owner
+			is_close_family_of = scope:owner
+		}
+		add = { value = 4  desc = FTR_COUP_AGENT_ROLE_KIN }
+	}
+}
+
+########## 十之二、政变时机窗口（05 §2）##########
+# 窗口刷新+派发周期与各时机时长
+ftr_coup_window_refresh_months_value = 2
+ftr_coup_window_travel_days_value = 180
+ftr_coup_window_newreign_years_value = 2
+ftr_coup_window_infirm_days_value = 365
+ftr_coup_window_imprisoned_days_value = 365
+ftr_coup_window_excommunicated_years_value = 2
+ftr_coup_window_ask_cooldown_years_value = 2
+# 单次派发概率（%）
+ftr_coup_window_chance_travel_value = 25
+ftr_coup_window_chance_newreign_value = 20
+ftr_coup_window_chance_infirm_value = 25
+ftr_coup_window_chance_imprisoned_value = 30
+ftr_coup_window_chance_excommunicated_value = 15
+# 窗口发动加成（成功率 %，写入 var:ftr_coup_opening_bonus）
+ftr_coup_opening_bonus_travel_value = 15
+ftr_coup_opening_bonus_newreign_value = 20
+ftr_coup_opening_bonus_infirm_value = 15
+ftr_coup_opening_bonus_imprisoned_value = 25
+ftr_coup_opening_bonus_excommunicated_value = 10
+ftr_coup_lie_low_bonus_value = 10
 
 # 求值域：起兵发起者（竞争者本人）。党羽总兵力 ÷ 君主兵力（分母保底 1，避免除零）。
 # 依赖：scope:ftr_court_monarch（事件 immediate 已保存）。

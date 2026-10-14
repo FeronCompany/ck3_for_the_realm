@@ -1,0 +1,101 @@
+﻿# 政变专用特工槽：贡献 = 原版通用基值 + 技能 + 身份档（内阁 > 廷臣 > 亲人，见 ftr_coup_agent_role_contribution_value）
+ftr_coup_agent_blade = {
+	contribution_type = success_chance_max
+	contribution = {
+		value = scheme_agent_general_bonuses_contribution_score_value
+		add = {
+			value = prowess
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.prowess
+		}
+		add = {
+			value = intrigue
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.intrigue
+		}
+		add = ftr_coup_agent_role_contribution_value
+	}
+}
+
+ftr_coup_agent_ambusher = {
+	contribution_type = success_chance_max
+	contribution = {
+		value = scheme_agent_general_bonuses_contribution_score_value
+		add = {
+			value = intrigue
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.intrigue
+		}
+		add = {
+			value = martial
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.martial
+		}
+		add = ftr_coup_agent_role_contribution_value
+	}
+}
+
+ftr_coup_agent_muscle = {
+	contribution_type = success_chance_max
+	contribution = {
+		value = scheme_agent_general_bonuses_contribution_score_value
+		add = {
+			value = prowess
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.prowess
+		}
+		add = ftr_coup_agent_role_contribution_value
+	}
+}
+
+ftr_coup_agent_runner = {
+	contribution_type = speed
+	contribution = {
+		value = scheme_agent_general_bonuses_contribution_score_value
+		add = {
+			value = intrigue
+			multiply = agent_1to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.intrigue
+		}
+		add = {
+			value = prowess
+			multiply = agent_1to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.prowess
+		}
+		add = ftr_coup_agent_role_contribution_value
+	}
+}
+
+ftr_coup_agent_lookout = {
+	contribution_type = secrecy
+	contribution = {
+		value = scheme_agent_general_bonuses_contribution_score_value
+		add = {
+			value = intrigue
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.intrigue
+		}
+		add = {
+			value = martial
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.martial
+		}
+		add = ftr_coup_agent_role_contribution_value
+	}
+}

@@ -20,5 +20,30 @@ can_keep_single_heir_succession_law_trigger = {
 	}
 }
 
+# 求值域：目标君主。判定其是否不在中枢（05 §3.1）。
+ftr_coup_monarch_away_trigger = {
+	OR = {
+		is_travelling = yes
+		is_leading_army = yes
+		AND = {
+			exists = capital_province
+			NOT = { location = capital_province }
+		}
+	}
+}
+
+# 求值域：候选参与者。时机窗口征询的资格（05 §2.2）。
+ftr_coup_window_candidate_valid_trigger = {
+	is_ai = yes
+	is_capable_adult = yes
+	is_imprisoned = no
+	NOT = { has_character_flag = ftr_coup_window_ask_cooldown }
+	exists = scope:ftr_coup_window_monarch
+	OR = {
+		is_courtier_of = scope:ftr_coup_window_monarch
+		is_vassal_of = scope:ftr_coup_window_monarch
+	}
+}
+
 
 

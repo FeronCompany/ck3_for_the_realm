@@ -25,6 +25,8 @@ ftr_court_struggle_valid_trigger = {
 	ftr_court_realm_tier_valid_trigger = yes
 	ftr_court_has_succession_order_trigger = yes
 	NOT = { is_imprisoned = yes }
+	# 神权制不参与朝堂角逐（教会政权无世俗继承之争）
+	NOT = { government_has_flag = government_is_theocracy }
 }
 
 # 收场核心判定：故事持有者是否仍是「最高领主」（求值域：story_owner）。

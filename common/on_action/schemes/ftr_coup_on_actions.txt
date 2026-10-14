@@ -22,6 +22,18 @@ ftr_coup_failure = {
 	}
 }
 
+# 君主不在中枢时政变成功：矫诏遥控废君（05 §3.4）
+ftr_coup_success_away = {
+	events = {
+		ftr_coup_outcoming.1010 # Decree deposition, by assault
+		ftr_coup_outcoming.1011 # Decree deposition, by infiltration
+		ftr_coup_outcoming.1012 # Decree deposition, by trap
+	}
+	on_actions = {
+		ftr_clear_coup_variable_effect
+	}
+}
+
 ftr_clear_coup_variable_effect = {
 	effect = {
 		remove_variable = ftr_coup_method
@@ -33,7 +45,7 @@ ftr_coup_ongoing = {
 		is_physically_able = yes
 	}
 	random_events = {
-		80 = 0
+		110 = 0
 		15 = ftr_coup_ongoing.1000 # Bribe servant
 		5 = ftr_coup_ongoing.1001 # Agent exposed
 		15 = ftr_coup_ongoing.1002 # Undercover infiltrated into the Guard
@@ -44,6 +56,12 @@ ftr_coup_ongoing = {
 		15 = ftr_coup_ongoing.1007 # Create chaos in the surrounding area
 		15 = ftr_coup_ongoing.1008 # Make a trap
 		10 = ftr_coup_ongoing.1009 # Action early because of misunderstanding
+		15 = ftr_coup_ongoing.1010 # Seal the post roads
+		10 = ftr_coup_ongoing.1011 # Seize the regent
+		10 = ftr_coup_ongoing.1012 # Forge a decree
+		15 = ftr_coup_ongoing.1013 # Seize the armoury and the gates
+		10 = ftr_coup_ongoing.1014 # Courtiers petition for a new lord
+		10 = ftr_coup_ongoing.1015 # Feign illness and bide time
 	}
 	events = {
 	}

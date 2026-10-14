@@ -4507,3 +4507,269 @@ ftr_court_struggle.0701 = {
 		ftr_court_decline_contest_effect = yes
 	}
 }
+
+##############################################################
+### 017x 政变时机窗口征询（05 §2.5）：root = 候选参与者
+### 由 ftr_coup_window_dispatch_one_effect 按时机类型派发；
+### 三选项：立即发动 / 隐忍待机 / 静观其变。
+##############################################################
+
+######### 0170 君主离城（中枢空虚） #########
+ftr_court_struggle.0170 = {
+	type = character_event
+	title = ftr_court_struggle.0170.t
+	desc = ftr_court_struggle.0170.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+		animation = personality_bold
+	}
+
+	immediate = { ftr_coup_window_ask_immediate_effect = yes }
+
+	option = { # 就是现在
+		name = ftr_court_struggle.0170.a
+		ai_chance = {
+			base = 40
+			modifier = { add = 40  has_trait = ambitious }
+			modifier = { add = 25  has_trait = brave }
+			modifier = { add = -60  has_trait = content }
+			modifier = { add = -40  has_trait = loyal }
+		}
+		ftr_coup_window_launch_effect = {
+			MONARCH = scope:ftr_court_monarch
+			BONUS = ftr_coup_opening_bonus_travel_value
+		}
+	}
+	option = { # 按兵不动
+		name = ftr_court_struggle.0170.b
+		ai_chance = {
+			base = 45
+			modifier = { add = 40  has_trait = patient }
+			modifier = { add = 30  has_trait = content }
+			modifier = { add = -30  has_trait = impatient }
+		}
+		ftr_coup_window_lie_low_effect = yes
+	}
+	option = { # 静观其变
+		name = ftr_court_struggle.0170.c
+		ai_chance = { base = 15 }
+		add_character_flag = {
+			flag = ftr_coup_window_ask_cooldown
+			years = ftr_coup_window_ask_cooldown_years_value
+		}
+	}
+}
+
+######### 0171 新君即位（合法性未稳） #########
+ftr_court_struggle.0171 = {
+	type = character_event
+	title = ftr_court_struggle.0171.t
+	desc = ftr_court_struggle.0171.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+		animation = personality_bold
+	}
+
+	immediate = { ftr_coup_window_ask_immediate_effect = yes }
+
+	option = { # 就是现在
+		name = ftr_court_struggle.0171.a
+		ai_chance = {
+			base = 40
+			modifier = { add = 40  has_trait = ambitious }
+			modifier = { add = 25  has_trait = brave }
+			modifier = { add = -60  has_trait = content }
+			modifier = { add = -40  has_trait = loyal }
+		}
+		ftr_coup_window_launch_effect = {
+			MONARCH = scope:ftr_court_monarch
+			BONUS = ftr_coup_opening_bonus_newreign_value
+		}
+	}
+	option = { # 按兵不动
+		name = ftr_court_struggle.0171.b
+		ai_chance = {
+			base = 45
+			modifier = { add = 40  has_trait = patient }
+			modifier = { add = 30  has_trait = content }
+			modifier = { add = -30  has_trait = impatient }
+		}
+		ftr_coup_window_lie_low_effect = yes
+	}
+	option = { # 静观其变
+		name = ftr_court_struggle.0171.c
+		ai_chance = { base = 15 }
+		add_character_flag = {
+			flag = ftr_coup_window_ask_cooldown
+			years = ftr_coup_window_ask_cooldown_years_value
+		}
+	}
+}
+
+######### 0172 君主失能（中枢无主） #########
+ftr_court_struggle.0172 = {
+	type = character_event
+	title = ftr_court_struggle.0172.t
+	desc = ftr_court_struggle.0172.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+		animation = personality_rational
+	}
+
+	immediate = { ftr_coup_window_ask_immediate_effect = yes }
+
+	option = { # 就是现在
+		name = ftr_court_struggle.0172.a
+		ai_chance = {
+			base = 40
+			modifier = { add = 40  has_trait = ambitious }
+			modifier = { add = 25  has_trait = brave }
+			modifier = { add = -60  has_trait = content }
+			modifier = { add = -40  has_trait = loyal }
+		}
+		ftr_coup_window_launch_effect = {
+			MONARCH = scope:ftr_court_monarch
+			BONUS = ftr_coup_opening_bonus_infirm_value
+		}
+	}
+	option = { # 按兵不动
+		name = ftr_court_struggle.0172.b
+		ai_chance = {
+			base = 45
+			modifier = { add = 40  has_trait = patient }
+			modifier = { add = 30  has_trait = content }
+			modifier = { add = -30  has_trait = impatient }
+		}
+		ftr_coup_window_lie_low_effect = yes
+	}
+	option = { # 静观其变
+		name = ftr_court_struggle.0172.c
+		ai_chance = { base = 15 }
+		add_character_flag = {
+			flag = ftr_coup_window_ask_cooldown
+			years = ftr_coup_window_ask_cooldown_years_value
+		}
+	}
+}
+
+######### 0173 君主被囚（中枢失据） #########
+ftr_court_struggle.0173 = {
+	type = character_event
+	title = ftr_court_struggle.0173.t
+	desc = ftr_court_struggle.0173.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+		animation = personality_rational
+	}
+
+	immediate = { ftr_coup_window_ask_immediate_effect = yes }
+
+	option = { # 就是现在
+		name = ftr_court_struggle.0173.a
+		ai_chance = {
+			base = 45
+			modifier = { add = 40  has_trait = ambitious }
+			modifier = { add = 25  has_trait = brave }
+			modifier = { add = -60  has_trait = content }
+			modifier = { add = -40  has_trait = loyal }
+		}
+		ftr_coup_window_launch_effect = {
+			MONARCH = scope:ftr_court_monarch
+			BONUS = ftr_coup_opening_bonus_imprisoned_value
+		}
+	}
+	option = { # 按兵不动
+		name = ftr_court_struggle.0173.b
+		ai_chance = {
+			base = 40
+			modifier = { add = 40  has_trait = patient }
+			modifier = { add = 30  has_trait = content }
+			modifier = { add = -30  has_trait = impatient }
+		}
+		ftr_coup_window_lie_low_effect = yes
+	}
+	option = { # 静观其变
+		name = ftr_court_struggle.0173.c
+		ai_chance = { base = 15 }
+		add_character_flag = {
+			flag = ftr_coup_window_ask_cooldown
+			years = ftr_coup_window_ask_cooldown_years_value
+		}
+	}
+}
+
+######### 0174 君主被绝罚（法统受损） #########
+ftr_court_struggle.0174 = {
+	type = character_event
+	title = ftr_court_struggle.0174.t
+	desc = ftr_court_struggle.0174.desc
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:ftr_court_monarch
+		animation = personality_rational
+	}
+
+	immediate = { ftr_coup_window_ask_immediate_effect = yes }
+
+	option = { # 就是现在
+		name = ftr_court_struggle.0174.a
+		ai_chance = {
+			base = 30
+			modifier = { add = 40  has_trait = ambitious }
+			modifier = { add = 25  has_trait = zealous }
+			modifier = { add = -60  has_trait = content }
+			modifier = { add = -40  has_trait = loyal }
+		}
+		ftr_coup_window_launch_effect = {
+			MONARCH = scope:ftr_court_monarch
+			BONUS = ftr_coup_opening_bonus_excommunicated_value
+		}
+	}
+	option = { # 按兵不动
+		name = ftr_court_struggle.0174.b
+		ai_chance = {
+			base = 50
+			modifier = { add = 40  has_trait = patient }
+			modifier = { add = 30  has_trait = content }
+			modifier = { add = -30  has_trait = impatient }
+		}
+		ftr_coup_window_lie_low_effect = yes
+	}
+	option = { # 静观其变
+		name = ftr_court_struggle.0174.c
+		ai_chance = { base = 20 }
+		add_character_flag = {
+			flag = ftr_coup_window_ask_cooldown
+			years = ftr_coup_window_ask_cooldown_years_value
+		}
+	}
+}

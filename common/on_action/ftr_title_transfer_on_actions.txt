@@ -7,6 +7,8 @@ on_title_gain = {
 		ftr_auto_assign_baronies_effects
 		# 政权易主（退位/被废/篡夺/派系逼宫）时，朝堂权力角逐 story 跟随新君转移
 		ftr_court_handover_on_title_gain_effect
+		# 新君即位 → 开启「即位」政变时机窗口（05 §2.1）
+		ftr_coup_window_set_newreign_effect
 	}
 }
 

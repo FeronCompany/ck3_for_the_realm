@@ -33,6 +33,12 @@ ftr_coup_success_effect = {
 		add_legitimacy = massive_legitimacy_loss
 		add_dread = 50
 	}
+	ftr_coup_transfer_realm_effect = yes
+}
+
+# 政变夺权共用段（05 §3.3）：头衔转移 + 封臣改宗 + 宫廷宏伟度继承。
+# 依赖：scope:owner = 政变发起者；scope:target = 被夺位者。
+ftr_coup_transfer_realm_effect = {
 	create_title_and_vassal_change = {
 		type = usurped
 		save_scope_as = change
@@ -157,5 +163,74 @@ ftr_coup_scheme_prep_effect = {
 			NOT = { exists = scope:suppress_next_event }
 		}
 		scheme_owner = { trigger_event = scheme_critical_moments.0002 }
+	}
+}
+
+# 彻底夺产（05 §3.3）：把被废君主名下剩余头衔一并收归新君，使其彻底无地。
+# 依赖：scope:owner = 新君；scope:target = 被废君主。
+ftr_coup_strip_all_titles_effect = {
+	create_title_and_vassal_change = {
+		type = usurped
+		save_scope_as = ftr_coup_strip_change
+		add_claim_on_loss = yes
+	}
+	scope:target = {
+		every_held_title = {
+			change_title_holder_include_vassals = {
+				holder = scope:owner
+				change = scope:ftr_coup_strip_change
+				government_base = scope:target
+			}
+		}
+	}
+	resolve_title_and_vassal_change = scope:ftr_coup_strip_change
+}
+
+# 君主在外·政变成功（05 §3.3）：矫诏废君——不擒获，剥夺全部头衔，目标转无地冒险者。
+ftr_coup_away_success_effect = {
+	$SCHEME$ = {
+		save_scope_as = coup_scheme
+	}
+	scope:coup_scheme = {
+		scheme_owner = {
+			save_scope_as = owner
+		}
+		scheme_target_character = {
+			save_scope_as = target
+		}
+		hidden_effect = {
+			every_scheme_agent_character = {
+				add_opinion = {
+					modifier = claimant_faction_member_opinion
+					target = scope:owner
+				}
+				ftr_personal_merit_backing_add_effect = {
+					CLAIMANT = scope:owner
+					AMOUNT = ftr_personal_merit_coup_support_value
+				}
+			}
+		}
+	}
+	scope:owner = {
+		add_legitimacy = massive_legitimacy_loss
+		add_dread = 50
+	}
+	ftr_coup_transfer_realm_effect = yes
+	ftr_coup_strip_all_titles_effect = yes
+	# 被废君主转无地冒险者（EP3 守卫；无该 DLC 时保留无地状态）
+	if = {
+		limit = {
+			scope:target ?= { is_alive = yes }
+			has_dlc_feature = roads_to_power
+		}
+		scope:target = {
+			set_landless_government_effect = yes
+			create_landless_adventurer_title_effect = {
+				REASON = flag:deposition
+				FLAVOR_CHAR = scope:owner
+			}
+			create_landless_adventurer_title_tooltip_effect = yes
+			adventurer_prestige_reset_effect = yes
+		}
 	}
 }

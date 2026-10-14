@@ -18,6 +18,8 @@ ftr_court_try_start_on_action = {
 		highest_held_title_tier >= tier_kingdom
 		# 已有角逐则跳过
 		NOT = { any_owned_story = { type = ftr_court_struggle } }
+		# 神权制不建立朝堂角逐
+		NOT = { government_has_flag = government_is_theocracy }
 		# 完整准入 + 议题1触发（内部已含 valid / 非冷却 / 非战争 / 候选数）
 		ftr_court_can_start_struggle_trigger = yes
 		ftr_court_should_activate_succession_trigger = yes
@@ -34,10 +36,13 @@ ftr_court_try_start_on_action = {
 # story owner 驾崩无继承的收场由 on_owner_death → end_story 独立处理，不在此重复。
 ftr_court_validate_on_action = {
 	trigger = {
-		# 身上确实挂着朝堂故事，且持有者已非最高领主才需要兜底收场
+		# 身上确实挂着朝堂故事，且持有者已非最高领主（或已转神权制）才需要兜底收场
 		any_owned_story = { type = ftr_court_struggle }
 		is_alive = yes
-		NOT = { ftr_court_story_owner_is_supreme_liege_trigger = yes }
+		OR = {
+			NOT = { ftr_court_story_owner_is_supreme_liege_trigger = yes }
+			government_has_flag = government_is_theocracy
+		}
 	}
 	effect = {
 		every_owned_story = {

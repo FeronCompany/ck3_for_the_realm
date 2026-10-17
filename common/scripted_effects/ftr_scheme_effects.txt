@@ -53,9 +53,10 @@ ftr_coup_transfer_realm_effect = {
 			limit = {
 				OR = {
 					tier >= tier_kingdom
-					tier = primary_title.tier
+					tier = scope:target.primary_title.tier
 					AND = {
 						tier = tier_county
+						exists = scope:target.capital_county
 						this = scope:target.capital_county
 					}
 				}

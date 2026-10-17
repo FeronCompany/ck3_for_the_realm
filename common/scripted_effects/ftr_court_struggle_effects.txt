@@ -3144,11 +3144,10 @@ ftr_court_omen_inquiry_effect = {
 
 # 求值域：君主。参数 CHAMPION = 被党羽 / 请愿者拥立的角色。
 # 逼立储 / 共治的**唯一落地关节**（04 §2.1）：
-#   ① 立储：仅合法继承人线（ftr_court_is_legitimate_heir_of_trigger）；**不受有无现役共治影响**
-#      ——已有官职线共治时仍可立储，只是不建共治。写储位前若将走太子线，先辞官回宫
-#      （否则引擎重算继承会清掉刚写入的指定，见 03 §2.2 顺序修复）。
+#   ① 立储：判据为 ftr_court_can_designate_champion_trigger（与共治无关）；行政制先辞官回宫再写储位
+#      （否则引擎会因「非本宫廷的适格继承人」拒绝写入，见 03 §2.2）。不可立储者由调用方派发前拦截。
 #   ② 建共治：需无现役共治。
-#       继承人线（共治型）：共帝 → 太子 → 共治君主；均不满足则只留储位。
+#       继承人线（合法继承人）：共帝 → 太子 → 共治君主；均不满足则只留储位。
 #       非继承人线（官职 / 摄政型）：草原摄政 → 维齐尔 → 摄政。
 #   注：中华霸主（tier_hegemony）的 grand_secretariat 宰相共治常驻，② 恒被拦下 ⇒ 该情形只落地为
 #       「指定继承人」。此为原版硬限制，不另设分支。
@@ -3163,11 +3162,15 @@ ftr_court_establish_champion_coregency_effect = {
 			scope:ftr_court_coregency_champion = { ftr_court_champion_eligible_diarch_trigger = yes }
 		}
 
-		# ① 立储：仅合法继承人线；与有无现役共治无关
+		# ① 立储
 		if = {
-			limit = { ftr_court_is_legitimate_heir_of_trigger = { HEIR = scope:ftr_court_coregency_champion } }
+			limit = { ftr_court_can_designate_champion_trigger = { HEIR = scope:ftr_court_coregency_champion } }
+			# 行政制：先辞官回宫，否则引擎会因「非本宫廷的适格继承人」拒绝写入储位（幂等）
 			if = {
-				limit = { ftr_diarchy_can_start_crown_prince_trigger = yes }
+				limit = {
+					government_has_mechanic = administrative
+					scope:ftr_court_coregency_champion = { top_liege = scope:ftr_court_coregency_liege }
+				}
 				scope:ftr_court_coregency_champion = { ftr_diarchy_enforce_crown_prince_unlanded_effect = yes }
 			}
 			set_designated_heir = scope:ftr_court_coregency_champion
@@ -3316,7 +3319,7 @@ ftr_court_backer_demand_pulse_effect = {
 					NOT = { ftr_court_realm_has_crown_prince_trigger = yes }
 				}
 			}
-			# 选出党羽规模最大的合格竞争者（按规模降序取首个达标者）
+			# 选出党羽规模最大且可被立储的合格竞争者（按规模降序取首个达标者）
 			set_variable = { name = ftr_court_demand_pick  value = 0 }
 			ordered_in_list = {
 				variable = ftr_court_participant_list
@@ -3329,6 +3332,9 @@ ftr_court_backer_demand_pulse_effect = {
 							scope:ftr_court_demand_candidate = {
 								ftr_court_backer_demand_scale_reached_trigger = yes
 								ftr_court_champion_eligible_diarch_trigger = yes
+							}
+							scope:ftr_court_demand_monarch = {
+								ftr_court_can_designate_champion_trigger = { HEIR = scope:ftr_court_demand_candidate }
 							}
 						}
 						scope:ftr_court_demand_candidate = { save_scope_as = ftr_court_demand_champion }

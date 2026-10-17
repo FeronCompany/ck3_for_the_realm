@@ -1,0 +1,198 @@
+﻿
+##############################################################
+### 讨伐军阀 —— 宗主向「拒绝内附的军阀」发动的全面讨伐，胜利夺取其全部领地
+### 前提：攻击者持 ftr_warlord_demand_refused 旗标（限时一年）且对方仍是自家军阀
+##############################################################
+ftr_warlord_annexation_cb = {
+	group = ftr_warlord_war
+	icon = subjugation_cb
+
+	# 针对整个政权而非某个头衔
+	target_titles = none
+	war_name = "FTR_WARLORD_ANNEXATION_WAR_NAME"
+	cb_name_no_target = "FTR_WARLORD_ANNEXATION_WAR_NAME"
+	interface_priority = 59
+
+	attacker_score_from_occupation_scale = 150
+	attacker_score_from_battles_scale = 150
+	defender_score_from_battles_scale = 150
+
+	# 占领足够比例的领地即可取胜（无需逐块清空）
+	ticking_war_score_targets_entire_realm = yes
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
+	attacker_ticking_warscore = 0
+	attacker_wargoal_percentage = 0.8
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	########## 谁可以发动 ##########
+	allowed_for_character = {
+		scope:attacker = {
+			is_independent_ruler = yes
+			has_character_flag = ftr_warlord_demand_refused
+		}
+	}
+
+	########## 对谁发动 ##########
+	allowed_against_character = {
+		scope:defender = {
+			is_independent_ruler = yes
+			is_landed = yes
+			has_subject_contract_group = ftr_tributary_warlord
+			is_tributary_of = scope:attacker
+		}
+	}
+
+	valid_to_start = {
+		scope:defender = {
+			is_landed = yes
+		}
+	}
+
+	should_invalidate = {
+		NOT = {
+			scope:defender = {
+				is_landed = yes
+				has_subject_contract_group = ftr_tributary_warlord
+			}
+		}
+	}
+
+	on_invalidated_desc = msg_subjugation_war_invalidated_message
+
+	on_invalidated = {
+		scope:attacker = {
+			if = {
+				limit = { is_alive = yes }
+				# 失效则重开宣战窗口，允许再次讨伐
+				add_character_flag = {
+					flag = ftr_warlord_demand_refused
+					years = 1
+				}
+			}
+		}
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = 250
+				desc = CB_BASE_COST
+			}
+			multiply = common_cb_prestige_cost_multiplier
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+	}
+
+	on_victory_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:attacker = { is_local_player = yes } }
+				desc = ftr_warlord_annexation_cb_victory_desc_attacker
+			}
+			desc = ftr_warlord_annexation_cb_victory_desc
+		}
+	}
+
+	on_victory = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		add_legitimacy_attacker_victory_effect = yes
+		scope:attacker = { accolade_attacker_war_end_glory_gain_med_effect = yes }
+
+		# 解除军阀朝贡关系
+		scope:defender = {
+			if = {
+				limit = { is_tributary = yes }
+				end_tributary = yes
+			}
+		}
+
+		# 夺取军阀的全部领地
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:defender = {
+			every_held_title = {
+				limit = {
+					tier >= tier_county
+					is_head_of_faith = no
+					is_noble_family_title = no
+				}
+				change_title_holder_include_vassals = {
+					holder = scope:attacker
+					change = scope:change
+				}
+			}
+			every_vassal = {
+				change_liege = {
+					liege = scope:attacker
+					change = scope:change
+				}
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		scope:defender = {
+			add_prestige = {
+				value = major_prestige_value
+				multiply = -1.0
+			}
+		}
+	}
+
+	on_white_peace_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = ftr_warlord_annexation_cb_white_peace_desc_defender
+			}
+			desc = ftr_warlord_annexation_cb_white_peace_desc
+		}
+	}
+
+	on_white_peace = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
+		scope:defender = { accolade_defender_war_end_glory_gain_med_effect = yes }
+		scope:attacker = {
+			add_prestige = {
+				value = medium_prestige_value
+				multiply = -1.0
+			}
+		}
+		add_truce_white_peace_effect = yes
+	}
+
+	on_defeat_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = ftr_warlord_annexation_cb_defeat_desc_defender
+			}
+			desc = ftr_warlord_annexation_cb_defeat_desc
+		}
+	}
+
+	on_defeat = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		add_legitimacy_attacker_defeat_effect = yes
+		scope:defender = { accolade_defender_war_end_glory_gain_high_effect = yes }
+
+		scope:attacker = {
+			add_prestige = {
+				value = medium_prestige_value
+				multiply = -1.0
+			}
+		}
+		add_truce_white_peace_effect = yes
+	}
+}

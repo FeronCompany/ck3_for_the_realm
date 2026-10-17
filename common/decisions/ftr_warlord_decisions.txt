@@ -1,0 +1,73 @@
+﻿
+##############################################################
+### 军阀 · 割据决议
+##############################################################
+ftr_warlord_secede_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = realm
+	desc = ftr_warlord_secede_decision_desc
+	selection_tooltip = ftr_warlord_secede_decision_tooltip
+	cooldown = { years = 5 }
+
+	is_shown = {
+		is_independent_ruler = no
+		liege = {
+			is_independent_ruler = yes
+			ftr_warlord_liege_in_civil_war_trigger = yes
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = ftr_warlord_not_already_tt
+			NOT = { has_subject_contract_group = ftr_tributary_warlord }
+		}
+		ftr_warlord_can_secede_trigger = yes
+	}
+
+	effect = {
+		# 固化作用域：申请者 = root，直属领主 = scope:ftr_warlord_liege
+		# （is_valid 已保证直属领主是独立统治者，故其即最高领主）
+		save_scope_as = ftr_warlord_plotter
+		liege = { save_scope_as = ftr_warlord_liege }
+
+		custom_tooltip = ftr_warlord_secede_decision_effect_tt
+		trigger_event = ftr_warlord_event.0001
+
+		stress_impact = {
+			content = medium_stress_impact_gain
+		}
+		stress_impact = {
+			ambitious = minor_stress_impact_loss
+		}
+	}
+
+	ai_check_interval = 24
+	ai_potential = {
+		highest_held_title_tier >= tier_duchy
+		ftr_warlord_can_secede_trigger = yes
+	}
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 40
+			is_powerful_vassal = yes
+		}
+		modifier = {
+			add = 30
+			OR = {
+				has_trait = ambitious
+				has_trait = disloyal
+			}
+		}
+		modifier = {
+			add = -50
+			OR = {
+				has_trait = loyal
+				has_trait = content
+			}
+		}
+	}
+}

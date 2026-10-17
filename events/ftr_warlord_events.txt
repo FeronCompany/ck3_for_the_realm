@@ -1,0 +1,191 @@
+﻿
+namespace = ftr_warlord_event
+
+##############################################################
+### 0001 割据判定（隐藏）
+### root = 申请割据的直属臣属
+### 需已保存 scope:ftr_warlord_plotter / scope:ftr_warlord_liege
+##############################################################
+ftr_warlord_event.0001 = {
+	hidden = yes
+
+	immediate = {
+		ftr_warlord_secede_roll_effect = yes
+	}
+}
+
+##############################################################
+### 0002 割据失败：最高君主决定逮捕或赦免
+### root = 最高君主
+### 需已保存 scope:ftr_warlord_plotter
+##############################################################
+ftr_warlord_event.0002 = {
+	type = character_event
+	title = ftr_warlord_event.0002.t
+	desc = ftr_warlord_event.0002.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:ftr_warlord_plotter
+	}
+
+	immediate = {}
+
+	option = { # 逮捕
+		name = ftr_warlord_event.0002.a
+		imprison = {
+			target = scope:ftr_warlord_plotter
+			type = dungeon
+		}
+		scope:ftr_warlord_plotter = {
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				title = ftr_warlord_imprisoned_for_secession_tt
+				left_icon = root
+				custom_tooltip = ftr_warlord_imprisoned_for_secession_tt_desc
+			}
+			stress_impact = {
+				ambitious = medium_stress_impact_gain
+			}
+		}
+		ai_chance = {
+			base = 40
+			modifier = {
+				add = 40
+				has_trait = wrathful
+			}
+			modifier = {
+				add = 30
+				OR = {
+					has_trait = arbitrary
+					has_trait = callous
+				}
+			}
+			modifier = {
+				add = -30
+				has_trait = forgiving
+			}
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:ftr_warlord_plotter
+				multiplier = -0.5
+			}
+		}
+	}
+
+	option = { # 赦免
+		name = ftr_warlord_event.0002.b
+		consume_all_criminal_reasons_effect = {
+			LIEGE = root
+			CRIMINAL = scope:ftr_warlord_plotter
+		}
+		scope:ftr_warlord_plotter = {
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = ftr_warlord_pardoned_for_secession_tt
+				left_icon = root
+				custom_tooltip = ftr_warlord_pardoned_for_secession_tt_desc
+			}
+			add_opinion = {
+				target = root
+				modifier = grateful_opinion
+				opinion = 40
+			}
+		}
+		stress_impact = {
+			forgiving = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 30
+			modifier = {
+				add = 40
+				has_trait = forgiving
+			}
+			modifier = {
+				add = 20
+				OR = {
+					has_trait = content
+					has_trait = trusting
+				}
+			}
+			opinion_modifier = {
+				who = root
+				opinion_target = scope:ftr_warlord_plotter
+				multiplier = 0.5
+			}
+		}
+	}
+
+	after = {}
+}
+
+##############################################################
+### 0004 要求内附被军阀拒绝：是否立即讨伐
+### root = 宗主（交互发起者）
+### 需已保存 scope:ftr_warlord_plotter
+##############################################################
+ftr_warlord_event.0004 = {
+	type = character_event
+	title = ftr_warlord_event.0004.t
+	desc = ftr_warlord_event.0004.desc
+	theme = realm
+	left_portrait = {
+		character = root
+	}
+	right_portrait = {
+		character = scope:ftr_warlord_plotter
+	}
+
+	immediate = {}
+
+	option = { # 兴兵讨伐
+		name = ftr_warlord_event.0004.a
+		start_war = {
+			target = scope:ftr_warlord_plotter
+			casus_belli = ftr_warlord_annexation_cb
+		}
+		ai_chance = {
+			base = 60
+			modifier = {
+				add = 40
+				OR = {
+					has_trait = wrathful
+					has_trait = ambitious
+				}
+			}
+			modifier = {
+				add = -40
+				OR = {
+					has_trait = craven
+					has_trait = content
+				}
+			}
+			modifier = {
+				add = -30
+				has_trait = forgiving
+			}
+		}
+	}
+
+	option = { # 暂且容忍
+		name = ftr_warlord_event.0004.b
+		stress_impact = {
+			wrathful = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 40
+			modifier = {
+				add = 40
+				has_trait = forgiving
+			}
+			modifier = {
+				add = -30
+				has_trait = wrathful
+			}
+		}
+	}
+
+	after = {}
+}

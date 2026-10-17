@@ -424,8 +424,132 @@ ftr_realm_event.1010 = {
 		}
 	}
 
+	option = { # 成为军阀，只在名义上尊奉新主
+		name = ftr_realm_event.1010.c
+		# 需实际持有伯爵领（无地贵族世家不可）且宗主国能接纳朝贡国
+		trigger = {
+			ftr_warlord_has_real_land_trigger = yes
+			scope:usurper_liege = {
+				can_have_tributaries_trigger = yes
+			}
+		}
+		save_scope_as = warlord_vassal
+		create_title_and_vassal_change = {
+			type = independency
+			save_scope_as = warlord_change
+			# 军阀名义上仍尊奉新主，故新主不获得宣称
+			add_claim_on_loss = no
+		}
+		becomes_independent = {
+			change = scope:warlord_change
+		}
+		resolve_title_and_vassal_change = scope:warlord_change
+		ftr_make_warlord_tributary_effect = {
+			TRIBUTARY = root
+			SUZERAIN = scope:usurper_liege
+		}
+		scope:usurper_liege = {
+			add_opinion = {
+				target = scope:warlord_vassal
+				modifier = tributary_volunteered_opinion
+			}
+			send_interface_message = {
+				type = event_generic_neutral
+				title = ftr_realm_event.1010.c.title
+				desc = ftr_realm_event.1010.c.desc
+				left_icon = scope:warlord_vassal
+			}
+		}
+		stress_impact = {
+			ambitious = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 60
+			modifier = {
+				add = 30
+				OR = {
+					has_trait = ambitious
+					has_trait = disloyal
+				}
+			}
+			modifier = {
+				add = -30
+				OR = {
+					has_trait = craven
+					has_trait = loyal
+				}
+			}
+			# 兵力越弱越倾向「名义上尊奉」而非硬独立（免遭清算；且割据不留给新主宣称）
+			modifier = {
+				add = {
+					value = 0.6
+					subtract = {
+						value = root.current_military_strength
+						divide = { value = scope:usurper_liege.max_military_strength min = 1 }
+					}
+					multiply = 100
+					min = -30
+					max = 60
+				}
+			}
+		}
+	}
+
+	option = { # 无地贵族：既不能独立、也不能建朝贡，只能公开谴责篡位者
+		name = ftr_realm_event.1010.d
+		trigger = {
+			NOT = { ftr_warlord_has_real_land_trigger = yes }
+		}
+		save_scope_as = condemning_vassal
+		add_prestige = minor_prestige_gain
+		scope:usurper_liege = {
+			add_opinion = {
+				target = scope:condemning_vassal
+				modifier = insult_opinion
+				opinion = -30
+			}
+			send_interface_message = {
+				type = event_diplomacy_bad_with_text
+				title = ftr_realm_event.1010.d.title
+				desc = ftr_realm_event.1010.d.desc
+				left_icon = scope:condemning_vassal
+				custom_tooltip = ftr_realm_event.1010.d.msg_tt
+			}
+		}
+		stress_impact = {
+			just = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 30
+			modifier = {
+				add = 40
+				OR = {
+					has_trait = just
+					has_trait = brave
+					has_trait = zealous
+				}
+			}
+			modifier = {
+				add = -40
+				OR = {
+					has_trait = craven
+					has_trait = loyal
+				}
+			}
+			opinion_modifier = {
+				opinion_target = scope:usurper_liege
+				who = root
+				multiplier = -0.3
+			}
+		}
+	}
+
 	option = { # How can I kneel to this
 		name = ftr_realm_event.1010.b
+		# 无地者脱离不成立，故限实际持有伯爵领者
+		trigger = {
+			ftr_warlord_has_real_land_trigger = yes
+		}
 		save_scope_as = independent_vassal
 		create_title_and_vassal_change = {
 			type = independency

@@ -8,3 +8,13 @@
  # ===== Mod war names (CB war_name field; missing causes "has no war_name scripted") =====
  FTR_QINGJUNCE_WAR_NAME: "Cleanse the Sovereign's Side"
  FTR_SUCCESSION_WAR_NAME: "War of Succession"
+
+ # ===== 军阀讨伐战 =====
+ ftr_warlord_annexation_cb:0 "Subjugate the Warlord"
+ FTR_WARLORD_ANNEXATION_WAR_NAME:0 "War Against the Warlord"
+ ftr_warlord_annexation_cb_victory_desc:0 "[defender.GetShortUIName] loses [defender.GetHerHis] lands to [attacker.GetShortUIName], and the warlord's nominal submission ends with it."
+ ftr_warlord_annexation_cb_victory_desc_attacker:0 "You will seize every title held by the warlord [defender.GetShortUIName] and put an end to [defender.GetHerHis] nominal submission."
+ ftr_warlord_annexation_cb_white_peace_desc:0 "The warlord keeps [defender.GetHerHis] lands — for now."
+ ftr_warlord_annexation_cb_white_peace_desc_defender:0 "You keep your lands — for now."
+ ftr_warlord_annexation_cb_defeat_desc:0 "The warlord [defender.GetShortUIName] has beaten back [attacker.GetShortUIName]'s attempt to reclaim [defender.GetHerHis] lands."
+ ftr_warlord_annexation_cb_defeat_desc_defender:0 "You have beaten back the suzerain's attempt to reclaim your lands."

@@ -151,14 +151,6 @@
  ftr_pg_liege_proposal_vote_abstain_decision_confirm:0 "投下弃权票"
  ftr_liege_realm_not_abstain_no_text:0 "未在领主领地内的议案中投下弃权票"
 
- ftr_warlord_gain_power_decision:0 "<FTR>拥兵自重"
- ftr_warlord_gain_power_decision_tooltip:0 "大丈夫立于天地之间，岂能郁郁久居人下？"
- ftr_warlord_gain_power_decision_desc:0 "我们的国家陷入混乱，我们的领主孱弱不堪。如今之计，唯有拥兵自重割据一方才能保全自身，为拯救国家与人民积蓄力量。"
- ftr_warlord_gain_power_decision_confirm:0 "时机已到！"
- ftr_liege_war_against_vassals_text:0 "领主正与其封臣交战"
- ftr_has_40_percent_of_lieges_army_text:0 "拥有超过领主当前兵力的40%"
- ftr_change_to_warlord_tt:0 "军阀起事"
-
  ftr_recruit_concubine_decision:0 "<FTR>引荐佳丽"
  ftr_recruit_concubine_decision_tooltip:0 "从社会上搜罗美丽的臣民，让他们充实后宫"
  ftr_recruit_concubine_decision_desc:0 "我的后宫人丁还不够兴旺，有必要搜罗一些侍妾来充实一下。"

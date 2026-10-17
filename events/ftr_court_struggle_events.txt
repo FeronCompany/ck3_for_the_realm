@@ -5,7 +5,7 @@
 #   01xx 继位与内战善后（0100–0150）
 #   02xx 站队 · 背书 · 共治 · 参与（0200–0230）
 #   03xx 暗算链：放谣 → 伪造 → 下毒及后续（0300–0390）
-#   04xx 脏手段其余：调查 / 牵制 / 绑架 / 谋杀（0400–0430）
+#   04xx 脏手段其余：牵制 / 绑架 / 谋杀（0410–0430）
 #   05xx 强出口与党羽逼宫（0500–0530）
 #   06xx 文明争斗族 M1–M6（0600–0641）
 
@@ -2291,103 +2291,8 @@ ftr_court_struggle.0390 = {
 }
 
 ##############################################################
-### 04xx 脏手段其余：调查 0400 / 牵制 0410 / 绑架 0420 / 谋杀 0430
+### 04xx 脏手段其余：牵制 0410 / 绑架 0420 / 谋杀 0430
 ##############################################################
-
-######### 0400 派间谍调查（§12.4.2 手段 2.2） #########
-
-# ---- 2.2 派间谍调查头号竞争者（root = 触发池任一人，§9.2）----
-# root 合法来源：① 最高统治者（story owner）；② 有头衔 / 领地的参与者；
-# ③ 参与者的有头衔 / 领地支持者（登记于 ftr_court_backer_of / 权贵 ftr_court_supporters）。
-# 资格由触发入口用 ftr_court_can_order_investigation_trigger 过滤；事件本身不假设 root = 君主：
-# immediate 按 root 的关系定位所在朝堂的 story 与君主（独立统治者 → 自身 story；封臣 → top_liege；
-# 无地廷臣 → employer），取头号竞争者（评分最高者，排除 root 自身）。非 actor→victim 互殴派发。
-ftr_court_struggle.0400 = {
-	type = character_event
-	title = ftr_court_struggle.0400.t
-	desc = ftr_court_struggle.0400.desc
-	theme = intrigue
-
-	left_portrait = {
-		character = root
-		animation = personality_rational
-	}
-
-	immediate = {
-		# 定位所在朝堂的 story 与君主
-		if = {
-			limit = { any_owned_story = { type = ftr_court_struggle } }
-			every_owned_story = {
-				limit = { story_type = ftr_court_struggle }
-				save_scope_as = ftr_court_story
-			}
-		}
-		else_if = {
-			limit = { exists = top_liege }
-			top_liege = {
-				every_owned_story = {
-					limit = { story_type = ftr_court_struggle }
-					save_scope_as = ftr_court_story
-				}
-			}
-		}
-		else_if = {
-			limit = { exists = employer }
-			employer = {
-				every_owned_story = {
-					limit = { story_type = ftr_court_struggle }
-					save_scope_as = ftr_court_story
-				}
-			}
-		}
-		scope:ftr_court_story ?= {
-			story_owner = { save_scope_as = ftr_court_monarch }
-			# 取头号竞争者（实时综合评分最高者）；root 本人即头号时顺延评分次高者（不调查自己）
-			ordered_in_list = {
-				variable = ftr_court_participant_list
-				order_by = ftr_court_claim_strength_value
-				limit = { NOT = { this = root } }
-				save_scope_as = ftr_court_ringleader
-			}
-		}
-	}
-
-	option = { # Investigate and expose him
-		name = ftr_court_struggle.0400.a
-		ai_chance = {
-			base = 55
-			modifier = { add = 30  has_trait = paranoid }
-			modifier = { add = 20  has_trait = ambitious }
-			modifier = { add = -25  has_trait = trusting }
-		}
-		# 查实头号竞争者：声望受损，并对调查发起者（root）交恶
-		scope:ftr_court_ringleader ?= {
-			add_opinion = { target = root  modifier = ftr_court_targeted_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = root }
-			add_prestige = { value = 0  subtract = ftr_court_calumny_prestige_value }
-		}
-		scope:ftr_court_story ?= {
-			if = {
-				limit = {
-					has_variable = ftr_court_struggle_intensity
-					var:ftr_court_struggle_intensity < ftr_court_intensity_max_value
-				}
-				change_variable = {
-					name = ftr_court_struggle_intensity
-					add = ftr_court_strife_low_intensity_value
-				}
-			}
-		}
-	}
-	option = { # Bide my time
-		name = ftr_court_struggle.0400.b
-		ai_chance = {
-			base = 45
-			modifier = { add = 20  has_trait = patient }
-			modifier = { add = 20  has_trait = trusting }
-			modifier = { add = -25  has_trait = paranoid }
-		}
-	}
-}
 
 # ---- 手段 2.1 后续：彻查伪证后追责伪造者（0401，root = 君主，0340 洗清分支链式） ----
 # 依赖：君主身上已存 ftr_court_inq_actor（伪造者）/ ftr_court_inq_victim（受害者）。
@@ -3139,17 +3044,18 @@ ftr_court_struggle.0500 = {
 # =====================================================================
 
 ###### 0520 党羽上疏：请立储（root = 最高领主） ######
-# 某竞争者的党羽规模已达门槛、且朝中尚无储位时，党羽集体上疏请君主立储；
-# 合法继承人另在可建共治时由统一关节顺带分权，非继承人只能取得官职 / 摄政型共治。
+# 某竞争者的党羽规模达门槛、朝中无储位、且其可被立储时，党羽集体上疏请君主立储；
+# 可建共治时由统一关节顺带分权。
 ######### 0520-0530 党羽逼宫（§13） #########
 ftr_court_struggle.0520 = {
 	type = character_event
 	title = ftr_court_struggle.0520.t
-	# 事件级过滤：被拥立的竞争者须仍在世（派发到触发的 2 天窗口内可能失效）
+	# 事件级过滤：被拥立者须仍在世且可被立储（延迟 2 天窗口内可能失效）
 	trigger = {
 		is_alive = yes
 		has_variable = ftr_court_demand_champion
 		var:ftr_court_demand_champion ?= { is_alive = yes }
+		ftr_court_can_designate_champion_trigger = { HEIR = var:ftr_court_demand_champion }
 		NOT = { ftr_court_realm_has_crown_prince_trigger = yes }
 	}
 	desc = ftr_court_struggle.0520.desc

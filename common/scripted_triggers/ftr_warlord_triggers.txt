@@ -1,0 +1,144 @@
+﻿
+##############################################################
+### 军阀机制 · 脚本条件（触发器）
+##############################################################
+
+# 求值域：战争。是否为内战（含本 Mod 自己的继位之战）。
+ftr_warlord_is_civil_war_trigger = {
+	OR = {
+		is_civil_war = yes
+		using_civil_war_cb_trigger = yes
+		using_cb = ftr_succession_war
+	}
+}
+
+# 求值域：领主。宽松判定：是否正处于内战（决议 is_shown 用，不论时长与战况）。
+ftr_warlord_liege_in_civil_war_trigger = {
+	any_character_war = {
+		ftr_warlord_is_civil_war_trigger = yes
+	}
+}
+
+# 求值域：领主。严格判定：任一内战持续 >5 年，且领主自身在该内战中的战争分数 < 50。
+# 注：迭代 war 列表时 prev = 被迭代的角色（原版 secede_from_empire_decision 同写法）。
+ftr_warlord_liege_prolonged_civil_war_trigger = {
+	any_character_war = {
+		ftr_warlord_is_civil_war_trigger = yes
+		war_days > 1826 # 约 5 年
+		trigger_if = {
+			limit = { is_attacker = prev }
+			attacker_war_score < 50
+		}
+		trigger_else = {
+			defender_war_score < 50
+		}
+	}
+}
+
+# 求值域：角色。是否实际持有伯爵领——世族头衔（天朝制伯爵级 / 行政制公爵级）不算实封领地。
+ftr_warlord_has_real_land_trigger = {
+	exists = capital_county
+}
+
+# 求值域：申请割据的直属臣属。决议 is_valid 的严格门槛。
+ftr_warlord_can_secede_trigger = {
+	# 决议置灰时给出可读的失败原因
+	custom_tooltip = {
+		text = ftr_warlord_needs_real_land_tt
+		ftr_warlord_has_real_land_trigger = yes
+	}
+	is_independent_ruler = no
+	is_at_war = no
+	exists = liege
+	liege = {
+		is_independent_ruler = yes
+		# 决议置灰时给出可读的失败原因
+		custom_tooltip = {
+			text = ftr_warlord_liege_prolonged_civil_war_tt
+			ftr_warlord_liege_prolonged_civil_war_trigger = yes
+		}
+	}
+}
+
+# 求值域：请求军事介入的请求者。自身是某场战争的主要参与方，
+# 且要么本身是独立统治者，要么身为封臣正与独立统治者直接交战。
+ftr_military_intervention_requester_trigger = {
+	any_character_war = {
+		OR = {
+			primary_attacker = prev
+			primary_defender = prev
+		}
+	}
+	OR = {
+		is_independent_ruler = yes
+		any_war_enemy = {
+			is_independent_ruler = yes
+		}
+	}
+}
+
+# 求值域：交互上下文（需 scope:actor / scope:recipient）。
+# 存在一块与对方相邻、且不是我直辖的伯爵领（割封臣的地，君主不那么心疼）。
+ftr_military_intervention_has_non_domain_border_county_trigger = {
+	scope:actor = {
+		any_sub_realm_county = {
+			is_neighbor_to_realm = scope:recipient
+			NOT = { holder ?= { this = scope:actor } }
+		}
+	}
+}
+
+# 求值域：交互上下文。存在一块与对方相邻且发展度低（<= 8）的伯爵领。
+ftr_military_intervention_has_poor_border_county_trigger = {
+	scope:actor = {
+		any_sub_realm_county = {
+			is_neighbor_to_realm = scope:recipient
+			development_level <= 8
+		}
+	}
+}
+
+# 求值域：交互上下文。存在一块与对方相邻、且不在首都所在公国的伯爵领。
+# 注：引擎无「伯爵领到首都距离」触发器，故以「不属于首都所在公国」代理「偏远」。
+ftr_military_intervention_has_remote_border_county_trigger = {
+	scope:actor = {
+		any_sub_realm_county = {
+			is_neighbor_to_realm = scope:recipient
+			NOT = { duchy ?= scope:actor.capital_county.duchy }
+		}
+	}
+}
+
+# 求值域：请求者。是否存在「我方为主要参与方且战争分数 <= -40」的战争（AI 求援门槛）。
+ftr_military_intervention_has_losing_war_trigger = {
+	any_character_war = {
+		OR = {
+			primary_attacker = prev
+			primary_defender = prev
+		}
+		trigger_if = {
+			limit = { is_attacker = prev }
+			attacker_war_score <= -40
+		}
+		trigger_else = {
+			defender_war_score <= -40
+		}
+	}
+}
+
+# 求值域：请求者。同上，但门槛抬到 <= -60（战况更糟，求援意愿更高）。
+ftr_military_intervention_has_critical_war_trigger = {
+	any_character_war = {
+		OR = {
+			primary_attacker = prev
+			primary_defender = prev
+		}
+		trigger_if = {
+			limit = { is_attacker = prev }
+			attacker_war_score <= -60
+		}
+		trigger_else = {
+			defender_war_score <= -60
+		}
+	}
+}

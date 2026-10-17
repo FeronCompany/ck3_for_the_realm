@@ -363,10 +363,12 @@ ftr_send_envoy_interaction = {
 		}
 		scope:actor = {
 			primary_title.tier >= tier_county
+			# 须有首都伯爵领：贵族世家类头衔虽算「有地」，但无首都，无法计贸易收益
+			exists = capital_county
 		}
 		scope:recipient = {
 			primary_title.tier >= tier_county
-			is_landed = yes
+			exists = capital_county
 			NOT = { this = scope:actor }
 		}
 	}
@@ -692,11 +694,18 @@ ftr_huangdi_ask_for_vassalation_interaction = {
 	cooldown_against_recipient = { years = 30 }
 
 	is_shown = {
-		scope:actor = {
-			has_title = title:h_china
-		}
 		scope:recipient = {
 			is_tributary_of = scope:actor
+		}
+		OR = {
+			# 天朝招附庸
+			scope:actor = {
+				has_title = title:h_china
+			}
+			# 宗主要求自家军阀内附
+			scope:recipient = {
+				has_subject_contract_group = ftr_tributary_warlord
+			}
 		}
 	}
 	is_valid_showing_failures_only = {
@@ -704,8 +713,11 @@ ftr_huangdi_ask_for_vassalation_interaction = {
 			is_at_war = no
 		}
 		scope:recipient = {
-			any_held_title = {
-				is_neighbor_to_realm = scope:actor
+			OR = {
+				any_held_title = {
+					is_neighbor_to_realm = scope:actor
+				}
+				has_subject_contract_group = ftr_tributary_warlord
 			}
 		}
 		scope:actor = {
@@ -759,15 +771,46 @@ ftr_huangdi_ask_for_vassalation_interaction = {
 	}
 	on_decline = {
 		custom_tooltip = ftr_vassalation_declined_tt
-		scope:actor = {
-			trigger_event = ftr_interaction_event.1008
+		scope:recipient = { save_scope_as = ftr_warlord_plotter }
+		scope:actor = { save_scope_as = ftr_warlord_liege }
+		if = {
+			limit = {
+				scope:recipient = {
+					has_subject_contract_group = ftr_tributary_warlord
+				}
+			}
+			# 军阀拒绝内附 → 宗主获得限时讨伐资格
+			custom_tooltip = ftr_warlord_refusal_war_tt
+			scope:actor = {
+				add_character_flag = {
+					flag = ftr_warlord_demand_refused
+					years = 1
+				}
+				trigger_event = {
+					id = ftr_warlord_event.0004
+					days = 1
+				}
+			}
+		}
+		else = {
+			scope:actor = {
+				trigger_event = ftr_interaction_event.1008
+			}
 		}
 	}
 
 	ai_potential = {
 		is_adult = yes
-		has_title = title:h_china
-		vassal_limit_available > 5
+		OR = {
+			AND = {
+				has_title = title:h_china
+				vassal_limit_available > 5
+			}
+			# 宗主也会尝试让割据的军阀真正内附
+			any_tributary = {
+				has_subject_contract_group = ftr_tributary_warlord
+			}
+		}
 	}
 
 	ai_accept = {
@@ -791,6 +834,15 @@ ftr_huangdi_ask_for_vassalation_interaction = {
 			add = -30
 			scope:recipient.primary_title.tier >= tier_kingdom
 			desc = FTR_VASSALATION_TIER
+		}
+
+		# 军阀：割据已成事实，除非走投无路不会交出实权
+		modifier = {
+			add = -50
+			scope:recipient = {
+				has_subject_contract_group = ftr_tributary_warlord
+			}
+			desc = FTR_VASSALATION_WARLORD
 		}
 
 		modifier = {
@@ -919,6 +971,18 @@ ftr_sue_for_peace_interaction = {
 							}
 						}
 						remove_participant = scope:actor
+						# 退出战争即视为「请求军事介入」的援军契约作罢，释放其契约槽位
+						if = {
+							limit = {
+								scope:actor = {
+									has_variable = ftr_mi_owed_war
+									var:ftr_mi_owed_war = prev
+								}
+							}
+							scope:actor = {
+								ftr_military_intervention_clear_debt_effect = yes
+							}
+						}
 					}
 				}
 			}
@@ -950,6 +1014,27 @@ ftr_sue_for_peace_interaction = {
 			}
 			desc = FTR_MILITARY_STRENGTH_COMPARISON
 		}
+		# 战事未久，双方都还没打出结果，此时更不情愿收手
+		modifier = {
+			add = -30
+			scope:recipient = {
+				any_character_war = {
+					scope:actor = {
+						is_participant_in_war = prev
+					}
+					OR = {
+						primary_attacker = scope:recipient
+						primary_defender = scope:recipient
+					}
+					NOR = {
+						primary_attacker = scope:actor
+						primary_defender = scope:actor
+					}
+					war_days < 730 # 不足两年
+				}
+			}
+			desc = FTR_SHORT_WAR_NEGOTIATION
+		}
 		modifier = {
 			add = 30
 			scope:recipient = {
@@ -964,6 +1049,418 @@ ftr_sue_for_peace_interaction = {
 			add = 30
 			scope:actor = {
 				debt_level >= 1
+			}
+		}
+	}
+}
+
+######### Request Military Intervention ##########
+# 请求军事介入：独立统治者或与独立统治者交战的封臣，向邻国（朝贡国/军阀不受距离限制）求援；
+# 可附加报酬（多选）：支付对方三年收入 / 割让相邻伯爵领 / 改信对方宗教。
+ftr_request_military_intervention_interaction = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	greeting = positive
+	can_send_despite_rejection = yes
+	notification_text = ftr_request_military_intervention_interaction_text
+	desc = ftr_request_military_intervention_interaction_desc
+	# 复用原版 call_ally 界面（列出请求者自己的战争；勿改用 interfere_in_war）
+	interface = call_ally
+	special_interaction = call_ally_interaction
+	icon = alliance
+	interface_priority = 15
+	ai_accept_negotiation = yes
+	ai_frequency = 24
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = tributaries
+		max = 5
+	}
+	cooldown_against_recipient = { years = 10 }
+
+	is_shown = {
+		# 请求者资格：主要参战方 + （独立统治者 或 与独立统治者交战的封臣）
+		scope:actor = {
+			ftr_military_intervention_requester_trigger = yes
+		}
+		# 目标资格：相邻或隔海相望的邻国；朝贡国（含军阀）可无视距离召唤宗主
+		OR = {
+			scope:actor = {
+				character_is_realm_neighbor = scope:recipient
+			}
+			scope:recipient = {
+				character_is_realm_neighbor = scope:actor
+			}
+			scope:actor = {
+				is_tributary_of = scope:recipient
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_imprisoned = no
+		}
+		# 已受雇履约中的目标不能再接单，否则其契约槽位会被覆盖
+		custom_tooltip = {
+			text = ftr_mi_already_contracted_tt
+			scope:recipient = {
+				NOT = { has_variable = ftr_mi_owed_war }
+			}
+		}
+	}
+	has_valid_target = {
+		exists = scope:target
+	}
+	has_valid_target_showing_failures_only = {
+		scope:target = {
+			custom_description = {
+				text = ftr_mi_must_be_war_leader_tt
+				OR = {
+					is_war_leader = scope:actor
+					primary_attacker = scope:actor
+					primary_defender = scope:actor
+				}
+			}
+			custom_description = {
+				text = ftr_mi_recipient_already_in_war_tt
+				NOR = {
+					any_war_attacker = { this = scope:recipient }
+					any_war_defender = { this = scope:recipient }
+				}
+			}
+		}
+	}
+	can_be_picked = {
+		exists = scope:target
+		scope:target = {
+			OR = {
+				is_war_leader = scope:actor
+				primary_attacker = scope:actor
+				primary_defender = scope:actor
+			}
+			NOR = {
+				any_war_attacker = { this = scope:recipient }
+				any_war_defender = { this = scope:recipient }
+			}
+		}
+	}
+
+	options_heading = ftr_military_intervention_cost_tt
+	send_option = { # 支付对方三年的收入（定金一年 + 战胜后两年）
+		is_valid = {
+			scope:actor = {
+				short_term_treasury_or_gold >= ftr_military_intervention_payment_deposit_value
+			}
+		}
+		flag = ftr_mi_pay_gold
+		localization = ftr_mi_pay_gold_tt
+		current_description = ftr_mi_pay_gold_desc_tt
+	}
+	send_option = { # 割让一块与对方相邻的伯爵领
+		is_valid = {
+			scope:actor = {
+				custom_description = {
+					text = ftr_mi_cede_county_valid_tt
+					any_sub_realm_county = {
+						is_neighbor_to_realm = scope:recipient
+					}
+				}
+			}
+		}
+		flag = ftr_mi_cede_county
+		localization = ftr_mi_cede_county_tt
+	}
+	send_option = { # 改信对方的宗教
+		is_valid = {
+			scope:actor = {
+				OR = {
+					NOT = { faith = scope:recipient.faith }
+					NOT = { rite = scope:recipient.rite }
+				}
+			}
+		}
+		flag = ftr_mi_convert_faith
+		localization = ftr_mi_convert_faith_tt
+	}
+	send_options_exclusive = no
+
+	on_accept = {
+		# 报酬：定金立即支付，余款与出力门槛锁额，待战胜后由 on_action 结算
+		if = {
+			limit = { scope:ftr_mi_pay_gold = yes }
+			scope:actor = {
+				ftr_military_intervention_set_contract_effect = yes
+			}
+		}
+		# 割让相邻伯爵领
+		if = {
+			limit = { scope:ftr_mi_cede_county = yes }
+			scope:actor = {
+				ftr_warlord_cede_neighboring_county_effect = {
+					TAKER = scope:recipient
+				}
+			}
+		}
+		# 改信对方宗教
+		if = {
+			limit = { scope:ftr_mi_convert_faith = yes }
+			scope:actor = {
+				set_character_faith = scope:recipient.faith
+				set_character_rite = scope:recipient.rite
+			}
+		}
+		# 目标加入请求者的阵营
+		if = {
+			limit = { exists = scope:target }
+			scope:target = {
+				hidden_effect = {
+					set_called_to = scope:recipient
+				}
+				if = {
+					limit = { is_attacker = scope:actor }
+					add_attacker = scope:recipient
+				}
+				else = {
+					add_defender = scope:recipient
+				}
+			}
+		}
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_request_military_intervention_interaction.accept.tt
+				left_icon = scope:actor
+				right_icon = scope:recipient
+			}
+		}
+	}
+	on_decline = {
+		scope:actor = {
+			send_interface_toast = {
+				title = ftr_request_military_intervention_interaction.decline.tt
+				left_icon = scope:actor
+				right_icon = scope:recipient
+			}
+		}
+	}
+
+	ai_potential = {
+		is_adult = yes
+		is_at_war = yes
+	}
+
+	ai_set_target = {
+		scope:actor = {
+			ordered_character_war = { # 挑自己劣势最大的那场战争
+				limit = {
+					OR = {
+						is_war_leader = prev
+						primary_attacker = prev
+						primary_defender = prev
+					}
+					NOR = {
+						any_war_attacker = { this = scope:recipient }
+						any_war_defender = { this = scope:recipient }
+					}
+					save_temporary_scope_as = target
+					# 只在确实处于劣势（战争分数 <= -40）时才值得求援
+					trigger_if = {
+						limit = { is_attacker = prev }
+						attacker_war_score <= -40
+					}
+					trigger_else = {
+						defender_war_score <= -40
+					}
+				}
+				order_by = {
+					value = 0
+					add = {
+						if = {
+							limit = { any_war_attacker = { this = scope:actor } }
+							subtract = attacker_war_score
+						}
+						else = {
+							subtract = defender_war_score
+						}
+					}
+				}
+				save_scope_as = target
+			}
+		}
+	}
+
+	ai_accept = {
+		base = -20
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.2
+		}
+		modifier = {
+			add = 40
+			scope:ftr_mi_pay_gold = yes
+			desc = FTR_MI_PAY_GOLD
+		}
+		modifier = {
+			add = 40
+			scope:ftr_mi_cede_county = yes
+			desc = FTR_MI_CEDE_COUNTY
+		}
+		modifier = {
+			add = 20
+			scope:ftr_mi_convert_faith = yes
+			desc = FTR_MI_CONVERT_FAITH
+		}
+		modifier = {
+			add = 20
+			scope:actor = {
+				is_tributary_of = scope:recipient
+			}
+			desc = FTR_MI_IS_TRIBUTARY
+		}
+		modifier = {
+			add = -50
+			scope:recipient = {
+				is_at_war = yes
+			}
+			desc = FTR_MI_TARGET_AT_WAR
+		}
+		# 军力对比：自身兵力相对请求者越强，越乐意接这单
+		modifier = {
+			add = {
+				value = ftr_military_intervention_strength_ratio_value
+				multiply = 20
+				max = 20
+			}
+			desc = FTR_MI_STRENGTH_RATIO
+		}
+		# 上次拿了钱却没出力
+		modifier = {
+			add = -50
+			scope:recipient = {
+				has_character_flag = ftr_mi_contribution_failure
+			}
+			desc = FTR_MI_CONTRIBUTION_FAILURE
+		}
+	}
+
+	ai_will_do = {
+		# ai_will_do 是 0-100 的发送概率（非竞争权重），基数给足才会被认真考虑
+		base = 70
+
+		# 没打到劣势（我方战争分数 <= -40）就没必要请外援
+		modifier = {
+			factor = 0
+			NOT = {
+				scope:actor = {
+					ftr_military_intervention_has_losing_war_trigger = yes
+				}
+			}
+		}
+
+		# 给钱：默认计价；我宽裕（>= 三倍定金）且对方拮据（不足一年收入）时反转为加分
+		modifier = {
+			factor = ftr_military_intervention_promise_cost_factor_value
+			scope:ftr_mi_pay_gold = yes
+		}
+		modifier = {
+			factor = 1.5
+			scope:ftr_mi_pay_gold = yes
+			scope:actor = {
+				short_term_treasury_or_gold >= {
+					value = ftr_military_intervention_payment_deposit_value
+					multiply = 3
+				}
+			}
+			scope:recipient = {
+				short_term_treasury_or_gold <= ftr_military_intervention_payment_deposit_value
+			}
+		}
+
+		# 割地：默认计价；本国面积大、或割的不是自己直辖地时，不情愿值下降
+		modifier = {
+			factor = ftr_military_intervention_promise_cost_factor_value
+			scope:ftr_mi_cede_county = yes
+		}
+		modifier = {
+			factor = 1.25
+			scope:ftr_mi_cede_county = yes
+			OR = {
+				scope:actor = { realm_size >= 15 }
+				ftr_military_intervention_has_non_domain_border_county_trigger = yes
+			}
+		}
+		# 割地：这块地不值钱（发展度低 / 不在首都所在公国）或对方领地少 → 小幅加成
+		modifier = {
+			factor = 1.15
+			scope:ftr_mi_cede_county = yes
+			ftr_military_intervention_has_poor_border_county_trigger = yes
+		}
+		modifier = {
+			factor = 1.15
+			scope:ftr_mi_cede_county = yes
+			ftr_military_intervention_has_remote_border_county_trigger = yes
+		}
+		modifier = {
+			factor = 1.15
+			scope:ftr_mi_cede_county = yes
+			scope:recipient = { realm_size <= 6 }
+		}
+
+		# 改宗：默认计价；愤世嫉俗或被开除教籍者本就不在乎改宗
+		modifier = {
+			factor = ftr_military_intervention_promise_cost_factor_value
+			scope:ftr_mi_convert_faith = yes
+		}
+		modifier = {
+			factor = 1.4
+			scope:ftr_mi_convert_faith = yes
+			scope:actor = {
+				OR = {
+					has_trait = cynical
+					has_trait = excommunicated
+				}
+			}
+		}
+
+		# 形势严峻时不再省这点代价：压低空手组，让出价组胜出且取最小报价
+		modifier = {
+			factor = 0.6
+			scope:actor = {
+				ftr_military_intervention_has_critical_war_trigger = yes
+			}
+			NOT = {
+				OR = {
+					scope:ftr_mi_pay_gold = yes
+					scope:ftr_mi_cede_county = yes
+					scope:ftr_mi_convert_faith = yes
+				}
+			}
+		}
+
+		# 战况越糟越急于求援
+		modifier = {
+			factor = 1.4
+			scope:actor = {
+				ftr_military_intervention_has_critical_war_trigger = yes
+			}
+		}
+
+		# 对方当前未参战才拉得动
+		modifier = {
+			factor = 1.3
+			scope:recipient = {
+				is_at_war = no
+			}
+		}
+
+		# 军力对比：对方兵越实越值得开口（兵少者报酬也打折，不必折腾）
+		modifier = {
+			factor = {
+				value = 0.6
+				add = {
+					value = ftr_military_intervention_strength_ratio_value
+					max = 1
+				}
 			}
 		}
 	}

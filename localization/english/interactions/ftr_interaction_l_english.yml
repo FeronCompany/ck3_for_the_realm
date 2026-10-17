@@ -85,3 +85,4 @@
  ftr_sue_for_peace_interaction.accept.tt:0 "[recipient.GetShortUIName] agrees to make peace with you"
  ftr_sue_for_peace_interaction.decline.tt:0 "[recipient.GetShortUIName] declines to make peace with you"
  FTR_MILITARY_STRENGTH_COMPARISON:0 "Military strength comparison: $VALUE|=+0$"
+ FTR_SHORT_WAR_NEGOTIATION:0 "War has lasted less than two years: $VALUE|=+0$"

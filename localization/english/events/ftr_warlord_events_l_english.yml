@@ -1,0 +1,18 @@
+﻿l_english:
+
+ # ===== 军阀 · 割据失败：逮捕或赦免 =====
+ ftr_warlord_event.0002.t:0 "<FTR> A Plot To Carve Out A Domain"
+ ftr_warlord_event.0002.desc:0 "With our realm consumed by endless civil war, [ftr_warlord_plotter.GetShortUIName] has grown bold: our spies report that [ftr_warlord_plotter.GetSheHe] has been sounding out the local notables, seeking to break away and rule as a warlord of [ftr_warlord_plotter.GetHerHis] own. The plot has not yet come to fruition — [ftr_warlord_plotter.GetSheHe] may still be brought to heel."
+ ftr_warlord_event.0002.a:0 "Throw [ftr_warlord_plotter.GetHerHim] In The Dungeon"
+ ftr_warlord_event.0002.b:0 "Not Now, Let It Be Forgotten"
+
+ ftr_warlord_imprisoned_for_secession_tt:0 "Imprisoned For Plotting Secession"
+ ftr_warlord_imprisoned_for_secession_tt_desc:0 "With your [liege|E] mired in civil war, you sounded out the local magnates and gathered men, meaning to break away and rule as a warlord in your own right. The plot was uncovered before it could be carried out: your dealings were reported, and you have been thrown into the dungeon to await your fate."
+ ftr_warlord_pardoned_for_secession_tt:0 "Pardoned For Plotting Secession"
+ ftr_warlord_pardoned_for_secession_tt_desc:0 "With your [liege|E] mired in civil war, you sounded out the local magnates and gathered men, meaning to break away and rule as a warlord in your own right. The plot was uncovered — but your [liege|E] has chosen to let the matter rest, and no charge will be pressed against you."
+
+ # ===== 军阀 · 要求内附被拒 =====
+ ftr_warlord_event.0004.t:0 "<FTR> The Warlord Refuses To Submit"
+ ftr_warlord_event.0004.desc:0 "Our envoys have returned empty-handed. [ftr_warlord_plotter.GetShortUIName], who rules what was once our land as a warlord, spat on our demand for submission and now flaunts [ftr_warlord_plotter.GetHerHis] defiance before the whole realm. Such an insult cannot stand unanswered — we could march on [ftr_warlord_plotter.GetHerHim] at once and take [ftr_warlord_plotter.GetHerHis] lands for good."
+ ftr_warlord_event.0004.a:0 "Then Let Blood Decide"
+ ftr_warlord_event.0004.b:0 "We Will Bear This Insult For Now"

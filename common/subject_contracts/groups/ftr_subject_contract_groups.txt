@@ -1,0 +1,23 @@
+﻿
+##############################################################
+### 军阀朝贡契约组 —— 名义上尊奉旧主的割据者，国名国色随宗主，义务只有贡金
+### 建立：start_tributary = { contract_group = ftr_tributary_warlord }；判定：has_subject_contract_group
+##############################################################
+ftr_tributary_warlord = {
+	is_tributary = yes
+
+	suzerain_line_type = line_suzerain
+	tributary_line_type = line_tributary
+
+	should_show_as_suzerain_realm_name = yes
+	should_show_as_suzerain_realm_color = yes
+
+	# 军阀无「必须留在宗主体制内」的约束，可随时撕毁这层名义臣属。
+	tributary_can_break_free = {
+		always = yes
+	}
+
+	contracts = {
+		default_tributary_taxes
+	}
+}

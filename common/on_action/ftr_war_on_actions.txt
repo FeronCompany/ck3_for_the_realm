@@ -34,3 +34,90 @@ on_combat_end_winner = {
 		ftr_combat_end_supply_on_action
 	}
 }
+
+# 「请求军事介入」余款结算（求值域：scope:war）。
+# 契约记在援军身上，故此处筛出的参战者即援军：其所在侧获胜则付款，落败则清账。
+ftr_military_intervention_attacker_win_on_action = {
+	effect = {
+		scope:war = {
+			every_war_participant = {
+				limit = {
+					is_attacker_in_war = scope:war
+					has_variable = ftr_mi_owed_war
+					var:ftr_mi_owed_war = scope:war
+				}
+				ftr_military_intervention_pay_remainder_effect = yes
+			}
+			every_war_participant = {
+				limit = {
+					is_defender_in_war = scope:war
+					has_variable = ftr_mi_owed_war
+					var:ftr_mi_owed_war = scope:war
+				}
+				ftr_military_intervention_clear_debt_effect = yes
+			}
+		}
+	}
+}
+
+ftr_military_intervention_defender_win_on_action = {
+	effect = {
+		scope:war = {
+			every_war_participant = {
+				limit = {
+					is_defender_in_war = scope:war
+					has_variable = ftr_mi_owed_war
+					var:ftr_mi_owed_war = scope:war
+				}
+				ftr_military_intervention_pay_remainder_effect = yes
+			}
+			every_war_participant = {
+				limit = {
+					is_attacker_in_war = scope:war
+					has_variable = ftr_mi_owed_war
+					var:ftr_mi_owed_war = scope:war
+				}
+				ftr_military_intervention_clear_debt_effect = yes
+			}
+		}
+	}
+}
+
+# 未取胜（白和 / 战争失效）：债不成立，直接给援军清账
+ftr_military_intervention_clear_debt_on_action = {
+	effect = {
+		scope:war = {
+			every_war_participant = {
+				limit = {
+					has_variable = ftr_mi_owed_war
+					var:ftr_mi_owed_war = scope:war
+				}
+				ftr_military_intervention_clear_debt_effect = yes
+			}
+		}
+	}
+}
+
+on_war_won_attacker = {
+	on_actions = {
+		ftr_military_intervention_attacker_win_on_action
+	}
+}
+
+on_war_won_defender = {
+	on_actions = {
+		ftr_military_intervention_defender_win_on_action
+	}
+}
+
+on_war_white_peace = {
+	on_actions = {
+		ftr_military_intervention_clear_debt_on_action
+	}
+}
+
+on_war_invalidated = {
+	on_actions = {
+		ftr_military_intervention_clear_debt_on_action
+	}
+}

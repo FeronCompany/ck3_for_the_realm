@@ -85,3 +85,4 @@
  ftr_sue_for_peace_interaction.accept.tt:0 "[recipient.GetShortUIName]同意媾和"
  ftr_sue_for_peace_interaction.decline.tt:0 "[recipient.GetShortUIName]拒绝媾和"
  FTR_MILITARY_STRENGTH_COMPARISON:0 "战力比较：$VALUE|=+0$"
+ FTR_SHORT_WAR_NEGOTIATION:0 "战争尚不足两年：$VALUE|=+0$"

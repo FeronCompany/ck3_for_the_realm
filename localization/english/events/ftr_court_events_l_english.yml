@@ -336,11 +336,7 @@ ftr_court_struggle_0240_ok:0 "So be it."
  ftr_court_struggle.0390.a:0 "I will not rest until this is settled!"
  ftr_court_struggle.0390.b:0 "Without proof, I can only bear it."
 
-###### 0400 Spymaster's eye / 0430 Murder (means 2.2 / 2.5)######
- ftr_court_struggle.0400.t:0 "The Spymaster's Eye"
- ftr_court_struggle.0400.desc:0 "As the intrigues at court grow ever hotter, [ROOT.Char.GetTitledFirstName] resolves to send one's ablest agents to investigate the most prominent claimant and see what leverage might be found against them."
- ftr_court_struggle.0400.a:0 "Investigate and expose their misdeeds openly."
- ftr_court_struggle.0400.b:0 "Know the enemy, but bide my time."
+###### 0430 Murder (means 2.5)######
  ftr_court_struggle.0430.t:0 "The Assassin's Plot"
  ftr_court_struggle.0430.desc:0 "[ROOT.Char.GetTitledFirstName]'s contest for the throne with [ftr_court_victim.GetFullName] has become mortal. Rather than fall honourably, [ROOT.Char.GetTitledFirstName] muses on hiring cutthroats to make the rival no longer a concern."
  ftr_court_struggle.0430.a:0 "Hire assassins to end their life."

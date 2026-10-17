@@ -1,0 +1,94 @@
+﻿
+##############################################################
+### 军阀机制 · 脚本数值
+##############################################################
+
+# 割据成功率（%）：以外交为主、谋略为辅，对比申请者与领主的能力差。
+# 求值域：申请者，需已保存 scope:ftr_warlord_plotter / scope:ftr_warlord_liege。
+ftr_warlord_secede_chance_value = {
+	value = 50
+
+	# 申请者能力
+	add = {
+		value = scope:ftr_warlord_plotter.diplomacy
+		multiply = 2
+	}
+	add = {
+		value = scope:ftr_warlord_plotter.intrigue
+		multiply = 1
+	}
+
+	# 领主掌控力
+	subtract = {
+		value = scope:ftr_warlord_liege.diplomacy
+		multiply = 2
+	}
+	subtract = {
+		value = scope:ftr_warlord_liege.intrigue
+		multiply = 1
+	}
+
+	min = 10
+	max = 90
+}
+
+# 援军军力 / 请求者最大军力。求值域：交互上下文（需 scope:actor / scope:recipient）。
+ftr_military_intervention_strength_ratio_value = {
+	value = scope:recipient.current_military_strength
+	divide = {
+		value = scope:actor.max_military_strength
+		min = 1
+	}
+}
+
+# 对方一年的收入。求值域：请求者（需 scope:recipient）。
+# 有国库走国库收入，无国库（封建/部落）走常规金钱收入；再按兵力对比打折（下限四分之一）。
+ftr_military_intervention_yearly_payment_value = {
+	value = 0
+	if = {
+		limit = {
+			scope:recipient = { has_treasury = yes }
+		}
+		add = scope:recipient.year_character_treasury_income
+	}
+	else = {
+		add = scope:recipient.yearly_character_income
+	}
+	multiply = {
+		value = ftr_military_intervention_strength_ratio_value
+		min = 0.25
+		max = 1
+	}
+	min = 10
+}
+
+# 「请求军事介入」报价的代价折扣：平时 0.7（计较代价）；形势严峻（<=-60）时 0.92（不再计较）。
+# 求值域：交互上下文（需 scope:actor）。
+ftr_military_intervention_promise_cost_factor_value = {
+	value = 0.7
+	if = {
+		limit = {
+			scope:actor = { ftr_military_intervention_has_critical_war_trigger = yes }
+		}
+		add = 0.3
+	}
+}
+
+# 援军出力门槛：自身最大军力的四分之一（对齐原版契约助战口径）。
+ftr_military_intervention_war_contribution_value = {
+	value = scope:recipient.max_military_strength
+	divide = 4
+	min = 50
+	round = yes
+}
+
+# 报酬定金：一年收入，立约时立即支付。
+ftr_military_intervention_payment_deposit_value = {
+	value = ftr_military_intervention_yearly_payment_value
+}
+
+# 报酬余款：两年收入，立约时锁额，战胜后补付。
+ftr_military_intervention_payment_remainder_value = {
+	value = ftr_military_intervention_yearly_payment_value
+	multiply = 2
+}

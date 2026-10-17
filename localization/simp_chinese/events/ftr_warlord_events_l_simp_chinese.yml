@@ -1,0 +1,18 @@
+﻿l_simp_chinese:
+
+ # ===== 军阀 · 割据失败：逮捕或赦免 =====
+ ftr_warlord_event.0002.t:0 "<FTR>图谋割据"
+ ftr_warlord_event.0002.desc:0 "我国久困于内战，[ftr_warlord_plotter.GetShortUIName]遂生异心：细作来报，[ftr_warlord_plotter.GetSheHe]近来暗中联络地方豪强，欲裂土自立，割据一方。此事尚未成势，尚可及时将其收押。"
+ ftr_warlord_event.0002.a:0 "下狱问罪"
+ ftr_warlord_event.0002.b:0 "暂且搁置，不予追究"
+
+ ftr_warlord_imprisoned_for_secession_tt:0 "因图谋割据被囚"
+ ftr_warlord_imprisoned_for_secession_tt_desc:0 "趁[liege|E]身陷内战之机，你暗中联络地方豪强、聚集兵马，意图裂土自立、割据一方。事机败露，尚未发动便已被察觉：你的往来勾连尽数落入领主耳中，如今身陷囹圄，听候发落。"
+ ftr_warlord_pardoned_for_secession_tt:0 "图谋割据获赦"
+ ftr_warlord_pardoned_for_secession_tt_desc:0 "趁[liege|E]身陷内战之机，你暗中联络地方豪强、聚集兵马，意图裂土自立、割据一方。事机败露，但[liege|E]决定不予追究，此事就此揭过，不再加罪于你。"
+
+ # ===== 军阀 · 要求内附被拒 =====
+ ftr_warlord_event.0004.t:0 "<FTR>军阀拒不内附"
+ ftr_warlord_event.0004.desc:0 "使者空手而归。占据我国旧土的军阀[ftr_warlord_plotter.GetShortUIName]断然拒绝了内附之请，公然将这份桀骜昭告朝野。此等羞辱岂能不了了之——我们大可立即兴兵讨伐，将其领地彻底收归版图。"
+ ftr_warlord_event.0004.a:0 "那就兵戎相见"
+ ftr_warlord_event.0004.b:0 "暂且忍下这口气"

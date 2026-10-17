@@ -1,0 +1,241 @@
+﻿
+##############################################################
+### 军阀机制 · 脚本效果
+##############################################################
+
+# 建立军阀朝贡关系：$TRIBUTARY$ = 军阀本人，$SUZERAIN$ = 名义宗主，求值域任意。
+ftr_make_warlord_tributary_effect = {
+	$TRIBUTARY$ = { save_scope_as = ftr_warlord_tributary }
+	$SUZERAIN$ = { save_scope_as = ftr_warlord_suzerain }
+
+	scope:ftr_warlord_tributary = {
+		# 先清掉既有朝贡关系，避免同挂两份契约
+		if = {
+			limit = { is_tributary = yes }
+			end_tributary = yes
+		}
+
+		# 仍是宗主封臣时（如无地贵族）无法建立朝贡关系，跳过以免刷 error.log
+		if = {
+			limit = {
+				NOT = { is_vassal_of = scope:ftr_warlord_suzerain }
+			}
+			start_tributary = {
+				contract_group = ftr_tributary_warlord
+				suzerain = scope:ftr_warlord_suzerain
+			}
+		}
+
+		if = {
+			limit = { is_tributary = yes } # 抑制 error.log
+			hidden_effect = {
+				# 军阀只缴贡金，取高额档
+				tributary_contract_set_obligation_level = {
+					type = default_tributary_taxes
+					level = 2
+				}
+			}
+		}
+		add_subject_standing = 10
+		custom_tooltip = ftr_become_warlord_tt
+	}
+}
+
+# 割据成功：独立 + 转向军阀朝贡关系。求值域：需已保存 plotter / liege。
+ftr_warlord_secede_success_effect = {
+	scope:ftr_warlord_plotter = {
+		create_title_and_vassal_change = {
+			type = independency
+			save_scope_as = ftr_warlord_change
+			add_claim_on_loss = yes
+		}
+		becomes_independent = {
+			change = scope:ftr_warlord_change
+		}
+		resolve_title_and_vassal_change = scope:ftr_warlord_change
+	}
+
+	ftr_make_warlord_tributary_effect = {
+		TRIBUTARY = scope:ftr_warlord_plotter
+		SUZERAIN = scope:ftr_warlord_liege
+	}
+
+	scope:ftr_warlord_plotter = {
+		send_interface_toast = {
+			type = event_toast_effect_good
+			title = ftr_warlord_secede_success_tt
+			left_icon = scope:ftr_warlord_liege
+		}
+	}
+	scope:ftr_warlord_liege = {
+		add_opinion = {
+			target = scope:ftr_warlord_plotter
+			modifier = betrayal_opinion
+			opinion = -50
+		}
+		send_interface_message = {
+			type = event_diplomacy_bad_with_text
+			title = ftr_warlord_secede_liege_title
+			desc = ftr_warlord_secede_liege_desc
+			left_icon = scope:ftr_warlord_plotter
+		}
+	}
+}
+
+# 割据失败：告知领主，由其决定逮捕或赦免。求值域：需已保存 plotter / liege。
+ftr_warlord_secede_failure_effect = {
+	scope:ftr_warlord_plotter = {
+		send_interface_toast = {
+			type = event_toast_effect_bad
+			title = ftr_warlord_secede_failure_tt
+			left_icon = scope:ftr_warlord_liege
+		}
+	}
+	scope:ftr_warlord_liege = {
+		trigger_event = {
+			id = ftr_warlord_event.0002
+			days = 1
+		}
+	}
+}
+
+# 随机判定割据成败（外交 + 谋略对比）。random 无 else 分支，故用临时旗标记住成功。
+ftr_warlord_secede_roll_effect = {
+	remove_character_flag = ftr_warlord_secede_succeeded
+	random = {
+		chance = ftr_warlord_secede_chance_value
+		add_character_flag = ftr_warlord_secede_succeeded
+	}
+	if = {
+		limit = { has_character_flag = ftr_warlord_secede_succeeded }
+		remove_character_flag = ftr_warlord_secede_succeeded
+		ftr_warlord_secede_success_effect = yes
+	}
+	else = {
+		ftr_warlord_secede_failure_effect = yes
+	}
+}
+
+# 请求军事介入·立约：定金立即支付；契约（战争 / 余款 / 付款人 / 出力门槛）记在援军名下。
+# 记在援军而非请求者，是为了能同时拉多人、或为多场战争各拉一人而互不覆盖。
+# 求值域：请求者（scope:actor / scope:recipient / scope:target 已就绪）。
+ftr_military_intervention_set_contract_effect = {
+	pay_treasury_or_gold = {
+		target = scope:recipient
+		value = ftr_military_intervention_payment_deposit_value
+	}
+	scope:recipient = {
+		set_variable = {
+			name = ftr_mi_owed_war
+			value = scope:target
+		}
+		set_variable = {
+			name = ftr_mi_owed_gold
+			value = ftr_military_intervention_payment_remainder_value
+		}
+		set_variable = {
+			name = ftr_mi_owed_payer
+			value = scope:actor
+		}
+		set_variable = {
+			name = ftr_mi_owed_contribution
+			value = ftr_military_intervention_war_contribution_value
+		}
+	}
+}
+
+# 请求军事介入·余款结算。求值域：援军（战争参战者）。
+# 援军须确实出力（战争贡献达标）才由付款人支付余款，否则记一次「受雇未出力」。
+ftr_military_intervention_pay_remainder_effect = {
+	save_scope_as = ftr_mi_payee
+	var:ftr_mi_owed_payer = { save_scope_as = ftr_mi_payer }
+	if = {
+		limit = {
+			scope:war = {
+				war_contribution = {
+					target = scope:ftr_mi_payee
+					value >= scope:ftr_mi_payee.var:ftr_mi_owed_contribution
+				}
+			}
+		}
+		# 余款按立约时锁定的金额支付，不受当下收入波动影响
+		scope:ftr_mi_payer = {
+			pay_treasury_or_gold = {
+				target = scope:ftr_mi_payee
+				value = scope:ftr_mi_payee.var:ftr_mi_owed_gold
+			}
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				title = ftr_mi_remainder_paid_tt
+				left_icon = scope:ftr_mi_payee
+			}
+		}
+	}
+	else = {
+		add_character_flag = {
+			flag = ftr_mi_contribution_failure
+			years = 10
+		}
+		scope:ftr_mi_payer = {
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				title = ftr_mi_contribution_short_tt
+				left_icon = scope:ftr_mi_payee
+			}
+		}
+	}
+	remove_variable = ftr_mi_owed_war
+	remove_variable = ftr_mi_owed_gold
+	remove_variable = ftr_mi_owed_payer
+	remove_variable = ftr_mi_owed_contribution
+}
+
+# 请求军事介入·债不成立（战败 / 白和 / 战争失效）时的清账。求值域：援军。
+ftr_military_intervention_clear_debt_effect = {
+	remove_variable = ftr_mi_owed_war
+	remove_variable = ftr_mi_owed_gold
+	remove_variable = ftr_mi_owed_payer
+	remove_variable = ftr_mi_owed_contribution
+}
+
+# 割让一块与 $TAKER$ 相邻的伯爵领（找不到则跳过）。求值域：割让方自己。
+# 一律直接转移头衔；原本是封臣的地则原持有者怀怨（不会变成对方的封臣）。
+ftr_warlord_cede_neighboring_county_effect = {
+	$TAKER$ = { save_scope_as = ftr_warlord_land_taker }
+	save_scope_as = ftr_warlord_land_giver
+
+	if = {
+		limit = {
+			any_sub_realm_county = {
+				is_neighbor_to_realm = scope:ftr_warlord_land_taker
+			}
+		}
+		create_title_and_vassal_change = {
+			type = granted
+			save_scope_as = ftr_warlord_land_change
+			add_claim_on_loss = yes
+		}
+		random_sub_realm_county = {
+			limit = {
+				is_neighbor_to_realm = scope:ftr_warlord_land_taker
+			}
+			# 非君主直辖：先给原持有者记一笔不满，再夺其头衔
+			if = {
+				limit = {
+					NOT = { holder ?= { this = scope:ftr_warlord_land_giver } }
+				}
+				holder ?= {
+					add_opinion = {
+						target = scope:ftr_warlord_land_giver
+						modifier = ftr_ceded_to_foreign_ruler_opinion
+					}
+				}
+			}
+			change_title_holder_include_vassals = {
+				holder = scope:ftr_warlord_land_taker
+				change = scope:ftr_warlord_land_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:ftr_warlord_land_change
+	}
+}

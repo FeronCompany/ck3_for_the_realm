@@ -81,6 +81,9 @@
  ftr_murderer_crime:0 "杀人偿命"
  ftr_murderer_crime_desc:0 "杀人偿命"
 
+ ftr_ceded_to_foreign_ruler_opinion:0 "把我的伯爵领割让给了外邦"
+ ftr_ceded_to_foreign_ruler_opinion_desc:0 "把我的伯爵领割让给了外邦"
+
  ftr_approve_aid_opinion:0 "同意提供赈灾资金"
  ftr_approve_aid_opinion_desc:0 "领主同意提供赈灾资金"
 

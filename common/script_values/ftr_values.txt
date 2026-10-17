@@ -290,9 +290,15 @@ ftr_trade_income_value = {
 			add = 2
 		}
 		multiply = {
-			value = scope:recipient.capital_county.development_level
-			multiply = 0.80
-			add = 15
+			# 无首都（无地角色）时退化为 dev=0 的等价兜底值，避免空作用域
+			value = 15
+			if = {
+				limit = { exists = scope:recipient.capital_county }
+				add = {
+					value = scope:recipient.capital_county.development_level
+					multiply = 0.80
+				}
+			}
 		}
 		# 任一方无首都省份（无地角色）时跳过距离系数；否则 squared_distance 会报空作用域
 		if = {
@@ -320,9 +326,15 @@ ftr_trade_income_expected_value = {
 			add = 2
 		}
 		multiply = {
-			value = scope:recipient.capital_county.development_level
-			multiply = 0.80
-			add = 15
+			# 无首都（无地角色）时退化为 dev=0 的等价兜底值，避免空作用域
+			value = 15
+			if = {
+				limit = { exists = scope:recipient.capital_county }
+				add = {
+					value = scope:recipient.capital_county.development_level
+					multiply = 0.80
+				}
+			}
 		}
 		# 任一方无首都省份（无地角色）时跳过距离系数；否则 squared_distance 会报空作用域
 		if = {

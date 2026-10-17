@@ -322,3 +322,11 @@ ftr_personal_merit_opinion = {
 	years = 1000
 	decaying = no
 }
+
+# 请求军事介入·割让领地：君主把我的伯爵领割给外邦（封臣 → 君主）
+ftr_ceded_to_foreign_ruler_opinion = {
+	opinion = -30
+	years = 20
+	decaying = yes
+	stacking = yes
+}

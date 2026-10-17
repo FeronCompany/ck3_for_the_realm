@@ -8,3 +8,13 @@
  # ===== 本 mod 战争名（CB 的 war_name 字段；缺省会报 "has no war_name scripted"） =====
  FTR_QINGJUNCE_WAR_NAME: "清君侧"
  FTR_SUCCESSION_WAR_NAME: "继位之战"
+
+ # ===== 军阀讨伐战 =====
+ ftr_warlord_annexation_cb:0 "讨伐军阀"
+ FTR_WARLORD_ANNEXATION_WAR_NAME:0 "讨伐军阀之战"
+ ftr_warlord_annexation_cb_victory_desc:0 "[defender.GetShortUIName]的领地将尽数落入[attacker.GetShortUIName]之手，军阀那点名义上的臣属也随之终结。"
+ ftr_warlord_annexation_cb_victory_desc_attacker:0 "你将夺取军阀[defender.GetShortUIName]名下的全部头衔，一并终结其名义上的臣属。"
+ ftr_warlord_annexation_cb_white_peace_desc:0 "军阀得以保住领地——暂且如此。"
+ ftr_warlord_annexation_cb_white_peace_desc_defender:0 "你暂时保住了自己的领地。"
+ ftr_warlord_annexation_cb_defeat_desc:0 "军阀[defender.GetShortUIName]击退了[attacker.GetShortUIName]收回旧土的企图。"
+ ftr_warlord_annexation_cb_defeat_desc_defender:0 "你击退了宗主收回旧土的企图。"

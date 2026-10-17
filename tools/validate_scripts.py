@@ -105,6 +105,8 @@ VANILLA_ON_ACTION_HOOKS = {
     "on_diarch_change",
     # 战争 / 战斗
     "on_war_declared", "on_war_ended", "on_war_won", "on_war_lost",
+    "on_war_won_attacker", "on_war_won_defender",
+    "on_war_white_peace", "on_war_invalidated",
     "on_combat_start", "on_combat_end_winner", "on_combat_end_loser",
     # 阴谋 / 计谋
     "on_scheme_start", "on_scheme_success", "on_scheme_failure",

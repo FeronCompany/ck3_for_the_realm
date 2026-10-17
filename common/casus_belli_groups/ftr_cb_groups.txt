@@ -22,3 +22,11 @@ ftr_civil_war = {
 	}
 }
 
+# 讨伐军阀专用组：朝贡关系内部的清算，不套用原版 subjugation 组的部落/宗教前置；
+# 真正的门槛（被拒内附旗标 + 对方是自家军阀）写在 ftr_warlord_annexation_cb 自身。
+ftr_warlord_war = {
+	allowed_for_character = {
+		always = yes
+	}
+}
+

@@ -67,12 +67,19 @@ ftr_ursurp_discontent_effects = {
 		every_vassal = {
 			limit = {
 				primary_title = {
-					tier >= tier_duchy
 					trigger_if = {
-						limit = {
-							NOT = { scope:title = scope:usurper_liege.primary_title }
+						# 世族头衔等级随政体而异（天朝制伯爵级 / 行政制公爵级），故不受公爵门槛限制
+						limit = { is_noble_family_title = yes }
+						always = yes
+					}
+					trigger_else = {
+						tier >= tier_duchy
+						trigger_if = {
+							limit = {
+								NOT = { scope:title = scope:usurper_liege.primary_title }
+							}
+							de_jure_liege = scope:title
 						}
-						de_jure_liege = scope:title
 					}
 				}
 				opinion = {

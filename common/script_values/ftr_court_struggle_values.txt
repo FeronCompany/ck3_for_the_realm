@@ -12,6 +12,10 @@ ftr_court_pulse_chance_contested_value = 14
 ftr_court_pulse_chance_crisis_value = 20
 # 一次危机结算后的冷却年数，防止连锁内战
 ftr_court_cooldown_years_value = 5
+# 朝堂无任何竞争者而收场后的重建冷却年数
+ftr_court_no_claimant_cooldown_years_value = 2
+# 新故事宽限（天）：参与者询问尚未答复期间不因「无竞争者」收场
+ftr_court_no_claimant_grace_days_value = 120
 # 竞争者数量下限（低于则不激活议题1）
 ftr_court_min_candidates_value = 2
 # 展示的竞争者上限（参与角逐者最多 5 人）

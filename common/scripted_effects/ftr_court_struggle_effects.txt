@@ -33,6 +33,14 @@ ftr_court_setup_effect = {
 	clear_variable_list = ftr_court_participant_list
 	set_variable = { name = ftr_court_participant_count  value = 0 }
 
+	# 宽限：询问尚未答复期间名单必然为空，先别让「无竞争者收场」把故事拆掉
+	story_owner ?= {
+		add_character_flag = {
+			flag = ftr_court_struggle_fresh
+			days = ftr_court_no_claimant_grace_days_value
+		}
+	}
+
 	# 启动：询问利益相关方是否参与角逐
 	ftr_court_launch_participation_asks_effect = yes
 }
@@ -136,6 +144,22 @@ ftr_court_end_story_if_owner_deposed_effect = {
 					NOT = { ftr_court_story_owner_is_supreme_liege_trigger = yes }
 					government_has_flag = government_is_theocracy
 				}
+			}
+		}
+		end_story = yes
+	}
+}
+
+# 在 story 域执行：已无任何在世竞争者 → 收场。
+# 与「失位收场」分开，只由主时钟派发（避开参与者询问事件尚未答复的窗口）。
+ftr_court_end_story_if_no_participant_effect = {
+	if = {
+		limit = { NOT = { ftr_court_has_any_participant_trigger = yes } }
+		# 进冷却：防止年度准入脉冲在「候选人都拒绝」的政权上反复建 / 拆故事
+		story_owner ?= {
+			add_character_flag = {
+				flag = ftr_court_cooldown
+				years = ftr_court_no_claimant_cooldown_years_value
 			}
 		}
 		end_story = yes

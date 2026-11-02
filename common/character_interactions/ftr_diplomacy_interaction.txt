@@ -1095,11 +1095,18 @@ ftr_request_military_intervention_interaction = {
 				is_tributary_of = scope:recipient
 			}
 		}
+		# 不能向自己求援，也不能向正与自己交战者求援
+		NOT = { scope:recipient = scope:actor }
+		scope:actor = {
+			NOT = { is_at_war_with = scope:recipient }
+		}
 	}
 	is_valid_showing_failures_only = {
 		scope:actor = {
 			is_imprisoned = no
+			NOT = { is_at_war_with = scope:recipient }
 		}
+		NOT = { scope:recipient = scope:actor }
 		# 已受雇履约中的目标不能再接单，否则其契约槽位会被覆盖
 		custom_tooltip = {
 			text = ftr_mi_already_contracted_tt
@@ -1246,6 +1253,8 @@ ftr_request_military_intervention_interaction = {
 	ai_potential = {
 		is_adult = yes
 		is_at_war = yes
+		# 不会为正在交战的对象当援军
+		NOT = { is_at_war_with = scope:actor }
 	}
 
 	ai_set_target = {

@@ -23,6 +23,8 @@ ftr_court_struggle.0001 = {
 		animation = shock
 	}
 	right_portrait = {
+		# 触发者本人即君主时不再重复显示（否则左右两个头像同为一人、各带一个头衔）
+		trigger = { NOT = { scope:ftr_court_monarch ?= { this = root } } }
 		character = scope:ftr_court_monarch
 		animation = personality_bold
 	}
@@ -67,6 +69,8 @@ ftr_court_struggle.0002 = {
 		animation = personality_brave
 	}
 	right_portrait = {
+		# 触发者本人即君主时不再重复显示（否则「尘埃落定」会同时出现两个最高领主头像）
+		trigger = { NOT = { scope:ftr_court_monarch ?= { this = root } } }
 		character = scope:ftr_court_monarch
 		animation = personality_dignified
 	}
@@ -93,6 +97,12 @@ ftr_court_struggle.0002 = {
 
 	option = { # The dust settles
 		name = ftr_court_struggle.0002.a
+		# 角逐平息、君权得证：故事持有者（最高领主）加中等合法性
+		# （add_legitimacy_effect 内含 is_valid_for_legitimacy_change，非合法性政体自动跳过）
+		if = {
+			limit = { is_independent_ruler = yes }
+			add_legitimacy_effect = { LEGITIMACY = medium_legitimacy_gain }
+		}
 	}
 }
 
@@ -3331,17 +3341,19 @@ ftr_court_struggle.0601 = {
 			modifier = { add = 15  has_trait = vengeful }
 			modifier = { add = -15  has_trait = content }
 		}
+		# 褫夺内阁之职
+		if = {
+			limit = { exists = scope:ftr_court_impeach_target }
+			fire_councillor = scope:ftr_court_impeach_target
+		}
+		add_prestige = {
+			value = 0
+			subtract = ftr_court_civil_strife_quell_prestige_value
+		}
+		ftr_court_impeach_aftermath_effect = { SIDE = 1 }
+		custom_tooltip = ftr_court_impeach_rival_chance_tt
 		custom_tooltip = {
-			text = ftr_court_impeach_grant_tt
-			if = {
-				limit = { exists = scope:ftr_court_impeach_target }
-				fire_councillor = scope:ftr_court_impeach_target
-			}
-			add_prestige = {
-				value = 0
-				subtract = ftr_court_civil_strife_quell_prestige_value
-			}
-			ftr_court_impeach_aftermath_effect = { SIDE = 1 }
+			text = ftr_court_impeach_intensity_high_tt
 			scope:ftr_court_story ?= {
 				ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_high_value }
 			}
@@ -3364,13 +3376,14 @@ ftr_court_struggle.0601 = {
 			modifier = { add = 15  has_trait = trusting }
 			modifier = { add = -15  has_trait = paranoid }
 		}
+		add_prestige = {
+			value = 0
+			subtract = ftr_court_civil_strife_quell_prestige_value
+		}
+		ftr_court_impeach_aftermath_effect = { SIDE = 2 }
+		custom_tooltip = ftr_court_impeach_rival_chance_tt
 		custom_tooltip = {
-			text = ftr_court_impeach_refuse_tt
-			add_prestige = {
-				value = 0
-				subtract = ftr_court_civil_strife_quell_prestige_value
-			}
-			ftr_court_impeach_aftermath_effect = { SIDE = 2 }
+			text = ftr_court_impeach_intensity_mid_tt
 			scope:ftr_court_story ?= {
 				ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_mid_value }
 			}
@@ -3393,9 +3406,10 @@ ftr_court_struggle.0601 = {
 			modifier = { add = 20  has_trait = diplomat }
 			modifier = { add = 15  has_trait = compassionate }
 		}
+		ftr_court_impeach_aftermath_effect = { SIDE = 3 }
+		custom_tooltip = ftr_court_impeach_rival_chance_tt
 		custom_tooltip = {
-			text = ftr_court_impeach_quell_tt
-			ftr_court_impeach_aftermath_effect = { SIDE = 3 }
+			text = ftr_court_impeach_intensity_quell_tt
 			scope:ftr_court_story ?= {
 				ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_quell_value }
 			}
@@ -3417,11 +3431,11 @@ ftr_court_struggle.0601 = {
 			modifier = { add = 20  has_trait = craven }
 			modifier = { add = 15  has_trait = lazy }
 		}
+		scope:ftr_court_impeach_actor ?= {
+			add_opinion = { target = root  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = root }
+		}
 		custom_tooltip = {
-			text = ftr_court_impeach_delay_tt
-			scope:ftr_court_impeach_actor ?= {
-				add_opinion = { target = root  modifier = ftr_political_opponent_opinion }  ftr_court_rival_grudge_effect = { CHARACTER = root }
-			}
+			text = ftr_court_impeach_intensity_low_tt
 			scope:ftr_court_story ?= {
 				ftr_court_intensity_add_effect = { AMOUNT = ftr_court_civil_strife_intensity_low_value }
 			}

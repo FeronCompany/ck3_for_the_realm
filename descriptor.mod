@@ -1,4 +1,4 @@
-version="A.M.7"
+version="A.M.8"
 tags={
 	"Character Interactions"
 	"Decisions"
